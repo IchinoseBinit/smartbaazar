@@ -14,19 +14,20 @@ class SmartClient {
   static String userEmail = '';
   static String laravelsession = '';
   static String phone = '';
+  static String userphoto = '';
   static final SmartClient _instance = SmartClient._internal();
   factory SmartClient() {
     return _instance;
   }
 
   late Dio _client;
-  final timeOutDuration = const Duration(seconds: kDebugMode ? 35 : 60);
+  final timeOutDuration = const Duration(seconds: kDebugMode ? 40 : 90);
   bool _isRefreshingToken = false; // Flag to avoid multiple refresh attempts
 
   Future<void> getlaravel() async {
     SharedPreferences stf = await SharedPreferences.getInstance();
-    if(SmartClient.laravelsession.isEmpty) {
-      SmartClient.laravelsession= stf.getString('laravel') ?? '';
+    if (SmartClient.laravelsession.isEmpty) {
+      SmartClient.laravelsession = stf.getString('laravel') ?? '';
     }
   }
 
@@ -122,6 +123,7 @@ class SmartClient {
 
   // Retry request after token refresh
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+    await Future.delayed(const Duration(seconds: 2));
     var options = Options(
       method: requestOptions.method,
       headers: {
@@ -149,8 +151,7 @@ class SmartClient {
       'accept': '*/*',
       'Connection': 'Keep-Alive',
       'X-AppApiToken': 'Yala@Techies_Nepal',
-      'Cookie':
-          'laravel_session=${SmartClient.laravelsession}',
+      'Cookie': 'laravel_session=${SmartClient.laravelsession}',
     };
 
     Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);

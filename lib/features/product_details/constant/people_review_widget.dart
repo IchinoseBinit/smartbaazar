@@ -11,9 +11,9 @@ class PeopleReviewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     print("pinky ${rate.first.name}");
     return SizedBox(
-      height: 150.h,
+      height: 100,
       width: double.infinity,
-      child: ListView.builder(
+      child:  ListView.builder(
         padding: const EdgeInsets.all(5),
         itemCount: rate.length,
         scrollDirection: Axis.horizontal,
@@ -23,7 +23,6 @@ class PeopleReviewsWidget extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 5.w),
             elevation: 4,
             child: Container(
-              width: 200.w,
               decoration: BoxDecoration(
                   color: Colors.white,
                   // color: Colors.white,

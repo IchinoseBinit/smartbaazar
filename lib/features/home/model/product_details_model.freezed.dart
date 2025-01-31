@@ -311,7 +311,7 @@ WidgetSimilarPosts _$WidgetSimilarPostsFromJson(Map<String, dynamic> json) {
 mixin _$WidgetSimilarPosts {
 // required String title,
 // required String link,
-  PostPagination get posts => throw _privateConstructorUsedError;
+  PostPagination? get posts => throw _privateConstructorUsedError;
 
   /// Serializes this WidgetSimilarPosts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -329,9 +329,9 @@ abstract class $WidgetSimilarPostsCopyWith<$Res> {
           WidgetSimilarPosts value, $Res Function(WidgetSimilarPosts) then) =
       _$WidgetSimilarPostsCopyWithImpl<$Res, WidgetSimilarPosts>;
   @useResult
-  $Res call({PostPagination posts});
+  $Res call({PostPagination? posts});
 
-  $PostPaginationCopyWith<$Res> get posts;
+  $PostPaginationCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -349,13 +349,13 @@ class _$WidgetSimilarPostsCopyWithImpl<$Res, $Val extends WidgetSimilarPosts>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? posts = null,
+    Object? posts = freezed,
   }) {
     return _then(_value.copyWith(
-      posts: null == posts
+      posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as PostPagination,
+              as PostPagination?,
     ) as $Val);
   }
 
@@ -363,8 +363,12 @@ class _$WidgetSimilarPostsCopyWithImpl<$Res, $Val extends WidgetSimilarPosts>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PostPaginationCopyWith<$Res> get posts {
-    return $PostPaginationCopyWith<$Res>(_value.posts, (value) {
+  $PostPaginationCopyWith<$Res>? get posts {
+    if (_value.posts == null) {
+      return null;
+    }
+
+    return $PostPaginationCopyWith<$Res>(_value.posts!, (value) {
       return _then(_value.copyWith(posts: value) as $Val);
     });
   }
@@ -378,10 +382,10 @@ abstract class _$$WidgetSimilarPostsImplCopyWith<$Res>
       __$$WidgetSimilarPostsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PostPagination posts});
+  $Res call({PostPagination? posts});
 
   @override
-  $PostPaginationCopyWith<$Res> get posts;
+  $PostPaginationCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -397,13 +401,13 @@ class __$$WidgetSimilarPostsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? posts = null,
+    Object? posts = freezed,
   }) {
     return _then(_$WidgetSimilarPostsImpl(
-      posts: null == posts
+      posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as PostPagination,
+              as PostPagination?,
     ));
   }
 }
@@ -419,7 +423,7 @@ class _$WidgetSimilarPostsImpl implements _WidgetSimilarPosts {
 // required String title,
 // required String link,
   @override
-  final PostPagination posts;
+  final PostPagination? posts;
 
   @override
   String toString() {
@@ -456,7 +460,7 @@ class _$WidgetSimilarPostsImpl implements _WidgetSimilarPosts {
 }
 
 abstract class _WidgetSimilarPosts implements WidgetSimilarPosts {
-  const factory _WidgetSimilarPosts({required final PostPagination posts}) =
+  const factory _WidgetSimilarPosts({required final PostPagination? posts}) =
       _$WidgetSimilarPostsImpl;
 
   factory _WidgetSimilarPosts.fromJson(Map<String, dynamic> json) =
@@ -465,7 +469,7 @@ abstract class _WidgetSimilarPosts implements WidgetSimilarPosts {
 // required String title,
 // required String link,
   @override
-  PostPagination get posts;
+  PostPagination? get posts;
 
   /// Create a copy of WidgetSimilarPosts
   /// with the given fields replaced by the non-null parameter values.
@@ -687,6 +691,7 @@ mixin _$PostResult {
   String? get textTwo => throw _privateConstructorUsedError;
   @JsonKey(name: 'ava_to')
   String? get avaTo => throw _privateConstructorUsedError;
+  int? get discount_percentage => throw _privateConstructorUsedError;
   String? get negotiable => throw _privateConstructorUsedError;
   @JsonKey(name: 'contact_name')
   String? get contactName => throw _privateConstructorUsedError;
@@ -721,6 +726,7 @@ mixin _$PostResult {
   String? get reviewed => throw _privateConstructorUsedError;
   String? get featured => throw _privateConstructorUsedError;
   String? get archived => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'archived_at')
   String? get archivedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'deletion_mail_sent_at')
@@ -743,12 +749,15 @@ mixin _$PostResult {
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
+  LocationModel? get location => throw _privateConstructorUsedError;
   usermodel? get user => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_details')
-  UserDetailsProduct? get userDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: 'detail_user')
+  SimilarProducts? get userDetails => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
+  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
+  int? get similarProductCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
   List<LivePrize> get livePrizes => throw _privateConstructorUsedError;
@@ -791,6 +800,7 @@ abstract class $PostResultCopyWith<$Res> {
       @JsonKey(name: 'text_one') String? textOne,
       @JsonKey(name: 'text_two') String? textTwo,
       @JsonKey(name: 'ava_to') String? avaTo,
+      int? discount_percentage,
       String? negotiable,
       @JsonKey(name: 'contact_name') String? contactName,
       String? email,
@@ -816,6 +826,7 @@ abstract class $PostResultCopyWith<$Res> {
       String? reviewed,
       String? featured,
       String? archived,
+      String? image,
       @JsonKey(name: 'archived_at') String? archivedAt,
       @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
       @JsonKey(name: 'fb_profile') String? fbProfile,
@@ -831,11 +842,14 @@ abstract class $PostResultCopyWith<$Res> {
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'user_details') UserDetailsProduct? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
       PostType? postType,
       City? city,
+      MyProductDeailModel? user_details,
+      int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> livePrizes,
       List<Shop>? deals,
@@ -844,10 +858,12 @@ abstract class $PostResultCopyWith<$Res> {
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
+  $LocationModelCopyWith<$Res>? get location;
   $usermodelCopyWith<$Res>? get user;
-  $UserDetailsProductCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get userDetails;
   $PostTypeCopyWith<$Res>? get postType;
   $CityCopyWith<$Res>? get city;
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -883,6 +899,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? textOne = freezed,
     Object? textTwo = freezed,
     Object? avaTo = freezed,
+    Object? discount_percentage = freezed,
     Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
@@ -908,6 +925,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
+    Object? image = freezed,
     Object? archivedAt = freezed,
     Object? deletionMailSentAt = freezed,
     Object? fbProfile = freezed,
@@ -923,11 +941,14 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? location = freezed,
     Object? user = freezed,
     Object? userDetails = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
     Object? city = freezed,
+    Object? user_details = freezed,
+    Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? livePrizes = null,
     Object? deals = freezed,
@@ -1007,6 +1028,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.avaTo
           : avaTo // ignore: cast_nullable_to_non_nullable
               as String?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       negotiable: freezed == negotiable
           ? _value.negotiable
           : negotiable // ignore: cast_nullable_to_non_nullable
@@ -1107,6 +1132,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -1167,6 +1196,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as LocationModel?,
       user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -1174,7 +1207,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
       userDetails: freezed == userDetails
           ? _value.userDetails
           : userDetails // ignore: cast_nullable_to_non_nullable
-              as UserDetailsProduct?,
+              as SimilarProducts?,
       pictures: freezed == pictures
           ? _value.pictures
           : pictures // ignore: cast_nullable_to_non_nullable
@@ -1187,6 +1220,14 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
+      similarProductCount: freezed == similarProductCount
+          ? _value.similarProductCount
+          : similarProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       ratingComment: null == ratingComment
           ? _value.ratingComment
           : ratingComment // ignore: cast_nullable_to_non_nullable
@@ -1242,6 +1283,20 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $LocationModelCopyWith<$Res>? get location {
+    if (_value.location == null) {
+      return null;
+    }
+
+    return $LocationModelCopyWith<$Res>(_value.location!, (value) {
+      return _then(_value.copyWith(location: value) as $Val);
+    });
+  }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $usermodelCopyWith<$Res>? get user {
     if (_value.user == null) {
       return null;
@@ -1256,12 +1311,12 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserDetailsProductCopyWith<$Res>? get userDetails {
+  $SimilarProductsCopyWith<$Res>? get userDetails {
     if (_value.userDetails == null) {
       return null;
     }
 
-    return $UserDetailsProductCopyWith<$Res>(_value.userDetails!, (value) {
+    return $SimilarProductsCopyWith<$Res>(_value.userDetails!, (value) {
       return _then(_value.copyWith(userDetails: value) as $Val);
     });
   }
@@ -1293,6 +1348,20 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
       return _then(_value.copyWith(city: value) as $Val);
     });
   }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MyProductDeailModelCopyWith<$Res>? get user_details {
+    if (_value.user_details == null) {
+      return null;
+    }
+
+    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
+      return _then(_value.copyWith(user_details: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -1322,6 +1391,7 @@ abstract class _$$PostResultImplCopyWith<$Res>
       @JsonKey(name: 'text_one') String? textOne,
       @JsonKey(name: 'text_two') String? textTwo,
       @JsonKey(name: 'ava_to') String? avaTo,
+      int? discount_percentage,
       String? negotiable,
       @JsonKey(name: 'contact_name') String? contactName,
       String? email,
@@ -1347,6 +1417,7 @@ abstract class _$$PostResultImplCopyWith<$Res>
       String? reviewed,
       String? featured,
       String? archived,
+      String? image,
       @JsonKey(name: 'archived_at') String? archivedAt,
       @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
       @JsonKey(name: 'fb_profile') String? fbProfile,
@@ -1362,11 +1433,14 @@ abstract class _$$PostResultImplCopyWith<$Res>
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'user_details') UserDetailsProduct? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
       PostType? postType,
       City? city,
+      MyProductDeailModel? user_details,
+      int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> livePrizes,
       List<Shop>? deals,
@@ -1378,13 +1452,17 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @override
   $RatingsCopyWith<$Res>? get ratings;
   @override
+  $LocationModelCopyWith<$Res>? get location;
+  @override
   $usermodelCopyWith<$Res>? get user;
   @override
-  $UserDetailsProductCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get userDetails;
   @override
   $PostTypeCopyWith<$Res>? get postType;
   @override
   $CityCopyWith<$Res>? get city;
+  @override
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -1418,6 +1496,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? textOne = freezed,
     Object? textTwo = freezed,
     Object? avaTo = freezed,
+    Object? discount_percentage = freezed,
     Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
@@ -1443,6 +1522,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
+    Object? image = freezed,
     Object? archivedAt = freezed,
     Object? deletionMailSentAt = freezed,
     Object? fbProfile = freezed,
@@ -1458,11 +1538,14 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? location = freezed,
     Object? user = freezed,
     Object? userDetails = freezed,
     Object? pictures = freezed,
     Object? postType = freezed,
     Object? city = freezed,
+    Object? user_details = freezed,
+    Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? livePrizes = null,
     Object? deals = freezed,
@@ -1542,6 +1625,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.avaTo
           : avaTo // ignore: cast_nullable_to_non_nullable
               as String?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       negotiable: freezed == negotiable
           ? _value.negotiable
           : negotiable // ignore: cast_nullable_to_non_nullable
@@ -1642,6 +1729,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -1702,6 +1793,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as LocationModel?,
       user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -1709,7 +1804,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
       userDetails: freezed == userDetails
           ? _value.userDetails
           : userDetails // ignore: cast_nullable_to_non_nullable
-              as UserDetailsProduct?,
+              as SimilarProducts?,
       pictures: freezed == pictures
           ? _value._pictures
           : pictures // ignore: cast_nullable_to_non_nullable
@@ -1722,6 +1817,14 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
+      similarProductCount: freezed == similarProductCount
+          ? _value.similarProductCount
+          : similarProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       ratingComment: null == ratingComment
           ? _value._ratingComment
           : ratingComment // ignore: cast_nullable_to_non_nullable
@@ -1768,6 +1871,7 @@ class _$PostResultImpl implements _PostResult {
       @JsonKey(name: 'text_one') this.textOne,
       @JsonKey(name: 'text_two') this.textTwo,
       @JsonKey(name: 'ava_to') this.avaTo,
+      required this.discount_percentage,
       this.negotiable,
       @JsonKey(name: 'contact_name') required this.contactName,
       required this.email,
@@ -1794,6 +1898,7 @@ class _$PostResultImpl implements _PostResult {
       required this.reviewed,
       required this.featured,
       required this.archived,
+      required this.image,
       @JsonKey(name: 'archived_at') required this.archivedAt,
       @JsonKey(name: 'deletion_mail_sent_at') this.deletionMailSentAt,
       @JsonKey(name: 'fb_profile') this.fbProfile,
@@ -1809,11 +1914,14 @@ class _$PostResultImpl implements _PostResult {
       required this.commentCount,
       required this.extra,
       this.ratings,
+      this.location,
       this.user,
-      @JsonKey(name: 'user_details') required this.userDetails,
+      @JsonKey(name: 'detail_user') required this.userDetails,
       required final List<Picture>? pictures,
       this.postType,
       this.city,
+      required this.user_details,
+      this.similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
       final List<LivePrize> livePrizes = const [],
@@ -1887,6 +1995,8 @@ class _$PostResultImpl implements _PostResult {
   @JsonKey(name: 'ava_to')
   final String? avaTo;
   @override
+  final int? discount_percentage;
+  @override
   final String? negotiable;
   @override
   @JsonKey(name: 'contact_name')
@@ -1946,6 +2056,8 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? archived;
   @override
+  final String? image;
+  @override
   @JsonKey(name: 'archived_at')
   final String? archivedAt;
   @override
@@ -1983,10 +2095,12 @@ class _$PostResultImpl implements _PostResult {
   @override
   final Ratings? ratings;
   @override
+  final LocationModel? location;
+  @override
   final usermodel? user;
   @override
-  @JsonKey(name: 'user_details')
-  final UserDetailsProduct? userDetails;
+  @JsonKey(name: 'detail_user')
+  final SimilarProducts? userDetails;
   final List<Picture>? _pictures;
   @override
   List<Picture>? get pictures {
@@ -2001,6 +2115,10 @@ class _$PostResultImpl implements _PostResult {
   final PostType? postType;
   @override
   final City? city;
+  @override
+  final MyProductDeailModel? user_details;
+  @override
+  final int? similarProductCount;
   final List<RatingComment> _ratingComment;
   @override
   @JsonKey(name: 'rating_comment')
@@ -2054,7 +2172,7 @@ class _$PostResultImpl implements _PostResult {
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, user: $user, userDetails: $userDetails, pictures: $pictures, postType: $postType, city: $city, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
   }
 
   @override
@@ -2089,6 +2207,8 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.textOne, textOne) || other.textOne == textOne) &&
             (identical(other.textTwo, textTwo) || other.textTwo == textTwo) &&
             (identical(other.avaTo, avaTo) || other.avaTo == avaTo) &&
+            (identical(other.discount_percentage, discount_percentage) ||
+                other.discount_percentage == discount_percentage) &&
             (identical(other.negotiable, negotiable) ||
                 other.negotiable == negotiable) &&
             (identical(other.contactName, contactName) ||
@@ -2127,6 +2247,7 @@ class _$PostResultImpl implements _PostResult {
                 other.featured == featured) &&
             (identical(other.archived, archived) ||
                 other.archived == archived) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.archivedAt, archivedAt) ||
                 other.archivedAt == archivedAt) &&
             (identical(other.deletionMailSentAt, deletionMailSentAt) ||
@@ -2150,6 +2271,8 @@ class _$PostResultImpl implements _PostResult {
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.userDetails, userDetails) ||
                 other.userDetails == userDetails) &&
@@ -2157,6 +2280,10 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
             (identical(other.city, city) || other.city == city) &&
+            (identical(other.user_details, user_details) ||
+                other.user_details == user_details) &&
+            (identical(other.similarProductCount, similarProductCount) ||
+                other.similarProductCount == similarProductCount) &&
             const DeepCollectionEquality()
                 .equals(other._ratingComment, _ratingComment) &&
             const DeepCollectionEquality()
@@ -2188,6 +2315,7 @@ class _$PostResultImpl implements _PostResult {
         textOne,
         textTwo,
         avaTo,
+        discount_percentage,
         negotiable,
         contactName,
         email,
@@ -2213,6 +2341,7 @@ class _$PostResultImpl implements _PostResult {
         reviewed,
         featured,
         archived,
+        image,
         archivedAt,
         deletionMailSentAt,
         fbProfile,
@@ -2228,11 +2357,14 @@ class _$PostResultImpl implements _PostResult {
         commentCount,
         extra,
         ratings,
+        location,
         user,
         userDetails,
         const DeepCollectionEquality().hash(_pictures),
         postType,
         city,
+        user_details,
+        similarProductCount,
         const DeepCollectionEquality().hash(_ratingComment),
         const DeepCollectionEquality().hash(_livePrizes),
         const DeepCollectionEquality().hash(_deals),
@@ -2276,6 +2408,7 @@ abstract class _PostResult implements PostResult {
       @JsonKey(name: 'text_one') final String? textOne,
       @JsonKey(name: 'text_two') final String? textTwo,
       @JsonKey(name: 'ava_to') final String? avaTo,
+      required final int? discount_percentage,
       final String? negotiable,
       @JsonKey(name: 'contact_name') required final String? contactName,
       required final String? email,
@@ -2302,6 +2435,7 @@ abstract class _PostResult implements PostResult {
       required final String? reviewed,
       required final String? featured,
       required final String? archived,
+      required final String? image,
       @JsonKey(name: 'archived_at') required final String? archivedAt,
       @JsonKey(name: 'deletion_mail_sent_at') final String? deletionMailSentAt,
       @JsonKey(name: 'fb_profile') final String? fbProfile,
@@ -2318,12 +2452,14 @@ abstract class _PostResult implements PostResult {
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
+      final LocationModel? location,
       final usermodel? user,
-      @JsonKey(name: 'user_details')
-      required final UserDetailsProduct? userDetails,
+      @JsonKey(name: 'detail_user') required final SimilarProducts? userDetails,
       required final List<Picture>? pictures,
       final PostType? postType,
       final City? city,
+      required final MyProductDeailModel? user_details,
+      final int? similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
       final List<LivePrize> livePrizes,
@@ -2381,6 +2517,8 @@ abstract class _PostResult implements PostResult {
   @override
   @JsonKey(name: 'ava_to')
   String? get avaTo;
+  @override
+  int? get discount_percentage;
   @override
   String? get negotiable;
   @override
@@ -2441,6 +2579,8 @@ abstract class _PostResult implements PostResult {
   @override
   String? get archived;
   @override
+  String? get image;
+  @override
   @JsonKey(name: 'archived_at')
   String? get archivedAt;
   @override
@@ -2478,16 +2618,22 @@ abstract class _PostResult implements PostResult {
   @override
   Ratings? get ratings;
   @override
+  LocationModel? get location;
+  @override
   usermodel? get user;
   @override
-  @JsonKey(name: 'user_details')
-  UserDetailsProduct? get userDetails;
+  @JsonKey(name: 'detail_user')
+  SimilarProducts? get userDetails;
   @override
   List<Picture>? get pictures;
   @override
   PostType? get postType;
   @override
   City? get city;
+  @override
+  MyProductDeailModel? get user_details;
+  @override
+  int? get similarProductCount;
   @override
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment;
@@ -2505,6 +2651,1315 @@ abstract class _PostResult implements PostResult {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostResultImplCopyWith<_$PostResultImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+LocationModel _$LocationModelFromJson(Map<String, dynamic> json) {
+  return _LocationModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$LocationModel {
+  NearestBranch? get nearestBranch => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
+
+  /// Serializes this LocationModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $LocationModelCopyWith<LocationModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LocationModelCopyWith<$Res> {
+  factory $LocationModelCopyWith(
+          LocationModel value, $Res Function(LocationModel) then) =
+      _$LocationModelCopyWithImpl<$Res, LocationModel>;
+  @useResult
+  $Res call({NearestBranch? nearestBranch, double? shortestDistance});
+
+  $NearestBranchCopyWith<$Res>? get nearestBranch;
+}
+
+/// @nodoc
+class _$LocationModelCopyWithImpl<$Res, $Val extends LocationModel>
+    implements $LocationModelCopyWith<$Res> {
+  _$LocationModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nearestBranch = freezed,
+    Object? shortestDistance = freezed,
+  }) {
+    return _then(_value.copyWith(
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as NearestBranch?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ) as $Val);
+  }
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $NearestBranchCopyWith<$Res>? get nearestBranch {
+    if (_value.nearestBranch == null) {
+      return null;
+    }
+
+    return $NearestBranchCopyWith<$Res>(_value.nearestBranch!, (value) {
+      return _then(_value.copyWith(nearestBranch: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$LocationModelImplCopyWith<$Res>
+    implements $LocationModelCopyWith<$Res> {
+  factory _$$LocationModelImplCopyWith(
+          _$LocationModelImpl value, $Res Function(_$LocationModelImpl) then) =
+      __$$LocationModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({NearestBranch? nearestBranch, double? shortestDistance});
+
+  @override
+  $NearestBranchCopyWith<$Res>? get nearestBranch;
+}
+
+/// @nodoc
+class __$$LocationModelImplCopyWithImpl<$Res>
+    extends _$LocationModelCopyWithImpl<$Res, _$LocationModelImpl>
+    implements _$$LocationModelImplCopyWith<$Res> {
+  __$$LocationModelImplCopyWithImpl(
+      _$LocationModelImpl _value, $Res Function(_$LocationModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nearestBranch = freezed,
+    Object? shortestDistance = freezed,
+  }) {
+    return _then(_$LocationModelImpl(
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as NearestBranch?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$LocationModelImpl implements _LocationModel {
+  const _$LocationModelImpl(
+      {required this.nearestBranch, required this.shortestDistance});
+
+  factory _$LocationModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LocationModelImplFromJson(json);
+
+  @override
+  final NearestBranch? nearestBranch;
+  @override
+  final double? shortestDistance;
+
+  @override
+  String toString() {
+    return 'LocationModel(nearestBranch: $nearestBranch, shortestDistance: $shortestDistance)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LocationModelImpl &&
+            (identical(other.nearestBranch, nearestBranch) ||
+                other.nearestBranch == nearestBranch) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, nearestBranch, shortestDistance);
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LocationModelImplCopyWith<_$LocationModelImpl> get copyWith =>
+      __$$LocationModelImplCopyWithImpl<_$LocationModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LocationModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _LocationModel implements LocationModel {
+  const factory _LocationModel(
+      {required final NearestBranch? nearestBranch,
+      required final double? shortestDistance}) = _$LocationModelImpl;
+
+  factory _LocationModel.fromJson(Map<String, dynamic> json) =
+      _$LocationModelImpl.fromJson;
+
+  @override
+  NearestBranch? get nearestBranch;
+  @override
+  double? get shortestDistance;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LocationModelImplCopyWith<_$LocationModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+NearestBranch _$NearestBranchFromJson(Map<String, dynamic> json) {
+  return _NearestBranch.fromJson(json);
+}
+
+/// @nodoc
+mixin _$NearestBranch {
+  String? get location => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+
+  /// Serializes this NearestBranch to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $NearestBranchCopyWith<NearestBranch> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NearestBranchCopyWith<$Res> {
+  factory $NearestBranchCopyWith(
+          NearestBranch value, $Res Function(NearestBranch) then) =
+      _$NearestBranchCopyWithImpl<$Res, NearestBranch>;
+  @useResult
+  $Res call({String? location, String? longitude, String? latitude});
+}
+
+/// @nodoc
+class _$NearestBranchCopyWithImpl<$Res, $Val extends NearestBranch>
+    implements $NearestBranchCopyWith<$Res> {
+  _$NearestBranchCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? location = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$NearestBranchImplCopyWith<$Res>
+    implements $NearestBranchCopyWith<$Res> {
+  factory _$$NearestBranchImplCopyWith(
+          _$NearestBranchImpl value, $Res Function(_$NearestBranchImpl) then) =
+      __$$NearestBranchImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? location, String? longitude, String? latitude});
+}
+
+/// @nodoc
+class __$$NearestBranchImplCopyWithImpl<$Res>
+    extends _$NearestBranchCopyWithImpl<$Res, _$NearestBranchImpl>
+    implements _$$NearestBranchImplCopyWith<$Res> {
+  __$$NearestBranchImplCopyWithImpl(
+      _$NearestBranchImpl _value, $Res Function(_$NearestBranchImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? location = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_$NearestBranchImpl(
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$NearestBranchImpl implements _NearestBranch {
+  const _$NearestBranchImpl(
+      {required this.location,
+      required this.longitude,
+      required this.latitude});
+
+  factory _$NearestBranchImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NearestBranchImplFromJson(json);
+
+  @override
+  final String? location;
+  @override
+  final String? longitude;
+  @override
+  final String? latitude;
+
+  @override
+  String toString() {
+    return 'NearestBranch(location: $location, longitude: $longitude, latitude: $latitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NearestBranchImpl &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, location, longitude, latitude);
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NearestBranchImplCopyWith<_$NearestBranchImpl> get copyWith =>
+      __$$NearestBranchImplCopyWithImpl<_$NearestBranchImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NearestBranchImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _NearestBranch implements NearestBranch {
+  const factory _NearestBranch(
+      {required final String? location,
+      required final String? longitude,
+      required final String? latitude}) = _$NearestBranchImpl;
+
+  factory _NearestBranch.fromJson(Map<String, dynamic> json) =
+      _$NearestBranchImpl.fromJson;
+
+  @override
+  String? get location;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NearestBranchImplCopyWith<_$NearestBranchImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+MyProductDeailModel _$MyProductDeailModelFromJson(Map<String, dynamic> json) {
+  return _UserDetails.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MyProductDeailModel {
+  String get name => throw _privateConstructorUsedError;
+  String get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool get hasSponsoredGifts => throw _privateConstructorUsedError;
+  int? get livePrizes => throw _privateConstructorUsedError;
+  int? get productCount => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  int? get subscribers => throw _privateConstructorUsedError;
+  double? get distance => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_id')
+  String get membershipId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_title')
+  String get membershipTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_color')
+  String get membershipColor => throw _privateConstructorUsedError;
+
+  /// Serializes this MyProductDeailModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $MyProductDeailModelCopyWith<MyProductDeailModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MyProductDeailModelCopyWith<$Res> {
+  factory $MyProductDeailModelCopyWith(
+          MyProductDeailModel value, $Res Function(MyProductDeailModel) then) =
+      _$MyProductDeailModelCopyWithImpl<$Res, MyProductDeailModel>;
+  @useResult
+  $Res call(
+      {String name,
+      String photo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') bool hasSponsoredGifts,
+      int? livePrizes,
+      int? productCount,
+      int? storyCount,
+      int? subscribers,
+      double? distance,
+      @JsonKey(name: 'membership_id') String membershipId,
+      @JsonKey(name: 'membership_title') String membershipTitle,
+      @JsonKey(name: 'membership_color') String membershipColor});
+}
+
+/// @nodoc
+class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
+    implements $MyProductDeailModelCopyWith<$Res> {
+  _$MyProductDeailModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? photo = null,
+    Object? userPhotoUrl = null,
+    Object? hasSponsoredGifts = null,
+    Object? livePrizes = freezed,
+    Object? productCount = freezed,
+    Object? storyCount = freezed,
+    Object? subscribers = freezed,
+    Object? distance = freezed,
+    Object? membershipId = null,
+    Object? membershipTitle = null,
+    Object? membershipColor = null,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      hasSponsoredGifts: null == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool,
+      livePrizes: freezed == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
+              as int?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribers: freezed == subscribers
+          ? _value.subscribers
+          : subscribers // ignore: cast_nullable_to_non_nullable
+              as int?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      membershipId: null == membershipId
+          ? _value.membershipId
+          : membershipId // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipTitle: null == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipColor: null == membershipColor
+          ? _value.membershipColor
+          : membershipColor // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$UserDetailsImplCopyWith<$Res>
+    implements $MyProductDeailModelCopyWith<$Res> {
+  factory _$$UserDetailsImplCopyWith(
+          _$UserDetailsImpl value, $Res Function(_$UserDetailsImpl) then) =
+      __$$UserDetailsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String name,
+      String photo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') bool hasSponsoredGifts,
+      int? livePrizes,
+      int? productCount,
+      int? storyCount,
+      int? subscribers,
+      double? distance,
+      @JsonKey(name: 'membership_id') String membershipId,
+      @JsonKey(name: 'membership_title') String membershipTitle,
+      @JsonKey(name: 'membership_color') String membershipColor});
+}
+
+/// @nodoc
+class __$$UserDetailsImplCopyWithImpl<$Res>
+    extends _$MyProductDeailModelCopyWithImpl<$Res, _$UserDetailsImpl>
+    implements _$$UserDetailsImplCopyWith<$Res> {
+  __$$UserDetailsImplCopyWithImpl(
+      _$UserDetailsImpl _value, $Res Function(_$UserDetailsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? photo = null,
+    Object? userPhotoUrl = null,
+    Object? hasSponsoredGifts = null,
+    Object? livePrizes = freezed,
+    Object? productCount = freezed,
+    Object? storyCount = freezed,
+    Object? subscribers = freezed,
+    Object? distance = freezed,
+    Object? membershipId = null,
+    Object? membershipTitle = null,
+    Object? membershipColor = null,
+  }) {
+    return _then(_$UserDetailsImpl(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      hasSponsoredGifts: null == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool,
+      livePrizes: freezed == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
+              as int?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribers: freezed == subscribers
+          ? _value.subscribers
+          : subscribers // ignore: cast_nullable_to_non_nullable
+              as int?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      membershipId: null == membershipId
+          ? _value.membershipId
+          : membershipId // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipTitle: null == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipColor: null == membershipColor
+          ? _value.membershipColor
+          : membershipColor // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$UserDetailsImpl implements _UserDetails {
+  const _$UserDetailsImpl(
+      {required this.name,
+      required this.photo,
+      @JsonKey(name: 'user_photo_url') required this.userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') required this.hasSponsoredGifts,
+      required this.livePrizes,
+      required this.productCount,
+      required this.storyCount,
+      required this.subscribers,
+      required this.distance,
+      @JsonKey(name: 'membership_id') required this.membershipId,
+      @JsonKey(name: 'membership_title') required this.membershipTitle,
+      @JsonKey(name: 'membership_color') required this.membershipColor});
+
+  factory _$UserDetailsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserDetailsImplFromJson(json);
+
+  @override
+  final String name;
+  @override
+  final String photo;
+  @override
+  @JsonKey(name: 'user_photo_url')
+  final String userPhotoUrl;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  final bool hasSponsoredGifts;
+  @override
+  final int? livePrizes;
+  @override
+  final int? productCount;
+  @override
+  final int? storyCount;
+  @override
+  final int? subscribers;
+  @override
+  final double? distance;
+  @override
+  @JsonKey(name: 'membership_id')
+  final String membershipId;
+  @override
+  @JsonKey(name: 'membership_title')
+  final String membershipTitle;
+  @override
+  @JsonKey(name: 'membership_color')
+  final String membershipColor;
+
+  @override
+  String toString() {
+    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membershipId: $membershipId, membershipTitle: $membershipTitle, membershipColor: $membershipColor)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserDetailsImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.userPhotoUrl, userPhotoUrl) ||
+                other.userPhotoUrl == userPhotoUrl) &&
+            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
+                other.hasSponsoredGifts == hasSponsoredGifts) &&
+            (identical(other.livePrizes, livePrizes) ||
+                other.livePrizes == livePrizes) &&
+            (identical(other.productCount, productCount) ||
+                other.productCount == productCount) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.subscribers, subscribers) ||
+                other.subscribers == subscribers) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
+            (identical(other.membershipId, membershipId) ||
+                other.membershipId == membershipId) &&
+            (identical(other.membershipTitle, membershipTitle) ||
+                other.membershipTitle == membershipTitle) &&
+            (identical(other.membershipColor, membershipColor) ||
+                other.membershipColor == membershipColor));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      photo,
+      userPhotoUrl,
+      hasSponsoredGifts,
+      livePrizes,
+      productCount,
+      storyCount,
+      subscribers,
+      distance,
+      membershipId,
+      membershipTitle,
+      membershipColor);
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserDetailsImplCopyWith<_$UserDetailsImpl> get copyWith =>
+      __$$UserDetailsImplCopyWithImpl<_$UserDetailsImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UserDetailsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _UserDetails implements MyProductDeailModel {
+  const factory _UserDetails(
+      {required final String name,
+      required final String photo,
+      @JsonKey(name: 'user_photo_url') required final String userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts')
+      required final bool hasSponsoredGifts,
+      required final int? livePrizes,
+      required final int? productCount,
+      required final int? storyCount,
+      required final int? subscribers,
+      required final double? distance,
+      @JsonKey(name: 'membership_id') required final String membershipId,
+      @JsonKey(name: 'membership_title') required final String membershipTitle,
+      @JsonKey(name: 'membership_color')
+      required final String membershipColor}) = _$UserDetailsImpl;
+
+  factory _UserDetails.fromJson(Map<String, dynamic> json) =
+      _$UserDetailsImpl.fromJson;
+
+  @override
+  String get name;
+  @override
+  String get photo;
+  @override
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool get hasSponsoredGifts;
+  @override
+  int? get livePrizes;
+  @override
+  int? get productCount;
+  @override
+  int? get storyCount;
+  @override
+  int? get subscribers;
+  @override
+  double? get distance;
+  @override
+  @JsonKey(name: 'membership_id')
+  String get membershipId;
+  @override
+  @JsonKey(name: 'membership_title')
+  String get membershipTitle;
+  @override
+  @JsonKey(name: 'membership_color')
+  String get membershipColor;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserDetailsImplCopyWith<_$UserDetailsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SimilarProducts _$SimilarProductsFromJson(Map<String, dynamic> json) {
+  return _SimilarProducts.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SimilarProducts {
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_id')
+  String? get membershipPlanId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_status')
+  String? get membershipStatus => throw _privateConstructorUsedError;
+  String get photo => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'users_location')
+  String? get usersLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'branch_location')
+  String? get branchLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_title')
+  String? get membershipPlanTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_color')
+  String? get membershipPlanColor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts => throw _privateConstructorUsedError;
+  bool? get sponsored => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'shortestDistance')
+  double? get shortestDistance => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nearestBranch')
+  String? get nearestBranch => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+
+  /// Serializes this SimilarProducts to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SimilarProductsCopyWith<SimilarProducts> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SimilarProductsCopyWith<$Res> {
+  factory $SimilarProductsCopyWith(
+          SimilarProducts value, $Res Function(SimilarProducts) then) =
+      _$SimilarProductsCopyWithImpl<$Res, SimilarProducts>;
+  @useResult
+  $Res call(
+      {String id,
+      @JsonKey(name: 'membership_plan_id') String? membershipPlanId,
+      @JsonKey(name: 'membership_status') String? membershipStatus,
+      String photo,
+      String name,
+      @JsonKey(name: 'users_location') String? usersLocation,
+      @JsonKey(name: 'branch_location') String? branchLocation,
+      @JsonKey(name: 'membership_plan_title') String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      bool? sponsored,
+      int? storyCount,
+      @JsonKey(name: 'shortestDistance') double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') String? nearestBranch,
+      String? longitude,
+      String? latitude});
+}
+
+/// @nodoc
+class _$SimilarProductsCopyWithImpl<$Res, $Val extends SimilarProducts>
+    implements $SimilarProductsCopyWith<$Res> {
+  _$SimilarProductsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? membershipPlanId = freezed,
+    Object? membershipStatus = freezed,
+    Object? photo = null,
+    Object? name = null,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? membershipPlanTitle = freezed,
+    Object? membershipPlanColor = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? sponsored = freezed,
+    Object? storyCount = freezed,
+    Object? shortestDistance = freezed,
+    Object? nearestBranch = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanTitle: freezed == membershipPlanTitle
+          ? _value.membershipPlanTitle
+          : membershipPlanTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanColor: freezed == membershipPlanColor
+          ? _value.membershipPlanColor
+          : membershipPlanColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SimilarProductsImplCopyWith<$Res>
+    implements $SimilarProductsCopyWith<$Res> {
+  factory _$$SimilarProductsImplCopyWith(_$SimilarProductsImpl value,
+          $Res Function(_$SimilarProductsImpl) then) =
+      __$$SimilarProductsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      @JsonKey(name: 'membership_plan_id') String? membershipPlanId,
+      @JsonKey(name: 'membership_status') String? membershipStatus,
+      String photo,
+      String name,
+      @JsonKey(name: 'users_location') String? usersLocation,
+      @JsonKey(name: 'branch_location') String? branchLocation,
+      @JsonKey(name: 'membership_plan_title') String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      bool? sponsored,
+      int? storyCount,
+      @JsonKey(name: 'shortestDistance') double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') String? nearestBranch,
+      String? longitude,
+      String? latitude});
+}
+
+/// @nodoc
+class __$$SimilarProductsImplCopyWithImpl<$Res>
+    extends _$SimilarProductsCopyWithImpl<$Res, _$SimilarProductsImpl>
+    implements _$$SimilarProductsImplCopyWith<$Res> {
+  __$$SimilarProductsImplCopyWithImpl(
+      _$SimilarProductsImpl _value, $Res Function(_$SimilarProductsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? membershipPlanId = freezed,
+    Object? membershipStatus = freezed,
+    Object? photo = null,
+    Object? name = null,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? membershipPlanTitle = freezed,
+    Object? membershipPlanColor = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? sponsored = freezed,
+    Object? storyCount = freezed,
+    Object? shortestDistance = freezed,
+    Object? nearestBranch = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_$SimilarProductsImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanTitle: freezed == membershipPlanTitle
+          ? _value.membershipPlanTitle
+          : membershipPlanTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanColor: freezed == membershipPlanColor
+          ? _value.membershipPlanColor
+          : membershipPlanColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SimilarProductsImpl implements _SimilarProducts {
+  const _$SimilarProductsImpl(
+      {required this.id,
+      @JsonKey(name: 'membership_plan_id') required this.membershipPlanId,
+      @JsonKey(name: 'membership_status') required this.membershipStatus,
+      required this.photo,
+      required this.name,
+      @JsonKey(name: 'users_location') this.usersLocation,
+      @JsonKey(name: 'branch_location') required this.branchLocation,
+      @JsonKey(name: 'membership_plan_title') required this.membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') required this.membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') required this.hasSponsoredGifts,
+      required this.sponsored,
+      required this.storyCount,
+      @JsonKey(name: 'shortestDistance') required this.shortestDistance,
+      @JsonKey(name: 'nearestBranch') required this.nearestBranch,
+      required this.longitude,
+      required this.latitude});
+
+  factory _$SimilarProductsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SimilarProductsImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  @JsonKey(name: 'membership_plan_id')
+  final String? membershipPlanId;
+  @override
+  @JsonKey(name: 'membership_status')
+  final String? membershipStatus;
+  @override
+  final String photo;
+  @override
+  final String name;
+  @override
+  @JsonKey(name: 'users_location')
+  final String? usersLocation;
+  @override
+  @JsonKey(name: 'branch_location')
+  final String? branchLocation;
+  @override
+  @JsonKey(name: 'membership_plan_title')
+  final String? membershipPlanTitle;
+  @override
+  @JsonKey(name: 'membership_plan_color')
+  final String? membershipPlanColor;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  final bool? hasSponsoredGifts;
+  @override
+  final bool? sponsored;
+  @override
+  final int? storyCount;
+  @override
+  @JsonKey(name: 'shortestDistance')
+  final double? shortestDistance;
+  @override
+  @JsonKey(name: 'nearestBranch')
+  final String? nearestBranch;
+  @override
+  final String? longitude;
+  @override
+  final String? latitude;
+
+  @override
+  String toString() {
+    return 'SimilarProducts(id: $id, membershipPlanId: $membershipPlanId, membershipStatus: $membershipStatus, photo: $photo, name: $name, usersLocation: $usersLocation, branchLocation: $branchLocation, membershipPlanTitle: $membershipPlanTitle, membershipPlanColor: $membershipPlanColor, hasSponsoredGifts: $hasSponsoredGifts, sponsored: $sponsored, storyCount: $storyCount, shortestDistance: $shortestDistance, nearestBranch: $nearestBranch, longitude: $longitude, latitude: $latitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SimilarProductsImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.membershipPlanId, membershipPlanId) ||
+                other.membershipPlanId == membershipPlanId) &&
+            (identical(other.membershipStatus, membershipStatus) ||
+                other.membershipStatus == membershipStatus) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.usersLocation, usersLocation) ||
+                other.usersLocation == usersLocation) &&
+            (identical(other.branchLocation, branchLocation) ||
+                other.branchLocation == branchLocation) &&
+            (identical(other.membershipPlanTitle, membershipPlanTitle) ||
+                other.membershipPlanTitle == membershipPlanTitle) &&
+            (identical(other.membershipPlanColor, membershipPlanColor) ||
+                other.membershipPlanColor == membershipPlanColor) &&
+            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
+                other.hasSponsoredGifts == hasSponsoredGifts) &&
+            (identical(other.sponsored, sponsored) ||
+                other.sponsored == sponsored) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance) &&
+            (identical(other.nearestBranch, nearestBranch) ||
+                other.nearestBranch == nearestBranch) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      membershipPlanId,
+      membershipStatus,
+      photo,
+      name,
+      usersLocation,
+      branchLocation,
+      membershipPlanTitle,
+      membershipPlanColor,
+      hasSponsoredGifts,
+      sponsored,
+      storyCount,
+      shortestDistance,
+      nearestBranch,
+      longitude,
+      latitude);
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SimilarProductsImplCopyWith<_$SimilarProductsImpl> get copyWith =>
+      __$$SimilarProductsImplCopyWithImpl<_$SimilarProductsImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SimilarProductsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SimilarProducts implements SimilarProducts {
+  const factory _SimilarProducts(
+      {required final String id,
+      @JsonKey(name: 'membership_plan_id')
+      required final String? membershipPlanId,
+      @JsonKey(name: 'membership_status')
+      required final String? membershipStatus,
+      required final String photo,
+      required final String name,
+      @JsonKey(name: 'users_location') final String? usersLocation,
+      @JsonKey(name: 'branch_location') required final String? branchLocation,
+      @JsonKey(name: 'membership_plan_title')
+      required final String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color')
+      required final String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts')
+      required final bool? hasSponsoredGifts,
+      required final bool? sponsored,
+      required final int? storyCount,
+      @JsonKey(name: 'shortestDistance')
+      required final double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') required final String? nearestBranch,
+      required final String? longitude,
+      required final String? latitude}) = _$SimilarProductsImpl;
+
+  factory _SimilarProducts.fromJson(Map<String, dynamic> json) =
+      _$SimilarProductsImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  @JsonKey(name: 'membership_plan_id')
+  String? get membershipPlanId;
+  @override
+  @JsonKey(name: 'membership_status')
+  String? get membershipStatus;
+  @override
+  String get photo;
+  @override
+  String get name;
+  @override
+  @JsonKey(name: 'users_location')
+  String? get usersLocation;
+  @override
+  @JsonKey(name: 'branch_location')
+  String? get branchLocation;
+  @override
+  @JsonKey(name: 'membership_plan_title')
+  String? get membershipPlanTitle;
+  @override
+  @JsonKey(name: 'membership_plan_color')
+  String? get membershipPlanColor;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts;
+  @override
+  bool? get sponsored;
+  @override
+  int? get storyCount;
+  @override
+  @JsonKey(name: 'shortestDistance')
+  double? get shortestDistance;
+  @override
+  @JsonKey(name: 'nearestBranch')
+  String? get nearestBranch;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SimilarProductsImplCopyWith<_$SimilarProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -6476,7 +7931,6 @@ mixin _$FieldDetails {
   String? get belongsTo => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
-  int? get max => throw _privateConstructorUsedError;
   @JsonKey(name: 'default_value')
   @DefaultValueConverter()
   dynamic get defaultValue =>
@@ -6484,8 +7938,6 @@ mixin _$FieldDetails {
   String? get required => throw _privateConstructorUsedError;
   @JsonKey(name: 'use_as_filter')
   String? get useAsFilter => throw _privateConstructorUsedError;
-  String? get help => throw _privateConstructorUsedError;
-  String? get active => throw _privateConstructorUsedError;
   List<FieldOption>? get options => throw _privateConstructorUsedError;
 
   /// Serializes this FieldDetails to a JSON map.
@@ -6509,14 +7961,11 @@ abstract class $FieldDetailsCopyWith<$Res> {
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? name,
       String? type,
-      int? max,
       @JsonKey(name: 'default_value')
       @DefaultValueConverter()
       dynamic defaultValue,
       String? required,
       @JsonKey(name: 'use_as_filter') String? useAsFilter,
-      String? help,
-      String? active,
       List<FieldOption>? options});
 }
 
@@ -6539,12 +7988,9 @@ class _$FieldDetailsCopyWithImpl<$Res, $Val extends FieldDetails>
     Object? belongsTo = freezed,
     Object? name = freezed,
     Object? type = freezed,
-    Object? max = freezed,
     Object? defaultValue = freezed,
     Object? required = freezed,
     Object? useAsFilter = freezed,
-    Object? help = freezed,
-    Object? active = freezed,
     Object? options = freezed,
   }) {
     return _then(_value.copyWith(
@@ -6564,10 +8010,6 @@ class _$FieldDetailsCopyWithImpl<$Res, $Val extends FieldDetails>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
       defaultValue: freezed == defaultValue
           ? _value.defaultValue
           : defaultValue // ignore: cast_nullable_to_non_nullable
@@ -6579,14 +8021,6 @@ class _$FieldDetailsCopyWithImpl<$Res, $Val extends FieldDetails>
       useAsFilter: freezed == useAsFilter
           ? _value.useAsFilter
           : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String?,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
               as String?,
       options: freezed == options
           ? _value.options
@@ -6609,14 +8043,11 @@ abstract class _$$FieldDetailsImplCopyWith<$Res>
       @JsonKey(name: 'belongs_to') String? belongsTo,
       String? name,
       String? type,
-      int? max,
       @JsonKey(name: 'default_value')
       @DefaultValueConverter()
       dynamic defaultValue,
       String? required,
       @JsonKey(name: 'use_as_filter') String? useAsFilter,
-      String? help,
-      String? active,
       List<FieldOption>? options});
 }
 
@@ -6637,12 +8068,9 @@ class __$$FieldDetailsImplCopyWithImpl<$Res>
     Object? belongsTo = freezed,
     Object? name = freezed,
     Object? type = freezed,
-    Object? max = freezed,
     Object? defaultValue = freezed,
     Object? required = freezed,
     Object? useAsFilter = freezed,
-    Object? help = freezed,
-    Object? active = freezed,
     Object? options = freezed,
   }) {
     return _then(_$FieldDetailsImpl(
@@ -6662,10 +8090,6 @@ class __$$FieldDetailsImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
       defaultValue: freezed == defaultValue
           ? _value.defaultValue
           : defaultValue // ignore: cast_nullable_to_non_nullable
@@ -6677,14 +8101,6 @@ class __$$FieldDetailsImplCopyWithImpl<$Res>
       useAsFilter: freezed == useAsFilter
           ? _value.useAsFilter
           : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String?,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
               as String?,
       options: freezed == options
           ? _value._options
@@ -6702,14 +8118,11 @@ class _$FieldDetailsImpl implements _FieldDetails {
       @JsonKey(name: 'belongs_to') this.belongsTo,
       this.name,
       this.type,
-      this.max,
       @JsonKey(name: 'default_value')
       @DefaultValueConverter()
       this.defaultValue,
       this.required,
       @JsonKey(name: 'use_as_filter') this.useAsFilter,
-      this.help,
-      this.active,
       final List<FieldOption>? options})
       : _options = options;
 
@@ -6726,8 +8139,6 @@ class _$FieldDetailsImpl implements _FieldDetails {
   @override
   final String? type;
   @override
-  final int? max;
-  @override
   @JsonKey(name: 'default_value')
   @DefaultValueConverter()
   final dynamic defaultValue;
@@ -6737,10 +8148,6 @@ class _$FieldDetailsImpl implements _FieldDetails {
   @override
   @JsonKey(name: 'use_as_filter')
   final String? useAsFilter;
-  @override
-  final String? help;
-  @override
-  final String? active;
   final List<FieldOption>? _options;
   @override
   List<FieldOption>? get options {
@@ -6753,7 +8160,7 @@ class _$FieldDetailsImpl implements _FieldDetails {
 
   @override
   String toString() {
-    return 'FieldDetails(id: $id, belongsTo: $belongsTo, name: $name, type: $type, max: $max, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, help: $help, active: $active, options: $options)';
+    return 'FieldDetails(id: $id, belongsTo: $belongsTo, name: $name, type: $type, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, options: $options)';
   }
 
   @override
@@ -6766,15 +8173,12 @@ class _$FieldDetailsImpl implements _FieldDetails {
                 other.belongsTo == belongsTo) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.max, max) || other.max == max) &&
             const DeepCollectionEquality()
                 .equals(other.defaultValue, defaultValue) &&
             (identical(other.required, required) ||
                 other.required == required) &&
             (identical(other.useAsFilter, useAsFilter) ||
                 other.useAsFilter == useAsFilter) &&
-            (identical(other.help, help) || other.help == help) &&
-            (identical(other.active, active) || other.active == active) &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
@@ -6786,12 +8190,9 @@ class _$FieldDetailsImpl implements _FieldDetails {
       belongsTo,
       name,
       type,
-      max,
       const DeepCollectionEquality().hash(defaultValue),
       required,
       useAsFilter,
-      help,
-      active,
       const DeepCollectionEquality().hash(_options));
 
   /// Create a copy of FieldDetails
@@ -6816,14 +8217,11 @@ abstract class _FieldDetails implements FieldDetails {
       @JsonKey(name: 'belongs_to') final String? belongsTo,
       final String? name,
       final String? type,
-      final int? max,
       @JsonKey(name: 'default_value')
       @DefaultValueConverter()
       final dynamic defaultValue,
       final String? required,
       @JsonKey(name: 'use_as_filter') final String? useAsFilter,
-      final String? help,
-      final String? active,
       final List<FieldOption>? options}) = _$FieldDetailsImpl;
 
   factory _FieldDetails.fromJson(Map<String, dynamic> json) =
@@ -6839,8 +8237,6 @@ abstract class _FieldDetails implements FieldDetails {
   @override
   String? get type;
   @override
-  int? get max;
-  @override
   @JsonKey(name: 'default_value')
   @DefaultValueConverter()
   dynamic get defaultValue; // Can be String or JSON
@@ -6849,10 +8245,6 @@ abstract class _FieldDetails implements FieldDetails {
   @override
   @JsonKey(name: 'use_as_filter')
   String? get useAsFilter;
-  @override
-  String? get help;
-  @override
-  String? get active;
   @override
   List<FieldOption>? get options;
 

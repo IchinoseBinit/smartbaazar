@@ -182,8 +182,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                   const VendorProfileScreen(),
                                             ));
                                       },
-                                      child: Image.asset(
-                                          'assets/images/group.png')),
+                                     child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                   SizedBox(
                                     height: 40,
                                     child: Row(
@@ -883,6 +886,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                               ),
                                                               child:
                                                                   AllProductDetailWidget(
+                                                                    
                                                                       productid: res.id,
 
                                                                       lat: res.user[0].latitude,
@@ -950,6 +954,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         children: data.business!.map(
                                           (e) {
                                             return BigContainer(
+                                              id: e.vendorId!,
+                                              issubbed:false ,
                                               memebertitle: e.membershipTitle!,
                                               lat: double.tryParse(
                                                       e.latitude ?? '0') ??

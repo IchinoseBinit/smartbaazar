@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -14,7 +15,7 @@ import 'package:smartbazar/features/report_complain/view/report_complain_screen.
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProductDetailWidget extends StatelessWidget {
+class ProductDetailWidget extends StatefulWidget {
   ProductDetailWidget({
     super.key,
     // this.membership_title,
@@ -49,11 +50,11 @@ class ProductDetailWidget extends StatelessWidget {
   String? price;
   String? discounttedPrice;
   int? similarproductCount;
-  String? views, comment, share;
   String? vendorname;
   int? didcountpercentage;
   String? posttype;
   String productid;
+  String comment;
 
   // String? membership_title;
   double? distance;
@@ -67,8 +68,16 @@ class ProductDetailWidget extends StatelessWidget {
   int? id;
   String? tradeImage;
   String? membershipid;
-  String? userId;
   String? lat, long;
+
+  @override
+  State<ProductDetailWidget> createState() => _ProductDetailWidgetState();
+}
+
+class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+  String? views, comment, share;
+
+  String? userId;
 
   Future<void> getdetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,14 +92,13 @@ class ProductDetailWidget extends StatelessWidget {
 
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
-    String showRs = discounttedPrice == '0' ? '' : '';
+    String showRs = widget.discounttedPrice == '0' ? '' : '';
 
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
             builder: (context) => ProductDetailScreen(
-              
-                  productId: productid,
+                  productId: widget.productid,
                 )));
       },
       child: Card(
@@ -120,43 +128,43 @@ class ProductDetailWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SvgPicture.asset(
-                          posttype == '1'
+                          widget.posttype == '1'
                               ? productsicon
-                              : posttype == '7'
+                              : widget.posttype == '7'
                                   ? b2bIcon
-                                  : posttype == '2'
+                                  : widget.posttype == '2'
                                       ? usedIcon
-                                      : posttype == '3'
+                                      : widget.posttype == '3'
                                           ? servicesIcon
-                                          : posttype == '4'
+                                          : widget.posttype == '4'
                                               ? jobIcon
-                                              : posttype == '5'
+                                              : widget.posttype == '5'
                                                   ? eventIcon
-                                                  : posttype == '8'
+                                                  : widget.posttype == '8'
                                                       ? grocaryicon
                                                       : productsicon, // Provide a default icon path if no match is found
                           height: 10,
                           color: Colors.grey,
                         ),
                         Text(
-                    posttype == '1'
-                        ? 'Products'
-                        : posttype == '7'
-                            ? 'B2B'
-                            : posttype == '2'
-                                ? 'Used'
-                                : posttype == '3'
-                                    ? 'Services'
-                                    : posttype == '4'
-                                        ? 'Jobs'
-                                        : posttype == '5'
-                                            ? 'Events'
-                                            : posttype == '8'
-                                                ? 'Grocery'
-                                                : '', // Default to an empty string if no match
-                    style: headerstyle.copyWith(
-                        fontSize: 9.sp, color: Colors.grey),
-                  ),
+                          widget.posttype == '1'
+                              ? 'Products'
+                              : widget.posttype == '7'
+                                  ? 'B2B'
+                                  : widget.posttype == '2'
+                                      ? 'Used'
+                                      : widget.posttype == '3'
+                                          ? 'Services'
+                                          : widget.posttype == '4'
+                                              ? 'Jobs'
+                                              : widget.posttype == '5'
+                                                  ? 'Events'
+                                                  : widget.posttype == '8'
+                                                      ? 'Grocery'
+                                                      : '', // Default to an empty string if no match
+                          style: headerstyle.copyWith(
+                              fontSize: 9.sp, color: Colors.grey),
+                        ),
                       ],
                     ),
                     PopupMenuButton(
@@ -192,7 +200,8 @@ class ProductDetailWidget extends StatelessWidget {
                               )),
                           PopupMenuItem(
                               onTap: () {
-                                addToFavorites(null, userId!, productid).then(
+                                addToFavorites(null, userId!, widget.productid)
+                                    .then(
                                   (value) {
                                     final snackBar = SnackBar(
                                       content: Text(value),
@@ -228,8 +237,8 @@ class ProductDetailWidget extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => VendorHomeScreen(
-                                        vendorName: vendorname!,
-                                        vid: id!,
+                                        vendorName: widget.vendorname!,
+                                        vid: widget.id!,
                                       ),
                                     ));
                               },
@@ -244,7 +253,8 @@ class ProductDetailWidget extends StatelessWidget {
                               )),
                           PopupMenuItem(
                             onTap: () {
-                              launch('https://www.google.com/maps?q=${double.tryParse(lat?? '0')},${double.tryParse(long?? '0')}');
+                              launch(
+                                  'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
                             },
                             height: 30,
                             padding: const EdgeInsets.only(left: 5),
@@ -267,7 +277,7 @@ class ProductDetailWidget extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (context) => ReportComplainScreen(
                                         productId: userId!,
-                                        productName: vendorname!),
+                                        productName: widget.vendorname!),
                                   ));
                             },
                             child: Text(
@@ -290,43 +300,23 @@ class ProductDetailWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              productImage == 'null'
-                  ? Image.asset(
-                      'assets/images/shoppingimages.png',
-                      height: 130.h,
+              Image.network(widget.productImage ?? '',
+                  height: 130.h, width: 200.w, fit: BoxFit.fill,
+                  loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child; // If no loading, show the image
+                } else {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
                       width: 200.w,
-                      fit: BoxFit.fill,
-                    )
-                  : Image.network(
-                      productImage ??
-                          '', // Ensure productImage is not null or empty
                       height: 130.h,
-                      width: 200.w,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // If no loading, show the image
-                        } else {
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: 200.w,
-                              height: 130.h,
-                              color:
-                                  Colors.white, // Placeholder shimmer container
-                            ),
-                          );
-                        }
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return SizedBox(
-                          width: 200.w,
-                          height: 130.h,
-                          child: const Icon(Icons.error),
-                        ); // Show error icon if image fails to load
-                      },
+                      color: Colors.white, // Placeholder shimmer container
                     ),
+                  );
+                }
+              }),
               SizedBox(
                 height: 5.h,
               ),
@@ -337,7 +327,7 @@ class ProductDetailWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title!,
+                      widget.title!,
                       style: headerstyle.copyWith(
                           color: ColorConstant.blackColor,
                           fontSize: 13,
@@ -352,14 +342,14 @@ class ProductDetailWidget extends StatelessWidget {
                           // height: 20.h,
                           width: 100.w,
                           child: Text(
-                            'Rs ${price ?? 0}',
+                            'Rs ${widget.price ?? 0}',
                             style: headerstyle.copyWith(
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
-                        offer == ''
+                        widget.offer == ''
                             ? const SizedBox()
                             : Row(
                                 children: [
@@ -369,7 +359,7 @@ class ProductDetailWidget extends StatelessWidget {
                                     size: 15,
                                   ),
                                   Text(
-                                    offer ?? '',
+                                    widget.offer ?? '',
                                     style: headerstyle.copyWith(
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff901B41),
@@ -404,11 +394,11 @@ class ProductDetailWidget extends StatelessWidget {
                         //   ],
                         // ),
                         const Spacer(),
-                        if (discounttedPrice != null &&
-                            discounttedPrice != '0' &&
-                            discounttedPrice!.isNotEmpty)
+                        if (widget.discounttedPrice != null &&
+                            widget.discounttedPrice != '0' &&
+                            widget.discounttedPrice!.isNotEmpty)
                           Text(
-                            "Rs$showRs$discounttedPrice",
+                            "Rs$showRs${widget.discounttedPrice}",
                             style: headerstyle.copyWith(
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w600,
@@ -433,7 +423,11 @@ class ProductDetailWidget extends StatelessWidget {
                           radius: 10,
                           backgroundColor: const Color(0xff901B41),
                           child: Text(
-                            avg_rating == 0 ? "0.0" : avg_rating.toString(),
+                            widget.avg_rating == 0 &&
+                                    widget.avg_rating == null &&
+                                    widget.avg_rating == 'null'
+                                ? "0.0"
+                                : widget.avg_rating.toString(),
                             // Provide fallback value of 0 when null
                             style: headerstyle.copyWith(fontSize: 8.sp),
                           ),
@@ -450,8 +444,9 @@ class ProductDetailWidget extends StatelessWidget {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: RatingBar.builder(
-                            initialRating:
-                                avg_rating == null ? 0.0 : avg_rating!,
+                            initialRating: widget.avg_rating == null
+                                ? 0.0
+                                : widget.avg_rating!,
                             // Default to 1 when avg_rating is null
                             minRating: 1,
                             direction: Axis.horizontal,
@@ -462,7 +457,7 @@ class ProductDetailWidget extends StatelessWidget {
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
                             itemBuilder: (context, index) {
-                              if (avg_rating == null) {
+                              if (widget.avg_rating == null) {
                                 // Default to 1 star when avg_rating is null or 0
                                 return index == 0
                                     ? const Icon(Icons.star,
@@ -472,12 +467,14 @@ class ProductDetailWidget extends StatelessWidget {
                                         color: Colors.grey); // Grey for others
                               } else {
                                 // Color logic based on avg_rating
-                                if (index < avg_rating!.floor()) {
+                                if (index < widget.avg_rating!.floor()) {
                                   // Full star if within avg_rating
                                   return const Icon(Icons.star,
                                       color: Color(0xff901B41));
-                                } else if (index == avg_rating!.floor() &&
-                                    (avg_rating! - avg_rating!.floor()) >=
+                                } else if (index ==
+                                        widget.avg_rating!.floor() &&
+                                    (widget.avg_rating! -
+                                            widget.avg_rating!.floor()) >=
                                         0.5) {
                                   // Half star if avg_rating has a decimal >= 0.5
                                   return const Icon(Icons.star_half,
@@ -496,9 +493,9 @@ class ProductDetailWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    discounttedPrice == '0' ||
-                            discounttedPrice?.length == 0 ||
-                            didcountpercentage == 0
+                    widget.discounttedPrice == '0' &&
+                            widget.discounttedPrice?.length == 0 &&
+                            widget.didcountpercentage == 0
                         ? const SizedBox()
                         : Row(
                             children: [
@@ -509,7 +506,7 @@ class ProductDetailWidget extends StatelessWidget {
                                 color: const Color(0xff901B41),
                               ),
                               Text(
-                                "$didcountpercentage%",
+                                "${widget.didcountpercentage}%",
                                 style: headerstyle.copyWith(
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xff901B41),
@@ -539,7 +536,9 @@ class ProductDetailWidget extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              wow == null || wow?.length == 0 ? '0' : wow!,
+                              widget.wow == null || widget.wow?.length == 0
+                                  ? '0'
+                                  : widget.wow!,
                               style: headerstyle.copyWith(
                                   fontSize: 10,
                                   color: const Color(0xff807C7C),
@@ -558,7 +557,7 @@ class ProductDetailWidget extends StatelessWidget {
                               width: 5.w,
                             ),
                             Text(
-                              comment ?? '1',
+                              widget.comment ?? '1',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
                                   color: const Color(0xff807C7C),
@@ -580,7 +579,7 @@ class ProductDetailWidget extends StatelessWidget {
                               width: 2.w,
                             ),
                             Text(
-                              similarproductCount?.toString() ?? '0',
+                              widget.similarproductCount?.toString() ?? '0',
                               style: headerstyle.copyWith(
                                   fontSize: 10,
                                   color: const Color(0xff807C7C),
@@ -646,10 +645,11 @@ class ProductDetailWidget extends StatelessWidget {
                     margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(vertical: 10.9.h),
                     decoration: BoxDecoration(
-                      color: membershipColor != null
+                      color: widget.membershipColor != null
                           ? Color(
                               int.parse(
-                                membershipColor!.replaceFirst('#', '0xFF'),
+                                widget.membershipColor!
+                                    .replaceFirst('#', '0xFF'),
                               ),
                             )
                           : const Color(0xff3D215F), // Default color
@@ -668,13 +668,14 @@ class ProductDetailWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VendorHomeScreen(
-                                      vendorName: vendorname!, vid: id!),
+                                      vendorName: widget.vendorname!,
+                                      vid: widget.id!),
                                 ));
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 13.w, right: 3.w),
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(Vimage!),
+                              backgroundImage: NetworkImage(widget.Vimage!),
                               radius: 19.sp,
                             ),
                           ),
@@ -689,11 +690,13 @@ class ProductDetailWidget extends StatelessWidget {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 11
-                                          ? '${vendorname!.substring(0, 11)}..' // Truncate after 11 characters
-                                          : vendorname ??
-                                              '', // If vendorname is null or short enough, show it fully
+                                      widget.shortestDistance == null
+                                          ? widget.vendorname.toString()
+                                          : widget.vendorname != null &&
+                                                  widget.vendorname!.length > 11
+                                              ? '${widget.vendorname!.substring(0, 11)}..' // Truncate after 11 characters
+                                              : widget.vendorname ??
+                                                  '', // If vendorname is null or short enough, show it fully
                                       style: headerstyle.copyWith(
                                         fontFamily:
                                             GoogleFonts.quicksand().fontFamily,
@@ -716,20 +719,20 @@ class ProductDetailWidget extends StatelessWidget {
                               Row(
                                 children: [
                                   Image.asset(
-                                    membershipid == "2"
+                                    widget.membershipid == "2"
                                         ? spotlighticon
-                                        : membershipid == "1"
+                                        : widget.membershipid == "1"
                                             ? basicsellericon
-                                            : membershipid == "3"
+                                            : widget.membershipid == "3"
                                                 ? domesticseller
-                                                : membershipid == "25"
+                                                : widget.membershipid == "25"
                                                     ? globalicon
                                                     : basicsellericon, // Default icon
                                     height: 9.h,
                                   ),
                                   SizedBox(width: 2.w),
                                   Text(
-                                    membershipTitle ?? "Domestic Brand",
+                                    widget.membershipTitle ?? "Domestic Brand",
                                     style: headerstyle.copyWith(
                                       fontSize: 10.sp,
                                       fontFamily:
@@ -747,11 +750,12 @@ class ProductDetailWidget extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(right: 10.w),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             // mainAxisAlignment: MainAxisAlignment.end,
                             // crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              shortestDistance != null &&
-                                      shortestDistance != 0.0
+                              widget.shortestDistance != null &&
+                                      widget.shortestDistance != 0.0
                                   ? Row(
                                       children: [
                                         const Icon(
@@ -761,7 +765,7 @@ class ProductDetailWidget extends StatelessWidget {
                                         ),
                                         SizedBox(width: 2.w),
                                         Text(
-                                          "${double.parse(shortestDistance.toString()).toStringAsFixed(2)} km",
+                                          "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
                                           style: headerstyle.copyWith(
                                             fontFamily: GoogleFonts.quicksand()
                                                 .fontFamily,
@@ -772,12 +776,12 @@ class ProductDetailWidget extends StatelessWidget {
                                       ],
                                     )
                                   : const SizedBox(),
-                              if (issponsored)
+                              if (widget.issponsored)
                                 Padding(
                                   padding: EdgeInsets.only(
-                                    top: shortestDistance == null ||
-                                            shortestDistance == 0.0
-                                        ? 10.h
+                                    top: widget.shortestDistance == null ||
+                                            widget.shortestDistance == 0.0
+                                        ? 12.h
                                         : 1.h,
                                   ),
                                   child: Row(
@@ -797,7 +801,7 @@ class ProductDetailWidget extends StatelessWidget {
                                   ),
                                 )
                               else
-                                SizedBox(height: 5.h),
+                                SizedBox(height: 10.h),
                             ],
                           ),
                         ),

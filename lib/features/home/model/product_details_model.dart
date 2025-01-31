@@ -23,7 +23,7 @@ class WidgetSimilarPosts with _$WidgetSimilarPosts {
   const factory WidgetSimilarPosts({
     // required String title,
     // required String link,
-    required PostPagination posts,
+    required PostPagination? posts,
   }) = _WidgetSimilarPosts;
 
   // Factory method to create WidgetSimilarPosts from JSON
@@ -64,6 +64,7 @@ class PostResult with _$PostResult {
     @JsonKey(name: 'text_one') String? textOne,
     @JsonKey(name: 'text_two') String? textTwo,
     @JsonKey(name: 'ava_to') String? avaTo,
+    required int? discount_percentage,
     String? negotiable,
     @JsonKey(name: 'contact_name') required String? contactName,
     required String? email,
@@ -89,6 +90,7 @@ class PostResult with _$PostResult {
     required String? reviewed,
     required String? featured,
     required String? archived,
+    required String? image,
     @JsonKey(name: 'archived_at') required String? archivedAt,
     @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
     @JsonKey(name: 'fb_profile') String? fbProfile,
@@ -104,11 +106,14 @@ class PostResult with _$PostResult {
     required int? commentCount,
     required ExtraModel? extra,
     Ratings? ratings,
+    LocationModel? location,
     usermodel? user,
-    @JsonKey(name: 'user_details') required UserDetailsProduct? userDetails,
+    @JsonKey(name: 'detail_user') required SimilarProducts? userDetails,
     required List<Picture>? pictures,
     PostType? postType,
     City? city,
+    required MyProductDeailModel ? user_details,
+     int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
     @Default([]) List<LivePrize> livePrizes,
     @Default([]) List<Shop>? deals,
@@ -120,6 +125,76 @@ class PostResult with _$PostResult {
       _$PostResultFromJson(json);
 }
 
+@freezed
+class LocationModel with _$LocationModel {
+  const factory LocationModel({
+    required NearestBranch? nearestBranch,
+    required double? shortestDistance,
+  }) = _LocationModel;
+
+  factory LocationModel.fromJson(Map<String, dynamic> json) =>
+      _$LocationModelFromJson(json);
+}
+
+@freezed
+class NearestBranch with _$NearestBranch {
+  const factory NearestBranch({
+    required String? location,
+    required String? longitude,
+    required String? latitude,
+  }) = _NearestBranch;
+
+  factory NearestBranch.fromJson(Map<String, dynamic> json) =>
+      _$NearestBranchFromJson(json);
+}
+
+
+@freezed
+class MyProductDeailModel with _$MyProductDeailModel {
+  const factory MyProductDeailModel({
+    required String name,
+    required String photo,
+    @JsonKey(name: 'user_photo_url') required String userPhotoUrl,
+    @JsonKey(name: 'has_sponsored_gifts') required bool hasSponsoredGifts,
+    required int? livePrizes,
+    required int? productCount,
+    required int? storyCount,
+    required int? subscribers,
+    required double? distance,
+    @JsonKey(name: 'membership_id') required String membershipId,
+    @JsonKey(name: 'membership_title') required String membershipTitle,
+    @JsonKey(name: 'membership_color') required String membershipColor,
+  }) = _UserDetails;
+
+  factory MyProductDeailModel.fromJson(Map<String, dynamic> json) =>
+      _$MyProductDeailModelFromJson(json);
+}
+
+
+@freezed
+class SimilarProducts with _$SimilarProducts {
+  const factory SimilarProducts({
+    required String id,
+    @JsonKey(name: 'membership_plan_id') required String? membershipPlanId,
+    @JsonKey(name: 'membership_status') required String? membershipStatus,
+    required String photo,
+    required String name,
+    @JsonKey(name: 'users_location') String? usersLocation,
+    @JsonKey(name: 'branch_location') required String? branchLocation,
+    @JsonKey(name: 'membership_plan_title') required String? membershipPlanTitle,
+    @JsonKey(name: 'membership_plan_color') required String? membershipPlanColor,
+    @JsonKey(name: 'has_sponsored_gifts') required bool? hasSponsoredGifts,
+    required bool? sponsored,
+    required int? storyCount,
+    @JsonKey(name: 'shortestDistance') required double? shortestDistance,
+    @JsonKey(name: 'nearestBranch') required String? nearestBranch,
+    required String? longitude,
+    required String? latitude,
+  }) = _SimilarProducts;
+
+  factory SimilarProducts.fromJson(Map<String, dynamic> json) =>
+      _$SimilarProductsFromJson(json);
+}
 
 
 @freezed
@@ -363,14 +438,11 @@ class FieldDetails with _$FieldDetails {
     @JsonKey(name: 'belongs_to') String? belongsTo,
     String? name,
     String? type,
-    int? max,
     @JsonKey(name: 'default_value')
     @DefaultValueConverter() 
     dynamic defaultValue, // Can be String or JSON
     String? required,
     @JsonKey(name: 'use_as_filter') String? useAsFilter,
-    String? help,
-    String? active,
     List<FieldOption>? options,
   }) = _FieldDetails;
 

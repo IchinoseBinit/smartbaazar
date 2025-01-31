@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'229018dde055ecf5fb62c24716e26e370f55370b';
+String _$createlistingHash() => r'3ac7b899d0196df11bb15e07ceffaf9743c7ea4d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,6 +72,7 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
     double? long,
     int? hyperd,
     int? seller,
+    int? trending,
   }) {
     return CreatelistingProvider(
       cf: cf,
@@ -106,6 +107,7 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       long: long,
       hyperd: hyperd,
       seller: seller,
+      trending: trending,
     );
   }
 
@@ -146,6 +148,7 @@ class CreatelistingFamily extends Family<AsyncValue<String>> {
       long: provider.long,
       hyperd: provider.hyperd,
       seller: provider.seller,
+      trending: provider.trending,
     );
   }
 
@@ -200,6 +203,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     double? long,
     int? hyperd,
     int? seller,
+    int? trending,
   }) : this._internal(
           (ref) => createlisting(
             ref as CreatelistingRef,
@@ -235,6 +239,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
             long: long,
             hyperd: hyperd,
             seller: seller,
+            trending: trending,
           ),
           from: createlistingProvider,
           name: r'createlistingProvider',
@@ -277,6 +282,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
           long: long,
           hyperd: hyperd,
           seller: seller,
+          trending: trending,
         );
 
   CreatelistingProvider._internal(
@@ -318,6 +324,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     required this.long,
     required this.hyperd,
     required this.seller,
+    required this.trending,
   }) : super.internal();
 
   final List<List<dynamic>>? cf;
@@ -352,6 +359,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   final double? long;
   final int? hyperd;
   final int? seller;
+  final int? trending;
 
   @override
   Override overrideWith(
@@ -398,6 +406,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         long: long,
         hyperd: hyperd,
         seller: seller,
+        trending: trending,
       ),
     );
   }
@@ -441,7 +450,8 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
         other.lat == lat &&
         other.long == long &&
         other.hyperd == hyperd &&
-        other.seller == seller;
+        other.seller == seller &&
+        other.trending == trending;
   }
 
   @override
@@ -479,6 +489,7 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
     hash = _SystemHash.combine(hash, long.hashCode);
     hash = _SystemHash.combine(hash, hyperd.hashCode);
     hash = _SystemHash.combine(hash, seller.hashCode);
+    hash = _SystemHash.combine(hash, trending.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -582,6 +593,9 @@ mixin CreatelistingRef on AutoDisposeFutureProviderRef<String> {
 
   /// The parameter `seller` of this provider.
   int? get seller;
+
+  /// The parameter `trending` of this provider.
+  int? get trending;
 }
 
 class _CreatelistingProviderElement
@@ -653,6 +667,8 @@ class _CreatelistingProviderElement
   int? get hyperd => (origin as CreatelistingProvider).hyperd;
   @override
   int? get seller => (origin as CreatelistingProvider).seller;
+  @override
+  int? get trending => (origin as CreatelistingProvider).trending;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

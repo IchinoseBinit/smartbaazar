@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'home_story_api.g.dart';
 
 @riverpod
-Future<HomeStoryModel> getHomeStory(GetHomeStoryRef ref) async {
+Future<HomeStoryModel> getHomeStory( ref) async {
   final SmartClient client = SmartClient();
 
   try {

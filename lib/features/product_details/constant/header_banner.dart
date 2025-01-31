@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class HeaderBannerWidget extends StatelessWidget {
-  final String title, img, vname;
+  final String title, img, vname, brandname, membershipid;
   final int id;
 
   const HeaderBannerWidget(
@@ -12,7 +13,9 @@ class HeaderBannerWidget extends StatelessWidget {
       required this.title,
       required this.img,
       required this.id,
-      required this.vname});
+      required this.vname,
+      required this.brandname,
+      required this.membershipid});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,7 @@ class HeaderBannerWidget extends StatelessWidget {
             ],
           ),
           Container(
-            padding: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
                 color: const Color(0xffD9D9D9).withOpacity(0.5),
                 borderRadius: const BorderRadius.only(
@@ -85,14 +88,23 @@ class HeaderBannerWidget extends StatelessWidget {
                   width: 3.w,
                 ),
                 Image.asset(
-                  'assets/images/Rectangle.png',
-                  color: ColorConstant.blackColor,
+                  membershipid == "2"
+                      ? spotlighticon
+                      : membershipid == "1"
+                          ? basicsellericon
+                          : membershipid == "3"
+                              ? domesticseller
+                              : membershipid == "25"
+                                  ? globalicon
+                                  : basicsellericon, // Default icon
+                  height: 15.h,
+                  color: Colors.black,
                 ),
                 SizedBox(
                   width: 4.w,
                 ),
                 Text(
-                  "GLOBAL BRAND ",
+                  brandname,
                   style: headerstyle.copyWith(
                       color: Colors.black, fontWeight: FontWeight.w600),
                 ),

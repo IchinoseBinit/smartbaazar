@@ -10,19 +10,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
@@ -31,23 +26,14 @@ import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/home/view/home_page_story_container.dart';
-import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
-import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
-import 'package:smartbazar/features/services_screen/api/service_provider.dart';
-import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
-import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import '../product_details/constant/all_product_detail_widget.dart';
 
@@ -225,6 +211,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
   @override
   void dispose() {
+    _pageController.dispose();
     dynamictabController.dispose();
 
     _debouncer.close();
@@ -265,7 +252,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
     return Scaffold(
         extendBody: true,
-        
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         // body: asyncbajarValue.when(
@@ -321,8 +307,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                     const VendorProfileScreen(),
                                               ));
                                         },
-                                        child: Image.asset(
-                                            'assets/images/group.png')),
+                                       child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -722,20 +711,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   );
                                 },
                                 loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      width: 40.w,
+                                      height: 100.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
+                                    ),
+                                  ),
+                                ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -769,85 +759,65 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     ),
                   ),
                   asyncPostTypeContent.when(
-                    data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+  data: (feedStoryData) {
+    final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+    if (homeStory?.story?.posts != null) {
+      final posts = homeStory!.story!.posts!;
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+      return SizedBox(
+        height: 100.h,
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final story = posts[index];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return SizedBox(
-                              height: 100.h,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: posts.length,
-                                itemBuilder: (context, index) {
-                                  final story = posts[index];
+            return HomePageStoryContainer(
+              index: index,
+              vendorName: story.vendorName ?? "Unknown Vendor",
+              vendorImage: story.vendorImage ??
+                  "https://example.com/default-image.png",
+              storyCount: story.storyCount ?? 0,
+              showGift: story.hasSponsoredGifts ?? false,
+              feedStoryContent: Story(posts: [story]),
+              userId: story.vendorId!,
+            );
+          },
+        ),
+      );
+    }
 
-                                  if (story is Map<String, dynamic>) {
-                                    final storyObject =
-                                        Story(posts: [Post.fromJson(story)]);
-
-                                    return HomePageStoryContainer(
-                                      index: index,
-                                      vendorName: story['vendor_name'] ??
-                                          "Unknown Vendor",
-                                      vendorImage: story['vendor_image'] ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story['story_count'] ?? 0,
-                                      showGift:
-                                          story['has_sponsored_gifts'] ?? false,
-                                      feedStoryContent: storyObject,
-                                      userId: story['vendor_id'],
-                                    );
-                                  } else {
-                                    return Container(); // Return an empty container if the post doesn't match the expected format
-                                  }
-                                },
-                              ),
-                            );
-                          }
-                        }
-                      }
-
-                      // If any of the above conditions fail, return a default widget
-                      return const Center(
-                        child: Text('No stories available. '),
-                      );
-                    },
-                    loading: () => SizedBox(
-                      height: 100.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5, // Number of shimmer placeholders
-                        itemBuilder: (context, index) => Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            width: 70.w,
-                            height: 100.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                  ),
+    return const Center(
+      child: Text('No stories available.'),
+    );
+  },
+  loading: () => SizedBox(
+    height: 100.h,
+    child: ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.horizontal,
+      itemCount: 5, // Number of shimmer placeholders
+      itemBuilder: (context, index) => Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          width: 70.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    ),
+  ),
+  error: (error, stack) =>
+      Center(child: Text('Error: $error')),
+),
                   SizedBox(
                     height: 6.h,
                   ),
@@ -939,21 +909,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("Try again: $error");
                     },
-                    loading:() => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                    loading: () => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   SizedBox(
@@ -1134,20 +1104,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text(error.toString());
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   Padding(
@@ -1203,16 +1173,13 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   child: ProductDetailWidget(
                                     lat: hot.user.latitude,
                                     long: hot.user.longitude,
-
-                                      productid: hot.id,
-                                    shortestDistance:
-                                        hot.user.shortestDistance,
+                                    productid: hot.id,
+                                    shortestDistance: hot.user.shortestDistance,
                                     posttype: hot.post_type_id,
                                     id: int.tryParse(hot.id),
                                     membershipid: hot.user.membership_id,
                                     avg_rating: hot.avg_rating?.toDouble(),
-                                    didcountpercentage:
-                                        hot.discount_percentage,
+                                    didcountpercentage: hot.discount_percentage,
                                     offer: hot.offers,
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
@@ -1326,7 +1293,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               return ProductDetailWidget(
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
-                                                  productid: pro.id,
+                                                productid: pro.id,
                                                 membershipid:
                                                     pro.user.membership_id,
                                                 posttype: pro.post_type_id,
@@ -1335,16 +1302,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 id: int.tryParse(pro.id),
                                                 didcountpercentage:
                                                     pro.discount_percentage,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
                                                 offer: pro.discounted_price,
                                                 wow: pro.wow,
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Services",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1370,20 +1336,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   // Expanded(
 
@@ -1436,10 +1402,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               return ProductDetailWidget(
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
-
-                                                  productid: pro.id,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
+                                                productid: pro.id,
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
                                                 membershipid:
                                                     pro.user.membership_id,
                                                 posttype: pro.post_type_id,
@@ -1450,12 +1415,11 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 id: int.tryParse(pro.id),
                                                 offer: pro.discounted_price,
                                                 wow: pro.wow,
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Services",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1480,21 +1444,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                    loading: () => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1538,8 +1502,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               return ProductDetailWidget(
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
-
-                                                  productid: pro.id,
+                                                productid: pro.id,
                                                 posttype: pro.post_type_id,
                                                 shortestDistance:
                                                     pro.user.shortestDistance,
@@ -1548,16 +1511,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 id: int.tryParse(pro.id),
                                                 didcountpercentage:
                                                     pro.discount_percentage,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
                                                 offer: pro.discounted_price,
                                                 wow: pro.wow,
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Services",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1582,21 +1544,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                    loading: () => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1640,8 +1602,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                               return ProductDetailWidget(
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
-
-                                                  productid: pro.id,
+                                                productid: pro.id,
                                                 posttype: pro.post_type_id,
                                                 shortestDistance:
                                                     pro.user.shortestDistance,
@@ -1650,16 +1611,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 id: int.tryParse(pro.id),
                                                 didcountpercentage:
                                                     pro.discount_percentage,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
                                                 offer: pro.discounted_price,
                                                 wow: pro.wow,
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Services",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1685,20 +1645,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 50,
@@ -1788,9 +1748,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
                                                   id: int.tryParse(prod.id),
@@ -1800,8 +1760,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   offer: prod.offers,
                                                   tradeImage:
                                                       'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   wow: prod.wow,
@@ -1817,12 +1777,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1884,15 +1844,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   shortestDistance: prod
@@ -1911,12 +1871,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1930,7 +1890,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                  height: 5.h,
+                                  height: 9.h,
                                 ),
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
@@ -1971,15 +1931,15 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -1998,12 +1958,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2020,20 +1980,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   Center(
@@ -2092,20 +2052,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -2139,20 +2099,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text(error.toString());
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2234,7 +2194,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                                 // Calculate height dynamically
                                 double calculatedHeight =
-                                    products.isNotEmpty ? 359.h : 100.h;
+                                    products.isNotEmpty ? 359.h : 50.h;
 
                                 return AnimatedContainer(
                                   alignment: Alignment.topLeft,
@@ -2264,9 +2224,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -2275,8 +2235,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   id: int.tryParse(prod.id),
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   comment: prod.commentcount
                                                       .toString(),
@@ -2291,12 +2251,12 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2308,20 +2268,21 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                 child: Text("Error loading data"),
                               ),
                               loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    width: 40.w,
+                                    height: 20.h,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                                      ),
                             ),
                           ],
                         );
@@ -2377,10 +2338,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                    
-                                      lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                            productid: res.id,
+                                    lat: res.user.latitude,
+                                    long: res.user.longitude,
+                                    productid: res.id,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
@@ -2440,20 +2400,20 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       return Text('error is $error');
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 40.h,

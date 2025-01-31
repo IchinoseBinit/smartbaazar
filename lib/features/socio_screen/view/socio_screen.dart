@@ -310,8 +310,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                     const VendorProfileScreen(),
                                               ));
                                         },
-                                        child: Image.asset(
-                                            'assets/images/group.png')),
+                                      child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -711,20 +714,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   );
                                 },
                                 loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      width: 40.w,
+                                      height: 100.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
+                                    ),
+                                  ),
+                                ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -761,60 +765,37 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     data: (feedStoryData) {
                       final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+                      if (homeStory?.story?.posts != null) {
+                        final posts = homeStory!.story!.posts!;
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+                        return SizedBox(
+                          height: 100.h,
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: posts.length,
+                            itemBuilder: (context, index) {
+                              final story = posts[index];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 8.h),
-                              child: SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
-
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
-
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        }
+                              return HomePageStoryContainer(
+                                index: index,
+                                vendorName:
+                                    story.vendorName ?? "Unknown Vendor",
+                                vendorImage: story.vendorImage ??
+                                    "https://example.com/default-image.png",
+                                storyCount: story.storyCount ?? 0,
+                                showGift: story.hasSponsoredGifts ?? false,
+                                feedStoryContent: Story(posts: [story]),
+                                userId: story.vendorId!,
+                              );
+                            },
+                          ),
+                        );
                       }
 
-                      // If any of the above conditions fail, return a default widget
                       return const Center(
-                        child: Text('No stories available. '),
+                        child: Text('No stories available.'),
                       );
                     },
                     loading: () => SizedBox(
@@ -932,20 +913,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("Try again: $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -1105,21 +1086,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text(error.toString());
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
-
+                        ),
+                      ),
+                    ),
                   ),
 
                   Padding(
@@ -1173,8 +1153,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 return ProductDetailWidget(
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
-
-                                    productid: hot.id,
+                                  productid: hot.id,
                                   id: int.tryParse(hot.id),
                                   posttype: hot.post_type_id,
                                   shortestDistance: hot.user.shortestDistance,
@@ -1192,8 +1171,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   price: hot.price,
                                   title: hot.title,
                                   vendorname: hot.user.name,
-                                  similarproductCount:
-                                      hot.similarProductCount,
+                                  similarproductCount: hot.similarProductCount,
                                   membershipColor: hot.user.membershipColor,
                                   membershipTitle: hot.user.membershipTitle,
                                 );
@@ -1285,7 +1263,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     return ProductDetailWidget(
                                       lat: pro.user.latitude,
                                       long: pro.user.longitude,
-                                        productid: pro.id,
+                                      productid: pro.id,
                                       posttype: pro.post_type_id,
                                       shortestDistance:
                                           pro.user.shortestDistance,
@@ -1307,10 +1285,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       productImage: pro.image,
                                       similarproductCount:
                                           pro.similarProductCount,
-                                      membershipColor:
-                                          pro.user.membershipColor,
-                                      membershipTitle:
-                                          pro.user.membershipTitle,
+                                      membershipColor: pro.user.membershipColor,
+                                      membershipTitle: pro.user.membershipTitle,
                                     );
                                   }),
                                 ),
@@ -1323,21 +1299,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                    loading: () => Center(
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1376,9 +1352,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
-                                                                              lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                          productid: pro.id,
+                                        lat: pro.user.latitude,
+                                        long: pro.user.longitude,
+                                        productid: pro.id,
                                         membershipid: pro.user.membership_id,
                                         posttype: pro.post_type_id,
                                         shortestDistance:
@@ -1386,13 +1362,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         id: int.tryParse(pro.id),
                                         didcountpercentage:
                                             pro.discount_percentage,
-                                        avg_rating:
-                                            pro.avg_rating?.toDouble(),
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-                                        discounttedPrice:
-                                            pro.discounted_price,
+                                        discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Socio-Shop",
                                         Vimage: pro.user.photo,
@@ -1420,20 +1394,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1469,14 +1443,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
-                                                                              lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                          productid: pro.id,
+                                        lat: pro.user.latitude,
+                                        long: pro.user.longitude,
+                                        productid: pro.id,
                                         id: int.tryParse(pro.id),
                                         membershipid: pro.user.membership_id,
                                         posttype: pro.post_type_id,
-                                        avg_rating:
-                                            pro.avg_rating?.toDouble(),
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         didcountpercentage:
                                             pro.discount_percentage,
                                         shortestDistance:
@@ -1484,8 +1457,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-                                        discounttedPrice:
-                                            pro.discounted_price,
+                                        discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Socio-Shop",
                                         Vimage: pro.user.photo,
@@ -1513,20 +1485,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   asyncbajarValue.when(
                     data: (data) {
@@ -1564,14 +1536,13 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
-                                                                              lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                          productid: pro.id,
+                                        lat: pro.user.latitude,
+                                        long: pro.user.longitude,
+                                        productid: pro.id,
                                         id: int.tryParse(pro.id),
                                         membershipid: pro.user.membership_id,
                                         posttype: pro.post_type_id,
-                                        avg_rating:
-                                            pro.avg_rating?.toDouble(),
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         didcountpercentage:
                                             pro.discount_percentage,
                                         shortestDistance:
@@ -1579,8 +1550,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-                                        discounttedPrice:
-                                            pro.discounted_price,
+                                        discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Socio-Shop",
                                         Vimage: pro.user.photo,
@@ -1608,20 +1578,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   asyncbajarValue.when(
                     data: (data) {
@@ -1656,9 +1626,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
-                                                                              lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                          productid: pro.id,
+                                        lat: pro.user.latitude,
+                                        long: pro.user.longitude,
+                                        productid: pro.id,
                                         posttype: pro.post_type_id,
                                         membershipid: pro.user.membership_id,
                                         id: int.tryParse(pro.id),
@@ -1666,13 +1636,11 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                             pro.user.shortestDistance,
                                         didcountpercentage:
                                             pro.discount_percentage,
-                                        avg_rating:
-                                            pro.avg_rating?.toDouble(),
+                                        avg_rating: pro.avg_rating?.toDouble(),
                                         offer: pro.discounted_price,
                                         wow: pro.wow,
                                         comment: pro.commentcount.toString(),
-                                        discounttedPrice:
-                                            pro.discounted_price,
+                                        discounttedPrice: pro.discounted_price,
                                         issponsored: pro.user.sponsored,
                                         lefttile: "Socio-Shop",
                                         Vimage: pro.user.photo,
@@ -1700,20 +1668,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 50,
@@ -1740,18 +1708,18 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         dynamicHeight = data.insidearr.isEmpty ||
                                 data.brandbazar_global!.isEmpty
                             ? 150
-                            : 450;
+                            : 460;
                       } else if (dynamictabController.index == 1) {
                         // Ensure data.doma[0] is valid and has length
                         dynamicHeight = data.insidearr.isEmpty ||
                                 data.brandbazar_domestic!.isEmpty
                             ? 150
-                            : 450;
+                            : 460;
                       } else if (dynamictabController.index == 2)
                         dynamicHeight =
                             data.insidearr.isEmpty || data.spotlights!.isEmpty
                                 ? 150
-                                : 450;
+                                : 460;
                       else
                         dynamicHeight = 450;
                       return SizedBox(
@@ -1803,9 +1771,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
                                                   id: int.tryParse(prod.id),
@@ -1815,8 +1783,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   offer: prod.offers,
                                                   tradeImage:
                                                       'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   wow: prod.wow,
@@ -1832,12 +1800,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1889,16 +1857,16 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
                                                   tradeImage: domesticicon,
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   shortestDistance: prod
@@ -1917,12 +1885,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1972,16 +1940,16 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   id: int.tryParse(prod.id),
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   posttype: prod.post_type_id,
                                                   tradeImage: spotlighticon,
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -2000,12 +1968,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2022,20 +1990,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   Center(
@@ -2094,20 +2062,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text("error $error");
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -2141,20 +2109,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text(error.toString());
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2259,17 +2227,17 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 2.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   id: int.tryParse(prod.id),
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   posttype: prod.post_type_id,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   offer: prod.offers,
@@ -2286,12 +2254,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2303,20 +2271,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 child: Text("Error loading data"),
                               ),
                               loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    width: 40.w,
+                                    height: 100.h,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                                      ),
                             ),
                           ],
                         );
@@ -2374,10 +2343,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                      lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                            productid: res.id,
-                                            
+                                    lat: res.user.latitude,
+                                    long: res.user.longitude,
+                                    productid: res.id,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
                                     offer: res.offers,
@@ -2437,20 +2405,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       return Text('error is $error');
                     },
                     loading: () => Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          width: 40.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                                      ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 50.h,

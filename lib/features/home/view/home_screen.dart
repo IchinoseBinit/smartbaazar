@@ -35,6 +35,7 @@ import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_page_story_container.dart';
+import 'package:smartbazar/features/home/view/home_story_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
@@ -42,6 +43,7 @@ import 'package:smartbazar/features/product_details/api/scratch_and_win_provider
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
@@ -138,15 +140,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       'screen': const EventsScreen()
     },
   ];
-  Future<void> getto() async {
-    SharedPreferences sgf = await SharedPreferences.getInstance();
-    print("palla ${sgf.getString('laravel')}");
-  }
 
   @override
   void initState() {
-    print('binod ${SmartClient.laravelsession}');
-    getto();
+    // print('binod ${SmartClient.laravelsession}');
     shared();
     super.initState();
     dynamictabController = TabController(length: 3, vsync: this);
@@ -258,7 +255,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     // final areaa = ref.watch(getScratchAndWinResponseProvider);
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
-  
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -353,8 +349,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       const VendorProfileScreen(),
                                                 ));
                                           },
-                                          child: Image.asset(
-                                              'assets/images/group.png')),
+                                          child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                       SizedBox(
                                         height: 40,
                                         child: Row(
@@ -814,57 +813,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       data: (feedStoryData) {
                         final homeStory = feedStoryData.homeStory;
 
-                        if (homeStory != null &&
-                            homeStory is Map<String, dynamic> &&
-                            homeStory.containsKey('story')) {
-                          final story = homeStory['story'];
+                        if (homeStory?.story?.posts != null) {
+                          final posts = homeStory!.story!.posts!;
 
-                          if (story != null &&
-                              story is Map<String, dynamic> &&
-                              story.containsKey('posts')) {
-                            final posts = story['posts'];
+                          return SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-                            if (posts != null && posts is List<dynamic>) {
-                              return SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
-
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
-
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              );
-                            }
-                          }
+                                return HomePageStoryContainer(
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                  feedStoryContent: Story(posts: [story]),
+                                  userId: story.vendorId!,
+                                );
+                              },
+                            ),
+                          );
                         }
 
-                        // If any of the above conditions fail, return a default widget
                         return const Center(
-                          child: Text('No stories available. '),
+                          child: Text('No stories available.'),
                         );
                       },
                       loading: () => SizedBox(
@@ -891,6 +870,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       error: (error, stack) =>
                           Center(child: Text('Error: $error')),
                     ),
+
+                    SizedBox(
+                      height: 5.h,
+                    ),
+
                     Column(
                       children: [
                         SizedBox(
@@ -1030,6 +1014,97 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
+                              ),
+                            );
+                          },
+                        ),
+                        Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                "BuyOrWin",
+                                textAlign: TextAlign.center,
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: const Color(0xff551b55)),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Center(
+                                child: Container(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  margin: EdgeInsets.only(bottom: 5.h),
+                                  height: 5.h,
+                                  width: 100.w,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF681b4e),
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+
+                        buyorwin.when(
+                          data: (data) {
+                            return SizedBox(
+                              height: 310.h,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: data.buynow.length,
+                                itemBuilder: (context, index) {
+                                  Buynowmodel resp = data.buynow[index];
+                                  return buyorwin_widget(
+                                    wow: resp.wow ?? '0',
+                                    gift_qty: resp.gift_qty!,
+                                    worth: resp.worth!,
+                                    productname: "Discount Coupon",
+                                    vendorImage: resp.vendorImage,
+                                    vendorname: resp.name,
+                                    winners: resp.winners.toString(),
+                                    proctimage:
+                                        "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text("error $error");
+                          },
+                          loading: () {
+                            // Shimmer loading effect
+                            return SizedBox(
+                              height: 310.h,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount:
+                                    5, // Adjust this number for the number of shimmer items
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.w),
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: Container(
+                                        width: 150.w,
+                                        height: 150.h,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },
@@ -1264,18 +1339,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                             if (dynamictabController.index == 0) {
                               dynamicHeight =
-                                  data.insidearr[0].isEmpty ? 150.h : 430.h;
+                                  data.insidearr[0].isEmpty ? 140.h : 430.h;
                             } else if (dynamictabController.index == 1) {
                               // Ensure data.doma[0] is valid and has length
                               dynamicHeight = (data.doma.isNotEmpty &&
                                       data.doma[0].isNotEmpty)
                                   ? 430.h
-                                  : 150.h;
+                                  : 140.h;
                             } else if (dynamictabController.index == 2)
                               dynamicHeight = (data.spotlight.isNotEmpty &&
                                       data.spot[0].isNotEmpty)
                                   ? 430.h
-                                  : 200.h;
+                                  : 140.h;
                             else
                               dynamicHeight = 420;
                             return SizedBox(
@@ -1313,7 +1388,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         data.insidearr[0].isEmpty
                                             ? Padding(
                                                 padding:
-                                                    EdgeInsets.only(top: 20.h),
+                                                    EdgeInsets.only(top: 5.h),
                                                 child: Center(
                                                     child: nolistingfound()),
                                               )
@@ -1662,98 +1737,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         //   },
                         // ),
 
-                        Center(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Text(
-                                "BuyOrWin",
-                                textAlign: TextAlign.center,
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    color: const Color(0xff551b55)),
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Center(
-                                child: Container(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  margin: EdgeInsets.only(bottom: 5.h),
-                                  height: 5.h,
-                                  width: 100.w,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFF681b4e),
-                                      borderRadius: BorderRadius.circular(5)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-
-                        buyorwin.when(
-                          data: (data) {
-                            return SizedBox(
-                              height: 310.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount: data.buynow.length,
-                                itemBuilder: (context, index) {
-                                  Buynowmodel resp = data.buynow[index];
-                                  return buyorwin_widget(
-                                    wow: resp.wow ?? '0',
-                                    gift_qty: resp.gift_qty!,
-                                    worth: resp.worth!,
-                                    productname: "Discount Coupon",
-                                    vendorImage: resp.vendorImage,
-                                    vendorname: resp.name,
-                                    winners: resp.winners.toString(),
-                                    proctimage:
-                                        "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          error: (error, stackTrace) {
-                            return Text("error $error");
-                          },
-                          loading: () {
-                            // Shimmer loading effect
-                            return SizedBox(
-                              height: 310.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount:
-                                    5, // Adjust this number for the number of shimmer items
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8.w),
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Container(
-                                        width: 150.w,
-                                        height: 150.h,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-
                         SizedBox(
                           height: 10.h,
                         ),
@@ -2065,6 +2048,7 @@ class valuenotifilersidebutton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("babu ${SmartClient.userphoto}");
     return ValueListenableBuilder<bool>(
       valueListenable: _showSideBar,
       builder: (context, value, child) {
@@ -2076,17 +2060,39 @@ class valuenotifilersidebutton extends StatelessWidget {
                 _showSideBar.value = !value;
               },
               child: value
-                  ? const CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage(
-                          'assets/images/Smartbazaar-Icon-for-QR.png'),
-                    )
+                  ? Hero(
+                      tag: 'profileHero',
+                      child: TweenAnimationBuilder<Color?>(
+                        tween: ColorTween(
+                          begin: Colors.blue.withOpacity(0.6),
+                          end: Colors.purple.withOpacity(0.6),
+                        ),
+                        duration: const Duration(seconds: 2),
+                        onEnd: () {
+                          // Restart the animation by swapping begin and end
+                        },
+                        builder: (context, color, child) {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(color: Colors.black, width: 0.5),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userphoto),
+                            ),
+                          );
+                        },
+                      ))
                   : Container(
                       width: 70.w,
                       padding: EdgeInsets.symmetric(
                         vertical: 5.h,
                       ),
-                      // Explicit height set
                       decoration: BoxDecoration(
                           color: const Color(0xffE2DAE5).withOpacity(0.9),
                           borderRadius: const BorderRadius.only(
@@ -2098,7 +2104,21 @@ class valuenotifilersidebutton extends StatelessWidget {
                           SizedBox(
                             height: 6.h,
                           ),
-                          Image.asset('assets/images/smart.png'),
+                          Hero(
+                            tag: 'profileHero',
+                            child: Container(
+                              margin: EdgeInsets.only(right: 3.w),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.black, width: 0.5)),
+                              child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundImage:
+                                      NetworkImage(SmartClient.userphoto)),
+                            ),
+                          ),
                           SizedBox(
                             height: 6.h,
                           ),
@@ -2192,8 +2212,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                 ],
                               )),
                         ],
-                      )),
-                    ),
+                      ))),
             ));
       },
     );

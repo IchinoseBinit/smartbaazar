@@ -18,7 +18,6 @@ import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.da
 import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
-import 'package:smartbazar/features/create_listing/view/SellerInformationWidget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/update_listing/api/fetch_category_by_id_provider.dart';
 import 'package:smartbazar/features/update_listing/api/update_listing_provider.dart';
@@ -115,6 +114,9 @@ class _UpdateListingState extends State<UpdateListing> {
 
   @override
   void initState() {
+    _acceptterms = widget.prod!.acceptTerms == '1' ? false : true;
+
+    descriptionController.text = widget.prod!.description!;
     selectedImages = widget.prod!.image!
         .split(',') // Split the string by commas
         .map((path) => File(path.trim())) // Trim whitespace and convert to File
@@ -240,6 +242,7 @@ class _UpdateListingState extends State<UpdateListing> {
 
       // Check if the fetched data is not null
       for (var e in fetchedTypes.data) {
+        print("kanxa ${e.offers}");
         // Normalize both strings by trimming, lowering case, and handling extra spaces
         String offer =
             e.offers.toLowerCase().trim().replaceAll(RegExp(r'\s+'), ' ') ?? '';
@@ -248,7 +251,7 @@ class _UpdateListingState extends State<UpdateListing> {
                 .trim()
                 .replaceAll(RegExp(r'\s+'), ' ') ??
             '';
-
+        print("babut $widgetOffer");
         // Normalize plural forms (strip 's' at the end of the string)
         offer =
             offer.endsWith('s') ? offer.substring(0, offer.length - 1) : offer;
@@ -2052,6 +2055,7 @@ class _UpdateListingState extends State<UpdateListing> {
                               });
                               try {
                                 String responseMessage = await updatelisting(
+                                  
                                   null,
                                   widget.prod!.id!,
 
@@ -2137,21 +2141,17 @@ class _UpdateListingState extends State<UpdateListing> {
   }
 }
 
-
-
 class updatephotoescontainer extends StatefulWidget {
-  updatephotoescontainer(
+  const updatephotoescontainer(
       {super.key, required this.onImagesSelected, this.updateimage});
   final Function(List<File?>) onImagesSelected;
   final List<File?>? updateimage;
 
   @override
-  State<updatephotoescontainer> createState() =>
-      _updatephotoescontainerState();
+  State<updatephotoescontainer> createState() => _updatephotoescontainerState();
 }
 
-class _updatephotoescontainerState
-    extends State<updatephotoescontainer> {
+class _updatephotoescontainerState extends State<updatephotoescontainer> {
   List<File?> images = [];
 
   void selectImages() async {
@@ -2277,9 +2277,9 @@ class _updatephotoescontainerState
                                 color: const Color(0xffADADAD),
                               ),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Icon(Icons.open_in_browser_outlined),
                                 SizedBox(width: 2),
                                 Text(

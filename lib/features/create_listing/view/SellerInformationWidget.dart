@@ -22,6 +22,7 @@ import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 
 class SellerInformationWidget extends ConsumerStatefulWidget {
   SellerInformationWidget(
@@ -140,7 +141,7 @@ class _SellerInformationWidgetState
   void _onSearchChanged(String searchTerm) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-    _debounce = Timer(const Duration(milliseconds: 300), () {
+    _debounce = Timer(const Duration(milliseconds: 10), () {
       if (searchTerm.isNotEmpty) {
         _getStreet(searchTerm);
       }
@@ -153,6 +154,7 @@ class _SellerInformationWidgetState
       setState(() {
         _places = value.places!;
       });
+      print("biabsh $_places");
     } catch (e) {
       // Handle errors if needed
       print('Error fetching street data: $e');
@@ -289,7 +291,7 @@ class _SellerInformationWidgetState
                 ),
               )),
               Positioned(
-                top: 90.h,
+                top: _places == null || _places!.isEmpty ? 90.h : 120.h,
                 child: CreateListingCardWidget(
                     child: Row(
                   children: [
@@ -359,6 +361,7 @@ class _SellerInformationWidgetState
               ),
               Positioned(
                 height: 100,
+                width: 400.w,
                 top: 60.h, // Adjust as per your layout
                 right: 0,
                 child: AnimatedOpacity(
@@ -404,6 +407,10 @@ class _SellerInformationWidgetState
                                     // Optional: Hide keyboard if dropdown triggered by typing
                                     FocusScope.of(context).unfocus();
                                   });
+                                  _places = [];
+                                  print("nirman $selectedpickup");
+                                  _pickupcontroller.text =
+                                      selectedpickup!.description!;
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(8.0),
@@ -768,10 +775,33 @@ class _SellerInformationWidgetState
                               content: Text(responseMessage),
                               actions: [
                                 TextButton(
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PendingApprovalScreen(),
+                                        ));
+                                  },
                                   child: const Text("OK"),
                                 ),
                               ],
+                            );
+                          },
+                        ).whenComplete(
+                          () {
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PendingApprovalScreen(),
+                                    ));
+                              },
                             );
                           },
                         );

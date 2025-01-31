@@ -314,8 +314,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     const VendorProfileScreen(),
                                               ));
                                         },
-                                        child: Image.asset(
-                                            'assets/images/group.png')),
+                                       child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -715,18 +718,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   );
                                 },
                                 loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    width: 70.w,
+                                    height: 100.h,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -809,86 +813,66 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   //   error: (error, stackTrace) => Text(error.toString()),
                   //   loading: () => const CircularProgressIndicator(),
                   // ),
-                  asyncPostTypeContent.when(
-                    data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                   asyncPostTypeContent.when(
+  data: (feedStoryData) {
+    final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+    if (homeStory?.story?.posts != null) {
+      final posts = homeStory!.story!.posts!;
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+      return SizedBox(
+        height: 100.h,
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final story = posts[index];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return SizedBox(
-                              height: 100.h,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: posts.length,
-                                itemBuilder: (context, index) {
-                                  final story = posts[index];
+            return HomePageStoryContainer(
+              index: index,
+              vendorName: story.vendorName ?? "Unknown Vendor",
+              vendorImage: story.vendorImage ??
+                  "https://example.com/default-image.png",
+              storyCount: story.storyCount ?? 0,
+              showGift: story.hasSponsoredGifts ?? false,
+              feedStoryContent: Story(posts: [story]),
+              userId: story.vendorId!,
+            );
+          },
+        ),
+      );
+    }
 
-                                  if (story is Map<String, dynamic>) {
-                                    final storyObject =
-                                        Story(posts: [Post.fromJson(story)]);
-
-                                    return HomePageStoryContainer(
-                                      index: index,
-                                      vendorName: story['vendor_name'] ??
-                                          "Unknown Vendor",
-                                      vendorImage: story['vendor_image'] ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story['story_count'] ?? 0,
-                                      showGift:
-                                          story['has_sponsored_gifts'] ?? false,
-                                      feedStoryContent: storyObject,
-                                      userId: story['vendor_id'],
-                                    );
-                                  } else {
-                                    return Container(); // Return an empty container if the post doesn't match the expected format
-                                  }
-                                },
-                              ),
-                            );
-                          }
-                        }
-                      }
-
-                      // If any of the above conditions fail, return a default widget
-                      return const Center(
-                        child: Text('No stories available. '),
-                      );
-                    },
-                    loading: () => SizedBox(
-                      height: 100.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5, // Number of shimmer placeholders
-                        itemBuilder: (context, index) => Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            width: 70.w,
-                            height: 100.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                  ),
+    return const Center(
+      child: Text('No stories available.'),
+    );
+  },
+  loading: () => SizedBox(
+    height: 100.h,
+    child: ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.horizontal,
+      itemCount: 5, // Number of shimmer placeholders
+      itemBuilder: (context, index) => Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          width: 70.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    ),
+  ),
+  error: (error, stack) =>
+      Center(child: Text('Error: $error')),
+),
 
                   SizedBox(
                     height: 15.h,
@@ -979,18 +963,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("Try again: $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -1170,18 +1154,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text(error.toString());
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -1234,7 +1218,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                 return ProductDetailWidget(
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
-                                    productid: hot.id,
+                                  productid: hot.id,
                                   tradeImage: usedIcon,
                                   posttype: hot.post_type_id,
                                   id: int.tryParse(hot.id),
@@ -1253,8 +1237,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   price: hot.price,
                                   title: hot.title,
                                   vendorname: hot.user.name,
-                                  similarproductCount:
-                                      hot.similarProductCount,
+                                  similarproductCount: hot.similarProductCount,
                                   membershipColor: hot.user.membershipColor,
                                   membershipTitle: hot.user.membershipTitle,
                                 );
@@ -1345,9 +1328,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct pro =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                                                      lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                                  productid: pro.id,
+                                                lat: pro.user.latitude,
+                                                long: pro.user.longitude,
+                                                productid: pro.id,
                                                 shortestDistance:
                                                     pro.user.shortestDistance,
                                                 offer: pro.offers,
@@ -1357,15 +1340,14 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 id: int.tryParse(pro.id),
                                                 didcountpercentage:
                                                     pro.discount_percentage,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 wow: pro.wow,
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Used",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1392,18 +1374,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   // Expanded(
 
@@ -1445,14 +1427,13 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[1][index];
                                         return ProductDetailWidget(
-                                                                                lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                            productid: pro.id,
+                                          lat: pro.user.latitude,
+                                          long: pro.user.longitude,
+                                          productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           id: int.tryParse(pro.id),
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           didcountpercentage:
@@ -1460,8 +1441,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           issponsored: pro.user.sponsored,
                                           discounttedPrice:
                                               pro.discounted_price,
@@ -1490,18 +1470,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1534,22 +1514,20 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[2][index];
                                         return ProductDetailWidget(
-                                                                                lat: pro.user.latitude,
-                                      long: pro.user.longitude,
-                                            productid: pro.id,
+                                          lat: pro.user.latitude,
+                                          long: pro.user.longitude,
+                                          productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           wow: pro.wow,
                                           discounttedPrice:
                                               pro.discounted_price,
@@ -1579,18 +1557,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1623,23 +1601,21 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[4][index];
                                         return ProductDetailWidget(
-                                                                                lat: pro.user.latitude,
-                                      long: pro.user.longitude,
+                                          lat: pro.user.latitude,
+                                          long: pro.user.longitude,
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1668,18 +1644,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 5.h,
@@ -1766,11 +1742,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 id: int.tryParse(prod.id),
                                                 posttype: prod.post_type_id,
                                                 membershipid:
@@ -1780,8 +1756,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     'assets/icon/b2bIcon.svg',
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1831,7 +1807,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   ),
                                   data.insidearr.isEmpty
                                       ? Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
+                                          padding: EdgeInsets.only(top: 18.h),
                                           child: Center(
                                             child: nolistingfound(),
                                           ),
@@ -1852,11 +1828,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   data.insidearr[1][index];
 
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.discount_percentage,
                                                 id: int.tryParse(prod.id),
@@ -1864,8 +1840,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1925,11 +1901,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod =
                                                   data.insidearr[2][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.avg_rating,
                                                 id: int.tryParse(prod.id),
@@ -1937,8 +1913,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1972,19 +1948,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   Center(
@@ -2042,19 +2018,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -2088,18 +2064,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text(error.toString());
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2197,11 +2173,12 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod = products[index];
 
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.avg_rating,
                                                 id: int.tryParse(prod.id),
@@ -2209,8 +2186,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -2257,20 +2234,20 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   },
                                   error: (error, stackTrace) =>
                                       Text("Error: $error"),
-                                  loading: () =>
-                                       Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                  loading: () => Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      width: 70.w,
+                                      height: 100.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             );
@@ -2282,18 +2259,18 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       return Text("$error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w, bottom: 8.h),
@@ -2343,9 +2320,9 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                      lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                            productid: res.id,
+                                    lat: res.user.latitude,
+                                    long: res.user.longitude,
+                                    productid: res.id,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,

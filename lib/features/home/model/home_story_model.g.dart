@@ -8,7 +8,9 @@ part of 'home_story_model.dart';
 
 _$HomeStoryModelImpl _$$HomeStoryModelImplFromJson(Map<String, dynamic> json) =>
     _$HomeStoryModelImpl(
-      homeStory: json['home_story'],
+      homeStory: json['home_story'] == null
+          ? null
+          : HomeStoryData.fromJson(json['home_story'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$HomeStoryModelImplToJson(

@@ -1,94 +1,90 @@
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:scratcher/scratcher.dart';
 
-class ScratchArea extends StatefulWidget {
-  const ScratchArea({super.key});
+// class ScratchArea extends StatefulWidget {
+//   const ScratchArea({super.key});
 
-  @override
-  _ScratchAreaState createState() => _ScratchAreaState();
-}
+//   @override
+//   _ScratchAreaState createState() => _ScratchAreaState();
+// }
 
-class _ScratchAreaState extends State<ScratchArea> {
-  late ConfettiController _controller;
+// class _ScratchAreaState extends State<ScratchArea> {
+//   late ConfettiController _controller;
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize ConfettiController
-    _controller = ConfettiController(duration: const Duration(seconds: 2));
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     // Initialize ConfettiController
+//     _controller = ConfettiController(duration: const Duration(seconds: 2));
+//   }
 
-  @override
-  void dispose() {
-    // Dispose the ConfettiController
-    _controller.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     // Dispose the ConfettiController
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ClipPath(
-      // clipper: PerfectTicketClipper(), // this is previous 
-      clipper: ScallopedWithGapsClipper(),
-      child: SizedBox(
-        width: 334,
-        height: 164,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Scratcher widget for the scratch functionality
-            Scratcher(
-              color: const Color(0xFFF5BF05), 
-              threshold: 60,
-              brushSize: 50,
-              onChange: (value) => print("Scratch progress: $value%"),
-              onThreshold: () {
-                // Trigger confetti when scratch threshold is reached
-                _controller.play();
-              },
-              image: Image.asset(
-                "assets/images/scratch_here_three.png",
-                fit: BoxFit.scaleDown,
-              ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return ClipPath(
+//       // clipper: PerfectTicketClipper(), // this is previous
+//       clipper: ScallopedWithGapsClipper(),
+//       child: SizedBox(
+//         width: 334,
+//         height: 164,
+//         child: Stack(
+//           alignment: Alignment.center,
+//           children: [
+//             // Scratcher widget for the scratch functionality
+//             Scratcher(
+//               enabled: false,
+//               color: const Color(0xFFF5BF05),
+//               threshold: 60,
+//               brushSize: 50,
+//               onChange: (value) => print("Scratch progress: $value%"),
+//               onThreshold: () {
+//                 // Trigger confetti when scratch threshold is reached
+//                 _controller.play();
+//               },
+//               image: Image.asset(
+//                 "assets/images/scratch_here_three.png",
+//                 fit: BoxFit.scaleDown,
+//               ),
+//               child: Center(
+//                 child: Text(
+//                   'Congratulations!\nYou revealed the prize!',
+//                   style: GoogleFonts.greatVibes(
+//                     fontSize: 40,
+//                     color: const Color.fromARGB(255, 255, 255, 255),
+//                   ),
+//                   textAlign: TextAlign.center,
+//                 ),
+//               ),
+//             ),
 
-              child: Center(
-                child: Text(
-                  'Congratulations!\nYou revealed the prize!',
-                  style: GoogleFonts.greatVibes(
-                    fontSize: 40,
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            
-            //**Confetti widget for the confetti animation
-            ConfettiWidget(
-              confettiController: _controller,
-              blastDirectionality: BlastDirectionality.explosive,
-              particleDrag: 0.05,
-              emissionFrequency: 0.05,
-              numberOfParticles: 100,
-              gravity: 0.1,
-              shouldLoop: false,
-              colors: const [
-                Colors.green,
-                Colors.red,
-                Colors.yellow,
-                Colors.blue,
-                Colors.purple,
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+//             //**Confetti widget for the confetti animation
+//             ConfettiWidget(
+//               confettiController: _controller,
+//               blastDirectionality: BlastDirectionality.explosive,
+//               particleDrag: 0.05,
+//               emissionFrequency: 0.05,
+//               numberOfParticles: 100,
+//               gravity: 0.1,
+//               shouldLoop: false,
+//               colors: const [
+//                 Colors.green,
+//                 Colors.red,
+//                 Colors.yellow,
+//                 Colors.blue,
+//                 Colors.purple,
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // ** for scallopededge deign gpt
 class ScallopedWithGapsClipper extends CustomClipper<Path> {
@@ -103,7 +99,7 @@ class ScallopedWithGapsClipper extends CustomClipper<Path> {
     Path path = Path();
 
     // Start from the top-left corner
-    path.moveTo(0,0);
+    path.moveTo(0, 0);
 
     // Top edge (straight line)
     path.lineTo(size.width, 0);

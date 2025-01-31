@@ -6,10 +6,11 @@ part 'home_story_model.g.dart';
 @freezed
 class HomeStoryModel with _$HomeStoryModel {
   const factory HomeStoryModel({
-    @JsonKey(name: 'home_story') dynamic homeStory,
+    @JsonKey(name: 'home_story') HomeStoryData? homeStory, // Use HomeStoryData instead of dynamic
   }) = _HomeStoryModel;
 
-  factory HomeStoryModel.fromJson(Map<String, dynamic> json) => _$HomeStoryModelFromJson(json);
+  factory HomeStoryModel.fromJson(Map<String, dynamic> json) =>
+      _$HomeStoryModelFromJson(json);
 }
 
 @freezed
@@ -18,7 +19,8 @@ class HomeStoryData with _$HomeStoryData {
     @JsonKey(name: 'story') Story? story,
   }) = _HomeStoryData;
 
-  factory HomeStoryData.fromJson(Map<String, dynamic> json) => _$HomeStoryDataFromJson(json);
+  factory HomeStoryData.fromJson(Map<String, dynamic> json) =>
+      _$HomeStoryDataFromJson(json);
 }
 
 @freezed
@@ -29,7 +31,6 @@ class Story with _$Story {
 
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 }
-
 @freezed
 class Post with _$Post {
   const factory Post({

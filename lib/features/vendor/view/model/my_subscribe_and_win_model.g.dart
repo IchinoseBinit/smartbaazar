@@ -164,9 +164,7 @@ _$WinnerImpl _$$WinnerImplFromJson(Map<String, dynamic> json) => _$WinnerImpl(
       status: json['status'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
-      giftWorth: json['gift_worth'] == null
-          ? null
-          : GiftWorth.fromJson(json['gift_worth'] as Map<String, dynamic>),
+      giftWorth: (json['gift_worth'] as num?)?.toInt(),
       name: json['name'] == null
           ? null
           : WinnerName.fromJson(json['name'] as Map<String, dynamic>),

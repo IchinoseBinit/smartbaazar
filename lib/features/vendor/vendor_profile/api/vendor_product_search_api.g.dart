@@ -7,7 +7,7 @@ part of 'vendor_product_search_api.dart';
 // **************************************************************************
 
 String _$searchVendorProductHash() =>
-    r'1fd07c1a8ccb882bddbd8fad6b2175e3e1855403';
+    r'9aa4ec60c49a349fcd842311c9cfaaeec150783f';
 
 /// Copied from Dart SDK
 class _SystemHash {

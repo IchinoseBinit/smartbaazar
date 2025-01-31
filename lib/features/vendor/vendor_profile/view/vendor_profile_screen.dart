@@ -8,6 +8,7 @@ import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
@@ -56,7 +57,6 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
 
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print("kela ${prefs.getString('name')}");
     setState(() {
       vendorName = prefs.getString('name');
     });
@@ -220,6 +220,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "title": 'Create',
       "subtitle": 'Feed',
       "screen": const FeedFormScreen(),
+    },
+    {
+      "icon": Icons.rss_feed_sharp,
+      "title": 'Create',
+      "subtitle": 'Buy-or-win',
+      "screen": const BuyOrWinFormScreen(),
     },
   ];
 

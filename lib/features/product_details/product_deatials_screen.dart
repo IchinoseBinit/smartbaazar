@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,8 +39,10 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
+final ratingProvider = StateProvider<double>((ref) => 0.0);
 
 // ignore: must_be_immutable
 class ProductDetailScreen extends ConsumerWidget {
@@ -80,6 +83,7 @@ class ProductDetailScreen extends ConsumerWidget {
     // List<Ad>? adslist = adsList.value!;
     // print("binod is $adslist");
     final selectedIndex = ref.watch(selectedIndexProvider);
+    final rating = ref.watch(ratingProvider);
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
@@ -88,7 +92,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          // print("binod ${data.result!.user!.id}");
+          print("binod ${data.result?.location}");
           return Scaffold(
             extendBody: true,
             floatingActionButtonLocation:
@@ -199,6 +203,7 @@ class ProductDetailScreen extends ConsumerWidget {
             // backgroundColor: const Color(0xffF6F1F1),
 
             body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               controller: _scrollController,
               scrollDirection: Axis.vertical,
               child: Column(
@@ -213,6 +218,7 @@ class ProductDetailScreen extends ConsumerWidget {
                         color: const Color(0xFF808080),
                         width: double.infinity,
                         child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -303,12 +309,14 @@ class ProductDetailScreen extends ConsumerWidget {
                       ),
                       if (data.result != null)
                         HeaderBannerWidget(
+                            membershipid:
+                                data.result!.user_details!.membershipId,
+                            brandname:
+                                data.result!.user_details!.membershipTitle,
                             id: data.result!.user!.id,
                             vname: data.result!.user!.name,
                             img: data.result!.userPhotoUrl,
-                            title: data.result!.feedPost!.isEmpty
-                                ? "Trade-hub"
-                                : data.result!.feedPost!.first.name!),
+                            title: data.result?.user?.name ?? 'store'),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -503,11 +511,17 @@ class ProductDetailScreen extends ConsumerWidget {
                           SizedBox(
                             height: 20.h,
                           ),
-                          LocationWidget(
-                            latitude: double.tryParse(data.result!.latitude!)!,
-                            longitude:
-                                double.tryParse(data.result!.longitude!)!,
-                          ),
+                          if (data.result != null &&
+                              data.result?.location?.nearestBranch != null &&
+                              data.result?.location != null)
+                            LocationWidget(
+                              shortestdistance:
+                                  data.result!.location!.shortestDistance ?? 0,
+                              latitude: double.tryParse(data
+                                  .result!.location!.nearestBranch!.latitude!)!,
+                              longitude: double.tryParse(data.result!.location!
+                                  .nearestBranch!.longitude!)!,
+                            ),
                           SizedBox(
                             height: 20.h,
                           ),
@@ -835,51 +849,87 @@ class ProductDetailScreen extends ConsumerWidget {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  InkWell(
-                                    onTap: () async {
-                                      ref
-                                          .watch(
-                                        postreviewProvider(
-                                            int.tryParse(productId)!,
-                                            _reviewcontroller.text,
-                                            '2'),
-                                      )
-                                          .whenData(
-                                        (value) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content:
-                                                      Text("Refiew added ")));
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          ref
+                                              .watch(
+                                            postreviewProvider(
+                                                int.tryParse(productId)!,
+                                                _reviewcontroller.text,
+                                                rating.toInt().toString()),
+                                          )
+                                              .whenData(
+                                            (value) {
+                                              showCustomToast(
+                                                context,
+                                                'Your review has been added',
+                                              );
+                                            },
+                                          );
+                                          ref.refresh(
+                                              productDetailsProvider(productId)
+                                                  .future);
+                                          ref.refresh(productDetailsProvider(
+                                              productId));
+
+                                          _reviewcontroller.text = '';
+                                          ref
+                                              .read(ratingProvider.notifier)
+                                              .state = 0.0;
                                         },
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: const Color(0xFF362677)),
-                                      child: Text(
-                                        "Submit Review",
-                                        style: headerstyle,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: const Color(0xFF362677)),
+                                          child: Text(
+                                            "Submit Review",
+                                            style: headerstyle,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Consumer(
+                                        builder: (context, ref, child) {
+                                          return Column(
+                                            children: [
+                                              StarRating(
+                                                rating:
+                                                    rating, // Show the current rating
+                                                allowHalfRating: false,
+                                                onRatingChanged: (newRating) {
+                                                  ref
+                                                          .read(ratingProvider
+                                                              .notifier)
+                                                          .state =
+                                                      newRating; // Update rating
+                                                },
+                                              ),
+                                              Text(
+                                                  "User Rating: $rating"), // Print user rating
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  const chat_review_widget(),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 30.w),
-                                    child: const chat_review_widget(),
+                                  ChatReviewWidget(
+                                    rating: data.result?.ratingComment,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           //  AdsWidget(
-                          //   user: data.result!.userDetails!,
+                          //   user: data.result!.detail_user!,
                           //  ),
                           SizedBox(
                             height: 10.h,
@@ -954,22 +1004,24 @@ class ProductDetailScreen extends ConsumerWidget {
                                     //     deal: data.result!.deals ??
                                     //         []) // Show deals content for selectedIndex 1
                                     : selectedIndex == 2
-                                        ? Row(
-                                            children: data.result!.shop!.map(
-                                            (e) {
-                                              return buildDealItemWidget(
-                                                  data: Deal(
+                                        ? (data.result?.shop == null ||
+                                                data.result!.shop!.isEmpty
+                                            ? Center(child: nolistingfound())
+                                            : Row(
+                                                children:
+                                                    data.result!.shop!.map((e) {
+                                                  return buildDealItemWidget(
+                                                    data: Deal(
                                                       discount_percentage: e
-                                                                  .discountPercentage
-                                                                  .toString() ==
-                                                              'null'
-                                                          ? '0'
-                                                          : e.discountPercentage
-                                                              .toString(),
+                                                              .discountPercentage
+                                                              ?.toString() ??
+                                                          '0',
                                                       id: e.id,
-                                                      image: e.image));
-                                            },
-                                          ).toList())
+                                                      image: e.image,
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ))
                                         : selectedIndex == 3
                                             ? SwapablePostCard(
                                                 post: data.result!.feedPost!)
@@ -999,59 +1051,85 @@ class ProductDetailScreen extends ConsumerWidget {
                                   color: Colors.black87),
                             ),
                           ),
-                          // data.widgetSimilarPosts?.posts.data.length==0
+                          data.widgetSimilarPosts?.posts?.data != null
+                              ? SizedBox(
+                                  child: AnimatedContainer(
+                                    padding: EdgeInsets.zero,
+                                    margin: EdgeInsets.zero,
+                                    duration: const Duration(milliseconds: 400),
+                                    // height: 300.h,
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      physics: const BouncingScrollPhysics(),
+                                      padding: EdgeInsets.zero,
+                                      scrollDirection: Axis.horizontal,
+                                      child: Wrap(
+                                        spacing: 3.w,
+                                        runSpacing: 0.h,
+                                        children: List.generate(
+                                            data.widgetSimilarPosts!.posts!.data
+                                                .length, (index) {
+                                          PostResult prod = data
+                                              .widgetSimilarPosts!
+                                              .posts!
+                                              .data[index];
 
-                          //     ? Center(child: nolistingfound())
-                          //     : GridView.builder(
-                          //         physics:
-                          //             const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                          //         shrinkWrap: true, // Adjust to fit content
-                          //         itemCount: data
-                          //             .widgetSimilarPosts?.posts.data.length,
-
-                          //         gridDelegate:
-                          //             const SliverGridDelegateWithFixedCrossAxisCount(
-                          //           mainAxisExtent: 430,
-                          //           crossAxisCount: 2,
-                          //           crossAxisSpacing: 0.2,
-                          //           mainAxisSpacing: 0.2,
-                          //           childAspectRatio: 0.9,
-                          //         ),
-                          //         itemBuilder: (context, index) {
-                          //           PostResult res = data.widgetSimilarPosts!.posts.data[index];
-                          //           return Padding(
-                          //             padding: EdgeInsets.only(bottom: 5.h),
-                          //             child: ProductDetailWidget(
-                          //               productImage: "https://smartbazaar.jianjun-rnd.com.np/storage/${res.pictures![0].filename}}",
-                          //                Vimage: res.user_photo_url,
-
-                          //               // vendorname: data
-                          //               //     .widgetSimilarPosts
-                          //               //     ?.posts
-                          //               //     .data[index]
-                          //               //     .user_details!
-                          //               //     .name,
-                          //               title:res.title,
-                          //               price: res.price,
-                          //               // similarproductCount: 0,
-                          //               // membershipColor: "#3D215F",
-                          //               // membershipTitle: "",
-                          //               // avg_rating: data
-                          //               //     .result!.ratings!.avg_rating!
-                          //               //     .toDouble(),
-                          //               // comment: data.result!.commentCount!
-                          //               //     .toString(),
-                          //               // discounttedPrice:
-                          //               //     data.result!.discountedPrice!,
-                          //               // issponsored: false,
-                          //               // lefttile: "Trade-Hub",
-                          //               // offer: data.result!.offer!,
-                          //               // wow: data.result!.wow,
-                          //             ),
-                          //           );
-                          //         },
-                          //       ),
-
+                                          return ProductDetailWidget(
+                                              lat: prod.latitude,
+                                              long: prod.longitude,
+                                              posttype: prod.postTypeId,
+                                              productid: prod.id.toString(),
+                                              membershipid: prod
+                                                  .user_details?.membershipId,
+                                              tradeImage:
+                                                  'assets/icon/loading.svg',
+                                              didcountpercentage:
+                                                  prod.discount_percentage,
+                                              distance: prod.userDetails
+                                                  ?.shortestDistance,
+                                              issponsored:
+                                                  prod.userDetails?.sponsored ??
+                                                      false,
+                                              shortestDistance: prod
+                                                  .userDetails?.shortestDistance
+                                                  ?.roundToDouble(),
+                                              wow: prod.wow,
+                                              comment:
+                                                  prod.commentCount.toString(),
+                                              avg_rating: prod
+                                                  .ratings?.avg_rating
+                                                  ?.toDouble(),
+                                              offer: prod.offers,
+                                              id: int.tryParse(prod
+                                                  .userDetails!.id
+                                                  .toString())!,
+                                              vendorname:
+                                                  prod.userDetails?.name ?? '',
+                                              discounttedPrice:
+                                                  prod.discountedPrice,
+                                              Vimage: prod.userDetails?.photo,
+                                              price: prod.price,
+                                              title: prod.title,
+                                              productImage: prod.image,
+                                              membershipColor: prod.userDetails
+                                                      ?.membershipPlanColor ??
+                                                  '',
+                                              similarproductCount:
+                                                  prod.similarProductCount,
+                                              membershipTitle: prod.userDetails
+                                                  ?.membershipPlanTitle);
+                                        }),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.only(top: 50.h),
+                                  child: nolistingfound(),
+                                ),
+                          SizedBox(
+                            height: 50.h,
+                          ),
                           // Container(
                           //   width: double.infinity,
                           //   color: Colors.red,
@@ -1129,6 +1207,7 @@ class SwapablePostCard extends StatelessWidget {
     return post.isEmpty
         ? Center(child: nolistingfound())
         : SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             child: Row(
               children: post.map((data) {
@@ -1164,6 +1243,7 @@ class LiveSwapble extends StatelessWidget {
     return post.isEmpty
         ? Center(child: nolistingfound())
         : SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             child: Row(
               children: post.map((data) {
@@ -1193,6 +1273,7 @@ class CardWidget extends StatelessWidget {
       child: deal.isEmpty
           ? Center(child: nolistingfound())
           : SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: deal.map((data) {
@@ -1221,47 +1302,138 @@ class CardWidget extends StatelessWidget {
   }
 }
 
-class chat_review_widget extends StatelessWidget {
-  const chat_review_widget({
-    super.key,
-  });
+class ChatReviewWidget extends StatefulWidget {
+  final List<RatingComment>? rating;
+
+  const ChatReviewWidget({super.key, required this.rating});
+
+  @override
+  _ChatReviewWidgetState createState() => _ChatReviewWidgetState();
+}
+
+class _ChatReviewWidgetState extends State<ChatReviewWidget> {
+  bool showAll = false;
+  Map<int, bool> expandedComments = {};
 
   @override
   Widget build(BuildContext context) {
+    if (widget.rating == null || widget.rating!.isEmpty) {
+      return const Text("No reviews yet");
+    }
+
+    // Show only 2 comments initially
+    final displayedComments =
+        showAll ? widget.rating! : widget.rating!.take(2).toList();
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const Icon(Icons.person_2_outlined),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.black87, width: 1)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "XYZ",
-                    style:
-                        headerstyle.copyWith(color: Colors.black, fontSize: 15),
+        ...displayedComments.asMap().entries.map((entry) {
+          int index = entry.key;
+          RatingComment comment = entry.value;
+          bool isExpanded = expandedComments[index] ?? false;
+
+          return Padding(
+            padding: EdgeInsets.only(left: index == 0 ? 0 : 30.w, bottom: 10.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 0.1,
+                            color: Colors.black,
+                          )),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: Image.network(
+                          comment.photo,
+                          width: 25,
+                          height: 25,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.zero,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.black87, width: 0.4),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              comment.name,
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  fontSize: 15),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  expandedComments[index] = !isExpanded;
+                                });
+                              },
+                              child: Text(
+                                isExpanded || comment.comment.length < 50
+                                    ? comment.comment
+                                    : "${comment.comment.substring(0, 50)}... See more",
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 290.w),
+                  child: const Text(
+                    "Reply",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.black,
+                    ),
                   ),
-                  const Text("This is a comment"),
-                ],
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+
+        // Show More / Show Less Button
+        if (widget.rating!.length > 2)
+          Center(
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  showAll = !showAll;
+                });
+              },
+              child: Text(
+                showAll ? "Show Less" : "Show More",
+                style: const TextStyle(decoration: TextDecoration.underline),
               ),
             ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 150.w),
-          child: const Text(
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationStyle: TextDecorationStyle.solid),
-              "Reply"),
-        )
+          ),
       ],
     );
   }

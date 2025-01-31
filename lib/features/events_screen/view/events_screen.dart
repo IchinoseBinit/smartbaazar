@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
@@ -308,8 +309,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                     const VendorProfileScreen(),
                                               ));
                                         },
-                                        child: Image.asset(
-                                            'assets/images/group.png')),
+                                      child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -744,69 +748,66 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       ),
                     ),
                   ),
-                  asyncPostTypeContent.when(
-                    data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                   asyncPostTypeContent.when(
+  data: (feedStoryData) {
+    final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+    if (homeStory?.story?.posts != null) {
+      final posts = homeStory!.story!.posts!;
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+      return SizedBox(
+        height: 100.h,
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final story = posts[index];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 5.h),
-                              child: SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
+            return HomePageStoryContainer(
+              index: index,
+              vendorName: story.vendorName ?? "Unknown Vendor",
+              vendorImage: story.vendorImage ??
+                  "https://example.com/default-image.png",
+              storyCount: story.storyCount ?? 0,
+              showGift: story.hasSponsoredGifts ?? false,
+              feedStoryContent: Story(posts: [story]),
+              userId: story.vendorId!,
+            );
+          },
+        ),
+      );
+    }
 
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
-
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        }
-                      }
-
-                      // If any of the above conditions fail, return a default widget
-                      return const SizedBox.shrink();
-                    },
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                  ),
+    return const Center(
+      child: Text('No stories available.'),
+    );
+  },
+  loading: () => SizedBox(
+    height: 100.h,
+    child: ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.horizontal,
+      itemCount: 5, // Number of shimmer placeholders
+      itemBuilder: (context, index) => Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
+          width: 70.w,
+          height: 100.h,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    ),
+  ),
+  error: (error, stack) =>
+      Center(child: Text('Error: $error')),
+),
 
                   SizedBox(
                     height: 6.h,
@@ -1114,53 +1115,81 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return data.hotProducts.isEmpty
                           ? Center(child: nolistingfound())
                           : SizedBox(
-                              height: 340.h,
-                              width: double.infinity,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.all(3),
-                                clipBehavior: Clip.antiAlias,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: data.hotProducts.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  VProduct hot = data.hotProducts[index];
-                                  return ProductDetailWidget(
-                                    lat: hot.user.latitude,
-                                    long: hot.user.longitude,
+                              child: SingleChildScrollView(
+                                scrollDirection:
+                                    Axis.horizontal, // Horizontal scrolling
+                                child: Wrap(
+                                  spacing:
+                                      0.w, // Horizontal space between items
+                                  runSpacing:
+                                      20.h, // Vertical space between rows
+                                  children: List.generate(
+                                      data.hotProducts.length, (index) {
+                                    VProduct prod = data.hotProducts[index];
 
-                                    productid: hot.id,
-                                    posttype: hot.post_type_id,
-                                    shortestDistance:
-                                        hot.user.shortestDistance,
-                                    membershipid: hot.user.membership_id,
-                                    id: int.tryParse(hot.id),
-                                    avg_rating: hot.avg_rating?.toDouble(),
-                                    didcountpercentage:
-                                        hot.discount_percentage,
-                                    offer: hot.offers,
-                                    wow: hot.wow,
-                                    comment: hot.commentcount.toString(),
-                                    discounttedPrice: hot.discounted_price,
-                                    issponsored: hot.user.sponsored,
-                                    lefttile: "Events",
-                                    productImage: hot.image,
-                                    Vimage: hot.user.photo,
-                                    price: hot.price,
-                                    title: hot.title,
-                                    vendorname: hot.user.name,
-                                    similarproductCount:
-                                        hot.similarProductCount,
-                                    membershipColor: hot.user.membershipColor,
-                                    membershipTitle: hot.user.membershipTitle,
-                                  );
-                                },
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      child: ProductDetailWidget(
+                                        lat: prod.user.latitude,
+                                        long: prod.user.longitude,
+                                        productid: prod.id,
+                                        membershipid: prod.user.membership_id,
+                                        posttype: prod.post_type_id,
+                                        lefttile: prod.post_type_id,
+                                        didcountpercentage:
+                                            prod.discount_percentage,
+                                        shortestDistance:
+                                            prod.user.shortestDistance,
+                                        avg_rating: prod.avg_rating?.toDouble(),
+                                        offer: prod.offers,
+                                        id: int.tryParse(prod.user.id),
+                                        comment: prod.commentcount.toString(),
+                                        wow: prod.wow,
+                                        issponsored: prod.user.sponsored,
+                                        vendorname: prod.user.name,
+                                        discounttedPrice: prod.discounted_price,
+                                        Vimage: prod.user.photo,
+                                        price: prod.price,
+                                        title: prod.title,
+                                        productImage: prod.image,
+                                        similarproductCount:
+                                            prod.similarProductCount,
+                                        membershipColor:
+                                            prod.user.membershipColor,
+                                        membershipTitle:
+                                            prod.user.membershipTitle,
+                                      ),
+                                    );
+                                  }),
+                                ),
                               ),
                             );
                     },
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => SizedBox(
+                      height: 200.h, // Adjust height as needed
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5, // Number of shimmer items
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Container(
+                              width: 150.w, // Width of each shimmer item
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   // Expanded(
@@ -1222,7 +1251,6 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               return ProductDetailWidget(
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
-
                                                 productid: pro.id,
                                                 posttype: pro.post_type_id,
                                                 shortestDistance:
@@ -1232,16 +1260,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 id: int.tryParse(pro.id),
                                                 didcountpercentage:
                                                     pro.discount_percentage,
-                                                avg_rating: pro.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    pro.avg_rating?.toDouble(),
                                                 offer: pro.discounted_price,
                                                 wow: pro.wow,
-                                                comment: pro.commentcount
-                                                    .toString(),
+                                                comment:
+                                                    pro.commentcount.toString(),
                                                 discounttedPrice:
                                                     pro.discounted_price,
-                                                issponsored:
-                                                    pro.user.sponsored,
+                                                issponsored: pro.user.sponsored,
                                                 lefttile: "Events",
                                                 Vimage: pro.user.photo,
                                                 price: pro.price,
@@ -1267,9 +1294,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    loading: () => SizedBox(
+                      height: 200.h, // Adjust height as needed
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5, // Number of shimmer items
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Container(
+                              width: 150.w, // Width of each shimmer item
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   // Expanded(
 
@@ -1317,8 +1362,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           posttype: pro.post_type_id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
@@ -1326,8 +1370,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               pro.avg_rating?.toDouble(),
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1356,7 +1399,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return Text("error $error");
                     },
                     loading: () {
-                      return const CircularProgressIndicator();
+                      return SizedBox(
+                        height: 200.h, // Adjust height as needed
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // Number of shimmer items
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Container(
+                                width: 150.w, // Width of each shimmer item
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
 
@@ -1392,13 +1455,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                         return ProductDetailWidget(
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
-
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           posttype: pro.post_type_id,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
@@ -1406,8 +1467,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               pro.avg_rating?.toDouble(),
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1436,7 +1496,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return Text("error $error");
                     },
                     loading: () {
-                      return const CircularProgressIndicator();
+                      return SizedBox(
+                        height: 200.h, // Adjust height as needed
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // Number of shimmer items
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Container(
+                                width: 150.w, // Width of each shimmer item
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
 
@@ -1476,8 +1556,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                           posttype: pro.post_type_id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
@@ -1485,8 +1564,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               pro.avg_rating?.toDouble(),
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1515,7 +1593,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return Text("error $error");
                     },
                     loading: () {
-                      return const CircularProgressIndicator();
+                      return SizedBox(
+                        height: 200.h, // Adjust height as needed
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // Number of shimmer items
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Container(
+                                width: 150.w, // Width of each shimmer item
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(
@@ -1618,8 +1716,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   offer: prod.offers,
                                                   tradeImage:
                                                       'assets/icon/b2bIcon.svg',
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   wow: prod.wow,
@@ -1635,12 +1733,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1692,15 +1790,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   shortestDistance: prod
@@ -1719,12 +1817,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1774,15 +1872,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -1801,12 +1899,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -1823,7 +1921,27 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return Text("error $error");
                     },
                     loading: () {
-                      return const CircularProgressIndicator();
+                      return SizedBox(
+                        height: 200.h, // Adjust height as needed
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // Number of shimmer items
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Container(
+                                width: 150.w, // Width of each shimmer item
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(
@@ -1922,46 +2040,83 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       return Text("error $error");
                     },
                     loading: () {
-                      return const CircularProgressIndicator();
+                      return SizedBox(
+                        height: 200.h, // Adjust height as needed
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5, // Number of shimmer items
+                            itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Container(
+                                width: 150.w, // Width of each shimmer item
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
 
                   SizedBox(
                     height: 10.h,
                   ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: 70.h,
-                        width: double.infinity,
-                        child: PageView.builder(
-                          controller: _adscontroller,
-                          reverse: true,
-                          allowImplicitScrolling: true,
-                          itemCount: data.ads.length,
+                  asyncbajarValue.when(data: (data) {
+                    return SizedBox(
+                      height: 70.h,
+                      width: double.infinity,
+                      child: PageView.builder(
+                        controller: _adscontroller,
+                        reverse: true,
+                        allowImplicitScrolling: true,
+                        itemCount: data.ads.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Image.network(
+                            data.ads[index].image!,
+                            // height: 150.h,
+                            width: double.infinity,
+                            // fit: BoxFit.fill,
+                          );
+                          // Image.asset(
+                          //     height: 150.h,
+                          //     width: double.infinity,
+                          //     fit: BoxFit.fill,
+                          //     );
+                        },
+                      ),
+                    );
+                  }, error: (error, stackTrace) {
+                    return Text(error.toString());
+                  }, loading: () {
+                    return SizedBox(
+                      height: 200.h, // Adjust height as needed
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              data.ads[index].image!,
-                              // height: 150.h,
-                              width: double.infinity,
-                              // fit: BoxFit.fill,
-                            );
-                            // Image.asset(
-                            //     height: 150.h,
-                            //     width: double.infinity,
-                            //     fit: BoxFit.fill,
-                            //     );
-                          },
+                          itemCount: 5, // Number of shimmer items
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.w),
+                            child: Container(
+                              width: 150.w, // Width of each shimmer item
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                  ),
+                      ),
+                    );
+                  }),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -2019,99 +2174,122 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                             // Display Products for the selected category
                             asyncbajarValue.when(
-                              data: (data) {
-                                // Define the products list corresponding to each category
-                                List<List<VProduct>> productsList = [
-                                  data.low_price_guarantee, // Corresponds to SHOPZONE
-                                  data.Launch_offer, // Corresponds to HOB
-                                  data.seasonal, // Corresponds to SERVICES
-                                  data.promotional, // Corresponds to TRADEHUB
-                                  data.clearance_sale, // Corresponds to USED
-                                  data.Launch_festival_offer, // Corresponds to USED
-                                ];
+                                data: (data) {
+                                  // Define the products list corresponding to each category
+                                  List<List<VProduct>> productsList = [
+                                    data.low_price_guarantee, // Corresponds to SHOPZONE
+                                    data.Launch_offer, // Corresponds to HOB
+                                    data.seasonal, // Corresponds to SERVICES
+                                    data.promotional, // Corresponds to TRADEHUB
+                                    data.clearance_sale, // Corresponds to USED
+                                    data.Launch_festival_offer, // Corresponds to USED
+                                  ];
 
-                                // Ensure the index is valid
-                                if (selectedIndex < 0 ||
-                                    selectedIndex >= productsList.length) {
-                                  selectedIndex =
-                                      0; // Default to the first category if index is out of bounds
-                                }
+                                  // Ensure the index is valid
+                                  if (selectedIndex < 0 ||
+                                      selectedIndex >= productsList.length) {
+                                    selectedIndex =
+                                        0; // Default to the first category if index is out of bounds
+                                  }
 
-                                List<VProduct> products =
-                                    productsList[selectedIndex];
+                                  List<VProduct> products =
+                                      productsList[selectedIndex];
 
-                                // Calculate height dynamically
-                                double calculatedHeight =
-                                    products.isNotEmpty ? 359.h : 100.h;
+                                  // Calculate height dynamically
+                                  double calculatedHeight =
+                                      products.isNotEmpty ? 359.h : 100.h;
 
-                                return AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  height: calculatedHeight,
-                                  child: products.isEmpty
-                                      ? Center(
-                                          child: nolistingfound(),
-                                        )
-                                      : ListView.builder(
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: const EdgeInsets.all(3),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: products.length,
-                                          itemBuilder: (context, index) {
-                                            VProduct prod = products[index];
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    height: calculatedHeight,
+                                    child: products.isEmpty
+                                        ? Center(
+                                            child: nolistingfound(),
+                                          )
+                                        : ListView.builder(
+                                            clipBehavior: Clip.antiAlias,
+                                            padding: const EdgeInsets.all(3),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: products.length,
+                                            itemBuilder: (context, index) {
+                                              VProduct prod = products[index];
 
-                                            return ProductDetailWidget(
-                                                                                                lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                              productid: prod.id,
-                                              membershipid:
-                                                  prod.user.membership_id,
-                                              offer: prod.offers,
-                                              posttype: prod.post_type_id,
-                                              shortestDistance:
-                                                  prod.user.shortestDistance,
-                                              id: int.tryParse(prod.id),
-                                              didcountpercentage:
-                                                  prod.discount_percentage,
-                                              avg_rating:
-                                                  prod.avg_rating?.toDouble(),
-                                              wow: prod.wow,
-                                              comment: prod.commentcount
-                                                  .toString(),
-                                              lefttile: "Events",
-                                              vendorname: prod.user.name,
-                                              discounttedPrice:
-                                                  prod.discounted_price,
-                                              Vimage: prod.title,
-                                              issponsored:
-                                                  prod.user.sponsored,
-                                              price: prod.price,
-                                              title: prod.title,
-                                              productImage: prod.image,
-                                              similarproductCount:
-                                                  prod.similarProductCount,
-                                              membershipColor:
-                                                  prod.user.membershipColor,
-                                              membershipTitle:
-                                                  prod.user.membershipTitle,
-                                            );
-                                          },
+                                              return ProductDetailWidget(
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                membershipid:
+                                                    prod.user.membership_id,
+                                                offer: prod.offers,
+                                                posttype: prod.post_type_id,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
+                                                id: int.tryParse(prod.id),
+                                                didcountpercentage:
+                                                    prod.discount_percentage,
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
+                                                wow: prod.wow,
+                                                comment: prod.commentcount
+                                                    .toString(),
+                                                lefttile: "Events",
+                                                vendorname: prod.user.name,
+                                                discounttedPrice:
+                                                    prod.discounted_price,
+                                                Vimage: prod.title,
+                                                issponsored:
+                                                    prod.user.sponsored,
+                                                price: prod.price,
+                                                title: prod.title,
+                                                productImage: prod.image,
+                                                similarproductCount:
+                                                    prod.similarProductCount,
+                                                membershipColor:
+                                                    prod.user.membershipColor,
+                                                membershipTitle:
+                                                    prod.user.membershipTitle,
+                                              );
+                                            },
+                                          ),
+                                  );
+                                },
+                                error: (error, stackTrace) => const Center(
+                                      child: Text("Error loading data"),
+                                    ),
+                                loading: () {
+                                  return SizedBox(
+                                    height: 200.h, // Adjust height as needed
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: 5, // Number of shimmer items
+                                        itemBuilder: (context, index) =>
+                                            Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          child: Container(
+                                            width: 150
+                                                .w, // Width of each shimmer item
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
                                         ),
-                                );
-                              },
-                              error: (error, stackTrace) => const Center(
-                                child: Text("Error loading data"),
-                              ),
-                              loading: () => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
+                                      ),
+                                    ),
+                                  );
+                                }),
                           ],
                         );
                       },
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -2128,99 +2306,75 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                   asyncbajarValue.when(
                     data: (data) {
-                      return data.product.isEmpty
-                          ? Center(child: nolistingfound())
-                          : GridView.builder(
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                              shrinkWrap: true, // Adjust to fit content
-                              itemCount: data.product.length,
-
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                mainAxisExtent: 370,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 0.6,
-                                mainAxisSpacing: 0.2,
-                                childAspectRatio: 0.5,
-                              ),
-                              itemBuilder: (context, index) {
-                                // VProduct res = data.allProducts[index];
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 5.h),
-                                  child: ProductDetailWidget(
-                                    lat: data.product[index].user.latitude,
-                                    long: data.product[index].user.longitude,
-
-                                    productid: data.product[index].id,
-                                    shortestDistance: data
-                                        .product[index].user.shortestDistance,
-                                    posttype:
-                                        data.product[index].post_type_id,
-                                    offer: data.product[index].offers,
-                                    membershipid: data
-                                        .product[index].user.membership_id,
-                                    id: int.tryParse(data.product[index].id),
-                                    didcountpercentage: data
-                                        .product[index].discount_percentage,
-                                    avg_rating: data.product[index].avg_rating
-                                        ?.toDouble(),
-                                    wow: data.product[index].wow,
-                                    comment: data.product[index].commentcount
-                                        .toString(),
-                                    issponsored:
-                                        data.product[index].user.sponsored,
-                                    discounttedPrice:
-                                        data.product[index].discounted_price,
-                                    lefttile: "Events",
-                                    productImage: data.product[index].image,
-                                    Vimage: data.product[index].user.photo,
-                                    vendorname: data.product[index].user.name,
-                                    title: data.product[index].title,
-                                    price: data.product[index].price,
-                                    similarproductCount: data
-                                        .product[index].similarProductCount,
-                                    membershipColor: data
-                                        .product[index].user.membershipColor,
-                                    membershipTitle: data
-                                        .product[index].user.membershipTitle,
-                                  ),
+                      return SizedBox(
+                        width: double.infinity,
+                        child: AnimatedContainer(
+                          padding: EdgeInsets.zero,
+                          margin: EdgeInsets.zero,
+                          duration: const Duration(milliseconds: 400),
+                          height: 350.h,
+                          child: SingleChildScrollView(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            child: Wrap(
+                              spacing: 0.w, // Horizontal spacing between items
+                              runSpacing: 0.h, // Vertical spacing between rows
+                              children: List.generate(data.hotProducts.length,
+                                  (index) {
+                                VProduct hot = data.hotProducts[index];
+                                return ProductDetailWidget(
+                                  lat: hot.user.latitude,
+                                  long: hot.user.longitude,
+                                  productid: hot.id,
+                                  id: int.tryParse(hot.id),
+                                  posttype: hot.post_type_id,
+                                  shortestDistance: hot.user.shortestDistance,
+                                  membershipid: hot.user.membership_id,
+                                  avg_rating: hot.avg_rating?.toDouble(),
+                                  didcountpercentage: hot.discount_percentage,
+                                  offer: hot.offers,
+                                  wow: hot.wow,
+                                  comment: hot.commentcount.toString(),
+                                  discounttedPrice: hot.discounted_price,
+                                  issponsored: hot.user.sponsored,
+                                  lefttile: "Socio-Shop",
+                                  productImage: hot.image,
+                                  Vimage: hot.user.photo,
+                                  price: hot.price,
+                                  title: hot.title,
+                                  vendorname: hot.user.name,
+                                  similarproductCount: hot.similarProductCount,
+                                  membershipColor: hot.user.membershipColor,
+                                  membershipTitle: hot.user.membershipTitle,
                                 );
-                              },
-                            );
-
-                      // SizedBox(
-                      //    height: 340.h,
-                      //   width: double.infinity,
-                      //   child: ListView.builder(
-                      //     padding: EdgeInsets.zero,
-                      //     clipBehavior: Clip.antiAlias,
-                      //     scrollDirection: Axis.horizontal,
-                      //     itemCount: data.allProducts.length,
-                      //     shrinkWrap: true,
-                      //     itemBuilder: (context, index) {
-                      //       // print(
-                      //       //     "ram ${}");
-                      //       return ProductDetailWidget(
-                      //         // productImage: data.allProducts[index].image,
-                      //         Vimage:
-                      //             data.allProducts[index].user.photo,
-
-                      //         vendorname:
-                      //             data.allProducts[index].user.name,
-                      //         title: data.allProducts[index].title,
-                      //         price: data.allProducts[index].price,
-                      //       );
-                      //     },
-                      //   ),
-                      // );
+                              }),
+                            ),
+                          ),
+                        ),
+                      );
                     },
-                    error: (error, stackTrace) {
-                      return Text('error is $error');
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                    error: (error, stackTrace) => Text(error.toString()),
+                    loading: () => SizedBox(
+                      height: 340.h,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(3),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            width: 200.w,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 30.h,

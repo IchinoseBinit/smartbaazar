@@ -108,6 +108,8 @@ class LoginApi {
     await prefs.setString("name", SmartClient.userName);
     await prefs.setString("email", SmartClient.userEmail);
     await prefs.setString("phone", SmartClient.phone);
+            await prefs.setString("photo", SmartClient.userphoto);
+
   }
 
   // Handle error response (non-2xx HTTP status)

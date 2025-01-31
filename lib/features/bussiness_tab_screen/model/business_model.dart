@@ -55,6 +55,7 @@ class BusinessResponse {
 
 
 class Business {
+  
   final String? vendorId;
   final String? vendorName;
   final String? vendorUsername;

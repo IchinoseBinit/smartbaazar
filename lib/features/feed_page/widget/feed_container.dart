@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
+import 'package:smartbazar/features/feed_page/api/list_comment_feed_api.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
+import 'package:smartbazar/features/feed_page/model/list_comment_of_feed.dart';
 import 'package:smartbazar/features/feed_page/view/add_comment_provider.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
 
@@ -19,6 +24,7 @@ class FeedContainer extends ConsumerStatefulWidget {
     required this.distance,
     required this.userId,
     this.showGift,
+    required this.hassttory,
     // this.userDetails,
     required this.interested,
     required this.engagement,
@@ -43,6 +49,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final bool? showGift;
   final String userId;
   final String feedId;
+  final bool hassttory;
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -54,74 +61,93 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
   bool _isLoading = false;
   bool _isLiked = false;
   int _likeCount = 0;
-  final TextEditingController _commentcontroller = TextEditingController();
 
-  void _showCommentBottomSheet(BuildContext context, String id) {
+  void _showCommentSection(BuildContext context, String feedproductid) {
     showModalBottomSheet(
+      useSafeArea: true,
       context: context,
-      isScrollControlled: true, // Ensures it adjusts for the keyboard
+      isScrollControlled: true, // Allows full-screen modal
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, // Minimized to fit content
-            children: [
-              const Text(
-                'Add a Comment',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _commentcontroller,
-                decoration: InputDecoration(
-                  hintText: 'Write your comment here...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  if (_commentcontroller.text.isNotEmpty) {
-                    ref
-                        .watch(postcommentProvider(id, _commentcontroller.text))
-                        .whenData(
-                      (value) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(value)));
-                      },
-                    );
-                  }
-
-                  Navigator.pop(context); // Close the bottom sheet
-                  // Handle the comment submission logic here
-                },
-                child: const Text('Submit'),
-              ),
-            ],
-          ),
-        );
-      },
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height, // Full screen height
+        child: CommentSection(id: feedproductid),
+      ),
     );
   }
+
+  // void _showCommentBottomSheet(BuildContext context, String id) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true, // Ensures it adjusts for the keyboard
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  //     ),
+  //     builder: (BuildContext context) {
+  //       print("kela ${id}");
+  //       return Padding(
+  //         padding: EdgeInsets.only(
+  //           left: 16,
+  //           right: 16,
+  //           top: 16,
+  //           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+  //         ),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min, // Minimized to fit content
+  //           children: [
+  //             const Text(
+  //               'Add a Comment',
+  //               style: TextStyle(
+  //                 fontSize: 18,
+  //                 fontWeight: FontWeight.bold,
+  //               ),
+  //             ),
+  //             const SizedBox(height: 10),
+  //             TextField(
+  //               controller: _commentcontroller,
+  //               decoration: InputDecoration(
+  //                 hintText: 'Write your comment here...',
+  //                 border: OutlineInputBorder(
+  //                   borderRadius: BorderRadius.circular(8),
+  //                 ),
+  //               ),
+  //               maxLines: 3,
+  //             ),
+  //             const SizedBox(height: 10),
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 if (_commentcontroller.text.isNotEmpty) {
+  //                   ref
+  //                       .watch(postcommentProvider(id, _commentcontroller.text))
+  //                       .whenData(
+  //                     (value) {
+  //                       ScaffoldMessenger.of(context)
+  //                           .showSnackBar(SnackBar(content: Text(value)));
+  //                     },
+  //                   );
+  //                 }
+
+  //                 Navigator.pop(context); // Close the bottom sheet
+  //                 // Handle the comment submission logic here
+  //               },
+  //               child: const Text('Submit'),
+  //             ),
+  //             SizedBox(
+  //               height: 100,
+  //             )
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     final feedGiftCardFuture =
         ref.watch(getFeedGiftCardProvider(widget.userId));
+    // print("kala ${widget.vendorImage}")
 
     return Column(
       children: [
@@ -149,18 +175,20 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5.w),
-                      width: 70.r,
-                      height: 70.r,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 3.w, color: const Color(0xffEACACB)),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                    widget.hassttory
+                        ? Container(
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            width: 70.r,
+                            height: 70.r,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 3.w, color: const Color(0xffEACACB)),
+                              shape: BoxShape.circle,
+                            ),
+                          )
+                        : Container(),
                     Padding(
-                      padding: const EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(3),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -195,6 +223,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                               onTap: () {
                                 feedGiftCardFuture.when(
                                   data: (feedCardData) {
+                                    print("pinky $feedCardData");
                                     return showCustomBottomSheet(
                                         context, feedCardData);
                                   },
@@ -209,7 +238,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                         child: Container(
                                           width: 50.r,
                                           height: 50.r,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
                                           ),
@@ -409,10 +438,10 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     }
                   },
                   errorBuilder: (context, error, stackTrace) {
-                    return SizedBox(
+                    return const SizedBox(
                       width: 130,
                       height: 70,
-                      child: const Icon(Icons.error),
+                      child: Icon(Icons.error),
                     ); // Show error icon if image fails to load
                   },
                 ),
@@ -491,13 +520,38 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                       },
                       child: Row(
                         children: [
-                          Icon(
-                            _isLiked
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            color: _isLiked ? Colors.red : Colors.white,
-                            size: 20.h,
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  _isLiked ? Colors.grey : Colors.white,
+                                  Colors.pink
+                                ], // Gradient colors
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              shape: BoxShape
+                                  .circle, // Make the background circular (if needed)
+                            ),
+                            padding: const EdgeInsets.all(
+                                8), // Add padding for space around the image
+                            child: Image.asset(
+                              'assets/icon/heart.png',
+                              color: _isLiked
+                                  ? Colors.red
+                                  : Colors.white, // Icon color
+                              // width: 24, // You can adjust the size
+                              // height: 24, // You can adjust the size
+                            ),
                           ),
+
+                          // Icon(
+                          //   _isLiked
+                          //       ? Icons.favorite
+                          //       : Icons.favorite_border_outlined,
+                          //   color: _isLiked ? Colors.red : Colors.white,
+                          //   size: 20.h,
+                          // ),
                           SizedBox(width: 4.w),
                         ],
                       ),
@@ -505,16 +559,36 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     SizedBox(width: 15.w),
                     // Comment Icon
                     GestureDetector(
-                      onTap: () =>
-                          _showCommentBottomSheet(context, widget.feedId),
+                      onTap: () => _showCommentSection(context, widget.feedId),
                       child: Row(
                         children: [
-                          Icon(Icons.chat_bubble_outline,
-                              color: Colors.white, size: 20.h),
+                          Container(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Colors.purple
+                                ], // Define your gradient colors
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              shape: BoxShape
+                                  .circle, // Make the container circular
+                            ),
+                            padding: const EdgeInsets.all(
+                                8), // Add padding to ensure the icon has space around it
+                            child: Image.asset(
+                              'assets/icon/Rectangle.png',
+                              color: Colors.white,
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
                           SizedBox(width: 4.w),
                         ],
                       ),
                     ),
+
                     SizedBox(width: 15.w),
                     // Comment Icon
                     GestureDetector(
@@ -523,20 +597,57 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.arrow_outward_outlined,
-                              color: Colors.white, size: 20.h),
-                          SizedBox(width: 4.w),
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape
+                                  .circle, // Make the container circular
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Colors.green
+                                ], // Define your gradient colors
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(
+                                8), // Optional: add padding around the image
+                            child: Image.asset(
+                              'assets/icon/tabler_location-share.png',
+                              width: 24, // Adjust width as needed
+                              height: 24, // Adjust height as needed
+                            ),
+                          )
                         ],
                       ),
                     ),
                     SizedBox(width: 15.w),
                     // Share Icon
                     GestureDetector(
-                      onTap: () {
-                        print("Shared!");
-                      },
-                      child: Icon(Icons.share, color: Colors.white, size: 20.h),
-                    ),
+                        onTap: () {
+                         Share.share('Share this');
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape:
+                                BoxShape.circle, // Make the container circular
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue,
+                                Colors.green
+                              ], // Define your gradient colors
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(
+                              8), // Optional: add padding around the image
+                          child: Image.asset(
+                            'assets/icon/fluent_share-48-filled.png',
+                            width: 24, // Adjust width as needed
+                            height: 24, // Adjust height as needed
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -685,7 +796,7 @@ class FullscreenImageView extends StatelessWidget {
             right: 16,
             child: GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.close, color: Colors.black),
               ),
@@ -693,6 +804,138 @@ class FullscreenImageView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CommentSection extends ConsumerStatefulWidget {
+  const CommentSection({super.key, required this.id});
+
+  final String id;
+
+  @override
+  ConsumerState<CommentSection> createState() => _CommentSectionState();
+}
+
+class _CommentSectionState extends ConsumerState<CommentSection> {
+  bool _isLoading = false;
+  final TextEditingController _commentcontroller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final commentAsyncValue = ref.watch(getfeedcommentProvider(widget.id));
+
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      minChildSize: 1,
+      maxChildSize: 1,
+      builder: (context, scrollController) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 40,
+                  height: 5,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              Text(
+                "Comment",
+                style: headerstyle.copyWith(
+                    color: ColorConstant.blackColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800),
+              ),
+              commentAsyncValue.when(
+                data: (comment) {
+                  if (comment.isEmpty) {
+                    return const Text('No comments yet');
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: comment.length,
+                      itemBuilder: (context, index) {
+                        FeedCommentModel value = comment[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(value.photo ?? ""),
+                          ),
+                          title: Text(value.name ?? "",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(value.comment ?? ""),
+                        );
+                      },
+                    ),
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(child: Text('Error: $error')),
+              ),
+              // Comment Input Section
+              TextField(
+                controller: _commentcontroller,
+                decoration: InputDecoration(
+                  hintText: "Add a comment...",
+                  border: InputBorder.none,
+                  suffixIcon: _isLoading
+                      ? const CircularProgressIndicator()
+                      : IconButton(
+                          icon: const Icon(Icons.send, color: Colors.blue),
+                          onPressed: () async {
+                            if (_commentcontroller.text.isNotEmpty) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+
+                              // Optimistically add the comment to the UI
+                              final newComment = FeedCommentModel(
+                                name: "You",
+                                comment: _commentcontroller.text,
+                                photo: "", // Provide the photo URL
+                              );
+
+                              // Post the comment
+                              ref
+                                  .watch(postcommentProvider(
+                                      widget.id, _commentcontroller.text))
+                                  .whenData((value) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(value)));
+                              });
+
+                              setState(() {
+                                _isLoading = false;
+                              });
+
+                              // Clear the input field
+                              _commentcontroller.text = '';
+
+                              // Trigger a rebuild of the comment list by refreshing the provider
+                              ref.refresh(getfeedcommentProvider(widget.id));
+                            }
+                          },
+                        ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

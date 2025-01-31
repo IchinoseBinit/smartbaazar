@@ -71,6 +71,8 @@ class LoginController extends StateNotifier<GenericState> {
         SmartClient.token = session['extra']['authToken'];
         SmartClient.userEmail = session['result']['email'];
         SmartClient.userName = session['result']['name'];
+                SmartClient.userphoto = session['result']['photo_url'];
+
 
         // TODO: SmartClient.token is not set here
 
@@ -119,6 +121,8 @@ class LoginController extends StateNotifier<GenericState> {
     await prefs.setString("email", SmartClient.userEmail);
     await prefs.setString("phone", SmartClient.phone);
     await prefs.setString("laravel", SmartClient.laravelsession);
+        await prefs.setString("photo", SmartClient.userphoto);
+
   }
 
   Future<String?> _getSessionData() async {

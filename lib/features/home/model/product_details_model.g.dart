@@ -34,7 +34,9 @@ Map<String, dynamic> _$$PostModelImplToJson(_$PostModelImpl instance) =>
 _$WidgetSimilarPostsImpl _$$WidgetSimilarPostsImplFromJson(
         Map<String, dynamic> json) =>
     _$WidgetSimilarPostsImpl(
-      posts: PostPagination.fromJson(json['posts'] as Map<String, dynamic>),
+      posts: json['posts'] == null
+          ? null
+          : PostPagination.fromJson(json['posts'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$WidgetSimilarPostsImplToJson(
@@ -78,6 +80,7 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       textOne: json['text_one'] as String?,
       textTwo: json['text_two'] as String?,
       avaTo: json['ava_to'] as String?,
+      discount_percentage: (json['discount_percentage'] as num?)?.toInt(),
       negotiable: json['negotiable'] as String?,
       contactName: json['contact_name'] as String?,
       email: json['email'] as String?,
@@ -103,6 +106,7 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       reviewed: json['reviewed'] as String?,
       featured: json['featured'] as String?,
       archived: json['archived'] as String?,
+      image: json['image'] as String?,
       archivedAt: json['archived_at'] as String?,
       deletionMailSentAt: json['deletion_mail_sent_at'] as String?,
       fbProfile: json['fb_profile'] as String?,
@@ -122,13 +126,16 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      location: json['location'] == null
+          ? null
+          : LocationModel.fromJson(json['location'] as Map<String, dynamic>),
       user: json['user'] == null
           ? null
           : usermodel.fromJson(json['user'] as Map<String, dynamic>),
-      userDetails: json['user_details'] == null
+      userDetails: json['detail_user'] == null
           ? null
-          : UserDetailsProduct.fromJson(
-              json['user_details'] as Map<String, dynamic>),
+          : SimilarProducts.fromJson(
+              json['detail_user'] as Map<String, dynamic>),
       pictures: (json['pictures'] as List<dynamic>?)
           ?.map((e) => Picture.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -138,6 +145,11 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] == null
           ? null
           : City.fromJson(json['city'] as Map<String, dynamic>),
+      user_details: json['user_details'] == null
+          ? null
+          : MyProductDeailModel.fromJson(
+              json['user_details'] as Map<String, dynamic>),
+      similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
       ratingComment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -179,6 +191,7 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'text_one': instance.textOne,
       'text_two': instance.textTwo,
       'ava_to': instance.avaTo,
+      'discount_percentage': instance.discount_percentage,
       'negotiable': instance.negotiable,
       'contact_name': instance.contactName,
       'email': instance.email,
@@ -204,6 +217,7 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'reviewed': instance.reviewed,
       'featured': instance.featured,
       'archived': instance.archived,
+      'image': instance.image,
       'archived_at': instance.archivedAt,
       'deletion_mail_sent_at': instance.deletionMailSentAt,
       'fb_profile': instance.fbProfile,
@@ -219,16 +233,122 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'commentCount': instance.commentCount,
       'extra': instance.extra,
       'ratings': instance.ratings,
+      'location': instance.location,
       'user': instance.user,
-      'user_details': instance.userDetails,
+      'detail_user': instance.userDetails,
       'pictures': instance.pictures,
       'postType': instance.postType,
       'city': instance.city,
+      'user_details': instance.user_details,
+      'similarProductCount': instance.similarProductCount,
       'rating_comment': instance.ratingComment,
       'livePrizes': instance.livePrizes,
       'deals': instance.deals,
       'shop': instance.shop,
       'feedPost': instance.feedPost,
+    };
+
+_$LocationModelImpl _$$LocationModelImplFromJson(Map<String, dynamic> json) =>
+    _$LocationModelImpl(
+      nearestBranch: json['nearestBranch'] == null
+          ? null
+          : NearestBranch.fromJson(
+              json['nearestBranch'] as Map<String, dynamic>),
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$$LocationModelImplToJson(_$LocationModelImpl instance) =>
+    <String, dynamic>{
+      'nearestBranch': instance.nearestBranch,
+      'shortestDistance': instance.shortestDistance,
+    };
+
+_$NearestBranchImpl _$$NearestBranchImplFromJson(Map<String, dynamic> json) =>
+    _$NearestBranchImpl(
+      location: json['location'] as String?,
+      longitude: json['longitude'] as String?,
+      latitude: json['latitude'] as String?,
+    );
+
+Map<String, dynamic> _$$NearestBranchImplToJson(_$NearestBranchImpl instance) =>
+    <String, dynamic>{
+      'location': instance.location,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
+    };
+
+_$UserDetailsImpl _$$UserDetailsImplFromJson(Map<String, dynamic> json) =>
+    _$UserDetailsImpl(
+      name: json['name'] as String,
+      photo: json['photo'] as String,
+      userPhotoUrl: json['user_photo_url'] as String,
+      hasSponsoredGifts: json['has_sponsored_gifts'] as bool,
+      livePrizes: (json['livePrizes'] as num?)?.toInt(),
+      productCount: (json['productCount'] as num?)?.toInt(),
+      storyCount: (json['storyCount'] as num?)?.toInt(),
+      subscribers: (json['subscribers'] as num?)?.toInt(),
+      distance: (json['distance'] as num?)?.toDouble(),
+      membershipId: json['membership_id'] as String,
+      membershipTitle: json['membership_title'] as String,
+      membershipColor: json['membership_color'] as String,
+    );
+
+Map<String, dynamic> _$$UserDetailsImplToJson(_$UserDetailsImpl instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'photo': instance.photo,
+      'user_photo_url': instance.userPhotoUrl,
+      'has_sponsored_gifts': instance.hasSponsoredGifts,
+      'livePrizes': instance.livePrizes,
+      'productCount': instance.productCount,
+      'storyCount': instance.storyCount,
+      'subscribers': instance.subscribers,
+      'distance': instance.distance,
+      'membership_id': instance.membershipId,
+      'membership_title': instance.membershipTitle,
+      'membership_color': instance.membershipColor,
+    };
+
+_$SimilarProductsImpl _$$SimilarProductsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SimilarProductsImpl(
+      id: json['id'] as String,
+      membershipPlanId: json['membership_plan_id'] as String?,
+      membershipStatus: json['membership_status'] as String?,
+      photo: json['photo'] as String,
+      name: json['name'] as String,
+      usersLocation: json['users_location'] as String?,
+      branchLocation: json['branch_location'] as String?,
+      membershipPlanTitle: json['membership_plan_title'] as String?,
+      membershipPlanColor: json['membership_plan_color'] as String?,
+      hasSponsoredGifts: json['has_sponsored_gifts'] as bool?,
+      sponsored: json['sponsored'] as bool?,
+      storyCount: (json['storyCount'] as num?)?.toInt(),
+      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
+      nearestBranch: json['nearestBranch'] as String?,
+      longitude: json['longitude'] as String?,
+      latitude: json['latitude'] as String?,
+    );
+
+Map<String, dynamic> _$$SimilarProductsImplToJson(
+        _$SimilarProductsImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'membership_plan_id': instance.membershipPlanId,
+      'membership_status': instance.membershipStatus,
+      'photo': instance.photo,
+      'name': instance.name,
+      'users_location': instance.usersLocation,
+      'branch_location': instance.branchLocation,
+      'membership_plan_title': instance.membershipPlanTitle,
+      'membership_plan_color': instance.membershipPlanColor,
+      'has_sponsored_gifts': instance.hasSponsoredGifts,
+      'sponsored': instance.sponsored,
+      'storyCount': instance.storyCount,
+      'shortestDistance': instance.shortestDistance,
+      'nearestBranch': instance.nearestBranch,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
     };
 
 _$CityImpl _$$CityImplFromJson(Map<String, dynamic> json) => _$CityImpl(
@@ -540,13 +660,10 @@ _$FieldDetailsImpl _$$FieldDetailsImplFromJson(Map<String, dynamic> json) =>
       belongsTo: json['belongs_to'] as String?,
       name: json['name'] as String?,
       type: json['type'] as String?,
-      max: (json['max'] as num?)?.toInt(),
       defaultValue:
           const DefaultValueConverter().fromJson(json['default_value']),
       required: json['required'] as String?,
       useAsFilter: json['use_as_filter'] as String?,
-      help: json['help'] as String?,
-      active: json['active'] as String?,
       options: (json['options'] as List<dynamic>?)
           ?.map((e) => FieldOption.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -558,13 +675,10 @@ Map<String, dynamic> _$$FieldDetailsImplToJson(_$FieldDetailsImpl instance) =>
       'belongs_to': instance.belongsTo,
       'name': instance.name,
       'type': instance.type,
-      'max': instance.max,
       'default_value':
           const DefaultValueConverter().toJson(instance.defaultValue),
       'required': instance.required,
       'use_as_filter': instance.useAsFilter,
-      'help': instance.help,
-      'active': instance.active,
       'options': instance.options,
     };
 

@@ -21,7 +21,7 @@ HomeStoryModel _$HomeStoryModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$HomeStoryModel {
   @JsonKey(name: 'home_story')
-  dynamic get homeStory => throw _privateConstructorUsedError;
+  HomeStoryData? get homeStory => throw _privateConstructorUsedError;
 
   /// Serializes this HomeStoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,9 @@ abstract class $HomeStoryModelCopyWith<$Res> {
           HomeStoryModel value, $Res Function(HomeStoryModel) then) =
       _$HomeStoryModelCopyWithImpl<$Res, HomeStoryModel>;
   @useResult
-  $Res call({@JsonKey(name: 'home_story') dynamic homeStory});
+  $Res call({@JsonKey(name: 'home_story') HomeStoryData? homeStory});
+
+  $HomeStoryDataCopyWith<$Res>? get homeStory;
 }
 
 /// @nodoc
@@ -63,8 +65,22 @@ class _$HomeStoryModelCopyWithImpl<$Res, $Val extends HomeStoryModel>
       homeStory: freezed == homeStory
           ? _value.homeStory
           : homeStory // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as HomeStoryData?,
     ) as $Val);
+  }
+
+  /// Create a copy of HomeStoryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $HomeStoryDataCopyWith<$Res>? get homeStory {
+    if (_value.homeStory == null) {
+      return null;
+    }
+
+    return $HomeStoryDataCopyWith<$Res>(_value.homeStory!, (value) {
+      return _then(_value.copyWith(homeStory: value) as $Val);
+    });
   }
 }
 
@@ -76,7 +92,10 @@ abstract class _$$HomeStoryModelImplCopyWith<$Res>
       __$$HomeStoryModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'home_story') dynamic homeStory});
+  $Res call({@JsonKey(name: 'home_story') HomeStoryData? homeStory});
+
+  @override
+  $HomeStoryDataCopyWith<$Res>? get homeStory;
 }
 
 /// @nodoc
@@ -98,7 +117,7 @@ class __$$HomeStoryModelImplCopyWithImpl<$Res>
       homeStory: freezed == homeStory
           ? _value.homeStory
           : homeStory // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as HomeStoryData?,
     ));
   }
 }
@@ -113,7 +132,7 @@ class _$HomeStoryModelImpl implements _HomeStoryModel {
 
   @override
   @JsonKey(name: 'home_story')
-  final dynamic homeStory;
+  final HomeStoryData? homeStory;
 
   @override
   String toString() {
@@ -125,13 +144,13 @@ class _$HomeStoryModelImpl implements _HomeStoryModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStoryModelImpl &&
-            const DeepCollectionEquality().equals(other.homeStory, homeStory));
+            (identical(other.homeStory, homeStory) ||
+                other.homeStory == homeStory));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(homeStory));
+  int get hashCode => Object.hash(runtimeType, homeStory);
 
   /// Create a copy of HomeStoryModel
   /// with the given fields replaced by the non-null parameter values.
@@ -152,7 +171,7 @@ class _$HomeStoryModelImpl implements _HomeStoryModel {
 
 abstract class _HomeStoryModel implements HomeStoryModel {
   const factory _HomeStoryModel(
-          {@JsonKey(name: 'home_story') final dynamic homeStory}) =
+          {@JsonKey(name: 'home_story') final HomeStoryData? homeStory}) =
       _$HomeStoryModelImpl;
 
   factory _HomeStoryModel.fromJson(Map<String, dynamic> json) =
@@ -160,7 +179,7 @@ abstract class _HomeStoryModel implements HomeStoryModel {
 
   @override
   @JsonKey(name: 'home_story')
-  dynamic get homeStory;
+  HomeStoryData? get homeStory;
 
   /// Create a copy of HomeStoryModel
   /// with the given fields replaced by the non-null parameter values.

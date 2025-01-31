@@ -161,7 +161,7 @@ class _CategoryFieldState extends State<CategoryField> {
         ),
         if (categoryListItems.isNotEmpty)
           _buildDropdown<MyCategory>(
-            label: 'MyCategory',
+            label: 'Category',
             items: categoryListItems,
             selectedValue: selectedCategory,
             onChanged: (newValue) {

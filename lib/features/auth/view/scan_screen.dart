@@ -11,7 +11,7 @@ class ScanScreen extends ConsumerStatefulWidget {
 }
 
 class _ScanScreenState extends ConsumerState<ScanScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: "QR");
+  // final GlobalKey qrKey = GlobalKey(debugLabel: "QR");
   // Barcode? result;
   // QRViewController? controller;
   @override

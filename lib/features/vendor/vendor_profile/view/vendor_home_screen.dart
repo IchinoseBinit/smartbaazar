@@ -15,7 +15,7 @@ import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -98,6 +98,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     "JOBS",
     "Grocery"
   ];
+  Map<String, String>? _followrespo;
   List<PostResult>? vendorsearchrespnse;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -130,15 +131,24 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   //     );
   //   }
   // }
+  Future<void> gets() async {
+    final a = followvendor("9").then(
+      (value) {
+        print("raju ${value['msg']}");
+      },
+    );
+  }
+
   int? myselectedindex; // Track selected index
   double? dynamicheight;
   @override
   void initState() {
+    gets();
     super.initState();
     myselectedindex = 0;
     dynamicheight = 410.0.h;
 
-    _tabController = TabController(length: 7, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     // Listen for tab changes
     _tabController.addListener(() {
       setState(() {
@@ -445,6 +455,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     : Column(
                         children: [
                           BigContainer(
+                            id: data.vendor_card!.membership_id!,
+                            issubbed:
+                                data.subscribed == 'subscribed' ? true : false,
                             memebertitle: data.vendor_card!.membership_title!,
                             lat: double.tryParse(
                                     data.vendor_card?.latitude ?? '0.0') ??
@@ -492,12 +505,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                       controller: _tabController,
                       tabs: const [
                         Tab(text: "SHOP"),
-                        Tab(text: "Home"),
                         Tab(text: "About"),
                         Tab(text: "BRANDS"),
                         Tab(text: "GET DIRECTIONS"),
                         Tab(text: "CUSTOMER SERVICE"),
-                        Tab(text: "CART"),
+                        Tab(text: "CAREER"),
                       ],
                     ),
                     // Wrap TabBarView in a container with a specific height
@@ -556,7 +568,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                       .whenData(
                                                     (value) {
                                                       vendorsearchrespnse =
-                                                          value.data!.Posts!.data;
+                                                          value.data!.Posts!
+                                                              .data;
                                                       // vendorsearchrespnse =
                                                       //     value.first.;
                                                     },
@@ -726,11 +739,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                               BrandNewModel prod =
                                                   alldata![index];
                                               return ProductDetailWidget(
+
                                                 lat: prod.userdetails?.latitude,
                                                 long:
                                                     prod.userdetails?.longitude,
                                                 productid: prod.id,
-                                                posttype: prod.post_type,
+                                                posttype: prod.post_type_id,
                                                 id: int.tryParse(prod.id),
                                                 membershipid: prod
                                                     .userdetails?.membership_id,
@@ -873,23 +887,25 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12.sp)),
                                       SizedBox(height: 10.h),
-                                      Row(
-                                        children: [
-                                          Icon(Icons.phone,
-                                              color: const Color(0xFF8B6C6C),
-                                              size: 14.h),
-                                          SizedBox(
-                                            width: 10.w,
-                                          ),
-                                          Text(
-                                            data.vendor_about!.phone ?? '',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12.sp,
+                                      if (data.vendor_about != null)
+                                        Row(
+                                          children: [
+                                            Icon(Icons.phone,
+                                                color: const Color(0xFF8B6C6C),
+                                                size: 14.h),
+                                            SizedBox(
+                                              width: 10.w,
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                          if(data.vendor_about!=null)
+                                            Text(
+                                              data.vendor_about!.phone ?? '',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12.sp,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       SizedBox(height: 10.h),
                                       Row(
                                         children: [
@@ -899,8 +915,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           SizedBox(
                                             width: 10.w,
                                           ),
+                                          if(data.vendor_about!=null)
                                           Text(
-                                            data.vendor_about!.nearestbranch ??
+                                            data.vendor_about?.nearestbranch ??
                                                 'The Bio is not yet published stay tuned',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -918,6 +935,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           SizedBox(
                                             width: 10.w,
                                           ),
+                                          if(data.vendor_card!=null)
                                           Text(
                                             data.vendor_about!.email!,
                                             style: TextStyle(
@@ -936,6 +954,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         ),
                                       ),
                                       SizedBox(height: 10.h),
+                                      if(data.vendor_card!=null)
                                       Text(
                                         data.vendor_about!.bio!,
                                         style: TextStyle(fontSize: 12.sp),
@@ -998,19 +1017,19 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                           ),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Coming Soon.........',
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
+                          // AnimatedContainer(
+                          //   duration: const Duration(milliseconds: 500),
+                          //   curve: Curves.easeInOut,
+                          //   alignment: Alignment.center,
+                          //   child: Text(
+                          //     'Coming Soon.........',
+                          //     style: headerstyle.copyWith(
+                          //       color: ColorConstant.blackColor,
+                          //       fontWeight: FontWeight.w700,
+                          //       fontSize: 12,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -1589,11 +1608,15 @@ class VendorFirstTabBarSection extends StatefulWidget {
 
 class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
   double _containerHeight = 540.h;
+  // Future<void> follow() async {
+
+  //   // Map<String, String> _getfollow = await followvendor(widget.data.membership_id);
+  // }
 
   @override
   void initState() {
     super.initState();
-
+    print("bibash ${widget.data.membership_id}");
     // Add a listener to the tab controller
     widget.tabController.addListener(() {
       setState(() {
@@ -1837,6 +1860,7 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
 }
 
 class BigContainer extends StatelessWidget {
+  final String id;
   final String title;
   final String logo;
   final String contact;
@@ -1850,11 +1874,13 @@ class BigContainer extends StatelessWidget {
       Cnumber;
   final double long, lat;
   final String memebertitle;
+  bool issubbed;
 
   // Constructor
-  const BigContainer(
+  BigContainer(
       {required this.lat,
       required this.long,
+      required this.id,
       super.key,
       required this.title,
       required this.logo,
@@ -1867,6 +1893,7 @@ class BigContainer extends StatelessWidget {
       required this.total_prize_worth,
       required this.location,
       required this.Cnumber,
+      required this.issubbed,
       required this.memebertitle});
 
   // Future<void> _openGoogleMap(double latitude, double longitude) async {
@@ -1879,9 +1906,10 @@ class BigContainer extends StatelessWidget {
   //     print("Could not open Google Maps");
   //   }
   // }
-
   @override
   Widget build(BuildContext context) {
+    Map<String, String>? followresp;
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: DottedBorder(
@@ -2173,19 +2201,44 @@ class BigContainer extends StatelessWidget {
                       -40, // Adjust based on how much the CircleAvatar should overlap
                   left: MediaQuery.sizeOf(context).width / 2 -
                       50, // Center the avatar
-                  child: ClipOval(
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: Image.asset(
-                        'assets/images/zoomlogo.png',
-                        fit: BoxFit.cover,
-                        width: 140,
-                        height: 140,
+                  child: InkWell(
+                    onTap: () async {
+                      Map<String, String> file = await followvendor(id).then(
+                        (value) {
+                          print("kalu $value");
+                          followresp = value;
+                          return {};
+                        },
+                      );
+
+                      print("raju ${followresp!['msg']}");
+                      //  showCustomToast(context, value['msg']!);
+                      //   if (value['data'] == '1')
+                      //     showDialog(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return const Dialog(
+                      //             backgroundColor: Colors.transparent,
+                      //             insetPadding: EdgeInsets.all(10),
+                      //             child: ScratchCard());
+                      //       },
+                      //     );
+                      //   if (value['times'] == "active") issubbed = true;
+                    },
+                    child: ClipOval(
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: Image.asset(
+                          'assets/images/zoomlogo.png',
+                          fit: BoxFit.cover,
+                          width: 140,
+                          height: 140,
+                        ),
                       ),
                     ),
                   ),
@@ -2196,35 +2249,22 @@ class BigContainer extends StatelessWidget {
               height: 5.h,
             ),
             SizedBox(height: 40.h),
-            InkWell(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const Dialog(
-                        backgroundColor: Colors.transparent,
-                        insetPadding: EdgeInsets.all(10),
-                        child: ScratchCard());
-                  },
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Connect",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.sp,
-                            color: const Color(0xff370C6B),
-                          ),
-                          textAlign: TextAlign.center),
-                    ],
-                  ),
+            Padding(
+              padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(issubbed ? "Connected" : "Connected",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: const Color(0xff370C6B),
+                        ),
+                        textAlign: TextAlign.center),
+                  ],
                 ),
               ),
             ),

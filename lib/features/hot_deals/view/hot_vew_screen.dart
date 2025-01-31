@@ -163,7 +163,11 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                         const VendorProfileScreen(),
                                   ));
                             },
-                            child: Image.asset('assets/images/group.png')),
+ child: const CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                          )),
                         SizedBox(
                           width: 2.w,
                         ),

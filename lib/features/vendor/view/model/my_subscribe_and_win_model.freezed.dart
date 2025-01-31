@@ -2027,7 +2027,7 @@ mixin _$Winner {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'gift_worth')
-  GiftWorth? get giftWorth => throw _privateConstructorUsedError;
+  int? get giftWorth => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   WinnerName? get name => throw _privateConstructorUsedError;
 
@@ -2052,10 +2052,9 @@ abstract class $WinnerCopyWith<$Res> {
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
-      @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+      @JsonKey(name: 'gift_worth') int? giftWorth,
       @JsonKey(name: 'name') WinnerName? name});
 
-  $GiftWorthCopyWith<$Res>? get giftWorth;
   $WinnerNameCopyWith<$Res>? get name;
 }
 
@@ -2111,26 +2110,12 @@ class _$WinnerCopyWithImpl<$Res, $Val extends Winner>
       giftWorth: freezed == giftWorth
           ? _value.giftWorth
           : giftWorth // ignore: cast_nullable_to_non_nullable
-              as GiftWorth?,
+              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as WinnerName?,
     ) as $Val);
-  }
-
-  /// Create a copy of Winner
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $GiftWorthCopyWith<$Res>? get giftWorth {
-    if (_value.giftWorth == null) {
-      return null;
-    }
-
-    return $GiftWorthCopyWith<$Res>(_value.giftWorth!, (value) {
-      return _then(_value.copyWith(giftWorth: value) as $Val);
-    });
   }
 
   /// Create a copy of Winner
@@ -2162,11 +2147,9 @@ abstract class _$$WinnerImplCopyWith<$Res> implements $WinnerCopyWith<$Res> {
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
-      @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+      @JsonKey(name: 'gift_worth') int? giftWorth,
       @JsonKey(name: 'name') WinnerName? name});
 
-  @override
-  $GiftWorthCopyWith<$Res>? get giftWorth;
   @override
   $WinnerNameCopyWith<$Res>? get name;
 }
@@ -2221,7 +2204,7 @@ class __$$WinnerImplCopyWithImpl<$Res>
       giftWorth: freezed == giftWorth
           ? _value.giftWorth
           : giftWorth // ignore: cast_nullable_to_non_nullable
-              as GiftWorth?,
+              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -2266,7 +2249,7 @@ class _$WinnerImpl implements _Winner {
   final String? updatedAt;
   @override
   @JsonKey(name: 'gift_worth')
-  final GiftWorth? giftWorth;
+  final int? giftWorth;
   @override
   @JsonKey(name: 'name')
   final WinnerName? name;
@@ -2323,7 +2306,7 @@ abstract class _Winner implements Winner {
       @JsonKey(name: 'status') final String? status,
       @JsonKey(name: 'created_at') final String? createdAt,
       @JsonKey(name: 'updated_at') final String? updatedAt,
-      @JsonKey(name: 'gift_worth') final GiftWorth? giftWorth,
+      @JsonKey(name: 'gift_worth') final int? giftWorth,
       @JsonKey(name: 'name') final WinnerName? name}) = _$WinnerImpl;
 
   factory _Winner.fromJson(Map<String, dynamic> json) = _$WinnerImpl.fromJson;
@@ -2348,7 +2331,7 @@ abstract class _Winner implements Winner {
   String? get updatedAt;
   @override
   @JsonKey(name: 'gift_worth')
-  GiftWorth? get giftWorth;
+  int? get giftWorth;
   @override
   @JsonKey(name: 'name')
   WinnerName? get name;

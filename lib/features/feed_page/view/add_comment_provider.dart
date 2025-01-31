@@ -6,15 +6,15 @@ part 'add_comment_provider.g.dart';
 
 @riverpod
 Future<String> postcomment(
-  ref, 
-  String id, 
+  ref,
+  String id,
   String reply,
 ) async {
   final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
-      requestType: RequestType.postWithTokenFormData,
+      requestType: RequestType.postWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/feed_comment/$id',
       parameter: {
         'comment': reply,
@@ -33,7 +33,8 @@ Future<String> postcomment(
         throw Exception('Unexpected response format.');
       }
     } else {
-      throw Exception('Failed to post comment. Status code: ${response.statusCode}');
+      throw Exception(
+          'Failed to post comment. Status code: ${response.statusCode}');
     }
   } catch (e) {
     print('Error posting comment: $e');

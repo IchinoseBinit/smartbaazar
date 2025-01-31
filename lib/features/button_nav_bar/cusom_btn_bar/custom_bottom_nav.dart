@@ -4,9 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 // Global state provider for managing the current selected index of the bottom nav bar
 final currentScreenProvider = StateProvider<int>((ref) => 1);
@@ -104,7 +102,6 @@ class Customernavbar extends StatelessWidget {
               ];
               return GestureDetector(
                 onTap: () {
-                  print("raju $index");
                   onTabChanged(index);
                 }, // Trigger the callback
                 child: Container(

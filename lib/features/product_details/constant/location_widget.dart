@@ -7,12 +7,14 @@ import 'package:smartbazar/constant/color_constant.dart';
 class LocationWidget extends StatefulWidget {
   final double longitude;
   final double latitude;
+  final double shortestdistance;
 
-  const LocationWidget({
-    Key? key,
-    required this.latitude,
-    required this.longitude,
-  }) : super(key: key);
+  const LocationWidget(
+      {Key? key,
+      required this.latitude,
+      required this.longitude,
+      required this.shortestdistance})
+      : super(key: key);
 
   @override
   _LocationWidgetState createState() => _LocationWidgetState();
@@ -35,20 +37,32 @@ class _LocationWidgetState extends State<LocationWidget> {
       );
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
-        setState(() {
-          _address =
-              "${place.locality ?? 'Unknown'}, ${place.administrativeArea ?? 'Unknown'}";
-        });
+        if (mounted) {
+          setState(() {
+            _address =
+                "${place.locality ?? 'Unknown'}, ${place.administrativeArea ?? 'Unknown'}";
+          });
+        }
       } else {
-        setState(() {
-          _address = "Location not available";
-        });
+        if (mounted) {
+          setState(() {
+            _address = "Location not available";
+          });
+        }
       }
     } catch (e) {
-      setState(() {
-        _address = "Location not found";
-      });
+      if (mounted) {
+        setState(() {
+          _address = "Location not found";
+        });
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    // Clean up resources if needed
+    super.dispose();
   }
 
   @override
@@ -136,9 +150,9 @@ class _LocationWidgetState extends State<LocationWidget> {
               ),
               const Icon(Icons.location_on),
               SizedBox(
-                width: 10.w,
+                width: 5.w,
               ),
-              const Text("2.5KM"),
+              Text("${widget.shortestdistance.toStringAsFixed(2)} KM"),
               SizedBox(
                 width: 10.w,
               ),

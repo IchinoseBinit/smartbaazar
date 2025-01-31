@@ -1,168 +1,62 @@
-// InkWell(
-//                   onTap: () {
-//                     Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                             builder: (context) => VendorHomeScreen(
-//                                 vendorName: vendorname!, vid: id!)));
-//                   },
-//                   child: Container(
-//                     width: double.infinity,
-//                     // height: 50.h,
-//                     margin: EdgeInsets.zero,
-//                     padding: EdgeInsets.symmetric(vertical: 10.9.h),
-//                     decoration: BoxDecoration(
-//                       color: membershipColor != null
-//                           ? Color(int.parse(
-//                               membershipColor!.replaceFirst('#', '0xFF'),),)
-//                           : const Color(0xff3D215F), // Default color
-//                       borderRadius: const BorderRadius.only(
-//                         bottomLeft: Radius.circular(13),
-//                         bottomRight: Radius.circular(13),
-//                       ),
-//                     ),
-//                     // ),
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       crossAxisAlignment: CrossAxisAlignment.center,
-//                       children: [
-//                         SizedBox(
-//                           width: 13.w,
-//                         ),
-//                         CircleAvatar(
-//                           backgroundImage: NetworkImage(Vimage!),
-//                           radius: 19.sp,
-//                         ),
-//                         SizedBox(
-//                           height: 10.h,
-//                         ),
-//                         Row(
-//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                           children: [
-//                             Column(
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                               children: [
-//                                 Row(
-//                                   mainAxisAlignment:
-//                                       MainAxisAlignment.spaceBetween,
-//                                   children: [
-//                                     SizedBox(
-//                                       width: 5.w,
-//                                     ),
-//                                     Text(
-//                                       vendorname != null &&
-//                                               vendorname!.length > 19
-//                                           ? '${vendorname!.substring(0, 14)}...'
-//                                           : vendorname ?? '',
-//                                       style: headerstyle.copyWith(
-//                                         fontFamily:
-//                                             GoogleFonts.quicksand().fontFamily,
-//                                         fontSize: 13.sp,
-//                                         fontWeight: FontWeight.w600,
-//                                       ),
-//                                     ),
-//                                     // SizedBox(
-//                                     //   width: 4.w,
-//                                     // ),
-//                                     const Icon(
-//                                       Icons.logout,
-//                                       color: Colors.white,
-//                                       size: 12,
-//                                     ),
-//                                     if (shortestDistance != null &&
-//                                         shortestDistance != 0.0)
-//                                       Row(
-//                                         children: [
-//                                           const Icon(
-//                                             Icons.location_on,
-//                                             color: Colors.white,
-//                                             size: 12,
-//                                           ),
-//                                           Text(
-//                                             "${double.parse(shortestDistance.toString()).toStringAsFixed(2) ?? 2.0} km",
-//                                             style: headerstyle.copyWith(
-//                                               fontFamily:
-//                                                   GoogleFonts.quicksand()
-//                                                       .fontFamily,
-//                                               fontSize: 9.sp,
-//                                               fontWeight: FontWeight.w700,
-//                                             ),
-//                                           ),
-//                                         ],
-//                                       ),
-//                                   ],
-//                                 ),
-//                                 Row(
-//                                   // mainAxisAlignment:
-//                                   //     MainAxisAlignment.spaceBetween,
-//                                   // crossAxisAlignment: CrossAxisAlignment.s,
-//                                   children: [
-//                                     Row(
-//                                       children: [
-//                                         SizedBox(
-//                                           width: 3.5.w,
-//                                         ),
-//                                         Image.asset(
-//                                           membershipid == "2"
-//                                               ? spotlighticon
-//                                               : membershipid == "1"
-//                                                   ? basicsellericon
-//                                                   : membershipid == "3"
-//                                                       ? domesticseller
-//                                                       : membershipid == "25"
-//                                                           ? globalicon
-//                                                           : basicsellericon, // Provide a default icon if no match
-//                                           height: 9.h,
-//                                         ),
-//                                         SizedBox(
-//                                           width: 1.w,
-//                                         ),
-//                                         SizedBox(
-//                                           child: Text(
-//                                             membershipTitle ?? "Domestic Brand",
-//                                             style: headerstyle.copyWith(
-//                                               fontSize: 10.sp,
-//                                               fontFamily:
-//                                                   GoogleFonts.quicksand()
-//                                                       .fontFamily,
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
-//                                               // Adjust font size based on length
-//                                               fontWeight: FontWeight.w700,
-//                                             ),
-//                                             // overflow: TextOverflow.ellipsis,
-//                                             // Apply ellipsis for overflow
-//                                             // maxLines:
-//                                             //     1, // Restrict to a single line
-//                                           ),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                     SizedBox(
-//                                       width: 65.w,
-//                                     ),
+class ProductImage extends StatefulWidget {
+  final String? productImage;
 
-//                                     if (issponsored)
-//                                       Row(
-//                                         children: [
-//                                           Image.asset("assets/images/mike.png"),
-//                                           Text(
-//                                             "SPONSORED",
-//                                             style: headerstyle.copyWith(
-//                                                 fontSize: 10.sp,
-//                                                 fontWeight: FontWeight.w700),
-//                                           ),
-//                                         ],
-//                                       )
+  const ProductImage({Key? key, this.productImage}) : super(key: key);
 
-//                                     // : const SizedBox(),
-//                                   ],
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
+  @override
+  _ProductImageState createState() => _ProductImageState();
+}
+
+class _ProductImageState extends State<ProductImage> {
+  String? imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the image URL
+    imageUrl = widget.productImage;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Check if the imageUrl is valid, if not show a placeholder
+    return widget.productImage == null || widget.productImage!.isEmpty
+        ? SizedBox(
+            width: 200.w,
+            height: 130.h,
+            child: const Icon(Icons.error),
+          )
+        : Image.network(
+            widget.productImage ?? '',
+            height: 130.h,
+            width: 200.w,
+            fit: BoxFit.fill,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child; // If no loading, show the image
+              } else {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 200.w,
+                    height: 130.h,
+                    color: Colors.white, // Placeholder shimmer container
+                  ),
+                );
+              }
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return SizedBox(
+                width: 200.w,
+                height: 130.h,
+                child: const Icon(Icons.error), // Show error icon if image fails to load
+              );
+            },
+          );
+  }
+}

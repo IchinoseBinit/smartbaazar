@@ -7,7 +7,6 @@ import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class MessageViewScreen extends ConsumerWidget {
   const MessageViewScreen({super.key});
@@ -107,18 +106,20 @@ class MessageViewScreen extends ConsumerWidget {
                                       },
                                       loading: () => Center(
                                         child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            width: 40.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       error: (error, stack) =>
                                           Text('Error: $error'),
@@ -130,22 +131,22 @@ class MessageViewScreen extends ConsumerWidget {
                                   SizedBox(height: 20.h),
                             );
                           },
-                          loading: () =>
-                             Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
+                          loading: () => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 40.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
-                                      ),
                           error: (error, stack) =>
                               Center(child: Text('Error: $error')),
                         );
@@ -164,103 +165,91 @@ class MessageViewScreen extends ConsumerWidget {
                               itemCount: alerts!.length,
                               itemBuilder: (context, index) {
                                 final alert = alerts[index];
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ProductDetailScreen(
-                                          productId: alert.clickAction!,
-                                        ),
+                                return Container(
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(16.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 6,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // Alert Icon and Title
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.notifications,
-                                              color:
-                                                  Colors.green.withOpacity(0.9),
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Expanded(
-                                              child: Text(
-                                                alert.title ?? 'No title',
-                                                style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.h),
-
-                                        // Alert Body Text
-                                        Text(
-                                          alert.body ?? 'No body',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Alert Icon and Title
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.notifications,
                                             color:
-                                                Colors.black.withOpacity(0.8),
+                                                Colors.green.withOpacity(0.9),
                                           ),
-                                          maxLines: 5,
-                                          overflow: TextOverflow.ellipsis,
-                                          softWrap: true,
-                                        ),
-                                        SizedBox(height: 20.h),
-
-                                        // Promotional Image
-                                        if (alert.image != null)
-                                          Center(
-                                            child: Image.network(
-                                              alert.image!,
-                                              fit: BoxFit.cover,
-                                              height: 100.h,
-                                              width: 180.h,
-                                            ),
-                                          ),
-                                        SizedBox(height: 20.h),
-
-                                        // Date and Time Row
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              alert.createdAt!,
+                                          SizedBox(width: 8.w),
+                                          Expanded(
+                                            child: Text(
+                                              alert.title ?? 'No title',
                                               style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: Colors.black
-                                                    .withOpacity(0.6),
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
                                               ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
                                             ),
-                                          ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10.h),
+                                
+                                      // Alert Body Text
+                                      Text(
+                                        alert.body ?? 'No body',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color:
+                                              Colors.black.withOpacity(0.8),
                                         ),
-                                      ],
-                                    ),
+                                        maxLines: 5,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                      ),
+                                      SizedBox(height: 20.h),
+                                
+                                      // Promotional Image
+                                      if (alert.image != null)
+                                        Center(
+                                          child: Image.network(
+                                            alert.image!,
+                                            fit: BoxFit.cover,
+                                            height: 100.h,
+                                            width: 180.h,
+                                          ),
+                                        ),
+                                      SizedBox(height: 20.h),
+                                
+                                      // Date and Time Row
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            alert.createdAt!,
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: Colors.black
+                                                  .withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 );
                               },
@@ -268,22 +257,22 @@ class MessageViewScreen extends ConsumerWidget {
                                   SizedBox(height: 20.h),
                             );
                           },
-                          loading: () =>
-                              Center(
-                                        child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 40.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
+                          loading: () => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 40.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
                           ),
-                                      ),
                           error: (error, stack) =>
                               Center(child: Text('Error: $error')),
                         );
@@ -419,7 +408,7 @@ class ListOfMessages extends StatelessWidget {
               padding: EdgeInsets.all(12.h),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xffD9D9D9),
+                color: Color(0xffD9D9D9)
               ),
               child: const Icon(Icons.person_3_outlined),
             ),

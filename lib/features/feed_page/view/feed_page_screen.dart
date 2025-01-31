@@ -113,34 +113,35 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       viewportFraction: 0.3,
       initialPage: selectedIndex,
     );
+
+    // Debounce setup (only once)
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
     });
+
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
+      if (!mounted) return; // Prevent calling setState() after dispose
+
       debugPrint("Search query: $query");
-      _isSectionsVisible = false;
-      ref.refresh(
-        searchProvider(query),
-      );
+
       setState(() {
+        _isSectionsVisible = false;
         _showSearchProductModels = query.isNotEmpty;
       });
-    });
 
-    // Set up debounce for search functionality
-    _searchController.addListener(() {
-      _debouncer.add(_searchController.text);
-    });
-
-    _debouncer.debounceTime(const Duration(milliseconds: 100)).listen((query) {
-      debugPrint("Search query: $query");
       ref.refresh(searchProvider(query));
-      setState(() {
-        _showSearchProductModels = query.isNotEmpty;
-      });
     });
 
     _scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose(); // Dispose the controller
+    _scrollController.dispose();
+    _debouncer.close(); // Close the debouncer if applicable
+    _pageController.dispose();
+    super.dispose();
   }
 
   void _handleScroll() {
@@ -252,8 +253,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                                   const VendorProfileScreen(),
                                             ));
                                       },
-                                      child: Image.asset(
-                                          'assets/images/group.png')),
+                                      child: const CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: AssetImage(
+                                            'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                      )),
                                   SizedBox(
                                     height: 40,
                                     child: Row(
@@ -776,7 +780,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           builder: (context) => const VendorProfileScreen(),
                         ));
                   },
-                  child: Image.asset('assets/images/group.png')),
+                  child: const CircleAvatar(
+                    radius: 20,
+                    backgroundImage:
+                        AssetImage('assets/images/Smartbazaar-Icon-for-QR.png'),
+                  )),
               SizedBox(
                   height: 40,
                   child: Row(
@@ -1177,7 +1185,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               ],
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 5.h),
           asyncFollowingFeedContent.when(
             data: (feedData) {
               if (feedData.data != null && feedData.data!.feedPost != null) {
@@ -1198,8 +1206,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FeedContainer(
-                              productCount:
-                                  userDetails!.productCount.toString(),
+                              hassttory:
+                                  userDetails!.storyCount! > 0 ? true : false,
+                              productCount: userDetails.productCount.toString(),
                               suscribers: userDetails.subscribers.toString(),
                               vendorName: userDetails.vendorName!,
                               vendorImage: userDetails.vendorImage!,
@@ -1254,83 +1263,68 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
+          SizedBox(height: 5.h),
           SizedBox(
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                asyncForYouStoryContent.when(
-                  data: (feedStoryData) {
-                    final feedStoryContent = feedStoryData.data?.feedstory;
-                    if (feedStoryContent != null &&
-                        feedStoryContent.posts != null) {
-                      return Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: feedStoryContent.posts?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            final Post story = feedStoryContent.posts![index];
-
-                            return FeedStoryAddWidget(
-                              index: index,
-                              vendorName: story.vendorName ?? "Unknown Vendor",
-                              vendorImage: story.vendorImage ??
-                                  "https://example.com/default-image.png",
-                              storyCount: story.storyCount ?? 0,
-                              showGift: story.hasSponsoredGifts ?? false,
-                              feedStoryContent: feedStoryContent,
-                              userId: story.vendorId!,
-                            );
-                          },
+            height: 75.h,
+            child: asyncForYouStoryContent.when(
+              data: (feedStoryData) {
+                final feedStoryContent = feedStoryData.data?.feedstory;
+                final posts = feedStoryContent?.posts ?? [];
+                return posts.isNotEmpty
+                    ? ListView.builder(
+                        padding: EdgeInsets.only(left: 3.w),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: posts.length,
+                        itemBuilder: (context, index) {
+                          final story = posts[index];
+                          return FeedStoryAddWidget(
+                            index: index,
+                            vendorName: story.vendorName ?? "Unknown Vendor",
+                            vendorImage: story.vendorImage ??
+                                "https://example.com/default-image.png",
+                            storyCount: story.storyCount ?? 0,
+                            showGift: story.hasSponsoredGifts ?? false,
+                            feedStoryContent: feedStoryContent!,
+                            userId: story.vendorId ?? '',
+                          );
+                        },
+                      )
+                    : const Center(child: Text("No stories available"));
+              },
+              loading: () => SizedBox(
+                height: 60.h,
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  itemBuilder: (_, __) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
                         ),
-                      );
-                    } else {
-                      return const Center(
-                          child: Text(
-                        "No stories available",
-                        textAlign: TextAlign.center,
-                      ));
-                    }
-                  },
-                  loading: () => Expanded(
-                      child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            );
-                          })),
-                  error: (error, stack) {
-                    if (error.toString().contains('Session has expired')) {
-                      return const Center(child: Text('Please log in again.'));
-                    }
-                    return Center(child: Text('Error: $error'));
-                  },
+                      ),
+                    ),
+                  ),
                 ),
-              ],
+              ),
+              error: (error, _) => Center(
+                child: Text(error.toString().contains('Session has expired')
+                    ? 'Please log in again.'
+                    : 'Error: $error'),
+              ),
             ),
           ),
-          SizedBox(height: 20.h),
           asyncForYouFeedContent.when(
             data: (feedData) {
               if (feedData.data != null && feedData.data!.feedPost != null) {
@@ -1355,7 +1349,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FeedContainer(
-                            productCount: userDetails!.productCount.toString(),
+                            hassttory:
+                                userDetails!.storyCount! > 0 ? true : false,
+                            productCount: userDetails.productCount.toString(),
                             suscribers: userDetails.subscribers.toString(),
                             vendorName: userDetails.vendorName!,
                             vendorImage: userDetails.vendorImage!,

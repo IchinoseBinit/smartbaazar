@@ -73,7 +73,6 @@ class NewListingRepository {
     );
 
     if (response.statusCode == 200) {
-      print("binodk ${response.realUri}");
 
       List<dynamic> data = response.data['result']['data'];
       return data.map((item) => MyCategory.fromJson(item)).toList();

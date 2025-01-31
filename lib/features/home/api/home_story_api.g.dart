@@ -6,7 +6,7 @@ part of 'home_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getHomeStoryHash() => r'ec074a1b72ebf3b3f557b0ef1d8ec3df863f91f0';
+String _$getHomeStoryHash() => r'5ab47e8f80fbfed4af3974d87953d654638fd144';
 
 /// See also [getHomeStory].
 @ProviderFor(getHomeStory)

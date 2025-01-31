@@ -122,7 +122,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
 
                 // Vendor Name
                 Positioned(
-                  bottom: -25.h,
+                  bottom: -23.h,
                   child: SizedBox(
                     width: 100.w,
                     child: Text(

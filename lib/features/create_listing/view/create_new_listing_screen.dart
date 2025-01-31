@@ -303,24 +303,24 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     final citySuggestionsAsync = ref.watch(getShippingCitiesProvider);
     ref.watch(GetCategoryResponseProvider(122)).whenData(
       (value) async {
-        eventresp = await value;
+        eventresp = value;
       },
     );
     final getCategories = ref.watch(GetCategoryResponseProvider(1)).whenData(
       (value) async {
         // print("kala ${value}");
-        getcar = await value; //car
+        getcar = value; //car
       },
     ); //car
 
     ref.watch(GetCategoryResponseProvider(73)).whenData(
       (value) async {
-        jobsresp = await value;
+        jobsresp = value;
       },
     );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
       (value) async {
-        phoneresp = await value;
+        phoneresp = value;
         print("lauka ${phoneresp?.result[4]}");
       },
     ); //phone
@@ -332,23 +332,23 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
     final laptop = ref.watch(GetCategoryResponseProvider(14)).whenData(
       (value) async {
-        laptoprep = await value;
+        laptoprep = value;
         // print('maula ${laptoprep}');
       },
     ); //car
     final furniture = ref.watch(GetCategoryResponseProvider(30)).whenData(
       (value) async {
-        furnitureresresp = await value;
+        furnitureresresp = value;
       },
     ); //car
     final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
       (value) async {
-        getRoad = await value;
+        getRoad = value;
       },
     ); //car
     final clothfirst = ref.watch(GetCategoryResponseProvider(54)).whenData(
       (value) async {
-        getcloth = await value;
+        getcloth = value;
       },
     );
     final selltofields = ref.watch(GetCategoryResponseProvider(217));
@@ -361,7 +361,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
     citySuggestionsAsync.when(
       data: (data) async {
-        shippingcities = await data;
+        shippingcities = data;
       },
       error: (error, stackTrace) {},
       loading: () {},
@@ -499,7 +499,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         typeid =
                             typeId; // Optionally use typeId for other purposes
                       });
-                      print("raju $typeId");
+                      // print("raju $typeId");
 
                       // Print the selected category ID and typeId for debugging
                       print(
@@ -533,8 +533,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     });
 
                     // Print the subcategory 2 ID
-                    print(
-                        "maka $categoryId Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
+                    // print(
+                    //     "maka $categoryId Sub-subcategory 2: ${sub2?.name}, Sub-subcategory 2 ID: ${sub2?.id}");
                   },
                 ),
 

@@ -22,7 +22,7 @@ Future<List<GetOnlyData>> geDataBySearchvendor(ref, String id) async {
     final List<dynamic> postsJson = response.data['data']['posts']['data'];
 
     // Map the JSON data to a list of Post objects
-    print("raju $postsJson");
+   // print("raju $postsJson");
     return postsJson.map((postJson) => GetOnlyData.fromJson(postJson)).toList();
   } catch (e) {
     print("Error occurred: $e");

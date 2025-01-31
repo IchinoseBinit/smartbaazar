@@ -42,29 +42,94 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// class hohoh extends StatelessWidget {
- 
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Comment Bottom Sheet')),
-//       body: Center(
-//         child: GestureDetector(
-//           onTap: () => _showCommentBottomSheet(context),
-//           child: Row(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Icon(Icons.chat_bubble_outline, color: Colors.blue, size: 24),
-//               SizedBox(width: 8),
-//               Text(
-//                 'Add Comment',
-//                 style: TextStyle(color: Colors.blue, fontSize: 16),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+class DemoScreen extends StatelessWidget {
+  const DemoScreen({super.key});
+
+  void _showCommentSection(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => const CommentSection(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Instagram Comments UI")),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => _showCommentSection(context),
+          child: const Text("Show Comments"),
+        ),
+      ),
+    );
+  }
+}
+
+class CommentSection extends StatelessWidget {
+  const CommentSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.6,
+      minChildSize: 0.4,
+      maxChildSize: 0.9,
+      builder: (context, scrollController) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              Container(
+                width: 40,
+                height: 5,
+                margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: const CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          "https://i.pravatar.cc/150?img=3",
+                        ),
+                      ),
+                      title: Text("User $index",
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: const Text("This is a sample comment..."),
+                      trailing: const Icon(Icons.favorite_border, size: 20),
+                    );
+                  },
+                ),
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: "Add a comment...",
+                  border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.blue),
+                    onPressed: () {},
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

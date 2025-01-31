@@ -8,7 +8,7 @@ part 'last_message_api.g.dart';
 
 @riverpod
 Future<MessageData?> getLastMessage(
-    GetLastMessageRef ref, String threadId) async {
+     ref, String threadId) async {
   final SmartClient client = SmartClient();
 
   try {

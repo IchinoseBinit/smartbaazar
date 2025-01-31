@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed-form_screen/api/offers_dropdown_api.dart';
 import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_api.dart';
 import 'package:smartbazar/features/feed-form_screen/api/submit_feed_form.dart';
@@ -99,12 +100,27 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
             content: const Text('Feed submitted successfully!'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainScreen(),
+                      ));
+                },
                 child: const Text('OK'),
               ),
             ],
           ),
         );
+        // Future.delayed(Duration(seconds: 700), () {
+        //   Navigator.pop(context);
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => FeedScreen(),
+        //       ));
+        // });
       }
     }).catchError((error) {
       setState(() => isSubmitting = false);
@@ -358,9 +374,11 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                                   Icons.arrow_drop_down),
                                               isExpanded: true,
                                               underline: const SizedBox(),
-                                              hint:     Text( products?.length==0? "No Product":
-                                                "Select Product",
-                                                style: TextStyle(
+                                              hint: Text(
+                                                products.isEmpty
+                                                    ? "No Product"
+                                                    : "Select Product",
+                                                style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 108, 93, 93),
                                                   fontSize: 15,

@@ -206,8 +206,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     dynamictabController.dispose();
     _debouncer.close();
     _searchController.dispose();
-    super.dispose();
     _scrollController.dispose();
+
+    super.dispose();
+
     // super.dispose();
   }
 
@@ -291,7 +293,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               ));
                                         },
                                         child: Image.asset(
-                                            'assets/images/group.png')),
+                                           height: 30,
+              width: 40,
+                                            'assets/images/Smartbazaar-Icon-for-QR.png')),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -690,19 +694,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         const Divider(),
                                   );
                                 },
-                                loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                loading: () => Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    width: 70.w,
+                                    height: 100.h,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
                                 error: (error, stack) {
                                   return Center(child: Text(error.toString()));
                                 },
@@ -739,60 +744,37 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     data: (feedStoryData) {
                       final homeStory = feedStoryData.homeStory;
 
-                      if (homeStory != null &&
-                          homeStory is Map<String, dynamic> &&
-                          homeStory.containsKey('story')) {
-                        final story = homeStory['story'];
+                      if (homeStory?.story?.posts != null) {
+                        final posts = homeStory!.story!.posts!;
 
-                        if (story != null &&
-                            story is Map<String, dynamic> &&
-                            story.containsKey('posts')) {
-                          final posts = story['posts'];
+                        return SizedBox(
+                          height: 100.h,
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: posts.length,
+                            itemBuilder: (context, index) {
+                              final story = posts[index];
 
-                          if (posts != null && posts is List<dynamic>) {
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 5.h),
-                              child: SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
-
-                                    if (story is Map<String, dynamic>) {
-                                      final storyObject =
-                                          Story(posts: [Post.fromJson(story)]);
-
-                                      return HomePageStoryContainer(
-                                        index: index,
-                                        vendorName: story['vendor_name'] ??
-                                            "Unknown Vendor",
-                                        vendorImage: story['vendor_image'] ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story['story_count'] ?? 0,
-                                        showGift:
-                                            story['has_sponsored_gifts'] ??
-                                                false,
-                                        feedStoryContent: storyObject,
-                                        userId: story['vendor_id'],
-                                      );
-                                    } else {
-                                      return Container(); // Return an empty container if the post doesn't match the expected format
-                                    }
-                                  },
-                                ),
-                              ),
-                            );
-                          }
-                        }
+                              return HomePageStoryContainer(
+                                index: index,
+                                vendorName:
+                                    story.vendorName ?? "Unknown Vendor",
+                                vendorImage: story.vendorImage ??
+                                    "https://example.com/default-image.png",
+                                storyCount: story.storyCount ?? 0,
+                                showGift: story.hasSponsoredGifts ?? false,
+                                feedStoryContent: Story(posts: [story]),
+                                userId: story.vendorId!,
+                              );
+                            },
+                          ),
+                        );
                       }
 
-                      // If any of the above conditions fail, return a default widget
                       return const Center(
-                        child: Text('No stories available. '),
+                        child: Text('No stories available.'),
                       );
                     },
                     loading: () => SizedBox(
@@ -1126,19 +1108,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     error: (error, stackTrace) {
                       return Text(error.toString());
                     },
-                    loading: () =>Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10),
@@ -1187,22 +1169,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               children: List.generate(data.hotProducts.length,
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
+                                print("kala ${hot.discount_percentage}");
                                 return Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.w),
                                   child: ProductDetailWidget(
                                     lat: hot.user.latitude,
                                     long: hot.user.longitude,
-
                                     productid: hot.id,
                                     membershipid: hot.user.membership_id,
                                     id: int.tryParse(hot.id),
                                     posttype: hot.post_type_id,
                                     offer: hot.offers,
-                                    shortestDistance:
-                                        hot.user.shortestDistance,
-                                    didcountpercentage:
-                                        hot.discount_percentage,
+                                    shortestDistance: hot.user.shortestDistance,
+                                    didcountpercentage: hot.discount_percentage,
                                     avg_rating: hot.avg_rating?.toDouble(),
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
@@ -1304,13 +1284,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         return ProductDetailWidget(
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
-
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           posttype: pro.post_type_id,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
@@ -1318,8 +1296,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               pro.avg_rating?.toDouble(),
                                           offer: pro.discounted_price,
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1430,13 +1407,11 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         return ProductDetailWidget(
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
-
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           id: int.tryParse(pro.id),
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           didcountpercentage:
@@ -1444,8 +1419,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           issponsored: pro.user.sponsored,
                                           discounttedPrice:
                                               pro.discounted_price,
@@ -1549,12 +1523,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         return ProductDetailWidget(
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
-
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           id: int.tryParse(pro.id),
@@ -1563,8 +1535,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1593,18 +1564,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   asyncbajarValue.when(
@@ -1639,22 +1610,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                         return ProductDetailWidget(
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
-
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
-                                          membershipid:
-                                              pro.user.membership_id,
+                                          membershipid: pro.user.membership_id,
                                           id: int.tryParse(pro.id),
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
                                               pro.avg_rating?.toDouble(),
                                           wow: pro.wow,
-                                          comment:
-                                              pro.commentcount.toString(),
+                                          comment: pro.commentcount.toString(),
                                           discounttedPrice:
                                               pro.discounted_price,
                                           issponsored: pro.user.sponsored,
@@ -1682,19 +1650,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 50.h,
@@ -1782,8 +1750,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 lat: prod.user.latitude,
                                                 long: prod.user.latitude,
                                                 productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 id: int.tryParse(prod.id),
                                                 posttype: prod.post_type_id,
                                                 membershipid:
@@ -1793,8 +1761,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     'assets/icon/b2bIcon.svg',
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1868,10 +1836,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               return ProductDetailWidget(
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
-
                                                 productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 id: int.tryParse(prod.id),
                                                 posttype: prod.post_type_id,
                                                 offer: prod.offers,
@@ -1879,8 +1846,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                     prod.user.membership_id,
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
@@ -1944,10 +1911,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               return ProductDetailWidget(
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
-
                                                 productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
                                                 membershipid:
@@ -1955,8 +1921,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 id: int.tryParse(prod.id),
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
@@ -1991,18 +1957,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       return Text("error $error");
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
 
                   Center(
@@ -2060,19 +2026,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     error: (error, stackTrace) {
                       return Text("error $error");
                     },
-                    loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   Center(
                     child: Column(
@@ -2141,18 +2107,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       return Text(error.toString());
                     },
                     loading: () => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -2254,14 +2220,13 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 return ProductDetailWidget(
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-
                                                   productid: prod.id,
                                                   id: int.tryParse(prod.id),
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   posttype: prod.post_type_id,
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   offer: prod.offers,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
@@ -2280,12 +2245,12 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 );
                                               },
                                             ),
@@ -2314,20 +2279,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   },
                                   error: (error, stackTrace) =>
                                       Text("Error: $error"),
-                                  loading: () =>
-                                      Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                                  loading: () => Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      width: 70.w,
+                                      height: 100.h,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             );
@@ -2338,23 +2303,23 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     error: (error, stackTrace) {
                       return Text("$error");
                     },
-                    loading: () =>Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: 10.h,
+                      top: 5.h,
                       bottom: 10.h,
                       left: 10.w,
                       right: 10.w,
@@ -2409,11 +2374,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: AllProductDetailWidget(
-                                      productid: res.id,
-                                      lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                    
-                                    
+                                    productid: res.id,
+                                    lat: res.user.latitude,
+                                    long: res.user.longitude,
                                     shortestDistance: res.user.shortestDistance,
                                     id: int.tryParse(res.id),
                                     membershipid: res.user.membership_id,
@@ -2472,19 +2435,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     error: (error, stackTrace) {
                       return Text('error is $error');
                     },
-                    loading:() => Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              width: 70.w,
-                              height: 100.h,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        width: 70.w,
+                        height: 100.h,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 50.h),
 
