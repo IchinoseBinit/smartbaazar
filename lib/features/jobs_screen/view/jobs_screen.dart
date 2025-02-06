@@ -23,6 +23,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -40,6 +41,7 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
 
@@ -222,6 +224,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
+        var homecategory = ref.watch(homeCategoryProvider);
+
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getjobsResponseProvider);
@@ -232,6 +236,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
     // asyncbajarValue.when(data: (data) {
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
+Future<void> refresh() async {
+  ref.refresh(getCategoriesProvider(73));
+  ref.refresh(getPostTypeStoryApiProvider('4'));
+  ref.refresh(getjobsResponseProvider);
+}
 
     // }, error: (error, stackTrace) {
 
@@ -290,19 +299,12 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
-                                        },
-                                    child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: AssetImage(
-                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                          )),
+                                        onTap: () {},
+                                        child: const CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                        )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -736,66 +738,85 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       ),
                     ),
                   ),
-                   asyncPostTypeContent.when(
-  data: (feedStoryData) {
-    final homeStory = feedStoryData.homeStory;
+                   homecategory.when(
+                    data: (feedStoryData) {
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-    if (homeStory?.story?.posts != null) {
-      final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-      return SizedBox(
-        height: 100.h,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-            return HomePageStoryContainer(
-              index: index,
-              vendorName: story.vendorName ?? "Unknown Vendor",
-              vendorImage: story.vendorImage ??
-                  "https://example.com/default-image.png",
-              storyCount: story.storyCount ?? 0,
-              showGift: story.hasSponsoredGifts ?? false,
-              feedStoryContent: Story(posts: [story]),
-              userId: story.vendorId!,
-            );
-          },
-        ),
-      );
-    }
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
 
-    return const Center(
-      child: Text('No stories available.'),
-    );
-  },
-  loading: () => SizedBox(
-    height: 100.h,
-    child: ListView.builder(
-      padding: EdgeInsets.zero,
-      scrollDirection: Axis.horizontal,
-      itemCount: 5, // Number of shimmer placeholders
-      itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: 70.w,
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    ),
-  ),
-  error: (error, stack) =>
-      Center(child: Text('Error: $error')),
-),
+                      return const Center(
+                        child: Text('No stories available.'),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
 
                   SizedBox(
                     height: 6.h,
@@ -1105,16 +1126,32 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                             itemBuilder: (context, index) {
                               VProduct hot = data.hotProducts[index];
                               return ProductDetailWidget(
+                                     savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                 lat: hot.user.latitude,
                                 long: hot.user.longitude,
-                                avg_rating: double.tryParse(hot.avg_rating.toString()?? '0'),
+                                avg_rating: double.tryParse(
+                                    hot.avg_rating.toString() ?? '0'),
                                 didcountpercentage: hot.discount_percentage,
                                 id: int.tryParse(hot.id),
                                 membershipid: hot.user.membership_id,
                                 offer: hot.offers,
                                 posttype: hot.post_type_id,
-
-                                  productid: hot.id,
+                                productid: hot.id,
                                 wow: hot.wow,
                                 comment: hot.commentcount.toString(),
                                 discounttedPrice: hot.discounted_price,
@@ -1168,18 +1205,32 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           itemBuilder: (context, index) {
                             VProduct hot = data.hotProducts[index];
                             return ProductDetailWidget(
+                               savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                               lat: hot.user.latitude,
                               long: hot.user.longitude,
-                              avg_rating: double.tryParse(hot.avg_rating.toString()),
+                              avg_rating:
+                                  double.tryParse(hot.avg_rating.toString()),
                               didcountpercentage: hot.discount_percentage,
-                              id: int.tryParse(hot.id)
-                              ,
+                              id: int.tryParse(hot.id),
                               membershipid: hot.user.membership_id,
                               offer: hot.offers,
                               posttype: hot.post_type_id,
-                              
-                            
-                                productid: hot.id,
+                              productid: hot.id,
                               wow: hot.wow,
                               comment: hot.commentcount.toString(),
                               discounttedPrice: hot.discounted_price,
@@ -1561,11 +1612,27 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                               VProduct prod =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                 savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 id: int.tryParse(prod.id),
                                                 posttype: prod.post_type_id,
                                                 membershipid:
@@ -1575,8 +1642,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                     'assets/icon/b2bIcon.svg',
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1646,20 +1713,36 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                   data.insidearr[1][index];
 
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
+                                                    savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 id: int.tryParse(prod.id),
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
@@ -1723,20 +1806,36 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                               VProduct prod =
                                                   data.insidearr[2][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                                  productid: prod.id,
+                                                    savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
+                                                productid: prod.id,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 offer: prod.offers,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 id: int.tryParse(prod.id),
                                                 didcountpercentage:
                                                     prod.avg_rating,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 comment: prod.commentcount
                                                     .toString(),
                                                 wow: prod.wow,
@@ -1972,12 +2071,27 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       itemBuilder: (context, index) {
                                         VProduct prod = products[index];
                                         return ProductDetailWidget(
-                                                                                            lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
-                                            productid: prod.id,
+                                              savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                          lat: prod.user.latitude,
+                                          long: prod.user.longitude,
+                                          productid: prod.id,
                                           wow: prod.wow,
-                                          comment:
-                                              prod.commentcount.toString(),
+                                          comment: prod.commentcount.toString(),
                                           lefttile: "Jobs",
                                           vendorname: prod.user.name,
                                           discounttedPrice:
@@ -2063,7 +2177,14 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           return Padding(
                             padding: EdgeInsets.only(bottom: 5.h),
                             child: AllProductDetailWidget(
-                              
+                                  savedid: data.product[index].savedByLoggedUser == null ||
+                                            data.product[index].savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : data.product[index].savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
+                                           
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                               productid: data.product[index].post_type_id!,
                               long: data.product[index].user.longitude,
                               lat: data.product[index].user.latitude,

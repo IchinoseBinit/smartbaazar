@@ -16,7 +16,7 @@ Future<VendorProductSearchResponse> searchVendorProduct(
   final SmartClient client = SmartClient();
 
   try {
-    // Prepare query parameters
+    // Prepare query parameters if required
     final queryParameters = <String, String>{};
     if (query.isNotEmpty) {
       queryParameters['query'] = query;
@@ -25,23 +25,32 @@ Future<VendorProductSearchResponse> searchVendorProduct(
     // Send the GET request
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      queryParameters: queryParameters,
-      url: "https://smartbazaar.jianjun-rnd.com.np/api/users/vendorsearch/$id",
+      queryParameters: {'query': query},
+      parameter: {'query': query},
+      url: "https://smartbazaar.jianjun-rnd.com.np/api/users/vendor/$id",
     );
-    print("poka ${response.data['data']['posts']}");
-    // Deserialize the response into the model
-    final responseData =
-        VendorProductSearchResponse.fromJson(response.data['data']);
-    print("paka $responseData");
-    return responseData;
-  } catch (e) {
-    print("Error occurred: $e");
 
-    if (e is DioException) {
-      print("DioError details: ${e.response?.data}");
+    if (response.statusCode == 200) {
+      print("Response Data: ${response.data}");
+
+      // Access the correct data part of the response
+      final responseData = VendorProductSearchResponse.fromJson(response.data);
+
+      print("Parsed Data: $responseData");
+
+      return responseData;
+    } else {
+      throw Exception("Unexpected response status: ${response.statusCode}");
     }
+  } on DioException catch (e) {
+    print("DioException occurred: ${e.message}");
+    print("Response data: ${e.response?.data}");
 
-    // Rethrow the error or return an empty/default response
+    throw Exception(
+        "Failed to fetch vendor products: ${e.response?.statusMessage}");
+  } catch (e) {
+    print("An error occurred: $e");
+
     throw Exception("Failed to fetch vendor products.");
   }
 }

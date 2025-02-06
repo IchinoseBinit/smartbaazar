@@ -12,13 +12,12 @@ Future<MessageThreadModel> getMessageThread(ref,
     {required String? filter}) async {
   final SmartClient client = SmartClient();
   try {
-    final response = await client.request(
-      requestType: RequestType.getWithToken,
-      url: ApiConstants.getMessageThreadUrl,
-      parameter: {
-        'filter': filter,
-      },
-    );
+   final response = await client.request(
+  requestType: RequestType.getWithToken,
+  url: ApiConstants.getMessageThreadUrl,
+  parameter: {'filter': filter},
+).timeout(const Duration(seconds: 150));
+
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
@@ -31,3 +30,5 @@ Future<MessageThreadModel> getMessageThread(ref,
     throw Exception('Failed to load message content: $e');
   }
 }
+
+

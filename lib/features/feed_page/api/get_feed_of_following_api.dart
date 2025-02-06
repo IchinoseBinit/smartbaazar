@@ -8,7 +8,7 @@ part 'get_feed_of_following_api.g.dart';
 
 @riverpod
 Future<GetFeedOfFollowingModel> getFeedOfFollowing(
-    GetFeedOfFollowingRef ref) async {
+     ref) async {
   final SmartClient client = SmartClient();
 
   try {

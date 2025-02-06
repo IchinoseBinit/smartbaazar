@@ -1,39 +1,42 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
 import 'package:smartbazar/features/feed_page/api/list_comment_feed_api.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/list_comment_of_feed.dart';
 import 'package:smartbazar/features/feed_page/view/add_comment_provider.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
+import 'package:smartbazar/features/message/api/message_thread_api.dart';
+import 'package:smartbazar/features/message/api/message_thread_provider.dart';
+import 'package:smartbazar/features/message/model/message_thread_model.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 
 class FeedContainer extends ConsumerStatefulWidget {
-  const FeedContainer({
-    super.key,
-    required this.vendorImage,
-    required this.vendorName,
-    required this.suscribers,
-    required this.productCount,
-    required this.livePrize,
-    required this.distance,
-    required this.userId,
-    this.showGift,
-    required this.hassttory,
-    // this.userDetails,
-    required this.interested,
-    required this.engagement,
-    required this.views,
-    required this.feedDetailImage,
-    required this.membershipTitle,
-    required this.membershipId,
-    required this.feedId,
-  });
+  const FeedContainer(
+      {super.key,
+      required this.vendorImage,
+      required this.vendorName,
+      required this.suscribers,
+      required this.productCount,
+      required this.livePrize,
+      required this.distance,
+      required this.userId,
+      this.showGift,
+      required this.hassttory,
+      // this.userDetails,
+      required this.interested,
+      required this.engagement,
+      required this.views,
+      required this.feedDetailImage,
+      required this.membershipTitle,
+      required this.membershipId,
+      required this.feedId,
+      required this.isLiked});
   final String? vendorImage;
   final String? vendorName;
   final String? suscribers;
@@ -50,6 +53,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String userId;
   final String feedId;
   final bool hassttory;
+  final String? isLiked;
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -58,12 +62,52 @@ class FeedContainer extends ConsumerStatefulWidget {
 }
 
 class _FeedContainerState extends ConsumerState<FeedContainer> {
+  bool? _isLiked;
   bool _isLoading = false;
-  bool _isLiked = false;
+
   int _likeCount = 0;
+  List<ThreadData>? messageList;
+
+  void _showBottomSheet(BuildContext context, String imgurl) {
+    if (messageList != null) {
+      showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        builder: (context) {
+          return ListView(
+            shrinkWrap: true,
+            children: List.generate(messageList!.length, (index) {
+              ThreadData msg = messageList![index];
+              return ListTile(
+                title: Text(msg.subject!),
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                        threadId: msg.id.toString(),
+                        username: msg.subject!,
+                        postId: msg.postId!,
+                        imageUrl: imgurl,
+                        //  isImportant: isImportant,
+                      ),
+                    ),
+                  );
+                  Navigator.pop(context); // Close the bottom sheet
+                },
+              );
+            }),
+          );
+        },
+      );
+    }
+  }
 
   void _showCommentSection(BuildContext context, String feedproductid) {
     showModalBottomSheet(
+      useRootNavigator: true,
+
       useSafeArea: true,
       context: context,
       isScrollControlled: true, // Allows full-screen modal
@@ -142,11 +186,28 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
   //     },
   //   );
   // }
+  @override
+  void initState() {
+    // TODO: implement initState
+    _isLiked = widget.isLiked == "0" ? true : false;
+    // print("pinky ${_isLiked} and ${widget.isLiked}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final feedGiftCardFuture =
         ref.watch(getFeedGiftCardProvider(widget.userId));
+    final currentfilter = ref.watch(messageFilterStateProvider);
+
+    final messageThreadProvider =
+        ref.watch(getMessageThreadProvider(filter: currentfilter)).whenData(
+      (value)async {
+        // print("rajukt ${value}");
+         messageList =  value.result?.data;
+      },
+    );
+
     // print("kala ${widget.vendorImage}")
 
     return Column(
@@ -223,12 +284,12 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                               onTap: () {
                                 feedGiftCardFuture.when(
                                   data: (feedCardData) {
-                                    print("pinky $feedCardData");
+                                    // print("pinky $feedCardData");
                                     return showCustomBottomSheet(
                                         context, feedCardData);
                                   },
                                   error: (error, stackTrace) =>
-                                      Text("error $error"),
+                                      Text("Please login again"),
                                   loading: () => showDialog(
                                     context: context,
                                     builder: (context) => Center(
@@ -503,8 +564,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
                           // Update the like state on success
                           setState(() {
-                            _isLiked = !_isLiked;
-                            _likeCount += _isLiked ? 1 : -1;
+                            _isLiked = !_isLiked!;
+                            _likeCount += _isLiked! ? 1 : -1;
                           });
                         } catch (e) {
                           // Handle errors
@@ -524,7 +585,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  _isLiked ? Colors.grey : Colors.white,
+                                  _isLiked! ? Colors.grey : Colors.white,
                                   Colors.pink
                                 ], // Gradient colors
                                 begin: Alignment.topLeft,
@@ -537,7 +598,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                 8), // Add padding for space around the image
                             child: Image.asset(
                               'assets/icon/heart.png',
-                              color: _isLiked
+                              color: _isLiked!
                                   ? Colors.red
                                   : Colors.white, // Icon color
                               // width: 24, // You can adjust the size
@@ -591,41 +652,61 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
                     SizedBox(width: 15.w),
                     // Comment Icon
-                    GestureDetector(
-                      onTap: () {
-                        print("Commented!");
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape
-                                  .circle, // Make the container circular
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.blue,
-                                  Colors.green
-                                ], // Define your gradient colors
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+
+                    messageThreadProvider.when(
+                      data: (data) {
+                        return GestureDetector(
+                          onTap: () {
+                            _showBottomSheet(context, widget.feedDetailImage!);
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, // Circular container
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.blue,
+                                      Colors.green
+                                    ], // Define gradient colors
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(
+                                    8), // Optional: add padding around the image
+                                child: Image.asset(
+                                  'assets/icon/tabler_location-share.png',
+                                  width: 24, // Adjust width as needed
+                                  height: 24, // Adjust height as needed
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.all(
-                                8), // Optional: add padding around the image
-                            child: Image.asset(
-                              'assets/icon/tabler_location-share.png',
-                              width: 24, // Adjust width as needed
-                              height: 24, // Adjust height as needed
-                            ),
-                          )
-                        ],
+                            ],
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) => InkWell(
+                          onTap: () => const LoginScreen(),
+                          child: const Center(child: Text("login"))),
+                      loading: () => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
+
                     SizedBox(width: 15.w),
                     // Share Icon
                     GestureDetector(
                         onTap: () {
-                         Share.share('Share this');
+                          Share.share('Share this');
                         },
                         child: Container(
                           decoration: const BoxDecoration(
@@ -884,7 +965,8 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Center(child: Text('Error: $error')),
+                error: (error, stack) =>
+                    Center(child: Text('Please login again')),
               ),
               // Comment Input Section
               TextField(
@@ -901,13 +983,16 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                               setState(() {
                                 _isLoading = true;
                               });
+                              ref.refresh(
+                                  getfeedcommentProvider(widget.id).future);
+                              // ref.invalidate(commentAsyncValue.value);
 
                               // Optimistically add the comment to the UI
-                              final newComment = FeedCommentModel(
-                                name: "You",
-                                comment: _commentcontroller.text,
-                                photo: "", // Provide the photo URL
-                              );
+                              // final newComment = FeedCommentModel(
+                              //   name: "You",
+                              //   comment: _commentcontroller.text,
+                              //   photo: "", // Provide the photo URL
+                              // );
 
                               // Post the comment
                               ref
@@ -932,6 +1017,9 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                         ),
                 ),
               ),
+              SizedBox(
+                height: 5.h,
+              )
             ],
           ),
         );

@@ -85,7 +85,8 @@ class PostResult with _$PostResult {
     @JsonKey(name: 'hyper_del') required String? hyperDel,
     @JsonKey(name: 'seller_del') String? sellerDel,
     @JsonKey(name: 'accept_terms') required String? acceptTerms,
-    @JsonKey(name: 'accept_marketing_offers') required String? acceptMarketingOffers,
+    @JsonKey(name: 'accept_marketing_offers')
+    required String? acceptMarketingOffers,
     @JsonKey(name: 'is_permanent') required String? isPermanent,
     required String? reviewed,
     required String? featured,
@@ -112,8 +113,8 @@ class PostResult with _$PostResult {
     required List<Picture>? pictures,
     PostType? postType,
     City? city,
-    required MyProductDeailModel ? user_details,
-     int? similarProductCount,
+    required MyProductDeailModel? user_details,
+    int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
     @Default([]) List<LivePrize> livePrizes,
     @Default([]) List<Shop>? deals,
@@ -148,28 +149,26 @@ class NearestBranch with _$NearestBranch {
       _$NearestBranchFromJson(json);
 }
 
-
 @freezed
 class MyProductDeailModel with _$MyProductDeailModel {
   const factory MyProductDeailModel({
-    required String name,
-    required String photo,
-    @JsonKey(name: 'user_photo_url') required String userPhotoUrl,
-    @JsonKey(name: 'has_sponsored_gifts') required bool hasSponsoredGifts,
-    required int? livePrizes,
-    required int? productCount,
-    required int? storyCount,
-    required int? subscribers,
-    required double? distance,
-    @JsonKey(name: 'membership_id') required String membershipId,
-    @JsonKey(name: 'membership_title') required String membershipTitle,
-    @JsonKey(name: 'membership_color') required String membershipColor,
-  }) = _UserDetails;
+    String? name,
+    String? photo,
+    @JsonKey(name: 'user_photo_url') String? userPhotoUrl,
+    @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+    int? livePrizes,
+    int? productCount,
+    int? storyCount,
+    int? subscribers,
+    double? distance,
+    @JsonKey(name: 'membership_id') String? membershipId,
+    @JsonKey(name: 'membership_title') String? membershipTitle,
+    @JsonKey(name: 'membership_color') String? membershipColor,
+  }) = _MyProductDeailModel;
 
   factory MyProductDeailModel.fromJson(Map<String, dynamic> json) =>
       _$MyProductDeailModelFromJson(json);
 }
-
 
 @freezed
 class SimilarProducts with _$SimilarProducts {
@@ -181,8 +180,10 @@ class SimilarProducts with _$SimilarProducts {
     required String name,
     @JsonKey(name: 'users_location') String? usersLocation,
     @JsonKey(name: 'branch_location') required String? branchLocation,
-    @JsonKey(name: 'membership_plan_title') required String? membershipPlanTitle,
-    @JsonKey(name: 'membership_plan_color') required String? membershipPlanColor,
+    @JsonKey(name: 'membership_plan_title')
+    required String? membershipPlanTitle,
+    @JsonKey(name: 'membership_plan_color')
+    required String? membershipPlanColor,
     @JsonKey(name: 'has_sponsored_gifts') required bool? hasSponsoredGifts,
     required bool? sponsored,
     required int? storyCount,
@@ -195,7 +196,6 @@ class SimilarProducts with _$SimilarProducts {
   factory SimilarProducts.fromJson(Map<String, dynamic> json) =>
       _$SimilarProductsFromJson(json);
 }
-
 
 @freezed
 class City with _$City {
@@ -234,8 +234,16 @@ class LivePrize with _$LivePrize {
 @freezed
 class Shop with _$Shop {
   factory Shop({
-    required String id,
-    required String image,
+    required String? id,
+    required String? image,
+    required String? userid,
+    required String? vendor_name,
+    required String? vendor_photo,
+    required String? wow,
+    required int? similarproductcount,
+    required String? comment_count,
+    required String? average_rating,
+
     @JsonKey(name: 'discount_percentage') required double? discountPercentage,
   }) = _Shop;
 
@@ -439,7 +447,7 @@ class FieldDetails with _$FieldDetails {
     String? name,
     String? type,
     @JsonKey(name: 'default_value')
-    @DefaultValueConverter() 
+    @DefaultValueConverter()
     dynamic defaultValue, // Can be String or JSON
     String? required,
     @JsonKey(name: 'use_as_filter') String? useAsFilter,
@@ -474,7 +482,6 @@ class DefaultValueConverter implements JsonConverter<dynamic, dynamic> {
   }
 }
 
-
 @freezed
 class FieldOption with _$FieldOption {
   const factory FieldOption({
@@ -482,7 +489,6 @@ class FieldOption with _$FieldOption {
     @JsonKey(name: 'field_id') String? fieldId,
     String? value,
     @JsonKey(name: 'parent_id') String? parentId,
- 
   }) = _FieldOption;
 
   factory FieldOption.fromJson(Map<String, dynamic> json) =>
@@ -505,7 +511,6 @@ class AvailableColor with _$AvailableColor {
   const factory AvailableColor({
     required String name,
     required String type,
-
     List<Option>? options,
   }) = _AvailableColor;
 

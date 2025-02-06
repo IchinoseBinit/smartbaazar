@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -22,6 +24,8 @@ class SponsoredProduct {
   final int? avg_rating;
   final String? discounted_price;
   final int? discount_percentage;
+    final List<SavedPost>? savedByLoggedUser;
+
   // final String? membership_id;
 
   SponsoredProduct({
@@ -41,11 +45,21 @@ class SponsoredProduct {
     this.offers,
     this.avg_rating,
     this.discount_percentage,
+    this.savedByLoggedUser
   });
 
   factory SponsoredProduct.fromJson(Map<String, dynamic> json) {
+       List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
     print("lama ${json['wow']}");
     return SponsoredProduct(
+      savedByLoggedUser:savedByLoggedUserList ,
+
       // membership_id: json['membership_id'],
       post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],

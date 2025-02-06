@@ -28,6 +28,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -48,6 +49,7 @@ import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 class BrandBazarScreen extends ConsumerStatefulWidget {
   const BrandBazarScreen({super.key});
@@ -241,6 +243,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    var homecategory = ref.watch(homeCategoryProvider);
 
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
 
@@ -248,6 +251,15 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(0));
+
+    void refreshAllProviders() {
+      ref.refresh(bottomNavIndexProvider);
+      ref.refresh(homeCategoryProvider);
+      ref.refresh(getPostTypeStoryApiProvider('1'));
+      ref.refresh(getBrandBazaarResponseProvider);
+      ref.refresh(getCategoriesProvider(0));
+    }
+
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
     // }, error: (error, stackTrace) {
@@ -307,20 +319,12 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
-                                        },
-                                       child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: AssetImage(
-                                              
-                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                          )),
+                                        onTap: () {},
+                                        child: const CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                        )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -765,35 +769,53 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       ),
                     ),
                   ),
-                  asyncPostTypeContent.when(
+                  homecategory.when(
                     data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-                      if (homeStory?.story?.posts != null) {
-                        final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-                        return SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: posts.length,
-                            itemBuilder: (context, index) {
-                              final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-                              return HomePageStoryContainer(
-                                index: index,
-                                vendorName:
-                                    story.vendorName ?? "Unknown Vendor",
-                                vendorImage: story.vendorImage ??
-                                    "https://example.com/default-image.png",
-                                storyCount: story.storyCount ?? 0,
-                                showGift: story.hasSponsoredGifts ?? false,
-                                feedStoryContent: Story(posts: [story]),
-                                userId: story.vendorId!,
-                              );
-                            },
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
                           ),
                         );
                       }
@@ -1154,11 +1176,29 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                   data.data!.new_products.length, (index) {
                                 BrandNewModel hot =
                                     data.data!.new_products[index];
-                                print("raju ${hot.discount_percentage==0.0}");
+                                print("raju ${hot.discount_percentage == 0.0}");
                                 return Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.w),
                                   child: ProductDetailWidget(
+                                    
+                                    savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
+
                                     lat: hot.userdetails?.latitude,
                                     long: hot.userdetails?.longitude,
                                     productid: hot.id,
@@ -1167,7 +1207,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     membershipid:
                                         hot.userdetails?.membership_id,
                                     didcountpercentage:
-                                        hot.discount_percentage==0.0
+                                        hot.discount_percentage == 0.0
                                             ? 0
                                             : hot.discount_percentage?.toInt(),
                                     offer: hot.offers,
@@ -1177,7 +1217,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
                                     discounttedPrice:
-                                        hot.discounted_price==null? '0': hot.discounted_price.toString(),
+                                        hot.discounted_price == null
+                                            ? '0'
+                                            : hot.discounted_price.toString(),
                                     issponsored:
                                         hot.userdetails?.sponsored ?? false,
                                     lefttile: "BrandBajar",
@@ -1187,7 +1229,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     title: hot.title,
                                     vendorname: hot.username,
                                     similarproductCount:
-                                        hot.similarProductCount,
+                                        hot.similarVendorProfileProductCount,
                                     membershipColor:
                                         hot.userdetails?.membership_color,
                                     membershipTitle:

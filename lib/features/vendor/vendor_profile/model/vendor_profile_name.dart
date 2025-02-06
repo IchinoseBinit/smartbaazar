@@ -12,7 +12,7 @@ class VendorProfile with _$VendorProfile {
     VendorCard? vendor_card,
     VendorAbout? vendor_about,
     List<Deal>? deals,
-    List<BrandNewModel>? all_products,
+    List<BrandNewModel>? all_VendorProfileProducts,
     List<FeedPost>? feedPosts,
     List<FeedPost>? live_prizes, 
     List<BrandNewModel>? brandnew,
@@ -24,7 +24,7 @@ class VendorProfile with _$VendorProfile {
     List<BrandNewModel>? grocery,
     String? scratch_banner,
     List<Advertisement>? advertisements,
-    // List<Product>? BrandNewModel,
+    // List<VendorProfileProduct>? BrandNewModel,
   }) = _VendorProfile;
 
   factory VendorProfile.fromJson(Map<String, dynamic> json) =>
@@ -49,19 +49,33 @@ class BrandNewModel with _$BrandNewModel {
     String? price,
     String? wow,
     required String? city,
-    required int? similarProductCount,
+    required int? similarVendorProfileProductCount,
     required int? discounted_price,
     required double? shortestDistance,
     required int? commentcount,
     required double? discount_percentage,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
+      final List<FezzedSaved>? savedByLoggedUser,
+
   }) = _BrandNewModel;
 
   factory BrandNewModel.fromJson(Map<String, dynamic> json) =>
       _$BrandNewModelFromJson(json);
 }
 
+@freezed
+class FezzedSaved with _$FezzedSaved {
+  const factory FezzedSaved({
+    required String id,
+    required String userId,
+    required String postId,
+    required String createdAt,
+    required String updatedAt,
+  }) = _FezzedSaved;
+
+  factory FezzedSaved.fromJson(Map<String, dynamic> json) => _$FezzedSavedFromJson(json);
+}
 @freezed
 class UserDetailsModel with _$UserDetailsModel {
   const factory UserDetailsModel({
@@ -223,8 +237,8 @@ class FeedPost with _$FeedPost {
 }
 
 @freezed
-class Product with _$Product {
-  const factory Product({
+class VendorProfileProduct with _$VendorProfileProduct {
+  const factory VendorProfileProduct({
     String? id,
     String? title,
     String? description,
@@ -247,19 +261,19 @@ class Product with _$Product {
     String? longitude,
     String? latitude,
     String? city,
-    int? similarProductCount,
+    int? similarVendorProfileProductCount,
     int? commentcount,
     double? avg_rating,
-    ProductUserDetailsModel? UserDetailsModel,
-  }) = _Product;
+    VendorProfileProductUserDetailsModel? UserDetailsModel,
+  }) = _VendorProfileProduct;
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory VendorProfileProduct.fromJson(Map<String, dynamic> json) =>
+      _$VendorProfileProductFromJson(json);
 }
 
 @freezed
-class ProductUserDetailsModel with _$ProductUserDetailsModel {
-  const factory ProductUserDetailsModel({
+class VendorProfileProductUserDetailsModel with _$VendorProfileProductUserDetailsModel {
+  const factory VendorProfileProductUserDetailsModel({
     String? user_id,
     String? membership_plan_id,
     String? membership_status,
@@ -273,8 +287,8 @@ class ProductUserDetailsModel with _$ProductUserDetailsModel {
     bool? has_sponsored_gifts,
     double? shortestDistance,
     String? nearestBranch,
-  }) = _ProductUserDetailsModel;
+  }) = _VendorProfileProductUserDetailsModel;
 
-  factory ProductUserDetailsModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductUserDetailsModelFromJson(json);
+  factory VendorProfileProductUserDetailsModel.fromJson(Map<String, dynamic> json) =>
+      _$VendorProfileProductUserDetailsModelFromJson(json);
 }

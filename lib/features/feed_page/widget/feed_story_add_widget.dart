@@ -78,6 +78,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
           context,
           MaterialPageRoute(
             builder: (_) => FeedStoryScreen(
+              
               selectedVendorIndex: widget.index,
               initialIndex: widget.index,
               author: widget.vendorName ?? '',

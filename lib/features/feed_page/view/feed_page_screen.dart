@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -30,6 +31,7 @@ import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -246,12 +248,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 children: [
                                   InkWell(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const VendorProfileScreen(),
-                                            ));
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           const VendorProfileScreen(),
+                                        //     ));
                                       },
                                       child: const CircleAvatar(
                                         radius: 20,
@@ -667,7 +669,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 return const SizedBox();
                               },
                               error: (error, stack) {
-                                return Center(child: Text(error.toString()));
+                                return Center(child: Text("PLease login again"));
                               },
                             ),
                           ),
@@ -697,18 +699,29 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               ),
             ];
           },
-          body: TabBarView(
+          body: Stack(
             children: [
-              // "Following" Tab Content
-              _buildFollowingTabContent(ref),
-              // "For You" Tab Content
-              _buildForYouTabContent(ref),
+              /// Ensure TabBarView fills the screen
+              Positioned.fill(
+                child: TabBarView(
+                  physics:
+                      const NeverScrollableScrollPhysics(), // Prevent unnecessary nested scrolling issues
+                  children: [
+                    _buildFollowingTabContent(ref),
+                    _buildForYouTabContent(ref),
+                  ],
+                ),
+              ),
+              FeedValueNotifier(
+                  showSideBar: _feedsidebar, isSectionsVisible: false),
             ],
           ),
         ),
       ),
     );
   }
+
+  final ValueNotifier<bool> _feedsidebar = ValueNotifier<bool>(true);
 
   Widget expandedContainer() {
     return Column(
@@ -1115,19 +1128,22 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
         children: [
-          SizedBox(height: 30.h),
-          SizedBox(
-            height: 100.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                asyncFollowingStoryContent.when(
-                  data: (feedStoryData) {
-                    final feedStoryContent = feedStoryData.data?.feedstory;
+          SizedBox(height: 5.h),
+          asyncFollowingStoryContent.when(
+            data: (feedStoryData) {
+              final feedStoryContent = feedStoryData.data?.feedstory;
 
+              return SizedBox(
+                height:
+                    feedStoryContent == null || feedStoryContent.posts == null
+                        ? 20.h
+                        : 95.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     if (feedStoryContent != null &&
-                        feedStoryContent.posts != null) {
-                      return Expanded(
+                        feedStoryContent.posts != null)
+                      Expanded(
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -1137,6 +1153,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                             final Post story = feedStoryContent.posts![index];
 
                             return FeedStoryAddWidget(
+                              
                               index: index,
                               vendorName: story.vendorName ?? "Unknown Vendor",
                               vendorImage: story.vendorImage ??
@@ -1148,14 +1165,21 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                             );
                           },
                         ),
-                      );
-                    } else {
-                      return const Center(
+                      )
+                    else
+                      const Center(
                         child: Text("No stories available"),
-                      );
-                    }
-                  },
-                  loading: () => Expanded(
+                      ),
+                  ],
+                ),
+              );
+            },
+            loading: () => SizedBox(
+              height: 20.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
@@ -1180,12 +1204,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       },
                     ),
                   ),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                ),
-              ],
+                ],
+              ),
             ),
+            error: (error, stack) =>  Center(child: Text("please login"))
           ),
-          SizedBox(height: 5.h),
           asyncFollowingFeedContent.when(
             data: (feedData) {
               if (feedData.data != null && feedData.data!.feedPost != null) {
@@ -1201,11 +1224,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       final feedDetail = feedItem.feedDetail;
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 3.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FeedContainer(
+                              isLiked: feedItem.wowstatus,
                               hassttory:
                                   userDetails!.storyCount! > 0 ? true : false,
                               productCount: userDetails.productCount.toString(),
@@ -1248,7 +1272,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               }
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Center(child: Text('Error: $error')),
+            error: (error, stack) =>  Center(child: Text("please login"))
           ),
           SizedBox(height: 70.h),
         ],
@@ -1266,13 +1290,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 5.h),
-          SizedBox(
-            height: 75.h,
-            child: asyncForYouStoryContent.when(
-              data: (feedStoryData) {
-                final feedStoryContent = feedStoryData.data?.feedstory;
-                final posts = feedStoryContent?.posts ?? [];
-                return posts.isNotEmpty
+          asyncForYouStoryContent.when(
+            data: (feedStoryData) {
+              final feedStoryContent = feedStoryData.data?.feedstory;
+              final posts = feedStoryContent?.posts ?? [];
+
+              return SizedBox(
+                height:
+                    feedStoryContent == null || posts.isEmpty ? 20.h : 100.h,
+                child: posts.isNotEmpty
                     ? ListView.builder(
                         padding: EdgeInsets.only(left: 3.w),
                         shrinkWrap: true,
@@ -1292,36 +1318,41 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           );
                         },
                       )
-                    : const Center(child: Text("No stories available"));
-              },
-              loading: () => SizedBox(
-                height: 60.h,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (_, __) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
+                    : const Center(child: Text("No stories available")),
+              );
+            },
+            loading: () => SizedBox(
+              height: 75.h,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: 5,
+                itemBuilder: (_, __) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
               ),
-              error: (error, _) => Center(
-                child: Text(error.toString().contains('Session has expired')
-                    ? 'Please log in again.'
-                    : 'Error: $error'),
+            ),
+            error: (error, _) => SizedBox(
+              height: 75.h,
+              child: Center(
+                child: Text(
+                  error.toString().contains('Session has expired')
+                      ? 'Please log in again.'
+                      : 'Error: $error',
+                ),
               ),
             ),
           ),
@@ -1338,6 +1369,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     final userDetails = feedItem.userDetail;
                     final interested = feedItem.interested;
                     final feedDetail = feedItem.feedDetail;
+                    // print("kala ${feedItem.wow_status}");
 
                     // return _buildFeedItem(feedItems[index]);
                     return Padding(
@@ -1349,6 +1381,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FeedContainer(
+                            isLiked: feedItem.wow_status,
                             hassttory:
                                 userDetails!.storyCount! > 0 ? true : false,
                             productCount: userDetails.productCount.toString(),
@@ -1391,7 +1424,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               }
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Center(child: Text('Error: $error')),
+            error: (error, stack) =>  Center(child: Text("please login"))
           ),
           const SizedBox.shrink()
         ],

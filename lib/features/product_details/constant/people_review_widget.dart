@@ -9,11 +9,12 @@ class PeopleReviewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("pinky ${rate.first.name}");
-    return SizedBox(
-      height: 100,
+    // print("pinky ${rate.first.name}");
+    return Container(
+      height: 150.h,
+      padding: const EdgeInsets.all(3),
       width: double.infinity,
-      child:  ListView.builder(
+      child: ListView.builder(
         padding: const EdgeInsets.all(5),
         itemCount: rate.length,
         scrollDirection: Axis.horizontal,

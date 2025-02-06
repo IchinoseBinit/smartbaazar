@@ -12,168 +12,167 @@ class MyOrderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final orderResponse = ref.watch(getOrderDetailsProvider);
 
-    return GenericSafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xffF6F1F1),
-        body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.h),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Row(
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'My Orders',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Text('Go back',
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff888888))),
-                    )
-                  ],
-                ),
+    return Scaffold(
+      extendBody: false,
+      backgroundColor: const Color(0xffF6F1F1),
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Row(
+                children: [
+                  const Icon(Icons.shopping_cart),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'My Orders',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text('Go back',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff888888))),
+                  )
+                ],
               ),
-              Divider(
-                thickness: 2.w,
-                color: const Color(0xffD9D9D9),
-              ),
-              SizedBox(height: 10.h),
-              Expanded(
-                child: orderResponse.when(
-                  data: (data) {
-                    return DefaultTabController(
-                      length: 2, // Number of tabs
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const TabBar(
-                            tabAlignment: TabAlignment.start,
-                            isScrollable: true,
-                            dividerColor: Color(0xffD9D9D9),
-                            tabs: [
-                              Tab(text: 'Order Received'),
-                              Tab(text: 'Order Placed'),
+            ),
+            Divider(
+              thickness: 2.w,
+              color: const Color(0xffD9D9D9),
+            ),
+            SizedBox(height: 10.h),
+            Expanded(
+              child: orderResponse.when(
+                data: (data) {
+                  return DefaultTabController(
+                    length: 2, // Number of tabs
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const TabBar(
+                          tabAlignment: TabAlignment.start,
+                          isScrollable: true,
+                          dividerColor: Color(0xffD9D9D9),
+                          tabs: [
+                            Tab(text: 'Order Received'),
+                            Tab(text: 'Order Placed'),
+                          ],
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              // Order Received Tab
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 20.h),
+                                child: ListView(
+                                  children: [
+                                    data.ordersReceived.data.isNotEmpty
+                                        ? ListView.separated(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, index) {
+                                              final order = data
+                                                  .ordersReceived
+                                                  .data[index];
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10.w),
+                                                child: OrderContainer(
+                                                  order: order,
+                                                  isOrderReceived: true,
+                                                ),
+                                              );
+                                            },
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    SizedBox(height: 14.h),
+                                            itemCount: data
+                                                .ordersReceived.data.length,
+                                          )
+                                        : Center(
+                                            child: Text(
+                                              'No products found in Order Received',
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                    SizedBox(height: 20.h),
+                                    Divider(
+                                        thickness: 2.w,
+                                        color: const Color(0xffD9D9D9)),
+                                  ],
+                                ),
+                              ),
+                              // Order Placed Tab
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 20.h),
+                                child: ListView(
+                                  children: [
+                                    data.ordersPlaced.data.isNotEmpty
+                                        ? ListView.separated(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, index) {
+                                              final order = data
+                                                  .ordersPlaced.data[index];
+                                              return Padding(
+                                                padding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10.w),
+                                                child: OrderContainer(
+                                                  order: order,
+                                                  isOrderReceived: false,
+                                                ),
+                                              );
+                                            },
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    SizedBox(height: 14.h),
+                                            itemCount: data
+                                                .ordersPlaced.data.length,
+                                          )
+                                        : Center(
+                                            child: Text(
+                                              'No products found in Order Placed',
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                    SizedBox(height: 20.h),
+                                    Divider(
+                                        thickness: 2.w,
+                                        color: const Color(0xffD9D9D9)),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                          Expanded(
-                            child: TabBarView(
-                              children: [
-                                // Order Received Tab
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: ListView(
-                                    children: [
-                                      data.ordersReceived.data.isNotEmpty
-                                          ? ListView.separated(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                final order = data
-                                                    .ordersReceived
-                                                    .data[index];
-                                                return Padding(
-                                                  padding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 10.w),
-                                                  child: OrderContainer(
-                                                    order: order,
-                                                    isOrderReceived: true,
-                                                  ),
-                                                );
-                                              },
-                                              separatorBuilder:
-                                                  (context, index) =>
-                                                      SizedBox(height: 14.h),
-                                              itemCount: data
-                                                  .ordersReceived.data.length,
-                                            )
-                                          : Center(
-                                              child: Text(
-                                                'No products found in Order Received',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                      SizedBox(height: 20.h),
-                                      Divider(
-                                          thickness: 2.w,
-                                          color: const Color(0xffD9D9D9)),
-                                    ],
-                                  ),
-                                ),
-                                // Order Placed Tab
-                                Container(
-                                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                                  child: ListView(
-                                    children: [
-                                      data.ordersPlaced.data.isNotEmpty
-                                          ? ListView.separated(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                final order = data
-                                                    .ordersPlaced.data[index];
-                                                return Padding(
-                                                  padding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 10.w),
-                                                  child: OrderContainer(
-                                                    order: order,
-                                                    isOrderReceived: false,
-                                                  ),
-                                                );
-                                              },
-                                              separatorBuilder:
-                                                  (context, index) =>
-                                                      SizedBox(height: 14.h),
-                                              itemCount: data
-                                                  .ordersPlaced.data.length,
-                                            )
-                                          : Center(
-                                              child: Text(
-                                                'No products found in Order Placed',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                      SizedBox(height: 20.h),
-                                      Divider(
-                                          thickness: 2.w,
-                                          color: const Color(0xffD9D9D9)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                error: (error, stack) => Center(child: Text('PLease login again')),
+                loading: () =>
+                    const Center(child: CircularProgressIndicator()),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

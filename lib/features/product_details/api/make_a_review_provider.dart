@@ -15,11 +15,11 @@ Future<String> postreview(
   try {
     final SmartClient client = SmartClient();
 
-    print("kala ${SmartClient.token}");
     // Make the request with the payload
     final response = await client.request(
       requestType: RequestType.postWithToken,
       url: '${ApiConstants.postreview}/$id',
+      
       parameter: {'comment': comment, 'rating': rating},
     );
 

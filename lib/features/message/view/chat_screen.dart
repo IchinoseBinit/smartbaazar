@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
@@ -15,6 +16,7 @@ import 'package:smartbazar/features/message/model/message_list_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:http/http.dart' as http;
 
 final selectedImageProvider = StateProvider<XFile?>((ref) => null);
 
@@ -22,15 +24,17 @@ class ChatScreen extends ConsumerStatefulWidget {
   final String threadId;
   final String username;
   final String postId;
+  String? imageUrl;
   // final String isImportant;
 
-  const ChatScreen({
-    super.key,
-    required this.threadId,
-    required this.username,
-    required this.postId,
-    // required this.isImportant,
-  });
+  ChatScreen(
+      {super.key,
+      required this.threadId,
+      required this.username,
+      required this.postId,
+      this.imageUrl
+      // required this.isImportant,
+      });
 
   @override
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
@@ -42,6 +46,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   int _currentPage = 1;
   bool _isLoadingMore = false;
+  File? _imageFile;
 
   final ImagePicker _imagePicker = ImagePicker();
 
@@ -50,7 +55,33 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.initState();
     _loadUserId(); // Load user ID from SharedPreferences
     _scrollController.addListener(_onScroll); // Add scroll listener
+    if (widget.imageUrl != null) _downloadImage();
   }
+
+Future<void> _downloadImage() async {
+  try {
+    print("Downloading: ${widget.imageUrl}");
+    final response = await http.get(Uri.parse(widget.imageUrl!));
+    if (response.statusCode == 200) {
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/downloaded_image.jpg';
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      setState(() {
+        _imageFile = file;
+      });
+
+      ref.read(selectedImageProvider.notifier).state = XFile(file.path);
+
+      print("Image saved temporarily at: $filePath");
+    } else {
+      print("Failed to load image");
+    }
+  } catch (e) {
+    print("Error downloading image: $e");
+  }
+}
 
   Future<void> _loadUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -180,7 +211,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                 itemCount: messages.length,
                                 itemBuilder: (context, index) {
                                   final message = messages[index];
-                                  print("kale $_currentUserId");
+                                  // print("kale $_currentUserId");
 
                                   return ChatMessageWidget(
                                     isUserMessage:
@@ -326,8 +357,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           );
 
           // Refresh message list provider after invalidating it
-          ref
-              .refresh(getMessageListProvider(widget.threadId, _currentPage));
+          ref.refresh(getMessageListProvider(widget.threadId, _currentPage));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

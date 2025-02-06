@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -45,11 +47,15 @@ import 'package:smartbazar/features/product_details/constant/product_detail_widg
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 import '../../../general_widget/story_search_bar.dart';
@@ -74,7 +80,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
   int selectedIndexx = 0; // State variable for selected index
-  final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
@@ -85,13 +90,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
-  final double _currentHeight = 500; // Default height for first tab
+// Default height for first tab
   Map<String, String>? dropdownValue;
   int? postypeid = 0;
 
   Future<void> shared() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-  }
+    // print("kaju ${pref.getKeys()}");
+      Map<String, dynamic> data = jsonDecode(pref.getString('session')?? '');
+
+ String? imageUrl = data["result"]["photo_url"];
+
+  print("kaju URL: $imageUrl and ${SmartClient.userPhoto}");  }
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -141,9 +151,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     },
   ];
 
+  Future<void> _loadUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("reku ${prefs.getString('userId')}");
+  }
+
   @override
   void initState() {
-    // print('binod ${SmartClient.laravelsession}');
+    _loadUserId(); // print('binod ${SmartClient.laravelsession}');
     shared();
     super.initState();
     dynamictabController = TabController(length: 3, vsync: this);
@@ -264,11 +279,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
     final sliders = ref.watch(fetchAdvertisementsProvider);
-    final category = ref.watch(homeCategoryProvider);
+    var category = ref.watch(homeCategoryProvider);
     // ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
     final buyorwin = ref.watch(fetchBuyAndHotProvider);
     final getSponsored = ref.watch(fetchSponsoredProvider);
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+
+    Future<void> refresh() async {
+      // Refreshing individual providers
+      ref.refresh(getHomeStoryProvider);
+      ref.refresh(fetchAdvertisementsProvider);
+      ref.refresh(homeCategoryProvider);
+      ref.refresh(fetchBuyAndHotProvider);
+      ref.refresh(fetchSponsoredProvider);
+      ref.refresh(homePostsProvider);
+
+      // If you need to perform any additional tasks after refreshing, you can do so here
+    }
 
     // category.when(
     //   data: (data) {
@@ -305,7 +332,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         backgroundColor: ColorConstant.whiteColor,
         // drawer: const CustomDrawer(),
         body: Stack(children: [
-          Positioned.fill(
+          Positioned(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               controller: _scrollController,
@@ -346,7 +373,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const VendorProfileScreen(),
+                                                      const MySubscriptionScreen(),
                                                 ));
                                           },
                                           child: const CircleAvatar(
@@ -708,7 +735,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ),
                             ),
                           ),
-                          if (_showSearchProductModels)
+                          if (false)
                             Positioned(
                               top: 80.h, // Position just below the search bar
                               left: 10,
@@ -809,12 +836,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           },
                         ),
                       ),
-                    asyncHomeStoryContent.when(
+                    category.when(
                       data: (feedStoryData) {
-                        final homeStory = feedStoryData.homeStory;
+                        List<HomeStoryPost>? homeStory =
+                            feedStoryData.home_story?.story.posts;
+                        // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-                        if (homeStory?.story?.posts != null) {
-                          final posts = homeStory!.story!.posts!;
+                        if (homeStory != null) {
+                          final posts = homeStory;
 
                           return SizedBox(
                             height: 100.h,
@@ -827,6 +856,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 final story = posts[index];
 
                                 return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
                                   index: index,
                                   vendorName:
                                       story.vendorName ?? "Unknown Vendor",
@@ -834,8 +878,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       "https://example.com/default-image.png",
                                   storyCount: story.storyCount ?? 0,
                                   showGift: story.hasSponsoredGifts ?? false,
-                                  feedStoryContent: Story(posts: [story]),
-                                  userId: story.vendorId!,
                                 );
                               },
                             ),
@@ -998,7 +1040,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             );
                           },
                           error: (error, stackTrace) {
-                            return Text("Try again: $error");
+                            return Text("Please login again");
                           },
                           loading: () {
                             // Shimmer Effect for Loading State
@@ -1063,6 +1105,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 itemCount: data.buynow.length,
                                 itemBuilder: (context, index) {
                                   Buynowmodel resp = data.buynow[index];
+
                                   return buyorwin_widget(
                                     wow: resp.wow ?? '0',
                                     gift_qty: resp.gift_qty!,
@@ -1071,8 +1114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     vendorImage: resp.vendorImage,
                                     vendorname: resp.name,
                                     winners: resp.winners.toString(),
-                                    proctimage:
-                                        "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts/default.png",
+                                    proctimage: resp.image,
                                   );
                                 },
                               ),
@@ -1117,6 +1159,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         // Display Products for the selected category
                         category.when(
                           data: (data) {
+                            // print(
+                            //     "raju ${data.home_story?.story.posts?.length}");
                             double dynamicHeight;
                             // Define the products list corresponding to each category
                             List<List<CategoryProduct>> productsList = [
@@ -1204,6 +1248,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       products[index];
 
                                                   return ProductDetailWidget(
+                                                    onRefresh: () {
+                                                      refresh();
+                                                      // ref.refresh(
+                                                      //     homeCategoryProvider);
+                                                    },
+                                                    savedid: prod.savedByLoggedUser ==
+                                                                null ||
+                                                            prod.savedByLoggedUser!
+                                                                .isEmpty
+                                                        ? []
+                                                        : prod
+                                                            .savedByLoggedUser,
                                                     lat: prod.userdetails
                                                             ?.latitude ??
                                                         '0.0',
@@ -1227,8 +1283,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         false,
                                                     shortestDistance: prod
                                                         .userdetails
-                                                        ?.shortestDistance
-                                                        ?.roundToDouble(),
+                                                        ?.shortestDistance,
                                                     wow: prod.wow,
                                                     comment: prod.commentCount
                                                         .toString(),
@@ -1414,6 +1469,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                     5.w),
                                                         child:
                                                             ProductDetailWidget(
+                                                          savedid: prod.savedByLoggedUser ==
+                                                                      null ||
+                                                                  prod.savedByLoggedUser!
+                                                                      .isEmpty
+                                                              ? []
+                                                              : prod
+                                                                  .savedByLoggedUser,
+                                                          onRefresh: () {
+                                                            refresh();
+                                                          },
                                                           lat: prod.user[0]
                                                                   .latitude ??
                                                               '0.0',
@@ -1517,20 +1582,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         (index) {
                                                       GlobalModel prod =
                                                           data.doma[0][index];
+                                                      print(
+                                                          "laukatp ${prod.post_type_id} and ${prod.title}");
+
                                                       return ProductDetailWidget(
+                                                        savedid: prod.savedByLoggedUser ==
+                                                                    null ||
+                                                                prod.savedByLoggedUser!
+                                                                    .isEmpty
+                                                            ? []
+                                                            : prod
+                                                                .savedByLoggedUser,
+                                                        onRefresh: () {
+                                                          refresh();
+                                                        },
                                                         lat: prod.user[0]
                                                                 .latitude ??
                                                             '0.0',
                                                         long: prod.user[0]
                                                                 .longitude ??
                                                             '0.0',
-                                                        productid: prod.id,
+                                                        productid:
+                                                            prod.post_type_id,
                                                         membershipid: prod
                                                             .user
                                                             .first
                                                             .membership_id,
                                                         posttype:
-                                                            prod.posttypename,
+                                                            prod.post_type_id,
                                                         lefttile:
                                                             prod.posttypename,
                                                         tradeImage:
@@ -1621,6 +1700,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 print(
                                                     'laka ${prod.discount_percentage} and ${prod.title}');
                                                 return ProductDetailWidget(
+                                                  savedid: prod.savedByLoggedUser ==
+                                                              null ||
+                                                          prod.savedByLoggedUser!
+                                                              .isEmpty
+                                                      ? []
+                                                      : prod.savedByLoggedUser,
+                                                  onRefresh: () {
+                                                    refresh();
+                                                  },
                                                   lat: prod.user[0].latitude ??
                                                       '0.0',
                                                   long:
@@ -1786,6 +1874,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             List.generate(data.length, (index) {
                                           SponsoredProduct prefs = data[index];
                                           return ProductDetailWidget(
+                                            savedid: prefs.savedByLoggedUser ==
+                                                        null ||
+                                                    prefs.savedByLoggedUser!
+                                                        .isEmpty
+                                                ? []
+                                                : prefs.savedByLoggedUser,
+                                            onRefresh: () {
+                                              refresh();
+                                            },
                                             lat: prefs.userdetails?.latitude ??
                                                 '0.0',
                                             long:
@@ -1904,77 +2001,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   data.allProducts.length,
                                   (index) {
                                     VProduct res = data.allProducts[index];
-                                    // print(
-                                    //     "lauka ${res.userDetail.shortestDistance}");
 
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductDetailScreen(
-                                              productId: res.id,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: SizedBox(
-                                        width: (MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                30.w) /
-                                            2, // Dynamically adjust to fit two items per row
-                                        child: Card(
-                                          clipBehavior: Clip.antiAlias,
-                                          shadowColor: const Color(0xff3D215F)
-                                              .withOpacity(0.5),
-                                          elevation: 9,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: AllProductDetailWidget(
-                                            productid: res.id,
-                                            lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                            membershipid:
-                                                res.userDetail.membership_id,
-                                            posttype: res.post_type_id,
-                                            didcountpercentage:
-                                                res.discount_percentage,
-                                            id: int.tryParse(
-                                                res.userDetail.user_id!),
-                                            shortestDistance: res
-                                                .userDetail.shortestDistance
-                                                ?.roundToDouble(),
-                                            issponsored:
-                                                res.userDetail.sponsored ??
-                                                    false,
-                                            distance: res.user.shortestDistance,
-                                            wow: res.wow.toString(),
-                                            discounttedPrice:
-                                                res.discountedPrice,
-                                            comment:
-                                                res.commentCount.toString(),
-                                            avg_rating:
-                                                res.avgRating?.toDouble() ??
-                                                    0.0,
-                                            offer: res.offers,
-                                            productImage: res.image,
-                                            Vimage: res.userDetail.photo,
-                                            vendorname: res.userDetail.name,
-                                            title: res.title,
-                                            price: res.price,
-                                            similarproductCount:
-                                                res.similarProductCount,
-                                            membershipColor:
-                                                res.userDetail.membership_color,
-                                            membershipTitle:
-                                                res.userDetail.membership_title,
-                                          ),
+                                    return SizedBox(
+                                      width: (MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              30.w) /
+                                          2, // Dynamically adjust to fit two items per row
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        shadowColor: const Color(0xff3D215F)
+                                            .withOpacity(0.5),
+                                        elevation: 9,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: AllProductDetailWidget(
+                                          savedid:
+                                              res.savedByLoggedUser == null ||
+                                                      res.savedByLoggedUser!
+                                                          .isEmpty
+                                                  ? []
+                                                  : res.savedByLoggedUser
+                                                      ?.map(
+                                                        (e) => SavedPost(
+                                                            id: e.id,
+                                                            userId: e.userId,
+                                                            postId: e.postId,
+                                                            createdAt:
+                                                                e.createdAt,
+                                                            updatedAt:
+                                                                e.updatedAt),
+                                                      )
+                                                      .toList(),
+                                          onRefresh: () {
+                                            refresh();
+                                          },
+                                          productid: res.id,
+                                          lat: res.user.latitude,
+                                          long: res.user.longitude,
+                                          membershipid:
+                                              res.userDetail.membership_id,
+                                          posttype: res.post_type_id,
+                                          didcountpercentage:
+                                              res.discount_percentage,
+                                          id: int.tryParse(
+                                              res.userDetail.user_id!),
+                                          shortestDistance:
+                                              res.userDetail.shortestDistance,
+                                          issponsored:
+                                              res.userDetail.sponsored ??
+                                                  false,
+                                          distance: res.user.shortestDistance,
+                                          wow: res.wow.toString(),
+                                          discounttedPrice:
+                                              res.discountedPrice,
+                                          comment:
+                                              res.commentCount.toString(),
+                                          avg_rating:
+                                              res.avgRating?.toDouble() ??
+                                                  0.0,
+                                          offer: res.offers,
+                                          productImage: res.image,
+                                          Vimage: res.userDetail.photo,
+                                          vendorname: res.userDetail.name,
+                                          title: res.title,
+                                          price: res.price,
+                                          similarproductCount:
+                                              res.similarProductCount,
+                                          membershipColor:
+                                              res.userDetail.membership_color,
+                                          membershipTitle:
+                                              res.userDetail.membership_title,
                                         ),
                                       ),
                                     );
@@ -2029,316 +2130,526 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ]),
             ),
           ),
+          if (_showSearchProductModels)
+            Positioned(
+              right: 30,
+              top: 85,
+              child: Container(
+                width: 300,
+                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                color: Colors.white,
+                child: SearchProductModels.when(
+                  data: (results) {
+                    // if (results.isEmpty || _searchController.text.isEmpty) {
+                    //   return const SizedBox(
+                    //     child: Text('No result found'),
+                    //   ); // No results
+                    // }
+                    return ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: results.length,
+                      itemBuilder: (context, index) {
+                        final product = results[index];
+                        return ListTile(
+                          dense: true,
+                          title: Text(
+                            softWrap: true,
+                            product.name,
+                            style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor, fontSize: 10),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusinessTabScreen(
+                                  query: _searchController.text,
+                                ),
+                              ),
+                            );
+                            setState(() {
+                              _showSearchProductModels = false;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                    );
+                  },
+                  loading: () {
+                    return const SizedBox();
+                  },
+                  error: (error, stack) {
+                    return Center(child: Text(error.toString()));
+                  },
+                ),
+              ),
+            ),
           valuenotifilersidebutton(
-              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+              showSideBar: _showSideBar, isSectionsVisible: _showSideBar.value),
         ]));
   }
 }
 
+ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
+
 class valuenotifilersidebutton extends StatelessWidget {
   const valuenotifilersidebutton({
     super.key,
-    required ValueNotifier<bool> showSideBar,
-    required bool isSectionsVisible,
-  })  : _showSideBar = showSideBar,
-        _isSectionsVisible = isSectionsVisible;
+    required this.showSideBar,
+    required this.isSectionsVisible,
+  });
 
-  final ValueNotifier<bool> _showSideBar;
-  final bool _isSectionsVisible;
+  final ValueNotifier<bool> showSideBar;
+  final bool isSectionsVisible;
 
   @override
   Widget build(BuildContext context) {
-    print("babu ${SmartClient.userphoto}");
     return ValueListenableBuilder<bool>(
-      valueListenable: _showSideBar,
+      valueListenable: showSideBar,
       builder: (context, value, child) {
         return Positioned(
-            top: _isSectionsVisible ? 300 : 300,
-            right: 0,
-            child: InkWell(
-              onTap: () {
-                _showSideBar.value = !value;
-              },
-              child: value
-                  ? Hero(
-                      tag: 'profileHero',
-                      child: TweenAnimationBuilder<Color?>(
-                        tween: ColorTween(
-                          begin: Colors.blue.withOpacity(0.6),
-                          end: Colors.purple.withOpacity(0.6),
-                        ),
-                        duration: const Duration(seconds: 2),
-                        onEnd: () {
-                          // Restart the animation by swapping begin and end
-                        },
-                        builder: (context, color, child) {
-                          return Container(
-                            margin: EdgeInsets.only(right: 3.w),
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border:
-                                  Border.all(color: Colors.black, width: 0.5),
-                            ),
-                            child: CircleAvatar(
-                              radius: 18,
-                              backgroundImage:
-                                  NetworkImage(SmartClient.userphoto),
-                            ),
-                          );
-                        },
-                      ))
-                  : Container(
-                      width: 70.w,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 5.h,
+          top: isSectionsVisible ? 300 : 300,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              showSideBar.value = !value;
+              // print('raju ${showSideBar.value}');
+            },
+            child: value
+                ? Hero(
+                    tag: 'profileHero',
+                    child: TweenAnimationBuilder<Color?>(
+                      tween: ColorTween(
+                        begin: Colors.blue.withOpacity(0.6),
+                        end: Colors.purple.withOpacity(0.6),
                       ),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffE2DAE5).withOpacity(0.9),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10))),
-                      child: Center(
-                          child: Column(
-                        children: [
-                          SizedBox(
-                            height: 6.h,
+                      duration: const Duration(seconds: 2),
+                      builder: (context, color, child) {
+                        return Container(
+                          margin: EdgeInsets.only(right: 3.w),
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 0.5),
                           ),
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                                NetworkImage(SmartClient.userPhoto),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Container(
+                    width: 70.w,
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffE2DAE5).withOpacity(0.9),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 6.h),
                           Hero(
                             tag: 'profileHero',
                             child: Container(
                               margin: EdgeInsets.only(right: 3.w),
                               padding: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.black, width: 0.5)),
-                              child: CircleAvatar(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.black, width: 0.5),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            VendorProfileScreen(),
+                                      ));
+                                },
+                                child: CircleAvatar(
                                   radius: 15,
                                   backgroundImage:
-                                      NetworkImage(SmartClient.userphoto)),
+                                      NetworkImage(SmartClient.userPhoto),
+                                ),
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 6.h,
-                          ),
+                          SizedBox(height: 6.h),
                           IconButton(
-                              onPressed: () {
-                                const ScanScreen();
-                              },
-                              icon: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/scanner.png',
-                                    height: 15,
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ScanScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/scanner.png',
+                                  height: 15,
+                                  color: const Color(0xff918994),
+                                ),
+                                Text(
+                                  "Connect",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
                                     color: const Color(0xff918994),
                                   ),
-                                  Text(
-                                    "Connect",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff918994)),
-                                  )
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                           IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PendingApprovalScreen(),
-                                    ));
-                              },
-                              icon: Column(
-                                children: [
-                                  const Icon(
-                                    Icons.shopping_cart_outlined,
-                                    size: 15,
-                                    color: Color(0xff918994),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PendingApprovalScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.shopping_cart_outlined,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Cart",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
                                   ),
-                                  Text(
-                                    "cart",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff918994)),
-                                  )
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                           IconButton(
-                              onPressed: () {
-                                Navigator.of(context, rootNavigator: true).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CreateNewListinScreen()));
-                              },
-                              icon: Column(
-                                children: [
-                                  const Icon(
-                                    Icons.add,
-                                    size: 15,
-                                    color: Color(0xff918994),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CreateNewListinScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Sell",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
                                   ),
-                                  Text(
-                                    "Sell",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff918994)),
-                                  )
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                           IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyOrderScreen(),
-                                    ));
-                              },
-                              icon: Column(
-                                children: [
-                                  Image.asset('assets/images/tennis.png'),
-                                  Text(
-                                    "Orders",
-                                    style: headerstyle.copyWith(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xff918994)),
-                                  )
-                                ],
-                              )),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MyOrderScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset('assets/images/tennis.png'),
+                                Text(
+                                  "Orders",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showSideBar.value = !value;
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.close,
+                                  size: 10,
+                                  color: const Color(0xff918994),
+                                ),
+                                Text(
+                                  "Close",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
-                      ))),
-            ));
+                      ),
+                    ),
+                  ),
+          ),
+        );
       },
     );
   }
 }
 
-class ProductSlider extends StatelessWidget {
-  const ProductSlider({
+//for feed
+class FeedValueNotifier extends StatelessWidget {
+  const FeedValueNotifier({
     super.key,
-    required this.homePostsData,
-    required this.valueExtractor,
-    required this.title,
+    required this.showSideBar,
+    required this.isSectionsVisible,
   });
 
-  final String title;
-  final AsyncValue<HomePosts> homePostsData;
-  final List<Product> Function(HomePosts) valueExtractor;
+  final ValueNotifier<bool> showSideBar;
+  final bool isSectionsVisible;
 
   @override
   Widget build(BuildContext context) {
-    final value = homePostsData.valueOrNull;
-    if (value != null && valueExtractor(value).isNotEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Text(
-              title,
-              style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          SizedBox(
-            height: productCardHeight,
-            child: switch (homePostsData) {
-              AsyncData(:final value) => ListView.separated(
-                  primary: false,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  shrinkWrap: true,
-                  itemCount: valueExtractor(value).length,
-                  itemBuilder: (context, index) {
-                    final product = valueExtractor(value)[index];
-                    return ProductCard(
-                      product: product,
-                      onTap: (product) {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           ProductDetailScreen(productId: product.id),
-                        //     ));
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ProductDetailsScreen(
-                        //               productId: product.id,
-                        //             )
-                        //             ));
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      width: 12.w,
-                    );
-                  },
-                ),
-              AsyncError() => ProductSliderSkeleton(),
-              _ => ProductSliderSkeleton(),
+    return ValueListenableBuilder<bool>(
+      valueListenable: showSideBar,
+      builder: (context, value, child) {
+        return Positioned(
+          top: isSectionsVisible ? 70 : 80,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              showSideBar.value = !value;
+
+              // print('raju ${showSideBar.value}');
             },
+            child: value
+                ? Hero(
+                    tag: 'profileHeroz',
+                    child: TweenAnimationBuilder<Color?>(
+                      tween: ColorTween(
+                        begin: Colors.blue.withOpacity(0.6),
+                        end: Colors.purple.withOpacity(0.6),
+                      ),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, color, child) {
+                        return Container(
+                          margin: EdgeInsets.only(right: 3.w),
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 0.5),
+                          ),
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                                NetworkImage(SmartClient.userPhoto),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Container(
+                    width: 70.w,
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffE2DAE5).withOpacity(0.9),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 6.h),
+                          Hero(
+                            tag: 'profileHeroz',
+                            child: Container(
+                              margin: EdgeInsets.only(right: 3.w),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.black, width: 0.5),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            VendorProfileScreen(),
+                                      ));
+                                },
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundImage:
+                                      NetworkImage(SmartClient.userPhoto),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 6.h),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ScanScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/scanner.png',
+                                  height: 15,
+                                  color: const Color(0xff918994),
+                                ),
+                                Text(
+                                  "Connect",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PendingApprovalScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.shopping_cart_outlined,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Cart",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CreateNewListinScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Sell",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MyOrderScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset('assets/images/tennis.png'),
+                                Text(
+                                  "Orders",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showSideBar.value = !value;
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.close,
+                                  size: 10,
+                                  color: const Color(0xff918994),
+                                ),
+                                Text(
+                                  "Close",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
           ),
-        ],
-      );
-    } else {
-      return Container();
-    }
-  }
-}
-
-class ProductSliderSkeleton extends StatelessWidget {
-  ProductSliderSkeleton({super.key});
-
-  final List<Product> fakeDate = List.generate(
-    7,
-    (index) => Product(
-      id: '',
-      title: '',
-      price: '0',
-      image: '',
-      visits: '0',
-      // pickup: '',
-    ),
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      child: ListView.separated(
-        primary: false,
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(left: 5.w),
-        shrinkWrap: true,
-        itemCount: fakeDate.length,
-        itemBuilder: (context, index) {
-          final product = fakeDate[index];
-          return ProductCard(
-            product: product,
-            onTap: (product) {},
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: 12.w,
-          );
-        },
-      ),
+        );
+      },
     );
   }
 }

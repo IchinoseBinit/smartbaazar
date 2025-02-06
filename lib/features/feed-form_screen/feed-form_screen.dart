@@ -339,7 +339,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                   loading: () =>
                                       const CircularProgressIndicator(),
                                   error: (error, stack) => Text(
-                                    'Failed to load offers: $error',
+                                    'Please login',
                                     style: const TextStyle(color: Colors.red),
                                   ),
                                 ),

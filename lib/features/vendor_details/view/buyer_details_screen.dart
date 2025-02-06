@@ -231,6 +231,7 @@ class _BuyerAccountDetailsWidgetState
     try {
       final updateBuyerUserDetail =
           await ref.read(updateBuyerUserDetailsProvider(
+            
         data.name ?? '',
         data.phone ?? '',
         data.username ?? '',
@@ -511,7 +512,7 @@ class _BuyerAccountDetailsWidgetState
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Text('Error: $error'),
+          error: (error, stackTrace) => Text('Please login again'),
         );
   }
 }
@@ -617,7 +618,7 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
               );
             },
             loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => Text('Error: $error'),
+            error: (error, stackTrace) => Text('Please login again'),
           ),
       ],
     );

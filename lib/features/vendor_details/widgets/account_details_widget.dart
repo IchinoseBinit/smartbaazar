@@ -135,7 +135,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         });
       },
       error: (error, stackTrace) {
-        print('Error loading user details: $error');
+        print('Please login again');
       },
       loading: () {
         print('Loading user details...');
@@ -610,7 +610,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Text('Error: $error'),
+          error: (error, stackTrace) => Text('Please login again'),
         );
   }
 }

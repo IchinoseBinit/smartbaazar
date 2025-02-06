@@ -22,6 +22,7 @@ Future<MySubscribeAndWinModel> getMySubscribeAndWinResponse(ref) async {
       throw Exception('Failed to load notifications');
     }
   } catch (e) {
+    
     print('Error loading notifications: $e');
     throw Exception('Failed to load notifications: $e');
   }

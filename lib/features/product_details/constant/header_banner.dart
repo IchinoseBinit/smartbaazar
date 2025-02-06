@@ -65,11 +65,7 @@ class HeaderBannerWidget extends StatelessWidget {
 
                   Image.asset('assets/images/back.png')
 
-                  //assets\images\back.png
-                  // Image.asset("assets/images/back.png",
-                  // height: 10,
-                  // width: 10,
-                  // )
+          
                 ],
               ),
             ],

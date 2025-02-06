@@ -388,6 +388,7 @@ mixin _$FeedPost {
   List<Product>? get products => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
   String? get views => throw _privateConstructorUsedError;
+  String? get wow_status => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'feed_detail')
@@ -424,6 +425,7 @@ abstract class $FeedPostCopyWith<$Res> {
       List<Product>? products,
       String? wow,
       String? views,
+      String? wow_status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
       @JsonKey(name: 'interested') Interested? interested,
@@ -460,6 +462,7 @@ class _$FeedPostCopyWithImpl<$Res, $Val extends FeedPost>
     Object? products = freezed,
     Object? wow = freezed,
     Object? views = freezed,
+    Object? wow_status = freezed,
     Object? createdAt = freezed,
     Object? feedDetail = freezed,
     Object? interested = freezed,
@@ -509,6 +512,10 @@ class _$FeedPostCopyWithImpl<$Res, $Val extends FeedPost>
       views: freezed == views
           ? _value.views
           : views // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wow_status: freezed == wow_status
+          ? _value.wow_status
+          : wow_status // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -592,6 +599,7 @@ abstract class _$$FeedPostImplCopyWith<$Res>
       List<Product>? products,
       String? wow,
       String? views,
+      String? wow_status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
       @JsonKey(name: 'interested') Interested? interested,
@@ -629,6 +637,7 @@ class __$$FeedPostImplCopyWithImpl<$Res>
     Object? products = freezed,
     Object? wow = freezed,
     Object? views = freezed,
+    Object? wow_status = freezed,
     Object? createdAt = freezed,
     Object? feedDetail = freezed,
     Object? interested = freezed,
@@ -679,6 +688,10 @@ class __$$FeedPostImplCopyWithImpl<$Res>
           ? _value.views
           : views // ignore: cast_nullable_to_non_nullable
               as String?,
+      wow_status: freezed == wow_status
+          ? _value.wow_status
+          : wow_status // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -714,6 +727,7 @@ class _$FeedPostImpl implements _FeedPost {
       final List<Product>? products,
       this.wow,
       this.views,
+      this.wow_status,
       @JsonKey(name: 'created_at') this.createdAt,
       @JsonKey(name: 'feed_detail') this.feedDetail,
       @JsonKey(name: 'interested') this.interested,
@@ -756,6 +770,8 @@ class _$FeedPostImpl implements _FeedPost {
   @override
   final String? views;
   @override
+  final String? wow_status;
+  @override
   @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
@@ -770,7 +786,7 @@ class _$FeedPostImpl implements _FeedPost {
 
   @override
   String toString() {
-    return 'FeedPost(id: $id, userId: $userId, image: $image, caption: $caption, like: $like, approved: $approved, offers: $offers, captionTitle: $captionTitle, products: $products, wow: $wow, views: $views, createdAt: $createdAt, feedDetail: $feedDetail, interested: $interested, userDetail: $userDetail)';
+    return 'FeedPost(id: $id, userId: $userId, image: $image, caption: $caption, like: $like, approved: $approved, offers: $offers, captionTitle: $captionTitle, products: $products, wow: $wow, views: $views, wow_status: $wow_status, createdAt: $createdAt, feedDetail: $feedDetail, interested: $interested, userDetail: $userDetail)';
   }
 
   @override
@@ -791,6 +807,8 @@ class _$FeedPostImpl implements _FeedPost {
             const DeepCollectionEquality().equals(other._products, _products) &&
             (identical(other.wow, wow) || other.wow == wow) &&
             (identical(other.views, views) || other.views == views) &&
+            (identical(other.wow_status, wow_status) ||
+                other.wow_status == wow_status) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.feedDetail, feedDetail) ||
@@ -816,6 +834,7 @@ class _$FeedPostImpl implements _FeedPost {
       const DeepCollectionEquality().hash(_products),
       wow,
       views,
+      wow_status,
       createdAt,
       feedDetail,
       interested,
@@ -850,6 +869,7 @@ abstract class _FeedPost implements FeedPost {
           final List<Product>? products,
           final String? wow,
           final String? views,
+          final String? wow_status,
           @JsonKey(name: 'created_at') final String? createdAt,
           @JsonKey(name: 'feed_detail') final FeedDetail? feedDetail,
           @JsonKey(name: 'interested') final Interested? interested,
@@ -883,6 +903,8 @@ abstract class _FeedPost implements FeedPost {
   String? get wow;
   @override
   String? get views;
+  @override
+  String? get wow_status;
   @override
   @JsonKey(name: 'created_at')
   String? get createdAt;

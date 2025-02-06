@@ -650,7 +650,8 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                           child: const Icon(Icons.error),
                         ); // Show error icon if image fails to load
                       },
-                    )),
+                    ),
+                    ),
                 SizedBox(
                   width: 20.w,
                 ),

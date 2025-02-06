@@ -33,37 +33,37 @@ class HomePageStoryContainer extends ConsumerStatefulWidget {
 
 class _HomePageStoryContainerState
     extends ConsumerState<HomePageStoryContainer> {
-  late List<Post> stories;
-  late List<String> vendors;
-  late List<String> vendorImage;
-  late List<bool> hasGift;
-  late Map<String, List<Post>> groupedStories;
+  // late List<Post> stories;
+  // late List<String> vendors;
+  // late List<String> vendorImage;
+  // late List<bool> hasGift;
+  // late Map<String, List<Post>> groupedStories;
 
   @override
   void initState() {
     super.initState();
 
     // Initialize stories
-    stories = widget.feedStoryContent?.posts ?? [];
+    // stories = widget.feedStoryContent?.posts ?? [];
 
     // Group stories by vendor ID
-    groupedStories = {};
-    for (var story in stories) {
-      groupedStories.putIfAbsent(story.vendorId!, () => []).add(story);
-    }
+    // groupedStories = {};
+    // for (var story in stories) {
+    //   groupedStories.putIfAbsent(story.vendorId!, () => []).add(story);
+    // }
 
     // Extract only one story per vendor (the first story)
-    var uniqueStories = groupedStories.values
-        .map((vendorStories) => vendorStories.first)
-        .toList();
+    // var uniqueStories = groupedStories.values
+    //     .map((vendorStories) => vendorStories.first)
+    //     .toList();
 
     // Set the filtered list of stories
-    stories = uniqueStories;
+    // stories = uniqueStories;
 
-    // Extract unique vendors and their images
-    vendors = stories.map((story) => story.vendorName!).toList();
-    vendorImage = stories.map((story) => story.vendorImage!).toList();
-    hasGift = stories.map((story) => story.hasSponsoredGifts ?? false).toList();
+    // // Extract unique vendors and their images
+    // vendors = stories.map((story) => story.vendorName!).toList();
+    // vendorImage = stories.map((story) => story.vendorImage!).toList();
+    // hasGift = stories.map((story) => story.hasSponsoredGifts ?? false).toList();
   }
 
   @override
@@ -88,7 +88,7 @@ class _HomePageStoryContainerState
       },
       child: Column(
         children: [
-          if (widget.index < vendorImage.length)
+          
             Stack(
               clipBehavior: Clip.none,
               alignment: Alignment.center,
@@ -115,7 +115,7 @@ class _HomePageStoryContainerState
                   child: CircleAvatar(
                     radius: 38.r,
                     backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
-                    backgroundImage: NetworkImage(vendorImage[widget.index]),
+                    backgroundImage: NetworkImage(widget.vendorImage!),
                   ),
                 ),
 
@@ -125,9 +125,7 @@ class _HomePageStoryContainerState
                   child: SizedBox(
                     width: 100.w,
                     child: Text(
-                      widget.index < vendors.length
-                          ? vendors[widget.index]
-                          : '',
+                      widget.vendorName!,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 11.sp,
@@ -157,7 +155,7 @@ class _HomePageStoryContainerState
                         ),
                       )
                     // : widget.showGift!
-                    : (widget.index < hasGift.length && hasGift[widget.index])
+                    : (widget.showGift?? false)
                         ? Positioned(
                             bottom: -5.h,
                             right: 0,

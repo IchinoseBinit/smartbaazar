@@ -82,8 +82,8 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
             const Divider(thickness: 1, height: 2, color: Color(0xffD9D9D9)),
             Container(
               padding: const EdgeInsets.all(5),
-              decoration:
-                  BoxDecoration(border: Border.all(color: const Color(0xffD9D9D9))),
+              decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xffD9D9D9))),
               child: Column(
                 children: [
                   SizedBox(height: 5.h),
@@ -171,7 +171,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                       );
                     },
                     error: (error, stackTrace) =>
-                        const Text("Error has occurred"),
+                       Center(child: Text("please login")),
                     loading: () => const CircularProgressIndicator(),
                   ),
                   Row(
@@ -185,19 +185,39 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      CreateListingCardWidget(
-                        child: Flexible(
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            ),
+                            const BoxShadow(
+                              color: Colors.white,
+                              spreadRadius: 0,
+                              blurRadius: 10,
+                              offset: Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: Card(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r)),
                           child: SizedBox(
-                            height: 10,
-                            width: 100,
+                            height: 40.h,
+                            width: 150.w,
                             child: TextField(
                               expands: false,
                               controller: qtycontroller,
                               keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
+                              decoration: InputDecoration(
+                                fillColor: Colors.grey.shade50,
+                                border: const OutlineInputBorder(
                                     borderSide: BorderSide.none),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide.none),
                               ),
                             ),

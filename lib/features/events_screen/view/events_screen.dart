@@ -25,6 +25,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -43,6 +44,7 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 class EventsScreen extends ConsumerStatefulWidget {
   const EventsScreen({super.key});
@@ -234,15 +236,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
+        var homecategory = ref.watch(homeCategoryProvider);
+
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(geteventResponseProvider);
-    final SearchProductModels =
-        ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(122));
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('5'));
 
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
+Future<void> refresh() async {
+  ref.refresh(geteventResponseProvider);
+  ref.refresh(getCategoriesProvider(122));
+  ref.refresh(getPostTypeStoryApiProvider('5'));
+}
 
     // }, error: (error, stackTrace) {
 
@@ -302,12 +311,12 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   children: [
                                     InkWell(
                                         onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const VendorProfileScreen(),
+                                          //     ));
                                         },
                                       child: const CircleAvatar(
                                             radius: 20,
@@ -748,66 +757,85 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       ),
                     ),
                   ),
-                   asyncPostTypeContent.when(
-  data: (feedStoryData) {
-    final homeStory = feedStoryData.homeStory;
+    homecategory.when(
+                    data: (feedStoryData) {
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-    if (homeStory?.story?.posts != null) {
-      final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-      return SizedBox(
-        height: 100.h,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-            return HomePageStoryContainer(
-              index: index,
-              vendorName: story.vendorName ?? "Unknown Vendor",
-              vendorImage: story.vendorImage ??
-                  "https://example.com/default-image.png",
-              storyCount: story.storyCount ?? 0,
-              showGift: story.hasSponsoredGifts ?? false,
-              feedStoryContent: Story(posts: [story]),
-              userId: story.vendorId!,
-            );
-          },
-        ),
-      );
-    }
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
 
-    return const Center(
-      child: Text('No stories available.'),
-    );
-  },
-  loading: () => SizedBox(
-    height: 100.h,
-    child: ListView.builder(
-      padding: EdgeInsets.zero,
-      scrollDirection: Axis.horizontal,
-      itemCount: 5, // Number of shimmer placeholders
-      itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: 70.w,
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    ),
-  ),
-  error: (error, stack) =>
-      Center(child: Text('Error: $error')),
-),
+                      return const Center(
+                        child: Text('No stories available.'),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
 
                   SizedBox(
                     height: 6.h,
@@ -1131,6 +1159,23 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 5.w),
                                       child: ProductDetailWidget(
+                                        
+                                           savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                         lat: prod.user.latitude,
                                         long: prod.user.longitude,
                                         productid: prod.id,
@@ -1249,6 +1294,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               VProduct pro =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
+                                                     savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
                                                 productid: pro.id,
@@ -1356,6 +1417,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[1][index];
                                         return ProductDetailWidget(
+                                               savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1453,6 +1530,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[2][index];
                                         return ProductDetailWidget(
+                                               savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1550,6 +1643,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[4][index];
                                         return ProductDetailWidget(
+                                               savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1704,6 +1813,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -1790,6 +1915,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -1872,6 +2013,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -2215,6 +2372,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                               VProduct prod = products[index];
 
                                               return ProductDetailWidget(
+                                                     savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -2323,6 +2496,22 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
                                 return ProductDetailWidget(
+                                       savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
                                   productid: hot.id,

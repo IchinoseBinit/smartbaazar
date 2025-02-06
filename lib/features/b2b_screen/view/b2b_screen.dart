@@ -22,6 +22,7 @@ import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
@@ -39,6 +40,7 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 import '../../home/api/post_type_story_api.dart';
 import '../../home/view/home_page_story_container.dart';
@@ -132,6 +134,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   int? dynamicsize;
 
   int _currentPage = 0;
+  int? selectedTab = 0;
 
   @override
   void initState() {
@@ -217,6 +220,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    var homecategory = ref.watch(homeCategoryProvider);
 
     //     final adsList = ref.watch(fetchAdsProvider);
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
@@ -224,6 +228,18 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(217));
+
+    Future<void> refresh() async {
+      // Refreshing the providers
+      ref.refresh(bottomNavIndexProvider);
+      ref.refresh(homeCategoryProvider);
+      ref.refresh(getPostTypeStoryApiProvider('7'));
+      ref.refresh(getB2bResponseProvider);
+      ref.refresh(searchProvider(_searchController.text));
+      ref.refresh(getCategoriesProvider(217));
+
+      // If needed, perform any additional tasks here after refreshing
+    }
 
     // asyncbajarValue.when(data: (data) {
     dynamicsize = 500;
@@ -284,17 +300,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
-                                        },
+                                        onTap: () {},
                                         child: Image.asset(
-                                           height: 30,
-              width: 40,
+                                            height: 30,
+                                            width: 40,
                                             'assets/images/Smartbazaar-Icon-for-QR.png')),
                                     SizedBox(
                                       height: 40,
@@ -740,35 +749,53 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       ),
                     ),
                   ),
-                  asyncPostTypeContent.when(
+                  homecategory.when(
                     data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-                      if (homeStory?.story?.posts != null) {
-                        final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-                        return SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: posts.length,
-                            itemBuilder: (context, index) {
-                              final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-                              return HomePageStoryContainer(
-                                index: index,
-                                vendorName:
-                                    story.vendorName ?? "Unknown Vendor",
-                                vendorImage: story.vendorImage ??
-                                    "https://example.com/default-image.png",
-                                storyCount: story.storyCount ?? 0,
-                                showGift: story.hasSponsoredGifts ?? false,
-                                feedStoryContent: Story(posts: [story]),
-                                userId: story.vendorId!,
-                              );
-                            },
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
                           ),
                         );
                       }
@@ -1169,11 +1196,17 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               children: List.generate(data.hotProducts.length,
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
-                                print("kala ${hot.discount_percentage}");
                                 return Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.w),
                                   child: ProductDetailWidget(
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                    savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser,
                                     lat: hot.user.latitude,
                                     long: hot.user.longitude,
                                     productid: hot.id,
@@ -1206,7 +1239,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         ),
                       );
                     },
-                    error: (error, stackTrace) => Text(error.toString()),
+                    error: (error, stackTrace) => Text("Please login again"),
                     loading: () => SizedBox(
                       height: 340.h,
                       child: ListView.builder(
@@ -1282,6 +1315,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[0][index];
                                         return ProductDetailWidget(
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser,
+                                          onRefresh: () {
+                                            refresh();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1405,6 +1446,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[1][index];
                                         return ProductDetailWidget(
+                                          onRefresh: () {
+                                            refresh();
+                                          },
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser,
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1521,6 +1570,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[2][index];
                                         return ProductDetailWidget(
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser,
+                                          onRefresh: () {
+                                            refresh();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1608,6 +1665,14 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[4][index];
                                         return ProductDetailWidget(
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser,
+                                          onRefresh: () {
+                                            refresh();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1717,19 +1782,22 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      if (data.global.isNotEmpty)
-                                        ...data.global.map((e) {
-                                          return NotStoryWidget(
-                                            vImage: e
-                                                .brandLogo, // Use the correct variable name
-                                            index: data.global
-                                                .indexOf(e), // Get the index
-                                            brandname: e.brandName,
-                                          );
-                                        }).toList(),
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.h),
+                                    child: Row(
+                                      children: [
+                                        if (data.global.isNotEmpty)
+                                          ...data.global.map((e) {
+                                            return NotStoryWidget(
+                                              vImage: e
+                                                  .brandLogo, // Use the correct variable name
+                                              index: data.global
+                                                  .indexOf(e), // Get the index
+                                              brandname: e.brandName,
+                                            );
+                                          }).toList(),
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 5.h,
@@ -1747,6 +1815,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               VProduct prod =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser,
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.latitude,
                                                 productid: prod.id,
@@ -1797,16 +1874,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: data.domestic.map((e) {
-                                        return NotStoryWidget(
-                                          vImage: e.brandLogo,
-                                          index: data.domestic.indexOf(e),
-                                          brandname: e.brandName,
-                                        );
-                                      }).toList(),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.h),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: data.domestic.map((e) {
+                                          return NotStoryWidget(
+                                            vImage: e.brandLogo,
+                                            index: data.domestic.indexOf(e),
+                                            brandname: e.brandName,
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
@@ -1834,6 +1914,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   data.insidearr[1][index];
 
                                               return ProductDetailWidget(
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -1877,16 +1960,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: data.spotlight.map((e) {
-                                        return NotStoryWidget(
-                                          vImage: e.brandLogo,
-                                          index: data.spotlight.indexOf(e),
-                                          brandname: e.brandName,
-                                        );
-                                      }).toList(),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.h),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: data.spotlight.map((e) {
+                                          return NotStoryWidget(
+                                            vImage: e.brandLogo,
+                                            index: data.spotlight.indexOf(e),
+                                            brandname: e.brandName,
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
@@ -1909,6 +1995,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               VProduct prod =
                                                   data.insidearr[2][index];
                                               return ProductDetailWidget(
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser,
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -2139,7 +2234,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       return SizedBox(
                         width: double.infinity,
                         height:
-                            productsList[selectedIndex!].isEmpty ? 150 : 420.h,
+                            productsList[selectedTab!].isEmpty ? 130 : 420.h,
                         child: ValueListenableBuilder<int>(
                           valueListenable: selectedIndexNotifier,
                           builder: (context, selectedIndex, child) {
@@ -2218,6 +2313,15 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 VProduct prod = products[index];
 
                                                 return ProductDetailWidget(
+                                                  savedid: prod.savedByLoggedUser ==
+                                                              null ||
+                                                          prod.savedByLoggedUser!
+                                                              .isEmpty
+                                                      ? []
+                                                      : prod.savedByLoggedUser,
+                                                  onRefresh: () {
+                                                    refresh();
+                                                  },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -2349,56 +2453,53 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           runSpacing: 15.h, // Vertical spacing between rows
                           children: List.generate(data.product.length, (index) {
                             VProduct res = data.product[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetailScreen(
-                                      productId: res.id,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: SizedBox(
-                                width:
-                                    (MediaQuery.of(context).size.width - 30.w) /
-                                        2, // Adjust for two items per row
-                                child: Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  shadowColor:
-                                      const Color(0xff3D215F).withOpacity(0.5),
-                                  elevation: 9,
-                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: AllProductDetailWidget(
-                                    productid: res.id,
-                                    lat: res.user.latitude,
-                                    long: res.user.longitude,
-                                    shortestDistance: res.user.shortestDistance,
-                                    id: int.tryParse(res.id),
-                                    membershipid: res.user.membership_id,
-                                    offer: res.offers,
-                                    posttype: res.post_type_id,
-                                    didcountpercentage: res.discount_percentage,
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    wow: res.wow,
-                                    comment: res.commentcount.toString(),
-                                    issponsored: res.user.sponsored,
-                                    discounttedPrice: res.discounted_price,
-                                    lefttile: "B2B",
-                                    productImage: res.image,
-                                    Vimage: res.user.photo,
-                                    vendorname: res.user.name,
-                                    title: res.title,
-                                    price: res.price,
-                                    similarproductCount:
-                                        res.similarProductCount,
-                                    membershipColor: res.user.membershipColor,
-                                    membershipTitle: res.user.membershipTitle,
-                                  ),
+                            return SizedBox(
+                              width:
+                                  (MediaQuery.of(context).size.width - 30.w) /
+                                      2, // Adjust for two items per row
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shadowColor:
+                                    const Color(0xff3D215F).withOpacity(0.5),
+                                elevation: 9,
+                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: AllProductDetailWidget(
+                                  
+                                       savedid: res.savedByLoggedUser == null ||
+                                          res.savedByLoggedUser!.isEmpty
+                                      ? []
+                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
+                                         
+                                  onRefresh: () {
+                                    refresh();
+                                  },
+                                  productid: res.id,
+                                  lat: res.user.latitude,
+                                  long: res.user.longitude,
+                                  shortestDistance: res.user.shortestDistance,
+                                  id: int.tryParse(res.id),
+                                  membershipid: res.user.membership_id,
+                                  offer: res.offers,
+                                  posttype: res.post_type_id,
+                                  didcountpercentage: res.discount_percentage,
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  wow: res.wow,
+                                  comment: res.commentcount.toString(),
+                                  issponsored: res.user.sponsored,
+                                  discounttedPrice: res.discounted_price,
+                                  lefttile: "B2B",
+                                  productImage: res.image,
+                                  Vimage: res.user.photo,
+                                  vendorname: res.user.name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount:
+                                      res.similarProductCount,
+                                  membershipColor: res.user.membershipColor,
+                                  membershipTitle: res.user.membershipTitle,
                                 ),
                               ),
                             );

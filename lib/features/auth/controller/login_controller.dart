@@ -36,13 +36,12 @@ class LoginController extends StateNotifier<GenericState> {
       state = LoadedState<LoginData>(response: loginData);
       _storeUserData(loginData);
 
-     Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => MainScreen(),
-  ),
-);
-
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ),
+      );
     } catch (e) {
       print("Login error: $e");
       _handleError(context, e);
@@ -71,10 +70,7 @@ class LoginController extends StateNotifier<GenericState> {
         SmartClient.token = session['extra']['authToken'];
         SmartClient.userEmail = session['result']['email'];
         SmartClient.userName = session['result']['name'];
-                SmartClient.userphoto = session['result']['photo_url'];
-
-
-        // TODO: SmartClient.token is not set here
+        SmartClient.userPhoto = session['result']['photo_url'];
 
         Navigator.pushReplacement(
           context,
@@ -111,8 +107,13 @@ class LoginController extends StateNotifier<GenericState> {
     SmartClient.userId = loginData.result.id.toString();
     SmartClient.userName = loginData.result.name;
     SmartClient.token = loginData.extra.authToken;
-    
     SmartClient.refresh = loginData.extra.refreshToken;
+    SmartClient.userEmail = loginData.result.email!;
+        SmartClient.phone = loginData.result.phone!;
+            SmartClient.userPhoto = loginData.result.photo_url!;
+
+
+
 
     await prefs.setString("session", json.encode(loginData.toJson()));
     await prefs.setString("accessToken", SmartClient.token);
@@ -120,9 +121,9 @@ class LoginController extends StateNotifier<GenericState> {
     await prefs.setString("name", SmartClient.userName);
     await prefs.setString("email", SmartClient.userEmail);
     await prefs.setString("phone", SmartClient.phone);
-    await prefs.setString("laravel", SmartClient.laravelsession);
-        await prefs.setString("photo", SmartClient.userphoto);
-
+    await prefs.setString("laravel", SmartClient.laravelSession);
+    await prefs.setString("photo", SmartClient.userPhoto);
+    await prefs.setString("userId", SmartClient.userId);
   }
 
   Future<String?> _getSessionData() async {
@@ -148,8 +149,7 @@ class LoginController extends StateNotifier<GenericState> {
       context: context,
       builder: (_) => AlertDialog(
         title: const Text("Message"),
-        content:
-            const Text("Plesae check your email and password and try again later"),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -185,6 +185,6 @@ class LoginController extends StateNotifier<GenericState> {
     await prefs.setString("name", SmartClient.userName);
     await prefs.setString("email", SmartClient.userEmail);
     await prefs.setString("phone", SmartClient.phone);
-    await prefs.setString("laravel", SmartClient.laravelsession);
+    await prefs.setString("laravel", SmartClient.laravelSession);
   }
 }

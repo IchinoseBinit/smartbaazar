@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
@@ -121,8 +122,10 @@ class MessageViewScreen extends ConsumerWidget {
                                           ),
                                         ),
                                       ),
-                                      error: (error, stack) =>
-                                          Text('Error: $error'),
+                                      error: (error, stack) => InkWell(
+                                          onTap: () => const LoginScreen(),
+                                          child: const Text(
+                                              'Please login and try again')),
                                     );
                                   },
                                 );
@@ -147,8 +150,8 @@ class MessageViewScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          error: (error, stack) =>
-                              Center(child: Text('Error: $error')),
+                          error: (error, stack) => const InkWell(
+                              child: Center(child: Text('Please login again'))),
                         );
                       },
                     ),
@@ -207,21 +210,20 @@ class MessageViewScreen extends ConsumerWidget {
                                         ],
                                       ),
                                       SizedBox(height: 10.h),
-                                
+
                                       // Alert Body Text
                                       Text(
                                         alert.body ?? 'No body',
                                         style: TextStyle(
                                           fontSize: 14.sp,
-                                          color:
-                                              Colors.black.withOpacity(0.8),
+                                          color: Colors.black.withOpacity(0.8),
                                         ),
                                         maxLines: 5,
                                         overflow: TextOverflow.ellipsis,
                                         softWrap: true,
                                       ),
                                       SizedBox(height: 20.h),
-                                
+
                                       // Promotional Image
                                       if (alert.image != null)
                                         Center(
@@ -233,7 +235,7 @@ class MessageViewScreen extends ConsumerWidget {
                                           ),
                                         ),
                                       SizedBox(height: 20.h),
-                                
+
                                       // Date and Time Row
                                       Row(
                                         mainAxisAlignment:
@@ -243,8 +245,8 @@ class MessageViewScreen extends ConsumerWidget {
                                             alert.createdAt!,
                                             style: TextStyle(
                                               fontSize: 12.sp,
-                                              color: Colors.black
-                                                  .withOpacity(0.6),
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
                                             ),
                                           ),
                                         ],
@@ -361,7 +363,7 @@ class MessageViewScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 40.h),
+              // SizedBox(height: 40.h),
             ],
           ),
         ),
@@ -390,14 +392,17 @@ class ListOfMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-          builder: (context) => ChatScreen(
-            threadId: threadId,
-            username: subject,
-            postId: postId,
-            //  isImportant: isImportant,
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              
+              threadId: threadId,
+              username: subject,
+              postId: postId,
+              //  isImportant: isImportant,
+            ),
           ),
-        ));
+        );
       },
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -407,9 +412,7 @@ class ListOfMessages extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.h),
               decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffD9D9D9)
-              ),
+                  shape: BoxShape.circle, color: Color(0xffD9D9D9)),
               child: const Icon(Icons.person_3_outlined),
             ),
             SizedBox(width: 11.w),

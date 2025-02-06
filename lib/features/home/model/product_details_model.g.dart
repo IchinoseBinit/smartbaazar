@@ -277,23 +277,25 @@ Map<String, dynamic> _$$NearestBranchImplToJson(_$NearestBranchImpl instance) =>
       'latitude': instance.latitude,
     };
 
-_$UserDetailsImpl _$$UserDetailsImplFromJson(Map<String, dynamic> json) =>
-    _$UserDetailsImpl(
-      name: json['name'] as String,
-      photo: json['photo'] as String,
-      userPhotoUrl: json['user_photo_url'] as String,
-      hasSponsoredGifts: json['has_sponsored_gifts'] as bool,
+_$MyProductDeailModelImpl _$$MyProductDeailModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MyProductDeailModelImpl(
+      name: json['name'] as String?,
+      photo: json['photo'] as String?,
+      userPhotoUrl: json['user_photo_url'] as String?,
+      hasSponsoredGifts: json['has_sponsored_gifts'] as bool?,
       livePrizes: (json['livePrizes'] as num?)?.toInt(),
       productCount: (json['productCount'] as num?)?.toInt(),
       storyCount: (json['storyCount'] as num?)?.toInt(),
       subscribers: (json['subscribers'] as num?)?.toInt(),
       distance: (json['distance'] as num?)?.toDouble(),
-      membershipId: json['membership_id'] as String,
-      membershipTitle: json['membership_title'] as String,
-      membershipColor: json['membership_color'] as String,
+      membershipId: json['membership_id'] as String?,
+      membershipTitle: json['membership_title'] as String?,
+      membershipColor: json['membership_color'] as String?,
     );
 
-Map<String, dynamic> _$$UserDetailsImplToJson(_$UserDetailsImpl instance) =>
+Map<String, dynamic> _$$MyProductDeailModelImplToJson(
+        _$MyProductDeailModelImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'photo': instance.photo,
@@ -397,8 +399,15 @@ Map<String, dynamic> _$$LivePrizeImplToJson(_$LivePrizeImpl instance) =>
     };
 
 _$ShopImpl _$$ShopImplFromJson(Map<String, dynamic> json) => _$ShopImpl(
-      id: json['id'] as String,
-      image: json['image'] as String,
+      id: json['id'] as String?,
+      image: json['image'] as String?,
+      userid: json['userid'] as String?,
+      vendor_name: json['vendor_name'] as String?,
+      vendor_photo: json['vendor_photo'] as String?,
+      wow: json['wow'] as String?,
+      similarproductcount: (json['similarproductcount'] as num?)?.toInt(),
+      comment_count: json['comment_count'] as String?,
+      average_rating: json['average_rating'] as String?,
       discountPercentage: (json['discount_percentage'] as num?)?.toDouble(),
     );
 
@@ -406,6 +415,13 @@ Map<String, dynamic> _$$ShopImplToJson(_$ShopImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'image': instance.image,
+      'userid': instance.userid,
+      'vendor_name': instance.vendor_name,
+      'vendor_photo': instance.vendor_photo,
+      'wow': instance.wow,
+      'similarproductcount': instance.similarproductcount,
+      'comment_count': instance.comment_count,
+      'average_rating': instance.average_rating,
       'discount_percentage': instance.discountPercentage,
     };
 

@@ -34,6 +34,7 @@ class FeedPost with _$FeedPost {
     @JsonKey(name: 'wow') dynamic wow,
     @JsonKey(name: 'user_id') String? userId,
     @JsonKey(name: 'offers') String? offers,
+    @JsonKey(name: 'wow_status') String? wowstatus,
     @JsonKey(name: 'products') List<Product>? products,
     @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
     @JsonKey(name: 'interested') Interested? interested,

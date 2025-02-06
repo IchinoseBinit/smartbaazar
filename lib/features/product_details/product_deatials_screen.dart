@@ -15,7 +15,9 @@ import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
+import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
@@ -61,6 +63,7 @@ class ProductDetailScreen extends ConsumerWidget {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController msgcontroller = TextEditingController();
   final TextEditingController _reviewcontroller = TextEditingController();
+  final FocusNode _reviewFocus = FocusNode();
 
   final String productId;
   // final int _selectedIndex = 0;
@@ -76,6 +79,10 @@ class ProductDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void focusreview() {
+      FocusScope.of(context).requestFocus(_reviewFocus);
+    }
+
     final double sch = MediaQuery.of(context).size.height;
     // final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
     // final adsList = ref.watch(fetchAdsProvider);
@@ -92,7 +99,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          print("binod ${data.result?.location}");
+          // print("bibash ${data.result?.user_details}");
           return Scaffold(
             extendBody: true,
             floatingActionButtonLocation:
@@ -293,7 +300,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch * 4);
+                                  _scrolltoo(sch * 0.8);
                                 },
                                 child: Text(
                                   "Description",
@@ -307,16 +314,16 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      if (data.result != null)
-                        HeaderBannerWidget(
-                            membershipid:
-                                data.result!.user_details!.membershipId,
-                            brandname:
-                                data.result!.user_details!.membershipTitle,
-                            id: data.result!.user!.id,
-                            vname: data.result!.user!.name,
-                            img: data.result!.userPhotoUrl,
-                            title: data.result?.user?.name ?? 'store'),
+                      // if (data.result != null &&
+                      //     data.result?.user_details != null)
+                      HeaderBannerWidget(
+                        membershipid: data.result!.user_details!.membershipId!,
+                        brandname: data.result!.user_details!.membershipTitle!,
+                        id: data.result!.user!.id,
+                        vname: data.result!.user!.name,
+                        img: data.result!.userPhotoUrl,
+                        title: data.result!.user!.name,
+                      ),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -835,6 +842,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     height: 4.h,
                                   ),
                                   TextField(
+                                    focusNode: _reviewFocus,
                                     controller: _reviewcontroller,
                                     maxLines: 5,
                                     decoration: const InputDecoration(
@@ -855,21 +863,29 @@ class ProductDetailScreen extends ConsumerWidget {
                                     children: [
                                       InkWell(
                                         onTap: () async {
-                                          ref
-                                              .watch(
-                                            postreviewProvider(
-                                                int.tryParse(productId)!,
-                                                _reviewcontroller.text,
-                                                rating.toInt().toString()),
-                                          )
-                                              .whenData(
-                                            (value) {
-                                              showCustomToast(
-                                                context,
-                                                'Your review has been added',
-                                              );
-                                            },
-                                          );
+                                          _reviewcontroller.text.isEmpty ||
+                                                  rating.toInt() == 0
+                                              ? showCustomToast(context,
+                                                  "please fill review and rating")
+                                              : ref
+                                                  .watch(
+                                                  postreviewProvider(
+                                                      int.tryParse(productId)!,
+                                                      _reviewcontroller.text,
+                                                      rating
+                                                          .toInt()
+                                                          .toString()),
+                                                )
+                                                  .whenData(
+                                                  (value) {
+                                                    showCustomToast(
+                                                      context,
+                                                      'Your review has been added',
+                                                    );
+                                                  },
+                                                );
+                                          showCustomToast(
+                                              context, "Thanks for review");
                                           ref.refresh(
                                               productDetailsProvider(productId)
                                                   .future);
@@ -922,6 +938,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                     height: 10.h,
                                   ),
                                   ChatReviewWidget(
+                                    replytap: focusreview,
                                     rating: data.result?.ratingComment,
                                   ),
                                 ],
@@ -979,59 +996,74 @@ class ProductDetailScreen extends ConsumerWidget {
                             }),
                           ),
 
-                          if (data.result?.deals != null)
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: SizedBox(
-                                child: selectedIndex == 1
-                                    ? Row(
-                                        children: data.result!.deals!.map(
-                                        (e) {
-                                          return buildDealItemWidget(
-                                              data: Deal(
-                                                  discount_percentage:
-                                                      e.discountPercentage
-                                                                  .toString() ==
-                                                              'null'
-                                                          ? '0'
-                                                          : e.discountPercentage
-                                                              .toString(),
-                                                  id: e.id,
-                                                  image: e.image));
-                                        },
-                                      ).toList())
-                                    // ? CardWidget(
-                                    //     deal: data.result!.deals ??
-                                    //         []) // Show deals content for selectedIndex 1
-                                    : selectedIndex == 2
-                                        ? (data.result?.shop == null ||
-                                                data.result!.shop!.isEmpty
-                                            ? Center(child: nolistingfound())
+                          data.result?.deals != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: SizedBox(
+                                    child: selectedIndex == 1
+                                        ? data.result?.deals?.length == 0
+                                            ? Center(
+                                                child: nolistingfound(),
+                                              )
                                             : Row(
                                                 children:
-                                                    data.result!.shop!.map((e) {
-                                                  return buildDealItemWidget(
-                                                    data: Deal(
-                                                      discount_percentage: e
-                                                              .discountPercentage
-                                                              ?.toString() ??
-                                                          '0',
-                                                      id: e.id,
-                                                      image: e.image,
-                                                    ),
+                                                    data.result!.deals!.map(
+                                                (e) {
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => )),
+                                                    },
+                                                    child: buildDealItemWidget(
+                                                        data: Deal(
+                                                            discount_percentage: e
+                                                                        .discountPercentage
+                                                                        .toString() ==
+                                                                    'null'
+                                                                ? '0'
+                                                                : e.discountPercentage
+                                                                    .toString(),
+                                                            id: e.id,
+                                                            image: e.image)),
                                                   );
-                                                }).toList(),
-                                              ))
-                                        : selectedIndex == 3
-                                            ? SwapablePostCard(
-                                                post: data.result!.feedPost!)
-                                            : selectedIndex == 4
-                                                ? LiveSwapble(
+                                                },
+                                              ).toList())
+                                        // ? CardWidget(
+                                        //     deal: data.result!.deals ??
+                                        //         []) // Show deals content for selectedIndex 1
+                                        : selectedIndex == 2
+                                            ? (data.result?.shop == null ||
+                                                    data.result!.shop!.isEmpty
+                                                ? Center(
+                                                    child: nolistingfound())
+                                                : Row(
+                                                    children: data.result!.shop!
+                                                        .map((e) {
+                                                      return buildDealItemWidget(
+                                                        data: Deal(
+                                                          discount_percentage: e
+                                                                  .discountPercentage
+                                                                  ?.toString() ??
+                                                              '0',
+                                                          id: e.id,
+                                                          image: e.image,
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  ))
+                                            : selectedIndex == 3
+                                                ? SwapablePostCard(
                                                     post:
-                                                        data.result!.livePrizes)
-                                                : const SizedBox(), // Fallback for other index values
-                              ),
-                            ),
+                                                        data.result!.feedPost!)
+                                                : selectedIndex == 4
+                                                    ? LiveSwapble(
+                                                        post: data
+                                                            .result!.livePrizes)
+                                                    : const SizedBox(), // Fallback for other index values
+                                  ),
+                                )
+                              : Center(
+                                  child: nolistingfound(),
+                                ),
 
                           SizedBox(
                             height: 10.h,
@@ -1123,12 +1155,14 @@ class ProductDetailScreen extends ConsumerWidget {
                                     ),
                                   ),
                                 )
-                              : Padding(
-                                  padding: EdgeInsets.only(top: 50.h),
-                                  child: nolistingfound(),
+                              : Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 50.h),
+                                    child: nolistingfound(),
+                                  ),
                                 ),
                           SizedBox(
-                            height: 50.h,
+                            height: 35.h,
                           ),
                           // Container(
                           //   width: double.infinity,
@@ -1289,7 +1323,7 @@ class CardWidget extends StatelessWidget {
                         width: 120,
                         height: 260,
                         child: Image.network(
-                          data.image,
+                          data.image!,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -1304,8 +1338,10 @@ class CardWidget extends StatelessWidget {
 
 class ChatReviewWidget extends StatefulWidget {
   final List<RatingComment>? rating;
+  final VoidCallback replytap;
 
-  const ChatReviewWidget({super.key, required this.rating});
+  const ChatReviewWidget(
+      {super.key, required this.rating, required this.replytap});
 
   @override
   _ChatReviewWidgetState createState() => _ChatReviewWidgetState();
@@ -1404,13 +1440,16 @@ class _ChatReviewWidgetState extends State<ChatReviewWidget> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 290.w),
-                  child: const Text(
-                    "Reply",
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.black,
+                InkWell(
+                  onTap: widget.replytap,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 290.w),
+                    child: const Text(
+                      "Reply",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),

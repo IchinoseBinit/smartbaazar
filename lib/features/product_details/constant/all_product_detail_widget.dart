@@ -1,49 +1,54 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AllProductDetailWidget extends StatelessWidget {
-  AllProductDetailWidget({
-    super.key,
-    // this.membership_title,
-    this.id,
-    this.offer = '',
-    this.title = "Trade",
-    this.discounttedPrice = '0',
-    this.comment = '0',
-    this.price = '1',
-    this.vendorname = 'John',
-    this.distance = 2,
-    this.Vimage = '',
-    this.productImage = '',
-    this.lefttile = 'TradeHub',
-    this.similarproductCount,
-    this.membershipColor,
-    this.wow,
-    this.issponsored = false,
-    this.shortestDistance,
-    this.membershipTitle,
-    this.didcountpercentage,
-    this.avg_rating = 1,
-    this.tradeImage,
-    this.posttype = '1',
-    this.membershipid = '1',
-    required this.productid,
-    required this.lat,
-    required this.long,
-  });
+  AllProductDetailWidget(
+      {super.key,
+      // this.membership_title,
+      this.id,
+      this.offer = '',
+      this.title = "Trade",
+      this.discounttedPrice = '0',
+      this.comment = '0',
+      this.price = '1',
+      this.vendorname = 'John',
+      this.distance = 2,
+      this.Vimage = '',
+      this.productImage,
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.wow,
+      this.issponsored = false,
+      this.shortestDistance,
+      this.membershipTitle,
+      this.didcountpercentage,
+      this.avg_rating = 1,
+      this.tradeImage,
+      this.posttype = '1',
+      this.membershipid = '1',
+      required this.productid,
+      required this.lat,
+      required this.long,
+      this.savedid,
+      this.onRefresh});
 
   String? title;
   String? price;
@@ -69,6 +74,8 @@ class AllProductDetailWidget extends StatelessWidget {
   String? membershipid;
   String? userId;
   String? lat, long;
+  List<SavedPost>? savedid;
+  final VoidCallback? onRefresh;
   Future<void> getdetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId');
@@ -81,748 +88,792 @@ class AllProductDetailWidget extends StatelessWidget {
     String showRs = "Rs";
     showRs = discounttedPrice == '0' ? '' : '';
 
-    return Column(
-      // mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    posttype == '1'
-                        ? productsicon
-                        : posttype == '7'
-                            ? b2bIcon
-                            : posttype == '2'
-                                ? usedIcon
-                                : posttype == '3'
-                                    ? servicesIcon
-                                    : posttype == '4'
-                                        ? jobIcon
-                                        : posttype == '5'
-                                            ? eventIcon
-                                            : posttype == '8'
-                                                ? grocaryicon
-                                                : 'defaultIcon', // Provide a default icon path if no match is found
-                    height: 10,
-                    color: Colors.grey,
-                  ),
-                  Text(
-                    posttype == '1'
-                        ? 'Products'
-                        : posttype == '7'
-                            ? 'B2B'
-                            : posttype == '2'
-                                ? 'Used'
-                                : posttype == '3'
-                                    ? 'Services'
-                                    : posttype == '4'
-                                        ? 'Jobs'
-                                        : posttype == '5'
-                                            ? 'Events'
-                                            : posttype == '8'
-                                                ? 'Grocery'
-                                                : '', // Default to an empty string if no match
-                    style: headerstyle.copyWith(
-                        fontSize: 9.sp, color: Colors.grey),
-                  ),
-                ],
-              ),
-              PopupMenuButton(
-                menuPadding: EdgeInsets.only(left: 10.w),
-                onSelected: (value) {},
+    return InkWell(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+            builder: (context) => ProductDetailScreen(
+                  productId: productid,
+                )));
+      },
+      child: Column(
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SvgPicture.asset(
+                      posttype == '1'
+                          ? productsicon
+                          : posttype == '7'
+                              ? b2bIcon
+                              : posttype == '2'
+                                  ? usedIcon
+                                  : posttype == '3'
+                                      ? servicesIcon
+                                      : posttype == '4'
+                                          ? jobIcon
+                                          : posttype == '5'
+                                              ? eventIcon
+                                              : posttype == '8'
+                                                  ? grocaryicon
+                                                  : 'defaultIcon', // Provide a default icon path if no match is found
+                      height: 10,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      posttype == '1'
+                          ? 'Products'
+                          : posttype == '7'
+                              ? 'B2B'
+                              : posttype == '2'
+                                  ? 'Used'
+                                  : posttype == '3'
+                                      ? 'Services'
+                                      : posttype == '4'
+                                          ? 'Jobs'
+                                          : posttype == '5'
+                                              ? 'Events'
+                                              : posttype == '8'
+                                                  ? 'Grocery'
+                                                  : '', // Default to an empty string if no match
+                      style: headerstyle.copyWith(
+                          fontSize: 9.sp, color: Colors.grey),
+                    ),
+                  ],
+                ),
+                PopupMenuButton(
+                  menuPadding: EdgeInsets.only(left: 10.w),
+                  onSelected: (value) {},
 
-                padding: EdgeInsets.symmetric(horizontal: 5.h),
-                elevation: 0,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6))),
-                constraints:
-                    const BoxConstraints.expand(width: 150, height: 150),
-                // menuPadding: const EdgeInsets.only(left: 10),
-                iconColor: const Color(0xffB6B4B4),
+                  padding: EdgeInsets.symmetric(horizontal: 5.h),
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(6))),
+                  constraints:
+                      const BoxConstraints.expand(width: 150, height: 150),
+                  // menuPadding: const EdgeInsets.only(left: 10),
+                  iconColor: const Color(0xffB6B4B4),
 
-                color: Colors.grey,
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                        height: 30,
-                        padding: EdgeInsets.only(left: 5.w, top: 10.h),
-                        onTap: () {
-                          Share.share('Share this');
-                        },
-                        child: Text(
-                          "Share",
-                          style: headerstyle.copyWith(
-                            fontFamily: GoogleFonts.quicksand().fontFamily,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 9,
-                          ),
-                        )),
-                    PopupMenuItem(
-                        onTap: () {
-                          addToFavorites(null, userId!, productid).then(
-                            (value) {
-                              final snackBar = SnackBar(
-                                content: Text(value),
+                  color: Colors.grey,
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                          height: 30,
+                          padding: EdgeInsets.only(left: 5.w, top: 10.h),
+                          onTap: () {
+                            Share.share('Share this');
+                          },
+                          child: Text(
+                            "Share",
+                            style: headerstyle.copyWith(
+                              fontFamily: GoogleFonts.quicksand().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 9,
+                            ),
+                          )),
+                      PopupMenuItem(
+                          onTap: () async {
+                            addToFavorites(null, userId.toString(), productid)
+                                .then(
+                              (value) {
+                                onRefresh?.call();
+                                final snackBar = SnackBar(
+                                  content: Text(value),
+                                );
+                                onRefresh?.call();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              },
+                            ).catchError((error) {
+                              final errorSnackBar = const SnackBar(
+                                content: Text('Please login and try again'),
                               );
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            },
-                          ).catchError((error) {
-                            final errorSnackBar = SnackBar(
-                              content:
-                                  Text('Failed to add to favorites: $error'),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(errorSnackBar);
-                          });
+                                  .showSnackBar(errorSnackBar);
+                            });
+                            onRefresh?.call();
+                          },
+                          height: 30,
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text(
+                            savedid == null || savedid!.isEmpty
+                                ? "Save"
+                                : "UnSave",
+                            style: headerstyle.copyWith(
+                              fontFamily: GoogleFonts.quicksand().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          )),
+                      PopupMenuItem(
+                          height: 30,
+                          padding: const EdgeInsets.only(left: 5),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                    vendorName: vendorname!,
+                                    vid: id!,
+                                  ),
+                                ));
+                          },
+                          child: Text(
+                            "Conatct Seller",
+                            style: headerstyle.copyWith(
+                              fontFamily: GoogleFonts.quicksand().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          )),
+                      PopupMenuItem(
+                        onTap: () {
+                          launch(
+                              'https://www.google.com/maps?q=${double.tryParse(lat ?? '0')},${double.tryParse(long ?? '0')}');
                         },
                         height: 30,
                         padding: const EdgeInsets.only(left: 5),
                         child: Text(
-                          "Save",
+                          "Get Seller Directives",
                           style: headerstyle.copyWith(
                             fontFamily: GoogleFonts.quicksand().fontFamily,
                             fontWeight: FontWeight.w600,
                             fontSize: 8,
                           ),
-                        )),
-                    PopupMenuItem(
+                        ),
+                      ),
+                      PopupMenuItem(
                         height: 30,
                         padding: const EdgeInsets.only(left: 5),
                         onTap: () {
+                          // print('value ${userId}');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => VendorHomeScreen(
-                                  vendorName: vendorname!,
-                                  vid: id!,
-                                ),
+                                builder: (context) => ReportComplainScreen(
+                                    productId: userId!,
+                                    productName: vendorname!),
                               ));
                         },
                         child: Text(
-                          "Conatct Seller",
+                          "Report",
                           style: headerstyle.copyWith(
                             fontFamily: GoogleFonts.quicksand().fontFamily,
                             fontWeight: FontWeight.w600,
                             fontSize: 8,
                           ),
-                        )),
-                    PopupMenuItem(
-                      onTap: () {
-                        launch(
-                            'https://www.google.com/maps?q=${double.tryParse(lat ?? '0')},${double.tryParse(long ?? '0')}');
-                      },
-                      height: 30,
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        "Get Seller Directives",
-                        style: headerstyle.copyWith(
-                          fontFamily: GoogleFonts.quicksand().fontFamily,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 8,
                         ),
                       ),
-                    ),
-                    PopupMenuItem(
-                      height: 30,
-                      padding: const EdgeInsets.only(left: 5),
-                      onTap: () {
-                        // print('value ${userId}');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReportComplainScreen(
-                                  productId: userId!, productName: vendorname!),
-                            ));
-                      },
-                      child: Text(
-                        "Report",
-                        style: headerstyle.copyWith(
-                          fontFamily: GoogleFonts.quicksand().fontFamily,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 8,
-                        ),
-                      ),
-                    ),
-                  ];
-                },
-                child: const Icon(
-                  size: 20,
-                  color: ColorConstant.grayColor,
-                  Icons.more_vert,
+                    ];
+                  },
+                  child: const Icon(
+                    size: 20,
+                    color: ColorConstant.grayColor,
+                    Icons.more_vert,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(
-                      productId: productid,
-                    )));
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.w),
-            child: Image.network(
-              productImage ?? '',
-              height: 100.h,
-              width: 150.w,
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.center,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child; // If the image has loaded, display it
-                }
-                return Shimmer.fromColors(
+          InkWell(
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ProductDetailScreen(
+                        productId: productid,
+                      )));
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              child: CachedNetworkImage(
+                imageUrl: productImage ?? '',
+                height: 100.h,
+                width: 150.w,
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.center,
+                placeholder: (context, url) => Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
                     height: 100.h,
-                    color: Colors.white, // Placeholder for shimmer effect
+                    color: Colors.white, // Placeholder shimmer effect
                   ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return SizedBox(
-                  height: 100.h,
-                  child: const Icon(Icons.error),
-                ); // Show error icon if image fails to load
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 3.h,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title!,
-                style: headerstyle.copyWith(
-                    color: ColorConstant.blackColor,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800),
-                softWrap: true,
-                maxLines: 1,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Rs ${price ?? 0.0}',
-                    style: headerstyle.copyWith(
-                        color: ColorConstant.blackColor,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(
-                    width: 3.h,
-                  ),
-                  offer != null && offer?.length != 0
-                      ? SizedBox(
-                          width: 65
-                              .w, // Ensures the content takes up the defined width
-                          child: Wrap(
-                            spacing: 3.w, // Spacing between items
-                            runSpacing:
-                                3.h, // Spacing between lines when wrapping
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize
-                                    .min, // Shrinks the row to fit content
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .center, // Aligns icon and text
-                                children: [
-                                  if (offer != null ||
-                                      discounttedPrice != null ||
-                                      offer?.length != 0)
-                                    const Icon(
-                                      Icons.track_changes_sharp,
-                                      color: Color(0xff901B41),
-                                      size: 12,
-                                    ),
-                                  if (offer != null)
-                                    SizedBox(
-                                        width: 5
-                                            .w), // Adds spacing between icon and text
-                                  if (offer != null)
-                                    Flexible(
-                                      child: Text(
-                                        offer!,
-                                        style: headerstyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: const Color(0xff901B41),
-                                          fontSize: 7.sp,
-                                        ),
-                                        overflow: TextOverflow
-                                            .visible, // Ensure the text wraps
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-
-                  // discounttedPrice != "0"
-                  //     ?
-
-                  // Row(
-                  //   children: [
-                  //     const Icon(
-                  //       Icons.track_changes_sharp,
-                  //       color: Color(0xff901B41),
-                  //       size: 15,
-                  //     ),
-                  //    offer==''?    Text(
-                  //       "Best Price",
-                  //       style: headerstyle.copyWith(
-                  //           fontWeight: FontWeight.w700,
-                  //           color: const Color(0xff901B41),
-                  //           fontSize: 8.sp),
-                  //     ):
-                  //     Text(
-                  //       "${offer} Price",
-                  //       style: headerstyle.copyWith(
-                  //           fontWeight: FontWeight.w700,
-                  //           color: const Color(0xff901B41),
-                  //           fontSize: 8.sp),
-                  //     ),
-                  //   ],
-                  // ),
-
-                  const Spacer(),
-                  if (discounttedPrice != null &&
-                      didcountpercentage != 0 &&
-                      discounttedPrice != '0' &&
-                      discounttedPrice!.isNotEmpty)
-                    Text(
-                      " Rs$showRs$discounttedPrice",
-                      style: headerstyle.copyWith(
-                        fontSize: 8.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
-                        decorationColor: Colors.grey,
+                ),
+                errorWidget: (context, url, error) {
+                  return CachedNetworkImage(
+                    imageUrl: productImage ?? '', // Retry loading
+                    height: 100.h,
+                    width: 150.w,
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.center,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        height: 100.h,
+                        color: Colors.white,
                       ),
                     ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 10,
-                    backgroundColor: const Color(0xff901B41),
-                    child:
-                        // avg_rating.toString() ?? '0',
-                        Text(
-                      avg_rating == 0 || avg_rating == null
-                          ? "0.0"
-                          : avg_rating.toString(),
-                      style: headerstyle.copyWith(fontSize: 8.sp),
+                    errorWidget: (context, url, error) => SizedBox(
+                      height: 100.h,
+                      child: const Icon(
+                          Icons.error), // Show error icon if retry fails
                     ),
-                  ),
-                  SizedBox(
-                    width: 1.w,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                      ),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: RatingBar.builder(
-                      initialRating: avg_rating == null || avg_rating == 0
-                          ? 0
-                          : avg_rating!,
-                      // Default to 1 when avg_rating is null or 0
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      // Always display 5 stars
-                      itemSize: 12,
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                      itemBuilder: (context, index) {
-                        if (avg_rating == null || avg_rating == 0) {
-                          // Default to 1 star when avg_rating is null or 0
-                          return index == 0
-                              ? const Icon(Icons.star,
-                                  color:
-                                      Color(0xff901B41)) // Fill the first star
-                              : const Icon(Icons.star,
-                                  color: Colors.grey); // Grey for others
-                        } else {
-                          // Color logic based on avg_rating
-                          if (index < avg_rating!.floor()) {
-                            // Full star if within avg_rating
-                            return const Icon(Icons.star,
-                                color: Color(0xff901B41));
-                          } else if (index == avg_rating!.floor() &&
-                              (avg_rating! - avg_rating!.floor()) >= 0.5) {
-                            // Half star if avg_rating has a decimal >= 0.5
-                            return const Icon(Icons.star_half,
-                                color: Color(0xff901B41));
-                          } else {
-                            // Grey star for others
-                            return const Icon(Icons.star, color: Colors.grey);
-                          }
-                        }
-                      },
-                      onRatingUpdate: (rating) {
-                        // Handle updated rating (if required)
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              discounttedPrice?.length == 0 ||
-                      discounttedPrice == null ||
-                      discounttedPrice == '0' ||
-                      didcountpercentage == null
-                  ? const SizedBox()
-                  : Row(
-                      children: [
-                        Image.asset(
-                          "assets/images/flameIcon.png",
-                          height: 10,
-                          width: 10,
-                          color: const Color(0xff901B41),
-                        ),
-                        Text(
-                          "$didcountpercentage%",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xff901B41),
-                              fontSize: 10),
-                        ),
-                        const Icon(
-                          Icons.arrow_downward_rounded,
-                          size: 15,
-                          color: Color(0xff901B41),
-                        )
-                      ],
-                    ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('assets/icon/Rectangle.png'),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      Text(
-                        wow != null ? '1' : wow.toString(),
-                        style: headerstyle.copyWith(
-                            fontSize: 10,
-                            color: const Color(0xff807C7C),
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      Image.asset("assets/icon/Vector.png"),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      Text(
-                        comment ?? '1',
-                        style: headerstyle.copyWith(
-                            fontSize: 10,
-                            color: const Color(0xff807C7C),
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        "assets/icon/solar.png",
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        width: 3.w,
-                      ),
-                      Text(
-                        similarproductCount?.toString() ?? '0',
-                        style: headerstyle.copyWith(
-                            fontSize: 10,
-                            color: const Color(0xff807C7C),
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-              decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "ENQUIRE",
-                    style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                        color: ColorConstant.blackColor),
-                  ),
-                  Text(
-                    '|',
-                    style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                        color: ColorConstant.blackColor),
-                  ),
-                  Text(
-                    "WIN",
-                    style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                        color: ColorConstant.blackColor),
-                  ),
-                  Text(
-                    '|',
-                    style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                        color: ColorConstant.blackColor),
-                  ),
-                  Text(
-                    "BUY",
-                    style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                        color: ColorConstant.blackColor),
-                  ),
-                ],
-              ),
-            ),
-            InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            VendorHomeScreen(vendorName: vendorname!, vid: id!),
-                      ));
+                  );
                 },
-                child: Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.symmetric(vertical: 10.9.h),
-                  decoration: BoxDecoration(
-                    color: membershipColor != null
-                        ? Color(
-                            int.parse(
-                              membershipColor!.replaceFirst('#', '0xFF'),
-                            ),
-                          )
-                        : const Color(0xff3D215F), // Default color
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(13),
-                      bottomRight: Radius.circular(13),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 3.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title!,
+                  style: headerstyle.copyWith(
+                      color: ColorConstant.blackColor,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800),
+                  softWrap: true,
+                  maxLines: 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Rs ${price ?? 0.0}',
+                      style: headerstyle.copyWith(
+                          color: ColorConstant.blackColor,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w800),
                     ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(Vimage!),
-                        radius: 15.sp,
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Expanded(
-                        // To allow spacing between elements
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Vendor Name
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      width: 3.h,
+                    ),
+                    offer != null && offer?.length != 0
+                        ? SizedBox(
+                            width: 65
+                                .w, // Ensures the content takes up the defined width
+                            child: Wrap(
+                              spacing: 3.w, // Spacing between items
+                              runSpacing:
+                                  3.h, // Spacing between lines when wrapping
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize
+                                      .min, // Shrinks the row to fit content
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Aligns icon and text
                                   children: [
-                                    Text(
-                                      vendorname != null &&
-                                              vendorname!.length > 10
-                                          ? '${vendorname!.substring(0, 10)}...'
-                                          : vendorname ?? '',
-                                      style: headerstyle.copyWith(
-                                        fontFamily:
-                                            GoogleFonts.quicksand().fontFamily,
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
+                                    if (offer != null ||
+                                        discounttedPrice != null ||
+                                        offer?.length != 0)
+                                      const Icon(
+                                        Icons.track_changes_sharp,
+                                        color: Color(0xff901B41),
+                                        size: 12,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 3.w,
-                                    ),
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                      size: 11,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      membershipid == "2"
-                                          ? spotlighticon
-                                          : membershipid == "1"
-                                              ? basicsellericon
-                                              : membershipid == "3"
-                                                  ? domesticseller
-                                                  : membershipid == "25"
-                                                      ? globalicon
-                                                      : basicsellericon, // Provide a default icon if no match
-                                      height: 9.h,
-                                    ),
-                                    SizedBox(
-                                      width: 2.w,
-                                    ),
-                                    Text(
-                                      membershipTitle ?? "Domestic Brand",
-                                      style: headerstyle.copyWith(
-                                        fontSize: 10.sp,
-                                        fontFamily:
-                                            GoogleFonts.quicksand().fontFamily,
-
-                                        // Adjust font size based on length
-                                        fontWeight: FontWeight.w700,
+                                    if (offer != null)
+                                      SizedBox(
+                                          width: 5
+                                              .w), // Adds spacing between icon and text
+                                    if (offer != null)
+                                      Flexible(
+                                        child: Text(
+                                          offer!,
+                                          style: headerstyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff901B41),
+                                            fontSize: 7.sp,
+                                          ),
+                                          overflow: TextOverflow
+                                              .visible, // Ensure the text wraps
+                                        ),
                                       ),
-                                      // overflow: TextOverflow.ellipsis,
-                                      // Apply ellipsis for overflow
-                                      // maxLines:
-                                      //     1, // Restrict to a single line
-                                    ),
                                   ],
                                 ),
                               ],
                             ),
+                          )
+                        : const SizedBox.shrink(),
 
-                            // Shortest Distance
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.w),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 3.h,
-                                  ),
-                                  shortestDistance != null &&
-                                          shortestDistance != 0.0
-                                      ? Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.location_on,
-                                              color: Colors.white,
-                                              size: 12,
-                                            ),
-                                            SizedBox(
-                                                width: 2
-                                                    .w), // Space between icon and text
-                                            Text(
-                                              "${double.parse(shortestDistance.toString()).toStringAsFixed(2)} km",
-                                              style: headerstyle.copyWith(
-                                                fontFamily:
-                                                    GoogleFonts.quicksand()
-                                                        .fontFamily,
-                                                fontSize: 9.sp,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : SizedBox(
-                                          height: 15.h,
-                                        ),
-                                  issponsored
-                                      ? Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 2.h,
-                                            ),
-                                            Image.asset(
-                                                "assets/images/mike.png"),
-                                            Text(
-                                              "SPONSORED",
-                                              style: headerstyle.copyWith(
-                                                  fontSize: 6.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        )
-                                      : SizedBox(
-                                          height: 5.h,
-                                        ),
-                                ],
+                    // discounttedPrice != "0"
+                    //     ?
+
+                    // Row(
+                    //   children: [
+                    //     const Icon(
+                    //       Icons.track_changes_sharp,
+                    //       color: Color(0xff901B41),
+                    //       size: 15,
+                    //     ),
+                    //    offer==''?    Text(
+                    //       "Best Price",
+                    //       style: headerstyle.copyWith(
+                    //           fontWeight: FontWeight.w700,
+                    //           color: const Color(0xff901B41),
+                    //           fontSize: 8.sp),
+                    //     ):
+                    //     Text(
+                    //       "${offer} Price",
+                    //       style: headerstyle.copyWith(
+                    //           fontWeight: FontWeight.w700,
+                    //           color: const Color(0xff901B41),
+                    //           fontSize: 8.sp),
+                    //     ),
+                    //   ],
+                    // ),
+
+                    const Spacer(),
+                    if (discounttedPrice != null &&
+                        didcountpercentage != 0 &&
+                        discounttedPrice != '0' &&
+                        discounttedPrice!.isNotEmpty)
+                      Text(
+                        " Rs$showRs$discounttedPrice",
+                        style: headerstyle.copyWith(
+                          fontSize: 8.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough,
+                          decorationColor: Colors.grey,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 10,
+                      backgroundColor: const Color(0xff901B41),
+                      child:
+                          // avg_rating.toString() ?? '0',
+                          Text(
+                        avg_rating == 0 || avg_rating == null
+                            ? "0.0"
+                            : avg_rating.toString(),
+                        style: headerstyle.copyWith(fontSize: 8.sp),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 1.w,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5),
+                        ),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: RatingBar.builder(
+                        initialRating: avg_rating == null || avg_rating == 0
+                            ? 0
+                            : avg_rating!,
+                        // Default to 1 when avg_rating is null or 0
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        // Always display 5 stars
+                        itemSize: 12,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 1.0),
+                        itemBuilder: (context, index) {
+                          if (avg_rating == null || avg_rating == 0) {
+                            // Default to 1 star when avg_rating is null or 0
+                            return index == 0
+                                ? const Icon(Icons.star,
+                                    color: Color(
+                                        0xff901B41)) // Fill the first star
+                                : const Icon(Icons.star,
+                                    color: Colors.grey); // Grey for others
+                          } else {
+                            // Color logic based on avg_rating
+                            if (index < avg_rating!.floor()) {
+                              // Full star if within avg_rating
+                              return const Icon(Icons.star,
+                                  color: Color(0xff901B41));
+                            } else if (index == avg_rating!.floor() &&
+                                (avg_rating! - avg_rating!.floor()) >= 0.5) {
+                              // Half star if avg_rating has a decimal >= 0.5
+                              return const Icon(Icons.star_half,
+                                  color: Color(0xff901B41));
+                            } else {
+                              // Grey star for others
+                              return const Icon(Icons.star, color: Colors.grey);
+                            }
+                          }
+                        },
+                        onRatingUpdate: (rating) {
+                          // Handle updated rating (if required)
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                discounttedPrice?.length == 0 ||
+                        discounttedPrice == null ||
+                        discounttedPrice == '0' ||
+                        didcountpercentage == null
+                    ? const SizedBox()
+                    : Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/flameIcon.png",
+                            height: 10,
+                            width: 10,
+                            color: const Color(0xff901B41),
+                          ),
+                          Text(
+                            "$didcountpercentage%",
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff901B41),
+                                fontSize: 10),
+                          ),
+                          const Icon(
+                            Icons.arrow_downward_rounded,
+                            size: 15,
+                            color: Color(0xff901B41),
+                          )
+                        ],
+                      ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset('assets/icon/Rectangle.png'),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          wow != null ? '1' : wow.toString(),
+                          style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: const Color(0xff807C7C),
+                              fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("assets/icon/Vector.png"),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          comment ?? '1',
+                          style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: const Color(0xff807C7C),
+                              fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          "assets/icon/solar.png",
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          similarproductCount?.toString() ?? '0',
+                          style: headerstyle.copyWith(
+                              fontSize: 10,
+                              color: const Color(0xff807C7C),
+                              fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "ENQUIRE",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: ColorConstant.blackColor),
+                    ),
+                    Text(
+                      '|',
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: ColorConstant.blackColor),
+                    ),
+                    Text(
+                      "WIN",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: ColorConstant.blackColor),
+                    ),
+                    Text(
+                      '|',
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: ColorConstant.blackColor),
+                    ),
+                    Text(
+                      "BUY",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                          color: ColorConstant.blackColor),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VendorHomeScreen(
+                              vendorName: vendorname!, vid: id!),
+                        ));
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.symmetric(vertical: 10.9.h),
+                    decoration: BoxDecoration(
+                      color: membershipColor != null
+                          ? Color(
+                              int.parse(
+                                membershipColor!.replaceFirst('#', '0xFF'),
                               ),
+                            )
+                          : const Color(0xff3D215F), // Default color
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(13),
+                        bottomRight: Radius.circular(13),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(Vimage!),
+                          radius: 15.sp,
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        shortestDistance == null
+                                            ? Text(
+                                                vendorname != null &&
+                                                        vendorname!.length > 16
+                                                    ? '${vendorname!.substring(0, 10)}...'
+                                                    : vendorname ?? '',
+                                                style: headerstyle.copyWith(
+                                                  fontFamily:
+                                                      GoogleFonts.quicksand()
+                                                          .fontFamily,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              )
+                                            : Text(
+                                                vendorname != null &&
+                                                        vendorname!.length > 10
+                                                    ? '${vendorname!.substring(0, 10)}...'
+                                                    : vendorname ?? '',
+                                                style: headerstyle.copyWith(
+                                                  fontFamily:
+                                                      GoogleFonts.quicksand()
+                                                          .fontFamily,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        const Icon(
+                                          Icons.logout,
+                                          color: Colors.white,
+                                          size: 11,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Image.asset(
+                                          membershipid == "2"
+                                              ? spotlighticon
+                                              : membershipid == "1"
+                                                  ? basicsellericon
+                                                  : membershipid == "3"
+                                                      ? domesticseller
+                                                      : membershipid == "25"
+                                                          ? globalicon
+                                                          : basicsellericon, // Provide a default icon if no match
+                                          height: 8.h,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Text(
+                                          membershipTitle ?? "Domestic Brand",
+                                          style: headerstyle.copyWith(
+                                            fontSize: 9.sp,
+                                            fontFamily: GoogleFonts.quicksand()
+                                                .fontFamily,
+
+                                            // Adjust font size based on length
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          // overflow: TextOverflow.ellipsis,
+                                          // Apply ellipsis for overflow
+                                          // maxLines:
+                                          //     1, // Restrict to a single line
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             )
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ))
-          ],
-        ),
-      ],
+                        SizedBox(
+                          width: 4.w,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 1.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              shortestDistance != null &&
+                                      shortestDistance != 0.0
+                                  ? Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on,
+                                          color: Colors.white,
+                                          size: 11,
+                                        ),
+                                        SizedBox(
+                                            width: 2
+                                                .w), // Space between icon and text
+                                        Text(
+                                          "${shortestDistance != null ? NumberFormat('#.##', 'en_US').format(shortestDistance) : ''} km",
+                                          style: headerstyle.copyWith(
+                                            fontFamily: GoogleFonts.quicksand()
+                                                .fontFamily,
+                                            fontSize: 9.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(
+                                      height: 14.h,
+                                    ),
+                              issponsored
+                                  ? Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 2.w, top: 5),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 2.h,
+                                          ),
+                                          Image.asset("assets/images/mike.png"),
+                                          Text(
+                                            "SPONSORED",
+                                            style: headerstyle.copyWith(
+                                                fontSize: 7.sp,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 11.h,
+                                    ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ))
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

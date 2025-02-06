@@ -7,7 +7,7 @@ part of 'get_feed_of_following_api.dart';
 // **************************************************************************
 
 String _$getFeedOfFollowingHash() =>
-    r'262267d451e58f676228e191c572f9137042d51a';
+    r'803680ebd0e6e33693ceaaff349c7591ffb5b667';
 
 /// See also [getFeedOfFollowing].
 @ProviderFor(getFeedOfFollowing)

@@ -22,6 +22,7 @@ import 'package:smartbazar/features/product_details/product_deatials_screen.dart
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 class HotViewScreen extends ConsumerStatefulWidget {
   String header = 'sponsored';
@@ -127,6 +128,9 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final getHotData = ref.watch(getHotDealsProvider(widget.header));
+    Future<void> refresh() async {
+      await ref.refresh(getHotDealsProvider(widget.header));
+    }
 
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return Scaffold(
@@ -163,11 +167,11 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                         const VendorProfileScreen(),
                                   ));
                             },
- child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: AssetImage(
-                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                          )),
+                            child: const CircleAvatar(
+                              radius: 20,
+                              backgroundImage: AssetImage(
+                                  'assets/images/Smartbazaar-Icon-for-QR.png'),
+                            )),
                         SizedBox(
                           width: 2.w,
                         ),
@@ -522,80 +526,79 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                   ),
                   getHotData.when(
                     data: (data) {
-                      print('gogo ${data.first.id}');
                       return SingleChildScrollView(
-                        padding: EdgeInsets.zero,
                         physics: const BouncingScrollPhysics(),
                         scrollDirection:
                             Axis.vertical, // Scroll vertically if needed
                         child: Wrap(
-                          spacing: 0.w, // Horizontal space between items
-                          runSpacing: 10.h, // Vertical space between rows
+                          spacing: 5.w, // Horizontal space between items
+                          runSpacing: 15.h, // Vertical space between rows
                           children: List.generate(
                             data.length,
                             (index) {
                               GlobalModel res = data[index];
-                              // print(
-                              //     "lauka ${res.userDetail.shortestDistance}");
 
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProductDetailScreen(
-                                        productId: res.id,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  width: (MediaQuery.of(context).size.width -
-                                          10.w) /
-                                      2, // Dynamically adjust to fit two items per row
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    shadowColor: const Color(0xff3D215F)
-                                        .withOpacity(0.5),
-                                    elevation: 9,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: AllProductDetailWidget(
-                                      
-                                        productid: res.id,
-                                      lat: res.user[0].latitude,
-                                      long: res.user[0].longitude,
-                                      membershipid: res.user[0].membership_id,
-                                      posttype: res.post_type_id,
-                                      didcountpercentage:
-                                          res.discount_percentage,
-                                      id: int.tryParse(res.user[0].user_id),
-                                      shortestDistance:
-                                          res.user[0].shortestDistance,
-                                      issponsored:
-                                          res.user[0].sponsored ?? false,
-                                      distance: res.user[0].shortestDistance,
-                                      wow: res.wow.toString(),
-                                      discounttedPrice: res.discont,
-                                      comment: res.commentnum.toString(),
-                                      avg_rating:
-                                          res.avg_rating?.toDouble() ?? 0.0,
-                                      offer: res.offers,
-                                      productImage: res.imageUrl,
-                                      Vimage: res.user[0].photo,
-                                      vendorname: res.user[0].name,
-                                      title: res.title,
-                                      price: res.price,
-                                      similarproductCount:
-                                          res.similarproductCount,
-                                      membershipColor:
-                                          res.user[0].membership_color,
-                                      membershipTitle:
-                                          res.user[0].membership_title,
-                                    ),
+                              return SizedBox(
+                                width: (MediaQuery.of(context).size.width -
+                                        25.w) /
+                                    2, // Dynamically adjust to fit two items per row
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  shadowColor: const Color(0xff3D215F)
+                                      .withOpacity(0.5),
+                                  elevation: 9,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 5.w),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: AllProductDetailWidget(
+                                    savedid: res.savedByLoggedUser == null ||
+                                            res.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : res.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                    productid: res.id,
+                                    lat: res.user[0].latitude,
+                                    long: res.user[0].longitude,
+                                    membershipid: res.user[0].membership_id,
+                                    posttype: res.post_type_id,
+                                    didcountpercentage:
+                                        res.discount_percentage,
+                                    id: int.tryParse(res.id),
+                                    shortestDistance:
+                                        res.user[0].shortestDistance,
+                                    issponsored:
+                                        res.user[0].sponsored ?? false,
+                                    distance: res.user[0].shortestDistance,
+                                    wow: res.wow.toString(),
+                                    discounttedPrice: res.discont,
+                                    comment: res.commentnum,
+                                    avg_rating:
+                                        res.avg_rating?.toDouble() ?? 0.0,
+                                    offer: res.offers,
+                                    productImage: res.imageUrl,
+                                    Vimage: res.user[0].photo,
+                                    vendorname: res.user[0].name,
+                                    title: res.title,
+                                    price: res.price,
+                                    similarproductCount:
+                                        res.similarproductCount,
+                                    membershipColor:
+                                        res.user[0].membership_color,
+                                    membershipTitle:
+                                        res.user[0].membership_title,
                                   ),
                                 ),
                               );

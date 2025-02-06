@@ -175,7 +175,6 @@ class _SellerInformationWidgetState
 
   @override
   Widget build(BuildContext context) {
-    print("kala ${widget.phonecoontroller!.text}");
     // final SearchProductModels =
     //     ref.watch(getStreetAddressProvider("sindhuli"));
     // Future<void> _getstreet(String name) async {

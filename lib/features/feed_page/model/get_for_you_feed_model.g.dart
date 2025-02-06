@@ -51,6 +51,7 @@ _$FeedPostImpl _$$FeedPostImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       wow: json['wow'] as String?,
       views: json['views'] as String?,
+      wow_status: json['wow_status'] as String?,
       createdAt: json['created_at'] as String?,
       feedDetail: json['feed_detail'] == null
           ? null
@@ -76,6 +77,7 @@ Map<String, dynamic> _$$FeedPostImplToJson(_$FeedPostImpl instance) =>
       'products': instance.products,
       'wow': instance.wow,
       'views': instance.views,
+      'wow_status': instance.wow_status,
       'created_at': instance.createdAt,
       'feed_detail': instance.feedDetail,
       'interested': instance.interested,

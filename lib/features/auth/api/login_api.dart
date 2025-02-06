@@ -36,7 +36,7 @@ class LoginApi {
 
       final sessionCookie = getSessionCookie(response.headers['set-cookie']);
       print("papaz $sessionCookie");
-      SmartClient.laravelsession = sessionCookie!;
+      SmartClient.laravelSession = sessionCookie!;
 
       // Save session cookie
       SharedPreferences sfr = await SharedPreferences.getInstance();
@@ -101,16 +101,18 @@ class LoginApi {
 
   // Store session details (tokens and user data)
   Future<void> _storeSessionDetails(LoginData user) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("session", json.encode(user.toJson()));
-    await prefs.setString("accessToken", SmartClient.token);
-    await prefs.setString("refreshToken", SmartClient.refresh);
-    await prefs.setString("name", SmartClient.userName);
-    await prefs.setString("email", SmartClient.userEmail);
-    await prefs.setString("phone", SmartClient.phone);
-            await prefs.setString("photo", SmartClient.userphoto);
+  final prefs = await SharedPreferences.getInstance();
+  final data = user.toJson();
+  await prefs.setString("session", json.encode(data));
+  await prefs.setString("accessToken", SmartClient.token);
+  await prefs.setString("refreshToken", SmartClient.refresh);
+  await prefs.setString("name", SmartClient.userName);
+  await prefs.setString("email", SmartClient.userEmail);
+  await prefs.setString("phone", SmartClient.phone);
+  await prefs.setString("photo", SmartClient.userPhoto);
+  await prefs.setString("userId", SmartClient.userId);
+}
 
-  }
 
   // Handle error response (non-2xx HTTP status)
   void _handleErrorResponse(Response response) {
@@ -123,18 +125,19 @@ class LoginApi {
   }
 
   // Handle Dio-specific errors (e.g., timeouts, server issues)
-  String _handleDioError(DioException e) {
-    if (e.response != null) {
-      final errorMessage =
-          e.response?.data['message'] ?? 'Unknown server error';
-      return errorMessage;
-    } else if (e.type == DioExceptionType.connectionTimeout) {
-      return 'Connection timeout. Please try again.';
-    } else if (e.type == DioExceptionType.receiveTimeout) {
-      return 'Server took too long to respond. Please try again.';
-    } else if (e.type == DioExceptionType.sendTimeout) {
-      return 'Request timed out. Please check your connection.';
-    }
-    return 'Something went wrong. Please check your connection.';
+ String _handleDioError(DioException e) {
+  if (e.response != null) {
+    return e.response?.data['message'] ?? 'Unknown server error';
   }
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+      return 'Connection timeout. Please try again.';
+    case DioExceptionType.receiveTimeout:
+      return 'Server took too long to respond. Please try again.';
+    case DioExceptionType.sendTimeout:
+      return 'Request timed out. Please check your connection.';
+    default:
+      return 'Something went wrong. Please check your connection.';
+  }
+}
 }

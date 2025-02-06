@@ -39,6 +39,7 @@ class FeedPost with _$FeedPost {
     List<Product>? products,
     String? wow,
     String? views,
+    String? wow_status,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
     @JsonKey(name: 'interested') Interested? interested,

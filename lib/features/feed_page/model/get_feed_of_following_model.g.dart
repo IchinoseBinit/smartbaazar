@@ -43,6 +43,7 @@ _$FeedPostImpl _$$FeedPostImplFromJson(Map<String, dynamic> json) =>
       wow: json['wow'],
       userId: json['user_id'] as String?,
       offers: json['offers'] as String?,
+      wowstatus: json['wow_status'] as String?,
       products: (json['products'] as List<dynamic>?)
           ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -67,6 +68,7 @@ Map<String, dynamic> _$$FeedPostImplToJson(_$FeedPostImpl instance) =>
       'wow': instance.wow,
       'user_id': instance.userId,
       'offers': instance.offers,
+      'wow_status': instance.wowstatus,
       'products': instance.products,
       'feed_detail': instance.feedDetail,
       'interested': instance.interested,

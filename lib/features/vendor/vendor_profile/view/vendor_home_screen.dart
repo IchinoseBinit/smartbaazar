@@ -15,23 +15,21 @@ import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
+import 'package:smartbazar/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final String vendorName;
   final int vid;
-  // final String connection,
-  // contact,
-  // total_connections,
-  // membership_title,
-  // has_sponsored_gifts,
-  // story_count;
+
   const VendorHomeScreen({
     super.key,
     required this.vendorName,
@@ -42,50 +40,6 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _VendorHomeScreenState();
 }
-
-// class _buildProductList extends StatelessWidget {
-//   final List<BrandNewModel>? products;
-//   _buildProductList({super.key, required this.products});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: 340.h,
-//       child: ListView.builder(
-//         clipBehavior: Clip.antiAlias,
-//         padding: const EdgeInsets.all(3),
-//         scrollDirection: Axis.horizontal,
-//         itemCount: products!.length,
-//         itemBuilder: (context, index) {
-//           BrandNewModel prod = products![index];
-//           return InkWell(
-//             onTap: () {}, // Handle onTap if needed
-//             child: ProductDetailWidget(
-//               lefttile: "TradeHUb",
-//               vendorname: prod.userdetails?.name ?? "",
-//               Vimage: prod.userdetails?.photo ?? "",
-//               avg_rating: prod.avg_rating ?? 0,
-//               comment: prod.commentcount.toString(),
-//               discounttedPrice: prod.discounted_price.toString(),
-//               distance: double.tryParse(prod.shortestDistance ?? '0') ?? 0,
-//               issponsored: prod.userdetails?.sponsored ?? false,
-//               membershipColor: prod.userdetails?.membership_color ?? "",
-//               membershipTitle: prod.userdetails?.membership_title ?? "",
-//               offer: prod.wow,
-//               price: prod.price ?? "",
-//               productImage: prod.image ?? "",
-//               shortestDistance:
-//                   double.tryParse(prod.shortestDistance ?? '0') ?? 0,
-//               similarproductCount: prod.similarProductCount ?? 0,
-//               title: prod.title ?? "",
-//               wow: prod.wow,
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
@@ -99,7 +53,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     "Grocery"
   ];
   Map<String, String>? _followrespo;
-  List<PostResult>? vendorsearchrespnse;
+  List<VendorSearchModel>? vendorsearchrespnse;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _vendorsearchController = TextEditingController();
@@ -109,28 +63,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   final bool _vendorsearchResullts = false;
   late TabController _tabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
-  // Future<void> _openGoogleMap(BuildContext context) async {
 
-  //   // Get current location
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-
-  //   double latitude = position.latitude;
-  //   double longitude = position.longitude;
-
-  //   // Create the Google Maps URL
-  //   String googleMapsUrl =
-  //       'https://www.google.com/maps/search/?q=$latitude,$longitude';
-
-  //   // Open Google Maps using the URL
-  //   if (await canLaunch(googleMapsUrl)) {
-  //     await launch(googleMapsUrl);
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Could not open Google Maps')),
-  //     );
-  //   }
-  // }
   Future<void> gets() async {
     final a = followvendor("9").then(
       (value) {
@@ -161,9 +94,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       });
     });
 
-    _vendorsearchController.addListener(() {
-      _debouncer.add(_vendorsearchController.text);
-    });
+    // _vendorsearchController.addListener(() {
+    //   _debouncer.add(_vendorsearchController.text);
+    // });
     void onSearchFocusChanged(bool hasFocus) {
       setState(() {
         _showSearchProductModels = hasFocus;
@@ -214,9 +147,26 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   Widget build(BuildContext context) {
     final vendorProfileModelDataAsyncValue = ref.watch(
         getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
+
+    // Future<void> getvhome(String product) async {
+    //   final _dats =
+    //       .when(
+    //         data: (data) {
+    //           print("pinky ${data}");
+    //         },
+    //         error: (error, stackTrace) => Text('error'),
+    //         loading: () => CircularProgressIndicator(),
+    //       );
+    // }
+
+    // getvhome("acer");
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
+    Future<void> refresh()async{
+      await ref.refresh(
+        getVendorProfileDataProvider(widget.vendorName.replaceAll(" ", '')));
+    }
 
     return Scaffold(
       extendBody: true,
@@ -489,378 +439,191 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         ],
                       ),
               ),
+              
+               SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: TabBar(
+                    onTap: (value) {
+                      setState(() {
+                        // Check if the tapped tab index is greater than 1
+                        dynamicheight = value > 1 ? 50.h : 410.h;
+                      });
+                    },
+                    tabAlignment: TabAlignment.start,
+                    isScrollable: true,
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: "SHOP"),
+                      Tab(text: "About"),
+                      Tab(text: "BRANDS"),
+                      Tab(text: "GET DIRECTIONS"),
+                      Tab(text: "CUSTOMER SERVICE"),
+                      Tab(text: "CAREER"),
+                    ],
+                  ),
+                ),
+              ),
               SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  child: SizedBox(
+                width: double.infinity,
+                height: 80,
+                child: TabBarView(
+                  controller: _tabController,
                   children: [
-                    TabBar(
-                      onTap: (value) {
-                        setState(() {
-                          // Check if the tapped tab index is greater than 1
-                          dynamicheight = value > 1 ? 50.h : 410.h;
-                        });
-                      },
-                      tabAlignment: TabAlignment.start,
-                      isScrollable: true,
-                      controller: _tabController,
-                      tabs: const [
-                        Tab(text: "SHOP"),
-                        Tab(text: "About"),
-                        Tab(text: "BRANDS"),
-                        Tab(text: "GET DIRECTIONS"),
-                        Tab(text: "CUSTOMER SERVICE"),
-                        Tab(text: "CAREER"),
-                      ],
-                    ),
-                    // Wrap TabBarView in a container with a specific height
-                    SizedBox(
-                      width: double.infinity,
-                      height: dynamicheight, // Adjust the height as needed
-                      child: TabBarView(
-                        controller: _tabController,
-                        physics:
-                            const BouncingScrollPhysics(), // Adds a smooth bouncing effect
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // First Tab: Carousel Slider
-                          Column(children: [
-                            // CarouselSlider(
-                            //   items: data.advertisements!.map((e) {
-                            //     return Image.network(
-                            //       e.image!,
-                            //       fit: BoxFit.cover,
-                            //     );
-                            //   }).toList(),
-                            //   options: CarouselOptions(
-                            //     aspectRatio: 5,
-                            //     reverse: false,
-                            //     viewportFraction: 1,
-                            //     autoPlay: true,
-                            //     enlargeCenterPage: true,
-                            //   ),
-                            // ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // Search Field
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 300),
-                                    child: _isSearchFieldVisible
-                                        ? SizedBox(
-                                            key: const ValueKey('SearchField'),
-                                            width: 300.0,
-                                            child: TextField(
-                                              onSubmitted: (value) {
-                                                if (value.isNotEmpty) {
-                                                  final vdata = ref
-                                                      .watch(
-                                                          searchVendorProductProvider(
-                                                              widget.vid
-                                                                  .toString(),
-                                                              'acer'))
-                                                      .whenData(
-                                                    (value) {
-                                                      vendorsearchrespnse =
-                                                          value.data!.Posts!
-                                                              .data;
-                                                      // vendorsearchrespnse =
-                                                      //     value.first.;
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                              controller:
-                                                  _vendorsearchController,
-                                              decoration: InputDecoration(
-                                                contentPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 5),
-                                                hintText: "Search...",
-                                                filled: true,
-                                                fillColor: Colors.grey
-                                                    .withOpacity(0.1),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.4),
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0)),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Colors.blue
-                                                        .withOpacity(0.6),
-                                                    width: 1.5,
-                                                  ),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0)),
-                                                ),
-                                                suffixIcon: InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      _isSearchFieldVisible =
-                                                          !_isSearchFieldVisible;
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                      ),
-                                                      color: Colors
-                                                          .black, // Replace with `ColorConstant.blackColor`
-                                                    ),
-                                                    child: const Icon(
-                                                      Icons.search,
-                                                      color: Colors
-                                                          .white, // Replace with `ColorConstant.whiteColor`
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _isSearchFieldVisible = true;
-                                              });
+                          // Search Field
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: _isSearchFieldVisible
+                                ? SizedBox(
+                                    key: const ValueKey('SearchField'),
+                                    width: 300.0,
+                                    child: TextField(
+                                      onSubmitted: (value) async {
+                                        if (value.isNotEmpty) {
+                                          final val = ref
+                                              .watch(
+                                                  searchVendorProductProvider(
+                                                      widget.vid.toString(),
+                                                      value))
+                                              .whenData(
+                                            (value) {
+                                              vendorsearchrespnse =
+                                                  value.data?.brandnew;
                                             },
-                                            icon: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 5),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      ColorConstant.blackColor),
-                                              child: const Icon(
-                                                Icons.search,
-                                                color: ColorConstant.whiteColor,
-                                              ),
-                                            ),
+                                          );
+                                        }
+                                      },
+                                      controller: _vendorsearchController,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.only(left: 5),
+                                        hintText: "Search...",
+                                        filled: true,
+                                        fillColor: Colors.grey.withOpacity(0.1),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            width: 1.0,
                                           ),
-                                  ),
-
-                                  SizedBox(
-                                    height: 50,
-                                    width: 800.w,
-                                    child: Row(
-                                      children: List.generate(categories.length,
-                                          (index) {
-                                        return GestureDetector(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.blue.withOpacity(0.6),
+                                            width: 1.5,
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                        ),
+                                        suffixIcon: InkWell(
                                           onTap: () {
                                             setState(() {
-                                              myselectedindex = index;
-                                              alldata = [
-                                                    data.brandnew,
-                                                    data.used,
-                                                    data.services,
-                                                    data.events,
-                                                    data.b2b,
-                                                    data.jobs,
-                                                    data.grocery
-                                                  ][index] ??
-                                                  [];
+                                              _isSearchFieldVisible =
+                                                  !_isSearchFieldVisible;
                                             });
                                           },
                                           child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10.0,
-                                                vertical: 5.h),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 10.w),
-                                            decoration: BoxDecoration(
-                                              color: myselectedindex == index
-                                                  ? ColorConstant.blackColor
-                                                  : Colors.grey[300],
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              categories[index],
-                                              style: TextStyle(
-                                                color: myselectedindex == index
-                                                    ? Colors.white
-                                                    : Colors.black,
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(10),
+                                                bottomRight:
+                                                    Radius.circular(10),
                                               ),
+                                              color: Colors
+                                                  .black, // Replace with `ColorConstant.blackColor`
                                             ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            vendorsearchrespnse == null ||
-                                    vendorsearchrespnse?.length == 0
-                                ? alldata?.isEmpty ?? true
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(40.0),
-                                        child: Center(
-                                            child: Text(
-                                                "No Listing available.....")),
-                                      )
-                                    : AnimatedContainer(
-                                        duration:
-                                            const Duration(milliseconds: 400),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Wrap(
-                                            spacing: 3.w,
-                                            children: List.generate(
-                                                alldata?.length ?? 0, (index) {
-                                              BrandNewModel prod =
-                                                  alldata![index];
-                                              return ProductDetailWidget(
-
-                                                lat: prod.userdetails?.latitude,
-                                                long:
-                                                    prod.userdetails?.longitude,
-                                                productid: prod.id,
-                                                posttype: prod.post_type_id,
-                                                id: int.tryParse(prod.id),
-                                                membershipid: prod
-                                                    .userdetails?.membership_id,
-                                                didcountpercentage: prod
-                                                    .discount_percentage
-                                                    ?.toInt(),
-                                                lefttile: "TradeHub",
-                                                vendorname:
-                                                    prod.userdetails?.name ??
-                                                        "",
-                                                Vimage:
-                                                    prod.userdetails?.photo ??
-                                                        "",
-                                                avg_rating: prod.avg_rating
-                                                        ?.toDouble() ??
-                                                    0,
-                                                comment: prod.commentcount
-                                                        ?.toString() ??
-                                                    "0",
-                                                discounttedPrice: prod
-                                                        .discounted_price
-                                                        ?.toString() ??
-                                                    "0",
-                                                distance: double.tryParse(prod
-                                                        .shortestDistance
-                                                        ?.toString() ??
-                                                    "0"),
-                                                issponsored: prod.userdetails
-                                                        ?.sponsored ??
-                                                    false,
-                                                membershipColor: prod
-                                                        .userdetails
-                                                        ?.membership_color ??
-                                                    "",
-                                                membershipTitle: prod
-                                                        .userdetails
-                                                        ?.membership_title ??
-                                                    "",
-                                                offer: prod.wow ?? "",
-                                                price: prod.price ?? "",
-                                                productImage: prod.image,
-                                                shortestDistance:
-                                                    prod.shortestDistance ??
-                                                        0.0,
-                                                similarproductCount:
-                                                    prod.similarProductCount ??
-                                                        0,
-                                                title: prod.title ?? "",
-                                                wow: prod.wow ?? "",
-                                              );
-                                            }),
+                                            child: const Icon(
+                                              Icons.search,
+                                              color: Colors
+                                                  .white, // Replace with `ColorConstant.whiteColor`
+                                            ),
                                           ),
                                         ),
-                                      )
-                                : SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Wrap(
-                                      spacing: 3.w,
-                                      children: List.generate(
-                                          vendorsearchrespnse?.length ?? 0,
-                                          (index) {
-                                        BrandNewModel prod =
-                                            data.all_products![index];
-                                        return ProductDetailWidget(
-                                          lat: prod.userdetails?.latitude,
-                                          long: prod.userdetails?.longitude,
-                                          productid: prod.id,
-                                          posttype: prod.post_type,
-                                          id: int.tryParse(prod.id),
-                                          membershipid:
-                                              prod.userdetails?.membership_id,
-                                          didcountpercentage:
-                                              prod.discount_percentage?.toInt(),
-                                          lefttile: "TradeHub",
-                                          vendorname:
-                                              prod.userdetails?.name ?? "",
-                                          Vimage: prod.userdetails?.photo ?? "",
-                                          avg_rating:
-                                              prod.avg_rating?.toDouble() ?? 0,
-                                          comment:
-                                              prod.commentcount?.toString() ??
-                                                  "0",
-                                          discounttedPrice: prod
-                                                  .discounted_price
-                                                  ?.toString() ??
-                                              "0",
-                                          distance: double.tryParse(prod
-                                                  .shortestDistance
-                                                  ?.toString() ??
-                                              "0"),
-                                          issponsored:
-                                              prod.userdetails?.sponsored ??
-                                                  false,
-                                          membershipColor: prod.userdetails
-                                                  ?.membership_color ??
-                                              "",
-                                          membershipTitle: prod.userdetails
-                                                  ?.membership_title ??
-                                              "",
-                                          offer: prod.wow ?? "",
-                                          price: prod.price ?? "",
-                                          productImage: prod.image,
-                                          shortestDistance:
-                                              prod.shortestDistance ?? 0.0,
-                                          similarproductCount:
-                                              prod.similarProductCount ?? 0,
-                                          title: prod.title ?? "",
-                                          wow: prod.wow ?? "",
-                                        );
-                                      }),
+                                      ),
+                                    ),
+                                  )
+                                : IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isSearchFieldVisible = true;
+                                      });
+                                    },
+                                    icon: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 5),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: ColorConstant.blackColor),
+                                      child: const Icon(
+                                        Icons.search,
+                                        color: ColorConstant.whiteColor,
+                                      ),
                                     ),
                                   ),
-                          ]),
+                          ),
 
-                          // Other Tabs with smooth animations
-                          AnimatedContainer(
+                          SizedBox(
+                            height: 50,
+                            width: 750.w,
+                            child: Row(
+                              children:
+                                  List.generate(categories.length, (index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      myselectedindex = index;
+                                      alldata = [
+                                            data.brandnew,
+                                            data.used,
+                                            data.services,
+                                            data.events,
+                                            data.b2b,
+                                            data.jobs,
+                                            data.grocery
+                                          ][index] ??
+                                          [];
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 5.h),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    decoration: BoxDecoration(
+                                      color: myselectedindex == index
+                                          ? ColorConstant.blackColor
+                                          : Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      categories[index],
+                                      style: TextStyle(
+                                        color: myselectedindex == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                      AnimatedContainer(
                             margin: const EdgeInsets.all(5),
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
@@ -965,7 +728,33 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                           ),
-                          AnimatedContainer(
+                       AnimatedContainer(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Coming Soon.........',
+                              style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                       AnimatedContainer(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Coming Soon.........',
+                              style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                    AnimatedContainer(
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                             alignment: Alignment.center,
@@ -991,222 +780,288 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                           ),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Coming Soon.........',
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Coming Soon.........',
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          // AnimatedContainer(
-                          //   duration: const Duration(milliseconds: 500),
-                          //   curve: Curves.easeInOut,
-                          //   alignment: Alignment.center,
-                          //   child: Text(
-                          //     'Coming Soon.........',
-                          //     style: headerstyle.copyWith(
-                          //       color: ColorConstant.blackColor,
-                          //       fontWeight: FontWeight.w700,
-                          //       fontSize: 12,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
                   ],
+                ),
+              )),
+              SliverToBoxAdapter(
+                child: vendorsearchrespnse == null ||
+                            vendorsearchrespnse!.isEmpty ??
+                        true
+                    ? (alldata?.isEmpty ?? true
+                        ? const Padding(
+                            padding: EdgeInsets.all(40.0),
+                            child: Center(
+                              child: Text("No Listing available....."),
+                            ),
+                          )
+                        : AnimatedContainer(
+                            duration: const Duration(milliseconds: 400),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(
+                                spacing: 3.w,
+                                children: List.generate(alldata?.length ?? 0,
+                                    (index) {
+                                  BrandNewModel prod = alldata![index];
+                                  return ProductDetailWidget(
+                                    lat: prod.userdetails?.latitude,
+                                    long: prod.userdetails?.longitude,
+                                    productid: prod.id,
+                                    posttype: prod.post_type_id,
+                                    id: int.tryParse(prod.id),
+                                    membershipid:
+                                        prod.userdetails?.membership_id,
+                                    didcountpercentage:
+                                        prod.discount_percentage?.toInt(),
+                                    lefttile: "TradeHub",
+                                    vendorname: prod.userdetails?.name ?? "",
+                                    Vimage: prod.userdetails?.photo ?? "",
+                                    avg_rating:
+                                        prod.avg_rating?.toDouble() ?? 0,
+                                    comment:
+                                        prod.commentcount?.toString() ?? "0",
+                                    discounttedPrice:
+                                        prod.discounted_price?.toString() ??
+                                            "0",
+                                    distance: double.tryParse(
+                                        prod.shortestDistance?.toString() ??
+                                            "0"),
+                                    issponsored:
+                                        prod.userdetails?.sponsored ?? false,
+                                    membershipColor:
+                                        prod.userdetails?.membership_color ??
+                                            "",
+                                    membershipTitle:
+                                        prod.userdetails?.membership_title ??
+                                            "",
+                                    offer: prod.wow ?? "",
+                                    price: prod.price ?? "",
+                                    productImage: prod.image,
+                                    shortestDistance:
+                                        prod.shortestDistance ?? 0.0,
+                                    similarproductCount:
+                                        prod.similarVendorProfileProductCount ?? 0,
+                                    title: prod.title ?? "",
+                                    wow: prod.wow ?? "",
+                                  );
+                                }),
+                              ),
+                            ),
+                          ))
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                          spacing: 3.w,
+                          children: List.generate(
+                              vendorsearchrespnse?.length ?? 0, (index) {
+                            BrandNewModel prod = data.all_VendorProfileProducts![index];
+                            return ProductDetailWidget(
+                              lat: prod.userdetails?.latitude,
+                              long: prod.userdetails?.longitude,
+                              productid: prod.id,
+                              posttype: prod.post_type,
+                              id: int.tryParse(prod.id),
+                              membershipid: prod.userdetails?.membership_id,
+                              didcountpercentage:
+                                  prod.discount_percentage?.toInt(),
+                              lefttile: "TradeHub",
+                              vendorname: prod.userdetails?.name ?? "",
+                              Vimage: prod.userdetails?.photo ?? "",
+                              avg_rating: prod.avg_rating?.toDouble() ?? 0,
+                              comment: prod.commentcount?.toString() ?? "0",
+                              discounttedPrice:
+                                  prod.discounted_price?.toString() ?? "0",
+                              distance: double.tryParse(
+                                  prod.shortestDistance?.toString() ?? "0"),
+                              issponsored: prod.userdetails?.sponsored ?? false,
+                              membershipColor:
+                                  prod.userdetails?.membership_color ?? "",
+                              membershipTitle:
+                                  prod.userdetails?.membership_title ?? "",
+                              offer: prod.wow ?? "",
+                              price: prod.price ?? "",
+                              productImage: prod.image,
+                              shortestDistance: prod.shortestDistance ?? 0.0,
+                              similarproductCount:
+                                  prod.similarVendorProfileProductCount ?? 0,
+                              title: prod.title ?? "",
+                              wow: prod.wow ?? "",
+                            );
+                          }),
+                        ),
+                      ),
+              ),
+                SliverToBoxAdapter(
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 5.h),
+                  child: const DottedLine(
+                      dashRadius: 5, dashColor: Color(0xffD9D9D9), dashLength: 7),
+                ),
+              ),
+                            SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 18.w, bottom: 10, top: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "POSTS",
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+                SliverToBoxAdapter(
+                child: data.feedPosts == null
+                    ? nolistingfound()
+                    : SizedBox(
+                        height: 295.h,
+                        width: double.infinity,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.feedPosts?.length,
+                          itemBuilder: (context, index) {
+                            FeedPost dataz = data.feedPosts![index];
+                            return PostCard(
+                              id: dataz.id,
+                              // subscribers: data.subscribers.toString(),
+                              // isLive: dataz.,
+                              image: dataz.image!,
+                              name: dataz.name!,
+                              caption: dataz.caption!,
+                              photo: dataz.photo!,
+                              subscribers: dataz.subscribers!.toString(),
+                            );
+                          },
+                        ),
+                      ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 5.h),
+                  child: const DottedLine(
+                      dashRadius: 5, dashColor: Color(0xffD9D9D9), dashLength: 7),
+                ),
+              ),
+                             SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 18.w, top: 10.h),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Live Prizes",
+                      style: TextStyle(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+                SliverToBoxAdapter(
+                child: data.live_prizes == null || data.live_prizes?.length == 0
+                    ? nolistingfound()
+                    : SizedBox(
+                        height: 260,
+                        width: double.infinity,
+                        child: SwapablePostCard(post: data.live_prizes!)),),
+               SliverToBoxAdapter(
+                child: Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 5.h),
+                  child: const DottedLine(
+                      dashRadius: 5, dashColor: Color(0xffD9D9D9), dashLength: 7),
                 ),
               ),
               SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    const DottedLine(
-                        dashRadius: 5,
-                        dashColor: Color(0xffD9D9D9),
-                        dashLength: 7),
-                    SizedBox(height: 5.h),
-                    Padding(
-                      padding: EdgeInsets.only(left: 18.w, bottom: 10, top: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "POSTS",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                    data.feedPosts == null
-                        ? nolistingfound()
-                        : SizedBox(
-                            height: 295.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: data.feedPosts?.length,
-                              itemBuilder: (context, index) {
-                                FeedPost dataz = data.feedPosts![index];
-                                return PostCard(
-                                  id: dataz.id,
-                                  // subscribers: data.subscribers.toString(),
-                                  // isLive: dataz.,
-                                  image: dataz.image!,
-                                  name: dataz.name!,
-                                  caption: dataz.caption!,
-                                  photo: dataz.photo!,
-                                  subscribers: dataz.subscribers!.toString(),
-                                );
-                              },
-                            ),
-                          ),
-                    const DottedLine(
-                        dashRadius: 5,
-                        dashColor: Color(0xffD9D9D9),
-                        dashLength: 7),
-                    SizedBox(height: 5.h),
-                    Padding(
-                      padding: EdgeInsets.only(left: 18.w, top: 10.h),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Live Prizes",
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                    data.live_prizes == null || data.live_prizes?.length == 0
-                        ? nolistingfound()
-                        : SizedBox(
-                            height: 260,
-                            width: double.infinity,
-                            child: SwapablePostCard(post: data.live_prizes!)),
-                    const DottedLine(
-                        dashRadius: 5,
-                        dashColor: Color(0xffD9D9D9),
-                        dashLength: 7),
-                    SizedBox(height: 5.h),
-                    Text(
-                      "All Products",
-                      textAlign: TextAlign.left,
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          color: ColorConstant.blackColor),
-                    ),
-                    data.all_products == null
-                        ? nolistingfound() // Show this widget when products are null
-                        : SingleChildScrollView(
-                            physics:
-                                const BouncingScrollPhysics(), // Enable scrolling with a bounce effect
-                            scrollDirection:
-                                Axis.vertical, // Scroll vertically if needed
-                            child: Wrap(
-                              spacing: 5.w, // Horizontal space between items
-                              runSpacing: 15.h, // Vertical space between rows
-                              children: List.generate(
-                                data.all_products?.length ??
-                                    0, // Safely handle null length
-                                (index) {
-                                  BrandNewModel res = data.all_products![index];
-
-                                  return InkWell(
-                                    onTap: () {
-                                      print("tata ${res.id}");
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         ProductDetailScreen(
-                                      //       productId: res.id,
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    },
-                                    child: SizedBox(
-                                      width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              30.w) /
-                                          2, // Dynamically adjust to fit two items per row
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        shadowColor: const Color(0xff3D215F)
-                                            .withOpacity(0.5),
-                                        elevation: 9,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: AllProductDetailWidget(
-                                          lat: res.userdetails?.latitude,
-                                          long: res.userdetails?.longitude,
-                                          productid: res.id,
-                                          posttype: res.post_type_id,
-                                          membershipid:
-                                              res.userdetails?.membership_id,
-                                          id: int.tryParse(res.id),
-                                          didcountpercentage:
-                                              res.discount_percentage?.toInt(),
-                                          productImage: res.image,
-                                          Vimage: res.userdetails!.photo!,
-                                          avg_rating:
-                                              res.avg_rating?.toDouble(),
-                                          comment: res.commentcount.toString(),
-                                          discounttedPrice:
-                                              res.discounted_price.toString(),
-                                          distance: res.shortestDistance,
-                                          issponsored:
-                                              res.userdetails!.sponsored!,
-                                          lefttile: "All Products",
-                                          membershipColor:
-                                              res.userdetails!.membership_color,
-                                          membershipTitle:
-                                              res.userdetails!.membership_title,
-                                          offer: res.offers,
-                                          price: res.price,
-                                          shortestDistance:
-                                              res.shortestDistance,
-                                          similarproductCount:
-                                              res.similarProductCount,
-                                          title: res.title,
-                                          vendorname: res.userdetails!.name,
-                                          wow: res.wow,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                  ],
+                child: Text(
+                  "All Products",
+                  textAlign: TextAlign.left,
+                  style: headerstyle.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: ColorConstant.blackColor),
                 ),
+              ),
+                SliverToBoxAdapter(
+                child: data.all_VendorProfileProducts == null
+                    ? nolistingfound() // Show this widget when products are null
+                    : SingleChildScrollView(
+                        physics:
+                            const BouncingScrollPhysics(), // Enable scrolling with a bounce effect
+                        scrollDirection:
+                            Axis.vertical, // Scroll vertically if needed
+                        child: Wrap(
+                          spacing: 5.w, // Horizontal space between items
+                          runSpacing: 15.h, // Vertical space between rows
+                          children: List.generate(
+                            data.all_VendorProfileProducts?.length ??
+                                0, // Safely handle null length
+                            (index) {
+                              BrandNewModel res = data.all_VendorProfileProducts![index];
+
+                              return SizedBox(
+                                width: (MediaQuery.of(context).size.width -
+                                        30.w) /
+                                    2, // Dynamically adjust to fit two items per row
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  shadowColor: const Color(0xff3D215F)
+                                      .withOpacity(0.5),
+                                  elevation: 9,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 5.w),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: AllProductDetailWidget(
+                                    
+                                        savedid: res.savedByLoggedUser == null ||
+                                          res.savedByLoggedUser!.isEmpty
+                                      ? []
+                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
+                                         
+                                  onRefresh: () {
+                                    refresh();
+                                  },
+                                    lat: res.userdetails?.latitude,
+                                    long: res.userdetails?.longitude,
+                                    productid: res.id,
+                                    posttype: res.post_type_id,
+                                    membershipid:
+                                        res.userdetails?.membership_id,
+                                    id: int.tryParse(res.id),
+                                    didcountpercentage:
+                                        res.discount_percentage?.toInt(),
+                                    productImage: res.image,
+                                    Vimage: res.userdetails!.photo!,
+                                    avg_rating: res.avg_rating?.toDouble(),
+                                    comment: res.commentcount.toString(),
+                                    discounttedPrice:
+                                        res.discounted_price.toString(),
+                                    distance: res.shortestDistance,
+                                    issponsored: res.userdetails!.sponsored!,
+                                    lefttile: "All Products",
+                                    membershipColor:
+                                        res.userdetails!.membership_color,
+                                    membershipTitle:
+                                        res.userdetails!.membership_title,
+                                    offer: res.offers,
+                                    price: res.price,
+                                    shortestDistance: res.shortestDistance,
+                                    similarproductCount:
+                                        res.similarVendorProfileProductCount,
+                                    title: res.title,
+                                    vendorname: res.userdetails!.name,
+                                    wow: res.wow,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
               )
             ],
           );
@@ -1229,227 +1084,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       ),
     );
   }
-
-  // Widget buildTabContent(String category, String name) {
-  //   final adsList = ref.watch(fetchAdsProvider);
-
-  //   // Use ref.watch to get search results based on category
-  //   final SearchProductModels = ref.watch(getVendorProfileDataProvider(
-  //     widget.vendorName.replaceAll(" ", ''),
-  //     // category: category,
-  //   ));
-
-  //   return SearchProductModels.when(
-  //     loading: () {
-  //       // Check if ads are loading and display loading indicator
-  //       if (adsList.isLoading) {
-  //         return const Center(child: CircularProgressIndicator());
-  //       }
-  //       // Check for errors when loading ads
-  //       else if (adsList.hasError) {
-  //         print("Error loading ads: ${adsList.error}");
-  //         return Center(child: Text('Error loading ads: ${adsList.error}'));
-  //       }
-  //       // Show ad if available and non-null
-  //       else if (adsList.value != null && adsList.value!.isNotEmpty) {
-  //         final ad = adsList.value!.first; // Get the first ad
-  //         return Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             // Safely display the ad image
-  //             Image.network(
-  //               ad.image ?? '', // Default to empty string if null
-  //               errorBuilder: (context, error, stackTrace) =>
-  //                   const Icon(Icons.error),
-  //             ),
-  //             // Display ad ID safely
-  //           ],
-  //         );
-  //       }
-  //       return const Center(child: Text('No ads available.'));
-  //     },
-  //     // Handle errors in the search results
-  //     error: (err, stack) => Center(child: Text('Error: $err')),
-  //     data: (data) {
-  //       // if (data.) {
-  //       //   return const Center(child: Text('No results found.'));
-  //       // }
-  //       // Display search results in a grid
-  //       return Container();
-  //     },
-  //   );
-  // }
-
-  // Widget _buildHomeTab(List<VendorResponse> data, String text) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const SizedBox(height: 10),
-  //       Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 16.w),
-  //         child: Text(
-  //           text,
-  //           style: TextStyle(
-  //             fontSize: 14.sp,
-  //             fontWeight: FontWeight.w700,
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //       ),
-  //       SizedBox(height: 16.h),
-
-  //       // Wrap GridView.builder with Expanded to avoid layout issues
-  //       Expanded(
-  //         child: GridView.builder(
-  //           //  physics: const NeverScrollableScrollPhysics(),
-  //           scrollDirection: Axis.vertical,
-  //           shrinkWrap: true,
-  //           padding: const EdgeInsets.only(left: 10, right: 5, top: 1),
-  //           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //             crossAxisCount: 2,
-  //             crossAxisSpacing: 5.0,
-  //             mainAxisSpacing: 5.0,
-  //             childAspectRatio: 0.7,
-  //           ),
-  //           itemCount: data.length,
-  //           itemBuilder: (context, index) {
-  //             final post = data[index];
-  //             return InkWell(
-  //               // onTap: () => Navigator.push(
-  //               //   context,
-  //               //   MaterialPageRoute(
-  //               //     builder: (context) =>
-  //               //         ProductDetailScreen(productId: post.id!),
-  //               //   ),
-  //               // ),
-  //               child: Container(
-  //                 margin: const EdgeInsets.only(top: 2),
-  //                 padding: const EdgeInsets.all(3),
-  //                 decoration: BoxDecoration(
-  //                   borderRadius: BorderRadius.circular(10),
-  //                   border: Border.all(
-  //                     color: Colors.grey,
-  //                     width: 0.2,
-  //                   ),
-  //                 ),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.stretch,
-  //                   mainAxisAlignment: MainAxisAlignment.start,
-  //                   children: [
-  //                     SizedBox(
-  //                       height: 2.h,
-  //                     ),
-  //                     // Image display with Skeleton placeholder
-  //                     Skeleton.replace(
-  //                       width: productCardWidth,
-  //                       child: Container(
-  //                         margin: const EdgeInsets.only(right: 2, top: 4),
-  //                         width: productCardWidth,
-  //                         height: 100.h,
-  //                         decoration: const BoxDecoration(
-  //                             // image: DecorationImage(
-  //                             //   image: NetworkImage(post.image!),
-  //                             //   fit: BoxFit.fill,
-  //                             // ),
-  //                             ),
-  //                       ),
-  //                     ),
-  //                     SizedBox(height: 9.h),
-
-  //                     // Title text with skeleton placeholder
-  //                     Skeleton.replace(
-  //                       height: 15.h,
-  //                       child: SizedBox(
-  //                         height: 30.h,
-  //                         child: Text(
-  //                           post.vendor!.name!,
-  //                           maxLines: 2,
-  //                           overflow: TextOverflow.ellipsis,
-  //                           style: TextStyle(
-  //                             fontSize: 12.sp,
-  //                             color: Colors.black,
-  //                             fontWeight: FontWeight.w700,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     SizedBox(height: 4.h),
-
-  //                     // Price and username section
-  //                     Row(
-  //                       children: [
-  //                         Text(
-  //                           "RS 100",
-  //                           style: TextStyle(fontSize: 14.sp),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     SizedBox(height: 2.h),
-
-  //                     // Username with skeleton placeholder
-  //                     Skeleton.replace(
-  //                       width: productCardWidth,
-  //                       child: SizedBox(
-  //                         width: productCardWidth,
-  //                         child: Text(
-  //                           ' post.username!',
-  //                           overflow: TextOverflow.ellipsis,
-  //                           style: TextStyle(
-  //                             fontSize: 13.sp,
-  //                             fontWeight: FontWeight.w400,
-  //                             color: Colors.black,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     SizedBox(height: 12.h),
-
-  //                     // Views and pickup location section
-  //                     const Row(
-  //                       mainAxisSize: MainAxisSize.min,
-  //                       children: [
-  //                         Icon(
-  //                           Icons.visibility,
-  //                           size: 15,
-  //                           color: Color(0xff888888),
-  //                         ),
-  //                         // Text(
-  //                         //  ' "${post.visits!}views"',
-  //                         //   style: TextStyle(
-  //                         //     fontSize: 9.sp,
-  //                         //   ),
-  //                         // ),
-  //                         Spacer(),
-  //                         // Text(
-  //                         //   (post.pickup != null && post.pickup!.isNotEmpty)
-  //                         //       ? post.pickup!
-  //                         //           .split(',')
-  //                         //           .map((s) => s
-  //                         //               .trim()) // Split by comma and trim spaces
-  //                         //           .toList() // Convert to a list
-  //                         //           .reversed // Reverse the list
-  //                         //           .elementAt(1) // Get the second last item
-  //                         //       : "Kathmandu", // Fallback if pickup is null or empty
-  //                         //   overflow: TextOverflow.ellipsis, // Prevent overflow
-  //                         //   style: TextStyle(
-  //                         //     fontSize: 9.sp,
-  //                         //   ),
-  //                         // ),
-  //                         SizedBox(
-  //                           width: 2.5,
-  //                         )
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }
 
 class DottedContainer extends StatelessWidget {
@@ -1616,7 +1250,6 @@ class _VendorFirstTabBarSectionState extends State<VendorFirstTabBarSection> {
   @override
   void initState() {
     super.initState();
-    print("bibash ${widget.data.membership_id}");
     // Add a listener to the tab controller
     widget.tabController.addListener(() {
       setState(() {
@@ -2180,7 +1813,8 @@ class BigContainer extends StatelessWidget {
                       ),
                     ],
                   ),
-                )),
+                ),
+                ),
             Stack(
               clipBehavior: Clip.none,
               children: [
@@ -2203,15 +1837,24 @@ class BigContainer extends StatelessWidget {
                       50, // Center the avatar
                   child: InkWell(
                     onTap: () async {
-                      Map<String, String> file = await followvendor(id).then(
-                        (value) {
-                          print("kalu $value");
-                          followresp = value;
-                          return {};
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const Dialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: EdgeInsets.all(10),
+                              child: ScratchCard());
                         },
                       );
+                      // Map<String, String> file = await followvendor(id).then(
+                      //   (value) {
+                      //     print("kalu $value");
+                      //     followresp = value;
+                      //     return {};
+                      //   },
+                      // );
 
-                      print("raju ${followresp!['msg']}");
+                      // print("raju ${followresp!['msg']}");
                       //  showCustomToast(context, value['msg']!);
                       //   if (value['data'] == '1')
                       //     showDialog(

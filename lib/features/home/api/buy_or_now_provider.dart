@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -344,6 +346,8 @@ class GlobalModel {
   final double? avg_rating;
   final double? shortestDistance;
   final String? posttypename;
+    final List<SavedPost>? savedByLoggedUser;
+
 
   final int? similarproductCount;
 
@@ -365,11 +369,21 @@ class GlobalModel {
       required this.avg_rating,
       this.discount_percentage,
       required this.discont,
-      this.posttypename});
+      this.posttypename,
+      this.savedByLoggedUser});
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
+       List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
+    
     return GlobalModel(
+      savedByLoggedUser: savedByLoggedUserList,
       post_type_id: json['post_type_id'],
       posttypename: json['posttypename'],
       discount_percentage: json['discount_percentage'],

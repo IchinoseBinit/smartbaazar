@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,41 +13,45 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/main.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailWidget extends StatefulWidget {
-  ProductDetailWidget({
-    super.key,
-    // this.membership_title,
-    this.id,
-    this.offer = '',
-    this.title = "Trade",
-    this.discounttedPrice = '0',
-    this.comment = '0',
-    this.price = '1',
-    this.vendorname = 'John',
-    this.distance = 2,
-    this.Vimage = '',
-    this.productImage = '',
-    this.lefttile = 'TradeHub',
-    this.similarproductCount,
-    this.membershipColor,
-    this.wow,
-    this.issponsored = false,
-    this.shortestDistance,
-    this.membershipTitle,
-    this.didcountpercentage,
-    this.avg_rating = 1,
-    this.tradeImage,
-    this.posttype = '1',
-    this.membershipid = '1',
-    required this.productid,
-    required this.lat,
-    required this.long,
-  });
+  ProductDetailWidget(
+      {super.key,
+      // this.membership_title,
+      this.id,
+      this.offer = '',
+      this.title = "Trade",
+      this.discounttedPrice = '0',
+      this.comment = '0',
+      this.price = '1',
+      this.vendorname = 'John',
+      this.distance = 2,
+      this.Vimage = '',
+      this.productImage,
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.wow,
+      this.issponsored = false,
+      this.shortestDistance,
+      this.membershipTitle,
+      this.didcountpercentage,
+      this.avg_rating = 1,
+      this.tradeImage,
+      this.posttype = '1',
+      this.membershipid = '1',
+      required this.productid,
+      required this.lat,
+      required this.long,
+      this.savedid,
+      this.onRefresh});
 
   String? title;
   String? price;
@@ -69,26 +76,33 @@ class ProductDetailWidget extends StatefulWidget {
   String? tradeImage;
   String? membershipid;
   String? lat, long;
+  List<SavedPost>? savedid;
+  final VoidCallback? onRefresh;
 
   @override
   State<ProductDetailWidget> createState() => _ProductDetailWidgetState();
 }
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+  String formatToTwoDecimals(double value) {
+    return sprintf("%.2f", [value]); // Formats to 2 decimal places
+  }
+
   String? views, comment, share;
 
-  String? userId;
+  int? userId;
 
-  Future<void> getdetails() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString('userId');
-    // print("zonet ${userId}");
+  void getUserId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? session = pref.getString('session');
+    if (session != null) userId = jsonDecode(session)['result']['id'];
+    print("rajuk $userId");
   }
 
   @override
   Widget build(BuildContext context) {
     // String showRs = "Rs";
-    getdetails();
+    getUserId();
 
     // showRs = discounttedPrice == '0' ? 'Rs.' : '';
     // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
@@ -199,29 +213,36 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 ),
                               )),
                           PopupMenuItem(
-                              onTap: () {
-                                addToFavorites(null, userId!, widget.productid)
+                              onTap: () async {
+                                addToFavorites(null, userId.toString(),
+                                        widget.productid)
                                     .then(
                                   (value) {
+                                    widget.onRefresh?.call();
                                     final snackBar = SnackBar(
                                       content: Text(value),
                                     );
+                                    widget.onRefresh?.call();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
+                                    setState(() {});
                                   },
                                 ).catchError((error) {
-                                  final errorSnackBar = SnackBar(
-                                    content: Text(
-                                        'Failed to add to favorites: $error'),
+                                  final errorSnackBar = const SnackBar(
+                                    content: Text('Please login and try again'),
                                   );
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(errorSnackBar);
                                 });
+                                widget.onRefresh?.call();
                               },
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
                               child: Text(
-                                "Save",
+                                widget.savedid == null ||
+                                        widget.savedid!.isEmpty
+                                    ? "Save"
+                                    : "UnSave",
                                 style: headerstyle.copyWith(
                                   fontFamily:
                                       GoogleFonts.quicksand().fontFamily,
@@ -253,6 +274,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               )),
                           PopupMenuItem(
                             onTap: () {
+                              // print("lanto ${widget.lat} and ${widget.long}");
                               launch(
                                   'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
                             },
@@ -276,7 +298,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ReportComplainScreen(
-                                        productId: userId!,
+                                        productId: userId.toString(),
                                         productName: widget.vendorname!),
                                   ));
                             },
@@ -300,23 +322,41 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
-              Image.network(widget.productImage ?? '',
-                  height: 130.h, width: 200.w, fit: BoxFit.fill,
-                  loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child; // If no loading, show the image
-                } else {
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(
-                      width: 200.w,
-                      height: 130.h,
-                      color: Colors.white, // Placeholder shimmer container
+              CachedNetworkImage(
+                imageUrl: widget.productImage ?? '',
+                height: 130.h,
+                width: 200.w,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 200.w,
+                    height: 130.h,
+                    color: Colors.white,
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  // If the image is null or failed to load, retry automatically
+                  return CachedNetworkImage(
+                    imageUrl: widget.productImage ?? '',
+                    height: 130.h,
+                    width: 200.w,
+                    fit: BoxFit.fill,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: 200.w,
+                        height: 130.h,
+                        color: Colors.white,
+                      ),
                     ),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.broken_image, size: 50),
                   );
-                }
-              }),
+                },
+              ),
               SizedBox(
                 height: 5.h,
               ),
@@ -367,32 +407,6 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                   ),
                                 ],
                               ),
-                        // discounttedPrice != "0"
-                        //     ?
-
-                        // Row(
-                        //   children: [
-                        //     const Icon(
-                        //       Icons.track_changes_sharp,
-                        //       color: Color(0xff901B41),
-                        //       size: 15,
-                        //     ),
-                        //    offer==''?    Text(
-                        //       "Best Price",
-                        //       style: headerstyle.copyWith(
-                        //           fontWeight: FontWeight.w700,
-                        //           color: const Color(0xff901B41),
-                        //           fontSize: 8.sp),
-                        //     ):
-                        //     Text(
-                        //       "${offer} Price",
-                        //       style: headerstyle.copyWith(
-                        //           fontWeight: FontWeight.w700,
-                        //           color: const Color(0xff901B41),
-                        //           fontSize: 8.sp),
-                        //     ),
-                        //   ],
-                        // ),
                         const Spacer(),
                         if (widget.discounttedPrice != null &&
                             widget.discounttedPrice != '0' &&
@@ -499,24 +513,27 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                         ? const SizedBox()
                         : Row(
                             children: [
-                              Image.asset(
-                                "assets/images/flameIcon.png",
-                                height: 10,
-                                width: 10,
-                                color: const Color(0xff901B41),
-                              ),
-                              Text(
-                                "${widget.didcountpercentage}%",
-                                style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xff901B41),
-                                    fontSize: 10),
-                              ),
-                              const Icon(
-                                Icons.arrow_downward_rounded,
-                                size: 15,
-                                color: Color(0xff901B41),
-                              )
+                              if (widget.didcountpercentage != 0)
+                                Image.asset(
+                                  "assets/images/flameIcon.png",
+                                  height: 10,
+                                  width: 10,
+                                  color: const Color(0xff901B41),
+                                ),
+                              if (widget.didcountpercentage != 0)
+                                Text(
+                                  "${widget.didcountpercentage}%",
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff901B41),
+                                      fontSize: 10),
+                                ),
+                              if (widget.didcountpercentage != 0)
+                                const Icon(
+                                  Icons.arrow_downward_rounded,
+                                  size: 15,
+                                  color: Color(0xff901B41),
+                                )
                             ],
                           ),
                   ],
@@ -673,12 +690,31 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 ));
                           },
                           child: Padding(
-                            padding: EdgeInsets.only(left: 13.w, right: 3.w),
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(widget.Vimage!),
-                              radius: 19.sp,
-                            ),
-                          ),
+                              padding: EdgeInsets.only(left: 13.w, right: 3.w),
+                              child: CircleAvatar(
+                                radius:
+                                    19.sp, // Adjust the radius using ScreenUtil
+                                backgroundImage: widget.Vimage! != null
+                                    ? NetworkImage(widget
+                                        .Vimage!) // Use the provided image URL if not null
+                                    : null,
+                                child: widget.Vimage! == null
+                                    ? Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 38
+                                              .sp, // Double the radius to get the width and height of the CircleAvatar
+                                          height: 38.sp,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors
+                                                .white, // Placeholder color
+                                          ),
+                                        ),
+                                      )
+                                    : null, // If there's no image, show the shimmer effect
+                              )),
                         ),
                         // Center Content
                         Expanded(
@@ -765,7 +801,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                         ),
                                         SizedBox(width: 2.w),
                                         Text(
-                                          "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
+                                          "${widget.shortestDistance != null ? formatToTwoDecimals(widget.shortestDistance!) : ''} km",
                                           style: headerstyle.copyWith(
                                             fontFamily: GoogleFonts.quicksand()
                                                 .fontFamily,

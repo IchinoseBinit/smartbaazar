@@ -25,6 +25,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/circle_story_count.dart';
@@ -44,6 +45,7 @@ import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
 
@@ -236,6 +238,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
 
+    var homecategory = ref.watch(homeCategoryProvider);
+
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
 
     final asyncbajarValue = ref.watch(getSocioDataProvider);
@@ -243,7 +247,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(0));
     // asyncbajarValue.when(data: (data) {
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    ref.refresh(bottomNavIndexProvider);
+    ref.refresh(getPostTypeStoryApiProvider('3'));
+    void refreshAllProviders() {
+      ref.refresh(bottomNavIndexProvider);
+      ref.refresh(homeCategoryProvider);
+      ref.refresh(getCategoriesProvider(0));
+
+      // Refreshing different data providers
+
+      ref.refresh(getSocioDataProvider);
+
+      // Refresh search & categories
+      ref.refresh(getCategoriesProvider(0));
+    }
 
     // }, error: (error, stackTrace) {
 
@@ -302,19 +319,12 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
-                                        },
-                                      child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: AssetImage(
-                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                          )),
+                                        onTap: () {},
+                                        child: const CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                        )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -761,35 +771,53 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                       ),
                     ),
                   ),
-                  asyncPostTypeContent.when(
+                  homecategory.when(
                     data: (feedStoryData) {
-                      final homeStory = feedStoryData.homeStory;
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-                      if (homeStory?.story?.posts != null) {
-                        final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-                        return SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: posts.length,
-                            itemBuilder: (context, index) {
-                              final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-                              return HomePageStoryContainer(
-                                index: index,
-                                vendorName:
-                                    story.vendorName ?? "Unknown Vendor",
-                                vendorImage: story.vendorImage ??
-                                    "https://example.com/default-image.png",
-                                storyCount: story.storyCount ?? 0,
-                                showGift: story.hasSponsoredGifts ?? false,
-                                feedStoryContent: Story(posts: [story]),
-                                userId: story.vendorId!,
-                              );
-                            },
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
                           ),
                         );
                       }
@@ -1151,6 +1179,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
                                 return ProductDetailWidget(
+                                         savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
                                   productid: hot.id,
@@ -1261,6 +1305,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       data.insidearr[0].length, (index) {
                                     VProduct pro = data.insidearr[0][index];
                                     return ProductDetailWidget(
+                                         savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                       lat: pro.user.latitude,
                                       long: pro.user.longitude,
                                       productid: pro.id,
@@ -1352,6 +1412,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
+                                         savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                         lat: pro.user.latitude,
                                         long: pro.user.longitude,
                                         productid: pro.id,
@@ -1443,6 +1519,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
+                                         savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                         lat: pro.user.latitude,
                                         long: pro.user.longitude,
                                         productid: pro.id,
@@ -1536,6 +1628,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
+                                         savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                         lat: pro.user.latitude,
                                         long: pro.user.longitude,
                                         productid: pro.id,
@@ -1626,6 +1734,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 2.w),
                                       child: ProductDetailWidget(
+                                         savedid: pro.savedByLoggedUser == null ||
+                                            pro.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : pro.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                         lat: pro.user.latitude,
                                         long: pro.user.longitude,
                                         productid: pro.id,
@@ -1771,6 +1895,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                   savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -1857,6 +1997,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -1940,6 +2096,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -2227,6 +2399,22 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 2.w),
                                                 child: ProductDetailWidget(
+                                                       savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refreshAllProviders();
+                                    },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -2319,55 +2507,51 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           runSpacing: 15.h, // Vertical spacing between rows
                           children: List.generate(data.product.length, (index) {
                             var res = data.product[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetailScreen(
-                                      productId: res.id,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: SizedBox(
-                                width: (MediaQuery.of(context).size.width) /
-                                    2, // Adjust for two items per row
-                                child: Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  shadowColor:
-                                      const Color(0xff3D215F).withOpacity(0.5),
-                                  elevation: 9,
-                                  // margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: AllProductDetailWidget(
-                                    lat: res.user.latitude,
-                                    long: res.user.longitude,
-                                    productid: res.id,
-                                    id: int.tryParse(res.id),
-                                    membershipid: res.user.membership_id,
-                                    offer: res.offers,
-                                    posttype: res.post_type_id,
-                                    shortestDistance: res.user.shortestDistance,
-                                    didcountpercentage: res.discount_percentage,
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    wow: res.wow,
-                                    comment: res.commentcount.toString(),
-                                    issponsored: res.user.sponsored,
-                                    discounttedPrice: res.discounted_price,
-                                    lefttile: "Socio",
-                                    productImage: res.image,
-                                    Vimage: res.user.photo,
-                                    vendorname: res.user.name,
-                                    title: res.title,
-                                    price: res.price,
-                                    similarproductCount:
-                                        res.similarProductCount,
-                                    membershipColor: res.user.membershipColor,
-                                    membershipTitle: res.user.membershipTitle,
-                                  ),
+                            return SizedBox(
+                              width: (MediaQuery.of(context).size.width) /
+                                  2, // Adjust for two items per row
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shadowColor:
+                                    const Color(0xff3D215F).withOpacity(0.5),
+                                elevation: 9,
+                                // margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: AllProductDetailWidget(
+                                      savedid: res.savedByLoggedUser == null ||
+                                          res.savedByLoggedUser!.isEmpty
+                                      ? []
+                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
+                                         
+                                  onRefresh: () {
+                                    refreshAllProviders();
+                                  },
+                                  lat: res.user.latitude,
+                                  long: res.user.longitude,
+                                  productid: res.id,
+                                  id: int.tryParse(res.id),
+                                  membershipid: res.user.membership_id,
+                                  offer: res.offers,
+                                  posttype: res.post_type_id,
+                                  shortestDistance: res.user.shortestDistance,
+                                  didcountpercentage: res.discount_percentage,
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  wow: res.wow,
+                                  comment: res.commentcount.toString(),
+                                  issponsored: res.user.sponsored,
+                                  discounttedPrice: res.discounted_price,
+                                  lefttile: "Socio",
+                                  productImage: res.image,
+                                  Vimage: res.user.photo,
+                                  vendorname: res.user.name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount:
+                                      res.similarProductCount,
+                                  membershipColor: res.user.membershipColor,
+                                  membershipTitle: res.user.membershipTitle,
                                 ),
                               ),
                             );

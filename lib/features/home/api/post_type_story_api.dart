@@ -7,8 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'post_type_story_api.g.dart';
 
 @riverpod
-Future<HomeStoryModel> getPostTypeStoryApi(
-     ref, String postTypeId) async {
+Future<HomeStoryModel> getPostTypeStoryApi(ref, String postTypeId) async {
   final SmartClient client = SmartClient();
 
   try {

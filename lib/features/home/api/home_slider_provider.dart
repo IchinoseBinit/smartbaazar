@@ -3,6 +3,7 @@ import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
+import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -24,6 +25,8 @@ class VProduct {
   final String? wow;
   final int? discount_percentage;
   final String? post_type_id;
+    final List<SavedPost>? savedByLoggedUser;
+
 
   VProduct({
     required this.id,
@@ -41,10 +44,20 @@ class VProduct {
     required this.userDetail,
     this.discount_percentage,
     required this.post_type_id,
+    this.savedByLoggedUser
   });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
+       List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
+    
     return VProduct(
+      savedByLoggedUser: savedByLoggedUserList,
       post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],
       wow: json['wow'],
@@ -89,6 +102,7 @@ class Homepage1 {
     );
   }
 }
+
 
 @riverpod
 Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {

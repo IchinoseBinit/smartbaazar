@@ -48,6 +48,7 @@ class _UpdateListingState extends State<UpdateListing> {
   TextEditingController pricecontroller = TextEditingController();
   TextEditingController modelcontroller = TextEditingController();
   String accept = '0';
+  bool _hide = false;
 
   TextEditingController streetsizecontroller = TextEditingController();
   TextEditingController storagecontroller = TextEditingController();
@@ -165,7 +166,7 @@ class _UpdateListingState extends State<UpdateListing> {
           (element) => element.id == int.tryParse(parentid!),
         );
       });
-      print("raju ${selectedcategopry?.name}");
+      // print("raju ${selectedcategopry?.name}");
     } catch (e) {
       print('Failed to load categories: $e');
     }
@@ -1635,7 +1636,9 @@ class _UpdateListingState extends State<UpdateListing> {
                           ),
                         )),
                         Positioned(
-                          top: 90.h,
+                          top: _places == null || _places!.isEmpty
+                              ? 90.h
+                              : 120.h,
                           child: CreateListingCardWidget(
                               child: Row(
                             children: [
@@ -1663,13 +1666,12 @@ class _UpdateListingState extends State<UpdateListing> {
                                 child: TextField(
                                   controller: phonecontroller,
                                   decoration: InputDecoration.collapsed(
-                                    hintText: widget.prod?.phone ?? '98XXXXXX',
-                                    hintStyle: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14.sp,
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                                      hintText:
+                                          phonecontroller?.text ?? '98XXXXXX',
+                                      hintStyle: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14.sp,
+                                          color: const Color(0xffADADAD))),
                                 ),
                               ),
                               Container(
@@ -1681,7 +1683,12 @@ class _UpdateListingState extends State<UpdateListing> {
                                 child: Column(
                                   children: [
                                     CustomCheckbox(
-                                        value: false, onChanged: (value) {}),
+                                        value: _hide,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _hide = value;
+                                          });
+                                        }),
                                     SizedBox(
                                       height: 5.h,
                                     ),
@@ -1701,18 +1708,19 @@ class _UpdateListingState extends State<UpdateListing> {
                         ),
                         Positioned(
                           height: 100,
+                          width: 400.w,
                           top: 60.h, // Adjust as per your layout
                           right: 0,
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 300),
                             opacity: _places == null || _places!.isEmpty
                                 ? 0
-                                : 1, // Fade in/out based on _places
+                                : 1, // Fade in/out
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               height: _places == null || _places!.isEmpty
                                   ? 0
-                                  : 100, // Smooth height transition
+                                  : 100, // Smooth transition
                               width: 200.w,
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -1737,15 +1745,19 @@ class _UpdateListingState extends State<UpdateListing> {
                                         return InkWell(
                                           onTap: () {
                                             setState(() {
-                                              _showSearchProductModels =
-                                                  false; // Optional if used elsewhere
-                                              FocusScope.of(context)
-                                                  .unfocus(); // Hide the keyboard
-                                              selectedpickup =
-                                                  product; // Set the selected item
-                                              _places =
-                                                  []; // Clear the dropdown items
+                                              // Set selected place
+                                              selectedpickup = product;
+
+                                              // Clear dropdown items to hide the dropdown
+                                              _places = [];
+
+                                              // Optional: Hide keyboard if dropdown triggered by typing
+                                              FocusScope.of(context).unfocus();
                                             });
+                                            _places = [];
+                                            print("nirman $selectedpickup");
+                                            _pickupcontroller.text =
+                                                selectedpickup!.description!;
                                           },
                                           child: Container(
                                             padding: const EdgeInsets.all(8.0),
@@ -2050,12 +2062,11 @@ class _UpdateListingState extends State<UpdateListing> {
                         : GeneralEelevatedButton(
                             text: isloading ? 'Submitting...' : 'Submit',
                             onPresssed: () async {
-                              setState(() {
-                                isloading = true; // Start loading
-                              });
+                              // setState(() {
+                              //   isloading = true; // Start loading
+                              // });
                               try {
                                 String responseMessage = await updatelisting(
-                                  
                                   null,
                                   widget.prod!.id!,
 
@@ -2100,9 +2111,7 @@ class _UpdateListingState extends State<UpdateListing> {
                                       widget.prod!.phone!,
                                   username: namecontroller.text ??
                                       widget.prod!.contactName!,
-                                  pickup: selectedpickup == null
-                                      ? widget.prod!.pickup!
-                                      : selectedpickup!.description!,
+                                  pickup: '11111.11',
                                   images: selectedImages,
                                   accept: _acceptterms == false
                                       ? widget.prod?.acceptTerms == true
@@ -2121,10 +2130,12 @@ class _UpdateListingState extends State<UpdateListing> {
                                       ? widget.prod?.storyDisplayDays!
                                       : stockcontroller.text,
                                   // youtube: widget.youtube?.trim(),
-                                  lat: selectedpickup!.latitude,
-                                  long: selectedpickup!.longitude,
+                                  lat: selectedpickup?.latitude==null? 1.11111:selectedpickup!.latitude!,
+                                  long: selectedpickup?.longitude==null? 1.11111:selectedpickup!.longitude!,
                                 );
-                              } catch (e) {}
+                              } catch (e) {
+                                print("error $e");
+                              }
                             },
                           ),
                   ),

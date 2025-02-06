@@ -25,7 +25,8 @@ mixin _$VendorProfile {
   VendorCard? get vendor_card => throw _privateConstructorUsedError;
   VendorAbout? get vendor_about => throw _privateConstructorUsedError;
   List<Deal>? get deals => throw _privateConstructorUsedError;
-  List<BrandNewModel>? get all_products => throw _privateConstructorUsedError;
+  List<BrandNewModel>? get all_VendorProfileProducts =>
+      throw _privateConstructorUsedError;
   List<FeedPost>? get feedPosts => throw _privateConstructorUsedError;
   List<FeedPost>? get live_prizes => throw _privateConstructorUsedError;
   List<BrandNewModel>? get brandnew => throw _privateConstructorUsedError;
@@ -60,7 +61,7 @@ abstract class $VendorProfileCopyWith<$Res> {
       VendorCard? vendor_card,
       VendorAbout? vendor_about,
       List<Deal>? deals,
-      List<BrandNewModel>? all_products,
+      List<BrandNewModel>? all_VendorProfileProducts,
       List<FeedPost>? feedPosts,
       List<FeedPost>? live_prizes,
       List<BrandNewModel>? brandnew,
@@ -98,7 +99,7 @@ class _$VendorProfileCopyWithImpl<$Res, $Val extends VendorProfile>
     Object? vendor_card = freezed,
     Object? vendor_about = freezed,
     Object? deals = freezed,
-    Object? all_products = freezed,
+    Object? all_VendorProfileProducts = freezed,
     Object? feedPosts = freezed,
     Object? live_prizes = freezed,
     Object? brandnew = freezed,
@@ -132,9 +133,9 @@ class _$VendorProfileCopyWithImpl<$Res, $Val extends VendorProfile>
           ? _value.deals
           : deals // ignore: cast_nullable_to_non_nullable
               as List<Deal>?,
-      all_products: freezed == all_products
-          ? _value.all_products
-          : all_products // ignore: cast_nullable_to_non_nullable
+      all_VendorProfileProducts: freezed == all_VendorProfileProducts
+          ? _value.all_VendorProfileProducts
+          : all_VendorProfileProducts // ignore: cast_nullable_to_non_nullable
               as List<BrandNewModel>?,
       feedPosts: freezed == feedPosts
           ? _value.feedPosts
@@ -240,7 +241,7 @@ abstract class _$$VendorProfileImplCopyWith<$Res>
       VendorCard? vendor_card,
       VendorAbout? vendor_about,
       List<Deal>? deals,
-      List<BrandNewModel>? all_products,
+      List<BrandNewModel>? all_VendorProfileProducts,
       List<FeedPost>? feedPosts,
       List<FeedPost>? live_prizes,
       List<BrandNewModel>? brandnew,
@@ -279,7 +280,7 @@ class __$$VendorProfileImplCopyWithImpl<$Res>
     Object? vendor_card = freezed,
     Object? vendor_about = freezed,
     Object? deals = freezed,
-    Object? all_products = freezed,
+    Object? all_VendorProfileProducts = freezed,
     Object? feedPosts = freezed,
     Object? live_prizes = freezed,
     Object? brandnew = freezed,
@@ -313,9 +314,9 @@ class __$$VendorProfileImplCopyWithImpl<$Res>
           ? _value._deals
           : deals // ignore: cast_nullable_to_non_nullable
               as List<Deal>?,
-      all_products: freezed == all_products
-          ? _value._all_products
-          : all_products // ignore: cast_nullable_to_non_nullable
+      all_VendorProfileProducts: freezed == all_VendorProfileProducts
+          ? _value._all_VendorProfileProducts
+          : all_VendorProfileProducts // ignore: cast_nullable_to_non_nullable
               as List<BrandNewModel>?,
       feedPosts: freezed == feedPosts
           ? _value._feedPosts
@@ -374,7 +375,7 @@ class _$VendorProfileImpl implements _VendorProfile {
       this.vendor_card,
       this.vendor_about,
       final List<Deal>? deals,
-      final List<BrandNewModel>? all_products,
+      final List<BrandNewModel>? all_VendorProfileProducts,
       final List<FeedPost>? feedPosts,
       final List<FeedPost>? live_prizes,
       final List<BrandNewModel>? brandnew,
@@ -387,7 +388,7 @@ class _$VendorProfileImpl implements _VendorProfile {
       this.scratch_banner,
       final List<Advertisement>? advertisements})
       : _deals = deals,
-        _all_products = all_products,
+        _all_VendorProfileProducts = all_VendorProfileProducts,
         _feedPosts = feedPosts,
         _live_prizes = live_prizes,
         _brandnew = brandnew,
@@ -420,12 +421,13 @@ class _$VendorProfileImpl implements _VendorProfile {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<BrandNewModel>? _all_products;
+  final List<BrandNewModel>? _all_VendorProfileProducts;
   @override
-  List<BrandNewModel>? get all_products {
-    final value = _all_products;
+  List<BrandNewModel>? get all_VendorProfileProducts {
+    final value = _all_VendorProfileProducts;
     if (value == null) return null;
-    if (_all_products is EqualUnmodifiableListView) return _all_products;
+    if (_all_VendorProfileProducts is EqualUnmodifiableListView)
+      return _all_VendorProfileProducts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -534,7 +536,7 @@ class _$VendorProfileImpl implements _VendorProfile {
 
   @override
   String toString() {
-    return 'VendorProfile(subscribed: $subscribed, vendor: $vendor, vendor_card: $vendor_card, vendor_about: $vendor_about, deals: $deals, all_products: $all_products, feedPosts: $feedPosts, live_prizes: $live_prizes, brandnew: $brandnew, used: $used, services: $services, jobs: $jobs, events: $events, b2b: $b2b, grocery: $grocery, scratch_banner: $scratch_banner, advertisements: $advertisements)';
+    return 'VendorProfile(subscribed: $subscribed, vendor: $vendor, vendor_card: $vendor_card, vendor_about: $vendor_about, deals: $deals, all_VendorProfileProducts: $all_VendorProfileProducts, feedPosts: $feedPosts, live_prizes: $live_prizes, brandnew: $brandnew, used: $used, services: $services, jobs: $jobs, events: $events, b2b: $b2b, grocery: $grocery, scratch_banner: $scratch_banner, advertisements: $advertisements)';
   }
 
   @override
@@ -550,8 +552,8 @@ class _$VendorProfileImpl implements _VendorProfile {
             (identical(other.vendor_about, vendor_about) ||
                 other.vendor_about == vendor_about) &&
             const DeepCollectionEquality().equals(other._deals, _deals) &&
-            const DeepCollectionEquality()
-                .equals(other._all_products, _all_products) &&
+            const DeepCollectionEquality().equals(
+                other._all_VendorProfileProducts, _all_VendorProfileProducts) &&
             const DeepCollectionEquality()
                 .equals(other._feedPosts, _feedPosts) &&
             const DeepCollectionEquality()
@@ -578,7 +580,7 @@ class _$VendorProfileImpl implements _VendorProfile {
       vendor_card,
       vendor_about,
       const DeepCollectionEquality().hash(_deals),
-      const DeepCollectionEquality().hash(_all_products),
+      const DeepCollectionEquality().hash(_all_VendorProfileProducts),
       const DeepCollectionEquality().hash(_feedPosts),
       const DeepCollectionEquality().hash(_live_prizes),
       const DeepCollectionEquality().hash(_brandnew),
@@ -614,7 +616,7 @@ abstract class _VendorProfile implements VendorProfile {
       final VendorCard? vendor_card,
       final VendorAbout? vendor_about,
       final List<Deal>? deals,
-      final List<BrandNewModel>? all_products,
+      final List<BrandNewModel>? all_VendorProfileProducts,
       final List<FeedPost>? feedPosts,
       final List<FeedPost>? live_prizes,
       final List<BrandNewModel>? brandnew,
@@ -641,7 +643,7 @@ abstract class _VendorProfile implements VendorProfile {
   @override
   List<Deal>? get deals;
   @override
-  List<BrandNewModel>? get all_products;
+  List<BrandNewModel>? get all_VendorProfileProducts;
   @override
   List<FeedPost>? get feedPosts;
   @override
@@ -694,13 +696,16 @@ mixin _$BrandNewModel {
   String? get price => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
-  int? get similarProductCount => throw _privateConstructorUsedError;
+  int? get similarVendorProfileProductCount =>
+      throw _privateConstructorUsedError;
   int? get discounted_price => throw _privateConstructorUsedError;
   double? get shortestDistance => throw _privateConstructorUsedError;
   int? get commentcount => throw _privateConstructorUsedError;
   double? get discount_percentage => throw _privateConstructorUsedError;
   int? get avg_rating => throw _privateConstructorUsedError;
   UserDetailsModel? get userdetails => throw _privateConstructorUsedError;
+  List<FezzedSaved>? get savedByLoggedUser =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this BrandNewModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -734,13 +739,14 @@ abstract class $BrandNewModelCopyWith<$Res> {
       String? price,
       String? wow,
       String? city,
-      int? similarProductCount,
+      int? similarVendorProfileProductCount,
       int? discounted_price,
       double? shortestDistance,
       int? commentcount,
       double? discount_percentage,
       int? avg_rating,
-      UserDetailsModel? userdetails});
+      UserDetailsModel? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
 
   $UserDetailsModelCopyWith<$Res>? get userdetails;
 }
@@ -775,13 +781,14 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
     Object? price = freezed,
     Object? wow = freezed,
     Object? city = freezed,
-    Object? similarProductCount = freezed,
+    Object? similarVendorProfileProductCount = freezed,
     Object? discounted_price = freezed,
     Object? shortestDistance = freezed,
     Object? commentcount = freezed,
     Object? discount_percentage = freezed,
     Object? avg_rating = freezed,
     Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -844,9 +851,10 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
               as int?,
       discounted_price: freezed == discounted_price
           ? _value.discounted_price
@@ -872,6 +880,10 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
           ? _value.userdetails
           : userdetails // ignore: cast_nullable_to_non_nullable
               as UserDetailsModel?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
     ) as $Val);
   }
 
@@ -914,13 +926,14 @@ abstract class _$$BrandNewModelImplCopyWith<$Res>
       String? price,
       String? wow,
       String? city,
-      int? similarProductCount,
+      int? similarVendorProfileProductCount,
       int? discounted_price,
       double? shortestDistance,
       int? commentcount,
       double? discount_percentage,
       int? avg_rating,
-      UserDetailsModel? userdetails});
+      UserDetailsModel? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
 
   @override
   $UserDetailsModelCopyWith<$Res>? get userdetails;
@@ -954,13 +967,14 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
     Object? price = freezed,
     Object? wow = freezed,
     Object? city = freezed,
-    Object? similarProductCount = freezed,
+    Object? similarVendorProfileProductCount = freezed,
     Object? discounted_price = freezed,
     Object? shortestDistance = freezed,
     Object? commentcount = freezed,
     Object? discount_percentage = freezed,
     Object? avg_rating = freezed,
     Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_$BrandNewModelImpl(
       id: null == id
@@ -1023,9 +1037,10 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
               as int?,
       discounted_price: freezed == discounted_price
           ? _value.discounted_price
@@ -1051,6 +1066,10 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
           ? _value.userdetails
           : userdetails // ignore: cast_nullable_to_non_nullable
               as UserDetailsModel?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
     ));
   }
 }
@@ -1074,13 +1093,15 @@ class _$BrandNewModelImpl implements _BrandNewModel {
       this.price,
       this.wow,
       required this.city,
-      required this.similarProductCount,
+      required this.similarVendorProfileProductCount,
       required this.discounted_price,
       required this.shortestDistance,
       required this.commentcount,
       required this.discount_percentage,
       required this.avg_rating,
-      required this.userdetails});
+      required this.userdetails,
+      final List<FezzedSaved>? savedByLoggedUser})
+      : _savedByLoggedUser = savedByLoggedUser;
 
   factory _$BrandNewModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BrandNewModelImplFromJson(json);
@@ -1116,7 +1137,7 @@ class _$BrandNewModelImpl implements _BrandNewModel {
   @override
   final String? city;
   @override
-  final int? similarProductCount;
+  final int? similarVendorProfileProductCount;
   @override
   final int? discounted_price;
   @override
@@ -1129,10 +1150,20 @@ class _$BrandNewModelImpl implements _BrandNewModel {
   final int? avg_rating;
   @override
   final UserDetailsModel? userdetails;
+  final List<FezzedSaved>? _savedByLoggedUser;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'BrandNewModel(id: $id, country_code: $country_code, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, story_display_days: $story_display_days, b2b_pricing: $b2b_pricing, image: $image, post_type: $post_type, username: $username, offers: $offers, price: $price, wow: $wow, city: $city, similarProductCount: $similarProductCount, discounted_price: $discounted_price, shortestDistance: $shortestDistance, commentcount: $commentcount, discount_percentage: $discount_percentage, avg_rating: $avg_rating, userdetails: $userdetails)';
+    return 'BrandNewModel(id: $id, country_code: $country_code, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, story_display_days: $story_display_days, b2b_pricing: $b2b_pricing, image: $image, post_type: $post_type, username: $username, offers: $offers, price: $price, wow: $wow, city: $city, similarVendorProfileProductCount: $similarVendorProfileProductCount, discounted_price: $discounted_price, shortestDistance: $shortestDistance, commentcount: $commentcount, discount_percentage: $discount_percentage, avg_rating: $avg_rating, userdetails: $userdetails, savedByLoggedUser: $savedByLoggedUser)';
   }
 
   @override
@@ -1162,8 +1193,10 @@ class _$BrandNewModelImpl implements _BrandNewModel {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.wow, wow) || other.wow == wow) &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.similarProductCount, similarProductCount) ||
-                other.similarProductCount == similarProductCount) &&
+            (identical(other.similarVendorProfileProductCount,
+                    similarVendorProfileProductCount) ||
+                other.similarVendorProfileProductCount ==
+                    similarVendorProfileProductCount) &&
             (identical(other.discounted_price, discounted_price) ||
                 other.discounted_price == discounted_price) &&
             (identical(other.shortestDistance, shortestDistance) ||
@@ -1175,7 +1208,9 @@ class _$BrandNewModelImpl implements _BrandNewModel {
             (identical(other.avg_rating, avg_rating) ||
                 other.avg_rating == avg_rating) &&
             (identical(other.userdetails, userdetails) ||
-                other.userdetails == userdetails));
+                other.userdetails == userdetails) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1197,13 +1232,14 @@ class _$BrandNewModelImpl implements _BrandNewModel {
         price,
         wow,
         city,
-        similarProductCount,
+        similarVendorProfileProductCount,
         discounted_price,
         shortestDistance,
         commentcount,
         discount_percentage,
         avg_rating,
-        userdetails
+        userdetails,
+        const DeepCollectionEquality().hash(_savedByLoggedUser)
       ]);
 
   /// Create a copy of BrandNewModel
@@ -1239,13 +1275,14 @@ abstract class _BrandNewModel implements BrandNewModel {
       final String? price,
       final String? wow,
       required final String? city,
-      required final int? similarProductCount,
+      required final int? similarVendorProfileProductCount,
       required final int? discounted_price,
       required final double? shortestDistance,
       required final int? commentcount,
       required final double? discount_percentage,
       required final int? avg_rating,
-      required final UserDetailsModel? userdetails}) = _$BrandNewModelImpl;
+      required final UserDetailsModel? userdetails,
+      final List<FezzedSaved>? savedByLoggedUser}) = _$BrandNewModelImpl;
 
   factory _BrandNewModel.fromJson(Map<String, dynamic> json) =
       _$BrandNewModelImpl.fromJson;
@@ -1281,7 +1318,7 @@ abstract class _BrandNewModel implements BrandNewModel {
   @override
   String? get city;
   @override
-  int? get similarProductCount;
+  int? get similarVendorProfileProductCount;
   @override
   int? get discounted_price;
   @override
@@ -1294,12 +1331,250 @@ abstract class _BrandNewModel implements BrandNewModel {
   int? get avg_rating;
   @override
   UserDetailsModel? get userdetails;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser;
 
   /// Create a copy of BrandNewModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrandNewModelImplCopyWith<_$BrandNewModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+FezzedSaved _$FezzedSavedFromJson(Map<String, dynamic> json) {
+  return _FezzedSaved.fromJson(json);
+}
+
+/// @nodoc
+mixin _$FezzedSaved {
+  String get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  String get postId => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
+  String get updatedAt => throw _privateConstructorUsedError;
+
+  /// Serializes this FezzedSaved to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of FezzedSaved
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $FezzedSavedCopyWith<FezzedSaved> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FezzedSavedCopyWith<$Res> {
+  factory $FezzedSavedCopyWith(
+          FezzedSaved value, $Res Function(FezzedSaved) then) =
+      _$FezzedSavedCopyWithImpl<$Res, FezzedSaved>;
+  @useResult
+  $Res call(
+      {String id,
+      String userId,
+      String postId,
+      String createdAt,
+      String updatedAt});
+}
+
+/// @nodoc
+class _$FezzedSavedCopyWithImpl<$Res, $Val extends FezzedSaved>
+    implements $FezzedSavedCopyWith<$Res> {
+  _$FezzedSavedCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of FezzedSaved
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? postId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$FezzedSavedImplCopyWith<$Res>
+    implements $FezzedSavedCopyWith<$Res> {
+  factory _$$FezzedSavedImplCopyWith(
+          _$FezzedSavedImpl value, $Res Function(_$FezzedSavedImpl) then) =
+      __$$FezzedSavedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String userId,
+      String postId,
+      String createdAt,
+      String updatedAt});
+}
+
+/// @nodoc
+class __$$FezzedSavedImplCopyWithImpl<$Res>
+    extends _$FezzedSavedCopyWithImpl<$Res, _$FezzedSavedImpl>
+    implements _$$FezzedSavedImplCopyWith<$Res> {
+  __$$FezzedSavedImplCopyWithImpl(
+      _$FezzedSavedImpl _value, $Res Function(_$FezzedSavedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FezzedSaved
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? userId = null,
+    Object? postId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
+    return _then(_$FezzedSavedImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      postId: null == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: null == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$FezzedSavedImpl implements _FezzedSaved {
+  const _$FezzedSavedImpl(
+      {required this.id,
+      required this.userId,
+      required this.postId,
+      required this.createdAt,
+      required this.updatedAt});
+
+  factory _$FezzedSavedImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FezzedSavedImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String userId;
+  @override
+  final String postId;
+  @override
+  final String createdAt;
+  @override
+  final String updatedAt;
+
+  @override
+  String toString() {
+    return 'FezzedSaved(id: $id, userId: $userId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FezzedSavedImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.postId, postId) || other.postId == postId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, userId, postId, createdAt, updatedAt);
+
+  /// Create a copy of FezzedSaved
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FezzedSavedImplCopyWith<_$FezzedSavedImpl> get copyWith =>
+      __$$FezzedSavedImplCopyWithImpl<_$FezzedSavedImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FezzedSavedImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _FezzedSaved implements FezzedSaved {
+  const factory _FezzedSaved(
+      {required final String id,
+      required final String userId,
+      required final String postId,
+      required final String createdAt,
+      required final String updatedAt}) = _$FezzedSavedImpl;
+
+  factory _FezzedSaved.fromJson(Map<String, dynamic> json) =
+      _$FezzedSavedImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get userId;
+  @override
+  String get postId;
+  @override
+  String get createdAt;
+  @override
+  String get updatedAt;
+
+  /// Create a copy of FezzedSaved
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FezzedSavedImplCopyWith<_$FezzedSavedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -3405,12 +3680,12 @@ abstract class _FeedPost implements FeedPost {
       throw _privateConstructorUsedError;
 }
 
-Product _$ProductFromJson(Map<String, dynamic> json) {
-  return _Product.fromJson(json);
+VendorProfileProduct _$VendorProfileProductFromJson(Map<String, dynamic> json) {
+  return _VendorProfileProduct.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Product {
+mixin _$VendorProfileProduct {
   String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
@@ -3433,25 +3708,28 @@ mixin _$Product {
   String? get longitude => throw _privateConstructorUsedError;
   String? get latitude => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
-  int? get similarProductCount => throw _privateConstructorUsedError;
+  int? get similarVendorProfileProductCount =>
+      throw _privateConstructorUsedError;
   int? get commentcount => throw _privateConstructorUsedError;
   double? get avg_rating => throw _privateConstructorUsedError;
-  ProductUserDetailsModel? get UserDetailsModel =>
+  VendorProfileProductUserDetailsModel? get UserDetailsModel =>
       throw _privateConstructorUsedError;
 
-  /// Serializes this Product to a JSON map.
+  /// Serializes this VendorProfileProduct to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
+  $VendorProfileProductCopyWith<VendorProfileProduct> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProductCopyWith<$Res> {
-  factory $ProductCopyWith(Product value, $Res Function(Product) then) =
-      _$ProductCopyWithImpl<$Res, Product>;
+abstract class $VendorProfileProductCopyWith<$Res> {
+  factory $VendorProfileProductCopyWith(VendorProfileProduct value,
+          $Res Function(VendorProfileProduct) then) =
+      _$VendorProfileProductCopyWithImpl<$Res, VendorProfileProduct>;
   @useResult
   $Res call(
       {String? id,
@@ -3476,25 +3754,26 @@ abstract class $ProductCopyWith<$Res> {
       String? longitude,
       String? latitude,
       String? city,
-      int? similarProductCount,
+      int? similarVendorProfileProductCount,
       int? commentcount,
       double? avg_rating,
-      ProductUserDetailsModel? UserDetailsModel});
+      VendorProfileProductUserDetailsModel? UserDetailsModel});
 
-  $ProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel;
+  $VendorProfileProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel;
 }
 
 /// @nodoc
-class _$ProductCopyWithImpl<$Res, $Val extends Product>
-    implements $ProductCopyWith<$Res> {
-  _$ProductCopyWithImpl(this._value, this._then);
+class _$VendorProfileProductCopyWithImpl<$Res,
+        $Val extends VendorProfileProduct>
+    implements $VendorProfileProductCopyWith<$Res> {
+  _$VendorProfileProductCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -3521,7 +3800,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? longitude = freezed,
     Object? latitude = freezed,
     Object? city = freezed,
-    Object? similarProductCount = freezed,
+    Object? similarVendorProfileProductCount = freezed,
     Object? commentcount = freezed,
     Object? avg_rating = freezed,
     Object? UserDetailsModel = freezed,
@@ -3615,9 +3894,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
               as int?,
       commentcount: freezed == commentcount
           ? _value.commentcount
@@ -3630,31 +3910,32 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       UserDetailsModel: freezed == UserDetailsModel
           ? _value.UserDetailsModel
           : UserDetailsModel // ignore: cast_nullable_to_non_nullable
-              as ProductUserDetailsModel?,
+              as VendorProfileProductUserDetailsModel?,
     ) as $Val);
   }
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $ProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel {
+  $VendorProfileProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel {
     if (_value.UserDetailsModel == null) {
       return null;
     }
 
-    return $ProductUserDetailsModelCopyWith<$Res>(_value.UserDetailsModel!,
-        (value) {
+    return $VendorProfileProductUserDetailsModelCopyWith<$Res>(
+        _value.UserDetailsModel!, (value) {
       return _then(_value.copyWith(UserDetailsModel: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
-  factory _$$ProductImplCopyWith(
-          _$ProductImpl value, $Res Function(_$ProductImpl) then) =
-      __$$ProductImplCopyWithImpl<$Res>;
+abstract class _$$VendorProfileProductImplCopyWith<$Res>
+    implements $VendorProfileProductCopyWith<$Res> {
+  factory _$$VendorProfileProductImplCopyWith(_$VendorProfileProductImpl value,
+          $Res Function(_$VendorProfileProductImpl) then) =
+      __$$VendorProfileProductImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -3680,24 +3961,24 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? longitude,
       String? latitude,
       String? city,
-      int? similarProductCount,
+      int? similarVendorProfileProductCount,
       int? commentcount,
       double? avg_rating,
-      ProductUserDetailsModel? UserDetailsModel});
+      VendorProfileProductUserDetailsModel? UserDetailsModel});
 
   @override
-  $ProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel;
+  $VendorProfileProductUserDetailsModelCopyWith<$Res>? get UserDetailsModel;
 }
 
 /// @nodoc
-class __$$ProductImplCopyWithImpl<$Res>
-    extends _$ProductCopyWithImpl<$Res, _$ProductImpl>
-    implements _$$ProductImplCopyWith<$Res> {
-  __$$ProductImplCopyWithImpl(
-      _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
+class __$$VendorProfileProductImplCopyWithImpl<$Res>
+    extends _$VendorProfileProductCopyWithImpl<$Res, _$VendorProfileProductImpl>
+    implements _$$VendorProfileProductImplCopyWith<$Res> {
+  __$$VendorProfileProductImplCopyWithImpl(_$VendorProfileProductImpl _value,
+      $Res Function(_$VendorProfileProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -3724,12 +4005,12 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? longitude = freezed,
     Object? latitude = freezed,
     Object? city = freezed,
-    Object? similarProductCount = freezed,
+    Object? similarVendorProfileProductCount = freezed,
     Object? commentcount = freezed,
     Object? avg_rating = freezed,
     Object? UserDetailsModel = freezed,
   }) {
-    return _then(_$ProductImpl(
+    return _then(_$VendorProfileProductImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -3818,9 +4099,10 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String?,
-      similarProductCount: freezed == similarProductCount
-          ? _value.similarProductCount
-          : similarProductCount // ignore: cast_nullable_to_non_nullable
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
               as int?,
       commentcount: freezed == commentcount
           ? _value.commentcount
@@ -3833,15 +4115,15 @@ class __$$ProductImplCopyWithImpl<$Res>
       UserDetailsModel: freezed == UserDetailsModel
           ? _value.UserDetailsModel
           : UserDetailsModel // ignore: cast_nullable_to_non_nullable
-              as ProductUserDetailsModel?,
+              as VendorProfileProductUserDetailsModel?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ProductImpl implements _Product {
-  const _$ProductImpl(
+class _$VendorProfileProductImpl implements _VendorProfileProduct {
+  const _$VendorProfileProductImpl(
       {this.id,
       this.title,
       this.description,
@@ -3864,13 +4146,13 @@ class _$ProductImpl implements _Product {
       this.longitude,
       this.latitude,
       this.city,
-      this.similarProductCount,
+      this.similarVendorProfileProductCount,
       this.commentcount,
       this.avg_rating,
       this.UserDetailsModel});
 
-  factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductImplFromJson(json);
+  factory _$VendorProfileProductImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VendorProfileProductImplFromJson(json);
 
   @override
   final String? id;
@@ -3917,24 +4199,24 @@ class _$ProductImpl implements _Product {
   @override
   final String? city;
   @override
-  final int? similarProductCount;
+  final int? similarVendorProfileProductCount;
   @override
   final int? commentcount;
   @override
   final double? avg_rating;
   @override
-  final ProductUserDetailsModel? UserDetailsModel;
+  final VendorProfileProductUserDetailsModel? UserDetailsModel;
 
   @override
   String toString() {
-    return 'Product(id: $id, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contact_name: $contact_name, email: $email, phone: $phone, phone_hidden: $phone_hidden, address: $address, city_id: $city_id, lon: $lon, lat: $lat, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, city: $city, similarProductCount: $similarProductCount, commentcount: $commentcount, avg_rating: $avg_rating, UserDetailsModel: $UserDetailsModel)';
+    return 'VendorProfileProduct(id: $id, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contact_name: $contact_name, email: $email, phone: $phone, phone_hidden: $phone_hidden, address: $address, city_id: $city_id, lon: $lon, lat: $lat, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, city: $city, similarVendorProfileProductCount: $similarVendorProfileProductCount, commentcount: $commentcount, avg_rating: $avg_rating, UserDetailsModel: $UserDetailsModel)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProductImpl &&
+            other is _$VendorProfileProductImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
@@ -3963,8 +4245,10 @@ class _$ProductImpl implements _Product {
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.similarProductCount, similarProductCount) ||
-                other.similarProductCount == similarProductCount) &&
+            (identical(other.similarVendorProfileProductCount,
+                    similarVendorProfileProductCount) ||
+                other.similarVendorProfileProductCount ==
+                    similarVendorProfileProductCount) &&
             (identical(other.commentcount, commentcount) ||
                 other.commentcount == commentcount) &&
             (identical(other.avg_rating, avg_rating) ||
@@ -3999,58 +4283,62 @@ class _$ProductImpl implements _Product {
         longitude,
         latitude,
         city,
-        similarProductCount,
+        similarVendorProfileProductCount,
         commentcount,
         avg_rating,
         UserDetailsModel
       ]);
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
-      __$$ProductImplCopyWithImpl<_$ProductImpl>(this, _$identity);
+  _$$VendorProfileProductImplCopyWith<_$VendorProfileProductImpl>
+      get copyWith =>
+          __$$VendorProfileProductImplCopyWithImpl<_$VendorProfileProductImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProductImplToJson(
+    return _$$VendorProfileProductImplToJson(
       this,
     );
   }
 }
 
-abstract class _Product implements Product {
-  const factory _Product(
-      {final String? id,
-      final String? title,
-      final String? description,
-      final String? tags,
-      final String? price,
-      final String? negotiable,
-      final String? contact_name,
-      final String? email,
-      final String? phone,
-      final String? phone_hidden,
-      final String? address,
-      final String? city_id,
-      final String? lon,
-      final String? lat,
-      final String? length,
-      final String? width,
-      final String? weight,
-      final String? height,
-      final String? pickup,
-      final String? longitude,
-      final String? latitude,
-      final String? city,
-      final int? similarProductCount,
-      final int? commentcount,
-      final double? avg_rating,
-      final ProductUserDetailsModel? UserDetailsModel}) = _$ProductImpl;
+abstract class _VendorProfileProduct implements VendorProfileProduct {
+  const factory _VendorProfileProduct(
+          {final String? id,
+          final String? title,
+          final String? description,
+          final String? tags,
+          final String? price,
+          final String? negotiable,
+          final String? contact_name,
+          final String? email,
+          final String? phone,
+          final String? phone_hidden,
+          final String? address,
+          final String? city_id,
+          final String? lon,
+          final String? lat,
+          final String? length,
+          final String? width,
+          final String? weight,
+          final String? height,
+          final String? pickup,
+          final String? longitude,
+          final String? latitude,
+          final String? city,
+          final int? similarVendorProfileProductCount,
+          final int? commentcount,
+          final double? avg_rating,
+          final VendorProfileProductUserDetailsModel? UserDetailsModel}) =
+      _$VendorProfileProductImpl;
 
-  factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
+  factory _VendorProfileProduct.fromJson(Map<String, dynamic> json) =
+      _$VendorProfileProductImpl.fromJson;
 
   @override
   String? get id;
@@ -4097,29 +4385,29 @@ abstract class _Product implements Product {
   @override
   String? get city;
   @override
-  int? get similarProductCount;
+  int? get similarVendorProfileProductCount;
   @override
   int? get commentcount;
   @override
   double? get avg_rating;
   @override
-  ProductUserDetailsModel? get UserDetailsModel;
+  VendorProfileProductUserDetailsModel? get UserDetailsModel;
 
-  /// Create a copy of Product
+  /// Create a copy of VendorProfileProduct
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$VendorProfileProductImplCopyWith<_$VendorProfileProductImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
-ProductUserDetailsModel _$ProductUserDetailsModelFromJson(
-    Map<String, dynamic> json) {
-  return _ProductUserDetailsModel.fromJson(json);
+VendorProfileProductUserDetailsModel
+    _$VendorProfileProductUserDetailsModelFromJson(Map<String, dynamic> json) {
+  return _VendorProfileProductUserDetailsModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ProductUserDetailsModel {
+mixin _$VendorProfileProductUserDetailsModel {
   String? get user_id => throw _privateConstructorUsedError;
   String? get membership_plan_id => throw _privateConstructorUsedError;
   String? get membership_status => throw _privateConstructorUsedError;
@@ -4134,21 +4422,24 @@ mixin _$ProductUserDetailsModel {
   double? get shortestDistance => throw _privateConstructorUsedError;
   String? get nearestBranch => throw _privateConstructorUsedError;
 
-  /// Serializes this ProductUserDetailsModel to a JSON map.
+  /// Serializes this VendorProfileProductUserDetailsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of ProductUserDetailsModel
+  /// Create a copy of VendorProfileProductUserDetailsModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProductUserDetailsModelCopyWith<ProductUserDetailsModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  $VendorProfileProductUserDetailsModelCopyWith<
+          VendorProfileProductUserDetailsModel>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProductUserDetailsModelCopyWith<$Res> {
-  factory $ProductUserDetailsModelCopyWith(ProductUserDetailsModel value,
-          $Res Function(ProductUserDetailsModel) then) =
-      _$ProductUserDetailsModelCopyWithImpl<$Res, ProductUserDetailsModel>;
+abstract class $VendorProfileProductUserDetailsModelCopyWith<$Res> {
+  factory $VendorProfileProductUserDetailsModelCopyWith(
+          VendorProfileProductUserDetailsModel value,
+          $Res Function(VendorProfileProductUserDetailsModel) then) =
+      _$VendorProfileProductUserDetailsModelCopyWithImpl<$Res,
+          VendorProfileProductUserDetailsModel>;
   @useResult
   $Res call(
       {String? user_id,
@@ -4167,17 +4458,17 @@ abstract class $ProductUserDetailsModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProductUserDetailsModelCopyWithImpl<$Res,
-        $Val extends ProductUserDetailsModel>
-    implements $ProductUserDetailsModelCopyWith<$Res> {
-  _$ProductUserDetailsModelCopyWithImpl(this._value, this._then);
+class _$VendorProfileProductUserDetailsModelCopyWithImpl<$Res,
+        $Val extends VendorProfileProductUserDetailsModel>
+    implements $VendorProfileProductUserDetailsModelCopyWith<$Res> {
+  _$VendorProfileProductUserDetailsModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ProductUserDetailsModel
+  /// Create a copy of VendorProfileProductUserDetailsModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -4254,12 +4545,12 @@ class _$ProductUserDetailsModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$ProductUserDetailsModelImplCopyWith<$Res>
-    implements $ProductUserDetailsModelCopyWith<$Res> {
-  factory _$$ProductUserDetailsModelImplCopyWith(
-          _$ProductUserDetailsModelImpl value,
-          $Res Function(_$ProductUserDetailsModelImpl) then) =
-      __$$ProductUserDetailsModelImplCopyWithImpl<$Res>;
+abstract class _$$VendorProfileProductUserDetailsModelImplCopyWith<$Res>
+    implements $VendorProfileProductUserDetailsModelCopyWith<$Res> {
+  factory _$$VendorProfileProductUserDetailsModelImplCopyWith(
+          _$VendorProfileProductUserDetailsModelImpl value,
+          $Res Function(_$VendorProfileProductUserDetailsModelImpl) then) =
+      __$$VendorProfileProductUserDetailsModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -4279,16 +4570,16 @@ abstract class _$$ProductUserDetailsModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$ProductUserDetailsModelImplCopyWithImpl<$Res>
-    extends _$ProductUserDetailsModelCopyWithImpl<$Res,
-        _$ProductUserDetailsModelImpl>
-    implements _$$ProductUserDetailsModelImplCopyWith<$Res> {
-  __$$ProductUserDetailsModelImplCopyWithImpl(
-      _$ProductUserDetailsModelImpl _value,
-      $Res Function(_$ProductUserDetailsModelImpl) _then)
+class __$$VendorProfileProductUserDetailsModelImplCopyWithImpl<$Res>
+    extends _$VendorProfileProductUserDetailsModelCopyWithImpl<$Res,
+        _$VendorProfileProductUserDetailsModelImpl>
+    implements _$$VendorProfileProductUserDetailsModelImplCopyWith<$Res> {
+  __$$VendorProfileProductUserDetailsModelImplCopyWithImpl(
+      _$VendorProfileProductUserDetailsModelImpl _value,
+      $Res Function(_$VendorProfileProductUserDetailsModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ProductUserDetailsModel
+  /// Create a copy of VendorProfileProductUserDetailsModel
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -4307,7 +4598,7 @@ class __$$ProductUserDetailsModelImplCopyWithImpl<$Res>
     Object? shortestDistance = freezed,
     Object? nearestBranch = freezed,
   }) {
-    return _then(_$ProductUserDetailsModelImpl(
+    return _then(_$VendorProfileProductUserDetailsModelImpl(
       user_id: freezed == user_id
           ? _value.user_id
           : user_id // ignore: cast_nullable_to_non_nullable
@@ -4366,8 +4657,9 @@ class __$$ProductUserDetailsModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ProductUserDetailsModelImpl implements _ProductUserDetailsModel {
-  const _$ProductUserDetailsModelImpl(
+class _$VendorProfileProductUserDetailsModelImpl
+    implements _VendorProfileProductUserDetailsModel {
+  const _$VendorProfileProductUserDetailsModelImpl(
       {this.user_id,
       this.membership_plan_id,
       this.membership_status,
@@ -4382,8 +4674,9 @@ class _$ProductUserDetailsModelImpl implements _ProductUserDetailsModel {
       this.shortestDistance,
       this.nearestBranch});
 
-  factory _$ProductUserDetailsModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductUserDetailsModelImplFromJson(json);
+  factory _$VendorProfileProductUserDetailsModelImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$VendorProfileProductUserDetailsModelImplFromJson(json);
 
   @override
   final String? user_id;
@@ -4414,14 +4707,14 @@ class _$ProductUserDetailsModelImpl implements _ProductUserDetailsModel {
 
   @override
   String toString() {
-    return 'ProductUserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance, nearestBranch: $nearestBranch)';
+    return 'VendorProfileProductUserDetailsModel(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance, nearestBranch: $nearestBranch)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProductUserDetailsModelImpl &&
+            other is _$VendorProfileProductUserDetailsModelImpl &&
             (identical(other.user_id, user_id) || other.user_id == user_id) &&
             (identical(other.membership_plan_id, membership_plan_id) ||
                 other.membership_plan_id == membership_plan_id) &&
@@ -4465,41 +4758,45 @@ class _$ProductUserDetailsModelImpl implements _ProductUserDetailsModel {
       shortestDistance,
       nearestBranch);
 
-  /// Create a copy of ProductUserDetailsModel
+  /// Create a copy of VendorProfileProductUserDetailsModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProductUserDetailsModelImplCopyWith<_$ProductUserDetailsModelImpl>
-      get copyWith => __$$ProductUserDetailsModelImplCopyWithImpl<
-          _$ProductUserDetailsModelImpl>(this, _$identity);
+  _$$VendorProfileProductUserDetailsModelImplCopyWith<
+          _$VendorProfileProductUserDetailsModelImpl>
+      get copyWith => __$$VendorProfileProductUserDetailsModelImplCopyWithImpl<
+          _$VendorProfileProductUserDetailsModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProductUserDetailsModelImplToJson(
+    return _$$VendorProfileProductUserDetailsModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _ProductUserDetailsModel implements ProductUserDetailsModel {
-  const factory _ProductUserDetailsModel(
-      {final String? user_id,
-      final String? membership_plan_id,
-      final String? membership_status,
-      final String? membership_id,
-      final String? membership_title,
-      final String? membership_color,
-      final String? photo,
-      final String? name,
-      final int? storyCount,
-      final bool? sponsored,
-      final bool? has_sponsored_gifts,
-      final double? shortestDistance,
-      final String? nearestBranch}) = _$ProductUserDetailsModelImpl;
+abstract class _VendorProfileProductUserDetailsModel
+    implements VendorProfileProductUserDetailsModel {
+  const factory _VendorProfileProductUserDetailsModel(
+          {final String? user_id,
+          final String? membership_plan_id,
+          final String? membership_status,
+          final String? membership_id,
+          final String? membership_title,
+          final String? membership_color,
+          final String? photo,
+          final String? name,
+          final int? storyCount,
+          final bool? sponsored,
+          final bool? has_sponsored_gifts,
+          final double? shortestDistance,
+          final String? nearestBranch}) =
+      _$VendorProfileProductUserDetailsModelImpl;
 
-  factory _ProductUserDetailsModel.fromJson(Map<String, dynamic> json) =
-      _$ProductUserDetailsModelImpl.fromJson;
+  factory _VendorProfileProductUserDetailsModel.fromJson(
+          Map<String, dynamic> json) =
+      _$VendorProfileProductUserDetailsModelImpl.fromJson;
 
   @override
   String? get user_id;
@@ -4528,10 +4825,11 @@ abstract class _ProductUserDetailsModel implements ProductUserDetailsModel {
   @override
   String? get nearestBranch;
 
-  /// Create a copy of ProductUserDetailsModel
+  /// Create a copy of VendorProfileProductUserDetailsModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProductUserDetailsModelImplCopyWith<_$ProductUserDetailsModelImpl>
+  _$$VendorProfileProductUserDetailsModelImplCopyWith<
+          _$VendorProfileProductUserDetailsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

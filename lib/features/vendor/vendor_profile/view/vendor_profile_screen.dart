@@ -6,6 +6,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
+import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
@@ -699,6 +700,7 @@ class MyAccountWidget extends StatelessWidget {
   Future<void> _handleAction(BuildContext context, String title) async {
     if (title == 'Log Out') {
       SharedPreferences preferences = await SharedPreferences.getInstance();
+      LogoutApi();
       showCustomToast(context, "logged out successfully");
       await preferences.clear();
       Navigator.of(context, rootNavigator: true).pushReplacement(

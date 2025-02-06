@@ -4,17 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 // Global state provider for managing the current selected index of the bottom nav bar
-final currentScreenProvider = StateProvider<int>((ref) => 1);
+final currentScreenProvider = StateProvider<int>((ref) => 3);
 
 // List of screens for navigation
 final List<Widget> _screens = [
   const HomeScreen(),
-  const FeedScreen(),
+ const MySubscribeAndWinPage(), 
+
   const MessageViewScreen(),
-  const VendorProfileScreen(),
+    const FeedScreen(),
 ];
 
 class MainScreen extends ConsumerWidget {

@@ -23,6 +23,7 @@ import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
@@ -39,6 +40,7 @@ import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
 
 import '../../home/model/home_story_model.dart';
 import '../../product_details/constant/all_product_detail_widget.dart';
@@ -230,16 +232,24 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
   @override
   Widget build(BuildContext context) {
+        var homecategory = ref.watch(homeCategoryProvider);
+
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getGrocertResponseProvider);
-    final SearchProductModels =
-        ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(171));
     final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('8'));
 
+    final SearchProductModels =
+        ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
+    Future<void> refresh() async {
+  ref.refresh(getGrocertResponseProvider);
+  ref.refresh(getCategoriesProvider(171));
+  ref.refresh(getPostTypeStoryApiProvider('8'));
+}
+
 
     // }, error: (error, stackTrace) {
 
@@ -299,19 +309,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const VendorProfileScreen(),
-                                              ));
-                                        },
-                                       child: const CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: AssetImage(
-                                                'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                          )),
+                                        onTap: () {},
+                                        child: const CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                        )),
                                     SizedBox(
                                       height: 40,
                                       child: Row(
@@ -714,7 +717,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   return const SizedBox();
                                 },
                                 error: (error, stack) {
-                                  return Center(child: Text(error.toString()));
+                                  return Center(child: Text('Please login again'));
                                 },
                               ),
                             ),
@@ -757,66 +760,85 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                   //   ),
                   // ),
 
-                    asyncPostTypeContent.when(
-  data: (feedStoryData) {
-    final homeStory = feedStoryData.homeStory;
+                  homecategory.when(
+                    data: (feedStoryData) {
+                      List<HomeStoryPost>? homeStory =
+                          feedStoryData.home_story?.story.posts;
+                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
 
-    if (homeStory?.story?.posts != null) {
-      final posts = homeStory!.story!.posts!;
+                      if (homeStory != null) {
+                        final posts = homeStory;
 
-      return SizedBox(
-        height: 100.h,
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final story = posts[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 100.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final story = posts[index];
 
-            return HomePageStoryContainer(
-              index: index,
-              vendorName: story.vendorName ?? "Unknown Vendor",
-              vendorImage: story.vendorImage ??
-                  "https://example.com/default-image.png",
-              storyCount: story.storyCount ?? 0,
-              showGift: story.hasSponsoredGifts ?? false,
-              feedStoryContent: Story(posts: [story]),
-              userId: story.vendorId!,
-            );
-          },
-        ),
-      );
-    }
+                                return HomePageStoryContainer(
+                                  feedStoryContent: Story(
+                                      posts: feedStoryData
+                                          .home_story?.story.posts
+                                          ?.map((e) => Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName))
+                                          .toList()),
+                                  userId: story.id,
+                                  index: index,
+                                  vendorName:
+                                      story.vendorName ?? "Unknown Vendor",
+                                  vendorImage: story.vendorImage ??
+                                      "https://example.com/default-image.png",
+                                  storyCount: story.storyCount ?? 0,
+                                  showGift: story.hasSponsoredGifts ?? false,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }
 
-    return const Center(
-      child: Text('No stories available.'),
-    );
-  },
-  loading: () => SizedBox(
-    height: 100.h,
-    child: ListView.builder(
-      padding: EdgeInsets.zero,
-      scrollDirection: Axis.horizontal,
-      itemCount: 5, // Number of shimmer placeholders
-      itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          width: 70.w,
-          height: 100.h,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    ),
-  ),
-  error: (error, stack) =>
-      Center(child: Text('Error: $error')),
-),
+                      return const Center(
+                        child: Text('No stories available.'),
+                      );
+                    },
+                    loading: () => SizedBox(
+                      height: 100.h,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5, // Number of shimmer placeholders
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
 
                   asyncbajarValue.when(
                     data: (data) {
@@ -905,7 +927,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       return const SizedBox();
                     },
                     error: (error, stackTrace) {
-                      return Text("Try again: $error");
+                      return Text("Please login again");
                     },
                     loading: () {
                       return const CircularProgressIndicator();
@@ -1085,7 +1107,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       );
                     },
                     error: (error, stackTrace) {
-                      return Text(error.toString());
+                      return Text('Please login again');
                     },
                     loading: () => const CircularProgressIndicator(),
                   ),
@@ -1143,18 +1165,31 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 2.w),
                                   child: ProductDetailWidget(
-                                  lat: hot.user.latitude,
-                                  long: hot.user.longitude,
-
+                                        savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                    lat: hot.user.latitude,
+                                    long: hot.user.longitude,
                                     productid: hot.id,
                                     membershipid: hot.user.membership_id,
                                     posttype: hot.post_type_id,
-                                    shortestDistance:
-                                        hot.user.shortestDistance,
+                                    shortestDistance: hot.user.shortestDistance,
                                     id: int.tryParse(hot.id),
                                     offer: hot.offers,
-                                    didcountpercentage:
-                                        hot.discount_percentage,
+                                    didcountpercentage: hot.discount_percentage,
                                     avg_rating: hot.avg_rating?.toDouble(),
                                     wow: hot.wow,
                                     comment: hot.commentcount.toString(),
@@ -1563,11 +1598,27 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               VProduct prod =
                                                   data.insidearr[1][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
+                                                 savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
                                                 productid: prod.id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 id: int.tryParse(prod.id),
                                                 posttype: prod.post_type_id,
                                                 membershipid:
@@ -1577,8 +1628,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     'assets/icon/b2bIcon.svg',
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1641,20 +1692,36 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               VProduct prod =
                                                   data.insidearr[1][index];
                                               return ProductDetailWidget(
-                                                                                                  lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
+                                                   savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                lat: prod.user.latitude,
+                                                long: prod.user.longitude,
                                                 productid: prod.id,
                                                 offer: prod.offers,
                                                 posttype: prod.post_type_id,
-                                                shortestDistance: prod
-                                                    .user.shortestDistance,
+                                                shortestDistance:
+                                                    prod.user.shortestDistance,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 id: int.tryParse(prod.id),
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                avg_rating: prod.avg_rating
-                                                    ?.toDouble(),
+                                                avg_rating:
+                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1729,34 +1796,46 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     VProduct prod = data
                                                         .insidearr[2][index];
                                                     return ProductDetailWidget(
-                                                                                                        lat: prod.user.latitude,
-                                                  long: prod.user.longitude,
+                                                         savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                      lat: prod.user.latitude,
+                                                      long: prod.user.longitude,
                                                       productid: prod.id,
-                                                                                                            wow: prod.wow,
-                                                                                                            comment: prod
-                                                      .commentcount
-                                                      .toString(),
-                                                                                                            lefttile: "Grocary",
-                                                                                                            vendorname:
-                                                      prod.user.name,
-                                                                                                            discounttedPrice: prod
-                                                      .discounted_price,
-                                                                                                            Vimage: prod.title,
-                                                                                                            issponsored:
-                                                      prod.user.sponsored,
-                                                                                                            price: prod.price,
-                                                                                                            title: prod.title,
-                                                                                                            productImage:
-                                                      prod.image,
-                                                                                                            similarproductCount: prod
-                                                      .similarProductCount,
-                                                                                                            membershipColor: prod
-                                                      .user
-                                                      .membershipColor,
-                                                                                                            membershipTitle: prod
-                                                      .user
-                                                      .membershipTitle,
-                                                                                                          );
+                                                      wow: prod.wow,
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      lefttile: "Grocary",
+                                                      vendorname:
+                                                          prod.user.name,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.title,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor: prod
+                                                          .user.membershipColor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    );
                                                   },
                                                 ),
                                         )
@@ -2021,17 +2100,33 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                                                                    lat: prod.user.latitude,
+                                                     savedid: prod.savedByLoggedUser == null ||
+                                            prod.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : prod.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                                  lat: prod.user.latitude,
                                                   long: prod.user.longitude,
-                                                    productid: prod.id,
+                                                  productid: prod.id,
                                                   posttype: prod.post_type_id,
                                                   shortestDistance: prod
                                                       .user.shortestDistance,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   id: int.tryParse(prod.id),
-                                                  didcountpercentage: prod
-                                                      .discount_percentage,
+                                                  didcountpercentage:
+                                                      prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
                                                       ?.toDouble(),
                                                   offer: prod.offers,
@@ -2048,12 +2143,12 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                   price: prod.price,
                                                   title: prod.title,
                                                   productImage: prod.image,
-                                                  similarproductCount: prod
-                                                      .similarProductCount,
-                                                  membershipColor: prod
-                                                      .user.membershipColor,
-                                                  membershipTitle: prod
-                                                      .user.membershipTitle,
+                                                  similarproductCount:
+                                                      prod.similarProductCount,
+                                                  membershipColor:
+                                                      prod.user.membershipColor,
+                                                  membershipTitle:
+                                                      prod.user.membershipTitle,
                                                 ),
                                               );
                                             }),
@@ -2098,55 +2193,59 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           runSpacing: 15.h, // Vertical spacing between rows
                           children: List.generate(data.product.length, (index) {
                             var res = data.product[index];
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetailScreen(
-                                      productId: res.id,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: SizedBox(
-                                width: (MediaQuery.of(context).size.width) /
-                                    2, // Adjust for two items per row
-                                child: Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  shadowColor:
-                                      const Color(0xff3D215F).withOpacity(0.5),
-                                  elevation: 9,
-                                  // margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: AllProductDetailWidget(
-                                      productid: res.id,
-                                      lat: res.user.latitude,
-                                            long: res.user.longitude,
-                                    shortestDistance: res.user.shortestDistance,
-                                    id: int.tryParse(res.id),
-                                    membershipid: res.user.membership_id,
-                                    offer: res.offers,
-                                    posttype: res.post_type_id,
-                                    didcountpercentage: res.discount_percentage,
-                                    avg_rating: res.avg_rating?.toDouble(),
-                                    wow: res.wow,
-                                    comment: res.commentcount.toString(),
-                                    issponsored: res.user.sponsored,
-                                    discounttedPrice: res.discounted_price,
-                                    lefttile: "Grocary",
-                                    productImage: res.image,
-                                    Vimage: res.user.photo,
-                                    vendorname: res.user.name,
-                                    title: res.title,
-                                    price: res.price,
-                                    similarproductCount:
-                                        res.similarProductCount,
-                                    membershipColor: res.user.membershipColor,
-                                    membershipTitle: res.user.membershipTitle,
-                                  ),
+                            return SizedBox(
+                              width: (MediaQuery.of(context).size.width) /
+                                  2, // Adjust for two items per row
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                shadowColor:
+                                    const Color(0xff3D215F).withOpacity(0.5),
+                                elevation: 9,
+                                // margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: AllProductDetailWidget(
+                                  savedid: res.savedByLoggedUser == null ||
+                                          res.savedByLoggedUser!.isEmpty
+                                      ? []
+                                      : res.savedByLoggedUser
+                                          ?.map(
+                                            (e) => SavedPost(
+                                                id: e.id,
+                                                userId: e.userId,
+                                                postId: e.postId,
+                                                createdAt: e.createdAt,
+                                                updatedAt: e.updatedAt),
+                                          )
+                                          .toList(),
+                                  onRefresh: () {
+                                    refresh();
+                                  },
+                                  productid: res.id,
+                                  lat: res.user.latitude,
+                                  long: res.user.longitude,
+                                  shortestDistance: res.user.shortestDistance,
+                                  id: int.tryParse(res.id),
+                                  membershipid: res.user.membership_id,
+                                  offer: res.offers,
+                                  posttype: res.post_type_id,
+                                  didcountpercentage: res.discount_percentage,
+                                  avg_rating: res.avg_rating?.toDouble(),
+                                  wow: res.wow,
+                                  comment: res.commentcount.toString(),
+                                  issponsored: res.user.sponsored,
+                                  discounttedPrice: res.discounted_price,
+                                  lefttile: "Grocary",
+                                  productImage: res.image,
+                                  Vimage: res.user.photo,
+                                  vendorname: res.user.name,
+                                  title: res.title,
+                                  price: res.price,
+                                  similarproductCount:
+                                      res.similarProductCount,
+                                  membershipColor: res.user.membershipColor,
+                                  membershipTitle: res.user.membershipTitle,
                                 ),
                               ),
                             );

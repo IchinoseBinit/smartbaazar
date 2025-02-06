@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
@@ -19,19 +22,31 @@ class MyOrderDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
-  IssueDropdownList? dropdownvalue;
+  String? dropdownvalue;
+  File? _selectedImage;
 
- bool _isReturnEligible(DateTime createdAt) {
+  bool _isReturnEligible(DateTime createdAt) {
     final now = DateTime.now();
     final difference = now.difference(createdAt).inDays;
     return difference <= 15;
   }
+  //   Future<void> pickImage() async {
+  //   final pickedFile =
+  //       await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _selectedImage = File(pickedFile.path);
+  //       widget.onImageSelected(_selectedImage);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final order = widget.order;
-    // Ensure createdAt is parsed as DateTime 
-   final createdAt = order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+    // Ensure createdAt is parsed as DateTime
+    final createdAt =
+        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
 
     // Check eligibility if createdAt is successfully parsed
     final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
@@ -201,8 +216,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                               const MyReturnScreen())),
                                   widget: ReturnProductDetails(
                                     //  IssueDropdownListItems: IssueDropdownListItems,
-                                    onDropdownChanged:
-                                        (IssueDropdownList value) {
+                                    onDropdownChanged: (String value) {
                                       setState(() {
                                         dropdownvalue = value;
                                       });
@@ -356,7 +370,7 @@ class TrackOrderDetails extends StatelessWidget {
 }
 
 class ReturnProductDetails extends StatefulWidget {
-  final Function(IssueDropdownList) onDropdownChanged;
+  final Function(String) onDropdownChanged;
 
   const ReturnProductDetails({
     Key? key,
@@ -368,7 +382,29 @@ class ReturnProductDetails extends StatefulWidget {
 }
 
 class _ReturnProductDetailsState extends State<ReturnProductDetails> {
-  IssueDropdownList? dropdownValue;
+  List<String?>? issueList = [];
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+  String? selectedissue;
+  @override
+  void initState() {
+    super.initState();
+    // Populate issueList in initState to prevent modifying state inside build()
+    issueList = getStaticDropdownMenuItems()
+        .map((e) => e.value?.name ?? "Unknown Issue")
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -384,20 +420,30 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   Text(
                     'Issue',
                     style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
                   ),
-                  SizedBox(width: 80.w),
-                  Expanded(
-                    child: DropdownButtonFormField<IssueDropdownList>(
-                      items: getStaticDropdownMenuItems(),
-                      value: dropdownValue,
-                      onChanged: (IssueDropdownList? newValue) {
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  Flexible(
+                    child: DropdownButtonFormField<String>(
+                      items: issueList!
+                          .map(
+                            (issue) => DropdownMenuItem<String>(
+                              value: issue,
+                              child: Text(issue!),
+                            ),
+                          )
+                          .toList(),
+                      value: selectedissue,
+                      onChanged: (String? newValue) {
                         setState(() {
-                          dropdownValue = newValue;
+                          selectedissue = newValue;
                           if (newValue != null) {
-                            widget.onDropdownChanged(newValue);
+                            widget.onDropdownChanged(selectedissue!);
                           }
                         });
                       },
@@ -441,7 +487,11 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
               ),
             ),
             SizedBox(height: 5.h),
-            const CityField(),
+            CityField(
+              onCitySelected: (data) {
+                print('binod ${data}');
+              },
+            ),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
               child: Column(
@@ -481,37 +531,64 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                         color: Colors.black),
                   ),
                   SizedBox(height: 10.h),
-                  Container(
-                    padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: const Color(0xffEDECEC)),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Choose File',
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xff36383C)),
-                        ),
-                        SizedBox(width: 7.w),
-                        Text(
-                          "|",
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xffADADAD)),
-                        ),
-                        SizedBox(width: 11.w),
-                        Text(
-                          'No File Chosen',
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.red),
-                        ),
-                      ],
+                  GestureDetector(
+                    onTap: _pickImage, // Open gallery on tap
+                    child: Container(
+                      padding: EdgeInsets.only(top: 6, left: 12, bottom: 7),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: const Color(0xffEDECEC),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Choose File',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xff36383C)),
+                          ),
+                          SizedBox(width: 7),
+                          Text(
+                            "|",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xffADADAD)),
+                          ),
+                          SizedBox(width: 11),
+                          _selectedImage != null
+                              ? Row(
+                                  children: [
+                                    Image.file(
+                                      _selectedImage!,
+                                      width: 40, // Adjust image size
+                                      height: 40, // Adjust image size
+                                      fit: BoxFit.cover,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      _selectedImage!.path
+                                          .split('/')
+                                          .last, // Show file name
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  'No File Chosen',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

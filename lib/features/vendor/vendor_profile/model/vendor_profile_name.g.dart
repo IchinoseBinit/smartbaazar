@@ -21,9 +21,10 @@ _$VendorProfileImpl _$$VendorProfileImplFromJson(Map<String, dynamic> json) =>
       deals: (json['deals'] as List<dynamic>?)
           ?.map((e) => Deal.fromJson(e as Map<String, dynamic>))
           .toList(),
-      all_products: (json['all_products'] as List<dynamic>?)
-          ?.map((e) => BrandNewModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      all_VendorProfileProducts:
+          (json['all_VendorProfileProducts'] as List<dynamic>?)
+              ?.map((e) => BrandNewModel.fromJson(e as Map<String, dynamic>))
+              .toList(),
       feedPosts: (json['feedPosts'] as List<dynamic>?)
           ?.map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -64,7 +65,7 @@ Map<String, dynamic> _$$VendorProfileImplToJson(_$VendorProfileImpl instance) =>
       'vendor_card': instance.vendor_card,
       'vendor_about': instance.vendor_about,
       'deals': instance.deals,
-      'all_products': instance.all_products,
+      'all_VendorProfileProducts': instance.all_VendorProfileProducts,
       'feedPosts': instance.feedPosts,
       'live_prizes': instance.live_prizes,
       'brandnew': instance.brandnew,
@@ -95,7 +96,8 @@ _$BrandNewModelImpl _$$BrandNewModelImplFromJson(Map<String, dynamic> json) =>
       price: json['price'] as String?,
       wow: json['wow'] as String?,
       city: json['city'] as String?,
-      similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
+      similarVendorProfileProductCount:
+          (json['similarVendorProfileProductCount'] as num?)?.toInt(),
       discounted_price: (json['discounted_price'] as num?)?.toInt(),
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       commentcount: (json['commentcount'] as num?)?.toInt(),
@@ -105,6 +107,9 @@ _$BrandNewModelImpl _$$BrandNewModelImplFromJson(Map<String, dynamic> json) =>
           ? null
           : UserDetailsModel.fromJson(
               json['userdetails'] as Map<String, dynamic>),
+      savedByLoggedUser: (json['savedByLoggedUser'] as List<dynamic>?)
+          ?.map((e) => FezzedSaved.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$BrandNewModelImplToJson(_$BrandNewModelImpl instance) =>
@@ -124,13 +129,33 @@ Map<String, dynamic> _$$BrandNewModelImplToJson(_$BrandNewModelImpl instance) =>
       'price': instance.price,
       'wow': instance.wow,
       'city': instance.city,
-      'similarProductCount': instance.similarProductCount,
+      'similarVendorProfileProductCount':
+          instance.similarVendorProfileProductCount,
       'discounted_price': instance.discounted_price,
       'shortestDistance': instance.shortestDistance,
       'commentcount': instance.commentcount,
       'discount_percentage': instance.discount_percentage,
       'avg_rating': instance.avg_rating,
       'userdetails': instance.userdetails,
+      'savedByLoggedUser': instance.savedByLoggedUser,
+    };
+
+_$FezzedSavedImpl _$$FezzedSavedImplFromJson(Map<String, dynamic> json) =>
+    _$FezzedSavedImpl(
+      id: json['id'] as String,
+      userId: json['userId'] as String,
+      postId: json['postId'] as String,
+      createdAt: json['createdAt'] as String,
+      updatedAt: json['updatedAt'] as String,
+    );
+
+Map<String, dynamic> _$$FezzedSavedImplToJson(_$FezzedSavedImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'userId': instance.userId,
+      'postId': instance.postId,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
     };
 
 _$UserDetailsModelImpl _$$UserDetailsModelImplFromJson(
@@ -291,8 +316,9 @@ Map<String, dynamic> _$$FeedPostImplToJson(_$FeedPostImpl instance) =>
       'created_at': instance.created_at,
     };
 
-_$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
-    _$ProductImpl(
+_$VendorProfileProductImpl _$$VendorProfileProductImplFromJson(
+        Map<String, dynamic> json) =>
+    _$VendorProfileProductImpl(
       id: json['id'] as String?,
       title: json['title'] as String?,
       description: json['description'] as String?,
@@ -315,16 +341,18 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       longitude: json['longitude'] as String?,
       latitude: json['latitude'] as String?,
       city: json['city'] as String?,
-      similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
+      similarVendorProfileProductCount:
+          (json['similarVendorProfileProductCount'] as num?)?.toInt(),
       commentcount: (json['commentcount'] as num?)?.toInt(),
       avg_rating: (json['avg_rating'] as num?)?.toDouble(),
       UserDetailsModel: json['UserDetailsModel'] == null
           ? null
-          : ProductUserDetailsModel.fromJson(
+          : VendorProfileProductUserDetailsModel.fromJson(
               json['UserDetailsModel'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
+Map<String, dynamic> _$$VendorProfileProductImplToJson(
+        _$VendorProfileProductImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -348,32 +376,34 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'longitude': instance.longitude,
       'latitude': instance.latitude,
       'city': instance.city,
-      'similarProductCount': instance.similarProductCount,
+      'similarVendorProfileProductCount':
+          instance.similarVendorProfileProductCount,
       'commentcount': instance.commentcount,
       'avg_rating': instance.avg_rating,
       'UserDetailsModel': instance.UserDetailsModel,
     };
 
-_$ProductUserDetailsModelImpl _$$ProductUserDetailsModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ProductUserDetailsModelImpl(
-      user_id: json['user_id'] as String?,
-      membership_plan_id: json['membership_plan_id'] as String?,
-      membership_status: json['membership_status'] as String?,
-      membership_id: json['membership_id'] as String?,
-      membership_title: json['membership_title'] as String?,
-      membership_color: json['membership_color'] as String?,
-      photo: json['photo'] as String?,
-      name: json['name'] as String?,
-      storyCount: (json['storyCount'] as num?)?.toInt(),
-      sponsored: json['sponsored'] as bool?,
-      has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
-      shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
-      nearestBranch: json['nearestBranch'] as String?,
-    );
+_$VendorProfileProductUserDetailsModelImpl
+    _$$VendorProfileProductUserDetailsModelImplFromJson(
+            Map<String, dynamic> json) =>
+        _$VendorProfileProductUserDetailsModelImpl(
+          user_id: json['user_id'] as String?,
+          membership_plan_id: json['membership_plan_id'] as String?,
+          membership_status: json['membership_status'] as String?,
+          membership_id: json['membership_id'] as String?,
+          membership_title: json['membership_title'] as String?,
+          membership_color: json['membership_color'] as String?,
+          photo: json['photo'] as String?,
+          name: json['name'] as String?,
+          storyCount: (json['storyCount'] as num?)?.toInt(),
+          sponsored: json['sponsored'] as bool?,
+          has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
+          shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
+          nearestBranch: json['nearestBranch'] as String?,
+        );
 
-Map<String, dynamic> _$$ProductUserDetailsModelImplToJson(
-        _$ProductUserDetailsModelImpl instance) =>
+Map<String, dynamic> _$$VendorProfileProductUserDetailsModelImplToJson(
+        _$VendorProfileProductUserDetailsModelImpl instance) =>
     <String, dynamic>{
       'user_id': instance.user_id,
       'membership_plan_id': instance.membership_plan_id,

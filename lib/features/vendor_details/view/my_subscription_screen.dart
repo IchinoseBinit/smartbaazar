@@ -64,7 +64,7 @@ class MySubscriptionScreen extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => Center(
                 child: Text(
-                  'Error: $error',
+                  'Please login',
                   style: const TextStyle(color: Colors.red),
                 ),
               ),

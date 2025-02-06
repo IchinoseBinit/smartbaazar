@@ -6,7 +6,7 @@ part of 'search_result_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSearchResponseHash() => r'78f2a21d2c356258c069352af08fd326776e09f6';
+String _$getSearchResponseHash() => r'666819cdc1cfd5c997aa5545f9137bfd7ed4d421';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,9 +41,11 @@ class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
   /// See also [getSearchResponse].
   GetSearchResponseProvider call(
     String query,
+    String orderby,
   ) {
     return GetSearchResponseProvider(
       query,
+      orderby,
     );
   }
 
@@ -53,6 +55,7 @@ class GetSearchResponseFamily extends Family<AsyncValue<BusinessResponse>> {
   ) {
     return call(
       provider.query,
+      provider.orderby,
     );
   }
 
@@ -77,10 +80,12 @@ class GetSearchResponseProvider
   /// See also [getSearchResponse].
   GetSearchResponseProvider(
     String query,
+    String orderby,
   ) : this._internal(
           (ref) => getSearchResponse(
             ref as GetSearchResponseRef,
             query,
+            orderby,
           ),
           from: getSearchResponseProvider,
           name: r'getSearchResponseProvider',
@@ -92,6 +97,7 @@ class GetSearchResponseProvider
           allTransitiveDependencies:
               GetSearchResponseFamily._allTransitiveDependencies,
           query: query,
+          orderby: orderby,
         );
 
   GetSearchResponseProvider._internal(
@@ -102,9 +108,11 @@ class GetSearchResponseProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
+    required this.orderby,
   }) : super.internal();
 
   final String query;
+  final String orderby;
 
   @override
   Override overrideWith(
@@ -120,6 +128,7 @@ class GetSearchResponseProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
+        orderby: orderby,
       ),
     );
   }
@@ -131,13 +140,16 @@ class GetSearchResponseProvider
 
   @override
   bool operator ==(Object other) {
-    return other is GetSearchResponseProvider && other.query == query;
+    return other is GetSearchResponseProvider &&
+        other.query == query &&
+        other.orderby == orderby;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, orderby.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -148,6 +160,9 @@ class GetSearchResponseProvider
 mixin GetSearchResponseRef on AutoDisposeFutureProviderRef<BusinessResponse> {
   /// The parameter `query` of this provider.
   String get query;
+
+  /// The parameter `orderby` of this provider.
+  String get orderby;
 }
 
 class _GetSearchResponseProviderElement
@@ -157,6 +172,8 @@ class _GetSearchResponseProviderElement
 
   @override
   String get query => (origin as GetSearchResponseProvider).query;
+  @override
+  String get orderby => (origin as GetSearchResponseProvider).orderby;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

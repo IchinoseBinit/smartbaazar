@@ -11,6 +11,7 @@ part 'search_result_provider.g.dart';
 Future<BusinessResponse> getSearchResponse(
   ref,
   String query,
+  String orderby,
 ) async {
   final SmartClient client = SmartClient();
 
@@ -18,7 +19,11 @@ Future<BusinessResponse> getSearchResponse(
     final Response response = await client.request(
       requestType: RequestType.postWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections/search',
-      parameter: {'query': query},
+      parameter: {
+        'query': query,
+        'orderby': orderby
+      
+      },
     );
 
     if (response.statusCode == 200) {

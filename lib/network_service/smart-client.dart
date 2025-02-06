@@ -2,232 +2,200 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // SharedPreferences
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 class SmartClient {
+  static final SmartClient _instance = SmartClient._internal();
+  factory SmartClient() => _instance;
+
+  final Dio _client = Dio();
+  final Duration _timeoutDuration = const Duration(seconds: kDebugMode ? 80 : 120);
+  bool _isRefreshingToken = false;
+
   static String token = '';
   static String refresh = '';
   static String userId = '';
   static String userName = '';
   static String userEmail = '';
-  static String laravelsession = '';
+  static String laravelSession = '';
   static String phone = '';
-  static String userphoto = '';
-  static final SmartClient _instance = SmartClient._internal();
-  factory SmartClient() {
-    return _instance;
-  }
-
-  late Dio _client;
-  final timeOutDuration = const Duration(seconds: kDebugMode ? 40 : 90);
-  bool _isRefreshingToken = false; // Flag to avoid multiple refresh attempts
-
-  Future<void> getlaravel() async {
-    SharedPreferences stf = await SharedPreferences.getInstance();
-    if (SmartClient.laravelsession.isEmpty) {
-      SmartClient.laravelsession = stf.getString('laravel') ?? '';
-    }
-  }
+  static String userPhoto = '';
 
   SmartClient._internal() {
-    _client = Dio();
-    _loadToken(); // Load the token at initialization
+    _loadToken();
+    _setupInterceptors();
+  }
 
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('accessToken') ?? '';
+    refresh = prefs.getString('refreshToken') ?? '';
+  }
+
+  Future<void> _getLaravelSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    laravelSession = prefs.getString('laravel') ?? '';
+  }
+
+  void _setupInterceptors() {
     if (kDebugMode) {
-      _client.interceptors.add(
-        LogInterceptor(
-          responseBody: true,
-          requestHeader: false,
-          responseHeader: false,
-          requestBody: true,
-        ),
-      );
+      _client.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
     }
-
     _client.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
-          if (SmartClient.token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer ${SmartClient.token}';
-          }
-          return handler.next(options);
-        },
-        onResponse: (response, handler) {
-          return handler.next(response);
-        },
+        
+      onRequest: (options, handler) {
+  if (token.isNotEmpty) {
+    options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  // Debugging: Print request headers
+  if (kDebugMode) {
+    print("Request Headers: ${options.headers}");
+  }
+
+  handler.next(options);
+},
+
         onError: (error, handler) async {
-          if (error.response != null && error.response!.statusCode == 401) {
-            if (!_isRefreshingToken) {
-              _isRefreshingToken = true;
-              final refreshed = await _refreshToken();
+          if (error.response?.statusCode == 401 && !_isRefreshingToken) {
+            _isRefreshingToken = true;
+            if (await _refreshToken()) {
+              error.requestOptions.headers['Authorization'] = 'Bearer $token';
+              final response = await _retry(error.requestOptions);
               _isRefreshingToken = false;
-              if (refreshed) {
-                error.requestOptions.headers['Authorization'] =
-                    'Bearer ${SmartClient.token}';
-                final response = await _retry(error.requestOptions);
-                return handler.resolve(response);
-              } else {
-                await _logout();
-                return handler.reject(error);
-              }
+              return handler.resolve(response);
             }
+            _isRefreshingToken = false;
+            await _logout();
           }
-          return handler.next(error);
+          handler.next(error);
         },
       ),
     );
   }
 
-  // Load token from SharedPreferences
-  Future<void> _loadToken() async {
+Future<bool> _refreshToken() async {
+  try {
+    final container = ProviderContainer();
+    final refreshTokenResponse =
+        await container.read(getRefreshTokenProvider.future);
+
+    // Debugging: Check response from API
+    if (kDebugMode) {
+      print("Refresh API Response: $refreshTokenResponse");
+    }
+
+    token = refreshTokenResponse.authToken;
+    refresh = refreshTokenResponse.refreshToken;
+
     final prefs = await SharedPreferences.getInstance();
-    SmartClient.token = prefs.getString('accessToken') ?? '';
-    SmartClient.refresh = prefs.getString('refreshToken') ?? '';
+    await prefs.setString('accessToken', token);
+    await prefs.setString('refreshToken', refresh);
 
-    if (SmartClient.token.isEmpty) {
-      print("Warning: No access token loaded. User might need to log in.");
+    return true;
+  } catch (error, stackTrace) {
+    if (kDebugMode) {
+      print("Failed to refresh token: $error");
+      print(stackTrace);
     }
   }
+  return false;
+}
 
-  // Refresh Token Logic
-  Future<bool> _refreshToken() async {
-    try {
-      final container = ProviderContainer(); // Create a Riverpod container
-      final refreshTokenResponse =
-          await container.read(getRefreshTokenProvider.future);
 
-      SmartClient.token = refreshTokenResponse.authToken;
-      SmartClient.refresh = refreshTokenResponse.refreshToken;
-
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accessToken', refreshTokenResponse.authToken);
-      await prefs.setString('refreshToken', refreshTokenResponse.refreshToken);
-
-      print("Token refreshed successfully: ${SmartClient.token}");
-      return true;
-    } catch (e) {
-      print("Error refreshing token: $e");
-      return false;
-    }
-  }
-
-  // Logout logic to clear stored tokens
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('accessToken');
     await prefs.remove('refreshToken');
-    print("Tokens cleared, user logged out.");
   }
 
-  // Retry request after token refresh
-  Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
-    await Future.delayed(const Duration(seconds: 2));
-    var options = Options(
+Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+  await Future.delayed(const Duration(seconds: 2));
+
+  final updatedHeaders = {
+    ...requestOptions.headers,
+    'Authorization': 'Bearer $token', // Ensure updated token is used
+  };
+
+  return _client.request<dynamic>(
+    requestOptions.path,
+    data: requestOptions.data,
+    queryParameters: requestOptions.queryParameters,
+    options: Options(
       method: requestOptions.method,
-      headers: {
-        ...requestOptions.headers,
-        'Authorization': 'Bearer ${SmartClient.token}',
-      },
-    );
-    return _client.request<dynamic>(requestOptions.path,
-        data: requestOptions.data,
-        queryParameters: requestOptions.queryParameters,
-        options: options);
-  }
+      headers: updatedHeaders, // Use updated headers
+    ),
+  );
+}
 
-  // Main request method handling various HTTP methods
+
   Future<Response> request({
     required RequestType requestType,
     required String url,
     dynamic parameter,
     dynamic queryParameters,
-    dynamic headers,
+    Map<String, dynamic>? headers,
   }) async {
-    getlaravel();
-    Map<String, String> defaultHeaders = {
+    await _getLaravelSession();
+
+    final defaultHeaders = {
       'Content-Type': 'application/json',
       'accept': '*/*',
-      'Connection': 'Keep-Alive',
+      // 'Connection': 'Keep-Alive',
       'X-AppApiToken': 'Yala@Techies_Nepal',
-      'Cookie': 'laravel_session=${SmartClient.laravelsession}',
+      'Cookie': 'laravel_session=$laravelSession',
     };
 
-    Map<String, String> mergedHeaders = _mergeHeaders(defaultHeaders, headers);
+    final mergedHeaders = {...defaultHeaders, if (headers != null) ...headers};
 
     switch (requestType) {
       case RequestType.get:
-        return await _client
-            .get(url,
-                options: Options(headers: mergedHeaders),
-                queryParameters: queryParameters)
-            .timeout(timeOutDuration);
-
       case RequestType.getWithToken:
-        return await _client
+        return _client
             .get(url,
                 options: Options(headers: mergedHeaders),
                 queryParameters: queryParameters)
-            .timeout(timeOutDuration);
-
+            .timeout(_timeoutDuration);
       case RequestType.post:
-        return await _client
-            .post(url.trim(),
-                queryParameters: queryParameters,
-                data: jsonEncode(parameter),
-                options: Options(headers: mergedHeaders))
-            .timeout(timeOutDuration);
-
       case RequestType.postWithToken:
-        return await _client
+        return _client
             .post(url,
                 data: jsonEncode(parameter),
                 options: Options(headers: mergedHeaders))
-            .timeout(timeOutDuration);
-
+            .timeout(_timeoutDuration);
       case RequestType.postWithTokenFormData:
-        return await _client
+        return _client
             .post(url,
                 data: parameter,
                 options: Options(headers: {
                   ...mergedHeaders,
-                  'Content-Type': 'multipart/form-data',
+                  'Content-Type': 'multipart/form-data'
                 }))
-            .timeout(timeOutDuration);
-
+            .timeout(_timeoutDuration);
       case RequestType.deleteWithToken:
-        return await _client
+        return _client
             .delete(url,
-                options: Options(headers: mergedHeaders), data: parameter)
-            .timeout(timeOutDuration);
-
+                data: parameter, options: Options(headers: mergedHeaders))
+            .timeout(_timeoutDuration);
       case RequestType.putWithToken:
-        return await _client
-            .put(url, options: Options(headers: mergedHeaders), data: parameter)
-            .timeout(timeOutDuration);
-
+        return _client
+            .put(url, data: parameter, options: Options(headers: mergedHeaders))
+            .timeout(_timeoutDuration);
       case RequestType.putWithTokenEncoded:
-        return await _client
+        return _client
             .put(url,
                 data: parameter,
                 options: Options(headers: {
                   ...mergedHeaders,
-                  "Content-Type": "application/x-www-form-urlencoded"
+                  'Content-Type': 'application/x-www-form-urlencoded'
                 }))
-            .timeout(timeOutDuration);
-
+            .timeout(_timeoutDuration);
       default:
         throw Exception("Unsupported request type");
     }
-  }
-
-  // Merge custom headers with default headers
-  Map<String, String> _mergeHeaders(
-      Map<String, String> defaultHeaders, dynamic additionalHeaders) {
-    if (additionalHeaders != null) {
-      return {...defaultHeaders, ...additionalHeaders};
-    }
-    return defaultHeaders;
   }
 }

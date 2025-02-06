@@ -33,6 +33,8 @@ class LogoutApi {
         SmartClient.userId = '';
         SmartClient.userName = '';
         SmartClient.userEmail = '';
+        SmartClient.laravelSession = '';
+        SmartClient.userPhoto = '';
 
         print('SharedPreferences cleared and tokens reset.');
 
