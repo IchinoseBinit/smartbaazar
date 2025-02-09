@@ -129,7 +129,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
         ref.watch(searchProvider(_searchController.text));
     final getHotData = ref.watch(getHotDealsProvider(widget.header));
     Future<void> refresh() async {
-      await ref.refresh(getHotDealsProvider(widget.header));
+      ref.refresh(getHotDealsProvider(widget.header));
     }
 
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');

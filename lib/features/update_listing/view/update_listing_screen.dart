@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
@@ -32,7 +33,8 @@ class UpdateListing extends StatefulWidget {
 }
 
 class _UpdateListingState extends State<UpdateListing> {
-  TypeList? dropdownvalue; // Updated to hold the selected TypeList object
+  TypeList?
+      _selectedtypedropdownvalue; // Updated to hold the selected TypeList object
 
   final bool _isChecked = false;
   final TextEditingController _pickupcontroller = TextEditingController();
@@ -110,14 +112,23 @@ class _UpdateListingState extends State<UpdateListing> {
   }
 
   String _inputText = "";
-  bool _showSearchProductModels = false;
+  final bool _showSearchProductModels = false;
   int? _selectedpackage = 0;
 
   @override
   void initState() {
     _acceptterms = widget.prod!.acceptTerms == '1' ? false : true;
+    emailcontroller.text = widget.prod!.email!;
+    if (widget.prod?.length != null)
+      lengthcontroller.text = widget.prod!.length!;
+    if (widget.prod?.width != null) widthcontroller.text = widget.prod!.width!;
+    if (widget.prod?.weight != null)
+      weightcontroller.text = widget.prod!.weight!;
 
     descriptionController.text = widget.prod!.description!;
+    selectedStoryDisplayDays =
+        int.tryParse(widget.prod!.storyDisplayDays ?? '0') ?? 0;
+
     selectedImages = widget.prod!.image!
         .split(',') // Split the string by commas
         .map((path) => File(path.trim())) // Trim whitespace and convert to File
@@ -133,6 +144,13 @@ class _UpdateListingState extends State<UpdateListing> {
     super.initState();
     _fetchOffers();
     _fetchCities();
+
+    titlecontroller.text = widget.prod!.title!;
+    descriptionController.text = widget.prod!.description!;
+    stockcontroller.text = widget.prod!.stock ?? '0';
+    pricecontroller.text = widget.prod!.price ?? '0';
+    discountcontroller.text = widget.prod!.discountedPrice ?? '0';
+
     _acceptterms = widget.prod!.acceptTerms == '1' ? true : false;
     accept = widget.prod!.acceptTerms!;
 
@@ -198,7 +216,7 @@ class _UpdateListingState extends State<UpdateListing> {
       // Update state with fetched data and selected type
       setState(() {
         typeListItems = fetchedTypes;
-        dropdownvalue = selectedType; // Set the dropdown value
+        _selectedtypedropdownvalue = selectedType; // Set the dropdown value
       });
     } catch (e) {
       // Handle error, maybe show a message to the user
@@ -430,10 +448,10 @@ class _UpdateListingState extends State<UpdateListing> {
                         Expanded(
                           child: CustomDropdownButton(
                             items: typeListItems,
-                            dropdownValue: dropdownvalue,
+                            dropdownValue: _selectedtypedropdownvalue,
                             onChanged: (TypeList? newValue) {
                               setState(() {
-                                dropdownvalue = newValue!;
+                                _selectedtypedropdownvalue = newValue!;
                               });
                             },
                             getItemLabel: (TypeList item) => item.typeName,
@@ -1148,6 +1166,7 @@ class _UpdateListingState extends State<UpdateListing> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          controller: weightcontroller,
                           decoration: InputDecoration.collapsed(
                               hintText: widget.prod?.weight ?? 'Weight in KG',
                               hintStyle: TextStyle(
@@ -1667,7 +1686,7 @@ class _UpdateListingState extends State<UpdateListing> {
                                   controller: phonecontroller,
                                   decoration: InputDecoration.collapsed(
                                       hintText:
-                                          phonecontroller?.text ?? '98XXXXXX',
+                                          phonecontroller.text ?? '98XXXXXX',
                                       hintStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14.sp,
@@ -2057,88 +2076,71 @@ class _UpdateListingState extends State<UpdateListing> {
                     height: 30.h,
                   ),
                   Center(
-                    child: isloading
-                        ? const Center(child: CircularProgressIndicator())
-                        : GeneralEelevatedButton(
-                            text: isloading ? 'Submitting...' : 'Submit',
-                            onPresssed: () async {
-                              // setState(() {
-                              //   isloading = true; // Start loading
-                              // });
-                              try {
-                                String responseMessage = await updatelisting(
-                                  null,
-                                  widget.prod!.id!,
+  child: isloading
+      ? const Center(child: CircularProgressIndicator())
+      : GeneralEelevatedButton(
+          text: isloading ? 'Submitting...' : 'Submit',
+          onPresssed: () async {
+            print('Category: ${selectedcategopry?.id ?? widget.prod?.categoryId}');
+            print('Title: ${titlecontroller.text.isEmpty ? widget.prod?.title : titlecontroller.text}');
+            print('Description: ${descriptionController.text.isEmpty ? widget.prod?.description : descriptionController.text}');
+            print('Stock: ${stockcontroller.text.isEmpty ? widget.prod?.stock : stockcontroller.text}');
+            print('Price: ${pricecontroller.text.isEmpty ? widget.prod?.price : pricecontroller.text}');
+            print('Discounted Price: ${discountcontroller.text.isEmpty ? widget.prod?.discountedPrice : discountcontroller.text}');
+            print('Offer: $selectedoffer');
+            print('Story Days: ${selectedStoryDisplayDays ?? widget.prod?.storyDisplayDays}');
+            print('Width: ${widthcontroller.text.isEmpty ? widget.prod?.width : widthcontroller.text}');
+            print('Height: ${heightcontroller.text.isEmpty ? widget.prod?.height : heightcontroller.text}');
+            print('Weight: ${weightcontroller.text.isEmpty ? widget.prod?.weight : weightcontroller.text}');
+            print('Email: ${emailcontroller.text.isEmpty ? widget.prod?.email : emailcontroller.text}');
+            print('Pickup: ${selectedpickup ?? "Default"}');
 
-                                  category: selectedcategopry?.id.toString() ??
-                                      widget.prod!.id.toString(),
+            setState(() {
+              isloading = true;
+            });
 
-                                  package: _selectedpackage,
-                                  // pieces: widget.pieces,
-                                  // ref
-                                  // cf: widget.cfvalue,
-                                  tags: _tags,
-                                  // category: widget.category!.trim(),
-                                  stock: stockcontroller.text ??
-                                      widget.prod!.stock!,
-                                  // mileage: widget.mileage?.trim(),
-                                  // warrenty: widget.warrenty?.value,
-                                  title: titlecontroller.text.isEmpty
-                                      ? widget.prod!.title!
-                                      : titlecontroller.text,
+            try {
+              String responseMessage = await updatelisting(
+                null,
+                widget.prod!.id!,
+                category: selectedcategopry?.id.toString() ?? widget.prod!.categoryId.toString(),
+                package: _selectedpackage,
+                tags: _tags,
+                stock: stockcontroller.text.isEmpty ? widget.prod!.stock! : stockcontroller.text,
+                title: titlecontroller.text.isEmpty ? widget.prod!.title! : titlecontroller.text,
+                city: selectedCity?.name ?? widget.prod!.address!,
+                price: pricecontroller.text.isEmpty ? widget.prod!.price! : pricecontroller.text,
+                description: descriptionController.text.isEmpty ? widget.prod!.description! : descriptionController.text,
+                length: lengthcontroller.text.isEmpty ? widget.prod!.length! : lengthcontroller.text,
+                width: widthcontroller.text.isEmpty ? widget.prod!.width! : widthcontroller.text,
+                height: heightcontroller.text.isEmpty ? widget.prod!.height! : heightcontroller.text,
+                weight: weightcontroller.text.isEmpty ? widget.prod!.weight! : weightcontroller.text,
+                disprice: discountcontroller.text.isEmpty ? widget.prod!.discountedPrice! : discountcontroller.text,
+                posttype: _selectedtypedropdownvalue   ?.typeId.toString() ?? widget.prod!.postTypeId!,
+                email: emailcontroller.text.isEmpty ? widget.prod!.email! : emailcontroller.text,
+                phone: phonecontroller.text.isEmpty ? widget.prod!.phone! : phonecontroller.text,
+                username: namecontroller.text.isEmpty ? widget.prod!.contactName! : namecontroller.text,
+                pickup: _pickupcontroller.text,
+                images: selectedImages,
+                accept: _acceptterms == true ? '1' : '0',
+                address: addresscontroller.text.isEmpty ? widget.prod!.address! : addresscontroller.text,
+                offer: selectedoffer?.offers ?? widget.prod?.offers!,
+                story: storagecontroller.text.isEmpty ? widget.prod?.storyDisplayDays! : storagecontroller.text,
+                lat: selectedpickup?.latitude ?? 1.11111,
+                long: selectedpickup?.longitude ?? 1.11111,
+              );
+              print("Update successful: $responseMessage");
+            } catch (e) {
+              print("Error updating listing: $e");
+            } finally {
+              setState(() {
+                isloading = false;
+              });
+            }
+          },
+        ),
+),
 
-                                  city: selectedCity!.name,
-                                  price: pricecontroller.text ??
-                                      widget.prod!.price!,
-                                  description: descriptionController.text ??
-                                      widget.prod!.description!,
-                                  length: lengthcontroller.text ??
-                                      widget.prod!.length!,
-                                  width: widthcontroller.text ??
-                                      widget.prod!.width!,
-                                  height: heightcontroller.text ??
-                                      widget.prod!.height!,
-                                  weight: weightcontroller.text ??
-                                      widget.prod!.weight!,
-                                  disprice: discountcontroller.text ??
-                                      widget.prod!.discountedPrice!,
-                                  posttype: dropdownvalue == null
-                                      ? widget.prod!.postTypeId!
-                                      : dropdownvalue!.typeId.toString(),
-                                  email: emailcontroller.text ??
-                                      widget.prod!.email!,
-                                  phone: phonecontroller.text ??
-                                      widget.prod!.phone!,
-                                  username: namecontroller.text ??
-                                      widget.prod!.contactName!,
-                                  pickup: '11111.11',
-                                  images: selectedImages,
-                                  accept: _acceptterms == false
-                                      ? widget.prod?.acceptTerms == true
-                                          ? '1'
-                                          : '0'
-                                      : _acceptterms == true
-                                          ? '1'
-                                          : '0',
-                                  address: addresscontroller.text ??
-                                      widget.prod!.address!,
-                                  // mapcontrolleer?.text.trim() ?? '',
-                                  offer: selectedoffer == null
-                                      ? widget.prod?.offers!
-                                      : selectedoffer?.offers,
-                                  story: storagecontroller.text == null
-                                      ? widget.prod?.storyDisplayDays!
-                                      : stockcontroller.text,
-                                  // youtube: widget.youtube?.trim(),
-                                  lat: selectedpickup?.latitude==null? 1.11111:selectedpickup!.latitude!,
-                                  long: selectedpickup?.longitude==null? 1.11111:selectedpickup!.longitude!,
-                                );
-                              } catch (e) {
-                                print("error $e");
-                              }
-                            },
-                          ),
-                  ),
                   SizedBox(
                     height: 30.h,
                   ),
@@ -2164,14 +2166,16 @@ class updatephotoescontainer extends StatefulWidget {
 
 class _updatephotoescontainerState extends State<updatephotoescontainer> {
   List<File?> images = [];
+  final ImagePicker _picker = ImagePicker();
 
   void selectImages() async {
     if (images.length < 6) {
-      // Dummy method for selecting images. Replace this with your image picker logic.
-      List<File?> selectedImages = []; // Add your picked images here
-      if (selectedImages.isNotEmpty) {
+      // Pick images using the ImagePicker
+      final List<XFile>? selectedImages = await _picker.pickMultiImage();
+
+      if (selectedImages != null && selectedImages.isNotEmpty) {
         setState(() {
-          images.addAll(selectedImages);
+          images.addAll(selectedImages.map((e) => File(e.path)).toList());
         });
         widget.onImagesSelected(images);
       }

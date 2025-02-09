@@ -386,7 +386,7 @@
 //                                     long: prod.userdetails?.longitude,
 //                                     productid: prod.id,
 //                                     posttype: prod.post_type_id,
-//                                     id: int.tryParse(prod.id),
+//                                     vendorid: prod.user.id,
 //                                     membershipid:
 //                                         prod.userdetails?.membership_id,
 //                                     didcountpercentage:
@@ -438,7 +438,7 @@
 //                               long: prod.userdetails?.longitude,
 //                               productid: prod.id,
 //                               posttype: prod.post_type,
-//                               id: int.tryParse(prod.id),
+//                               vendorid: prod.user.id,
 //                               membershipid: prod.userdetails?.membership_id,
 //                               didcountpercentage:
 //                                   prod.discount_percentage?.toInt(),

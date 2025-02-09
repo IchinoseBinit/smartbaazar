@@ -238,8 +238,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
   @override
   Widget build(BuildContext context) {
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
-        var homecategory = ref.watch(homeCategoryProvider);
-
+    var homecategory = ref.watch(homeCategoryProvider);
 
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
@@ -261,17 +260,16 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
     void refreshAllProviders() {
-  ref.refresh(bottomNavIndexProvider);
-  ref.refresh(homeCategoryProvider);
-  ref.refresh(getPostTypeStoryApiProvider('1'));
-  ref.refresh(getBrandBazaarResponseProvider);
-  ref.refresh(getCategoriesProvider(0));
+      ref.refresh(bottomNavIndexProvider);
+      ref.refresh(homeCategoryProvider);
+      ref.refresh(getPostTypeStoryApiProvider('1'));
+      ref.refresh(getBrandBazaarResponseProvider);
+      ref.refresh(getCategoriesProvider(0));
 
-  // Additional providers
-  ref.refresh(getPostTypeStoryApiProvider('2'));
-  ref.refresh(getUsedResponseProvider);
-}
-
+      // Additional providers
+      ref.refresh(getPostTypeStoryApiProvider('2'));
+      ref.refresh(getUsedResponseProvider);
+    }
 
     return Scaffold(
         extendBody: true,
@@ -823,7 +821,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                   //   error: (error, stackTrace) => Text(error.toString()),
                   //   loading: () => const CircularProgressIndicator(),
                   // ),
-                   homecategory.when(
+                  homecategory.when(
                     data: (feedStoryData) {
                       List<HomeStoryPost>? homeStory =
                           feedStoryData.home_story?.story.posts;
@@ -1249,28 +1247,28 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   (index) {
                                 VProduct hot = data.hotProducts[index];
                                 return ProductDetailWidget(
-                                     savedid: hot.savedByLoggedUser == null ||
-                                            hot.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : hot.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                  savedid: hot.savedByLoggedUser == null ||
+                                          hot.savedByLoggedUser!.isEmpty
+                                      ? []
+                                      : hot.savedByLoggedUser
+                                          ?.map(
+                                            (e) => SavedPost(
+                                                id: e.id,
+                                                userId: e.userId,
+                                                postId: e.postId,
+                                                createdAt: e.createdAt,
+                                                updatedAt: e.updatedAt),
+                                          )
+                                          .toList(),
+                                  onRefresh: () {
+                                    refreshAllProviders();
+                                  },
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
                                   productid: hot.id,
                                   tradeImage: usedIcon,
                                   posttype: hot.post_type_id,
-                                  id: int.tryParse(hot.id),
+                                  vendorid: hot.user.id,
                                   membershipid: hot.user.membership_id,
                                   didcountpercentage: hot.discount_percentage,
                                   offer: hot.offers,
@@ -1377,22 +1375,26 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct pro =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                savedid: pro.savedByLoggedUser == null ||
-                                            pro.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : pro.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                                savedid: pro.savedByLoggedUser ==
+                                                            null ||
+                                                        pro.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : pro.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
                                                 lat: pro.user.latitude,
                                                 long: pro.user.longitude,
                                                 productid: pro.id,
@@ -1402,7 +1404,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 posttype: pro.post_type_id,
                                                 membershipid:
                                                     pro.user.membership_id,
-                                                id: int.tryParse(pro.id),
+                                                vendorid: pro.user.id,
                                                 didcountpercentage:
                                                     pro.discount_percentage,
                                                 avg_rating:
@@ -1492,28 +1494,29 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[1][index];
                                         return ProductDetailWidget(
-                                                 savedid: pro.savedByLoggedUser == null ||
-                                            pro.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : pro.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refreshAllProviders();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
@@ -1595,22 +1598,23 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[2][index];
                                         return ProductDetailWidget(
-                                                 savedid: pro.savedByLoggedUser == null ||
-                                            pro.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : pro.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refreshAllProviders();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1619,7 +1623,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           membershipid: pro.user.membership_id,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
@@ -1698,22 +1702,23 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                       itemBuilder: (context, index) {
                                         VProduct pro = data.insidearr[4][index];
                                         return ProductDetailWidget(
-                                                 savedid: pro.savedByLoggedUser == null ||
-                                            pro.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : pro.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                          savedid: pro.savedByLoggedUser ==
+                                                      null ||
+                                                  pro.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : pro.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refreshAllProviders();
+                                          },
                                           lat: pro.user.latitude,
                                           long: pro.user.longitude,
                                           productid: pro.id,
@@ -1722,7 +1727,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           membershipid: pro.user.membership_id,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
@@ -1855,28 +1860,32 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                       savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
                                                 shortestDistance:
                                                     prod.user.shortestDistance,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 posttype: prod.post_type_id,
                                                 membershipid:
                                                     prod.user.membership_id,
@@ -1957,22 +1966,26 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   data.insidearr[1][index];
 
                                               return ProductDetailWidget(
-                                                       savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -1980,7 +1993,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.discount_percentage,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
@@ -2046,22 +2059,26 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod =
                                                   data.insidearr[2][index];
                                               return ProductDetailWidget(
-                                                       savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -2069,7 +2086,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.avg_rating,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
@@ -2334,22 +2351,26 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               VProduct prod = products[index];
 
                                               return ProductDetailWidget(
-                                                       savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refreshAllProviders();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -2357,7 +2378,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                     prod.avg_rating?.toDouble(),
                                                 didcountpercentage:
                                                     prod.avg_rating,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 membershipid:
                                                     prod.user.membership_id,
                                                 offer: prod.offers,
@@ -2485,11 +2506,19 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
-                                      savedid: res.savedByLoggedUser == null ||
+                                  savedid: res.savedByLoggedUser == null ||
                                           res.savedByLoggedUser!.isEmpty
                                       ? []
-                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
-                                         
+                                      : res.savedByLoggedUser
+                                          ?.map(
+                                            (e) => SavedPost(
+                                                id: e.id,
+                                                userId: e.userId,
+                                                postId: e.postId,
+                                                createdAt: e.createdAt,
+                                                updatedAt: e.updatedAt),
+                                          )
+                                          .toList(),
                                   onRefresh: () {
                                     refreshAllProviders();
                                   },
@@ -2513,8 +2542,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                   vendorname: res.user.name,
                                   title: res.title,
                                   price: res.price,
-                                  similarproductCount:
-                                      res.similarProductCount,
+                                  similarproductCount: res.similarProductCount,
                                   membershipColor: res.user.membershipColor,
                                   membershipTitle: res.user.membershipTitle,
                                 ),

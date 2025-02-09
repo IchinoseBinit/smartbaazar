@@ -338,9 +338,9 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                                   },
                                   loading: () =>
                                       const CircularProgressIndicator(),
-                                  error: (error, stack) => Text(
+                                  error: (error, stack) => const Text(
                                     'Please login',
-                                    style: const TextStyle(color: Colors.red),
+                                    style: TextStyle(color: Colors.red),
                                   ),
                                 ),
                               ),

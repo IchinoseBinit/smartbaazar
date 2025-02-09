@@ -12,27 +12,27 @@ Future<String> updatelisting(
   String num, {
   List<List<dynamic>>? cf,
   List<String>? tags,
-  required String category,
-  required String stock,
+  String? category,
+  String? stock,
   String? mileage,
   String? warrenty,
-  required String title,
-  required String city,
-  required String price,
-  required String description,
+  String? title,
+  String? city,
+  String? price,
+  String? description,
   String? length,
   String? width,
   String? height,
   String? weight,
   String? disprice,
-  required String posttype,
-  required String email,
-  required String phone,
-  required String username,
-  required String pickup,
+  String? posttype,
+  String? email,
+  String? phone,
+  String? username,
+  String? pickup,
   List<File?>? images,
-  required String accept,
-  required String address,
+  String? accept,
+  String? address,
   String? offer,
   String? story,
   String? youtube,
@@ -46,64 +46,58 @@ Future<String> updatelisting(
   final SmartClient client = SmartClient();
 
   try {
-    // Create FormData to handle text fields and file uploads dynamically
-    Map<String, dynamic> formDataMap = {
-      'category_id': category,
-      'post_type_id': posttype,
-      'title': title,
-      'description': description,
-      'contact_name': username,
-      'auth_field': "phone",
-      'phone': phone,
-      'phone_country': "NP",
-      'city_id': city,
-      'accept_terms': accept,
-      'email': email,
-      'country_code': "NP",
-      'price': price,
-      'discounted_price': disprice,
-      'negotiable': "0",
-      'phone_hidden': "1",
-      'captcha': "embed",
-      'ip_addr': "127.0.0.1",
-      'accept_marketing_offers': accept,
-      'is_permanent': "0",
-      'package_id': package,
-      'payment_method_id': "1",
-      'trending': "1",
-      'stock': stock ?? 0,
-      'address': address ?? "null",
-      'length': length ?? "1",
-      'width': width ?? "1",
-      'height': height ?? "1",
-      'weight': weight ?? "1",
-      'pickup': pickup,
-      'longitude': long?.toString() ?? "75",
-      'latitude': lat?.toString() ?? "85",
-      'hyper_del': hyperd,
-      'seller_del': seller,
-      'story_display_days': "1",
-      'offers': offer ?? "Seasonal Offers",
-      'youtube': youtube ?? "jbhjbh",
-      'piece_from[]': pieces?.map((e) => e['from']).toList() ?? [],
-      'piece_to[]': pieces?.map((e) => e['to']).toList() ?? [],
-      'rate[]': pieces?.map((e) => e['rate']).toList() ?? [],
-    };
+    Map<String, dynamic> formDataMap = {};
 
-    // Handle dynamic tags
+    // Add only non-null fields to the map
+    if (category != null) formDataMap['category_id'] = category;
+    if (posttype != null) formDataMap['post_type_id'] = posttype;
+    if (title != null) formDataMap['title'] = title;
+    if (description != null) formDataMap['description'] = description;
+    if (username != null) formDataMap['contact_name'] = username;
+    if (phone != null) formDataMap['phone'] = phone;
+    if (city != null) formDataMap['city_id'] = city;
+    if (email != null) formDataMap['email'] = email;
+    if (price != null) formDataMap['price'] = price;
+    if (disprice != null) formDataMap['discounted_price'] = disprice;
+    if (stock != null) formDataMap['stock'] = stock;
+    if (address != null) formDataMap['address'] = address;
+    if (length != null) formDataMap['length'] = length;
+    if (width != null) formDataMap['width'] = width;
+    if (height != null) formDataMap['height'] = height;
+    if (weight != null) formDataMap['weight'] = weight;
+    if (pickup != null) formDataMap['pickup'] = pickup;
+    if (offer != null) formDataMap['offers'] = offer;
+    if (story != null) formDataMap['story_display_days'] = story;
+    if (youtube != null) formDataMap['youtube'] = youtube;
+    if (lat != null) formDataMap['latitude'] = lat.toString();
+    if (long != null) formDataMap['longitude'] = long.toString();
+    if (hyperd != null) formDataMap['hyper_del'] = hyperd;
+    if (seller != null) formDataMap['seller_del'] = seller;
+    if (package != null) formDataMap['package_id'] = package;
+
+    // Accept terms should be '1' if true, '0' if false, and excluded if null
+    if (accept != null) formDataMap['accept_terms'] = accept;
+
+    // Handle tags array
     if (tags != null && tags.isNotEmpty) {
       formDataMap['tags[]'] = tags;
     }
 
-    // Create FormData
+    // Handle pieces array
+    if (pieces != null && pieces.isNotEmpty) {
+      formDataMap['piece_from[]'] = pieces.map((e) => e['from']).toList();
+      formDataMap['piece_to[]'] = pieces.map((e) => e['to']).toList();
+      formDataMap['rate[]'] = pieces.map((e) => e['rate']).toList();
+    }
+
     FormData formData = FormData.fromMap(formDataMap);
 
-    // Handle images
+    // Handle image uploads
     if (images != null) {
       for (var file in images) {
-        if (file != null) {
+        if (file != null && await file.exists()) {
           formData.files.add(MapEntry(
-            'pictures',
+            'pictures[]',
             await MultipartFile.fromFile(
               file.path,
               filename: file.path.split('/').last,
@@ -113,22 +107,8 @@ Future<String> updatelisting(
       }
     }
 
-    // Generate cURL command from formData for debugging (if needed)
-    String curlCommand = 'curl -X POST <API_URL> \\ \n';
-    for (var entry in formData.fields) {
-      curlCommand += '--form \'${entry.key}=${entry.value}\' \\ \n';
-    }
-
-    for (var file in formData.files) {
-      curlCommand += '--form \'${file.key}=@${file.value.filename}\' \\ \n';
-    }
-
-    // Print cURL command
-    print("rembo\n $curlCommand");
-
-    // Send the request
     final response = await client.request(
-      requestType: RequestType.putWithTokenFormData,
+      requestType: RequestType.putWithTokenEncoded,
       url: "https://smartbazaar.jianjun-rnd.com.np/api/posts/$num",
       parameter: formData,
     );
@@ -136,9 +116,11 @@ Future<String> updatelisting(
     if (response.statusCode == 200 && response.data['success'] == true) {
       return response.data['message'];
     } else {
-      throw Exception("Failed to create listing: ${response.data['message']}");
+      throw Exception("Failed to update listing: ${response.data['message']}");
     }
+  } on DioError catch (e) {
+    return "Dio Error: ${e.message}";
   } catch (e) {
-    throw Exception("API request failed: ${e.toString()}");
+    return "API request failed: ${e.toString()}";
   }
 }

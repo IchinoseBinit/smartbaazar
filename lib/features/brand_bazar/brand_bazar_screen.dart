@@ -1202,7 +1202,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                     lat: hot.userdetails?.latitude,
                                     long: hot.userdetails?.longitude,
                                     productid: hot.id,
-                                    id: int.tryParse(hot.id),
+                                    vendorid: hot.userdetails!.user_id,
                                     posttype: hot.post_type_id,
                                     membershipid:
                                         hot.userdetails?.membership_id,

@@ -15,23 +15,22 @@ class VendorProductSearchResponse with _$VendorProductSearchResponse {
 @freezed
 class Vdata with _$Vdata {
   const factory Vdata({
-    // required VPosts? Posts,
-    required List<VendorSearchModel>? brandnew,
+    // required VVSearchpost? VSearchpost,
+    required  VSearchpost? posts,
   }) = _Vdata;
 
   factory Vdata.fromJson(Map<String, dynamic> json) => _$VdataFromJson(json);
 }
 
-// @freezed
-// class VPosts with _$VPosts {
-//   const factory VPosts({
-//     // @JsonKey(name: 'current_page') required int currentPage,
-//     required List<PostResult>? data,
-//   }) = _VPosts;
+@freezed
+class VSearchpost with _$VSearchpost {
+  const factory VSearchpost({
+    int? current_page,
+     List<VendorSearchModel>? data,
+  }) = _VSearchpost;
 
-//   factory VPosts.fromJson(Map<String, dynamic> json) => _$VPostsFromJson(json);
-// }
-
+  factory VSearchpost.fromJson(Map<String, dynamic> json) => _$VSearchpostFromJson(json);
+}
 
 @freezed
 class VendorSearchModel with _$VendorSearchModel {

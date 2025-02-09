@@ -6,7 +6,7 @@ part of 'update_listing_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updatelistingHash() => r'0fa6f8ccb395ef6ebfdf4c7b478a1fc022aebc7c';
+String _$updatelistingHash() => r'86f99938555ba16bda2b4902131ad83c6a94b36d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,27 +43,27 @@ class UpdatelistingFamily extends Family<AsyncValue<String>> {
     String num, {
     List<List<dynamic>>? cf,
     List<String>? tags,
-    required String category,
-    required String stock,
+    String? category,
+    String? stock,
     String? mileage,
     String? warrenty,
-    required String title,
-    required String city,
-    required String price,
-    required String description,
+    String? title,
+    String? city,
+    String? price,
+    String? description,
     String? length,
     String? width,
     String? height,
     String? weight,
     String? disprice,
-    required String posttype,
-    required String email,
-    required String phone,
-    required String username,
-    required String pickup,
+    String? posttype,
+    String? email,
+    String? phone,
+    String? username,
+    String? pickup,
     List<File?>? images,
-    required String accept,
-    required String address,
+    String? accept,
+    String? address,
     String? offer,
     String? story,
     String? youtube,
@@ -174,27 +174,27 @@ class UpdatelistingProvider extends AutoDisposeFutureProvider<String> {
     String num, {
     List<List<dynamic>>? cf,
     List<String>? tags,
-    required String category,
-    required String stock,
+    String? category,
+    String? stock,
     String? mileage,
     String? warrenty,
-    required String title,
-    required String city,
-    required String price,
-    required String description,
+    String? title,
+    String? city,
+    String? price,
+    String? description,
     String? length,
     String? width,
     String? height,
     String? weight,
     String? disprice,
-    required String posttype,
-    required String email,
-    required String phone,
-    required String username,
-    required String pickup,
+    String? posttype,
+    String? email,
+    String? phone,
+    String? username,
+    String? pickup,
     List<File?>? images,
-    required String accept,
-    required String address,
+    String? accept,
+    String? address,
     String? offer,
     String? story,
     String? youtube,
@@ -330,27 +330,27 @@ class UpdatelistingProvider extends AutoDisposeFutureProvider<String> {
   final String num;
   final List<List<dynamic>>? cf;
   final List<String>? tags;
-  final String category;
-  final String stock;
+  final String? category;
+  final String? stock;
   final String? mileage;
   final String? warrenty;
-  final String title;
-  final String city;
-  final String price;
-  final String description;
+  final String? title;
+  final String? city;
+  final String? price;
+  final String? description;
   final String? length;
   final String? width;
   final String? height;
   final String? weight;
   final String? disprice;
-  final String posttype;
-  final String email;
-  final String phone;
-  final String username;
-  final String pickup;
+  final String? posttype;
+  final String? email;
+  final String? phone;
+  final String? username;
+  final String? pickup;
   final List<File?>? images;
-  final String accept;
-  final String address;
+  final String? accept;
+  final String? address;
   final String? offer;
   final String? story;
   final String? youtube;
@@ -508,10 +508,10 @@ mixin UpdatelistingRef on AutoDisposeFutureProviderRef<String> {
   List<String>? get tags;
 
   /// The parameter `category` of this provider.
-  String get category;
+  String? get category;
 
   /// The parameter `stock` of this provider.
-  String get stock;
+  String? get stock;
 
   /// The parameter `mileage` of this provider.
   String? get mileage;
@@ -520,16 +520,16 @@ mixin UpdatelistingRef on AutoDisposeFutureProviderRef<String> {
   String? get warrenty;
 
   /// The parameter `title` of this provider.
-  String get title;
+  String? get title;
 
   /// The parameter `city` of this provider.
-  String get city;
+  String? get city;
 
   /// The parameter `price` of this provider.
-  String get price;
+  String? get price;
 
   /// The parameter `description` of this provider.
-  String get description;
+  String? get description;
 
   /// The parameter `length` of this provider.
   String? get length;
@@ -547,28 +547,28 @@ mixin UpdatelistingRef on AutoDisposeFutureProviderRef<String> {
   String? get disprice;
 
   /// The parameter `posttype` of this provider.
-  String get posttype;
+  String? get posttype;
 
   /// The parameter `email` of this provider.
-  String get email;
+  String? get email;
 
   /// The parameter `phone` of this provider.
-  String get phone;
+  String? get phone;
 
   /// The parameter `username` of this provider.
-  String get username;
+  String? get username;
 
   /// The parameter `pickup` of this provider.
-  String get pickup;
+  String? get pickup;
 
   /// The parameter `images` of this provider.
   List<File?>? get images;
 
   /// The parameter `accept` of this provider.
-  String get accept;
+  String? get accept;
 
   /// The parameter `address` of this provider.
-  String get address;
+  String? get address;
 
   /// The parameter `offer` of this provider.
   String? get offer;
@@ -609,21 +609,21 @@ class _UpdatelistingProviderElement
   @override
   List<String>? get tags => (origin as UpdatelistingProvider).tags;
   @override
-  String get category => (origin as UpdatelistingProvider).category;
+  String? get category => (origin as UpdatelistingProvider).category;
   @override
-  String get stock => (origin as UpdatelistingProvider).stock;
+  String? get stock => (origin as UpdatelistingProvider).stock;
   @override
   String? get mileage => (origin as UpdatelistingProvider).mileage;
   @override
   String? get warrenty => (origin as UpdatelistingProvider).warrenty;
   @override
-  String get title => (origin as UpdatelistingProvider).title;
+  String? get title => (origin as UpdatelistingProvider).title;
   @override
-  String get city => (origin as UpdatelistingProvider).city;
+  String? get city => (origin as UpdatelistingProvider).city;
   @override
-  String get price => (origin as UpdatelistingProvider).price;
+  String? get price => (origin as UpdatelistingProvider).price;
   @override
-  String get description => (origin as UpdatelistingProvider).description;
+  String? get description => (origin as UpdatelistingProvider).description;
   @override
   String? get length => (origin as UpdatelistingProvider).length;
   @override
@@ -635,21 +635,21 @@ class _UpdatelistingProviderElement
   @override
   String? get disprice => (origin as UpdatelistingProvider).disprice;
   @override
-  String get posttype => (origin as UpdatelistingProvider).posttype;
+  String? get posttype => (origin as UpdatelistingProvider).posttype;
   @override
-  String get email => (origin as UpdatelistingProvider).email;
+  String? get email => (origin as UpdatelistingProvider).email;
   @override
-  String get phone => (origin as UpdatelistingProvider).phone;
+  String? get phone => (origin as UpdatelistingProvider).phone;
   @override
-  String get username => (origin as UpdatelistingProvider).username;
+  String? get username => (origin as UpdatelistingProvider).username;
   @override
-  String get pickup => (origin as UpdatelistingProvider).pickup;
+  String? get pickup => (origin as UpdatelistingProvider).pickup;
   @override
   List<File?>? get images => (origin as UpdatelistingProvider).images;
   @override
-  String get accept => (origin as UpdatelistingProvider).accept;
+  String? get accept => (origin as UpdatelistingProvider).accept;
   @override
-  String get address => (origin as UpdatelistingProvider).address;
+  String? get address => (origin as UpdatelistingProvider).address;
   @override
   String? get offer => (origin as UpdatelistingProvider).offer;
   @override

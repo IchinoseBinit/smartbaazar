@@ -1211,7 +1211,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     long: hot.user.longitude,
                                     productid: hot.id,
                                     membershipid: hot.user.membership_id,
-                                    id: int.tryParse(hot.id),
+                                    vendorid: hot.user.id,
                                     posttype: hot.post_type_id,
                                     offer: hot.offers,
                                     shortestDistance: hot.user.shortestDistance,
@@ -1239,7 +1239,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                         ),
                       );
                     },
-                    error: (error, stackTrace) => Text("Please login again"),
+                    error: (error, stackTrace) =>
+                        const Text("Please login again"),
                     loading: () => SizedBox(
                       height: 340.h,
                       child: ListView.builder(
@@ -1330,7 +1331,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                               pro.user.shortestDistance,
                                           posttype: pro.post_type_id,
                                           membershipid: pro.user.membership_id,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
@@ -1459,7 +1460,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           productid: pro.id,
                                           shortestDistance:
                                               pro.user.shortestDistance,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
@@ -1586,7 +1587,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           membershipid: pro.user.membership_id,
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
@@ -1681,7 +1682,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                           offer: pro.offers,
                                           posttype: pro.post_type_id,
                                           membershipid: pro.user.membership_id,
-                                          id: int.tryParse(pro.id),
+                                          vendorid: pro.user.id,
                                           didcountpercentage:
                                               pro.discount_percentage,
                                           avg_rating:
@@ -1829,7 +1830,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 productid: prod.id,
                                                 shortestDistance:
                                                     prod.user.shortestDistance,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 posttype: prod.post_type_id,
                                                 membershipid:
                                                     prod.user.membership_id,
@@ -1922,7 +1923,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 productid: prod.id,
                                                 shortestDistance:
                                                     prod.user.shortestDistance,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 posttype: prod.post_type_id,
                                                 offer: prod.offers,
                                                 membershipid:
@@ -2013,7 +2014,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                 posttype: prod.post_type_id,
                                                 membershipid:
                                                     prod.user.membership_id,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 didcountpercentage:
                                                     prod.discount_percentage,
                                                 avg_rating:
@@ -2325,7 +2326,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
-                                                  id: int.tryParse(prod.id),
+                                                  vendorid: prod.user.id,
                                                   membershipid:
                                                       prod.user.membership_id,
                                                   posttype: prod.post_type_id,
@@ -2467,12 +2468,19 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 child: AllProductDetailWidget(
-                                  
-                                       savedid: res.savedByLoggedUser == null ||
+                                  savedid: res.savedByLoggedUser == null ||
                                           res.savedByLoggedUser!.isEmpty
                                       ? []
-                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
-                                         
+                                      : res.savedByLoggedUser
+                                          ?.map(
+                                            (e) => SavedPost(
+                                                id: e.id,
+                                                userId: e.userId,
+                                                postId: e.postId,
+                                                createdAt: e.createdAt,
+                                                updatedAt: e.updatedAt),
+                                          )
+                                          .toList(),
                                   onRefresh: () {
                                     refresh();
                                   },
@@ -2496,8 +2504,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                   vendorname: res.user.name,
                                   title: res.title,
                                   price: res.price,
-                                  similarproductCount:
-                                      res.similarProductCount,
+                                  similarproductCount: res.similarProductCount,
                                   membershipColor: res.user.membershipColor,
                                   membershipTitle: res.user.membershipTitle,
                                 ),

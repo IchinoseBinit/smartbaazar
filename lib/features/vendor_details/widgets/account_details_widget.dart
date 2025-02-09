@@ -610,7 +610,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Text('Please login again'),
+          error: (error, stackTrace) => const Text('Please login again'),
         );
   }
 }

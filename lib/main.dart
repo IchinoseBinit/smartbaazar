@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -6,12 +7,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -24,6 +31,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 
 void main() {
   // Set custom HttpOverrides globally
@@ -52,136 +65,35 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home:
-            SplashScreen()
-          ),
-    );
-  }
-}
-
-class SearchScreen extends StatefulWidget {
-  @override
-  _SearchScreenState createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _controller = TextEditingController();
-  List<String> suggestions = [
-    'Laptop',
-    'Shoes',
-    'Smartphone',
-    'Headphones',
-    'Smartwatch',
-    'Tablet',
-    'Backpack',
-    'Jacket'
-  ];
-  List<String> filteredSuggestions = [];
+  // Future<void> getss() async {
+  //   SharedPreferences stf = await SharedPreferences.getInstance();
+  //   var _a=jsonDecode(stf.getString('session')!);
+  //   print('bibash ${_a['result']['username']}');
+  // }
 
   @override
   void initState() {
+    // getss();
+    // TODO: implement initState
     super.initState();
-    filteredSuggestions = suggestions;
-  }
-
-  void _filterSuggestions(String query) {
-    setState(() {
-      filteredSuggestions = suggestions
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Search Bar
-                TextField(
-                  controller: _controller,
-                  onChanged: _filterSuggestions,
-                  decoration: InputDecoration(
-                    labelText: 'Search',
-                    hintText: 'Search products',
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.search),
-                  ),
-                ),
-              ],
+    return ScreenUtilInit(
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: GoogleFonts.quicksand().fontFamily,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
             ),
-          ),
-          // Only show the suggestions list if it's not empty
-          if (_controller.text.isNotEmpty && filteredSuggestions.isNotEmpty)
-            Positioned(
-              left: 16.0,
-              right: 16.0,
-              top: 75.0, // Adjusted to position below the TextField
-              child: Material(
-                color: Colors.white,
-                elevation: 3,
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  height: 200,
-                  child: ListView.builder(
-                    itemCount: filteredSuggestions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(filteredSuggestions[index]),
-                        onTap: () {
-                          // Handle selection
-                          print('Selected: ${filteredSuggestions[index]}');
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-          // Positioned container with "data" text
-          Positioned.fill(
-            left: 16.0,
-            right: 16.0,
-            top: 80.0, // Adjusted to position below the suggestions list
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    "data",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 150,
-                    itemBuilder: (context, index) {
-                      return Text("${index}");
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+            
+            // home: SplashScreen(),
+            home:SplashScreen()),
+            );
   }
 }
 
@@ -221,4 +133,112 @@ class SavedPost {
       'updated_at': updatedAt,
     };
   }
+}
+
+class WidgetToImage extends ConsumerStatefulWidget {
+  @override
+  _WidgetToImageState createState() => _WidgetToImageState();
+}
+
+class _WidgetToImageState extends ConsumerState<WidgetToImage> {
+  GlobalKey globalKey = GlobalKey();
+  String? _savedImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    // Automatically capture and save the image when the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _captureAndSaveImage();
+    });
+  }
+
+  Future<void> _captureAndSaveImage() async {
+    try {
+      // Ensure the widget is rendered before capturing
+      await Future.delayed(Duration(milliseconds: 500));
+
+      ui.Image image = await captureWidget(globalKey);
+      String filePath = await saveImageToGallery(image);
+
+      setState(() {
+        _savedImagePath = filePath;
+      });
+
+      // Set the saved image in the StateProvider
+      ref.read(selectedImageProvider.notifier).state = XFile(filePath);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image saved to gallery!')),
+      );
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RepaintBoundary(
+            key: globalKey,
+            child: BigContainer(
+              lat: 37.7749,
+              long: -122.4194,
+              id: "12345",
+              title: "Amazing Place",
+              logo:
+                  'https://smartbazaar.jianjun-rnd.com.np/storage/avatars/np/9/3de13c8aabaf35b8335233510fd9f4c0.png',
+              contact: "+1 (123) 456-7890",
+              storyCount: "5",
+              membershipTitle: "Premium Member",
+              deals_circle: "Exclusive Deals",
+              total_connections: "50",
+              total_prize_worth: "\$1000",
+              location: "San Francisco, CA",
+              Cnumber: "987654321",
+              issubbed: true,
+              memebertitle: "Gold Member",
+            ),
+          ),
+          SizedBox(height: 20),
+          if (_savedImagePath != null)
+            Column(
+              children: [
+                Text('Saved Image:'),
+                SizedBox(height: 10),
+                Image.file(File(_savedImagePath!), height: 100),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+Future<ui.Image> captureWidget(GlobalKey key) async {
+  RenderRepaintBoundary boundary =
+      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+  return image;
+}
+
+Future<String> saveImageToGallery(ui.Image image) async {
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+  // Get the temporary directory
+  final directory = await getTemporaryDirectory();
+  final filePath = '${directory.path}/widget_image.png';
+  final file = File(filePath);
+
+  // Save the image to the file
+  await file.writeAsBytes(pngBytes);
+
+  // Save the image to the gallery
+  await ImageGallerySaver.saveFile(filePath);
+
+  return filePath;
 }

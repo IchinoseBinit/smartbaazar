@@ -190,7 +190,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                     .showSnackBar(snackBar);
                               },
                             ).catchError((error) {
-                              final errorSnackBar = const SnackBar(
+                              const errorSnackBar = SnackBar(
                                 content: Text('Please login and try again'),
                               );
                               ScaffoldMessenger.of(context)

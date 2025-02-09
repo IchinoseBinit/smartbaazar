@@ -7,7 +7,7 @@ part of 'vendor_product_search_api.dart';
 // **************************************************************************
 
 String _$searchVendorProductHash() =>
-    r'11c9d0c4f22dae7eebf879b4457f7c4f31bf9fe7';
+    r'0af55e719944f891dfd817a644f255fe4a9b7180';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,7 +42,7 @@ class SearchVendorProductFamily
 
   /// See also [searchVendorProduct].
   SearchVendorProductProvider call(
-    String id,
+    int id,
     String query,
   ) {
     return SearchVendorProductProvider(
@@ -81,7 +81,7 @@ class SearchVendorProductProvider
     extends AutoDisposeFutureProvider<VendorProductSearchResponse> {
   /// See also [searchVendorProduct].
   SearchVendorProductProvider(
-    String id,
+    int id,
     String query,
   ) : this._internal(
           (ref) => searchVendorProduct(
@@ -113,7 +113,7 @@ class SearchVendorProductProvider
     required this.query,
   }) : super.internal();
 
-  final String id;
+  final int id;
   final String query;
 
   @override
@@ -165,7 +165,7 @@ class SearchVendorProductProvider
 mixin SearchVendorProductRef
     on AutoDisposeFutureProviderRef<VendorProductSearchResponse> {
   /// The parameter `id` of this provider.
-  String get id;
+  int get id;
 
   /// The parameter `query` of this provider.
   String get query;
@@ -177,7 +177,7 @@ class _SearchVendorProductProviderElement
   _SearchVendorProductProviderElement(super.provider);
 
   @override
-  String get id => (origin as SearchVendorProductProvider).id;
+  int get id => (origin as SearchVendorProductProvider).id;
   @override
   String get query => (origin as SearchVendorProductProvider).query;
 }

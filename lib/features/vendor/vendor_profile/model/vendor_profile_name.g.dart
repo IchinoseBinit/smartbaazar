@@ -98,10 +98,10 @@ _$BrandNewModelImpl _$$BrandNewModelImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] as String?,
       similarVendorProfileProductCount:
           (json['similarVendorProfileProductCount'] as num?)?.toInt(),
-      discounted_price: (json['discounted_price'] as num?)?.toInt(),
+      discounted_price: json['discounted_price'] as String?,
       shortestDistance: (json['shortestDistance'] as num?)?.toDouble(),
       commentcount: (json['commentcount'] as num?)?.toInt(),
-      discount_percentage: (json['discount_percentage'] as num?)?.toDouble(),
+      discount_percentage: (json['discount_percentage'] as num?)?.toInt(),
       avg_rating: (json['avg_rating'] as num?)?.toInt(),
       userdetails: json['userdetails'] == null
           ? null
@@ -243,6 +243,7 @@ _$VendorCardImpl _$$VendorCardImplFromJson(Map<String, dynamic> json) =>
       membership_id: json['membership_id'] as String?,
       membership_title: json['membership_title'] as String?,
       membership_color: json['membership_color'] as String?,
+      subscribed: json['subscribed'] as String?,
     );
 
 Map<String, dynamic> _$$VendorCardImplToJson(_$VendorCardImpl instance) =>
@@ -261,6 +262,7 @@ Map<String, dynamic> _$$VendorCardImplToJson(_$VendorCardImpl instance) =>
       'membership_id': instance.membership_id,
       'membership_title': instance.membership_title,
       'membership_color': instance.membership_color,
+      'subscribed': instance.subscribed,
     };
 
 _$VendorAboutImpl _$$VendorAboutImplFromJson(Map<String, dynamic> json) =>
@@ -284,7 +286,7 @@ Map<String, dynamic> _$$VendorAboutImplToJson(_$VendorAboutImpl instance) =>
 _$DealImpl _$$DealImplFromJson(Map<String, dynamic> json) => _$DealImpl(
       id: json['id'] as String?,
       image: json['image'] as String?,
-      discount_percentage: json['discount_percentage'] as String?,
+      discount_percentage: (json['discount_percentage'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$DealImplToJson(_$DealImpl instance) =>

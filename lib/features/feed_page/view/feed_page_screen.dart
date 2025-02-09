@@ -669,7 +669,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 return const SizedBox();
                               },
                               error: (error, stack) {
-                                return Center(child: Text("PLease login again"));
+                                return const Center(child: Text("PLease login again"));
                               },
                             ),
                           ),
@@ -1207,7 +1207,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 ],
               ),
             ),
-            error: (error, stack) =>  Center(child: Text("please login"))
+            error: (error, stack) =>  const Center(child: Text("please login"))
           ),
           asyncFollowingFeedContent.when(
             data: (feedData) {
@@ -1272,7 +1272,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               }
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) =>  Center(child: Text("please login"))
+            error: (error, stack) =>  const Center(child: Text("please login"))
           ),
           SizedBox(height: 70.h),
         ],
@@ -1424,7 +1424,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               }
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) =>  Center(child: Text("please login"))
+            error: (error, stack) =>  const Center(child: Text("please login"))
           ),
           const SizedBox.shrink()
         ],

@@ -224,7 +224,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
   @override
   Widget build(BuildContext context) {
     // ref.watch(fetchAdsProvider);
-        var homecategory = ref.watch(homeCategoryProvider);
+    var homecategory = ref.watch(homeCategoryProvider);
 
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
@@ -236,11 +236,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
     // asyncbajarValue.when(data: (data) {
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
-Future<void> refresh() async {
-  ref.refresh(getCategoriesProvider(73));
-  ref.refresh(getPostTypeStoryApiProvider('4'));
-  ref.refresh(getjobsResponseProvider);
-}
+    Future<void> refresh() async {
+      ref.refresh(getCategoriesProvider(73));
+      ref.refresh(getPostTypeStoryApiProvider('4'));
+      ref.refresh(getjobsResponseProvider);
+    }
 
     // }, error: (error, stackTrace) {
 
@@ -738,7 +738,7 @@ Future<void> refresh() async {
                       ),
                     ),
                   ),
-                   homecategory.when(
+                  homecategory.when(
                     data: (feedStoryData) {
                       List<HomeStoryPost>? homeStory =
                           feedStoryData.home_story?.story.posts;
@@ -1126,28 +1126,28 @@ Future<void> refresh() async {
                             itemBuilder: (context, index) {
                               VProduct hot = data.hotProducts[index];
                               return ProductDetailWidget(
-                                     savedid: hot.savedByLoggedUser == null ||
-                                            hot.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : hot.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                savedid: hot.savedByLoggedUser == null ||
+                                        hot.savedByLoggedUser!.isEmpty
+                                    ? []
+                                    : hot.savedByLoggedUser
+                                        ?.map(
+                                          (e) => SavedPost(
+                                              id: e.id,
+                                              userId: e.userId,
+                                              postId: e.postId,
+                                              createdAt: e.createdAt,
+                                              updatedAt: e.updatedAt),
+                                        )
+                                        .toList(),
+                                onRefresh: () {
+                                  refresh();
+                                },
                                 lat: hot.user.latitude,
                                 long: hot.user.longitude,
                                 avg_rating: double.tryParse(
                                     hot.avg_rating.toString() ?? '0'),
                                 didcountpercentage: hot.discount_percentage,
-                                id: int.tryParse(hot.id),
+                                vendorid: hot.user!.id,
                                 membershipid: hot.user.membership_id,
                                 offer: hot.offers,
                                 posttype: hot.post_type_id,
@@ -1205,28 +1205,28 @@ Future<void> refresh() async {
                           itemBuilder: (context, index) {
                             VProduct hot = data.hotProducts[index];
                             return ProductDetailWidget(
-                               savedid: hot.savedByLoggedUser == null ||
-                                            hot.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : hot.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                              savedid: hot.savedByLoggedUser == null ||
+                                      hot.savedByLoggedUser!.isEmpty
+                                  ? []
+                                  : hot.savedByLoggedUser
+                                      ?.map(
+                                        (e) => SavedPost(
+                                            id: e.id,
+                                            userId: e.userId,
+                                            postId: e.postId,
+                                            createdAt: e.createdAt,
+                                            updatedAt: e.updatedAt),
+                                      )
+                                      .toList(),
+                              onRefresh: () {
+                                refresh();
+                              },
                               lat: hot.user.latitude,
                               long: hot.user.longitude,
                               avg_rating:
                                   double.tryParse(hot.avg_rating.toString()),
                               didcountpercentage: hot.discount_percentage,
-                              id: int.tryParse(hot.id),
+                              vendorid: hot.user!.id,
                               membershipid: hot.user.membership_id,
                               offer: hot.offers,
                               posttype: hot.post_type_id,
@@ -1612,28 +1612,32 @@ Future<void> refresh() async {
                                               VProduct prod =
                                                   data.insidearr[0][index];
                                               return ProductDetailWidget(
-                                                 savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
                                                 shortestDistance:
                                                     prod.user.shortestDistance,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 posttype: prod.post_type_id,
                                                 membershipid:
                                                     prod.user.membership_id,
@@ -1713,22 +1717,26 @@ Future<void> refresh() async {
                                                   data.insidearr[1][index];
 
                                               return ProductDetailWidget(
-                                                    savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -1738,7 +1746,7 @@ Future<void> refresh() async {
                                                     prod.user.shortestDistance,
                                                 membershipid:
                                                     prod.user.membership_id,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 didcountpercentage:
                                                     prod.discount_percentage,
                                                 avg_rating:
@@ -1806,22 +1814,26 @@ Future<void> refresh() async {
                                               VProduct prod =
                                                   data.insidearr[2][index];
                                               return ProductDetailWidget(
-                                                    savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -1831,7 +1843,7 @@ Future<void> refresh() async {
                                                 offer: prod.offers,
                                                 membershipid:
                                                     prod.user.membership_id,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 didcountpercentage:
                                                     prod.avg_rating,
                                                 avg_rating:
@@ -2071,22 +2083,24 @@ Future<void> refresh() async {
                                       itemBuilder: (context, index) {
                                         VProduct prod = products[index];
                                         return ProductDetailWidget(
-                                              savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                          savedid: prod.savedByLoggedUser ==
+                                                      null ||
+                                                  prod.savedByLoggedUser!
+                                                      .isEmpty
+                                              ? []
+                                              : prod.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refresh();
+                                          },
                                           lat: prod.user.latitude,
                                           long: prod.user.longitude,
                                           productid: prod.id,
@@ -2177,14 +2191,24 @@ Future<void> refresh() async {
                           return Padding(
                             padding: EdgeInsets.only(bottom: 5.h),
                             child: AllProductDetailWidget(
-                                  savedid: data.product[index].savedByLoggedUser == null ||
-                                            data.product[index].savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : data.product[index].savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
-                                           
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                              savedid: data.product[index].savedByLoggedUser ==
+                                          null ||
+                                      data.product[index].savedByLoggedUser!
+                                          .isEmpty
+                                  ? []
+                                  : data.product[index].savedByLoggedUser
+                                      ?.map(
+                                        (e) => SavedPost(
+                                            id: e.id,
+                                            userId: e.userId,
+                                            postId: e.postId,
+                                            createdAt: e.createdAt,
+                                            updatedAt: e.updatedAt),
+                                      )
+                                      .toList(),
+                              onRefresh: () {
+                                refresh();
+                              },
                               productid: data.product[index].post_type_id!,
                               long: data.product[index].user.longitude,
                               lat: data.product[index].user.latitude,

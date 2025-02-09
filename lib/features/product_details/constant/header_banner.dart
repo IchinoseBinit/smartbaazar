@@ -36,7 +36,9 @@ class HeaderBannerWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            VendorHomeScreen(vendorName: vname, vid: id),
+                            VendorHomeScreen(
+                              vendorName: vname,
+                               vid: id),
                       ));
                 },
                 child: CircleAvatar(

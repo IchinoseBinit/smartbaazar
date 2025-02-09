@@ -125,20 +125,20 @@ class _ScanScreenState extends State<ScanScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.info),
+                  const Icon(Icons.info),
                   IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.close))
+                      icon: const Icon(Icons.close))
                 ],
               ),
             ),
             Column(
               children: [
                 Center(child: Image.asset('assets/images/appLogo.png')),
-                SizedBox(height: 3),
-                Text(
+                const SizedBox(height: 3),
+                const Text(
                   "SCAN>SHOP>WIN",
                   style: TextStyle(
                       fontSize: 25,
@@ -148,7 +148,7 @@ class _ScanScreenState extends State<ScanScreen>
                 )
               ],
             ),
-            Container(
+            SizedBox(
               height: 300.h,
               child: Stack(
                 children: [
@@ -204,13 +204,13 @@ class _ScanScreenState extends State<ScanScreen>
                   ),
 
                   // Text and Image in the center top between the flash and close buttons
-                  Positioned(
+                  const Positioned(
                     top: 30,
                     left: 60,
                     right: 60,
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           "Scan Your QR Code",
                           style: TextStyle(
                             fontSize: 18,
@@ -219,7 +219,7 @@ class _ScanScreenState extends State<ScanScreen>
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         // Image.asset(
                         //   'assets/sample_image.png',
                         //   height: 40,

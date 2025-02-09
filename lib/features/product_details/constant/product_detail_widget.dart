@@ -25,7 +25,7 @@ class ProductDetailWidget extends StatefulWidget {
   ProductDetailWidget(
       {super.key,
       // this.membership_title,
-      this.id,
+      this.vendorid,
       this.offer = '',
       this.title = "Trade",
       this.discounttedPrice = '0',
@@ -72,7 +72,7 @@ class ProductDetailWidget extends StatefulWidget {
   String? offer, wow;
   double? avg_rating;
   double? shortestDistance;
-  int? id;
+  String? vendorid;
   String? tradeImage;
   String? membershipid;
   String? lat, long;
@@ -228,7 +228,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                     setState(() {});
                                   },
                                 ).catchError((error) {
-                                  final errorSnackBar = const SnackBar(
+                                  const errorSnackBar = SnackBar(
                                     content: Text('Please login and try again'),
                                   );
                                   ScaffoldMessenger.of(context)
@@ -258,8 +258,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => VendorHomeScreen(
-                                        vendorName: widget.vendorname!,
-                                        vid: widget.id!,
+                                        vendorName:widget.vendorname!,
+                                        vid: int.parse(widget.vendorid!),
                                       ),
                                     ));
                               },
@@ -353,7 +353,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       ),
                     ),
                     errorWidget: (context, url, error) =>
-                        Icon(Icons.broken_image, size: 50),
+                        const Icon(Icons.broken_image, size: 50),
                   );
                 },
               ),
@@ -685,8 +685,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VendorHomeScreen(
-                                      vendorName: widget.vendorname!,
-                                      vid: widget.id!),
+                                    vendorName: widget.vendorname!,
+                                      vid: int.tryParse(widget.vendorid!)!),
                                 ));
                           },
                           child: Padding(

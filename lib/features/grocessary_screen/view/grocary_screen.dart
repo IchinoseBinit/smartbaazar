@@ -232,7 +232,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
   @override
   Widget build(BuildContext context) {
-        var homecategory = ref.watch(homeCategoryProvider);
+    var homecategory = ref.watch(homeCategoryProvider);
 
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
@@ -245,11 +245,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
         ref.watch(searchProvider(_searchController.text));
     // asyncbajarValue.when(data: (data) {
     Future<void> refresh() async {
-  ref.refresh(getGrocertResponseProvider);
-  ref.refresh(getCategoriesProvider(171));
-  ref.refresh(getPostTypeStoryApiProvider('8'));
-}
-
+      ref.refresh(getGrocertResponseProvider);
+      ref.refresh(getCategoriesProvider(171));
+      ref.refresh(getPostTypeStoryApiProvider('8'));
+    }
 
     // }, error: (error, stackTrace) {
 
@@ -717,7 +716,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   return const SizedBox();
                                 },
                                 error: (error, stack) {
-                                  return Center(child: Text('Please login again'));
+                                  return const Center(
+                                      child: Text('Please login again'));
                                 },
                               ),
                             ),
@@ -927,7 +927,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       return const SizedBox();
                     },
                     error: (error, stackTrace) {
-                      return Text("Please login again");
+                      return const Text("Please login again");
                     },
                     loading: () {
                       return const CircularProgressIndicator();
@@ -1107,7 +1107,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       );
                     },
                     error: (error, stackTrace) {
-                      return Text('Please login again');
+                      return const Text('Please login again');
                     },
                     loading: () => const CircularProgressIndicator(),
                   ),
@@ -1165,7 +1165,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 2.w),
                                   child: ProductDetailWidget(
-                                        savedid: hot.savedByLoggedUser == null ||
+                                    savedid: hot.savedByLoggedUser == null ||
                                             hot.savedByLoggedUser!.isEmpty
                                         ? []
                                         : hot.savedByLoggedUser
@@ -1187,7 +1187,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     membershipid: hot.user.membership_id,
                                     posttype: hot.post_type_id,
                                     shortestDistance: hot.user.shortestDistance,
-                                    id: int.tryParse(hot.id),
+                                    vendorid: hot.user!.id,
                                     offer: hot.offers,
                                     didcountpercentage: hot.discount_percentage,
                                     avg_rating: hot.avg_rating?.toDouble(),
@@ -1598,28 +1598,32 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               VProduct prod =
                                                   data.insidearr[1][index];
                                               return ProductDetailWidget(
-                                                 savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
                                                 shortestDistance:
                                                     prod.user.shortestDistance,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 posttype: prod.post_type_id,
                                                 membershipid:
                                                     prod.user.membership_id,
@@ -1692,22 +1696,26 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               VProduct prod =
                                                   data.insidearr[1][index];
                                               return ProductDetailWidget(
-                                                   savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                savedid: prod.savedByLoggedUser ==
+                                                            null ||
+                                                        prod.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : prod.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id,
+                                                              userId: e.userId,
+                                                              postId: e.postId,
+                                                              createdAt:
+                                                                  e.createdAt,
+                                                              updatedAt:
+                                                                  e.updatedAt),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refresh();
+                                                },
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
@@ -1717,7 +1725,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     prod.user.shortestDistance,
                                                 membershipid:
                                                     prod.user.membership_id,
-                                                id: int.tryParse(prod.id),
+                                                vendorid: prod.user.id,
                                                 didcountpercentage:
                                                     prod.discount_percentage,
                                                 avg_rating:
@@ -1796,22 +1804,29 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     VProduct prod = data
                                                         .insidearr[2][index];
                                                     return ProductDetailWidget(
-                                                         savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                      savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refresh();
+                                                      },
                                                       lat: prod.user.latitude,
                                                       long: prod.user.longitude,
                                                       productid: prod.id,
@@ -2100,22 +2115,28 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 5.w),
                                                 child: ProductDetailWidget(
-                                                     savedid: prod.savedByLoggedUser == null ||
-                                            prod.savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : prod.savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
+                                                  savedid: prod.savedByLoggedUser ==
+                                                              null ||
+                                                          prod.savedByLoggedUser!
+                                                              .isEmpty
+                                                      ? []
+                                                      : prod.savedByLoggedUser
+                                                          ?.map(
+                                                            (e) => SavedPost(
+                                                                id: e.id,
+                                                                userId:
+                                                                    e.userId,
+                                                                postId:
+                                                                    e.postId,
+                                                                createdAt:
+                                                                    e.createdAt,
+                                                                updatedAt: e
+                                                                    .updatedAt),
+                                                          )
+                                                          .toList(),
+                                                  onRefresh: () {
+                                                    refresh();
+                                                  },
                                                   lat: prod.user.latitude,
                                                   long: prod.user.longitude,
                                                   productid: prod.id,
@@ -2124,7 +2145,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                       .user.shortestDistance,
                                                   membershipid:
                                                       prod.user.membership_id,
-                                                  id: int.tryParse(prod.id),
+                                                  vendorid: prod.user.id,
                                                   didcountpercentage:
                                                       prod.discount_percentage,
                                                   avg_rating: prod.avg_rating
@@ -2242,8 +2263,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   vendorname: res.user.name,
                                   title: res.title,
                                   price: res.price,
-                                  similarproductCount:
-                                      res.similarProductCount,
+                                  similarproductCount: res.similarProductCount,
                                   membershipColor: res.user.membershipColor,
                                   membershipTitle: res.user.membershipTitle,
                                 ),

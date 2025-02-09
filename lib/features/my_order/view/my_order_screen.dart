@@ -81,12 +81,10 @@ class MyOrderScreen extends ConsumerWidget {
                                             shrinkWrap: true,
                                             itemBuilder: (context, index) {
                                               final order = data
-                                                  .ordersReceived
-                                                  .data[index];
+                                                  .ordersReceived.data[index];
                                               return Padding(
-                                                padding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 10.w),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
                                                 child: OrderContainer(
                                                   order: order,
                                                   isOrderReceived: true,
@@ -96,8 +94,8 @@ class MyOrderScreen extends ConsumerWidget {
                                             separatorBuilder:
                                                 (context, index) =>
                                                     SizedBox(height: 14.h),
-                                            itemCount: data
-                                                .ordersReceived.data.length,
+                                            itemCount:
+                                                data.ordersReceived.data.length,
                                           )
                                         : Center(
                                             child: Text(
@@ -126,12 +124,11 @@ class MyOrderScreen extends ConsumerWidget {
                                                 const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             itemBuilder: (context, index) {
-                                              final order = data
-                                                  .ordersPlaced.data[index];
+                                              final order =
+                                                  data.ordersPlaced.data[index];
                                               return Padding(
-                                                padding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 10.w),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
                                                 child: OrderContainer(
                                                   order: order,
                                                   isOrderReceived: false,
@@ -141,8 +138,8 @@ class MyOrderScreen extends ConsumerWidget {
                                             separatorBuilder:
                                                 (context, index) =>
                                                     SizedBox(height: 14.h),
-                                            itemCount: data
-                                                .ordersPlaced.data.length,
+                                            itemCount:
+                                                data.ordersPlaced.data.length,
                                           )
                                         : Center(
                                             child: Text(
@@ -167,9 +164,9 @@ class MyOrderScreen extends ConsumerWidget {
                     ),
                   );
                 },
-                error: (error, stack) => Center(child: Text('PLease login again')),
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()),
+                error: (error, stack) =>
+                    const Center(child: Text('PLease login again')),
+                loading: () => const Center(child: CircularProgressIndicator()),
               ),
             ),
           ],
@@ -191,6 +188,7 @@ class OrderContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final vendorName = order.vendorName;
     final productTitle = order.postTitle;
 
@@ -289,6 +287,7 @@ class OrderContainer extends StatelessWidget {
                         const Spacer(),
                         InkWell(
                           onTap: () {
+                            // print('bibash ${order}');
                             Navigator.push(
                               context,
                               MaterialPageRoute(

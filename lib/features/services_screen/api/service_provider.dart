@@ -303,7 +303,6 @@ import 'package:dio/dio.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';

@@ -138,10 +138,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
         ref.watch(searchProvider(_searchController.text));
 
         Future<void> refresh()async{
-          await  ref.refresh(getSearchResponseProvider(
+          ref.refresh(getSearchResponseProvider(
         _query, selectedValue ?? 'price-low-to-high'));
    
-        };
+        }
 
     return Scaffold(
       // bottomNavigationBar: BottomNavigationScreen(),
@@ -590,7 +590,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                 return const SizedBox();
                               },
                               error: (error, stack) {
-                                return Center(child: Text("please login"));
+                                return const Center(child: Text("please login"));
                               },
                             ),
                           ),
@@ -1237,7 +1237,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                     );
                   },
                   error: (error, stackTrace) {
-                    return Text("Please login again");
+                    return const Text("Please login again");
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),

@@ -21,14 +21,28 @@ Map<String, dynamic> _$$VendorProductSearchResponseImplToJson(
     };
 
 _$VdataImpl _$$VdataImplFromJson(Map<String, dynamic> json) => _$VdataImpl(
-      brandnew: (json['brandnew'] as List<dynamic>?)
-          ?.map((e) => VendorSearchModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      posts: json['posts'] == null
+          ? null
+          : VSearchpost.fromJson(json['posts'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$VdataImplToJson(_$VdataImpl instance) =>
     <String, dynamic>{
-      'brandnew': instance.brandnew,
+      'posts': instance.posts,
+    };
+
+_$VSearchpostImpl _$$VSearchpostImplFromJson(Map<String, dynamic> json) =>
+    _$VSearchpostImpl(
+      current_page: (json['current_page'] as num?)?.toInt(),
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => VendorSearchModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$VSearchpostImplToJson(_$VSearchpostImpl instance) =>
+    <String, dynamic>{
+      'current_page': instance.current_page,
+      'data': instance.data,
     };
 
 _$VendorSearchModelImpl _$$VendorSearchModelImplFromJson(

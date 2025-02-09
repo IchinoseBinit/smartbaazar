@@ -48,6 +48,7 @@ import 'package:smartbazar/features/product_details/product_deatials_screen.dart
 import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
@@ -94,14 +95,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Map<String, String>? dropdownValue;
   int? postypeid = 0;
 
+  //innsersearch
+
   Future<void> shared() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     // print("kaju ${pref.getKeys()}");
-      Map<String, dynamic> data = jsonDecode(pref.getString('session')?? '');
+    Map<String, dynamic> data = jsonDecode(pref.getString('session') ?? '');
 
- String? imageUrl = data["result"]["photo_url"];
+    String? imageUrl = data["result"]["photo_url"];
 
-  print("kaju URL: $imageUrl and ${SmartClient.userPhoto}");  }
+    print("kaju URL: $imageUrl and ${SmartClient.userPhoto}");
+  }
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -270,6 +274,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     // final areaa = ref.watch(getScratchAndWinResponseProvider);
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
+    // AsyncLoading<VendorProductSearchResponse>() _vendorinnsersearch;
 
     List<String> categories =
         _services.map((e) => e['label'] as String).toList();
@@ -735,68 +740,68 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ),
                             ),
                           ),
-                          if (false)
-                            Positioned(
-                              top: 80.h, // Position just below the search bar
-                              left: 10,
-                              right: 10,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                color: Colors.white,
-                                child: SearchProductModels.when(
-                                  data: (results) {
-                                    if (results.isEmpty) {
-                                      return const SizedBox(
-                                        child: Text('No result found'),
-                                      ); // No results
-                                    }
-                                    return ListView.separated(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      primary: false,
-                                      itemCount: results.length,
-                                      itemBuilder: (context, index) {
-                                        final product = results[index];
-                                        return ListTile(
-                                          dense: true,
-                                          title: Text(
-                                            softWrap: true,
-                                            product.name,
-                                            style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontSize: 10),
-                                          ),
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BusinessTabScreen(
-                                                  query: _searchController.text,
-                                                ),
-                                              ),
-                                            );
-                                            setState(() {
-                                              _showSearchProductModels = false;
-                                              FocusScope.of(context).unfocus();
-                                            });
-                                          },
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          const Divider(),
-                                    );
-                                  },
-                                  loading: () {
-                                    return const SizedBox();
-                                  },
-                                  error: (error, stack) {
-                                    return Center(
-                                        child: Text(error.toString()));
-                                  },
-                                ),
-                              ),
-                            ),
+                          // if (false)
+                          //   Positioned(
+                          //     top: 80.h, // Position just below the search bar
+                          //     left: 10,
+                          //     right: 10,
+                          //     child: Container(
+                          //       margin: EdgeInsets.symmetric(horizontal: 5.w),
+                          //       color: Colors.white,
+                          //       child: SearchProductModels.when(
+                          //         data: (results) {
+                          //           if (results.isEmpty) {
+                          //             return const SizedBox(
+                          //               child: Text('No result found'),
+                          //             ); // No results
+                          //           }
+                          //           return ListView.separated(
+                          //             padding: EdgeInsets.zero,
+                          //             shrinkWrap: true,
+                          //             primary: false,
+                          //             itemCount: results.length,
+                          //             itemBuilder: (context, index) {
+                          //               final product = results[index];
+                          //               return ListTile(
+                          //                 dense: true,
+                          //                 title: Text(
+                          //                   softWrap: true,
+                          //                   product.name,
+                          //                   style: headerstyle.copyWith(
+                          //                       color: ColorConstant.blackColor,
+                          //                       fontSize: 10),
+                          //                 ),
+                          //                 onTap: () {
+                          //                   Navigator.push(
+                          //                     context,
+                          //                     MaterialPageRoute(
+                          //                       builder: (context) =>
+                          //                           BusinessTabScreen(
+                          //                         query: _searchController.text,
+                          //                       ),
+                          //                     ),
+                          //                   );
+                          //                   setState(() {
+                          //                     _showSearchProductModels = false;
+                          //                     FocusScope.of(context).unfocus();
+                          //                   });
+                          //                 },
+                          //               );
+                          //             },
+                          //             separatorBuilder: (context, index) =>
+                          //                 const Divider(),
+                          //           );
+                          //         },
+                          //         loading: () {
+                          //           return const SizedBox();
+                          //         },
+                          //         error: (error, stack) {
+                          //           return Center(
+                          //               child: Text(error.toString()));
+                          //         },
+                          //       ),
+                          //     ),
+                          //   ),
                         ],
                       ),
                     ),
@@ -1040,7 +1045,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             );
                           },
                           error: (error, stackTrace) {
-                            return Text("Please login again");
+                            return const Text("Please login again");
                           },
                           loading: () {
                             // Shimmer Effect for Loading State
@@ -1177,7 +1182,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             List<CategoryProduct> products =
                                 productsList[selectedIndexx];
 
-                            dynamicHeight = products.isEmpty ? 160.h : 390.h;
+                            dynamicHeight = products.isEmpty ? 120.h : 390.h;
 
                             return SizedBox(
                               height: dynamicHeight,
@@ -1290,9 +1295,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     avg_rating: prod.avgRating
                                                         ?.toDouble(),
                                                     offer: prod.offers,
-                                                    id: int.tryParse(
-                                                        prod.userdetails?.id ??
-                                                            '0'),
+                                                    vendorid:
+                                                        prod.userdetails?.id,
                                                     lefttile: categories[
                                                         selectedIndexx],
                                                     vendorname: prod.userdetails
@@ -1322,7 +1326,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ),
                                         )
                                       : Padding(
-                                          padding: EdgeInsets.only(top: 50.h),
+                                          padding: EdgeInsets.only(top: 20.h),
                                           child: nolistingfound(),
                                         ),
                                 ],
@@ -1503,10 +1507,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           avg_rating:
                                                               prod.avg_rating,
                                                           offer: prod.offers,
-                                                          id: int.tryParse(prod
-                                                              .user
-                                                              .first
-                                                              .user_id),
+                                                          vendorid: prod.user
+                                                              .first.user_id,
                                                           comment:
                                                               prod.commentnum,
                                                           wow: prod.wow,
@@ -1626,10 +1628,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         avg_rating:
                                                             prod.avg_rating,
                                                         offer: prod.offers,
-                                                        id: int.tryParse(prod
-                                                            .user
-                                                            .first
-                                                            .user_id),
+                                                        vendorid: prod
+                                                            .user.first.user_id,
                                                         comment:
                                                             prod.commentnum,
                                                         wow: prod.wow,
@@ -1719,7 +1719,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       .user[0].shortestDistance,
                                                   membershipid: prod
                                                       .user.first.membership_id,
-                                                  posttype: prod.posttypename,
+                                                  posttype: prod.post_type_id,
                                                   didcountpercentage:
                                                       prod.discount_percentage,
                                                   lefttile: prod.posttypename,
@@ -1729,8 +1729,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       prod.shortestDistance,
                                                   avg_rating: prod.avg_rating,
                                                   offer: prod.offers,
-                                                  id: int.tryParse(
-                                                      prod.user.first.user_id),
+                                                  vendorid:
+                                                      prod.user.first.user_id,
                                                   comment: prod.commentnum,
                                                   wow: prod.wow,
                                                   issponsored:
@@ -1896,8 +1896,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 .discount_percentage
                                                 ?.toInt(),
                                             shortestDistance: prefs
-                                                .userdetails?.shortestDistance
-                                                ?.roundToDouble(),
+                                                .userdetails?.shortestDistance,
                                             issponsored:
                                                 prefs.userdetails!.sponsored!,
                                             wow: prefs.wow,
@@ -1909,7 +1908,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             discounttedPrice:
                                                 prefs.discounted_price,
                                             offer: prefs.offers,
-                                            id: int.tryParse(prefs.id),
+                                            vendorid:
+                                                prefs.userdetails!.user_id,
                                             price: prefs.price,
                                             productImage: prefs.image,
                                             title: prefs.title,
@@ -2020,23 +2020,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               BorderRadius.circular(15.0),
                                         ),
                                         child: AllProductDetailWidget(
-                                          savedid:
-                                              res.savedByLoggedUser == null ||
-                                                      res.savedByLoggedUser!
-                                                          .isEmpty
-                                                  ? []
-                                                  : res.savedByLoggedUser
-                                                      ?.map(
-                                                        (e) => SavedPost(
-                                                            id: e.id,
-                                                            userId: e.userId,
-                                                            postId: e.postId,
-                                                            createdAt:
-                                                                e.createdAt,
-                                                            updatedAt:
-                                                                e.updatedAt),
-                                                      )
-                                                      .toList(),
+                                          savedid: res.savedByLoggedUser ==
+                                                      null ||
+                                                  res.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : res.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
                                           onRefresh: () {
                                             refresh();
                                           },
@@ -2053,17 +2050,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           shortestDistance:
                                               res.userDetail.shortestDistance,
                                           issponsored:
-                                              res.userDetail.sponsored ??
-                                                  false,
+                                              res.userDetail.sponsored ?? false,
                                           distance: res.user.shortestDistance,
                                           wow: res.wow.toString(),
-                                          discounttedPrice:
-                                              res.discountedPrice,
-                                          comment:
-                                              res.commentCount.toString(),
+                                          discounttedPrice: res.discountedPrice,
+                                          comment: res.commentCount.toString(),
                                           avg_rating:
-                                              res.avgRating?.toDouble() ??
-                                                  0.0,
+                                              res.avgRating?.toDouble() ?? 0.0,
                                           offer: res.offers,
                                           productImage: res.image,
                                           Vimage: res.userDetail.photo,
@@ -2275,7 +2268,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            VendorProfileScreen(),
+                                            const VendorProfileScreen(),
                                       ));
                                 },
                                 child: CircleAvatar(
@@ -2291,7 +2284,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ScanScreen(),
+                                  builder: (context) => const ScanScreen(),
                                 ),
                               );
                             },
@@ -2400,7 +2393,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                 const Icon(
                                   Icons.close,
                                   size: 10,
-                                  color: const Color(0xff918994),
+                                  color: Color(0xff918994),
                                 ),
                                 Text(
                                   "Close",
@@ -2505,7 +2498,7 @@ class FeedValueNotifier extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            VendorProfileScreen(),
+                                            const VendorProfileScreen(),
                                       ));
                                 },
                                 child: CircleAvatar(
@@ -2521,7 +2514,7 @@ class FeedValueNotifier extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ScanScreen(),
+                                  builder: (context) => const ScanScreen(),
                                 ),
                               );
                             },
@@ -2630,7 +2623,7 @@ class FeedValueNotifier extends StatelessWidget {
                                 const Icon(
                                   Icons.close,
                                   size: 10,
-                                  color: const Color(0xff918994),
+                                  color: Color(0xff918994),
                                 ),
                                 Text(
                                   "Close",

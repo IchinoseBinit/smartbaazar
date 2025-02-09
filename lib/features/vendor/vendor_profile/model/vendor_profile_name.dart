@@ -50,10 +50,10 @@ class BrandNewModel with _$BrandNewModel {
     String? wow,
     required String? city,
     required int? similarVendorProfileProductCount,
-    required int? discounted_price,
+    required String? discounted_price,
     required double? shortestDistance,
     required int? commentcount,
-    required double? discount_percentage,
+    required int? discount_percentage,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
       final List<FezzedSaved>? savedByLoggedUser,
@@ -188,6 +188,7 @@ class   VendorCard with _$VendorCard {
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    String? subscribed
   }) = _VendorCard;
 
   factory VendorCard.fromJson(Map<String, dynamic> json) =>
@@ -213,7 +214,7 @@ class Deal with _$Deal {
   const factory Deal({
     String? id,
     String? image,
-    String? discount_percentage,
+    double? discount_percentage,
   }) = _Deal;
 
   factory Deal.fromJson(Map<String, dynamic> json) => _$DealFromJson(json);

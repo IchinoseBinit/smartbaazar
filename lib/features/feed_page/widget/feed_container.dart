@@ -289,7 +289,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                         context, feedCardData);
                                   },
                                   error: (error, stackTrace) =>
-                                      Text("Please login again"),
+                                      const Text("Please login again"),
                                   loading: () => showDialog(
                                     context: context,
                                     builder: (context) => Center(
@@ -966,7 +966,7 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) =>
-                    Center(child: Text('Please login again')),
+                    const Center(child: Text('Please login again')),
               ),
               // Comment Input Section
               TextField(

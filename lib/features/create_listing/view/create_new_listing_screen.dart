@@ -174,9 +174,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   void initState() {
     typeid = '1';
     getSellerData();
-    checkuserverified().then(
+    checkUserVerified().then(
       (value) {
-        isUserVerified = value;
+        isUserVerified = value!.userVerify;
       },
     );
     super.initState();

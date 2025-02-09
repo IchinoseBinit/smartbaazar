@@ -12,7 +12,7 @@ Future<HomeStoryModel> getPostTypeStoryApi(ref, String postTypeId) async {
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: '${ApiConstants.producttypeurl}/$postTypeId',
     );
     if (response.statusCode == 200) {

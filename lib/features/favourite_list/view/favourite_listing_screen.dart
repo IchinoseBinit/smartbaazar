@@ -102,7 +102,7 @@ class FavouriteListingScreen extends ConsumerWidget {
                     separatorBuilder: (context, index) => SizedBox(height: 16.h),
                     itemCount: 6, // Number of skeleton items
                   ),
-                  error: (error, stack) => Text('Please login and try again'),
+                  error: (error, stack) => const Text('Please login and try again'),
                 )
               ],
             ),

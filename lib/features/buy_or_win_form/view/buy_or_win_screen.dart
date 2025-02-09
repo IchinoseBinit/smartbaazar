@@ -171,7 +171,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                       );
                     },
                     error: (error, stackTrace) =>
-                       Center(child: Text("please login")),
+                       const Center(child: Text("please login")),
                     loading: () => const CircularProgressIndicator(),
                   ),
                   Row(

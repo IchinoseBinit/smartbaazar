@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
@@ -14,11 +18,50 @@ import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/del.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 final selectedImageProvider = StateProvider<XFile?>((ref) => null);
+Future<ui.Image> captureWidget(GlobalKey key) async {
+  if (key.currentContext == null) {
+    throw Exception('Widget is not yet rendered.');
+  }
+
+  RenderRepaintBoundary boundary =
+      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+  return image;
+}
+
+// Helper function to save the captured image to the gallery
+Future<String> saveImageToGallery(ui.Image image) async {
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+  // Get the temporary directory
+  final directory = await getTemporaryDirectory();
+  final filePath = '${directory.path}/widget_image.png';
+  final file = File(filePath);
+
+  // Save the image to the file
+  await file.writeAsBytes(pngBytes);
+
+  // Save the image to the gallery
+  await ImageGallerySaver.saveFile(filePath);
+
+  return filePath;
+}
+
+const flutterColor = Color(0xFF40D0FD);
 
 class ChatScreen extends ConsumerStatefulWidget {
   final String threadId;
@@ -47,48 +90,115 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   int _currentPage = 1;
   bool _isLoadingMore = false;
   File? _imageFile;
+  bool? _isverified;
+  VerifyUser? _givecard;
+  BigContainer? _card;
 
   final ImagePicker _imagePicker = ImagePicker();
+  final GlobalKey _widgetKey = GlobalKey(); // Key to reference the widget
+  Uint8List? _capturedImage;
+  String? _savedImagePath;
+  Future<void> loaduserid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _currentUserId = prefs.getString("userId");
+  }
 
   @override
   void initState() {
+    loaduserid();
+    _isverified = false;
+    checkUserVerified().then(
+      (value) {
+        _isverified = value?.userVerify == '1' ? true : false;
+        if (_isverified!) _givecard = value;
+        print('babu ${_isverified}');
+      },
+    );
     super.initState();
-    _loadUserId(); // Load user ID from SharedPreferences
     _scrollController.addListener(_onScroll); // Add scroll listener
     if (widget.imageUrl != null) _downloadImage();
+
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   captureImage(); // This ensures that capture happens after the widget is built
+    // });
   }
 
-Future<void> _downloadImage() async {
-  try {
-    print("Downloading: ${widget.imageUrl}");
-    final response = await http.get(Uri.parse(widget.imageUrl!));
-    if (response.statusCode == 200) {
-      final tempDir = await getTemporaryDirectory();
-      final filePath = '${tempDir.path}/downloaded_image.jpg';
-      final file = File(filePath);
-      await file.writeAsBytes(response.bodyBytes);
+  Future<void> _captureAndSendImage() async {
+    try {
+      await Future.delayed(Duration(seconds: 1)); // Ensure rendering completion
 
+      if (_widgetKey.currentContext == null) {
+        print('Vendor Card Widget is not yet rendered.');
+        return;
+      }
+
+      RenderRepaintBoundary? boundary = _widgetKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary?;
+
+      if (boundary == null) {
+        print("Render boundary not found!");
+        return;
+      }
+
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      // Get the temporary directory
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/vendor_card.png';
+      final file = File(filePath);
+
+      // Save the image file
+      await file.writeAsBytes(pngBytes);
+
+      // Update state to send in chat
       setState(() {
-        _imageFile = file;
+        _savedImagePath = filePath;
       });
 
-      ref.read(selectedImageProvider.notifier).state = XFile(file.path);
+      ref.read(selectedImageProvider.notifier).state = XFile(filePath);
 
-      print("Image saved temporarily at: $filePath");
-    } else {
-      print("Failed to load image");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Card selected !')),
+      );
+    } catch (e) {
+      print('Error capturing image: $e');
     }
-  } catch (e) {
-    print("Error downloading image: $e");
   }
-}
 
-  Future<void> _loadUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _currentUserId = prefs.getString('userId');
-    });
+  Future<void> _downloadImage() async {
+    try {
+      print("Downloading: ${widget.imageUrl}");
+      final response = await http.get(Uri.parse(widget.imageUrl!));
+      if (response.statusCode == 200) {
+        final tempDir = await getTemporaryDirectory();
+        final filePath = '${tempDir.path}/downloaded_image.jpg';
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        setState(() {
+          _imageFile = file;
+        });
+
+        ref.read(selectedImageProvider.notifier).state = XFile(file.path);
+
+        print("Image saved temporarily at: $filePath");
+      } else {
+        print("Failed to load image");
+      }
+    } catch (e) {
+      print("Error downloading image: $e");
+    }
   }
+
+  // Future<void> _loadUserId() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _currentUserId = prefs.getString('userId');
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -159,6 +269,33 @@ Future<void> _downloadImage() async {
 
   @override
   Widget build(BuildContext context) {
+    if(_currentUserId!=null)
+    ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!))!.whenData(
+      (value) {
+        print("kalu $value");
+        _card = BigContainer(
+            key: GlobalKey(),
+            lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
+            long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
+            id: value.data!.vendor_card!.membership_id!,
+            title: value.data!.vendor_card!.membership_title!,
+            logo: value.data!.vendor_card!.photo!,
+            contact: value.data!.vendor_card!.phone!,
+            storyCount: value.data!.vendor_card!.storycount.toString(),
+            membershipTitle: value.data!.vendor_card!.membership_title!,
+            deals_circle: '0',
+            total_connections: value.data!.vendor_card!.subscribers.toString(),
+            total_prize_worth: value.data!.vendor_card!.prize_worth.toString(),
+            location: value.data!.vendor_card!.nearestbranch ?? '',
+            Cnumber: value.data!.vendor_card!.phone!,
+            issubbed: value.data!.vendor_card!.subscribed == 'subscribed'
+                ? true
+                : false, // Assuming isSubscribed is in vendor_card
+
+            memebertitle: value.data!.vendor_card!.membership_title!);
+      },
+    );
+
     // Fetch messages based on threadId using Riverpod provider
     final messagesAsyncValue =
         ref.watch(getMessageListProvider(widget.threadId, _currentPage));
@@ -228,7 +365,8 @@ Future<void> _downloadImage() async {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Center(child: Text('Error: $error')),
+                error: (error, stack) =>
+                    Center(child: Text('please login again')),
               ),
             ),
 
@@ -256,8 +394,8 @@ Future<void> _downloadImage() async {
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.file(
                                   File(selectedImage.path),
-                                  width: 80,
-                                  height: 80,
+                                  width: 100,
+                                  height: 120,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -294,6 +432,52 @@ Future<void> _downloadImage() async {
                             ),
                           ),
                         ),
+                        SizedBox(width: 10.w),
+                        // if (_isverified!)
+                          GlowButton(
+                            onPressed: () {
+                              // Show the dialog
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    insetPadding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        // Positioned widget for the SizedBox with RepaintBoundary
+                                        Positioned(
+                                          child: SizedBox(
+                                            height: 550.h,
+                                            width: 400.w,
+                                            child: RepaintBoundary(
+                                              key: _widgetKey,
+                                              child: _card ??
+                                                  SizedBox
+                                                      .shrink(), // Ensure _card is not null
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+
+                              // Wait for 1 second before closing the dialog
+                              Future.delayed(Duration(seconds: 1), () {
+                                Navigator.of(context)
+                                    .pop(); // Close the dialog after 1 second
+                              });
+
+                              // Capture and send the image (optional)
+                              _captureAndSendImage();
+                            },
+                            color: flutterColor,
+                            child: const Text('Card'),
+                          ),
+
                         SizedBox(width: 10.w),
                         GestureDetector(
                           onTap: _pickImage, // Call _pickImage on tap
@@ -351,10 +535,10 @@ Future<void> _downloadImage() async {
           // Invalidate the message list provider to trigger a refresh
           ref.invalidate(getMessageListProvider(widget.threadId, _currentPage));
 
-          // Show success message
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Message sent successfully')),
-          );
+          // // Show success message
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(content: Text('Message sent successfully')),
+          // );
 
           // Refresh message list provider after invalidating it
           ref.refresh(getMessageListProvider(widget.threadId, _currentPage));
@@ -600,7 +784,7 @@ class ChatMessageWidget extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
                       child: Image.network(
-                        height: 100.h,
+                        height: 200.h,
                         '$baseUrl${message.filename}',
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>

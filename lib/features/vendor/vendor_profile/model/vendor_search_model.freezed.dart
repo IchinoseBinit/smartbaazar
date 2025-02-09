@@ -200,8 +200,8 @@ Vdata _$VdataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Vdata {
-// required VPosts? Posts,
-  List<VendorSearchModel>? get brandnew => throw _privateConstructorUsedError;
+// required VVSearchpost? VSearchpost,
+  VSearchpost? get posts => throw _privateConstructorUsedError;
 
   /// Serializes this Vdata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -217,7 +217,9 @@ abstract class $VdataCopyWith<$Res> {
   factory $VdataCopyWith(Vdata value, $Res Function(Vdata) then) =
       _$VdataCopyWithImpl<$Res, Vdata>;
   @useResult
-  $Res call({List<VendorSearchModel>? brandnew});
+  $Res call({VSearchpost? posts});
+
+  $VSearchpostCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -235,14 +237,28 @@ class _$VdataCopyWithImpl<$Res, $Val extends Vdata>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? brandnew = freezed,
+    Object? posts = freezed,
   }) {
     return _then(_value.copyWith(
-      brandnew: freezed == brandnew
-          ? _value.brandnew
-          : brandnew // ignore: cast_nullable_to_non_nullable
-              as List<VendorSearchModel>?,
+      posts: freezed == posts
+          ? _value.posts
+          : posts // ignore: cast_nullable_to_non_nullable
+              as VSearchpost?,
     ) as $Val);
+  }
+
+  /// Create a copy of Vdata
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $VSearchpostCopyWith<$Res>? get posts {
+    if (_value.posts == null) {
+      return null;
+    }
+
+    return $VSearchpostCopyWith<$Res>(_value.posts!, (value) {
+      return _then(_value.copyWith(posts: value) as $Val);
+    });
   }
 }
 
@@ -253,7 +269,10 @@ abstract class _$$VdataImplCopyWith<$Res> implements $VdataCopyWith<$Res> {
       __$$VdataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<VendorSearchModel>? brandnew});
+  $Res call({VSearchpost? posts});
+
+  @override
+  $VSearchpostCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -269,13 +288,13 @@ class __$$VdataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? brandnew = freezed,
+    Object? posts = freezed,
   }) {
     return _then(_$VdataImpl(
-      brandnew: freezed == brandnew
-          ? _value._brandnew
-          : brandnew // ignore: cast_nullable_to_non_nullable
-              as List<VendorSearchModel>?,
+      posts: freezed == posts
+          ? _value.posts
+          : posts // ignore: cast_nullable_to_non_nullable
+              as VSearchpost?,
     ));
   }
 }
@@ -283,27 +302,18 @@ class __$$VdataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VdataImpl implements _Vdata {
-  const _$VdataImpl({required final List<VendorSearchModel>? brandnew})
-      : _brandnew = brandnew;
+  const _$VdataImpl({required this.posts});
 
   factory _$VdataImpl.fromJson(Map<String, dynamic> json) =>
       _$$VdataImplFromJson(json);
 
-// required VPosts? Posts,
-  final List<VendorSearchModel>? _brandnew;
-// required VPosts? Posts,
+// required VVSearchpost? VSearchpost,
   @override
-  List<VendorSearchModel>? get brandnew {
-    final value = _brandnew;
-    if (value == null) return null;
-    if (_brandnew is EqualUnmodifiableListView) return _brandnew;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  final VSearchpost? posts;
 
   @override
   String toString() {
-    return 'Vdata(brandnew: $brandnew)';
+    return 'Vdata(posts: $posts)';
   }
 
   @override
@@ -311,13 +321,12 @@ class _$VdataImpl implements _Vdata {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VdataImpl &&
-            const DeepCollectionEquality().equals(other._brandnew, _brandnew));
+            (identical(other.posts, posts) || other.posts == posts));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_brandnew));
+  int get hashCode => Object.hash(runtimeType, posts);
 
   /// Create a copy of Vdata
   /// with the given fields replaced by the non-null parameter values.
@@ -336,20 +345,197 @@ class _$VdataImpl implements _Vdata {
 }
 
 abstract class _Vdata implements Vdata {
-  const factory _Vdata({required final List<VendorSearchModel>? brandnew}) =
-      _$VdataImpl;
+  const factory _Vdata({required final VSearchpost? posts}) = _$VdataImpl;
 
   factory _Vdata.fromJson(Map<String, dynamic> json) = _$VdataImpl.fromJson;
 
-// required VPosts? Posts,
+// required VVSearchpost? VSearchpost,
   @override
-  List<VendorSearchModel>? get brandnew;
+  VSearchpost? get posts;
 
   /// Create a copy of Vdata
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VdataImplCopyWith<_$VdataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+VSearchpost _$VSearchpostFromJson(Map<String, dynamic> json) {
+  return _VSearchpost.fromJson(json);
+}
+
+/// @nodoc
+mixin _$VSearchpost {
+  int? get current_page => throw _privateConstructorUsedError;
+  List<VendorSearchModel>? get data => throw _privateConstructorUsedError;
+
+  /// Serializes this VSearchpost to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of VSearchpost
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $VSearchpostCopyWith<VSearchpost> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VSearchpostCopyWith<$Res> {
+  factory $VSearchpostCopyWith(
+          VSearchpost value, $Res Function(VSearchpost) then) =
+      _$VSearchpostCopyWithImpl<$Res, VSearchpost>;
+  @useResult
+  $Res call({int? current_page, List<VendorSearchModel>? data});
+}
+
+/// @nodoc
+class _$VSearchpostCopyWithImpl<$Res, $Val extends VSearchpost>
+    implements $VSearchpostCopyWith<$Res> {
+  _$VSearchpostCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of VSearchpost
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? current_page = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_value.copyWith(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<VendorSearchModel>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$VSearchpostImplCopyWith<$Res>
+    implements $VSearchpostCopyWith<$Res> {
+  factory _$$VSearchpostImplCopyWith(
+          _$VSearchpostImpl value, $Res Function(_$VSearchpostImpl) then) =
+      __$$VSearchpostImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int? current_page, List<VendorSearchModel>? data});
+}
+
+/// @nodoc
+class __$$VSearchpostImplCopyWithImpl<$Res>
+    extends _$VSearchpostCopyWithImpl<$Res, _$VSearchpostImpl>
+    implements _$$VSearchpostImplCopyWith<$Res> {
+  __$$VSearchpostImplCopyWithImpl(
+      _$VSearchpostImpl _value, $Res Function(_$VSearchpostImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of VSearchpost
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? current_page = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_$VSearchpostImpl(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<VendorSearchModel>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$VSearchpostImpl implements _VSearchpost {
+  const _$VSearchpostImpl(
+      {this.current_page, final List<VendorSearchModel>? data})
+      : _data = data;
+
+  factory _$VSearchpostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VSearchpostImplFromJson(json);
+
+  @override
+  final int? current_page;
+  final List<VendorSearchModel>? _data;
+  @override
+  List<VendorSearchModel>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'VSearchpost(current_page: $current_page, data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VSearchpostImpl &&
+            (identical(other.current_page, current_page) ||
+                other.current_page == current_page) &&
+            const DeepCollectionEquality().equals(other._data, _data));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, current_page, const DeepCollectionEquality().hash(_data));
+
+  /// Create a copy of VSearchpost
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VSearchpostImplCopyWith<_$VSearchpostImpl> get copyWith =>
+      __$$VSearchpostImplCopyWithImpl<_$VSearchpostImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VSearchpostImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _VSearchpost implements VSearchpost {
+  const factory _VSearchpost(
+      {final int? current_page,
+      final List<VendorSearchModel>? data}) = _$VSearchpostImpl;
+
+  factory _VSearchpost.fromJson(Map<String, dynamic> json) =
+      _$VSearchpostImpl.fromJson;
+
+  @override
+  int? get current_page;
+  @override
+  List<VendorSearchModel>? get data;
+
+  /// Create a copy of VSearchpost
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$VSearchpostImplCopyWith<_$VSearchpostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

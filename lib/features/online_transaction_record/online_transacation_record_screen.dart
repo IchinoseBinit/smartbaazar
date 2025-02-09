@@ -110,7 +110,7 @@ class _OnlineTransactionRecordScreenState
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Center(child: Text('Please login again')),
+            error: (error, stackTrace) => const Center(child: Text('Please login again')),
           ),
         ),
       ),

@@ -364,7 +364,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Center(
+            error: (error, stackTrace) => const Center(
               child: Text('Please login again'),
             ),
           ),
@@ -922,7 +922,7 @@ class _ShippingCitiesFieldState extends ConsumerState<ShippingCitiesField> {
               );
             },
             loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => Text('Please login again'),
+            error: (error, stackTrace) => const Text('Please login again'),
           ),
       ],
     );
@@ -1030,7 +1030,7 @@ class _StreetAddressFieldWidgetState
               );
             },
             loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => Text('Please login again'),
+            error: (error, stackTrace) => const Text('Please login again'),
           ),
       ],
     );

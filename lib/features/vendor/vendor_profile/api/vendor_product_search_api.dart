@@ -10,7 +10,7 @@ part 'vendor_product_search_api.g.dart';
 @riverpod
 Future<VendorProductSearchResponse> searchVendorProduct(
   ref,
-  String id,
+  int id,
   String query,
 ) async {
   final SmartClient client = SmartClient();
@@ -25,15 +25,15 @@ Future<VendorProductSearchResponse> searchVendorProduct(
     // Send the GET request
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      queryParameters: {'query': query},
       parameter: {'query': query},
-      url: "https://smartbazaar.jianjun-rnd.com.np/api/users/vendor/$id",
+      // parameter: {'query': query},
+      url: "https://smartbazaar.jianjun-rnd.com.np/api/users/vendorsearch/$id",
     );
 
     if (response.statusCode == 200) {
       print("Response Data: ${response.data}");
 
-      // Access the correct data part of the response
+      // Access the correct data part of the respo  nse
       final responseData = VendorProductSearchResponse.fromJson(response.data);
 
       print("Parsed Data: $responseData");

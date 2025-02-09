@@ -698,10 +698,10 @@ mixin _$BrandNewModel {
   String? get city => throw _privateConstructorUsedError;
   int? get similarVendorProfileProductCount =>
       throw _privateConstructorUsedError;
-  int? get discounted_price => throw _privateConstructorUsedError;
+  String? get discounted_price => throw _privateConstructorUsedError;
   double? get shortestDistance => throw _privateConstructorUsedError;
   int? get commentcount => throw _privateConstructorUsedError;
-  double? get discount_percentage => throw _privateConstructorUsedError;
+  int? get discount_percentage => throw _privateConstructorUsedError;
   int? get avg_rating => throw _privateConstructorUsedError;
   UserDetailsModel? get userdetails => throw _privateConstructorUsedError;
   List<FezzedSaved>? get savedByLoggedUser =>
@@ -740,10 +740,10 @@ abstract class $BrandNewModelCopyWith<$Res> {
       String? wow,
       String? city,
       int? similarVendorProfileProductCount,
-      int? discounted_price,
+      String? discounted_price,
       double? shortestDistance,
       int? commentcount,
-      double? discount_percentage,
+      int? discount_percentage,
       int? avg_rating,
       UserDetailsModel? userdetails,
       List<FezzedSaved>? savedByLoggedUser});
@@ -859,7 +859,7 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
       discounted_price: freezed == discounted_price
           ? _value.discounted_price
           : discounted_price // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -871,7 +871,7 @@ class _$BrandNewModelCopyWithImpl<$Res, $Val extends BrandNewModel>
       discount_percentage: freezed == discount_percentage
           ? _value.discount_percentage
           : discount_percentage // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as int?,
       avg_rating: freezed == avg_rating
           ? _value.avg_rating
           : avg_rating // ignore: cast_nullable_to_non_nullable
@@ -927,10 +927,10 @@ abstract class _$$BrandNewModelImplCopyWith<$Res>
       String? wow,
       String? city,
       int? similarVendorProfileProductCount,
-      int? discounted_price,
+      String? discounted_price,
       double? shortestDistance,
       int? commentcount,
-      double? discount_percentage,
+      int? discount_percentage,
       int? avg_rating,
       UserDetailsModel? userdetails,
       List<FezzedSaved>? savedByLoggedUser});
@@ -1045,7 +1045,7 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
       discounted_price: freezed == discounted_price
           ? _value.discounted_price
           : discounted_price // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as String?,
       shortestDistance: freezed == shortestDistance
           ? _value.shortestDistance
           : shortestDistance // ignore: cast_nullable_to_non_nullable
@@ -1057,7 +1057,7 @@ class __$$BrandNewModelImplCopyWithImpl<$Res>
       discount_percentage: freezed == discount_percentage
           ? _value.discount_percentage
           : discount_percentage // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as int?,
       avg_rating: freezed == avg_rating
           ? _value.avg_rating
           : avg_rating // ignore: cast_nullable_to_non_nullable
@@ -1139,13 +1139,13 @@ class _$BrandNewModelImpl implements _BrandNewModel {
   @override
   final int? similarVendorProfileProductCount;
   @override
-  final int? discounted_price;
+  final String? discounted_price;
   @override
   final double? shortestDistance;
   @override
   final int? commentcount;
   @override
-  final double? discount_percentage;
+  final int? discount_percentage;
   @override
   final int? avg_rating;
   @override
@@ -1276,10 +1276,10 @@ abstract class _BrandNewModel implements BrandNewModel {
       final String? wow,
       required final String? city,
       required final int? similarVendorProfileProductCount,
-      required final int? discounted_price,
+      required final String? discounted_price,
       required final double? shortestDistance,
       required final int? commentcount,
-      required final double? discount_percentage,
+      required final int? discount_percentage,
       required final int? avg_rating,
       required final UserDetailsModel? userdetails,
       final List<FezzedSaved>? savedByLoggedUser}) = _$BrandNewModelImpl;
@@ -1320,13 +1320,13 @@ abstract class _BrandNewModel implements BrandNewModel {
   @override
   int? get similarVendorProfileProductCount;
   @override
-  int? get discounted_price;
+  String? get discounted_price;
   @override
   double? get shortestDistance;
   @override
   int? get commentcount;
   @override
-  double? get discount_percentage;
+  int? get discount_percentage;
   @override
   int? get avg_rating;
   @override
@@ -2570,6 +2570,7 @@ mixin _$VendorCard {
   String? get membership_id => throw _privateConstructorUsedError;
   String? get membership_title => throw _privateConstructorUsedError;
   String? get membership_color => throw _privateConstructorUsedError;
+  String? get subscribed => throw _privateConstructorUsedError;
 
   /// Serializes this VendorCard to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2601,7 +2602,8 @@ abstract class $VendorCardCopyWith<$Res> {
       String? nearestbranch,
       String? membership_id,
       String? membership_title,
-      String? membership_color});
+      String? membership_color,
+      String? subscribed});
 }
 
 /// @nodoc
@@ -2633,6 +2635,7 @@ class _$VendorCardCopyWithImpl<$Res, $Val extends VendorCard>
     Object? membership_id = freezed,
     Object? membership_title = freezed,
     Object? membership_color = freezed,
+    Object? subscribed = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -2691,6 +2694,10 @@ class _$VendorCardCopyWithImpl<$Res, $Val extends VendorCard>
           ? _value.membership_color
           : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -2717,7 +2724,8 @@ abstract class _$$VendorCardImplCopyWith<$Res>
       String? nearestbranch,
       String? membership_id,
       String? membership_title,
-      String? membership_color});
+      String? membership_color,
+      String? subscribed});
 }
 
 /// @nodoc
@@ -2747,6 +2755,7 @@ class __$$VendorCardImplCopyWithImpl<$Res>
     Object? membership_id = freezed,
     Object? membership_title = freezed,
     Object? membership_color = freezed,
+    Object? subscribed = freezed,
   }) {
     return _then(_$VendorCardImpl(
       name: freezed == name
@@ -2805,6 +2814,10 @@ class __$$VendorCardImplCopyWithImpl<$Res>
           ? _value.membership_color
           : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -2826,7 +2839,8 @@ class _$VendorCardImpl implements _VendorCard {
       this.nearestbranch,
       this.membership_id,
       this.membership_title,
-      this.membership_color});
+      this.membership_color,
+      this.subscribed});
 
   factory _$VendorCardImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorCardImplFromJson(json);
@@ -2859,10 +2873,12 @@ class _$VendorCardImpl implements _VendorCard {
   final String? membership_title;
   @override
   final String? membership_color;
+  @override
+  final String? subscribed;
 
   @override
   String toString() {
-    return 'VendorCard(name: $name, photo: $photo, longitude: $longitude, latitude: $latitude, phone: $phone, profile_url: $profile_url, storycount: $storycount, subscribers: $subscribers, prize_worth: $prize_worth, has_sponsored_gifts: $has_sponsored_gifts, nearestbranch: $nearestbranch, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
+    return 'VendorCard(name: $name, photo: $photo, longitude: $longitude, latitude: $latitude, phone: $phone, profile_url: $profile_url, storycount: $storycount, subscribers: $subscribers, prize_worth: $prize_worth, has_sponsored_gifts: $has_sponsored_gifts, nearestbranch: $nearestbranch, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, subscribed: $subscribed)';
   }
 
   @override
@@ -2894,7 +2910,9 @@ class _$VendorCardImpl implements _VendorCard {
             (identical(other.membership_title, membership_title) ||
                 other.membership_title == membership_title) &&
             (identical(other.membership_color, membership_color) ||
-                other.membership_color == membership_color));
+                other.membership_color == membership_color) &&
+            (identical(other.subscribed, subscribed) ||
+                other.subscribed == subscribed));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2914,7 +2932,8 @@ class _$VendorCardImpl implements _VendorCard {
       nearestbranch,
       membership_id,
       membership_title,
-      membership_color);
+      membership_color,
+      subscribed);
 
   /// Create a copy of VendorCard
   /// with the given fields replaced by the non-null parameter values.
@@ -2947,7 +2966,8 @@ abstract class _VendorCard implements VendorCard {
       final String? nearestbranch,
       final String? membership_id,
       final String? membership_title,
-      final String? membership_color}) = _$VendorCardImpl;
+      final String? membership_color,
+      final String? subscribed}) = _$VendorCardImpl;
 
   factory _VendorCard.fromJson(Map<String, dynamic> json) =
       _$VendorCardImpl.fromJson;
@@ -2980,6 +3000,8 @@ abstract class _VendorCard implements VendorCard {
   String? get membership_title;
   @override
   String? get membership_color;
+  @override
+  String? get subscribed;
 
   /// Create a copy of VendorCard
   /// with the given fields replaced by the non-null parameter values.
@@ -3233,7 +3255,7 @@ Deal _$DealFromJson(Map<String, dynamic> json) {
 mixin _$Deal {
   String? get id => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
-  String? get discount_percentage => throw _privateConstructorUsedError;
+  double? get discount_percentage => throw _privateConstructorUsedError;
 
   /// Serializes this Deal to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -3249,7 +3271,7 @@ abstract class $DealCopyWith<$Res> {
   factory $DealCopyWith(Deal value, $Res Function(Deal) then) =
       _$DealCopyWithImpl<$Res, Deal>;
   @useResult
-  $Res call({String? id, String? image, String? discount_percentage});
+  $Res call({String? id, String? image, double? discount_percentage});
 }
 
 /// @nodoc
@@ -3283,7 +3305,7 @@ class _$DealCopyWithImpl<$Res, $Val extends Deal>
       discount_percentage: freezed == discount_percentage
           ? _value.discount_percentage
           : discount_percentage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ) as $Val);
   }
 }
@@ -3295,7 +3317,7 @@ abstract class _$$DealImplCopyWith<$Res> implements $DealCopyWith<$Res> {
       __$$DealImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String? image, String? discount_percentage});
+  $Res call({String? id, String? image, double? discount_percentage});
 }
 
 /// @nodoc
@@ -3326,7 +3348,7 @@ class __$$DealImplCopyWithImpl<$Res>
       discount_percentage: freezed == discount_percentage
           ? _value.discount_percentage
           : discount_percentage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -3344,7 +3366,7 @@ class _$DealImpl implements _Deal {
   @override
   final String? image;
   @override
-  final String? discount_percentage;
+  final double? discount_percentage;
 
   @override
   String toString() {
@@ -3386,7 +3408,7 @@ abstract class _Deal implements Deal {
   const factory _Deal(
       {final String? id,
       final String? image,
-      final String? discount_percentage}) = _$DealImpl;
+      final double? discount_percentage}) = _$DealImpl;
 
   factory _Deal.fromJson(Map<String, dynamic> json) = _$DealImpl.fromJson;
 
@@ -3395,7 +3417,7 @@ abstract class _Deal implements Deal {
   @override
   String? get image;
   @override
-  String? get discount_percentage;
+  double? get discount_percentage;
 
   /// Create a copy of Deal
   /// with the given fields replaced by the non-null parameter values.

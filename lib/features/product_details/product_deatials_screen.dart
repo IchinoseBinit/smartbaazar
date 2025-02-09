@@ -1015,13 +1015,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     },
                                                     child: buildDealItemWidget(
                                                         data: Deal(
-                                                            discount_percentage: e
-                                                                        .discountPercentage
-                                                                        .toString() ==
-                                                                    'null'
-                                                                ? '0'
-                                                                : e.discountPercentage
-                                                                    .toString(),
+                                                            discount_percentage:e.discountPercentage?? 0,
                                                             id: e.id,
                                                             image: e.image)),
                                                   );
@@ -1041,9 +1035,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                       return buildDealItemWidget(
                                                         data: Deal(
                                                           discount_percentage: e
-                                                                  .discountPercentage
-                                                                  ?.toString() ??
-                                                              '0',
+                                                                  .discountPercentage??
+                                                                 
+                                                              0,
                                                           id: e.id,
                                                           image: e.image,
                                                         ),
@@ -1132,9 +1126,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   .ratings?.avg_rating
                                                   ?.toDouble(),
                                               offer: prod.offers,
-                                              id: int.tryParse(prod
-                                                  .userDetails!.id
-                                                  .toString())!,
+                                             vendorid: prod.userDetails!.id,
                                               vendorname:
                                                   prod.userDetails?.name ?? '',
                                               discounttedPrice:
@@ -1251,7 +1243,7 @@ class SwapablePostCard extends StatelessWidget {
                   isLive: show,
                   image: data.image!,
                   name: data.name!,
-                  caption: data.caption!,
+                  caption: data.caption?? '',
                   photo: data.photo!,
                   subscribers: data.subscribers!.toString(),
                 );

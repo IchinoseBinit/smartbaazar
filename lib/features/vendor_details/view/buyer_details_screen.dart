@@ -512,7 +512,7 @@ class _BuyerAccountDetailsWidgetState
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stackTrace) => Text('Please login again'),
+          error: (error, stackTrace) => const Text('Please login again'),
         );
   }
 }
@@ -618,7 +618,7 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
               );
             },
             loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => Text('Please login again'),
+            error: (error, stackTrace) => const Text('Please login again'),
           ),
       ],
     );

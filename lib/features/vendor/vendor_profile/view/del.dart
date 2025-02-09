@@ -1,27 +1,19 @@
 import 'dart:convert';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/model/product_details_model.dart';
-import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
@@ -173,7 +165,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
           return CustomScrollView(
             slivers: [
-               SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Container(
                   height: 150.h,
                   width: double.infinity,
@@ -761,7 +753,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
               //                       long: prod.userdetails?.longitude,
               //                       productid: prod.id,
               //                       posttype: prod.post_type_id,
-              //                       id: int.tryParse(prod.id),
+              //                       vendorid: prod.user.id,
               //                       membershipid:
               //                           prod.userdetails?.membership_id,
               //                       didcountpercentage:
@@ -813,7 +805,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
               //                 long: prod.userdetails?.longitude,
               //                 productid: prod.id,
               //                 posttype: prod.post_type,
-              //                 id: int.tryParse(prod.id),
+              //                 vendorid: prod.user.id,
               //                 membershipid: prod.userdetails?.membership_id,
               //                 didcountpercentage:
               //                     prod.discount_percentage?.toInt(),
@@ -1021,7 +1013,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
               //           ),
               //         ),
               // )
-              
             ],
           );
         },
