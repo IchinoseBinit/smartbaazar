@@ -321,55 +321,53 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             SizedBox(height: 30.h),
 
             // Expanded widget to display messages
-            Expanded(
-              child: messagesAsyncValue.when(
-                data: (messageList) {
-                  final messages = messageList.result?.data;
+           Expanded(
+  child: messagesAsyncValue.when(
+    data: (messageList) {
+      final messages = messageList.result?.data?.reversed.toList(); // Reverse the message order
 
-                  if (messages == null || messages.isEmpty) {
-                    return const Center(child: Text('No messages available'));
-                  }
+      if (messages == null || messages.isEmpty) {
+        return const Center(child: Text('No messages available'));
+      }
 
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        reverse: true,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: constraints.maxHeight,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListView.builder(
-                                reverse: true,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: messages.length,
-                                itemBuilder: (context, index) {
-                                  final message = messages[index];
-                                  // print("kale $_currentUserId");
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            reverse: true,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListView.builder(
+                    reverse: true,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
 
-                                  return ChatMessageWidget(
-                                    isUserMessage:
-                                        message.userId == SmartClient.userId,
-                                    message: message,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
+                      return ChatMessageWidget(
+                        isUserMessage: message.userId == SmartClient.userId,
+                        message: message,
                       );
                     },
-                  );
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) =>
-                    const Center(child: Text('please login again')),
+                  ),
+                ],
               ),
             ),
+          );
+        },
+      );
+    },
+    loading: () => const Center(child: CircularProgressIndicator()),
+    error: (error, stack) => const Center(child: Text('Please login again')),
+  ),
+),
+
 
             SafeArea(
               child: Container(

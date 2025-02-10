@@ -227,7 +227,6 @@ class CategoryProduct {
           .map((item) => SavedPost.fromJson(item))
           .toList();
     }
-    print("kammo ${savedByLoggedUserList.length}");
 
     return CategoryProduct(
       savedByLoggedUser: savedByLoggedUserList,

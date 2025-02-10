@@ -1697,8 +1697,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   data.spot[0].length, (index) {
                                                 GlobalModel prod =
                                                     data.spot[0][index];
-                                                print(
-                                                    'laka ${prod.discount_percentage} and ${prod.title}');
+
                                                 return ProductDetailWidget(
                                                   savedid: prod.savedByLoggedUser ==
                                                               null ||

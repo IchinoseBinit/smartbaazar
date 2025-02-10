@@ -57,7 +57,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   Future<void> gets() async {
     final a = followvendor("9").then(
       (value) {
-        print("raju ${value['msg']}");
       },
     );
   }
@@ -1794,7 +1793,6 @@ class BigContainer extends StatelessWidget {
                         },
                       );
 
-                      print("raju ${followresp!['msg']}");
                       //  showCustomToast(context, value['msg']!);
                       //   if (value['data'] == '1')
                       //     showDialog(

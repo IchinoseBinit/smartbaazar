@@ -85,12 +85,12 @@ dependencies:
   flutter_glow: ^0.3.2
   hooks_riverpod: ^2.6.1
   widgets_to_image: ^1.0.0
-  image_gallery_saver: ^2.0.3
   # flutter_barcode_scanner: ^2.0.0
 
 
 dependency_overrides:
    custom_lint: 0.7.0
+   image_gallery_saver: 2.0.1
 
 
 dev_dependencies:

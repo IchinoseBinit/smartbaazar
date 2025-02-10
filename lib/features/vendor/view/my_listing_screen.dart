@@ -65,7 +65,6 @@ class MyListingScreen extends ConsumerWidget {
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             itemBuilder: (context, int index) {
                               final product = products[index];
-                              print("lakau ${product.postTypeId}");
                               return MyListinDetails(product: product);
                             },
                             separatorBuilder: (context, index) =>

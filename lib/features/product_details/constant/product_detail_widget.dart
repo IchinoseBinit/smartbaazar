@@ -94,7 +94,6 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? session = pref.getString('session');
     if (session != null) userId = jsonDecode(session)['result']['id'];
-    print("rajuk $userId");
   }
 
   @override

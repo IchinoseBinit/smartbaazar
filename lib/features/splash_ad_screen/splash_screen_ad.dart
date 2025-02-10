@@ -9,6 +9,7 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AdSplashScreen extends ConsumerStatefulWidget {
   const AdSplashScreen({super.key});
+
   @override
   ConsumerState<AdSplashScreen> createState() => _AdSplashScreenState();
 }
@@ -16,22 +17,25 @@ class AdSplashScreen extends ConsumerStatefulWidget {
 class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
   int _countDown = 6;
   Timer? _timer;
-  bool _countdownStarted = false; // Prevent multiple countdowns
+  bool _countdownStarted = false;
+  bool _retryFetching = false; // To control auto-refresh
 
   @override
   void initState() {
     super.initState();
-    _startDotsAnimation(); // Move to initState() to avoid multiple calls
+    _startDotsAnimation();
+    PaintingBinding.instance.imageCache.clear();
+    PaintingBinding.instance.imageCache.maximumSize = 10;
   }
 
-void _startDotsAnimation() {
-  _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
-    if (mounted) setState(() {}); // Trigger rebuild (for UI updates if needed)
-  });
-}
+  void _startDotsAnimation() {
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (mounted) setState(() {});
+    });
+  }
 
   void _startCountdown() {
-    if (_countdownStarted) return; // Prevent multiple timers
+    if (_countdownStarted) return;
     _countdownStarted = true;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -51,7 +55,7 @@ void _startDotsAnimation() {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel timer in dispose to avoid memory leaks
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -59,30 +63,75 @@ void _startDotsAnimation() {
   Widget build(BuildContext context) {
     final adsList = ref.watch(fetchAdsProvider);
 
+    if (adsList.isLoading) {
+      return _loadingScreen();
+    }
+
+    if (adsList.hasError || adsList.value == null || adsList.value!.isEmpty) {
+      // Retry fetching if the first attempt returns null
+      if (!_retryFetching) {
+        _retryFetching = true;
+        Future.delayed(const Duration(seconds: 2), () {
+          ref.refresh(fetchAdsProvider);
+        });
+      }
+
+      return _errorScreen();
+    }
+
+    return _adScreen(adsList.value!.first.image!);
+  }
+
+  Widget _loadingScreen() {
+    return GenericSafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
+        ),
+      ),
+    );
+  }
+
+  Widget _errorScreen() {
+    return GenericSafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("No ads available. Retrying..."),
+              SizedBox(height: 10.h),
+              CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _adScreen(String imageUrl) {
     return GenericSafeArea(
       child: Scaffold(
         body: Stack(
           children: [
             Center(
-              child: adsList.isLoading
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
-                      ],
-                    )
-                  : adsList.value?.isNotEmpty == true
-                      ? CachedNetworkImage(
-                          imageUrl: adsList.value!.first.image!,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Image.asset('assets/images/preloader.gif', width: 150.w, height: 150.h),
-                          errorWidget: (context, url, error) => const Text("Error loading ad"),
-                          imageBuilder: (context, imageProvider) {
-                            _startCountdown(); // Ensure it starts only once
-                            return Image(image: imageProvider, fit: BoxFit.cover);
-                          },
-                        )
-                      : const Text("No ads available"),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Image.asset(
+                  'assets/images/preloader.gif',
+                  width: 150.w,
+                  height: 150.h,
+                ),
+                errorWidget: (context, url, error) {
+                  print("Image Load Error: $error");
+                  return const Text("Image failed to load");
+                },
+                imageBuilder: (context, imageProvider) {
+                  _startCountdown();
+                  return Image(image: imageProvider, fit: BoxFit.cover);
+                },
+              ),
             ),
             Positioned(
               top: 50.h,
@@ -90,7 +139,11 @@ void _startDotsAnimation() {
               child: Text(
                 _countDown > 0 ? "Ad ends\n in $_countDown s" : "Redirecting...",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color.fromARGB(255, 27, 41, 52)),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Color.fromARGB(255, 27, 41, 52),
+                ),
               ),
             ),
           ],

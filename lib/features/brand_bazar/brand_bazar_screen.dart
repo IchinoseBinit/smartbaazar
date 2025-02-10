@@ -1176,7 +1176,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                   data.data!.new_products.length, (index) {
                                 BrandNewModel hot =
                                     data.data!.new_products[index];
-                                print("raju ${hot.discount_percentage == 0.0}");
                                 return Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 5.w),

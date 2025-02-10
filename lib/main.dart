@@ -86,20 +86,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            
-            // home: SplashScreen(),
-            home:const SplashScreen()
-            ),
-            );
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+
+          // home: SplashScreen(),
+          home: ProductDetailScreen(
+            productId: '947',
+          )),
+    );
   }
 }
 
@@ -226,27 +227,27 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
   }
 }
 
-Future<ui.Image> captureWidget(GlobalKey key) async {
-  RenderRepaintBoundary boundary =
-      key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  return image;
-}
+// Future<ui.Image> captureWidget(GlobalKey key) async {
+//   RenderRepaintBoundary boundary =
+//       key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+//   ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+//   return image;
+// }
 
-Future<String> saveImageToGallery(ui.Image image) async {
-  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  Uint8List pngBytes = byteData!.buffer.asUint8List();
+// Future<String> saveImageToGallery(ui.Image image) async {
+//   ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+//   Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-  // Get the temporary directory
-  final directory = await getTemporaryDirectory();
-  final filePath = '${directory.path}/widget_image.png';
-  final file = File(filePath);
+//   // Get the temporary directory
+//   final directory = await getTemporaryDirectory();
+//   final filePath = '${directory.path}/widget_image.png';
+//   final file = File(filePath);
 
-  // Save the image to the file
-  await file.writeAsBytes(pngBytes);
+//   // Save the image to the file
+//   await file.writeAsBytes(pngBytes);
 
-  // Save the image to the gallery
-  await ImageGallerySaver.saveFile(filePath);
+//   // Save the image to the gallery
+//   await ImageGallerySaver.saveFile(filePath);
 
-  return filePath;
-}
+//   return filePath;
+// }

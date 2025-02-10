@@ -10,6 +10,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/api/change_password_api.dart';
 import 'package:smartbazar/features/vendor_details/api/verify_vendor_account_api.dart';
 import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
@@ -26,24 +27,23 @@ class VendroDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
-   String? vendorName;
+  String? vendorName;
   @override
   void initState() {
     super.initState();
     _loadUserName(); // Load user name from SharedPreferences
   }
 
-Future<void> _loadUserName() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? name = prefs.getString('name');
+  Future<void> _loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? name = prefs.getString('name');
 
-  if (name != null) {
-    setState(() {
-      vendorName = name;
-    });
+    if (name != null) {
+      setState(() {
+        vendorName = name;
+      });
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,15 +66,15 @@ Future<void> _loadUserName() async {
                     SizedBox(
                       width: 15.w,
                     ),
-                    if(vendorName!=null)
-                    Text(
-                      '$vendorName',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xff000000),
+                    if (vendorName != null)
+                      Text(
+                        '$vendorName',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xff000000),
+                        ),
                       ),
-                    ),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
@@ -143,6 +143,7 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
   File? taxCertificateFile;
   File? registerCertificateFile;
   bool _isLoading = false;
+  String? _isverified;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -206,6 +207,19 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    checkUserVerified().then(
+      (value) {
+        print("raju ${value?.userVerify}");
+        _isverified = value?.userVerify;
+      },
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -234,6 +248,7 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
             height: 10.h,
           ),
           const Divider(color: Color(0xffADADAD)),
+          if(_isverified=='1')
           Padding(
             padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
             child: Column(
@@ -262,6 +277,11 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
               ],
             ),
           ),
+          if(_isverified=='1')
+          Text("Request pending"),
+          if(_isLoading=='2')
+          Text('Please contact adminstrator'),
+
           const SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 12.w),

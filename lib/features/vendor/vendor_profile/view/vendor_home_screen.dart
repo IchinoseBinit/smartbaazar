@@ -44,6 +44,7 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
+  int? _categorieslength;
   final List<String> categories = [
     "PRODUCTS",
     "Used",
@@ -79,6 +80,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   int? tabsize;
   @override
   void initState() {
+    _categorieslength = categories.length;
     // gets();
     super.initState();
     myselectedindex = 0;
@@ -509,7 +511,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                     width: 750.w,
                                                     child: Row(
                                                       children: List.generate(
-                                                          categories.length,
+                                                          _categorieslength!,
                                                           (index) {
                                                         return GestureDetector(
                                                           onTap: () {
@@ -520,6 +522,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                   "raja $myselectedindex");
                                                               myselectedindex =
                                                                   index;
+
+
                                                               alldata = [
                                                                     data.data
                                                                         ?.brandnew,
@@ -606,10 +610,22 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                               .start,
                                                       children: [
                                                         if (data.data
-                                                                ?.vendor_about !=
-                                                            null)
-                                                           if (data.data!.vendor_about!=null && data.data?.vendor_about!='')
-                                                            Text("Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                                                                    ?.vendor_about !=
+                                                                null &&
+                                                            data
+                                                                    .data
+                                                                    ?.vendor_about
+                                                                    ?.bio
+                                                                    ?.length !=
+                                                                0)
+                                                          if (data.data!
+                                                                      .vendor_about !=
+                                                                  null &&
+                                                              data.data
+                                                                      ?.vendor_about !=
+                                                                  '')
+                                                            Text(
+                                                                "Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
                                                                 style: TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
@@ -1120,23 +1136,23 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               }
 
                               return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: data.live_prizes!.map((card) {
-                return PostCard(
-                  id: card.id,
-                  // subscribers: data.subscribers.toString(),
-                  isLive: false,
-                  image: card.image!,
-                  name: card.name!,
-                  caption: card.caption?? '',
-                  photo: card.photo!,
-                  subscribers: card.subscribers!.toString(),
-                );
-              }).toList(),
-            ),
-          );
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.live_prizes!.map((card) {
+                                    return PostCard(
+                                      id: card.id,
+                                      // subscribers: data.subscribers.toString(),
+                                      isLive: false,
+                                      image: card.image!,
+                                      name: card.name!,
+                                      caption: card.caption ?? '',
+                                      photo: card.photo!,
+                                      subscribers: card.subscribers!.toString(),
+                                    );
+                                  }).toList(),
+                                ),
+                              );
                             },
                             loading: () => SizedBox(
                               height: 260,
@@ -1948,12 +1964,10 @@ class BigContainer extends StatelessWidget {
   final double long, lat;
   final String memebertitle;
   bool issubbed;
-  
 
   // Constructor
   BigContainer(
       {required this.lat,
-
       required this.long,
       required this.id,
       super.key,
@@ -2046,26 +2060,26 @@ class BigContainer extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                      SvgPicture.asset(
-                          id.toString() == '1'
-                              ? productsicon
-                              : id.toString() == '7'
-                                  ? b2bIcon
-                                  : id.toString() == '2'
-                                      ? usedIcon
-                                      : id.toString() == '3'
-                                          ? servicesIcon
-                                          : id.toString() == '4'
-                                              ? jobIcon
-                                              : id.toString() == '5'
-                                                  ? eventIcon
-                                                  : id.toString() == '8'
-                                                      ? grocaryicon
-                                                      : productsicon, // Provide a default icon path if no match is found
-                           width: 50,
+                    SvgPicture.asset(
+                      id.toString() == '1'
+                          ? productsicon
+                          : id.toString() == '7'
+                              ? b2bIcon
+                              : id.toString() == '2'
+                                  ? usedIcon
+                                  : id.toString() == '3'
+                                      ? servicesIcon
+                                      : id.toString() == '4'
+                                          ? jobIcon
+                                          : id.toString() == '5'
+                                              ? eventIcon
+                                              : id.toString() == '8'
+                                                  ? grocaryicon
+                                                  : productsicon, // Provide a default icon path if no match is found
+                      width: 50,
                       height: 50,
                       color: Colors.grey,
-                        ),
+                    ),
                     // Image.asset(
                     //   "assets/icon/domestic_brand.png",
                     //   width: 50,

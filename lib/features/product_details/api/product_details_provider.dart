@@ -20,7 +20,6 @@ Future<PostModel> productDetails(ref, String id) async {
 
 // print("bibash Details: ${response.data['result']['user_details']}");
     // // print("bibash ${PostModel.fromJson(response.data['result']['pictures'])}");
-    print("kammo ${response.data['extra']}");
     print("sola ${PostModel.fromJson(response.data)}");
     return PostModel.fromJson(response.data);
   } catch (e) {
