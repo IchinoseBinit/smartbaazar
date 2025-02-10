@@ -1147,7 +1147,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                 avg_rating: double.tryParse(
                                     hot.avg_rating.toString() ?? '0'),
                                 didcountpercentage: hot.discount_percentage,
-                                vendorid: hot.user!.id,
+                                vendorid: hot.user.id,
                                 membershipid: hot.user.membership_id,
                                 offer: hot.offers,
                                 posttype: hot.post_type_id,
@@ -1226,7 +1226,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               avg_rating:
                                   double.tryParse(hot.avg_rating.toString()),
                               didcountpercentage: hot.discount_percentage,
-                              vendorid: hot.user!.id,
+                              vendorid: hot.user.id,
                               membershipid: hot.user.membership_id,
                               offer: hot.offers,
                               posttype: hot.post_type_id,

@@ -188,7 +188,6 @@ class OrderContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final vendorName = order.vendorName;
     final productTitle = order.postTitle;
 
@@ -215,12 +214,7 @@ class OrderContainer extends StatelessWidget {
               Text(vendorName),
               const Icon(Icons.arrow_forward_ios, color: Color(0xffADADAD)),
               const Spacer(),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () {
-                  // Handle delete action
-                },
-              ),
+              const SizedBox()
             ],
           ),
           SizedBox(height: 10.h),

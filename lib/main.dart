@@ -11,6 +11,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
@@ -21,6 +22,7 @@ import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -36,7 +38,10 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 
 void main() {
   // Set custom HttpOverrides globally
@@ -92,7 +97,8 @@ class _MyAppState extends State<MyApp> {
             ),
             
             // home: SplashScreen(),
-            home:SplashScreen()),
+            home:const SplashScreen()
+            ),
             );
   }
 }
@@ -136,6 +142,8 @@ class SavedPost {
 }
 
 class WidgetToImage extends ConsumerStatefulWidget {
+  const WidgetToImage({super.key});
+
   @override
   _WidgetToImageState createState() => _WidgetToImageState();
 }
@@ -156,7 +164,7 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
   Future<void> _captureAndSaveImage() async {
     try {
       // Ensure the widget is rendered before capturing
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       ui.Image image = await captureWidget(globalKey);
       String filePath = await saveImageToGallery(image);
@@ -169,7 +177,7 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
       ref.read(selectedImageProvider.notifier).state = XFile(filePath);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image saved to gallery!')),
+        const SnackBar(content: Text('Image saved to gallery!')),
       );
     } catch (e) {
       print('Error: $e');
@@ -203,12 +211,12 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
               memebertitle: "Gold Member",
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (_savedImagePath != null)
             Column(
               children: [
-                Text('Saved Image:'),
-                SizedBox(height: 10),
+                const Text('Saved Image:'),
+                const SizedBox(height: 10),
                 Image.file(File(_savedImagePath!), height: 100),
               ],
             ),

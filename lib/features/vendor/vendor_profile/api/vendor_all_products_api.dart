@@ -14,7 +14,7 @@ Future<VendorAllProductsResponse> getVendorAllProducts(
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url:
           'https://smartbazaar.jianjun-rnd.com.np/api/users/vendor_all_products/$vendorid',
     );

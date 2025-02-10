@@ -407,7 +407,7 @@ _$ShopImpl _$$ShopImplFromJson(Map<String, dynamic> json) => _$ShopImpl(
       wow: json['wow'] as String?,
       similarproductcount: (json['similarproductcount'] as num?)?.toInt(),
       comment_count: json['comment_count'] as String?,
-      average_rating: json['average_rating'] as String?,
+      average_rating: (json['average_rating'] as num?)?.toInt(),
       discountPercentage: (json['discount_percentage'] as num?)?.toDouble(),
     );
 

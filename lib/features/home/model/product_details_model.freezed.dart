@@ -4559,7 +4559,7 @@ mixin _$Shop {
   String? get wow => throw _privateConstructorUsedError;
   int? get similarproductcount => throw _privateConstructorUsedError;
   String? get comment_count => throw _privateConstructorUsedError;
-  String? get average_rating => throw _privateConstructorUsedError;
+  int? get average_rating => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_percentage')
   double? get discountPercentage => throw _privateConstructorUsedError;
 
@@ -4586,7 +4586,7 @@ abstract class $ShopCopyWith<$Res> {
       String? wow,
       int? similarproductcount,
       String? comment_count,
-      String? average_rating,
+      int? average_rating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage});
 }
 
@@ -4652,7 +4652,7 @@ class _$ShopCopyWithImpl<$Res, $Val extends Shop>
       average_rating: freezed == average_rating
           ? _value.average_rating
           : average_rating // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       discountPercentage: freezed == discountPercentage
           ? _value.discountPercentage
           : discountPercentage // ignore: cast_nullable_to_non_nullable
@@ -4677,7 +4677,7 @@ abstract class _$$ShopImplCopyWith<$Res> implements $ShopCopyWith<$Res> {
       String? wow,
       int? similarproductcount,
       String? comment_count,
-      String? average_rating,
+      int? average_rating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage});
 }
 
@@ -4740,7 +4740,7 @@ class __$$ShopImplCopyWithImpl<$Res>
       average_rating: freezed == average_rating
           ? _value.average_rating
           : average_rating // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       discountPercentage: freezed == discountPercentage
           ? _value.discountPercentage
           : discountPercentage // ignore: cast_nullable_to_non_nullable
@@ -4784,7 +4784,7 @@ class _$ShopImpl implements _Shop {
   @override
   final String? comment_count;
   @override
-  final String? average_rating;
+  final int? average_rating;
   @override
   @JsonKey(name: 'discount_percentage')
   final double? discountPercentage;
@@ -4858,7 +4858,7 @@ abstract class _Shop implements Shop {
       required final String? wow,
       required final int? similarproductcount,
       required final String? comment_count,
-      required final String? average_rating,
+      required final int? average_rating,
       @JsonKey(name: 'discount_percentage')
       required final double? discountPercentage}) = _$ShopImpl;
 
@@ -4881,7 +4881,7 @@ abstract class _Shop implements Shop {
   @override
   String? get comment_count;
   @override
-  String? get average_rating;
+  int? get average_rating;
   @override
   @JsonKey(name: 'discount_percentage')
   double? get discountPercentage;

@@ -111,7 +111,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       (value) {
         _isverified = value?.userVerify == '1' ? true : false;
         if (_isverified!) _givecard = value;
-        print('babu ${_isverified}');
+        print('babu $_isverified');
       },
     );
     super.initState();
@@ -125,7 +125,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Future<void> _captureAndSendImage() async {
     try {
-      await Future.delayed(Duration(seconds: 1)); // Ensure rendering completion
+      await Future.delayed(const Duration(seconds: 1)); // Ensure rendering completion
 
       if (_widgetKey.currentContext == null) {
         print('Vendor Card Widget is not yet rendered.');
@@ -161,7 +161,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ref.read(selectedImageProvider.notifier).state = XFile(filePath);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Card selected !')),
+        const SnackBar(content: Text('Card selected !')),
       );
     } catch (e) {
       print('Error capturing image: $e');
@@ -269,8 +269,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(_currentUserId!=null)
-    ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!))!.whenData(
+    if(_currentUserId!=null) {
+      ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!)).whenData(
       (value) {
         print("kalu $value");
         _card = BigContainer(
@@ -295,6 +295,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             memebertitle: value.data!.vendor_card!.membership_title!);
       },
     );
+    }
 
     // Fetch messages based on threadId using Riverpod provider
     final messagesAsyncValue =
@@ -366,7 +367,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) =>
-                    Center(child: Text('please login again')),
+                    const Center(child: Text('please login again')),
               ),
             ),
 
@@ -442,7 +443,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                 builder: (BuildContext context) {
                                   return Dialog(
                                     backgroundColor: Colors.transparent,
-                                    insetPadding: EdgeInsets.all(10),
+                                    insetPadding: const EdgeInsets.all(10),
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: <Widget>[
@@ -454,7 +455,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                             child: RepaintBoundary(
                                               key: _widgetKey,
                                               child: _card ??
-                                                  SizedBox
+                                                  const SizedBox
                                                       .shrink(), // Ensure _card is not null
                                             ),
                                           ),
@@ -466,7 +467,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                               );
 
                               // Wait for 1 second before closing the dialog
-                              Future.delayed(Duration(seconds: 1), () {
+                              Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.of(context)
                                     .pop(); // Close the dialog after 1 second
                               });

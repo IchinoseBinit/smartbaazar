@@ -242,7 +242,7 @@ class Shop with _$Shop {
     required String? wow,
     required int? similarproductcount,
     required String? comment_count,
-    required String? average_rating,
+    required int? average_rating,
 
     @JsonKey(name: 'discount_percentage') required double? discountPercentage,
   }) = _Shop;

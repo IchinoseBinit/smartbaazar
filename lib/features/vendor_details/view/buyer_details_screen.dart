@@ -32,15 +32,13 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
     getuser(); // Load user name from SharedPreferences
   }
 
-
- Future<void> getuser() async {
-  SharedPreferences prfs = await SharedPreferences.getInstance();
-  setState(() {
-    vendorName = prfs.getString("name");
-  });
-  print("ramu $vendorName");
-}
-
+  Future<void> getuser() async {
+    SharedPreferences prfs = await SharedPreferences.getInstance();
+    setState(() {
+      vendorName = prfs.getString("name");
+    });
+    print("ramu $vendorName");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,9 +177,8 @@ class _BuyerAccountDetailsWidgetState
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userId = prefs.getString('userId');
-    });
+    print("babu ${prefs.getString('userId')}");
+   userId = prefs.getString('userId');
   }
 
   @override
@@ -231,7 +228,6 @@ class _BuyerAccountDetailsWidgetState
     try {
       final updateBuyerUserDetail =
           await ref.read(updateBuyerUserDetailsProvider(
-            
         data.name ?? '',
         data.phone ?? '',
         data.username ?? '',

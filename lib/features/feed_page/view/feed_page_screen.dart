@@ -127,7 +127,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       debugPrint("Search query: $query");
 
       setState(() {
-        _isSectionsVisible = false;
+        // _isSectionsVisible = false;
         _showSearchProductModels = query.isNotEmpty;
       });
 
@@ -135,15 +135,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     });
 
     _scrollController.addListener(_handleScroll);
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose(); // Dispose the controller
-    _scrollController.dispose();
-    _debouncer.close(); // Close the debouncer if applicable
-    _pageController.dispose();
-    super.dispose();
   }
 
   void _handleScroll() {
@@ -196,6 +187,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     {'label': 'Grocery', 'id': 7},
   ];
   final int _currentIndex = 0;
+
+  @override
+  void dispose() {
+    _searchController.dispose(); // Dispose the controller
+    _scrollController.dispose();
+    _debouncer.close(); // Close the debouncer if applicable
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +334,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                               _onSearchFocusChanged(
                                                   _searchController
                                                       .text.isNotEmpty);
-                                              _isSectionsVisible = true;
+                                              if (_searchController
+                                                      .text.isNotEmpty) {
+                                                setState(() {
+                                                  _isSectionsVisible = true;
+                                                });
+                                              }
                                             },
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
@@ -379,6 +384,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                                           .text,
                                                     ),
                                                   ));
+                                              _isSectionsVisible = true;
                                             }
                                           },
                                           child: Container(
@@ -669,7 +675,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 return const SizedBox();
                               },
                               error: (error, stack) {
-                                return const Center(child: Text("PLease login again"));
+                                return const Center(
+                                    child: Text("PLease login again"));
                               },
                             ),
                           ),
@@ -1130,150 +1137,153 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         children: [
           SizedBox(height: 5.h),
           asyncFollowingStoryContent.when(
-            data: (feedStoryData) {
-              final feedStoryContent = feedStoryData.data?.feedstory;
+              data: (feedStoryData) {
+                final feedStoryContent = feedStoryData.data?.feedstory;
 
-              return SizedBox(
-                height:
-                    feedStoryContent == null || feedStoryContent.posts == null
-                        ? 20.h
-                        : 95.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (feedStoryContent != null &&
-                        feedStoryContent.posts != null)
-                      Expanded(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: feedStoryContent.posts!.length,
-                          itemBuilder: (context, index) {
-                            final Post story = feedStoryContent.posts![index];
+                return SizedBox(
+                  height:
+                      feedStoryContent == null || feedStoryContent.posts == null
+                          ? 20.h
+                          : 95.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (feedStoryContent != null &&
+                          feedStoryContent.posts != null)
+                        Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: feedStoryContent.posts!.length,
+                            itemBuilder: (context, index) {
+                              final Post story = feedStoryContent.posts![index];
 
-                            return FeedStoryAddWidget(
-                              
-                              index: index,
-                              vendorName: story.vendorName ?? "Unknown Vendor",
-                              vendorImage: story.vendorImage ??
-                                  "https://example.com/default-image.png",
-                              storyCount: story.storyCount ?? 0,
-                              showGift: story.hasSponsoredGifts ?? false,
-                              feedStoryContent: feedStoryContent,
-                              userId: story.vendorId ?? "",
-                            );
-                          },
-                        ),
-                      )
-                    else
-                      const Center(
-                        child: Text("No stories available"),
-                      ),
-                  ],
-                ),
-              );
-            },
-            loading: () => SizedBox(
-              height: 20.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: 80,
-                              height: 80,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                            ),
+                              return FeedStoryAddWidget(
+                                index: index,
+                                vendorName:
+                                    story.vendorName ?? "Unknown Vendor",
+                                vendorImage: story.vendorImage ??
+                                    "https://example.com/default-image.png",
+                                storyCount: story.storyCount ?? 0,
+                                showGift: story.hasSponsoredGifts ?? false,
+                                feedStoryContent: feedStoryContent,
+                                userId: story.vendorId ?? "",
+                              );
+                            },
                           ),
-                        );
-                      },
+                        )
+                      else
+                        const Center(
+                          child: Text("No stories available"),
+                        ),
+                    ],
+                  ),
+                );
+              },
+              loading: () => SizedBox(
+                    height: 20.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            error: (error, stack) =>  const Center(child: Text("please login"))
-          ),
+              error: (error, stack) =>
+                  const Center(child: Text("please login"))),
           asyncFollowingFeedContent.when(
-            data: (feedData) {
-              if (feedData.data != null && feedData.data!.feedPost != null) {
-                final feedItems = feedData.data!.feedPost!;
-                return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: feedItems.length,
-                    itemBuilder: (context, index) {
-                      final feedItem = feedItems[index];
-                      final userDetails = feedItem.userDetail;
-                      final interested = feedItem.interested;
-                      final feedDetail = feedItem.feedDetail;
+              data: (feedData) {
+                if (feedData.data != null && feedData.data!.feedPost != null) {
+                  final feedItems = feedData.data!.feedPost!;
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: feedItems.length,
+                      itemBuilder: (context, index) {
+                        final feedItem = feedItems[index];
+                        final userDetails = feedItem.userDetail;
+                        final interested = feedItem.interested;
+                        final feedDetail = feedItem.feedDetail;
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FeedContainer(
-                              isLiked: feedItem.wowstatus,
-                              hassttory:
-                                  userDetails!.storyCount! > 0 ? true : false,
-                              productCount: userDetails.productCount.toString(),
-                              suscribers: userDetails.subscribers.toString(),
-                              vendorName: userDetails.vendorName!,
-                              vendorImage: userDetails.vendorImage!,
-                              livePrize: userDetails.livePrize.toString(),
-                              distance:
-                                  userDetails.distance?.toStringAsFixed(0),
-                              interested: interested?.interested?.toString(),
-                              engagement: interested?.engagement?.toString(),
-                              views: interested?.views,
-                              feedDetailImage: feedDetail!.image!,
-                              membershipTitle:
-                                  userDetails.membershipTitle ?? '',
-                              membershipId: userDetails.membershipId ?? '',
-                              showGift: userDetails.hasSponsoredGifts ?? false,
-                              userId: feedItem.userId ?? '',
-                              feedId: feedItem.id ?? '',
-                            ),
-                            PromoCard(
-                              products: feedItem.products!
-                                  .map((product) => {
-                                        "imagePath": product.image ??
-                                            "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
-                                        "price": product.price ?? "N/A",
-                                        "id": feedItem.id ?? "",
-                                      })
-                                  .toList(),
-                              captionTitle: '${feedItem.captionTitle}',
-                              caption: feedItem.caption ?? '',
-                              offerText: feedItem.offers ?? 'Special Offer!',
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-              } else {
-                return const Center(child: Text('No feed items available'));
-              }
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) =>  const Center(child: Text("please login"))
-          ),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FeedContainer(
+                                isLiked: feedItem.wowstatus,
+                                hassttory:
+                                    userDetails!.storyCount! > 0 ? true : false,
+                                productCount:
+                                    userDetails.productCount.toString(),
+                                suscribers: userDetails.subscribers.toString(),
+                                vendorName: userDetails.vendorName!,
+                                vendorImage: userDetails.vendorImage!,
+                                livePrize: userDetails.livePrize.toString(),
+                                distance:
+                                    userDetails.distance?.toStringAsFixed(0),
+                                interested: interested?.interested?.toString(),
+                                engagement: interested?.engagement?.toString(),
+                                views: interested?.views,
+                                feedDetailImage: feedDetail!.image!,
+                                membershipTitle:
+                                    userDetails.membershipTitle ?? '',
+                                membershipId: userDetails.membershipId ?? '',
+                                showGift:
+                                    userDetails.hasSponsoredGifts ?? false,
+                                userId: feedItem.userId ?? '',
+                                feedId: feedItem.id ?? '',
+                              ),
+                              PromoCard(
+                                products: feedItem.products!
+                                    .map((product) => {
+                                          "imagePath": product.image ??
+                                              "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                                          "price": product.price ?? "N/A",
+                                          "id": feedItem.id ?? "",
+                                        })
+                                    .toList(),
+                                captionTitle: '${feedItem.captionTitle}',
+                                caption: feedItem.caption ?? '',
+                                offerText: feedItem.offers ?? 'Special Offer!',
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                } else {
+                  return const Center(child: Text('No feed items available'));
+                }
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  const Center(child: Text("please login"))),
           SizedBox(height: 70.h),
         ],
       ),
@@ -1357,75 +1367,76 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             ),
           ),
           asyncForYouFeedContent.when(
-            data: (feedData) {
-              if (feedData.data != null && feedData.data!.feedPost != null) {
-                final feedItems = feedData.data!.feedPost!;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: feedItems.length,
-                  itemBuilder: (context, index) {
-                    final feedItem = feedItems[index];
-                    final userDetails = feedItem.userDetail;
-                    final interested = feedItem.interested;
-                    final feedDetail = feedItem.feedDetail;
-                    // print("kala ${feedItem.wow_status}");
+              data: (feedData) {
+                if (feedData.data != null && feedData.data!.feedPost != null) {
+                  final feedItems = feedData.data!.feedPost!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: feedItems.length,
+                    itemBuilder: (context, index) {
+                      final feedItem = feedItems[index];
+                      final userDetails = feedItem.userDetail;
+                      final interested = feedItem.interested;
+                      final feedDetail = feedItem.feedDetail;
+                      // print("kala ${feedItem.wow_status}");
 
-                    // return _buildFeedItem(feedItems[index]);
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2.0,
-                        //  horizontal: 16,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FeedContainer(
-                            isLiked: feedItem.wow_status,
-                            hassttory:
-                                userDetails!.storyCount! > 0 ? true : false,
-                            productCount: userDetails.productCount.toString(),
-                            suscribers: userDetails.subscribers.toString(),
-                            vendorName: userDetails.vendorName!,
-                            vendorImage: userDetails.vendorImage!,
-                            livePrize: userDetails.livePrize.toString(),
-                            distance: userDetails.distance?.toStringAsFixed(0),
-                            interested: interested?.interested?.toString(),
-                            engagement: interested?.engagement?.toString(),
-                            views: interested?.views,
-                            feedDetailImage: feedDetail!.image!,
-                            membershipTitle: userDetails.membershipTitle,
-                            membershipId: userDetails.membershipId ?? '',
-                            showGift: userDetails.hasSponsoredGifts ?? false,
-                            userId: feedItem.userId ?? '',
-                            feedId: feedItem.id ?? '',
-                            //feedDetail: feedItem.feedDetail,
-                          ),
-                          PromoCard(
-                            products: feedItem.products!
-                                .map((product) => {
-                                      "imagePath": product.image ??
-                                          "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
-                                      "price": product.price ?? "N/A",
-                                      "id": feedItem.id ?? "",
-                                    })
-                                .toList(),
-                            captionTitle: '${feedItem.captionTitle}',
-                            caption: feedItem.caption ?? '',
-                            offerText: feedItem.offers ?? 'Special Offer!',
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              } else {
-                return const Center(child: Text('No feed items available'));
-              }
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) =>  const Center(child: Text("please login"))
-          ),
+                      // return _buildFeedItem(feedItems[index]);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 2.0,
+                          //  horizontal: 16,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FeedContainer(
+                              isLiked: feedItem.wow_status,
+                              hassttory:
+                                  userDetails!.storyCount! > 0 ? true : false,
+                              productCount: userDetails.productCount.toString(),
+                              suscribers: userDetails.subscribers.toString(),
+                              vendorName: userDetails.vendorName!,
+                              vendorImage: userDetails.vendorImage!,
+                              livePrize: userDetails.livePrize.toString(),
+                              distance:
+                                  userDetails.distance?.toStringAsFixed(0),
+                              interested: interested?.interested?.toString(),
+                              engagement: interested?.engagement?.toString(),
+                              views: interested?.views,
+                              feedDetailImage: feedDetail!.image!,
+                              membershipTitle: userDetails.membershipTitle,
+                              membershipId: userDetails.membershipId ?? '',
+                              showGift: userDetails.hasSponsoredGifts ?? false,
+                              userId: feedItem.userId ?? '',
+                              feedId: feedItem.id ?? '',
+                              //feedDetail: feedItem.feedDetail,
+                            ),
+                            PromoCard(
+                              products: feedItem.products!
+                                  .map((product) => {
+                                        "imagePath": product.image ??
+                                            "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                                        "price": product.price ?? "N/A",
+                                        "id": feedItem.id ?? "",
+                                      })
+                                  .toList(),
+                              captionTitle: '${feedItem.captionTitle}',
+                              caption: feedItem.caption ?? '',
+                              offerText: feedItem.offers ?? 'Special Offer!',
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('No feed items available'));
+                }
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  const Center(child: Text("please login"))),
           const SizedBox.shrink()
         ],
       ),

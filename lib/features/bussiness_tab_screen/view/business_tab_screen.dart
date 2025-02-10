@@ -137,13 +137,13 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
 
-        Future<void> refresh()async{
-          ref.refresh(getSearchResponseProvider(
-        _query, selectedValue ?? 'price-low-to-high'));
-   
-        }
+    Future<void> refresh() async {
+      ref.refresh(getSearchResponseProvider(
+          _query, selectedValue ?? 'price-low-to-high'));
+    }
 
     return Scaffold(
+      extendBody: true,
       // bottomNavigationBar: BottomNavigationScreen(),
       body: SingleChildScrollView(
         primary: false,
@@ -152,6 +152,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
             minHeight: MediaQuery.of(context).size.height,
           ),
           child: IntrinsicHeight(
+            
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +348,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   ),
                                 ],
                               ),
-
+        
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -381,7 +382,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   );
                                 }),
                               ),
-
+        
                               SizedBox(
                                 height: 80.h,
                                 child: PageView.builder(
@@ -396,7 +397,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   },
                                   itemBuilder: (context, index) {
                                     Map<String, dynamic> data = items[index];
-
+        
                                     // Highlight only when index == 4
                                     bool isActive = index == 1;
                                     return GestureDetector(
@@ -471,7 +472,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   },
                                 ),
                               ),
-
+        
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                                 child: const Divider(
@@ -590,7 +591,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                 return const SizedBox();
                               },
                               error: (error, stack) {
-                                return const Center(child: Text("please login"));
+                                return const Center(
+                                    child: Text("please login"));
                               },
                             ),
                           ),
@@ -854,86 +856,129 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             ),
                                           )
                                         : SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection:
-                                  Axis.vertical, // Scroll vertically if needed
-                              child: Wrap(
-                                spacing: 5.w, // Horizontal space between items
-                                runSpacing: 15.h, // Vertical space between rows
-                                children: List.generate(
-                                  data.brandNew!.length,
-                                  (index) {
-                                    GlobalModel res = data.brandNew![index];
-
-                                    return SizedBox(
-                                      width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              30.w) /
-                                          2, // Dynamically adjust to fit two items per row
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        shadowColor: const Color(0xff3D215F)
-                                            .withOpacity(0.5),
-                                        elevation: 9,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: AllProductDetailWidget(
-                                           savedid: res.savedByLoggedUser == null ||
-                                          res.savedByLoggedUser!.isEmpty
-                                      ? []
-                                      : res.savedByLoggedUser?.map((e) => SavedPost(id: e.id, userId: e.userId, postId: e.postId, createdAt: e.createdAt, updatedAt: e.updatedAt) ,).toList(),
-                                         
-                                                                        onRefresh: () {
-                                    refresh();
-                                                                        },
-                                          productid: res.id,
-                                          lat: res.user[0].latitude,
-                                          long: res.user[0].longitude,
-                                          membershipid:
-                                              res.user[0].membership_id,
-                                          posttype: res.post_type_id,
-                                          didcountpercentage:
-                                              res.discount_percentage,
-                                          id: int.tryParse(
-                                              res.user[0].user_id),
-                                          shortestDistance: res
-                                              .user[0].shortestDistance,
-                                          issponsored:
-                                              res.user[0].sponsored ??
-                                                  false,
-                                          distance: res.user[0].shortestDistance,
-                                          wow: res.wow.toString(),
-                                          discounttedPrice:
-                                              res.discont,
-                                          comment:
-                                              res.commentnum.toString(),
-                                          avg_rating:
-                                              res.avg_rating?.toDouble() ??
-                                                  0.0,
-                                          offer: res.offers,
-                                          productImage: res.imageUrl,
-                                          Vimage: res.user[0].photo,
-                                          vendorname: res.user[0].name,
-                                          title: res.title,
-                                          price: res.price,
-                                          similarproductCount:
-                                              res.similarproductCount,
-                                          membershipColor:
-                                              res.user[0].membership_color,
-                                          membershipTitle:
-                                              res.user[0].membership_title,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
+                                            physics:
+                                                const BouncingScrollPhysics(),
+                                            scrollDirection: Axis
+                                                .vertical, // Scroll vertically if needed
+                                            child: Wrap(
+                                              spacing: 5
+                                                  .w, // Horizontal space between items
+                                              runSpacing: 15
+                                                  .h, // Vertical space between rows
+                                              children: List.generate(
+                                                data.brandNew!.length,
+                                                (index) {
+                                                  GlobalModel res =
+                                                      data.brandNew![index];
+                                                  
+                                                  return Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                30.w) /
+                                                            2, // Dynamically adjust to fit two items per row
+                                                        child: Card(
+                                                          clipBehavior:
+                                                              Clip.antiAlias,
+                                                          shadowColor: const Color(
+                                                                  0xff3D215F)
+                                                              .withOpacity(0.5),
+                                                          elevation: 9,
+                                                          margin:
+                                                              EdgeInsets.symmetric(
+                                                                  horizontal: 5.w),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(15.0),
+                                                          ),
+                                                          child:
+                                                              AllProductDetailWidget(
+                                                            savedid: res.savedByLoggedUser ==
+                                                                        null ||
+                                                                    res.savedByLoggedUser!
+                                                                        .isEmpty
+                                                                ? []
+                                                                : res
+                                                                    .savedByLoggedUser
+                                                                    ?.map(
+                                                                      (e) => SavedPost(
+                                                                          id: e.id,
+                                                                          userId: e
+                                                                              .userId,
+                                                                          postId: e
+                                                                              .postId,
+                                                                          createdAt: e
+                                                                              .createdAt,
+                                                                          updatedAt:
+                                                                              e.updatedAt),
+                                                                    )
+                                                                    .toList(),
+                                                            onRefresh: () {
+                                                              refresh();
+                                                            },
+                                                            productid: res.id,
+                                                            lat: res
+                                                                .user[0].latitude,
+                                                            long: res
+                                                                .user[0].longitude,
+                                                            membershipid: res
+                                                                .user[0]
+                                                                .membership_id,
+                                                            posttype:
+                                                                res.post_type_id,
+                                                            didcountpercentage: res
+                                                                .discount_percentage,
+                                                            id: int.tryParse(res
+                                                                .user[0].user_id),
+                                                            shortestDistance: res
+                                                                .user[0]
+                                                                .shortestDistance,
+                                                            issponsored: res.user[0]
+                                                                    .sponsored ??
+                                                                false,
+                                                            distance: res.user[0]
+                                                                .shortestDistance,
+                                                            wow: res.wow.toString(),
+                                                            discounttedPrice:
+                                                                res.discont,
+                                                            comment: res.commentnum
+                                                                .toString(),
+                                                            avg_rating: res
+                                                                    .avg_rating
+                                                                    ?.toDouble() ??
+                                                                0.0,
+                                                            offer: res.offers,
+                                                            productImage:
+                                                                res.imageUrl,
+                                                            Vimage:
+                                                                res.user[0].photo,
+                                                            vendorname:
+                                                                res.user[0].name,
+                                                            title: res.title,
+                                                            price: res.price,
+                                                            similarproductCount: res
+                                                                .similarproductCount,
+                                                            membershipColor: res
+                                                                .user[0]
+                                                                .membership_color,
+                                                            membershipTitle: res
+                                                                .user[0]
+                                                                .membership_title,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 30.h,),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Column(
@@ -996,7 +1041,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                       (index) {
                                                         GlobalModel res =
                                                             data.used![index];
-
+        
                                                         return SizedBox(
                                                           width: (MediaQuery.of(
                                                                           context)
@@ -1005,12 +1050,13 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                                   7.w) /
                                                               2, // Dynamically adjust to fit two items per row
                                                           child: Card(
-                                                            clipBehavior: Clip
-                                                                .antiAlias,
-                                                            shadowColor: const Color(
-                                                                    0xff3D215F)
-                                                                .withOpacity(
-                                                                    0.5),
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
                                                             elevation: 9,
                                                             margin: EdgeInsets
                                                                 .symmetric(
@@ -1025,37 +1071,39 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                             ),
                                                             child:
                                                                 AllProductDetailWidget(
-                                                                  savedid: res.savedByLoggedUser == null ||
-                                                                                                    res.savedByLoggedUser!.isEmpty
-                                                                                                ? []
-                                                                                                : res.savedByLoggedUser
-                                                                                                    ?.map(
-                                                                                                      (e) => SavedPost(
-                                                                                                          id: e.id,
-                                                                                                          userId: e.userId,
-                                                                                                          postId: e.postId,
-                                                                                                          createdAt: e.createdAt,
-                                                                                                          updatedAt: e.updatedAt),
-                                                                                                    )
-                                                                                                    .toList(),
-                                                                                            onRefresh: () {
-                                                                                              refresh();
-                                                                                            },
+                                                              savedid: res.savedByLoggedUser ==
+                                                                          null ||
+                                                                      res.savedByLoggedUser!
+                                                                          .isEmpty
+                                                                  ? []
+                                                                  : res
+                                                                      .savedByLoggedUser
+                                                                      ?.map(
+                                                                        (e) => SavedPost(
+                                                                            id: e
+                                                                                .id,
+                                                                            userId:
+                                                                                e.userId,
+                                                                            postId: e.postId,
+                                                                            createdAt: e.createdAt,
+                                                                            updatedAt: e.updatedAt),
+                                                                      )
+                                                                      .toList(),
+                                                              onRefresh: () {
+                                                                refresh();
+                                                              },
                                                               lat: res.user[0]
                                                                   .latitude,
-                                                              long: res
-                                                                  .user[0]
+                                                              long: res.user[0]
                                                                   .longitude,
-                                                              productid:
-                                                                  res.id,
+                                                              productid: res.id,
                                                               posttype: res
                                                                   .posttypename,
                                                               membershipid: res
                                                                   .user[0]
                                                                   .membership_id,
-                                                              id: int
-                                                                  .tryParse(
-                                                                      res.id),
+                                                              id: int.tryParse(
+                                                                  res.id),
                                                               didcountpercentage:
                                                                   res.discount_percentage,
                                                               avg_rating: res
@@ -1064,8 +1112,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                                   .commentnum,
                                                               discounttedPrice:
                                                                   res.discont,
-                                                              offer:
-                                                                  res.offers,
+                                                              offer: res.offers,
                                                               shortestDistance:
                                                                   res.shortestDistance,
                                                               wow: res.wow,
@@ -1079,12 +1126,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                                   .user[0]
                                                                   .photo!,
                                                               vendorname: res
-                                                                  .user[0]
-                                                                  .name,
-                                                              title:
-                                                                  res.title,
-                                                              price:
-                                                                  res.price,
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
                                                               similarproductCount:
                                                                   res.similarproductCount,
                                                               membershipColor: res
@@ -1125,7 +1169,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     (index) {
                                                       GlobalModel res =
                                                           data.services![index];
-
+                                                  
                                                       return SizedBox(
                                                         width: (MediaQuery.of(
                                                                         context)
@@ -1155,22 +1199,30 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                           ),
                                                           child:
                                                               AllProductDetailWidget(
-                                                                savedid: res.savedByLoggedUser == null ||
-                                                                                                  res.savedByLoggedUser!.isEmpty
-                                                                                              ? []
-                                                                                              : res.savedByLoggedUser
-                                                                                                  ?.map(
-                                                                                                    (e) => SavedPost(
-                                                                                                        id: e.id,
-                                                                                                        userId: e.userId,
-                                                                                                        postId: e.postId,
-                                                                                                        createdAt: e.createdAt,
-                                                                                                        updatedAt: e.updatedAt),
-                                                                                                  )
-                                                                                                  .toList(),
-                                                                                          onRefresh: () {
-                                                                                            refresh();
-                                                                                          },
+                                                            savedid: res.savedByLoggedUser ==
+                                                                        null ||
+                                                                    res.savedByLoggedUser!
+                                                                        .isEmpty
+                                                                ? []
+                                                                : res
+                                                                    .savedByLoggedUser
+                                                                    ?.map(
+                                                                      (e) => SavedPost(
+                                                                          id: e
+                                                                              .id,
+                                                                          userId: e
+                                                                              .userId,
+                                                                          postId: e
+                                                                              .postId,
+                                                                          createdAt: e
+                                                                              .createdAt,
+                                                                          updatedAt:
+                                                                              e.updatedAt),
+                                                                    )
+                                                                    .toList(),
+                                                            onRefresh: () {
+                                                              refresh();
+                                                            },
                                                             productid: res.id,
                                                             lat: res.user[0]
                                                                 .latitude,
@@ -1186,25 +1238,25 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                                 .shortestDistance,
                                                             posttype: res
                                                                 .post_type_id,
-                                                            avg_rating: res
-                                                                .avg_rating,
-                                                            comment: res
-                                                                .commentnum,
+                                                            avg_rating:
+                                                                res.avg_rating,
+                                                            comment:
+                                                                res.commentnum,
                                                             discounttedPrice:
                                                                 res.discont,
                                                             offer: res.offers,
                                                             wow: res.wow,
-                                                            id: int.tryParse(
-                                                                res.user.first
-                                                                    .user_id),
+                                                            id: int.tryParse(res
+                                                                .user
+                                                                .first
+                                                                .user_id),
                                                             issponsored: res
                                                                 .user[0]
                                                                 .sponsored!,
                                                             productImage:
                                                                 res.imageUrl,
                                                             Vimage: res
-                                                                .user[0]
-                                                                .photo!,
+                                                                .user[0].photo!,
                                                             vendorname: res
                                                                 .user[0].name,
                                                             title: res.title,
@@ -1228,11 +1280,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                           ),
                                   ]),
                                 ),
-                                const SizedBox(
-                                  height: 5,
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                               ],
                             )),
+                            SizedBox(height: 30.h,),
                       ],
                     );
                   },
@@ -1242,6 +1295,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                 ),
+              SizedBox(height: 30.h,),
               ],
             ),
           ),

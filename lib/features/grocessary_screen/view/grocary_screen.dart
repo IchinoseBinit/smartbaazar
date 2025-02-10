@@ -1187,7 +1187,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     membershipid: hot.user.membership_id,
                                     posttype: hot.post_type_id,
                                     shortestDistance: hot.user.shortestDistance,
-                                    vendorid: hot.user!.id,
+                                    vendorid: hot.user.id,
                                     offer: hot.offers,
                                     didcountpercentage: hot.discount_percentage,
                                     avg_rating: hot.avg_rating?.toDouble(),

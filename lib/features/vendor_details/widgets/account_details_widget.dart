@@ -306,12 +306,15 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                  'Gender',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Text(
+                                    'Gender',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                                 Radio<String>(

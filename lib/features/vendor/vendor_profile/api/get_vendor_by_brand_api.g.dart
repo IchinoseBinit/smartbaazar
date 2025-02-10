@@ -7,7 +7,7 @@ part of 'get_vendor_by_brand_api.dart';
 // **************************************************************************
 
 String _$getvendorbybrandnameHash() =>
-    r'df4402371eae0ac25ba409f72158783a9ee40883';
+    r'2c3ad2c8404741e86b925b55e6d8b325c4c668d2';
 
 /// Copied from Dart SDK
 class _SystemHash {

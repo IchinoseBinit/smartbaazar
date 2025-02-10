@@ -75,7 +75,7 @@ class MyListingScreen extends ConsumerWidget {
                         );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(child: Text('please login and try again')),
+                error: (err, stack) => const Center(child: Text('please login and try again')),
               ),
             ],
           ),

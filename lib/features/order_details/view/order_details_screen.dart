@@ -522,12 +522,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                   child: TextButton(
                     onPressed: () {
                       // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>  const HomeScreen()),
-                        (route) => false, // Remove all previous routes
-                      );
+                      Navigator.pop(context);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

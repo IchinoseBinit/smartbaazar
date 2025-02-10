@@ -216,7 +216,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                   context,
                                   buttonTitle: 'Submit',
                                   callback: () {
-                                    print("lala ${order}");
+                                    print("lala $order");
                                     ref
                                         .watch(postmyreturnProvider(
                                       order.id, // Random order ID
@@ -237,7 +237,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                         .whenData(
                                       (value) {
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                                 content:
                                                     Text("Data inserted")));
                                         Navigator.pop(context);
@@ -441,8 +441,9 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
   TextEditingController? messagecontroller;
 
   Future<void> _pickImage() async {
-    if (_isImagePickerActive)
+    if (_isImagePickerActive) {
       return; // Prevent opening picker if it's already active
+    }
     setState(() {
       _isImagePickerActive = true; // Set to true when image picker is active
     });
@@ -542,10 +543,8 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   TextField(
                     controller: messagecontroller,
                     onChanged: (value) {
-                      if (value != null) {
-                        widget.message(selectedissue!);
-                      }
-                    },
+                      widget.message(selectedissue!);
+                                        },
                     maxLines: null,
                     decoration: InputDecoration.collapsed(
                         hintText: 'Describe your issue',
@@ -560,10 +559,8 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
             SizedBox(height: 5.h),
             CityField(
               onCitySelected: (data) {
-                if (data != null) {
-                  widget.place(data!);
-                }
-              },
+                widget.place(data!);
+                            },
             ),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
@@ -581,10 +578,8 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   SizedBox(height: 10.h),
                   TextField(
                     onChanged: (value) {
-                      if (value != null) {
-                        widget.address(value!);
-                      }
-                    },
+                      widget.address(value!);
+                                        },
                     decoration: InputDecoration.collapsed(
                         hintText: 'Enter Street Address',
                         hintStyle: TextStyle(

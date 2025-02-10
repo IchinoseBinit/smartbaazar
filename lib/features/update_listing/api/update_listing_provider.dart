@@ -118,7 +118,7 @@ Future<String> updatelisting(
     } else {
       throw Exception("Failed to update listing: ${response.data['message']}");
     }
-  } on DioError catch (e) {
+  } on DioException catch (e) {
     return "Dio Error: ${e.message}";
   } catch (e) {
     return "API request failed: ${e.toString()}";

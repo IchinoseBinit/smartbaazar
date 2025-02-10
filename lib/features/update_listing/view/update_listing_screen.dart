@@ -119,11 +119,13 @@ class _UpdateListingState extends State<UpdateListing> {
   void initState() {
     _acceptterms = widget.prod!.acceptTerms == '1' ? false : true;
     emailcontroller.text = widget.prod!.email!;
-    if (widget.prod?.length != null)
+    if (widget.prod?.length != null) {
       lengthcontroller.text = widget.prod!.length!;
+    }
     if (widget.prod?.width != null) widthcontroller.text = widget.prod!.width!;
-    if (widget.prod?.weight != null)
+    if (widget.prod?.weight != null) {
       weightcontroller.text = widget.prod!.weight!;
+    }
 
     descriptionController.text = widget.prod!.description!;
     selectedStoryDisplayDays =
@@ -2171,7 +2173,7 @@ class _updatephotoescontainerState extends State<updatephotoescontainer> {
   void selectImages() async {
     if (images.length < 6) {
       // Pick images using the ImagePicker
-      final List<XFile>? selectedImages = await _picker.pickMultiImage();
+      final List<XFile> selectedImages = await _picker.pickMultiImage();
 
       if (selectedImages != null && selectedImages.isNotEmpty) {
         setState(() {

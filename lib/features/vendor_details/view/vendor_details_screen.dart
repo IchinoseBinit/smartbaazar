@@ -26,19 +26,24 @@ class VendroDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
-  String? vendorName;
+   String? vendorName;
   @override
   void initState() {
     super.initState();
     _loadUserName(); // Load user name from SharedPreferences
   }
 
-  Future<void> _loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+Future<void> _loadUserName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? name = prefs.getString('name');
+
+  if (name != null) {
     setState(() {
-      vendorName = prefs.getString('userName');
+      vendorName = name;
     });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +66,7 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
                     SizedBox(
                       width: 15.w,
                     ),
+                    if(vendorName!=null)
                     Text(
                       '$vendorName',
                       style: TextStyle(
@@ -350,11 +356,10 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
 
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userId = prefs.getString('userId');
-      email = prefs.getString('userEmail');
-      userName = prefs.getString('userName');
-    });
+
+    userId = prefs.getString('userId');
+    email = prefs.getString('email');
+    userName = prefs.getString('name');
   }
 
   Future<void> _changePassword() async {
@@ -510,7 +515,7 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
                   SizedBox(
                     height: 10.h,
                   ),
-                const  PreferredTimeZoneDropdown(),
+                  const PreferredTimeZoneDropdown(),
                   Text(
                     "NOTE: If no preferred time zone is selected, the Country's preferred time zone will be used for the front-office dates (e.g. \"Asia/Kathmandu\" for Nepal) and \"UTC\" will be used for the Admin Panel dates.",
                     style: TextStyle(

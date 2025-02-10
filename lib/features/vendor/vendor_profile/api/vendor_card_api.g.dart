@@ -6,7 +6,7 @@ part of 'vendor_card_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getVendorCardHash() => r'2d6ddfb4520e977b2e75fa95db738b8b7d741b4e';
+String _$getVendorCardHash() => r'eba886ba3f3303073dff477df8b64bbfd9862166';
 
 /// Copied from Dart SDK
 class _SystemHash {

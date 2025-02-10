@@ -14,7 +14,7 @@ Future<VendorCardResponse> getVendorCard(
 
   try {
     final response = await client.request(
-      requestType: RequestType.getWithToken,
+      requestType: RequestType.get,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/vendor_detail/$id',
     );
 

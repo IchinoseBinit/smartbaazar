@@ -5,6 +5,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -146,7 +147,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   bool _isSearchFieldVisible = false;
   // VendorResponse? vendorcard;
   // Future<void> searchvendor(String name) async {
-  //   await ref.watch(searchVendorProductProvider(widget.vid, name)).whenData(
+  //   await ref.watch(searchVendorProductProvider(vid, name)).whenData(
   //     (value) {
   //       setState(() {
   //         vendorsearchrespnse = value.data?.posts?.data!;
@@ -607,12 +608,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         if (data.data
                                                                 ?.vendor_about !=
                                                             null)
-                                                          if (data
-                                                                  .data
-                                                                  ?.vendor_about!
-                                                                  .bio!
-                                                                  .length !=
-                                                              0)
+                                                           if (data.data!.vendor_about!=null && data.data?.vendor_about!='')
                                                             Text("Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
                                                                 style: TextStyle(
                                                                     fontWeight:
@@ -1688,17 +1684,17 @@ class buildDealItemWidget extends StatelessWidget {
 //   double _containerHeight = 540.h;
 //   // Future<void> follow() async {
 
-//   //   // Map<String, String> _getfollow = await followvendor(widget.data.membership_id);
+//   //   // Map<String, String> _getfollow = await followvendor(data.membership_id);
 //   // }
 
 //   @override
 //   void initState() {
 //     super.initState();
 //     // Add a listener to the tab controller
-//     widget.tabController.addListener(() {
+//     tabController.addListener(() {
 //       setState(() {
 //         // Adjust the height dynamically based on the selected tab
-//         if (widget.tabController.index == 0) {
+//         if (tabController.index == 0) {
 //           _containerHeight = 540.h; // Height for the first tab
 //         } else {
 //           _containerHeight = 400.h; // Height for the second tab
@@ -1714,7 +1710,7 @@ class buildDealItemWidget extends StatelessWidget {
 //       crossAxisAlignment: CrossAxisAlignment.start,
 //       children: [
 //         TabBar(
-//           controller: widget.tabController,
+//           controller: tabController,
 //           indicator: const UnderlineTabIndicator(
 //             borderSide: BorderSide(
 //               width: 4,
@@ -1737,22 +1733,22 @@ class buildDealItemWidget extends StatelessWidget {
 //           curve: Curves.easeInOut,
 //           height: _containerHeight,
 //           child: TabBarView(
-//             controller: widget.tabController,
+//             controller: tabController,
 //             children: [
 //               // BigContainer(
-//               //   memebertitle: widget.data.membership_title!,
+//               //   memebertitle: data.membership_title!,
 //               //   lat: double.tryParse(data.vendor_card! ?? '0.0') ?? 0.0,
 //               //   long: double.tryParse(data.vendor_card! ?? '0.0') ?? 0.0,
-//               //   title: widget.data.name!,
-//               //   logo: widget.data.photo!,
-//               //   contact: widget.data.phone ?? '9812457859',
-//               //   storyCount: widget.data.storycount!.toString(),
-//               //   membershipTitle: widget.data.membership_title!,
+//               //   title: data.name!,
+//               //   logo: data.photo!,
+//               //   contact: data.phone ?? '9812457859',
+//               //   storyCount: data.storycount!.toString(),
+//               //   membershipTitle: data.membership_title!,
 //               //   deals_circle: '0',
 //               //   total_connections: "0",
 //               //   total_prize_worth: '0',
-//               //   location: widget.data.nearestbranch.toString(),
-//               //   Cnumber: widget.data.phone ?? '9845612345',
+//               //   location: data.nearestbranch.toString(),
+//               //   Cnumber: data.phone ?? '9845612345',
 //               // ),
 //               Padding(
 //                 padding: const EdgeInsets.all(8.0),
@@ -1768,7 +1764,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                       crossAxisAlignment: CrossAxisAlignment.start,
 //                       children: [
 //                         Text(
-//                             "Opening hours:\n${(jsonDecode(widget.vabout.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+//                             "Opening hours:\n${(jsonDecode(vabout.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
 //                             style: TextStyle(
 //                                 fontWeight: FontWeight.w600, fontSize: 12.sp)),
 //                         SizedBox(height: 10.h),
@@ -1780,7 +1776,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                               width: 10.w,
 //                             ),
 //                             Text(
-//                               widget.vabout.phone ?? '',
+//                               vabout.phone ?? '',
 //                               style: TextStyle(
 //                                 fontWeight: FontWeight.w600,
 //                                 fontSize: 12.sp,
@@ -1797,7 +1793,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                               width: 10.w,
 //                             ),
 //                             Text(
-//                               widget.vabout.nearestbranch ??
+//                               vabout.nearestbranch ??
 //                                   'The Bio is not yet published stay tuned',
 //                               style: TextStyle(
 //                                 fontWeight: FontWeight.w600,
@@ -1815,7 +1811,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                               width: 10.w,
 //                             ),
 //                             Text(
-//                               widget.vabout.email!,
+//                               vabout.email!,
 //                               style: TextStyle(
 //                                 fontWeight: FontWeight.w600,
 //                                 fontSize: 12.sp,
@@ -1833,7 +1829,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                         ),
 //                         SizedBox(height: 10.h),
 //                         Text(
-//                           widget.vabout.bio!,
+//                           vabout.bio!,
 //                           style: TextStyle(fontSize: 12.sp),
 //                         ),
 //                       ],
@@ -1858,7 +1854,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                 crossAxisAlignment: CrossAxisAlignment.start,
 //                 children: [
 //                   Text(
-//                       "Opening hours:\n${(jsonDecode(widget.vabout.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+//                       "Opening hours:\n${(jsonDecode(vabout.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
 //                       style: TextStyle(
 //                           fontWeight: FontWeight.w600, fontSize: 12.sp)),
 //                   SizedBox(height: 10.h),
@@ -1870,7 +1866,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                         width: 10.w,
 //                       ),
 //                       Text(
-//                         widget.vabout.phone ?? '',
+//                         vabout.phone ?? '',
 //                         style: TextStyle(
 //                           fontWeight: FontWeight.w600,
 //                           fontSize: 12.sp,
@@ -1887,7 +1883,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                         width: 10.w,
 //                       ),
 //                       Text(
-//                         widget.vabout.nearestbranch ??
+//                         vabout.nearestbranch ??
 //                             'The Bio is not yet published stay tuned',
 //                         style: TextStyle(
 //                           fontWeight: FontWeight.w600,
@@ -1905,7 +1901,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                         width: 10.w,
 //                       ),
 //                       Text(
-//                         widget.vabout.email!,
+//                         vabout.email!,
 //                         style: TextStyle(
 //                           fontWeight: FontWeight.w600,
 //                           fontSize: 12.sp,
@@ -1923,7 +1919,7 @@ class buildDealItemWidget extends StatelessWidget {
 //                   ),
 //                   SizedBox(height: 10.h),
 //                   Text(
-//                     widget.vabout.bio!,
+//                     vabout.bio!,
 //                     style: TextStyle(fontSize: 12.sp),
 //                   ),
 //                 ],
@@ -1952,10 +1948,12 @@ class BigContainer extends StatelessWidget {
   final double long, lat;
   final String memebertitle;
   bool issubbed;
+  
 
   // Constructor
   BigContainer(
       {required this.lat,
+
       required this.long,
       required this.id,
       super.key,
@@ -2048,12 +2046,32 @@ class BigContainer extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    Image.asset(
-                      "assets/icon/domestic_brand.png",
-                      width: 50,
+                      SvgPicture.asset(
+                          id.toString() == '1'
+                              ? productsicon
+                              : id.toString() == '7'
+                                  ? b2bIcon
+                                  : id.toString() == '2'
+                                      ? usedIcon
+                                      : id.toString() == '3'
+                                          ? servicesIcon
+                                          : id.toString() == '4'
+                                              ? jobIcon
+                                              : id.toString() == '5'
+                                                  ? eventIcon
+                                                  : id.toString() == '8'
+                                                      ? grocaryicon
+                                                      : productsicon, // Provide a default icon path if no match is found
+                           width: 50,
                       height: 50,
                       color: Colors.grey,
-                    ),
+                        ),
+                    // Image.asset(
+                    //   "assets/icon/domestic_brand.png",
+                    //   width: 50,
+                    //   height: 50,
+                    //   color: Colors.grey,
+                    // ),
                     Text(
                       membershipTitle,
                       style: TextStyle(fontSize: 9.sp),

@@ -2544,7 +2544,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   lat: hot.user.latitude,
                                   long: hot.user.longitude,
                                   productid: hot.id,
-                                  vendorid: hot.user!.id,
+                                  vendorid: hot.user.id,
                                   posttype: hot.post_type_id,
                                   shortestDistance: hot.user.shortestDistance,
                                   membershipid: hot.user.membership_id,

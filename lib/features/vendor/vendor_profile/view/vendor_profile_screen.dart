@@ -711,12 +711,8 @@ class MyAccountWidget extends StatelessWidget {
         MaterialPageRoute(builder: (context) => const MessageViewScreen()),
       );
     } else if (title == 'Transaction') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OnlineTransactionRecordScreen(),
-        ),
-      );
+    Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(builder: (context) => const OnlineTransactionRecordScreen()));
     }
   }
 
