@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,8 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -182,281 +183,309 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     final cartItemsAsyncValue = ref.watch(getCartItemProvider);
     return GenericSafeArea(
       child: Scaffold(
+        // extendBody: true,
         backgroundColor: const Color(0xffF6F1F1),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.h),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.shopping_cart,
-                        size: 25,
-                      ),
-                      SizedBox(width: 5.w),
-                      Text(
-                        'Cart',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const BottomNavigationScreen(),
-                              ));
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(
-                              size: 15,
-                              Icons.arrow_back_ios,
-                              color: Color(0xffADADAD),
-                            ),
-                            Text(
-                              'Continue Shopping',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xff888888),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+        body: Stack(
+          children: [
+            // Scrollable content
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 20.h,
+                  bottom: 80
+                      .h, // Add bottom padding to avoid overlap with the fixed footer
                 ),
-                const Divider(thickness: 2, color: Color(0xffD9D9D9)),
-                const SizedBox(height: 20),
-                cartItemsAsyncValue.when(
-                  data: (data) {
-                    final cartItems = data['cart'] as List<CartItem>? ?? [];
-                    final vendors = data['vendors'] as List<Vendor>? ?? [];
-                    if (selectedItems.isEmpty ||
-                        selectedItems.length < cartItems.length) {
-                      selectedItems =
-                          List<bool>.filled(cartItems.length, false);
-                    }
-                    if (cartItems.isEmpty) {
-                      return Center(
-                        child: Text(
-                          'No products available in cart',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      );
-                    }
-
-                    final groupedItems = groupItemsByVendor(cartItems);
-
-                    return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: groupedItems.keys.length,
-                      itemBuilder: (context, index) {
-                        final vendorId = groupedItems.keys.elementAt(index);
-                        final vendorItems = groupedItems[vendorId]!;
-                        final vendor = vendors.firstWhere(
-                          (v) => v.id == vendorId,
-                          orElse: () => Vendor(id: '0', name: 'Unknown'),
-                        );
-
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 16.h),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 10.h),
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: const Color(0xffFFFFFF),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white.withOpacity(0.2),
-                                  spreadRadius: 10,
-                                  blurRadius: 10,
-                                  offset: const Offset(1, 0),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Safely handle the potential null value
-                                        bool currentSelection = selectedVendors[
-                                                vendorId] ??
-                                            false; // Default to false if null
-                                        updateVendorSelection(
-                                            vendorId, !currentSelection);
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          width: 15,
-                                          height: 15,
-                                          decoration: BoxDecoration(
-                                            color: selectedVendors[vendorId] ==
-                                                    true
-                                                ? const Color(0xff362677)
-                                                : null,
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color:
-                                                  selectedVendors[vendorId] ==
-                                                          true
-                                                      ? const Color(0xff362677)
-                                                      : const Color(0xffD9D9D9),
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          child:
-                                              selectedVendors[vendorId] == true
-                                                  ? const Icon(
-                                                      Icons.check,
-                                                      size: 12.0,
-                                                      color: Colors.white,
-                                                    )
-                                                  : null,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 7.w,
-                                    ),
-                                    Text(
-                                      vendor.name,
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Color(0xffADADAD),
-                                    ),
-                                    const Spacer(),
-                                  ],
-                                ),
-                                ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: vendorItems.length,
-                                  itemBuilder: (context, vendorItemIndex) {
-                                    final cartItem =
-                                        vendorItems[vendorItemIndex];
-
-                                    return Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: InkWell(
-                                              child:
-                                                  SvgPicture.asset(deleteIcon),
-                                              onTap: () {
-                                                deleteCartItem(
-                                                    cartItem.postId!);
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                        AddToCartPRoductDetails(
-                                          cartItem: cartItem,
-                                          vendors: vendors,
-                                          isSelected: selectedItems[
-                                              cartItems.indexOf(cartItem)],
-                                          onDecrement: () =>
-                                              decrementQuantity(cartItem),
-                                          onIncrement: () =>
-                                              incrementQuantity(cartItem),
-                                          onSelected: (isSelected) {
-                                            updateItemSelection(
-                                                cartItem, isSelected);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(height: 8.h),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                  error: (err, stack) {
-                    String errorMessage = 'Something went wrong';
-                    if (err is Exception) {
-                    errorMessage = err.toString(); // Get the specific error message
-                  }
-                    return Center(child: Text(errorMessage, style: TextStyle(fontSize: 16.sp, color: Colors.red),));
-                  } ,
-                ),
-                SizedBox(height: 20.h),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      child: Row(
                         children: [
+                          const Icon(
+                            Icons.shopping_cart,
+                            size: 25,
+                          ),
+                          SizedBox(width: 5.w),
                           Text(
-                            'Sub Total',
+                            'Cart',
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w700,
-                              color: const Color(0xff36383C),
+                              color: Colors.black,
                             ),
                           ),
-                          Text(
-                            'Rs $subtotal',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xff36383C),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const FeedScreen(),
+                                  ));
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  size: 15,
+                                  Icons.arrow_back_ios,
+                                  color: Color(0xffADADAD),
+                                ),
+                                Text(
+                                  'Continue Shopping',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff888888),
+                                  ),
+                                )
+                              ],
                             ),
-                          ),
+                          )
                         ],
                       ),
-                      GeneralTextButton(
-                        marginH: 0,
-                        fgColor: Colors.white,
-                        bgColor: const Color(0xff362677),
-                        title: 'Checkout',
-                        onPressed: () {
-                          cartItemsAsyncValue.whenData((data) {
-                            proceedToCheckout(
-                              data['cart'] as List<CartItem>? ?? [],
-                              selectedItems,
+                    ),
+                    const Divider(thickness: 2, color: Color(0xffD9D9D9)),
+                    const SizedBox(height: 20),
+                    cartItemsAsyncValue.when(
+                      data: (data) {
+                        final cartItems = data['cart'] as List<CartItem>? ?? [];
+                        final vendors = data['vendors'] as List<Vendor>? ?? [];
+                        if (selectedItems.isEmpty ||
+                            selectedItems.length < cartItems.length) {
+                          selectedItems =
+                              List<bool>.filled(cartItems.length, false);
+                        }
+                        if (cartItems.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No products available in cart',
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                          );
+                        }
+
+                        final groupedItems = groupItemsByVendor(cartItems);
+
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: groupedItems.keys.length,
+                          itemBuilder: (context, index) {
+                            final vendorId = groupedItems.keys.elementAt(index);
+                            final vendorItems = groupedItems[vendorId]!;
+                            final vendor = vendors.firstWhere(
+                              (v) => v.id == vendorId,
+                              orElse: () => Vendor(id: '0', name: 'Unknown'),
                             );
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 16.h),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6.w, vertical: 10.h),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  color: const Color(0xffFFFFFF),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.white.withOpacity(0.2),
+                                      spreadRadius: 10,
+                                      blurRadius: 10,
+                                      offset: const Offset(1, 0),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            bool currentSelection =
+                                                selectedVendors[vendorId] ??
+                                                    false;
+                                            updateVendorSelection(
+                                                vendorId, !currentSelection);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 15,
+                                              height: 15,
+                                              decoration: BoxDecoration(
+                                                color: selectedVendors[
+                                                            vendorId] ==
+                                                        true
+                                                    ? const Color(0xff362677)
+                                                    : null,
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: selectedVendors[
+                                                              vendorId] ==
+                                                          true
+                                                      ? const Color(0xff362677)
+                                                      : const Color(0xffD9D9D9),
+                                                  width: 1.0,
+                                                ),
+                                              ),
+                                              child:
+                                                  selectedVendors[vendorId] ==
+                                                          true
+                                                      ? const Icon(
+                                                          Icons.check,
+                                                          size: 12.0,
+                                                          color: Colors.white,
+                                                        )
+                                                      : null,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 7.w,
+                                        ),
+                                        Text(
+                                          vendor.name,
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xffADADAD),
+                                        ),
+                                        const Spacer(),
+                                      ],
+                                    ),
+                                    ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: vendorItems.length,
+                                      itemBuilder: (context, vendorItemIndex) {
+                                        final cartItem =
+                                            vendorItems[vendorItemIndex];
+
+                                        return Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: InkWell(
+                                                  child: SvgPicture.asset(
+                                                      deleteIcon),
+                                                  onTap: () {
+                                                    deleteCartItem(
+                                                        cartItem.postId!);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            AddToCartPRoductDetails(
+                                              cartItem: cartItem,
+                                              vendors: vendors,
+                                              isSelected: selectedItems[
+                                                  cartItems.indexOf(cartItem)],
+                                              onDecrement: () =>
+                                                  decrementQuantity(cartItem),
+                                              onIncrement: () =>
+                                                  incrementQuantity(cartItem),
+                                              onSelected: (isSelected) {
+                                                updateItemSelection(
+                                                    cartItem, isSelected);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(height: 8.h),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (err, stack) {
+                        String errorMessage =
+                            'Login Session Expired.Please login again';
+                        if (err is Exception) {
+                          errorMessage =
+                              err.toString(); // Get the specific error message
+                        } else if (err is DioException) {
+                          String errorMessage =
+                              err.toString(); // Get the specific error message
+                        }
+                        return Center(
+                            child: Text(
+                          errorMessage,
+                          style: TextStyle(fontSize: 16.sp, color: Colors.red),
+                        ));
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+            // Fixed Subtotal and Checkout Button
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                color: Colors.white, // Add background color if necessary
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Sub Total',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff36383C),
+                          ),
+                        ),
+                        Text(
+                          'Rs $subtotal',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff36383C),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GeneralTextButton(
+                      marginH: 0,
+                      fgColor: Colors.white,
+                      bgColor: const Color(0xff362677),
+                      title: 'Checkout',
+                      onPressed: () {
+                        cartItemsAsyncValue.whenData((data) {
+                          proceedToCheckout(
+                            data['cart'] as List<CartItem>? ?? [],
+                            selectedItems,
+                          );
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -569,7 +598,6 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                       height: 15,
                       decoration: BoxDecoration(
                         color: _isChecked ? const Color(0xff362677) : null,
-
                         // color: _isChecked ? const Color(0xff362677) : null,
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -603,8 +631,27 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                     ),
                     child: Image.network(
                       widget.cartItem.image,
+                      width: 150.w,
                       height: 70.h,
-                    )),
+                      fit: BoxFit.fill,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child; // If no loading, show the image
+                        } else {
+                          return const Center(
+                              child:
+                                  CircularProgressIndicator()); // Show loading indicator
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return SizedBox(
+                          width: 130.w,
+                          height: 70.h,
+                          child: const Icon(Icons.error),
+                        ); // Show error icon if image fails to load
+                      },
+                    ),
+                    ),
                 SizedBox(
                   width: 20.w,
                 ),

@@ -6,7 +6,7 @@ part of 'product_details_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productDetailsHash() => r'a8caaea1bff8942ae73cf11b024e0773192298a2';
+String _$productDetailsHash() => r'3fab4acc4a20ccdeeec0481e86a7a19105172237';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const productDetailsProvider = ProductDetailsFamily();
 
 /// See also [productDetails].
-class ProductDetailsFamily extends Family<AsyncValue<ProductDetailsModel>> {
+class ProductDetailsFamily extends Family<AsyncValue<PostModel>> {
   /// See also [productDetails].
   const ProductDetailsFamily();
 
@@ -72,8 +72,7 @@ class ProductDetailsFamily extends Family<AsyncValue<ProductDetailsModel>> {
 }
 
 /// See also [productDetails].
-class ProductDetailsProvider
-    extends AutoDisposeFutureProvider<ProductDetailsModel> {
+class ProductDetailsProvider extends AutoDisposeFutureProvider<PostModel> {
   /// See also [productDetails].
   ProductDetailsProvider(
     String id,
@@ -108,7 +107,7 @@ class ProductDetailsProvider
 
   @override
   Override overrideWith(
-    FutureOr<ProductDetailsModel> Function(ProductDetailsRef provider) create,
+    FutureOr<PostModel> Function(ProductDetailsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -125,7 +124,7 @@ class ProductDetailsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<ProductDetailsModel> createElement() {
+  AutoDisposeFutureProviderElement<PostModel> createElement() {
     return _ProductDetailsProviderElement(this);
   }
 
@@ -143,18 +142,19 @@ class ProductDetailsProvider
   }
 }
 
-mixin ProductDetailsRef on AutoDisposeFutureProviderRef<ProductDetailsModel> {
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin ProductDetailsRef on AutoDisposeFutureProviderRef<PostModel> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _ProductDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<ProductDetailsModel>
-    with ProductDetailsRef {
+    extends AutoDisposeFutureProviderElement<PostModel> with ProductDetailsRef {
   _ProductDetailsProviderElement(super.provider);
 
   @override
   String get id => (origin as ProductDetailsProvider).id;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

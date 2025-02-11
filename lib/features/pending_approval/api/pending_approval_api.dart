@@ -1,15 +1,14 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/pending_approval/model/pending_approval_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'pending_approval_api.g.dart';
 
 @riverpod
-Future<PendingApprovalModel> getPendingApprovalResponse(
-    GetPendingApprovalResponseRef ref) async {
-  final SmartClinet client = SmartClinet();
+Future<PendingApprovalModel> getPendingApprovalResponse(ref) async {
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,

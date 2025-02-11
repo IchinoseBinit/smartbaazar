@@ -7,7 +7,7 @@ part of 'message_is_important_api.dart';
 // **************************************************************************
 
 String _$markMessageIsImportantHash() =>
-    r'a84b24e2675a1217f9ef92a1d9e4473e38c3a5d2';
+    r'62c98af9d6dc6ac218af9f66ed1324a6c9e2b565';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -156,6 +156,8 @@ class MarkMessageIsImportantProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin MarkMessageIsImportantRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `threadId` of this provider.
   String get threadId;
@@ -170,4 +172,4 @@ class _MarkMessageIsImportantProviderElement
   String get threadId => (origin as MarkMessageIsImportantProvider).threadId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

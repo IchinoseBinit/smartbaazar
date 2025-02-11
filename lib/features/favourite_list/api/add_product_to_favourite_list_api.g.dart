@@ -6,7 +6,7 @@ part of 'add_product_to_favourite_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$addToFavoritesHash() => r'809ab3e31ca034cf0e05c833b7dc1443dd418363';
+String _$addToFavoritesHash() => r'f105c08bd2f19effe7a9458e57ab0bcad87db4ca';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -154,6 +154,8 @@ class AddToFavoritesProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin AddToFavoritesRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `userId` of this provider.
   String get userId;
@@ -172,4 +174,4 @@ class _AddToFavoritesProviderElement
   String get postId => (origin as AddToFavoritesProvider).postId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

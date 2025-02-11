@@ -6,7 +6,7 @@ part of 'message_thread_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMessageThreadHash() => r'8e0308531ff11a9ee7cd8f2d7181932f0d1a2ba9';
+String _$getMessageThreadHash() => r'607871c5dcabcf14fe9d72f5195568967ebaa900';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class GetMessageThreadProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetMessageThreadRef on AutoDisposeFutureProviderRef<MessageThreadModel> {
   /// The parameter `filter` of this provider.
   String? get filter;
@@ -157,4 +159,4 @@ class _GetMessageThreadProviderElement
   String? get filter => (origin as GetMessageThreadProvider).filter;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

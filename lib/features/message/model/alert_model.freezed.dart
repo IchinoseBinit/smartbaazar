@@ -23,8 +23,12 @@ mixin _$AlertModel {
   @JsonKey(name: "alerts")
   List<Alert>? get alerts => throw _privateConstructorUsedError;
 
+  /// Serializes this AlertModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AlertModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AlertModelCopyWith<AlertModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$AlertModelCopyWithImpl<$Res, $Val extends AlertModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AlertModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class __$$AlertModelImplCopyWithImpl<$Res>
       _$AlertModelImpl _value, $Res Function(_$AlertModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AlertModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,12 +137,14 @@ class _$AlertModelImpl implements _AlertModel {
             const DeepCollectionEquality().equals(other._alerts, _alerts));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_alerts));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AlertModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AlertModelImplCopyWith<_$AlertModelImpl> get copyWith =>
@@ -159,8 +169,11 @@ abstract class _AlertModel implements AlertModel {
   @override
   @JsonKey(name: "alerts")
   List<Alert>? get alerts;
+
+  /// Create a copy of AlertModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlertModelImplCopyWith<_$AlertModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -184,8 +197,12 @@ mixin _$Alert {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Alert to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Alert
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AlertCopyWith<Alert> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -215,6 +232,8 @@ class _$AlertCopyWithImpl<$Res, $Val extends Alert>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Alert
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -290,6 +309,8 @@ class __$$AlertImplCopyWithImpl<$Res>
       _$AlertImpl _value, $Res Function(_$AlertImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Alert
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -399,12 +420,14 @@ class _$AlertImpl implements _Alert {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, userId, title, body, image,
       clickAction, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Alert
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AlertImplCopyWith<_$AlertImpl> get copyWith =>
@@ -451,8 +474,11 @@ abstract class _Alert implements Alert {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
+
+  /// Create a copy of Alert
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlertImplCopyWith<_$AlertImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

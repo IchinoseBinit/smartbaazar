@@ -6,11 +6,12 @@ part of 'b2b_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getB2bResponseHash() => r'15f60201255d8ac995e9cb4893c8fd5f2aeac39b';
+String _$getB2bResponseHash() => r'5140acc3a749713818f165423ff7723d3572d4a9';
 
 /// See also [getB2bResponse].
 @ProviderFor(getB2bResponse)
-final getB2bResponseProvider = AutoDisposeFutureProvider<B2bModel>.internal(
+final getB2bResponseProvider =
+    AutoDisposeFutureProvider<PostTypeFetch>.internal(
   getB2bResponse,
   name: r'getB2bResponseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,6 +21,8 @@ final getB2bResponseProvider = AutoDisposeFutureProvider<B2bModel>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetB2bResponseRef = AutoDisposeFutureProviderRef<B2bModel>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetB2bResponseRef = AutoDisposeFutureProviderRef<PostTypeFetch>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

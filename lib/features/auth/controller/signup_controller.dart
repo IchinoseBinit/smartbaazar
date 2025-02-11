@@ -31,7 +31,7 @@ class SignUpController extends StateNotifier<GenericState> {
     try {
       final SignupModel singUpData = await _signUpApi.signUp(
           name: name,
-          phone: phone,
+          phone: int.tryParse(phone)!,
           email: email,
           passsword: passsword,
           dob: dateofb,

@@ -6,7 +6,7 @@ part of 'contact_seller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$contactSellerHash() => r'269f98d285c78ff914092c465b07327f6fce9b28';
+String _$contactSellerHash() => r'1f779a406ac0381780859393f04ae9618b4b4ca9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -187,6 +187,8 @@ class ContactSellerProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ContactSellerRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `username` of this provider.
   String get username;
@@ -220,4 +222,4 @@ class _ContactSellerProviderElement
   String get email => (origin as ContactSellerProvider).email;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

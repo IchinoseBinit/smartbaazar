@@ -11,6 +11,7 @@ class CartItem with _$CartItem {
     @JsonKey(name: 'vendor_id') String? vendorId,
     //  required String? vendorId,
     @JsonKey(name: 'post_id') String? postId,
+    @JsonKey(name: 'post_type_id') String? postTypeId,
     required String name,
     required String qty,
     required String price,
@@ -28,7 +29,7 @@ class Vendor with _$Vendor {
   factory Vendor({
     required String id,
     required String name,
-     String? username,
+    String? username,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);

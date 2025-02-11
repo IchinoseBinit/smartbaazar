@@ -1,15 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/common/appbar_widget.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class LeftArrowScreen extends ConsumerStatefulWidget {
@@ -24,13 +21,13 @@ class LeftArrowScreen extends ConsumerStatefulWidget {
 class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
   final _debouncer = BehaviorSubject<String>();
-  late List<Container> _items;
+  late List<Container> items;
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
@@ -40,7 +37,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   @override
   void initState() {
     super.initState();
-    _items = [
+    items = [
       left_arrow(const Color(0xff362664)),
       left_arrow(const Color(0xff901B41)),
       left_arrow(const Color(0xff362664)),
@@ -270,7 +267,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: _items.asMap().entries.map((entry) {
+                      children: items.asMap().entries.map((entry) {
                         return Container(
                           width: 12.0,
                           height: 12.0,
@@ -305,7 +302,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                           // Wrap the Container with Expanded
                           child: CarouselSlider(
                             carouselController: _carouselController,
-                            items: _items.map(
+                            items: items.map(
                               (item) {
                                 return item;
                               },
@@ -326,7 +323,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         ),
                         IconButton(
                             onPressed: () {
-                              if (_currentIndex < _items.length - 1) {
+                              if (_currentIndex < items.length - 1) {
                                 _carouselController.animateToPage(
                                   _currentIndex + 1, // Move to next slide
                                   duration: const Duration(milliseconds: 300),
@@ -340,7 +337,9 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 10.h,),
+              SizedBox(
+                height: 10.h,
+              ),
             ],
           ),
         ),
@@ -357,7 +356,9 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
       ),
       child: Column(
         children: [
-          SizedBox(height: 5.h,),
+          SizedBox(
+            height: 5.h,
+          ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 10.h),
             width: double.infinity,

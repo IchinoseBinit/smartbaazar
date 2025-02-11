@@ -83,8 +83,8 @@ class PendingApprovalScreen extends ConsumerWidget {
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (error, stackTrace) => Center(
-                    child: Text('Failed to load data: $error'),
+                  error: (error, stackTrace) => const Center(
+                    child: Text('Please login again'),
                   ),
                 ),
 

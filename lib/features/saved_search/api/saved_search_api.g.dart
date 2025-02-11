@@ -6,7 +6,7 @@ part of 'saved_search_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSavedSearchesHash() => r'519e0ac6222b5ef8f6ec86090b60ee91ffe332d6';
+String _$getSavedSearchesHash() => r'eb09fb3302784822338ae394a06255cfbfacd5dc';
 
 /// See also [getSavedSearches].
 @ProviderFor(getSavedSearches)
@@ -21,6 +21,8 @@ final getSavedSearchesProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetSavedSearchesRef = AutoDisposeFutureProviderRef<SavedSearchModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

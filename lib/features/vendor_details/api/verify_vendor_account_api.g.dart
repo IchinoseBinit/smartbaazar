@@ -7,7 +7,7 @@ part of 'verify_vendor_account_api.dart';
 // **************************************************************************
 
 String _$verifyVendorAccountHash() =>
-    r'37994079048b1f185c68b0fa52d98b4a167079f1';
+    r'aaf827f6fdbb8a9fbc5ee4755f1896c1868fcc35';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -166,6 +166,8 @@ class VerifyVendorAccountProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin VerifyVendorAccountRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `panVat` of this provider.
   File get panVat;
@@ -192,4 +194,4 @@ class _VerifyVendorAccountProviderElement
       (origin as VerifyVendorAccountProvider).registerCertificate;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

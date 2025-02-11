@@ -7,13 +7,17 @@ import 'package:smartbazar/features/home/model/search_product_model.dart';
 part 'search_product.g.dart';
 
 @riverpod
-Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
+Future<List<SearchProductModel>> search( ref, String query) async {
   if (query.isEmpty) return [];
 
   final client = Dio(
     BaseOptions(
+      sendTimeout: const Duration(seconds: 30),
+      receiveTimeout:const Duration(seconds: 30) ,
+       connectTimeout: const Duration(seconds: 30), // 60 seconds
       followRedirects: false, // Disable automatic redirection
-      validateStatus: (status) => status != null && status >= 200 && status < 400,
+      validateStatus: (status) =>
+          status != null && status >= 200 && status < 400,
     ),
   );
 
@@ -40,7 +44,8 @@ Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
     if (response.statusCode == 301) {
       final redirectUrl = response.headers['location']?.first;
       if (redirectUrl != null) {
-        response = await sendRequest(redirectUrl); // Handle the redirected request
+        response =
+            await sendRequest(redirectUrl); // Handle the redirected request
       } else {
         throw Exception('Redirection URL is missing');
       }
@@ -52,7 +57,9 @@ Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
       print('Response Data: $data'); // Log response data
       if (data is Map<String, dynamic> && data.containsKey('data')) {
         final List<dynamic> productList = data['data'];
-        return productList.map((item) => SearchProductModel.fromJson(item)).toList();
+        return productList
+            .map((item) => SearchProductModel.fromJson(item))
+            .toList();
       } else {
         throw Exception('Invalid response format');
       }

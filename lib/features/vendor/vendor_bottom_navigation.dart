@@ -97,7 +97,8 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 selectedItemColor: const Color(0xff362677),
-                selectedIconTheme: const IconThemeData(color: Color(0xff362677)),
+                selectedIconTheme:
+                    const IconThemeData(color: Color(0xff362677)),
                 selectedLabelStyle: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w700,
@@ -113,8 +114,8 @@ class _VendorBottomNavigationState extends State<VendorBottomNavigation> {
                   BottomNavigationBarItem(
                     icon: SvgPicture.asset(
                       homeIcon,
-                      colorFilter:
-                          const ColorFilter.mode(Color(0xff36383C), BlendMode.srcIn),
+                      colorFilter: const ColorFilter.mode(
+                          Color(0xff36383C), BlendMode.srcIn),
                     ),
                     label: 'Home',
                   ),

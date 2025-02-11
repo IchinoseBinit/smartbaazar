@@ -22,7 +22,8 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
   File? imageFile;
 
   // Use a GlobalKey to manage the state of ChooseFileWidget
-  final GlobalKey<ChooseFileWidgetState> _imageWidgetKey = GlobalKey<ChooseFileWidgetState>();
+  final GlobalKey<ChooseFileWidgetState> _imageWidgetKey =
+      GlobalKey<ChooseFileWidgetState>();
 
   void _submitBankDetails() {
     bool isFormValid = _formKey.currentState!.validate();
@@ -81,7 +82,7 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
       accountNumber = null;
       imageFile = null;
       // Notify the image picker widget to reset the image
-   //   _imageWidgetKey.currentState?.resetImage();
+      //   _imageWidgetKey.currentState?.resetImage();
     });
   }
 
@@ -192,7 +193,6 @@ class _BankDetailsWidgetState extends ConsumerState<BankDetailsWidget> {
   }
 }
 
-
 class ChooseFileWidget extends StatefulWidget {
   final Function(File?) onImageSelected;
   final Color? textColor;
@@ -217,6 +217,7 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
     super.initState();
     _selectedImage = widget.initialImage; // Set initial image if provided
   }
+
   @override
   void didUpdateWidget(covariant ChooseFileWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -251,6 +252,40 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
       children: [
         GestureDetector(
           onTap: pickImage,
+          child: Center(
+            child: Container(
+              height: 75.h,
+              width: 95.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(width: 1, color: const Color(0xffADADAD)),
+              ),
+              child: Center(
+                child: _selectedImage != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.file(
+                          _selectedImage!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      )
+                    : Text(
+                        'Add Photo',
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          color: const Color(0xff888888),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        GestureDetector(
+          onTap: pickImage,
           child: Container(
             padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
             decoration: BoxDecoration(
@@ -278,9 +313,7 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
                 ),
                 SizedBox(width: 11.w),
                 Text(
-                  _selectedImage == null
-                      ? 'No File Chosen'
-                      : 'File Selected',
+                  _selectedImage == null ? 'No File Chosen' : 'File Selected',
                   style: TextStyle(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w400,
@@ -291,31 +324,7 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
             ),
           ),
         ),
-        SizedBox(height: 10.h),
-        _selectedImage != null
-            ? Container(
-                width: double.infinity,
-                height: 150.h,
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xffADADAD)),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: Image.file(
-                    _selectedImage!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Center(child: Text('Error loading image'));
-                    },
-                  ),
-                ),
-              )
-            : Container(),
       ],
     );
   }
 }
-
-
-

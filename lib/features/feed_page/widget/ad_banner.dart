@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/home/model/product_details_model.dart';
 
 class AdsWidget extends StatelessWidget {
-  const AdsWidget({
+  final UserDetailsProduct user;
+   const AdsWidget({
     super.key,
+    required this.user
   });
 
   @override
@@ -29,7 +32,7 @@ class AdsWidget extends StatelessWidget {
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset("assets/images/group.png"),
+            Image.network(user.photo),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +46,7 @@ class AdsWidget extends StatelessWidget {
                           width: 7.w,
                         ),
                         Text(
-                          "Adidas",
+                          user.name,
                           style: headerstyle.copyWith(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
@@ -80,7 +83,7 @@ class AdsWidget extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "4.5K",
+                          user.name,
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -101,7 +104,7 @@ class AdsWidget extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "1.5K",
+                          user.productCount.toString()?? '0',
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -122,7 +125,7 @@ class AdsWidget extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "8",
+                          user.livePrizes.toString()?? '0',
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -142,11 +145,12 @@ class AdsWidget extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        const Icon(Icons.location_on_outlined,
-                        size: 18,
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 18,
                         ),
                         Text(
-                          "2.4",
+                          user.distance==null? '0': user.distance.toString(),
                           style: headerstyle.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -158,7 +162,7 @@ class AdsWidget extends StatelessWidget {
                 )
               ],
             )
-      
+
             // Image.asset(
             //     fit: BoxFit.cover,
             //     height: 110,
@@ -172,7 +176,7 @@ class AdsWidget extends StatelessWidget {
             //         Row(
             //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //           children: [
-      
+
             //             Container(
             //               padding: const EdgeInsets.all(3),
             //               decoration: BoxDecoration(
@@ -216,3 +220,5 @@ class AdsWidget extends StatelessWidget {
     );
   }
 }
+
+

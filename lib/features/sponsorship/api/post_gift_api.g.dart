@@ -6,7 +6,7 @@ part of 'post_gift_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postgiftHash() => r'8f934bb49eea9b45133d08d58dad8d5f526bc048';
+String _$postgiftHash() => r'1c6fbc56f2bb3fae21a36508349784ee35643294';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -186,6 +186,8 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostgiftRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `gift` of this provider.
   String get gift;
@@ -219,4 +221,4 @@ class _PostgiftProviderElement extends AutoDisposeFutureProviderElement<bool>
   File get imageFile => (origin as PostgiftProvider).imageFile;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

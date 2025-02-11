@@ -6,7 +6,7 @@ part of 'street_address_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getStreetAddressHash() => r'ca22c886412635e2f4e94186a9265a8ecc0fef38';
+String _$getStreetAddressHash() => r'aeecce9a3225fa104f67ab69425b09b7184aff33';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -145,6 +145,8 @@ class GetStreetAddressProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetStreetAddressRef
     on AutoDisposeFutureProviderRef<List<StreetAddressModel>> {
   /// The parameter `query` of this provider.
@@ -160,4 +162,4 @@ class _GetStreetAddressProviderElement
   String get query => (origin as GetStreetAddressProvider).query;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

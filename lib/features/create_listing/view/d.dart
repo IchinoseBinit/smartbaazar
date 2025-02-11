@@ -1,141 +1,71 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
-import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
-import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
-import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+// class ReturnPolicyWidget extends StatefulWidget {
+//   final dynamic phoneresp;
 
-class CategoryField extends StatefulWidget {
-  final Function(Category?) onCategorySelected;
+//   const ReturnPolicyWidget({Key? key, required this.phoneresp})
+//       : super(key: key);
 
-  const CategoryField({
-    super.key,
-    required this.onCategorySelected,
-  });
+//   @override
+//   _ReturnPolicyWidgetState createState() => _ReturnPolicyWidgetState();
+// }
 
-  @override
-  State<CategoryField> createState() => _CategoryFieldState();
-}
+// class _ReturnPolicyWidgetState extends State<ReturnPolicyWidget> {
+//   Map<int, bool> _selectedOptions = {}; // Track selected options dynamically
 
-class _CategoryFieldState extends State<CategoryField> {
-  List<Category> categoryListItems = [];
-  List<Category> subCategoryListItems = [];
-  Category? selectedCategory;
-  Category? selectedSubCategory;
+//   @override
+//   void initState() {
+//     super.initState();
+//     // Initialize the selected options map
+//     for (var option in widget.phoneresp.result[4].options) {
+//       _selectedOptions[option.id] = false; // Default to unchecked
+//     }
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchCategoryList();
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return CreateListingCardWidget(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             'Return Policy',
+//             style: TextStyle(
+//               fontSize: 14.sp,
+//               fontWeight: FontWeight.w600,
+//               color: Colors.black,
+//             ),
+//           ),
+//           ...widget.phoneresp.result[4].options.map<Widget>((option) {
+//             return Row(
+//               children: [
+//                 Checkbox(
+//                   value: _selectedOptions[option.id] ?? false,
+//                   onChanged: (bool? value) {
+//                     setState(() {
+//                       _selectedOptions[option.id] = value ?? false;
+//                     });
 
-  Future<void> _fetchCategoryList() async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-      List<Category> fetchedCategories = await repository.fetchCategoryList();
-      setState(() {
-        categoryListItems = fetchedCategories;
-      });
-    } catch (e) {
-      print('Failed to load categories: $e');
-    }
-  }
-
-  Future<void> _fetchSubCategoryList(Category category) async {
-    try {
-      NewListingRepository repository = NewListingRepository();
-      List<Category> fetchedSubCategories = await repository.fetchSubCategoryList(category.id);
-      setState(() {
-        subCategoryListItems = fetchedSubCategories;
-        selectedSubCategory = null; // Reset selected subcategory when category changes
-      });
-    } catch (e) {
-      print('Failed to load subcategories: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CreateListingCardWidget(
-          child: Row(
-            children: [
-              Text(
-                'Category',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                ' *',
-                style: TextStyle(
-                  color: const Color(0xffD33636),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.sp,
-                ),
-              ),
-              Expanded(
-                child: CustomDropdownButton<Category>(
-                  items: categoryListItems,
-                  dropdownValue: selectedCategory,
-                  onChanged: (Category? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedCategory = newValue;
-                        widget.onCategorySelected(newValue);
-                      });
-                      _fetchSubCategoryList(newValue); // Fetch subcategories for the selected category
-                    }
-                    print("Category selected: ${selectedCategory?.id}");
-                  },
-                  getItemLabel: (Category item) => item.name,
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (subCategoryListItems.isNotEmpty)
-          CreateListingCardWidget(
-            child: Row(
-              children: [
-                Text(
-                  'Subcategory',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  ' *',
-                  style: TextStyle(
-                    color: const Color(0xffD33636),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                  ),
-                ),
-                Expanded(
-                  child: CustomDropdownButton<Category>(
-                    items: subCategoryListItems,
-                    dropdownValue: selectedSubCategory,
-                    onChanged: (Category? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedSubCategory = newValue;
-                        });
-                      }
-                    },
-                    getItemLabel: (Category item) => item.name,
-                  ),
-                ),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
+//                     // Add logic to handle changes
+//                     cf?.add([
+//                       'cf.${widget.phoneresp.result[4]?.id}',
+//                       option.id,
+//                     ]);
+//                   },
+//                 ),
+//                 Flexible(
+//                   child: Text(
+//                     option.value,
+//                     style: TextStyle(
+//                       fontSize: 14.sp,
+//                       fontWeight: FontWeight.w600,
+//                       color: Colors.black,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             );
+//           }).toList(),
+//         ],
+//       ),
+//     );
+//   }
+// }

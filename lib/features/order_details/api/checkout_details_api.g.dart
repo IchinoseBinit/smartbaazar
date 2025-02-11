@@ -7,7 +7,7 @@ part of 'checkout_details_api.dart';
 // **************************************************************************
 
 String _$postSelectedItemOfCartHash() =>
-    r'fc175c9ea74b8b3b7613ef12156409444823c1da';
+    r'159c31e04078cf76d375fd409c3dc838c59c7078';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -158,6 +158,8 @@ class PostSelectedItemOfCartProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostSelectedItemOfCartRef
     on AutoDisposeFutureProviderRef<CheckoutDetailsModel> {
   /// The parameter `vendorId` of this provider.
@@ -180,4 +182,4 @@ class _PostSelectedItemOfCartProviderElement
       (origin as PostSelectedItemOfCartProvider).selectedProduct;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,71 +1,102 @@
- import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+final List<Map<String, dynamic>> services = [
+  {'label': 'Low Price Guarantee', 'id': 1},
+  {'label': 'Launch Offer', 'id': 2},
+  {'label': 'Seasonal offer', 'id': 3},
+  {'label': 'Promotional', 'id': 4},
+  {'label': 'Clearance sale', 'id': 5},
+  {'label': 'Festival sale', 'id': 5},
+];
+Padding nolistingfound() {
+  return const Padding(
+    padding: EdgeInsets.only(top: 10, left: 10),
+    child: SizedBox(child: Text("No listing found")),
+  );
+}
+
 final List<Map<String, dynamic>> items = [
-   {
-      'icon': 'assets/icon/b2bIcon.svg',
-      'label': 'TradeHub',
-      'screen': const B2bScreen()
-    },
-     {
-      'icon': 'assets/icon/loading.svg',
-      'label': 'Everything',
-      'screen': const HomeScreen()
-    },
-     {
-      'icon': 'assets/icon/brandBazarIcon.svg',
-      'label': 'Brandbazaar',
-      'screen': const BrandBazarScreen()
-    },
-      {
-      'icon': 'assets/icon/usedIcon.svg',
-      'label': 'Used',
-      'screen': const UsedScreen()
-    },
-    {
-      'icon': 'assets/icon/openCartIcon.svg',
-      'label': 'SocioShop',
-      'screen': const HomeScreen()
-    },
-  
-     {
-      'icon': 'assets/icon/box.svg',
-      'label': 'ServiceHub',
-      'screen': const ServicesScreen()
-    },
-     {
-      'icon': 'assets/icon/vectors.svg',
-      'label': 'Job',
-      'screen': const JobssScreen()
-    },
-  
-    {
-      'icon': 'assets/icon/groceryIcon.svg',
-      'label': 'Grocery',
-      'screen': const GrocarysScreen()
-    },
-    
-    {
-      'icon': 'assets/icon/eventIcon.svg',
-      'label': 'Events',
-      'screen': const EventsScreen()
-    },
-   
-   
-   
-  
-    
-  ];
-
-
+  {
+    'icon': 'assets/icon/b2bIcon.svg',
+    'label': 'TradeHub',
+    'screen': const B2bScreen()
+  },
+  {
+    'icon': 'assets/icon/loading.svg',
+    'label': 'Everything',
+    'screen': const HomeScreen()
+  },
+  {
+    'icon': 'assets/icon/brandBazarIcon.svg',
+    'label': 'Brandbazaar',
+    'screen': const BrandBazarScreen()
+  },
+  {
+    'icon': 'assets/icon/usedIcon.svg',
+    'label': 'Used',
+    'screen': const UsedScreen()
+  },
+  {
+    'icon': 'assets/icon/openCartIcon.svg',
+    'label': 'SocioShop',
+    'screen': const SocioShopScreen()
+  },
+  {
+    'icon': 'assets/icon/box.svg',
+    'label': 'ServiceHub',
+    'screen': const ServicesScreen()
+  },
+  {
+    'icon': 'assets/icon/vectors.svg',
+    'label': 'Job',
+    'screen': const JobssScreen()
+  },
+  {
+    'icon': 'assets/icon/groceryIcon.svg',
+    'label': 'Grocery',
+    'screen': const GrocarysScreen()
+  },
+  {
+    'icon': 'assets/icon/eventIcon.svg',
+    'label': 'Events',
+    'screen': const EventsScreen()
+  },
+];
+final bottomNavIndexProvider = StateProvider<int>((ref) => 1);
 
 const String baseAsset = "assets/icon";
+//icons-postype
+const String b2bicon = 'assets/icon/b2bIcon.svg';
+const String brandbajaricon = 'assets/icon/brandBazarIcon.svg';
+const String usedicon = 'assets/icon/usedIcon.svg';
+const String socioshipicon = 'assets/icon/openCartIcon.svg';
+const String servicesicon = 'assets/icon/box.svg';
+
+const String jobicon = 'assets/icon/vectors.svg';
+const String grocaryicon = 'assets/icon/groceryIcon.svg';
+const String productsicon = 'assets/icon/products.svg';
+
+const String eventicon = 'assets/icon/eventIcon.svg';
+const String basicsellericon = 'assets/icon/basic.png';
+const String domesticseller = 'assets/icon/domectic.png';
+
+
+
+//global spot and domestic 
+// const String domesticicon = 'assets/icon/domestic_brand.png';
+// const String globalicon = 'assets/icon/global_brand.png';
+// const String spotlighticon = 'assets/icon/spotlight_seller.png';
+
 
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
@@ -76,6 +107,10 @@ const String servicesIcon = "$baseAsset/servicesIcon.svg";
 const String usedIcon = "$baseAsset/usedIcon.svg";
 const String groceryIcon = "$baseAsset/groceryIcon.svg";
 const String jobIcon = "$baseAsset/jobIcon.svg";
+const String domesticicon = '$baseAsset/domestic_brand.png';
+const String globalicon = '$baseAsset/global_brand.png';
+const String spotlighticon = '$baseAsset/spotlight_seller.png';
+const String vendorprofile = '$baseAsset/vendor.png';
 
 const String eventIcon = "$baseAsset/eventIcon.svg";
 const String contactSellerIcon = "$baseAsset/contactSellerIcon.svg";

@@ -6,7 +6,7 @@ part of 'delete_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deleteMessageHash() => r'6b8854403a7c4ee1782695f6e2267514604bcb96';
+String _$deleteMessageHash() => r'9e07f95119041cf0d039c162098d07f3254ac72e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class DeleteMessageProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin DeleteMessageRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `threadId` of this provider.
   String get threadId;
@@ -155,4 +157,4 @@ class _DeleteMessageProviderElement
   String get threadId => (origin as DeleteMessageProvider).threadId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

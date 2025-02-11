@@ -10,7 +10,6 @@ import 'package:smartbazar/features/b2b_screen/model/b2b_model.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/product_model.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/product_screen/Api/product_api_repository.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/widgets/custom_drawer_widget.dart';
@@ -28,7 +27,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
-  bool _showSearchResults = false;
+  bool _showSearchProductModels = false;
 
   @override
   void initState() {
@@ -43,13 +42,14 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
       ref.refresh(
           searchProvider(query)); // Ensure this provider works as expected
       setState(() {
-        _showSearchResults = query.isNotEmpty;
+        _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
 
   @override
   void dispose() {
+    
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
@@ -57,15 +57,15 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
-      _showSearchResults = hasFocus;
+      _showSearchProductModels = hasFocus;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final adsList = ref.watch(getAdsProvider);
+    final adsList = ref.watch(fetchAdsProvider);
     final AsyncbajarValue = ref.watch(getprodwuctResposneProvider);
-    final searchResults = ref.watch(searchProvider(
+    final SearchProductModels = ref.watch(searchProvider(
         _searchController.text)); // Ensure this updates correctly
 
     return GenericSafeArea(
@@ -102,14 +102,14 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                   return SingleChildScrollView(
                     child: Column(
                       children: [
-                        if (_showSearchResults)
+                        if (_showSearchProductModels)
                           Positioned(
                             top: 0.h, // Position just below the search bar
                             left: 0,
                             right: 0,
                             child: Container(
                               color: Colors.white,
-                              child: searchResults.when(
+                              child: SearchProductModels.when(
                                 data: (results) {
                                   debugPrint(
                                       "Search results: $results"); // Debug print
@@ -128,7 +128,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                       itemBuilder: (context, index) {
                                         final product = results[index];
                                         return ListTile(
-                                          title: Text(product.title),
+                                          title: const Text('product.'),
                                           onTap: () {
                                             Navigator.push(
                                               context,
@@ -141,7 +141,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                             );
 
                                             setState(() {
-                                              _showSearchResults = false;
+                                              _showSearchProductModels = false;
                                               FocusScope.of(context).unfocus();
                                             });
                                           },
@@ -176,12 +176,12 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                   },
                                   child: Image.network(
                                       width: double.infinity,
-                                          fit: BoxFit.contain,
+                                      fit: BoxFit.contain,
                                       e.image!),
                                 );
                               },
                             ).toList(),
-                          options: CarouselOptions(
+                            options: CarouselOptions(
                               height: 150.h,
                               aspectRatio: 0.1,
                               reverse: true,
@@ -196,7 +196,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                           data: data,
                           title: "Hot products",
                         ),
-                       
                         CarouselSlider(
                             items: ads.map(
                               (e) {
@@ -206,7 +205,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                               const CreateNewListinScreen(),
+                                              const CreateNewListinScreen(),
                                         ));
                                   },
                                   child: Image.network(
@@ -216,7 +215,7 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                                 );
                               },
                             ).toList(),
-                           options: CarouselOptions(
+                            options: CarouselOptions(
                               height: 150.h,
                               aspectRatio: 0.1,
                               reverse: true,
@@ -224,7 +223,6 @@ class _ProductScreenState extends ConsumerState<ProductScreen> {
                               autoPlay: true,
                               enlargeCenterPage: true,
                             )),
-                      
                         ProductSlider(
                           ishot: false,
                           data: data,
@@ -300,18 +298,21 @@ class ProductSlider extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             shrinkWrap: true,
-            itemCount:ishot? data.hot_products!.length :data.products!.data!.length,
+            itemCount:
+                ishot ? data.hot_products!.length : data.products!.data!.length,
             itemBuilder: (context, index) {
-              final Product product = ishot?  data.hot_products![index]: data.products!.data![index];
+              final Product product = ishot
+                  ? data.hot_products![index]
+                  : data.products!.data![index];
               return ProductCard(
                 product: product,
                 onTap: (product) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailScreen(productId: product.id),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           ProductDetailScreen(productId: product.id),
+                  //     ));
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

@@ -11,18 +11,18 @@ import 'package:smartbazar/features/saved_search/model/saved_search_response_mod
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 // Define a provider that handles the search results logic
-final searchResultsProvider = StateNotifierProvider<SearchResultsNotifier,
-    AsyncValue<List<SavedSearchesResponseModel>>>(
-  (ref) => SearchResultsNotifier(ref),
+final SearchProductModelsProvider = StateNotifierProvider<
+    SearchProductModelsNotifier, AsyncValue<List<SavedSearchesResponseModel>>>(
+  (ref) => SearchProductModelsNotifier(ref),
 );
 
-class SearchResultsNotifier
+class SearchProductModelsNotifier
     extends StateNotifier<AsyncValue<List<SavedSearchesResponseModel>>> {
-  SearchResultsNotifier(this.ref) : super(const AsyncValue.data([]));
+  SearchProductModelsNotifier(this.ref) : super(const AsyncValue.data([]));
 
   final Ref ref;
 
-  Future<void> fetchSearchResults(String query) async {
+  Future<void> fetchSearchProductModels(String query) async {
     state = const AsyncValue.loading();
     try {
       final result =
@@ -46,21 +46,23 @@ class SavedSearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
-  bool isShowingSearchResults = false;
+  bool isShowingSearchProductModels = false;
   String currentQuery = '';
 
   void _onSavedSearchTapped(String keyword) {
     setState(() {
       currentQuery = keyword;
-      isShowingSearchResults = true;
+      isShowingSearchProductModels = true;
     });
-    ref.read(searchResultsProvider.notifier).fetchSearchResults(currentQuery);
+    ref
+        .read(SearchProductModelsProvider.notifier)
+        .fetchSearchProductModels(currentQuery);
   }
 
   @override
   Widget build(BuildContext context) {
     final savedSearchesAsync = ref.watch(getSavedSearchesProvider);
-    final searchResultsAsync = ref.watch(searchResultsProvider);
+    final SearchProductModelsAsync = ref.watch(SearchProductModelsProvider);
 
     return GenericSafeArea(
       child: Scaffold(
@@ -206,7 +208,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                           itemCount: savedSearchList.length,
                         ),
                         SizedBox(height: 20.h),
-                        if (isShowingSearchResults)
+                        if (isShowingSearchProductModels)
                           Column(
                             children: [
                               Text(
@@ -216,9 +218,9 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 10.h),
-                              searchResultsAsync.when(
-                                data: (searchResults) {
-                                  if (searchResults.isEmpty) {
+                              SearchProductModelsAsync.when(
+                                data: (SearchProductModels) {
+                                  if (SearchProductModels.isEmpty) {
                                     return const Text(
                                         "No matching results found.",
                                         style: TextStyle(color: Colors.grey));
@@ -226,11 +228,11 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
 
                                   // Extract the lists from search results
                                   final brandNewList =
-                                      searchResults.first.data?.brandNew!;
+                                      SearchProductModels.first.data?.brandNew!;
                                   // final usedList =
-                                  //     searchResults.first.data.used!;
+                                  //     SearchProductModels.first.data.used!;
                                   // final servicesList =
-                                  //     searchResults.first.data.services!;
+                                  //     SearchProductModels.first.data.services!;
 
                                   return Column(
                                     crossAxisAlignment:
@@ -250,7 +252,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                 loading: () =>
                                     const CircularProgressIndicator(),
                                 error: (error, stackTrace) =>
-                                    Text('Error: $error'),
+                                    const Text('Please login again'),
                               ),
                             ],
                           ),
@@ -377,7 +379,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                             ),
                             Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   item.title!,

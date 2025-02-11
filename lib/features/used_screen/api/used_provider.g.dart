@@ -6,11 +6,12 @@ part of 'used_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getUsedResponseHash() => r'59d85d9dc51de011a173d2f136a95ec0c892472b';
+String _$getUsedResponseHash() => r'0b4829ffa055a633983e36687423a8b50aece778';
 
 /// See also [getUsedResponse].
 @ProviderFor(getUsedResponse)
-final getUsedResponseProvider = AutoDisposeFutureProvider<UsedModel>.internal(
+final getUsedResponseProvider =
+    AutoDisposeFutureProvider<PostTypeFetch>.internal(
   getUsedResponse,
   name: r'getUsedResponseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,6 +21,8 @@ final getUsedResponseProvider = AutoDisposeFutureProvider<UsedModel>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetUsedResponseRef = AutoDisposeFutureProviderRef<UsedModel>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetUsedResponseRef = AutoDisposeFutureProviderRef<PostTypeFetch>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

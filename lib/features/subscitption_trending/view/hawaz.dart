@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: CarouselDemo(),
     );
   }
@@ -22,9 +22,15 @@ class CarouselDemo extends StatefulWidget {
 }
 
 class _CarouselDemoState extends State<CarouselDemo> {
-  final List<String> _items = ['Content 1', 'Content 2', 'Content 3', 'Content 4'];
+  final List<String> items = [
+    'Content 1',
+    'Content 2',
+    'Content 3',
+    'Content 4'
+  ];
 
-  final CarouselSliderController _carouselController = CarouselSliderController(); // Correct CarouselController instance
+  final CarouselSliderController _carouselController =
+      CarouselSliderController(); // Correct CarouselController instance
   int _currentIndex = 0;
 
   @override
@@ -37,7 +43,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CarouselSlider(
-            items: _items.map((item) {
+            items: items.map((item) {
               return Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -63,7 +69,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: _items.asMap().entries.map((entry) {
+            children: items.asMap().entries.map((entry) {
               return Container(
                 width: 12.0,
                 height: 12.0,
@@ -94,7 +100,7 @@ class _CarouselDemoState extends State<CarouselDemo> {
               const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (_currentIndex < _items.length - 1) {
+                  if (_currentIndex < items.length - 1) {
                     _carouselController.animateToPage(
                       _currentIndex + 1, // Move to next slide
                       duration: const Duration(milliseconds: 300),

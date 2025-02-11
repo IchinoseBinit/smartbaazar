@@ -10,6 +10,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor_details/api/change_password_api.dart';
 import 'package:smartbazar/features/vendor_details/api/verify_vendor_account_api.dart';
 import 'package:smartbazar/features/vendor_details/widgets/account_details_widget.dart';
@@ -35,9 +36,13 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
 
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      vendorName = prefs.getString('userName');
-    });
+    String? name = prefs.getString('name');
+
+    if (name != null) {
+      setState(() {
+        vendorName = name;
+      });
+    }
   }
 
   @override
@@ -61,14 +66,15 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
                     SizedBox(
                       width: 15.w,
                     ),
-                    Text(
-                      '$vendorName',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xff000000),
+                    if (vendorName != null)
+                      Text(
+                        '$vendorName',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xff000000),
+                        ),
                       ),
-                    ),
                     const Spacer(),
                     GestureDetector(
                       onTap: () {
@@ -128,7 +134,8 @@ class VerifyAccountWidget extends ConsumerStatefulWidget {
   const VerifyAccountWidget({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<VerifyAccountWidget> createState() => _VerifyAccountWidgetState();
+  ConsumerState<VerifyAccountWidget> createState() =>
+      _VerifyAccountWidgetState();
 }
 
 class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
@@ -136,6 +143,7 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
   File? taxCertificateFile;
   File? registerCertificateFile;
   bool _isLoading = false;
+  String? _isverified;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -199,6 +207,19 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    checkUserVerified().then(
+      (value) {
+        print("raju ${value?.userVerify}");
+        _isverified = value?.userVerify;
+      },
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -227,8 +248,9 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
             height: 10.h,
           ),
           const Divider(color: Color(0xffADADAD)),
+          if(_isverified=='1')
           Padding(
-            padding: EdgeInsets.only(left: 10.w, right: 45.w, top: 20.h),
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -241,12 +263,12 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
                       selectedFile: panVatFile,
                     ),
                     VerifyAccountPhotoContainer(
-                      title: 'Tax Certificate',
+                      title: 'VAT',
                       onTap: () => _pickFile('Tax'),
                       selectedFile: taxCertificateFile,
                     ),
                     VerifyAccountPhotoContainer(
-                      title: 'Register Certificate',
+                      title: 'Certificate',
                       onTap: () => _pickFile('Register'),
                       selectedFile: registerCertificateFile,
                     ),
@@ -255,6 +277,11 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
               ],
             ),
           ),
+          if(_isverified=='1')
+          Text("Request pending"),
+          if(_isLoading=='2')
+          Text('Please contact adminstrator'),
+
           const SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 12.w),
@@ -329,7 +356,8 @@ class ChangePasswordWidget extends ConsumerStatefulWidget {
   const ChangePasswordWidget({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ChangePasswordWidget> createState() => _ChangePasswordWidgetState();
+  ConsumerState<ChangePasswordWidget> createState() =>
+      _ChangePasswordWidgetState();
 }
 
 class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
@@ -348,24 +376,25 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
 
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userId = prefs.getString('userId');
-      email = prefs.getString('userEmail');
-      userName = prefs.getString('userName');
-    });
+
+    userId = prefs.getString('userId');
+    email = prefs.getString('email');
+    userName = prefs.getString('name');
   }
 
   Future<void> _changePassword() async {
     if (_formKey.currentState!.validate()) {
       final password = _passwordController.text;
       final confirmPassword = _confirmPasswordController.text;
-print(">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",);
+      print(
+        ">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",
+      );
       if (userId != null) {
         try {
           final result = await ref.read(changePasswordProvider(
                   password, confirmPassword, userId!, email!, userName!)
               .future);
-              // print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$result");
+          // print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$result");
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Password updated successfully!')),
           );
@@ -475,7 +504,7 @@ print(">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",);
                         CheckboxListTile(
                           title: Text(
                             'I have read and agree to the Terms & Conditions',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: 12.sp),
                           ),
                           value: termsAccepted,
                           activeColor: const Color(0xff362677),
@@ -484,11 +513,12 @@ print(">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",);
                               termsAccepted = newValue ?? false;
                             });
                           },
+                          controlAffinity: ListTileControlAffinity.leading,
                         ),
                         CheckboxListTile(
                           title: Text(
                             'I accept to receive marketing emails, SMS, and notifications',
-                            style: TextStyle(fontSize: 14.sp),
+                            style: TextStyle(fontSize: 12.sp),
                           ),
                           value: marketingAccepted,
                           activeColor: const Color(0xff362677),
@@ -497,12 +527,19 @@ print(">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",);
                               marketingAccepted = newValue ?? false;
                             });
                           },
+                          controlAffinity: ListTileControlAffinity.leading,
                         ),
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 10.h,
+                  ),
+                  const PreferredTimeZoneDropdown(),
+                  Text(
+                    "NOTE: If no preferred time zone is selected, the Country's preferred time zone will be used for the front-office dates (e.g. \"Asia/Kathmandu\" for Nepal) and \"UTC\" will be used for the Admin Panel dates.",
+                    style: TextStyle(
+                        fontSize: 10.sp, color: const Color(0xFF888888)),
                   ),
                   GeneralTextButton(
                     marginH: 0,
@@ -519,6 +556,97 @@ print(">>>>>>>>>>>>>>>>>>>>$userId: ,$email,$userName",);
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PreferredTimeZoneDropdown extends StatefulWidget {
+  const PreferredTimeZoneDropdown({super.key});
+
+  @override
+  State<PreferredTimeZoneDropdown> createState() =>
+      _PreferredTimeZoneDropdownState();
+}
+
+class _PreferredTimeZoneDropdownState extends State<PreferredTimeZoneDropdown> {
+  final List<String> timeZones = [
+    "UTC-12:00",
+    "UTC-11:00",
+    "UTC-10:00",
+    "UTC-09:00",
+    "UTC-08:00",
+    "UTC-07:00",
+    "UTC-06:00",
+    "UTC-05:00",
+    "UTC-04:00",
+    "UTC-03:00",
+    "UTC-02:00",
+    "UTC-01:00",
+    "UTC+00:00",
+    "UTC+01:00",
+    "UTC+02:00",
+    "UTC+03:00",
+    "UTC+04:00",
+    "UTC+05:00",
+    "UTC+06:00",
+    "UTC+07:00",
+    "UTC+08:00",
+    "UTC+09:00",
+    "UTC+10:00",
+    "UTC+11:00",
+    "UTC+12:00",
+  ];
+
+  String? selectedTimeZone;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          hintText: "Preferred Time Zone",
+          hintStyle: TextStyle(
+            color: const Color(0xFFADADAD),
+            fontSize: 14.sp,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          prefixIcon: Padding(
+            padding:
+                EdgeInsets.only(right: 11.w, left: 5.w, top: 5.h, bottom: 5.h),
+            child: Container(
+              height: 50,
+              width: 52,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(
+                    0xFFAEC5FF,
+                  )),
+              child: const Icon(
+                Icons.hourglass_bottom,
+                color: Color(0xff362677),
+              ),
+            ),
+          ),
+        ),
+        value: selectedTimeZone,
+        items: timeZones.map((timeZone) {
+          return DropdownMenuItem(
+            value: timeZone,
+            child: Text(timeZone),
+          );
+        }).toList(),
+        onChanged: (newValue) {
+          setState(() {
+            selectedTimeZone = newValue;
+          });
+        },
+        validator: (value) =>
+            value == null ? "Please select a time zone" : null,
       ),
     );
   }

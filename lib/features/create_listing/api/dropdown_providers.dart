@@ -19,26 +19,37 @@ Future<List<TypeList>> typeListProvider(TypeListProviderRef ref) async {
 
 // Provider for fetching category list
 @riverpod
-Future<List<Category>> categoryListProvider(CategoryListProviderRef ref, {String? parentId}) async {
+Future<List<MyCategory>> categoryListProvider(CategoryListProviderRef ref,
+    {String? parentId}) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchCategoryList(parentId: parentId);
 }
+
 @riverpod
-Future<List<Category>> subCategoryListProvider(SubCategoryListProviderRef ref, int parentId) async {
+Future<List<MyCategory>> subCategoryListProvider(
+    SubCategoryListProviderRef ref, int parentId) async {
+  final repository = ref.read(newListingRepositoryProvider);
+  return repository.fetchSubCategoryList(parentId);
+}
+
+Future<List<MyCategory>> getsubCategoryListProvder1(
+    SubCategoryListProviderRef ref, int parentId) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchSubCategoryList(parentId);
 }
 
 // Provider for fetching product types
 @riverpod
-Future<List<ProductType>> productTypeProvider(ProductTypeProviderRef ref) async {
+Future<List<ProductType>> productTypeProvider(
+    ProductTypeProviderRef ref) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchProductType();
 }
 
 // Provider for fetching city list
 @riverpod
-Future<List<CityList>> cityListProvider(CityListProviderRef ref, int page) async {
+Future<List<CityList>> cityListProvider(
+    CityListProviderRef ref, int page) async {
   final repository = ref.read(newListingRepositoryProvider);
   return repository.fetchCities(page);
 }

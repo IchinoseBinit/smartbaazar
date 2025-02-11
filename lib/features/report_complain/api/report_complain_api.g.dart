@@ -6,7 +6,7 @@ part of 'report_complain_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$reportComplainHash() => r'cca776459e6cbee791014a4f94653df9d1c31380';
+String _$reportComplainHash() => r'9038d8208d087ecff24430f8d310c8e91a44f2bb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -154,6 +154,8 @@ class ReportComplainProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ReportComplainRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `report` of this provider.
   ReportComplainModel get report;
@@ -172,4 +174,4 @@ class _ReportComplainProviderElement
   String get productId => (origin as ReportComplainProvider).productId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
