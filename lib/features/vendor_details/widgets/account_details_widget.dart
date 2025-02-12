@@ -62,9 +62,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userId = prefs.getString('userId');
-    });
+    userId = prefs.getString('userId');
   }
 
   void _setInitialValues(UserData? userData) {

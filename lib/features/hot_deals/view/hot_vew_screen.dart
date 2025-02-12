@@ -21,6 +21,7 @@ import 'package:smartbazar/features/product_details/constant/all_product_detail_
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/main.dart';
@@ -218,44 +219,49 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                             return Card(
                               elevation: 8,
                               child: ListView.separated(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount: results.length,
-                                itemBuilder: (context, index) {
-                                  final product = results[index];
-                                  return ListTile(
-                                    title: Text(product.name),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessTabScreen(
-                                              query: _searchController.text,
-                                            ),
-                                          ));
-
-                                      setState(() {
-                                        _showSearchProductModels = false;
-
-                                        FocusScope.of(context).unfocus();
-                                      });
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         ProductDetailsScreen(
-                                      //       productId: product.id,
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    },
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const Divider(),
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: results.length,
+                      itemBuilder: (context, index) {
+                        final product = results[index];
+                        return ListTile(
+                          dense: true,
+                          title: Text(
+                            softWrap: true,
+                            product.name,
+                            style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor, fontSize: 10),
+                          ),
+                          onTap: () {
+                            product.id!=null?
+                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VendorHomeScreen(
+                                 vendorName: product.name,
+                                 vid: int.tryParse(product.id!)!,
+                                ),
                               ),
+                            ):
+                            
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusinessTabScreen(
+                                  query: _searchController.text,
+                                ),
+                              ),
+                            );
+                            setState(() {
+                              _showSearchProductModels = false;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                    ),
                             );
                           }, loading: () {
                             return null;

@@ -181,7 +181,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                     PopupMenuButton(
                       menuPadding: EdgeInsets.only(left: 10.w),
                       onSelected: (value) {},
-
+    
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
@@ -190,7 +190,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           const BoxConstraints.expand(width: 150, height: 150),
                       // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
-
+    
                       color: Colors.grey,
                       itemBuilder: (context) {
                         return [
@@ -255,7 +255,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => VendorHomeScreen(
-                                        vendorName:widget.vendorname!,
+                                        vendorName: widget.vendorname!,
                                         vid: int.parse(widget.vendorid!),
                                       ),
                                     ));
@@ -319,6 +319,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              //image
               CachedNetworkImage(
                 imageUrl: widget.productImage ?? '',
                 height: 130.h,
@@ -355,10 +356,11 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 },
               ),
               SizedBox(
-                height: 5.h,
+                height: 7.h,
               ),
+              //title
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 22.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,10 +369,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       widget.title!,
                       style: headerstyle.copyWith(
                           color: ColorConstant.blackColor,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800),
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.bold),
                       softWrap: true,
                       maxLines: 1,
+                    ),
+                    SizedBox(
+                      height: 2.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -383,7 +388,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             style: headerstyle.copyWith(
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,
-                                fontWeight: FontWeight.w800),
+                                fontStyle: FontStyle.normal,
+    
+                                fontWeight: FontWeight.w900),
                           ),
                         ),
                         widget.offer == ''
@@ -423,8 +430,11 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 5.h,
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
+                padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 1.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -444,9 +454,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           ),
                         ),
                         const SizedBox(
-                          width: 5,
+                          width: 1,
                         ),
                         Container(
+                          margin: EdgeInsets.only(left: 5.w),
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(5),
@@ -536,6 +547,9 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                 child: Row(
@@ -606,12 +620,15 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Column(
                 // mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 9.h),
                     decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -654,10 +671,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 0.6.h,
+                  ),
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(vertical: 10.9.h),
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
                     decoration: BoxDecoration(
                       color: widget.membershipColor != null
                           ? Color(
@@ -682,7 +702,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VendorHomeScreen(
-                                    vendorName: widget.vendorname!,
+                                      vendorName: widget.vendorname!,
                                       vid: int.tryParse(widget.vendorid!)!),
                                 ));
                           },

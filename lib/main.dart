@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
@@ -14,9 +15,12 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/view/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
@@ -52,6 +56,10 @@ void main() {
   HttpOverrides.global = MyHttpOverrides();
 
   runApp(const ProviderScope(child: MyApp()));
+SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+
+      
+
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -80,12 +88,7 @@ class _MyAppState extends State<MyApp> {
   //   print('bibash ${_a['result']['username']}');
   // }
 
-  @override
-  void initState() {
-    // getss();
-    // TODO: implement initState
-    super.initState();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +103,8 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
 
-          home: SplashScreen(),),
-          // home: CreateNewListinScreen())
+          home: SplashScreen()
+          )
           
     );
   }

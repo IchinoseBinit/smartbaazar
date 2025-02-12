@@ -335,7 +335,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                                   _searchController
                                                       .text.isNotEmpty);
                                               if (_searchController
-                                                  .text.isNotEmpty) {
+                                                      .text.isNotEmpty) {
                                                 setState(() {
                                                   _isSectionsVisible = true;
                                                 });
@@ -715,6 +715,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       const NeverScrollableScrollPhysics(), // Prevent unnecessary nested scrolling issues
                   children: [
                     _buildFollowingTabContent(ref),
+                    // Container()
                     _buildForYouTabContent(ref),
                   ],
                 ),
@@ -1144,7 +1145,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                   height:
                       feedStoryContent == null || feedStoryContent.posts == null
                           ? 20.h
-                          : 90.h,
+                          : 95.h,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -1284,6 +1285,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) =>
                   const Center(child: Text("please login"))),
+          SizedBox(height: 70.h),
         ],
       ),
     );
@@ -1383,7 +1385,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       // return _buildFeedItem(feedItems[index]);
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 1.0,
+                          vertical: 2.0,
                           //  horizontal: 16,
                         ),
                         child: Column(

@@ -137,9 +137,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
 
-    Future<void> refresh() async {
+    Future<void> refreshprovider() async {
       ref.refresh(getSearchResponseProvider(
           _query, selectedValue ?? 'price-low-to-high'));
+      ref.refresh(searchProvider(_searchController.text));
     }
 
     return Scaffold(
@@ -152,7 +153,6 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
             minHeight: MediaQuery.of(context).size.height,
           ),
           child: IntrinsicHeight(
-            
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,7 +348,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   ),
                                 ],
                               ),
-        
+
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -382,7 +382,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   );
                                 }),
                               ),
-        
+
                               SizedBox(
                                 height: 80.h,
                                 child: PageView.builder(
@@ -397,7 +397,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   },
                                   itemBuilder: (context, index) {
                                     Map<String, dynamic> data = items[index];
-        
+
                                     // Highlight only when index == 4
                                     bool isActive = index == 1;
                                     return GestureDetector(
@@ -472,7 +472,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                   },
                                 ),
                               ),
-        
+
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10.w),
                                 child: const Divider(
@@ -550,7 +550,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     child: Text('No result found'),
                                   ); // No results
                                 }
-                                return ListView.separated(
+                                ListView.separated(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   primary: false,
@@ -567,15 +567,28 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             fontSize: 10),
                                       ),
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessTabScreen(
-                                              query: _searchController.text,
-                                            ),
-                                          ),
-                                        );
+                                        product.id != null
+                                            ? Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      VendorHomeScreen(
+                                                    vendorName: product.name,
+                                                    vid: int.tryParse(
+                                                        product.id!)!,
+                                                  ),
+                                                ),
+                                              )
+                                            : Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BusinessTabScreen(
+                                                    query:
+                                                        _searchController.text,
+                                                  ),
+                                                ),
+                                              );
                                         setState(() {
                                           _showSearchProductModels = false;
                                           FocusScope.of(context).unfocus();
@@ -855,165 +868,187 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               child: nolistingfound(),
                                             ),
                                           )
-                                        : SingleChildScrollView(
-                                            physics:
-                                                const BouncingScrollPhysics(),
-                                            scrollDirection: Axis
-                                                .vertical, // Scroll vertically if needed
-                                            child: Wrap(
-                                              spacing: 5
-                                                  .w, // Horizontal space between items
-                                              runSpacing: 15
-                                                  .h, // Vertical space between rows
-                                              children: List.generate(
-                                                data.brandNew!.length,
-                                                (index) {
-                                                  GlobalModel res =
-                                                      data.brandNew![index];
-                                                  
-                                                  return Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                30.w) /
-                                                            2, // Dynamically adjust to fit two items per row
-                                                        child: Card(
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          shadowColor: const Color(
-                                                                  0xff3D215F)
-                                                              .withOpacity(0.5),
-                                                          elevation: 9,
-                                                          margin:
-                                                              EdgeInsets.symmetric(
-                                                                  horizontal: 5.w),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(15.0),
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30),
+                                            child: SingleChildScrollView(
+                                              physics:
+                                                  const BouncingScrollPhysics(),
+                                              scrollDirection: Axis
+                                                  .vertical, // Scroll vertically if needed
+                                              child: Wrap(
+                                                alignment: WrapAlignment.center,
+                                                spacing: 10
+                                                    .w, // Horizontal space between items
+                                                runSpacing: 10
+                                                    .h, // Vertical space between rows
+                                                children: List.generate(
+                                                  data.brandNew!.length,
+                                                  (index) {
+                                                    GlobalModel res =
+                                                        data.brandNew![index];
+
+                                                    return SizedBox(
+                                                      width: (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              2) -
+                                                          15, // Adjust width for two columns
+                                                      child: Column(
+                                                        children: [
+                                                          Card(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                            elevation: 9,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0),
+                                                            ),
+                                                            child:
+                                                                AllProductDetailWidget(
+                                                              savedid: res.savedByLoggedUser ==
+                                                                          null ||
+                                                                      res.savedByLoggedUser!
+                                                                          .isEmpty
+                                                                  ? []
+                                                                  : res
+                                                                      .savedByLoggedUser
+                                                                      ?.map(
+                                                                        (e) => SavedPost(
+                                                                            id: e
+                                                                                .id,
+                                                                            userId:
+                                                                                e.userId,
+                                                                            postId: e.postId,
+                                                                            createdAt: e.createdAt,
+                                                                            updatedAt: e.updatedAt),
+                                                                      )
+                                                                      .toList(),
+                                                              onRefresh: () {
+                                                                refreshprovider();
+                                                              },
+                                                              productid: res.id,
+                                                              lat: res.user[0]
+                                                                  .latitude,
+                                                              long: res.user[0]
+                                                                  .longitude,
+                                                              membershipid: res
+                                                                  .user[0]
+                                                                  .membership_id,
+                                                              posttype: res
+                                                                  .post_type_id,
+                                                              didcountpercentage:
+                                                                  res.discount_percentage,
+                                                              id: int.tryParse(
+                                                                  res.user[0]
+                                                                      .user_id),
+                                                              shortestDistance: res
+                                                                  .user[0]
+                                                                  .shortestDistance,
+                                                              issponsored: res
+                                                                      .user[0]
+                                                                      .sponsored ??
+                                                                  false,
+                                                              distance: res
+                                                                  .user[0]
+                                                                  .shortestDistance,
+                                                              wow: res.wow
+                                                                  .toString(),
+                                                              discounttedPrice:
+                                                                  res.discont,
+                                                              comment: res
+                                                                  .commentnum
+                                                                  .toString(),
+                                                              avg_rating: res
+                                                                      .avg_rating
+                                                                      ?.toDouble() ??
+                                                                  0.0,
+                                                              offer: res.offers,
+                                                              productImage:
+                                                                  res.imageUrl,
+                                                              Vimage: res
+                                                                  .user[0]
+                                                                  .photo,
+                                                              vendorname: res
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
+                                                              similarproductCount:
+                                                                  res.similarproductCount,
+                                                              membershipColor: res
+                                                                  .user[0]
+                                                                  .membership_color,
+                                                              membershipTitle: res
+                                                                  .user[0]
+                                                                  .membership_title,
+                                                            ),
                                                           ),
-                                                          child:
-                                                              AllProductDetailWidget(
-                                                            savedid: res.savedByLoggedUser ==
-                                                                        null ||
-                                                                    res.savedByLoggedUser!
-                                                                        .isEmpty
-                                                                ? []
-                                                                : res
-                                                                    .savedByLoggedUser
-                                                                    ?.map(
-                                                                      (e) => SavedPost(
-                                                                          id: e.id,
-                                                                          userId: e
-                                                                              .userId,
-                                                                          postId: e
-                                                                              .postId,
-                                                                          createdAt: e
-                                                                              .createdAt,
-                                                                          updatedAt:
-                                                                              e.updatedAt),
-                                                                    )
-                                                                    .toList(),
-                                                            onRefresh: () {
-                                                              refresh();
-                                                            },
-                                                            productid: res.id,
-                                                            lat: res
-                                                                .user[0].latitude,
-                                                            long: res
-                                                                .user[0].longitude,
-                                                            membershipid: res
-                                                                .user[0]
-                                                                .membership_id,
-                                                            posttype:
-                                                                res.post_type_id,
-                                                            didcountpercentage: res
-                                                                .discount_percentage,
-                                                            id: int.tryParse(res
-                                                                .user[0].user_id),
-                                                            shortestDistance: res
-                                                                .user[0]
-                                                                .shortestDistance,
-                                                            issponsored: res.user[0]
-                                                                    .sponsored ??
-                                                                false,
-                                                            distance: res.user[0]
-                                                                .shortestDistance,
-                                                            wow: res.wow.toString(),
-                                                            discounttedPrice:
-                                                                res.discont,
-                                                            comment: res.commentnum
-                                                                .toString(),
-                                                            avg_rating: res
-                                                                    .avg_rating
-                                                                    ?.toDouble() ??
-                                                                0.0,
-                                                            offer: res.offers,
-                                                            productImage:
-                                                                res.imageUrl,
-                                                            Vimage:
-                                                                res.user[0].photo,
-                                                            vendorname:
-                                                                res.user[0].name,
-                                                            title: res.title,
-                                                            price: res.price,
-                                                            similarproductCount: res
-                                                                .similarproductCount,
-                                                            membershipColor: res
-                                                                .user[0]
-                                                                .membership_color,
-                                                            membershipTitle: res
-                                                                .user[0]
-                                                                .membership_title,
-                                                          ),
-                                                        ),
+                                                          SizedBox(
+                                                              height: 10.h),
+                                                        ],
                                                       ),
-                                                      SizedBox(height: 30.h,),
-                                                    ],
-                                                  );
-                                                },
+                                                    );
+                                                  },
+                                                ),
                                               ),
                                             ),
                                           ),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                        children: data.business!.map(
-                                          (e) {
-                                            return BigContainer(
-                                              storycount: e.storyCount.toString(),
-                                              id: e.vendorId!,
-                                              issubbed: false,
-                                              memebertitle: e.membershipTitle!,
-                                              lat: double.tryParse(
-                                                      e.latitude ?? '0') ??
-                                                  0,
-                                              long: double.tryParse(
-                                                      e.longitude ?? '0') ??
-                                                  0,
-                                              Cnumber:
-                                                  e.contact ?? '9887654867',
-                                              
-                                              location: e.location ?? 'Nepal',
-                                              total_connections:
-                                                  e.totalConnections!,
-                                              total_prize_worth:
-                                                  e.totalPrizeWorth!,
-                                              title: e.vendorName!,
-                                              contact:
-                                                  e.contact ?? '9845784578',
-                                              logo: e.logo!,
-                                              membershipTitle:
-                                                  e.membershipTitle!,
-                                              storyCount: e.storyCount!,
-                                              hasSpo: e.hasSponsoredGifts!,
-                                            );
-                                          },
-                                        ).toList(),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 30),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Column(
+                                          children: data.business!.map(
+                                            (e) {
+                                              return BigContainer(
+                                                onsubscribed: () {
+                                                  refreshprovider();
+                                                },
+                                                storycount:
+                                                    e.storyCount.toString(),
+                                                id: e.vendorId!,
+                                                issubbed: false,
+                                                memebertitle:
+                                                    e.membershipTitle!,
+                                                lat: double.tryParse(
+                                                        e.latitude ?? '0') ??
+                                                    0,
+                                                long: double.tryParse(
+                                                        e.longitude ?? '0') ??
+                                                    0,
+                                                Cnumber:
+                                                    e.contact ?? '9887654867',
+                                                location: e.location ?? 'Nepal',
+                                                total_connections:
+                                                    e.totalConnections!,
+                                                total_prize_worth:
+                                                    e.totalPrizeWorth!,
+                                                title: e.vendorName!,
+                                                contact:
+                                                    e.contact ?? '9845784578',
+                                                logo: e.logo!,
+                                                membershipTitle:
+                                                    e.membershipTitle!,
+                                                storyCount: e.storyCount!,
+                                                hasSpo: e.hasSponsoredGifts!,
+                                              );
+                                            },
+                                          ).toList(),
+                                        ),
                                       ),
                                     ),
                                     data.used!.isEmpty
@@ -1042,7 +1077,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                       (index) {
                                                         GlobalModel res =
                                                             data.used![index];
-        
+
                                                         return SizedBox(
                                                           width: (MediaQuery.of(
                                                                           context)
@@ -1091,7 +1126,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                                       )
                                                                       .toList(),
                                                               onRefresh: () {
-                                                                refresh();
+                                                                refreshprovider();
                                                               },
                                                               lat: res.user[0]
                                                                   .latitude,
@@ -1155,138 +1190,143 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                               child: nolistingfound(),
                                             ),
                                           )
-                                        : SingleChildScrollView(
-                                            scrollDirection: Axis
-                                                .vertical, // Scroll vertically if needed
-                                            child: LayoutBuilder(
-                                              builder: (context, constraints) {
-                                                return Wrap(
-                                                  spacing: 5
-                                                      .w, // Horizontal space between items
-                                                  runSpacing: 15
-                                                      .h, // Vertical space between rows
-                                                  children: List.generate(
-                                                    data.services?.length ?? 0,
-                                                    (index) {
-                                                      GlobalModel res =
-                                                          data.services![index];
-                                                  
-                                                      return SizedBox(
-                                                        width: (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                30.w) /
-                                                            2, // Dynamically adjust to fit two items per row
-                                                        child: Card(
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          shadowColor:
-                                                              const Color(
-                                                                      0xff3D215F)
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                          elevation: 9,
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      5.w),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15.0),
+                                        : Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 30),
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis
+                                                  .vertical, // Scroll vertically if needed
+                                              child: LayoutBuilder(
+                                                builder:
+                                                    (context, constraints) {
+                                                  return Wrap(
+                                                    spacing: 5
+                                                        .w, // Horizontal space between items
+                                                    runSpacing: 15
+                                                        .h, // Vertical space between rows
+                                                    children: List.generate(
+                                                      data.services?.length ??
+                                                          0,
+                                                      (index) {
+                                                        GlobalModel res = data
+                                                            .services![index];
+
+                                                        return SizedBox(
+                                                          width: (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width -
+                                                                  30.w) /
+                                                              2, // Dynamically adjust to fit two items per row
+                                                          child: Card(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            shadowColor:
+                                                                const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                            elevation: 9,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15.0),
+                                                            ),
+                                                            child:
+                                                                AllProductDetailWidget(
+                                                              savedid: res.savedByLoggedUser ==
+                                                                          null ||
+                                                                      res.savedByLoggedUser!
+                                                                          .isEmpty
+                                                                  ? []
+                                                                  : res
+                                                                      .savedByLoggedUser
+                                                                      ?.map(
+                                                                        (e) => SavedPost(
+                                                                            id: e
+                                                                                .id,
+                                                                            userId:
+                                                                                e.userId,
+                                                                            postId: e.postId,
+                                                                            createdAt: e.createdAt,
+                                                                            updatedAt: e.updatedAt),
+                                                                      )
+                                                                      .toList(),
+                                                              onRefresh: () {
+                                                                refreshprovider();
+                                                              },
+                                                              productid: res.id,
+                                                              lat: res.user[0]
+                                                                  .latitude,
+                                                              long: res.user[9]
+                                                                  .longitude,
+                                                              didcountpercentage:
+                                                                  res.discount_percentage,
+                                                              membershipid: res
+                                                                  .user[0]
+                                                                  .membership_id,
+                                                              shortestDistance: res
+                                                                  .user[0]
+                                                                  .shortestDistance,
+                                                              posttype: res
+                                                                  .post_type_id,
+                                                              avg_rating: res
+                                                                  .avg_rating,
+                                                              comment: res
+                                                                  .commentnum,
+                                                              discounttedPrice:
+                                                                  res.discont,
+                                                              offer: res.offers,
+                                                              wow: res.wow,
+                                                              id: int.tryParse(
+                                                                  res.user.first
+                                                                      .user_id),
+                                                              issponsored: res
+                                                                  .user[0]
+                                                                  .sponsored!,
+                                                              productImage:
+                                                                  res.imageUrl,
+                                                              Vimage: res
+                                                                  .user[0]
+                                                                  .photo!,
+                                                              vendorname: res
+                                                                  .user[0].name,
+                                                              title: res.title,
+                                                              price: res.price,
+                                                              similarproductCount:
+                                                                  res.similarproductCount,
+                                                              membershipColor: res
+                                                                  .user[0]
+                                                                  .membership_color!,
+                                                              membershipTitle: res
+                                                                  .user[0]
+                                                                  .membership_title!,
+                                                            ),
                                                           ),
-                                                          child:
-                                                              AllProductDetailWidget(
-                                                            savedid: res.savedByLoggedUser ==
-                                                                        null ||
-                                                                    res.savedByLoggedUser!
-                                                                        .isEmpty
-                                                                ? []
-                                                                : res
-                                                                    .savedByLoggedUser
-                                                                    ?.map(
-                                                                      (e) => SavedPost(
-                                                                          id: e
-                                                                              .id,
-                                                                          userId: e
-                                                                              .userId,
-                                                                          postId: e
-                                                                              .postId,
-                                                                          createdAt: e
-                                                                              .createdAt,
-                                                                          updatedAt:
-                                                                              e.updatedAt),
-                                                                    )
-                                                                    .toList(),
-                                                            onRefresh: () {
-                                                              refresh();
-                                                            },
-                                                            productid: res.id,
-                                                            lat: res.user[0]
-                                                                .latitude,
-                                                            long: res.user[9]
-                                                                .longitude,
-                                                            didcountpercentage:
-                                                                res.discount_percentage,
-                                                            membershipid: res
-                                                                .user[0]
-                                                                .membership_id,
-                                                            shortestDistance: res
-                                                                .user[0]
-                                                                .shortestDistance,
-                                                            posttype: res
-                                                                .post_type_id,
-                                                            avg_rating:
-                                                                res.avg_rating,
-                                                            comment:
-                                                                res.commentnum,
-                                                            discounttedPrice:
-                                                                res.discont,
-                                                            offer: res.offers,
-                                                            wow: res.wow,
-                                                            id: int.tryParse(res
-                                                                .user
-                                                                .first
-                                                                .user_id),
-                                                            issponsored: res
-                                                                .user[0]
-                                                                .sponsored!,
-                                                            productImage:
-                                                                res.imageUrl,
-                                                            Vimage: res
-                                                                .user[0].photo!,
-                                                            vendorname: res
-                                                                .user[0].name,
-                                                            title: res.title,
-                                                            price: res.price,
-                                                            similarproductCount:
-                                                                res.similarproductCount,
-                                                            membershipColor: res
-                                                                .user[0]
-                                                                .membership_color!,
-                                                            membershipTitle: res
-                                                                .user[0]
-                                                                .membership_title!,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              },
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           ),
                                   ]),
                                 ),
                                 SizedBox(
-                                  height: 5.h,
+                                  height: 40.h,
                                 ),
                               ],
                             )),
-                            SizedBox(height: 30.h,),
+                        SizedBox(
+                          height: 60.h,
+                        ),
                       ],
                     );
                   },
@@ -1296,7 +1336,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                 ),
-              SizedBox(height: 30.h,),
+                SizedBox(
+                  height: 70.h,
+                ),
               ],
             ),
           ),

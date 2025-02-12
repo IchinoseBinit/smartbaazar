@@ -8,26 +8,41 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
+import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/search_product_model.dart';
+import 'package:smartbazar/features/home/view/header.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/get_vendor_by_brand_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/get_vendor_posts_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_all_products_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/vendorfollow_unfollow_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/main.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
@@ -44,7 +59,55 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
+  bool? showsearch;
   int? _categorieslength;
+  final List<Map<String, dynamic>> _items = [
+    {
+      'icon': 'assets/icon/openCartIcon.svg',
+      'label': 'SocioShop',
+      'screen': const SocioShopScreen()
+    },
+    {
+      'icon': 'assets/icon/loading.svg',
+      'label': 'Everything',
+      'screen': const HomeScreen()
+    },
+    {
+      'icon': 'assets/icon/usedIcon.svg',
+      'label': 'Used',
+      'screen': const UsedScreen()
+    },
+    {
+      'icon': 'assets/icon/b2bIcon.svg',
+      'label': 'TradeHub',
+      'screen': const B2bScreen()
+    },
+    {
+      'icon': 'assets/icon/brandBazarIcon.svg',
+      'label': 'Brandbazaar',
+      'screen': const BrandBazarScreen()
+    },
+    {
+      'icon': 'assets/icon/box.svg',
+      'label': 'ServiceHub',
+      'screen': const ServicesScreen()
+    },
+    {
+      'icon': 'assets/icon/vectors.svg',
+      'label': 'Job',
+      'screen': const JobssScreen()
+    },
+    {
+      'icon': 'assets/icon/groceryIcon.svg',
+      'label': 'Grocery',
+      'screen': const GrocarysScreen()
+    },
+    {
+      'icon': 'assets/icon/eventIcon.svg',
+      'label': 'Events',
+      'screen': const EventsScreen()
+    },
+  ];
   final List<String> categories = [
     "PRODUCTS",
     "Used",
@@ -66,6 +129,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   late TabController _tabController;
   int _postType = 0; // Default to 'Home' tab with postType 0
   String? _vendorimage;
+  PageController _pageController = PageController(viewportFraction: 0.3);
 
   // Future<void> gets() async {
   //   final a = followvendor("9").then(
@@ -77,15 +141,43 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
   int? myselectedindex; // Track selected index
   double? dynamicheight;
+  Map<String, String>? dropdownValue;
+  int? postypeid = 0;
+
+  Offset _initialDragPosition = Offset.zero; // Track initial drag position
+  bool _isSectionsVisible = true;
+
   int? tabsize;
+  void _onDragUpdate(DragUpdateDetails details) {
+    final dragDistance = details.globalPosition.dy - _initialDragPosition.dy;
+    if (dragDistance > 50 && !_isSectionsVisible) {
+      setState(() {
+        _isSectionsVisible = true;
+      });
+    } else if (dragDistance < -50 && _isSectionsVisible) {
+      setState(() {
+        _isSectionsVisible = false;
+      });
+    }
+  }
+
+  void _onDragStart(DragStartDetails details) {
+    _initialDragPosition = details.globalPosition;
+  }
+
   @override
   void initState() {
+    showsearch = true;
     _categorieslength = categories.length;
     // gets();
     super.initState();
     myselectedindex = 0;
     dynamicheight = 410.0.h;
     tabsize = 80;
+    _pageController = PageController(
+      viewportFraction: 0.3,
+      initialPage: selectedIndex,
+    );
 
     _tabController = TabController(length: 6, vsync: this);
 
@@ -162,8 +254,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   @override
   Widget build(BuildContext context) {
     final allproductsresp = ref.watch(getVendorAllProductsProvider(widget.vid));
-    Future<void> refresh() async {
+
+    Future<void> refreshAllprovider() async {
       ref.refresh(getVendorAllProductsProvider(widget.vid));
+      ref.refresh(getVendorAllProductsProvider(widget.vid));
+      ref.refresh(getvendorpostandprizesProvider((widget.vid)));
     }
 
     Future<void> searchvendor(String name) async {
@@ -256,7 +351,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         children: [
           // Scrollable content
           Positioned.fill(
-            top: 156.h, // Space for the search bar
+            top: 250.h, // Space for the search bar
             child: SingleChildScrollView(
               child: ref.watch(getVendorCardProvider(widget.vid)).when(
                     data: (vendorcard) {
@@ -277,6 +372,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             ),
                           if (vendorcard.data != null)
                             BigContainer(
+                              onsubscribed: () {
+                                refreshAllprovider();
+                              },
                               lat: double.tryParse(
                                   vendorcard.data!.vendor_card?.latitude ??
                                       '0')!,
@@ -296,10 +394,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                   .toString(), // Assuming storyCount is in vendor_card
                               membershipTitle: vendorcard.data!.vendor_card!
                                   .membership_title!, // Assuming membershipTitle is in vendor_card
-                              storycount: vendorcard.data!.vendor_card!.storycount!.toString(),
-                             // Assuming dealsCircle is in vendor_card
-                              total_connections:
-                                vendorcard.data!.vendor_card!.subscribers!.toString(), // Assuming totalConnections is in vendor_card
+                              storycount: vendorcard
+                                  .data!.vendor_card!.storycount!
+                                  .toString(),
+                              // Assuming dealsCircle is in vendor_card
+                              total_connections: vendorcard
+                                  .data!.vendor_card!.subscribers!
+                                  .toString(), // Assuming totalConnections is in vendor_card
                               total_prize_worth: vendorcard
                                   .data!.vendor_card!.prize_worth!
                                   .toString(), // Assuming totalPrizeWorth is in vendor_card
@@ -333,6 +434,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 setState(() {
                                   // Check if the tapped tab index is greater than 1
                                   dynamicheight = value > 1 ? 50.h : 410.h;
+                                  print("raju ${_tabController.index == 0}");
+                                  showsearch =
+                                      _tabController.index == 0 ? true : false;
                                 });
                               },
                               tabAlignment: TabAlignment.start,
@@ -352,12 +456,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               .watch(getvendorbybrandnameProvider(widget.vid))
                               .when(
                                 data: (data) {
-                                  if (data.data!.b2b?.length == 0) {
-                                    print("kalu ");
-                                    categories.where(
-                                      (element) => element == 'b2b',
-                                    );
-                                  }
+                                  // if (data.data!.b2b?.length == 0) {
+                                  //   categories.where(
+                                  //     (element) => element == 'b2b',
+                                  //   );
+                                  // }
                                   if (myselectedindex == 0) {
                                     alldata = data.data?.brandnew;
                                   }
@@ -828,186 +931,200 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                           ],
                                         ),
                                       ),
-                                      vendorsearchrespnse == null ||
-                                                  vendorsearchrespnse!
-                                                      .isEmpty ??
-                                              true
-                                          ? (alldata?.isEmpty ?? true
-                                              ? const Padding(
-                                                  padding: EdgeInsets.all(40.0),
-                                                  child: Center(
-                                                    child: Text(
-                                                        "No Listing available....."),
-                                                  ),
-                                                )
-                                              : AnimatedContainer(
-                                                  duration: const Duration(
-                                                      milliseconds: 400),
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Wrap(
-                                                      spacing: 3.w,
-                                                      children: List.generate(
-                                                          alldata?.length ?? 0,
-                                                          (index) {
-                                                        BrandNewModel prod =
-                                                            alldata![index];
-                                                        return ProductDetailWidget(
-                                                          lat: prod.userdetails
-                                                              ?.latitude,
-                                                          long: prod.userdetails
-                                                              ?.longitude,
-                                                          productid: prod.id,
-                                                          posttype:
-                                                              prod.post_type_id,
-                                                          vendorid: prod
-                                                              .userdetails!
-                                                              .user_id,
-                                                          onRefresh: () {
-                                                            refresh();
-                                                          },
-                                                          membershipid: prod
-                                                              .userdetails
-                                                              ?.membership_id,
-                                                          didcountpercentage:
-                                                              prod.discount_percentage ??
-                                                                  0,
-                                                          lefttile: "TradeHub",
-                                                          vendorname: prod
-                                                                  .userdetails
-                                                                  ?.name ??
-                                                              "",
-                                                          Vimage: prod
-                                                                  .userdetails
-                                                                  ?.photo ??
-                                                              "",
-                                                          avg_rating: prod
-                                                                  .avg_rating
-                                                                  ?.toDouble() ??
-                                                              0,
-                                                          comment: prod
-                                                                  .commentcount
-                                                                  ?.toString() ??
-                                                              "0",
-                                                          discounttedPrice: prod
-                                                                  .discounted_price
-                                                                  ?.toString() ??
-                                                              "0",
-                                                          distance: double.tryParse(prod
-                                                                  .shortestDistance
-                                                                  ?.toString() ??
-                                                              "0"),
-                                                          issponsored: prod
-                                                                  .userdetails
-                                                                  ?.sponsored ??
-                                                              false,
-                                                          membershipColor: prod
-                                                                  .userdetails
-                                                                  ?.membership_color ??
-                                                              "",
-                                                          membershipTitle: prod
-                                                                  .userdetails
-                                                                  ?.membership_title ??
-                                                              "",
-                                                          offer: prod.wow ?? "",
-                                                          price:
-                                                              prod.price ?? "",
-                                                          productImage:
-                                                              prod.image,
-                                                          shortestDistance:
-                                                              prod.shortestDistance ??
-                                                                  0.0,
-                                                          similarproductCount:
-                                                              prod.similarVendorProfileProductCount ??
-                                                                  0,
-                                                          title:
-                                                              prod.title ?? "",
-                                                          wow: prod.wow ?? "",
-                                                        );
-                                                      }),
+                                      if (showsearch!)
+                                        vendorsearchrespnse == null ||
+                                                    vendorsearchrespnse!
+                                                        .isEmpty ??
+                                                true
+                                            ? (alldata?.isEmpty ?? true
+                                                ? const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(40.0),
+                                                    child: Center(
+                                                      child: Text(
+                                                          "No Listing available....."),
                                                     ),
-                                                  ),
-                                                ))
-                                          : SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Wrap(
-                                                spacing: 3.w,
-                                                children: List.generate(
-                                                    vendorsearchrespnse
-                                                            ?.length ??
-                                                        0, (index) {
-                                                  VendorSearchModel prod =
-                                                      vendorsearchrespnse![
-                                                          index];
-                                                  return ProductDetailWidget(
-                                                    lat: prod
-                                                        .userdetails?.latitude,
-                                                    long: prod
-                                                        .userdetails?.longitude,
-                                                    productid: prod.id!,
-                                                    posttype: prod.postType,
-                                                    vendorid: prod
-                                                        .userdetails?.userId,
-                                                    onRefresh: () {
-                                                      refresh();
-                                                    },
-                                                    membershipid: prod
-                                                        .userdetails
-                                                        ?.membershipId,
-                                                    didcountpercentage: prod
-                                                        .discountPercentage
-                                                        ?.toInt(),
-                                                    lefttile: "TradeHub",
-                                                    vendorname: prod.userdetails
-                                                            ?.name ??
-                                                        "",
-                                                    Vimage: prod.userdetails
-                                                            ?.photo ??
-                                                        "",
-                                                    avg_rating: prod.avgRating
-                                                            ?.toDouble() ??
-                                                        0,
-                                                    comment: prod.commentCount
-                                                            ?.toString() ??
-                                                        "0",
-                                                    discounttedPrice: prod
-                                                            .discountedPrice
-                                                            ?.toString() ??
-                                                        "0",
-                                                    distance: double.tryParse(prod
-                                                            .userdetails
-                                                            ?.shortestDistance
-                                                            ?.toString() ??
-                                                        "0"),
-                                                    issponsored: prod
-                                                            .userdetails
-                                                            ?.sponsored ??
-                                                        false,
-                                                    membershipColor: prod
-                                                            .userdetails
-                                                            ?.membershipColor ??
-                                                        "",
-                                                    membershipTitle: prod
-                                                            .userdetails
-                                                            ?.membershipTitle ??
-                                                        "",
-                                                    offer: prod.wow ?? "",
-                                                    price: prod.price ?? "",
-                                                    productImage: prod.image,
-                                                    shortestDistance: prod
-                                                            .userdetails
-                                                            ?.shortestDistance ??
-                                                        0.0,
-                                                    similarproductCount:
-                                                        prod.similarProductCount ??
-                                                            0,
-                                                    title: prod.title ?? "",
-                                                    wow: prod.wow ?? "",
-                                                  );
-                                                }),
+                                                  )
+                                                : AnimatedContainer(
+                                                    duration: const Duration(
+                                                        milliseconds: 400),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Wrap(
+                                                        spacing: 3.w,
+                                                        children: List.generate(
+                                                            alldata?.length ??
+                                                                0, (index) {
+                                                          BrandNewModel prod =
+                                                              alldata![index];
+                                                          return ProductDetailWidget(
+                                                            lat: prod
+                                                                .userdetails
+                                                                ?.latitude,
+                                                            long: prod
+                                                                .userdetails
+                                                                ?.longitude,
+                                                            productid: prod.id,
+                                                            posttype: prod
+                                                                .post_type_id,
+                                                            vendorid: prod
+                                                                .userdetails!
+                                                                .user_id,
+                                                            onRefresh: () {
+                                                              refreshAllprovider();
+                                                              ref.refresh(
+                                                                  getVendorCardProvider(
+                                                                      widget
+                                                                          .vid));
+                                                            },
+                                                            membershipid: prod
+                                                                .userdetails
+                                                                ?.membership_id,
+                                                            didcountpercentage:
+                                                                prod.discount_percentage ??
+                                                                    0,
+                                                            lefttile:
+                                                                "TradeHub",
+                                                            vendorname: prod
+                                                                    .userdetails
+                                                                    ?.name ??
+                                                                "",
+                                                            Vimage: prod
+                                                                    .userdetails
+                                                                    ?.photo ??
+                                                                "",
+                                                            avg_rating: prod
+                                                                    .avg_rating
+                                                                    ?.toDouble() ??
+                                                                0,
+                                                            comment: prod
+                                                                    .commentcount
+                                                                    ?.toString() ??
+                                                                "0",
+                                                            discounttedPrice: prod
+                                                                    .discounted_price
+                                                                    ?.toString() ??
+                                                                "0",
+                                                            distance: double
+                                                                .tryParse(prod
+                                                                        .shortestDistance
+                                                                        ?.toString() ??
+                                                                    "0"),
+                                                            issponsored: prod
+                                                                    .userdetails
+                                                                    ?.sponsored ??
+                                                                false,
+                                                            membershipColor: prod
+                                                                    .userdetails
+                                                                    ?.membership_color ??
+                                                                "",
+                                                            membershipTitle: prod
+                                                                    .userdetails
+                                                                    ?.membership_title ??
+                                                                "",
+                                                            offer:
+                                                                prod.wow ?? "",
+                                                            price: prod.price ??
+                                                                "",
+                                                            productImage:
+                                                                prod.image,
+                                                            shortestDistance:
+                                                                prod.shortestDistance ??
+                                                                    0.0,
+                                                            similarproductCount:
+                                                                prod.similarVendorProfileProductCount ??
+                                                                    0,
+                                                            title: prod.title ??
+                                                                "",
+                                                            wow: prod.wow ?? "",
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  ))
+                                            : SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Wrap(
+                                                  spacing: 3.w,
+                                                  children: List.generate(
+                                                      vendorsearchrespnse
+                                                              ?.length ??
+                                                          0, (index) {
+                                                    VendorSearchModel prod =
+                                                        vendorsearchrespnse![
+                                                            index];
+                                                    return ProductDetailWidget(
+                                                      lat: prod.userdetails
+                                                          ?.latitude,
+                                                      long: prod.userdetails
+                                                          ?.longitude,
+                                                      productid: prod.id!,
+                                                      posttype: prod.postType,
+                                                      vendorid: prod
+                                                          .userdetails?.userId,
+                                                      onRefresh: () {
+                                                        refreshAllprovider();
+                                                      },
+                                                      membershipid: prod
+                                                          .userdetails
+                                                          ?.membershipId,
+                                                      didcountpercentage: prod
+                                                          .discountPercentage
+                                                          ?.toInt(),
+                                                      lefttile: "TradeHub",
+                                                      vendorname: prod
+                                                              .userdetails
+                                                              ?.name ??
+                                                          "",
+                                                      Vimage: prod.userdetails
+                                                              ?.photo ??
+                                                          "",
+                                                      avg_rating: prod.avgRating
+                                                              ?.toDouble() ??
+                                                          0,
+                                                      comment: prod.commentCount
+                                                              ?.toString() ??
+                                                          "0",
+                                                      discounttedPrice: prod
+                                                              .discountedPrice
+                                                              ?.toString() ??
+                                                          "0",
+                                                      distance: double.tryParse(prod
+                                                              .userdetails
+                                                              ?.shortestDistance
+                                                              ?.toString() ??
+                                                          "0"),
+                                                      issponsored: prod
+                                                              .userdetails
+                                                              ?.sponsored ??
+                                                          false,
+                                                      membershipColor: prod
+                                                              .userdetails
+                                                              ?.membershipColor ??
+                                                          "",
+                                                      membershipTitle: prod
+                                                              .userdetails
+                                                              ?.membershipTitle ??
+                                                          "",
+                                                      offer: prod.wow ?? "",
+                                                      price: prod.price ?? "",
+                                                      productImage: prod.image,
+                                                      shortestDistance: prod
+                                                              .userdetails
+                                                              ?.shortestDistance ??
+                                                          0.0,
+                                                      similarproductCount:
+                                                          prod.similarProductCount ??
+                                                              0,
+                                                      title: prod.title ?? "",
+                                                      wow: prod.wow ?? "",
+                                                    );
+                                                  }),
+                                                ),
                                               ),
-                                            ),
                                     ],
                                   );
                                 },
@@ -1212,98 +1329,103 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         nolistingfound()); // ✅ Shows "No Listing Found" when empty
                               }
 
-                              return SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                child: Wrap(
-                                  spacing: 5.w,
-                                  runSpacing: 15.h,
-                                  children: List.generate(
-                                    data.data.all_products!.length,
-                                    (index) {
-                                      BrandNewModel res =
-                                          data.data.all_products![index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20.h),
+                                child: SingleChildScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  child: Wrap(
+                                    spacing: 5.w,
+                                    runSpacing: 15.h,
+                                    children: List.generate(
+                                      data.data.all_products!.length,
+                                      (index) {
+                                        BrandNewModel res =
+                                            data.data.all_products![index];
 
-                                      return SizedBox(
-                                        width:
-                                            (MediaQuery.of(context).size.width -
-                                                    30.w) /
-                                                2,
-                                        child: Card(
-                                          clipBehavior: Clip.antiAlias,
-                                          shadowColor: const Color(0xff3D215F)
-                                              .withOpacity(0.5),
-                                          elevation: 9,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: AllProductDetailWidget(
-                                            savedid: res.savedByLoggedUser
-                                                    ?.map((e) => SavedPost(
-                                                          id: e.id,
-                                                          userId: e.userId,
-                                                          postId: e.postId,
-                                                          createdAt:
-                                                              e.createdAt,
-                                                          updatedAt:
-                                                              e.updatedAt,
-                                                        ))
-                                                    .toList() ??
-                                                [], // ✅ Ensured `null` safety
+                                        return SizedBox(
+                                          width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  30.w) /
+                                              2,
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            shadowColor: const Color(0xff3D215F)
+                                                .withOpacity(0.5),
+                                            elevation: 9,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 5.w),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                            child: AllProductDetailWidget(
+                                              savedid: res.savedByLoggedUser
+                                                      ?.map((e) => SavedPost(
+                                                            id: e.id,
+                                                            userId: e.userId,
+                                                            postId: e.postId,
+                                                            createdAt:
+                                                                e.createdAt,
+                                                            updatedAt:
+                                                                e.updatedAt,
+                                                          ))
+                                                      .toList() ??
+                                                  [], // ✅ Ensured `null` safety
 
-                                            onRefresh: () {
-                                              refresh();
-                                            },
-                                            lat: res.userdetails?.latitude,
-                                            long: res.userdetails?.longitude,
-                                            productid: res.id,
-                                            posttype: res.post_type_id,
-                                            membershipid:
-                                                res.userdetails?.membership_id,
-                                            id: int.tryParse(res.id),
-                                            didcountpercentage:
-                                                res.discount_percentage ?? 0,
-                                            productImage: res.image,
-                                            Vimage:
-                                                res.userdetails?.photo ?? "",
-                                            avg_rating:
-                                                res.avg_rating?.toDouble(),
-                                            comment:
-                                                res.commentcount.toString(),
-                                            discounttedPrice: res
-                                                    .discounted_price
-                                                    ?.toString() ??
-                                                "0",
-                                            distance:
-                                                res.shortestDistance ?? 0.0,
-                                            issponsored:
-                                                res.userdetails?.sponsored ??
-                                                    false,
-                                            lefttile: "All Products",
-                                            membershipColor: res.userdetails
-                                                    ?.membership_color ??
-                                                "",
-                                            membershipTitle: res.userdetails
-                                                    ?.membership_title ??
-                                                "",
-                                            offer: res.offers ?? "",
-                                            price: res.price ?? "0",
-                                            shortestDistance:
-                                                res.shortestDistance ?? 0.0,
-                                            similarproductCount:
-                                                res.similarVendorProfileProductCount ??
-                                                    0,
-                                            title: res.title ?? "No Title",
-                                            vendorname: res.userdetails?.name ??
-                                                "Unknown",
-                                            wow: res.wow ?? "",
+                                              onRefresh: () {
+                                                refreshAllprovider();
+                                              },
+                                              lat: res.userdetails?.latitude,
+                                              long: res.userdetails?.longitude,
+                                              productid: res.id,
+                                              posttype: res.post_type_id,
+                                              membershipid: res
+                                                  .userdetails?.membership_id,
+                                              id: int.tryParse(res.id),
+                                              didcountpercentage:
+                                                  res.discount_percentage ?? 0,
+                                              productImage: res.image,
+                                              Vimage:
+                                                  res.userdetails?.photo ?? "",
+                                              avg_rating:
+                                                  res.avg_rating?.toDouble(),
+                                              comment:
+                                                  res.commentcount.toString(),
+                                              discounttedPrice: res
+                                                      .discounted_price
+                                                      ?.toString() ??
+                                                  "0",
+                                              distance:
+                                                  res.shortestDistance ?? 0.0,
+                                              issponsored:
+                                                  res.userdetails?.sponsored ??
+                                                      false,
+                                              lefttile: "All Products",
+                                              membershipColor: res.userdetails
+                                                      ?.membership_color ??
+                                                  "",
+                                              membershipTitle: res.userdetails
+                                                      ?.membership_title ??
+                                                  "",
+                                              offer: res.offers ?? "",
+                                              price: res.price ?? "0",
+                                              shortestDistance:
+                                                  res.shortestDistance ?? 0.0,
+                                              similarproductCount:
+                                                  res.similarVendorProfileProductCount ??
+                                                      0,
+                                              title: res.title ?? "No Title",
+                                              vendorname:
+                                                  res.userdetails?.name ??
+                                                      "Unknown",
+                                              wow: res.wow ?? "",
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               );
@@ -1368,181 +1490,486 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
           // Fixed Search Bar
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 150.h,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                ),
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF85237C),
-                    Color(0xFF5C1E56),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
+              top: 0,
+              left: 0,
+              right: 0,
               child: Column(
                 children: [
-                  const SizedBox(height: 40),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                      SizedBox(
-                        height: 41.h,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                left: 15.w,
-                                top: 3.h,
-                                bottom: 3.h,
-                                right: 5.w,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 0.1,
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20.r),
-                                  bottomLeft: Radius.circular(20.r),
-                                ),
-                              ),
-                              child: _vendorimage != null
-                                  ? CircleAvatar(
-                                      radius: 17,
-                                      backgroundImage:
-                                          NetworkImage(_vendorimage!),
-                                    )
-                                  : const CircleAvatar(), // or any other widget you want to show if _vendorimage is null
-
-                              // Empty child to maintain layout
+                  SizedBox(
+                    // height: 300.h,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: Container(
+                            // height: 170,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(50),
+                                  bottomRight: Radius.circular(50)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF392574),
+                                    Color(0xFF681b4e),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
                             ),
-                            Container(
-                              width: 200.w,
-                              padding: EdgeInsets.symmetric(vertical: 9.h),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                style: const TextStyle(
-                                  fontSize: 14,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 40,
                                 ),
-                                controller: _searchController,
-                                onTap: () {
-                                  _onSearchFocusChanged(
-                                      _searchController.text.isEmpty);
-                                },
-                                cursorHeight: 13.h,
-                                onChanged: (value) {
-                                  if (value.isNotEmpty) {
-                                    SearchProductModels.whenData(
-                                      (value) {
-                                        showOverlay(context, value);
-                                      },
-                                    );
-                                    // _showOverlay(context, [
-                                    //   "Product 1",
-                                    //   "Product 2",
-                                    //   "Product 3"
-                                    // ]);
-                                  } else {
-                                    removeOverlay();
-                                  }
-                                  setState(
-                                      () {}); // Refresh UI when text changes
-                                },
-                                decoration: InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  hintText: "   Search MyPower BizSpace",
-                                  hintStyle: TextStyle(fontSize: 11.sp),
-                                  isCollapsed: true,
-                                  disabledBorder: InputBorder.none,
-                                  isDense: true,
-                                  enabled: true,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if (_searchController.text.trim().isNotEmpty) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BusinessTabScreen(
-                                        query: _searchController.text,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MySubscriptionScreen(),
+                                              ));
+                                        },
+                                        child: const CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: AssetImage(
+                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                        )),
+                                    SizedBox(
+                                      height: 40,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 45.h,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.w),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF46236a),
+                                              border: Border.all(
+                                                  color: Colors.white),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(19.r),
+                                                bottomLeft:
+                                                    Radius.circular(19.r),
+                                              ),
+                                            ),
+                                            child: DropdownButton<
+                                                Map<String, String>>(
+                                              alignment: Alignment.center,
+                                              value: dropdownValue ??
+                                                  headeritems[postypeid!],
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  dropdownValue = newValue;
+                                                });
+                                              },
+                                              items: headeritems.map((item) {
+                                                return DropdownMenuItem(
+                                                  alignment: Alignment.center,
+                                                  value: item,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        item['icon']!,
+                                                        height: 10.h,
+                                                        color: Colors.white,
+                                                      ),
+                                                      SizedBox(width: 8.w),
+                                                      Text(
+                                                        item['label']!,
+                                                        style: TextStyle(
+                                                            fontSize: 10.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }).toList(),
+                                              dropdownColor:
+                                                  const Color(0xff665B6B)
+                                                      .withOpacity(0.5),
+                                              underline: const SizedBox(),
+                                              icon: const SizedBox(),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 180.w,
+                                            height: 45.h,
+                                            padding: const EdgeInsets.all(5),
+                                            decoration: const BoxDecoration(
+                                                color: Colors.white),
+                                            child: TextField(
+                                              controller: _searchController,
+                                              onTap: () {
+                                                _onSearchFocusChanged(
+                                                    _searchController
+                                                        .text.isNotEmpty);
+                                              },
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                prefixIcon: const Icon(
+                                                  Icons.search,
+                                                  size: 25,
+                                                  color: Color(0xffD9D9D9),
+                                                ),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      width: 0.2,
+                                                      color: Colors.white),
+                                                ),
+                                                hintText: "Search Everything",
+                                                hintStyle: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(
+                                                        0xffD9D9D9)),
+                                                isCollapsed: true,
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 5.h,
+                                                        horizontal: 10.w),
+                                                disabledBorder:
+                                                    InputBorder.none,
+                                                isDense: true,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (_searchController.text
+                                                  .trim()
+                                                  .isNotEmpty) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BusinessTabScreen(
+                                                        query: _searchController
+                                                            .text,
+                                                      ),
+                                                    ));
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 45.h,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20.w,
+                                                  vertical: 5.h),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.white),
+                                                color: Colors.transparent,
+                                                borderRadius: BorderRadius.only(
+                                                  topRight:
+                                                      Radius.circular(19.r),
+                                                  bottomRight:
+                                                      Radius.circular(19.r),
+                                                ),
+                                              ),
+                                              child: Icon(
+                                                Icons.search,
+                                                color: Colors.white,
+                                                size: 20.sp,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 6.3.h,
+                                  ],
                                 ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 0.1,
-                                  ),
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(15.r),
-                                    bottomRight: Radius.circular(15.r),
+
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedIndex = index;
+                                        });
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+
+                                SizedBox(
+                                  height: 80.h,
+                                  child: PageView.builder(
+                                    itemCount: _items.length,
+                                    padEnds: false,
+                                    controller: _pageController,
+                                    onPageChanged: (value) {
+                                      setState(() {
+                                        selectedIndex =
+                                            value; // Update selectedIndex based on page change
+                                      });
+                                    },
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> data = _items[index];
+
+                                      // Highlight only when index == 4
+                                      bool isActive = index == 1;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: AnimatedContainer(
+                                          padding: EdgeInsets.zero,
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        data['screen']),
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (data['icon']
+                                                    .toString()
+                                                    .endsWith('.svg'))
+                                                  SvgPicture.asset(
+                                                    data['icon'],
+                                                    alignment: Alignment.center,
+                                                    fit: BoxFit.contain,
+                                                    theme: const SvgTheme(
+                                                        currentColor:
+                                                            Color(0xffdd9d9d9)),
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                else
+                                                  Image.asset(
+                                                    data['icon'],
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  data['label'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(3.r),
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.white,
-                                    size: 20.sp,
+
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: const Divider(
+                                    thickness: 0.4,
+                                    height: 1,
+                                    color: ColorConstant.grayColor,
                                   ),
                                 ),
-                              ),
+                                if (_isSectionsVisible)
+                                  Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const BrandBazarScreen(),
+                                                ));
+                                          },
+                                          child: const Text(
+                                            "Brandbazaar",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MySubscribeAndWinPage(),
+                                                ));
+                                          },
+                                          child: const Text(
+                                            "BuyOrWin",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                //   ],
+                                // ),
+                              ],
                             ),
-                          ],
+                          ),
+                        ),
+                        // if (true)
+                        Positioned(
+                          top: 80.h, // Position just below the search bar
+                          left: 10,
+                          right: 10,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            color: Colors.white,
+                            child: SearchProductModels.when(
+                              data: (results) {
+                                if (results.isEmpty) {
+                                  return const SizedBox.shrink(); // No results
+                                }
+                                return ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: results.length,
+                                  itemBuilder: (context, index) {
+                                    final product = results[index];
+                                    return ListTile(
+                                      dense: true,
+                                      title: Text(
+                                        softWrap: true,
+                                        product.name,
+                                        style: headerstyle.copyWith(
+                                            color: ColorConstant.blackColor,
+                                            fontSize: 10),
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BusinessTabScreen(
+                                              query: _searchController.text,
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          _showSearchProductModels = false;
+                                          FocusScope.of(context).unfocus();
+                                        });
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                );
+                              },
+                              loading: () {
+                                return const SizedBox();
+                              },
+                              error: (error, stack) {
+                                return Center(child: Text(error.toString()));
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onVerticalDragUpdate: _onDragUpdate,
+                    onVerticalDragStart: _onDragStart,
+                    onTap: () {
+                      setState(() {
+                        _isSectionsVisible = !_isSectionsVisible;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: Center(
+                        child: Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          margin: EdgeInsets.only(top: 5.h),
+                          height: 7.h,
+                          width: 60.w,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFF681b4e),
+                              borderRadius: BorderRadius.circular(5)),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  const Spacer(),
-                  Container(
-                    width: 80.w,
-                    height: 6.h,
-                    decoration: BoxDecoration(
-                        color: ColorConstant.whiteColor,
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  )
                 ],
-              ),
-            ),
-          ),
+              )),
         ],
       ),
     );
@@ -1955,7 +2382,7 @@ class buildDealItemWidget extends StatelessWidget {
 //   }
 // }
 
-class BigContainer extends StatelessWidget {
+class BigContainer extends StatefulWidget {
   final String id;
   final String title;
   final String logo;
@@ -1970,7 +2397,8 @@ class BigContainer extends StatelessWidget {
       Cnumber;
   final double long, lat;
   final String memebertitle;
-  bool issubbed;
+  bool issubbed = false;
+  final VoidCallback? onsubscribed; // Changed this to VoidCallback?
 
   // Constructor
   BigContainer(
@@ -1990,35 +2418,40 @@ class BigContainer extends StatelessWidget {
       required this.location,
       required this.Cnumber,
       required this.issubbed,
-      required this.memebertitle});
+      required this.memebertitle,
+      required this.onsubscribed});
 
-  // Future<void> _openGoogleMap(double latitude, double longitude) async {
-  //   final Uri googleMapsUrl =
-  //       Uri.parse('https://www.google.com/maps/search/?q=$latitude,$longitude');
+  @override
+  State<BigContainer> createState() => _BigContainerState();
+}
 
-  //   if (await canLaunchUrl(googleMapsUrl)) {
-  //     await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
-  //   } else {
-  //     print("Could not open Google Maps");
-  //   }
-  // }
+class _BigContainerState extends State<BigContainer> {
+  // Future<void> _openGoogleMap(double latitude, double longitude) async {\
+
+  bool? _hassubbed;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _hassubbed = widget.issubbed;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Map<String, String>? followresp;
-
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(30.0),
       child: DottedBorder(
         color: const Color(0xFF6D1A49),
         strokeWidth: 1,
         borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
+        radius: const Radius.circular(35),
         dashPattern: const [7, 5],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -2036,17 +2469,20 @@ class BigContainer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Column(
-                  children: [
-                    Text(
-                      "Connect",
-                      style: TextStyle(fontSize: 9.sp),
-                    ),
-                    Text(
-                      "Pass",
-                      style: TextStyle(fontSize: 9.sp),
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Connect",
+                        style: TextStyle(fontSize: 9.sp),
+                      ),
+                      Text(
+                        "Pass",
+                        style: TextStyle(fontSize: 9.sp),
+                      )
+                    ],
+                  ),
                 ),
                 DottedBorder(
                   color: const Color(0xff6d1a49),
@@ -2059,7 +2495,7 @@ class BigContainer extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 40,
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(logo),
+                          backgroundImage: NetworkImage(widget.logo),
                           radius: 60,
                           backgroundColor: Colors.white,
                         ),
@@ -2067,48 +2503,23 @@ class BigContainer extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                      Image.asset(
-                  id.toString() == "2"
-                      ? spotlighticon
-                      : id.toString() == "1"
-                          ? basicsellericon
-                          : id.toString() == "3"
-                              ? domesticseller
-                              : id.toString() == "25"
-                                  ? globalicon
-                                  : basicsellericon, // Default icon
-                     width: 50,
+                    Image.asset(
+                      widget.id.toString() == "2"
+                          ? spotlighticon
+                          : widget.id.toString() == "1"
+                              ? basicsellericon
+                              : widget.id.toString() == "3"
+                                  ? domesticseller
+                                  : widget.id.toString() == "25"
+                                      ? globalicon
+                                      : basicsellericon, // Default icon
+                      width: 50,
                       height: 50,
                       color: Colors.grey,
-                ),
-                    // SvgPicture.asset(
-                    //   id.toString() == '1'
-                    //       ? productsicon
-                    //       : id.toString() == '7'
-                    //           ? b2bIcon
-                    //           : id.toString() == '2'
-                    //               ? usedIcon
-                    //               : id.toString() == '3'
-                    //                   ? servicesIcon
-                    //                   : id.toString() == '4'
-                    //                       ? jobIcon
-                    //                       : id.toString() == '5'
-                    //                           ? eventIcon
-                    //                           : id.toString() == '8'
-                    //                               ? grocaryicon
-                    //                               : productsicon, // Provide a default icon path if no match is found
-                    //   width: 50,
-                    //   height: 50,
-                    //   color: Colors.grey,
-                    // ),
-                    // Image.asset(
-                    //   "assets/icon/domestic_brand.png",
-                    //   width: 50,
-                    //   height: 50,
-                    //   color: Colors.grey,
-                    // ),
+                    ),
+
                     Text(
-                      membershipTitle,
+                      widget.membershipTitle,
                       style: TextStyle(fontSize: 9.sp),
                     ),
                     // Text(
@@ -2130,7 +2541,7 @@ class BigContainer extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    title,
+                    widget.title,
                     style: TextStyle(
                         fontSize: 24.sp,
                         color: Colors.black,
@@ -2139,7 +2550,7 @@ class BigContainer extends StatelessWidget {
                 ),
                 Center(
                   child: Text(
-                    title,
+                    widget.title,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: Colors.black,
@@ -2163,7 +2574,7 @@ class BigContainer extends StatelessWidget {
                           onTap: () async {
                             // Use Google Maps app-specific URL scheme
                             final Uri mapsIntentUrl = Uri.parse(
-                                'https://www.google.com/maps/dir/?api=1&destination=$lat,$long');
+                                'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.long}');
 
                             // Fallback check
                             if (await canLaunchUrl(mapsIntentUrl)) {
@@ -2208,10 +2619,10 @@ class BigContainer extends StatelessWidget {
                         ),
                       ],
                     ),
-                    location == 'null'
+                    widget.location == 'null'
                         ? const SizedBox()
                         : Text(
-                            location,
+                            widget.location,
                             style: TextStyle(
                               fontSize: 9.sp,
                               color: const Color(0xFF370C6B),
@@ -2239,7 +2650,7 @@ class BigContainer extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      Cnumber,
+                      widget.Cnumber,
                       style: TextStyle(
                         fontSize: 9.sp,
                         color: const Color(0xFF370C6B),
@@ -2248,6 +2659,9 @@ class BigContainer extends StatelessWidget {
                   ],
                 )
               ],
+            ),
+            SizedBox(
+              height: 5.h,
             ),
             Container(
               margin: EdgeInsets.only(top: 5.h),
@@ -2261,7 +2675,7 @@ class BigContainer extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          total_connections,
+                          widget.total_connections,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 13.sp,
@@ -2278,7 +2692,7 @@ class BigContainer extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          storycount,
+                          widget.storycount,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 13.sp,
@@ -2295,7 +2709,7 @@ class BigContainer extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "Rs.$total_prize_worth",
+                          "Rs.${widget.total_prize_worth}",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 13.sp,
@@ -2321,7 +2735,7 @@ class BigContainer extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 18.0),
                     child: Text(
-                      "smartbazaar.com.np/$title",
+                      "smartbazaar.com.np/${widget.title}",
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -2368,22 +2782,35 @@ class BigContainer extends StatelessWidget {
               height: 5.h,
             ),
             SizedBox(height: 40.h),
-            Padding(
-              padding: EdgeInsets.only(left: 4.h, bottom: 5.h),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(issubbed ? "Connected" : "Connected",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
-                          color: const Color(0xff370C6B),
-                        ),
-                        textAlign: TextAlign.center),
-                  ],
+            InkWell(
+              onTap: () {
+                followUnfollowVendor(widget.id).then(
+                  (value) {
+                    showCustomToast(context, value);
+                  },
+                );
+                widget.onsubscribed!;
+                setState(() {
+                  _hassubbed = !_hassubbed!;
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.only(left: 5.w, bottom: 5.w),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(_hassubbed! ? "Connected" : "Connect",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                            color: const Color(0xff370C6B),
+                          ),
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -2446,6 +2873,9 @@ class BigContainer extends StatelessWidget {
                     Image.asset('assets/images/arrow_down.png')
                   ]),
             ),
+            SizedBox(
+              height: 3.h,
+            )
           ],
         ),
       ),

@@ -14,11 +14,15 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
+import 'package:smartbazar/features/order_details/api/add_to_cart_api.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
@@ -151,16 +155,76 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      // print("biabsh ");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OrderDetailsScreen(
-                            selectedProductIds: [],
-                            selectedVendorIds: [],
-                          ),
-                        ),
-                      );
+                      ref.watch(addtocartProvider(data.result!.id!.toString()));
+
+                      showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Sucessful!',
+                style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff362677)),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'Product added to the cart sucessfully!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const AddToCartScreen()));
+                },
+                child: Text(
+                  'View Cart',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Container(
+                height: 40.h,
+                width: 40.w,
+                decoration: const BoxDecoration(
+                    color: Color(0xff362677), shape: BoxShape.circle),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 24,
+                  weight: 50,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );();
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
@@ -196,8 +260,15 @@ class ProductDetailScreen extends ConsumerWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddToCartScreen(),
-                          ));
+                              builder: (context) =>
+                                  OrderDetailsScreen(selectedProductIds: [
+                                    productDetailsAsyncValue.value!.result!.id!
+                                        .toString()
+                                  ], selectedVendorIds: [
+                                    productDetailsAsyncValue
+                                        .value?.result?.user?.id
+                                        .toString()
+                                  ])));
                     },
                     child: const CircleAvatar(
                         backgroundColor: Colors.grey,
@@ -318,7 +389,7 @@ class ProductDetailScreen extends ConsumerWidget {
                       //     data.result?.user_details != null)
                       HeaderBannerWidget(
                         membershipid: data.result!.user!.id.toString(),
-                        brandname: data.result!.user!.name,
+                        brandname: data.result!.postType!.name,
                         id: data.result!.user!.id,
                         vname: data.result!.user!.name,
                         img: data.result!.userPhotoUrl,
@@ -1015,7 +1086,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     },
                                                     child: buildDealItemWidget(
                                                         data: Deal(
-                                                            discount_percentage:e.discountPercentage?? 0,
+                                                            discount_percentage:
+                                                                e.discountPercentage ??
+                                                                    0,
                                                             id: e.id,
                                                             image: e.image)),
                                                   );
@@ -1034,10 +1107,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                         .map((e) {
                                                       return buildDealItemWidget(
                                                         data: Deal(
-                                                          discount_percentage: e
-                                                                  .discountPercentage??
-                                                                 
-                                                              0,
+                                                          discount_percentage:
+                                                              e.discountPercentage ??
+                                                                  0,
                                                           id: e.id,
                                                           image: e.image,
                                                         ),
@@ -1126,7 +1198,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   .ratings?.avg_rating
                                                   ?.toDouble(),
                                               offer: prod.offers,
-                                             vendorid: prod.userDetails!.id,
+                                              vendorid: prod.userDetails!.id,
                                               vendorname:
                                                   prod.userDetails?.name ?? '',
                                               discounttedPrice:
@@ -1243,7 +1315,7 @@ class SwapablePostCard extends StatelessWidget {
                   isLive: show,
                   image: data.image!,
                   name: data.name!,
-                  caption: data.caption?? '',
+                  caption: data.caption ?? '',
                   photo: data.photo!,
                   subscribers: data.subscribers!.toString(),
                 );

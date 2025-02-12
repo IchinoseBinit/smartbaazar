@@ -8,8 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
@@ -20,6 +23,7 @@ import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/del.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'dart:typed_data';
@@ -124,7 +128,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Future<void> _captureAndSendImage() async {
     try {
-      await Future.delayed(const Duration(seconds: 1)); // Ensure rendering completion
+      await Future.delayed(
+          const Duration(seconds: 1)); // Ensure rendering completion
 
       if (_widgetKey.currentContext == null) {
         print('Vendor Card Widget is not yet rendered.');
@@ -265,35 +270,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     );
   }
+  
 
   @override
   Widget build(BuildContext context) {
-    if(_currentUserId!=null) {
+    if (_currentUserId != null) {
       ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!)).whenData(
-      (value) {
-        print("kalu $value");
-        _card = BigContainer(
-            key: GlobalKey(),
-            lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
-            long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
-            id: value.data!.vendor_card!.membership_id!,
-            title: value.data!.vendor_card!.membership_title!,
-            logo: value.data!.vendor_card!.photo!,
-            contact: value.data!.vendor_card!.phone!,
-            storyCount: value.data!.vendor_card!.storycount.toString(),
-            membershipTitle: value.data!.vendor_card!.membership_title!,
-            deals_circle: '0',
-            total_connections: value.data!.vendor_card!.subscribers.toString(),
-            total_prize_worth: value.data!.vendor_card!.prize_worth.toString(),
-            location: value.data!.vendor_card!.nearestbranch ?? '',
-            Cnumber: value.data!.vendor_card!.phone!,
-            issubbed: value.data!.vendor_card!.subscribed == 'subscribed'
-                ? true
-                : false, // Assuming isSubscribed is in vendor_card
+        (value) {
+          print("kalu $value");
+          _card = BigContainer(
+            onsubscribed: () {
+              
+            },
+              key: GlobalKey(),
+              lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
+              long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
+              id: value.data!.vendor_card!.membership_id!,
+              title: value.data!.vendor_card!.name!,
+              logo: value.data!.vendor_card!.photo!,
+              contact: value.data!.vendor_card!.phone!,
+              storyCount: value.data!.vendor_card!.storycount.toString(),
+              membershipTitle: value.data!.vendor_card!.membership_title!,
+              storycount: value.data!.vendor_card!.storycount.toString(),
+              total_connections:
+                  value.data!.vendor_card!.subscribers.toString(),
+              total_prize_worth:
+                  value.data!.vendor_card!.prize_worth.toString(),
+              location: value.data!.vendor_card!.nearestbranch ?? '',
+              Cnumber: value.data!.vendor_card!.phone!,
+              issubbed: value.data!.vendor_card!.subscribed == 'subscribed'
+                  ? true
+                  : false, // Assuming isSubscribed is in vendor_card
 
-            memebertitle: value.data!.vendor_card!.membership_title!);
-      },
-    );
+              memebertitle: value.data!.vendor_card!.membership_title!);
+        },
+      );
     }
 
     // Fetch messages based on threadId using Riverpod provider
@@ -320,53 +331,55 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             SizedBox(height: 30.h),
 
             // Expanded widget to display messages
-           Expanded(
-  child: messagesAsyncValue.when(
-    data: (messageList) {
-      final messages = messageList.result?.data?.reversed.toList(); // Reverse the message order
+            Expanded(
+              child: messagesAsyncValue.when(
+                data: (messageList) {
+                  final messages = messageList.result?.data?.reversed
+                      .toList(); // Reverse the message order
 
-      if (messages == null || messages.isEmpty) {
-        return const Center(child: Text('No messages available'));
-      }
+                  if (messages == null || messages.isEmpty) {
+                    return const Center(child: Text('No messages available'));
+                  }
 
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            reverse: true,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListView.builder(
-                    reverse: true,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        reverse: true,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: constraints.maxHeight,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListView.builder(
+                                reverse: true,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) {
+                                  final message = messages[index];
 
-                      return ChatMessageWidget(
-                        isUserMessage: message.userId == SmartClient.userId,
-                        message: message,
+                                  return ChatMessageWidget(
+                                    isUserMessage:
+                                        message.userId == _currentUserId,
+                                    message: message,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
-                  ),
-                ],
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) =>
+                    const Center(child: Text('Please login again')),
               ),
             ),
-          );
-        },
-      );
-    },
-    loading: () => const Center(child: CircularProgressIndicator()),
-    error: (error, stack) => const Center(child: Text('Please login again')),
-  ),
-),
-
 
             SafeArea(
               child: Container(
@@ -431,7 +444,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           ),
                         ),
                         SizedBox(width: 10.w),
-                        // if (_isverified!)
+                        if (_isverified!)
                           GlowButton(
                             onPressed: () {
                               // Show the dialog
@@ -779,16 +792,30 @@ class ChatMessageWidget extends StatelessWidget {
 
                   // Corrected the image display section
                   if (_isImageUrl(message.filename))
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
-                      child: Image.network(
-                        height: 200.h,
-                        '$baseUrl${message.filename}',
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image),
-                      ),
-                    ),
+                   InkWell(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullscreenImageView(
+          color: Colors.grey,
+          imagePath: '$baseUrl${message.filename}',
+        ),
+      ),
+    );
+  },
+  child: Padding(
+    padding: EdgeInsets.symmetric(vertical: 8.h),
+    child: Image.network(
+      '$baseUrl${message.filename}',
+      height: 200.h,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) =>
+          const Icon(Icons.broken_image),
+    ),
+  ),
+),
+
 
                   if (message.filename != null &&
                       message.filename!.isNotEmpty &&
@@ -825,6 +852,50 @@ class ChatMessageWidget extends StatelessWidget {
                   shape: BoxShape.circle, color: Color(0xffD9D9D9)),
               child: const Icon(Icons.person_outline),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class FullscreenImageView extends StatelessWidget {
+  final String imagePath;
+  final Color? color;
+
+  const FullscreenImageView(
+      {Key? key, required this.imagePath, this.color = Colors.grey})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: color,
+      body: Stack(
+        children: [
+          PhotoViewGallery.builder(
+            itemCount: 1,
+            builder: (context, index) {
+              return PhotoViewGalleryPageOptions(
+                imageProvider: NetworkImage(imagePath),
+                minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.covered * 3, // Zoom up to 3x
+                heroAttributes: PhotoViewHeroAttributes(tag: imagePath),
+              );
+            },
+            scrollPhysics: const BouncingScrollPhysics(),
+            backgroundDecoration: const BoxDecoration(color: Colors.grey),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 16,
+            right: 16,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.close, color: Colors.black),
+              ),
+            ),
+          ),
         ],
       ),
     );

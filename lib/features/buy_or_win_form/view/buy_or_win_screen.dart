@@ -170,7 +170,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                       );
                     },
                     error: (error, stackTrace) =>
-                       const Center(child: Text("please login")),
+                        const Center(child: Text("please login")),
                     loading: () => const CircularProgressIndicator(),
                   ),
                   Row(
@@ -241,7 +241,10 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                                   showCustomToast(context, value);
                                 },
                               );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Form added")));
                               qtycontroller.text = '';
+                              Navigator.pop(context);
                             },
                       marginH: 0,
                       height: 28.h,

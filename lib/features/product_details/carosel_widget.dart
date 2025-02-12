@@ -35,60 +35,61 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
     return Container(
         child: Stack(
       children: [
-   Positioned(
-            child: CarouselSlider(
-              options: CarouselOptions(
-                height: 300.0, // Set height of carousel
-                viewportFraction: 1.0,
-                initialPage: 0,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-              ),
-              items: widget.items.map((item) {
-                return GestureDetector(
-                  onTap: () {
-                    // Open full-screen zoomable image on tap
-                    showDialog(
-                      context: context,
-                      builder: (_) => Dialog(
-                        insetPadding: EdgeInsets.zero, // Remove dialog padding
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: PhotoViewGallery.builder(
-                            itemCount: widget.items.length,
-                            builder: (context, index) {
-                              return PhotoViewGalleryPageOptions(
-                                imageProvider: NetworkImage(
-                                    widget.items[index].image_url!),
-                                minScale: PhotoViewComputedScale.contained,
-                                maxScale: PhotoViewComputedScale.covered,
-                              );
-                            },
-                            scrollPhysics: const BouncingScrollPhysics(),
-                            backgroundDecoration: const BoxDecoration(
-                              color: Colors.black,
-                            ),
-                            pageController: PageController(initialPage: currentIndex),
+        Positioned(
+          child: CarouselSlider(
+            options: CarouselOptions(
+              height: 300.0, // Set height of carousel
+              viewportFraction: 1.0,
+              initialPage: 0,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+            ),
+            items: widget.items.map((item) {
+              return GestureDetector(
+                onTap: () {
+                  // Open full-screen zoomable image on tap
+                  showDialog(
+                    context: context,
+                    builder: (_) => Dialog(
+                      insetPadding: EdgeInsets.zero, // Remove dialog padding
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: PhotoViewGallery.builder(
+                          itemCount: widget.items.length,
+                          builder: (context, index) {
+                            return PhotoViewGalleryPageOptions(
+                              imageProvider:
+                                  NetworkImage(widget.items[index].image_url!),
+                              minScale: PhotoViewComputedScale.contained,
+                              maxScale: PhotoViewComputedScale.covered,
+                            );
+                          },
+                          scrollPhysics: const BouncingScrollPhysics(),
+                          backgroundDecoration: const BoxDecoration(
+                            color: Colors.black,
                           ),
+                          pageController:
+                              PageController(initialPage: currentIndex),
                         ),
                       ),
-                    );
-                  },
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Image.network(
-                      item.image_url!,
-                      fit: BoxFit.fill,
                     ),
+                  );
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Image.network(
+                    item.image_url!,
+                    fit: BoxFit.fill,
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
+        ),
         Positioned(
           left: 200.w,
           bottom: 50,
@@ -238,64 +239,29 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
             ],
           ),
         ),
+       Positioned(
+  top: 10,
+  right: 15,
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      color: Colors.black.withOpacity(0.6),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Text(
+      "${currentIndex + 1}/${widget.items.length}", // Display current index + 1 / total images
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
+
       ],
     )
 
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     CarouselSlider(
-        //       options: CarouselOptions(
-        //         height: 250.0.h, // Responsive height
-        //         viewportFraction: 1.0,
-        //         initialPage: 0,
-        //         onPageChanged: (index, reason) {
-        //           setState(() {
-        //             currentIndex = index;
-        //           });
-        //         },
-        //       ),
-        //       items: widget.items.map((item) {
-        //         return SizedBox(
-        //           width: double.infinity,
-        //           child: Image.network(
-        //             item,
-        //             fit: BoxFit.fill,
-        //           ),
-        //         );
-        //       }).toList(),
-        //     ),
-        //     SizedBox(height: 10.h),
-        //     // Dots representing the current index
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: List.generate(widget.dots, (index) {
-        //         return GestureDetector(
-        //           onTap: () {
-        //             setState(() {
-        //               currentIndex = index;
-        //             });
-        //           },
-        //           child: AnimatedContainer(
-        //             duration: const Duration(milliseconds: 300),
-        //             width: currentIndex == index
-        //                 ? 16.0
-        //                 : 12.0, // Larger dot for active index
-        //             height: currentIndex == index ? 16.0 : 12.0,
-        //             margin: const EdgeInsets.symmetric(
-        //                 vertical: 8.0, horizontal: 4.0),
-        //             decoration: BoxDecoration(
-        //               shape: BoxShape.circle,
-        //               color: currentIndex == index
-        //                   ? const Color.fromARGB(255, 83, 81, 81)
-        //                   : Colors.grey,
-        //             ),
-        //           ),
-        //         );
-        //       }),
-        //     ),
-        //   ],
-        // ),
         );
   }
 }

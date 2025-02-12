@@ -47,6 +47,7 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/main.dart';
@@ -686,42 +687,50 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       child: Text('No result found'),
                                     ); // No results
                                   }
-                                  return ListView.separated(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount: results.length,
-                                    itemBuilder: (context, index) {
-                                      final product = results[index];
-                                      return ListTile(
-                                        dense: true,
-                                        title: Text(
-                                          softWrap: true,
-                                          product.name,
-                                          style: headerstyle.copyWith(
-                                              color: ColorConstant.blackColor,
-                                              fontSize: 10),
-                                        ),
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BusinessTabScreen(
-                                                query: _searchController.text,
-                                              ),
-                                            ),
-                                          );
-                                          setState(() {
-                                            _showSearchProductModels = false;
-                                            FocusScope.of(context).unfocus();
-                                          });
-                                        },
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        const Divider(),
-                                  );
+                                  ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: results.length,
+                      itemBuilder: (context, index) {
+                        final product = results[index];
+                        return ListTile(
+                          dense: true,
+                          title: Text(
+                            softWrap: true,
+                            product.name,
+                            style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor, fontSize: 10),
+                          ),
+                          onTap: () {
+                            product.id!=null?
+                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VendorHomeScreen(
+                                 vendorName: product.name,
+                                 vid: int.tryParse(product.id!)!,
+                                ),
+                              ),
+                            ):
+                            
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusinessTabScreen(
+                                  query: _searchController.text,
+                                ),
+                              ),
+                            );
+                            setState(() {
+                              _showSearchProductModels = false;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                    );
                                 },
                                 loading: () => Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
