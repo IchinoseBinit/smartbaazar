@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,11 +26,20 @@ class SmartClient {
   static String userPhoto = '';
    
 
+SmartClient._internal() {
+  _loadToken();
+  _setupInterceptors();
+  _enableKeepAlive();
+}
 
-  SmartClient._internal() {
-    _loadToken();
-    _setupInterceptors();
-  }
+void _enableKeepAlive() {
+  (_client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      (HttpClient client) {
+    client.connectionTimeout = _timeoutDuration;
+    client.idleTimeout = const Duration(seconds: 30); // Keep-Alive timeout
+    return client;
+  };
+}
 
   Future<void> _loadToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -86,13 +97,16 @@ Future<bool> _refreshToken() async {
     final refreshTokenResponse =
         await container.read(getRefreshTokenProvider.future);
 
-    // Debugging: Check response from API
-    if (kDebugMode) {
-      print("Refresh API Response: $refreshTokenResponse");
+    // Validate the response
+    if (refreshTokenResponse.authToken == null || refreshTokenResponse.refreshToken == null) {
+      if (kDebugMode) {
+        print("Invalid token response: $refreshTokenResponse");
+      }
+      return false;
     }
 
-    token = refreshTokenResponse.authToken;
-    refresh = refreshTokenResponse.refreshToken;
+    token = refreshTokenResponse.authToken!;
+    refresh = refreshTokenResponse.refreshToken!;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('accessToken', token);
@@ -104,10 +118,9 @@ Future<bool> _refreshToken() async {
       print("Failed to refresh token: $error");
       print(stackTrace);
     }
+    return false;
   }
-  return false;
 }
-
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -147,7 +160,7 @@ Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     final defaultHeaders = {
       'Content-Type': 'application/json',
       'accept': '*/*',
-      // 'Connection': 'Keep-Alive',
+       'Connection': 'Keep-Alive',
       'X-AppApiToken': 'Yala@Techies_Nepal',
       'Cookie': 'laravel_session=$laravelSession',
     };
