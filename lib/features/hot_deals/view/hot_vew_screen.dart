@@ -219,49 +219,53 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                             return Card(
                               elevation: 8,
                               child: ListView.separated(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: results.length,
-                      itemBuilder: (context, index) {
-                        final product = results[index];
-                        return ListTile(
-                          dense: true,
-                          title: Text(
-                            softWrap: true,
-                            product.name,
-                            style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor, fontSize: 10),
-                          ),
-                          onTap: () {
-                            product.id!=null?
-                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VendorHomeScreen(
-                                 vendorName: product.name,
-                                 vid: int.tryParse(product.id!)!,
-                                ),
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: results.length,
+                                itemBuilder: (context, index) {
+                                  final product = results[index];
+                                  return ListTile(
+                                    dense: true,
+                                    title: Text(
+                                      softWrap: true,
+                                      product.name,
+                                      style: headerstyle.copyWith(
+                                          color: ColorConstant.blackColor,
+                                          fontSize: 10),
+                                    ),
+                                    onTap: () {
+                                      product.id != null
+                                          ? Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    VendorHomeScreen(
+                                                  vendorName: product.name,
+                                                  vid: int.tryParse(
+                                                      product.id!)!,
+                                                ),
+                                              ),
+                                            )
+                                          : Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BusinessTabScreen(
+                                                  query: _searchController.text,
+                                                ),
+                                              ),
+                                            );
+                                      setState(() {
+                                        _showSearchProductModels = false;
+                                        FocusScope.of(context).unfocus();
+                                      });
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const Divider(),
                               ),
-                            ):
-                            
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BusinessTabScreen(
-                                  query: _searchController.text,
-                                ),
-                              ),
-                            );
-                            setState(() {
-                              _showSearchProductModels = false;
-                              FocusScope.of(context).unfocus();
-                            });
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) => const Divider(),
-                    ),
                             );
                           }, loading: () {
                             return null;
@@ -535,113 +539,123 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                       // )
                     ],
                   ),
+                  getHotData.when(
+                    data: (data) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 40.h),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection:
+                              Axis.vertical, // Scroll vertically if needed
+                          child: Wrap(
+                            spacing: 5.w, // Horizontal space between items
+                            runSpacing: 15.h, // Vertical space between rows
+                            children: List.generate(
+                              data.length,
+                              (index) {
+                                GlobalModel res = data[index];
 
-getHotData.when(
-  data: (data) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 40.h),
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical, // Scroll vertically if needed
-        child: Wrap(
-          spacing: 5.w, // Horizontal space between items
-          runSpacing: 15.h, // Vertical space between rows
-          children: List.generate(
-            data.length,
-            (index) {
-              GlobalModel res = data[index];
-
-              return SizedBox(
-                width: (MediaQuery.of(context).size.width - 25.w) / 2,
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  shadowColor: const Color(0xff3D215F).withOpacity(0.5),
-                  elevation: 9,
-                  margin: EdgeInsets.symmetric(horizontal: 5.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: AllProductDetailWidget(
-                    savedid: res.savedByLoggedUser == null ||
-                            res.savedByLoggedUser!.isEmpty
-                        ? []
-                        : res.savedByLoggedUser
-                            ?.map(
-                              (e) => SavedPost(
-                                  id: e.id,
-                                  userId: e.userId,
-                                  postId: e.postId,
-                                  createdAt: e.createdAt,
-                                  updatedAt: e.updatedAt),
-                            )
-                            .toList(),
-                    onRefresh: () {
-                      refresh();
+                                return SizedBox(
+                                  width: (MediaQuery.of(context).size.width -
+                                          25.w) /
+                                      2,
+                                  child: Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    shadowColor: const Color(0xff3D215F)
+                                        .withOpacity(0.5),
+                                    elevation: 9,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    child: AllProductDetailWidget(
+                                      savedid: res.savedByLoggedUser == null ||
+                                              res.savedByLoggedUser!.isEmpty
+                                          ? []
+                                          : res.savedByLoggedUser
+                                              ?.map(
+                                                (e) => SavedPost(
+                                                    id: e.id,
+                                                    userId: e.userId,
+                                                    postId: e.postId,
+                                                    createdAt: e.createdAt,
+                                                    updatedAt: e.updatedAt),
+                                              )
+                                              .toList(),
+                                      onRefresh: () {
+                                        refresh();
+                                      },
+                                      productid: res.id,
+                                      lat: res.user[0].latitude,
+                                      long: res.user[0].longitude,
+                                      membershipid: res.user[0].membership_id,
+                                      posttype: res.post_type_id,
+                                      didcountpercentage:
+                                          res.discount_percentage,
+                                      id: int.tryParse(res.id),
+                                      shortestDistance:
+                                          res.user[0].shortestDistance,
+                                      issponsored:
+                                          res.user[0].sponsored ?? false,
+                                      distance: res.user[0].shortestDistance,
+                                      wow: res.wow.toString(),
+                                      discounttedPrice: res.discont,
+                                      comment: res.commentnum,
+                                      avg_rating:
+                                          res.avg_rating?.toDouble() ?? 0.0,
+                                      offer: res.offers,
+                                      productImage: res.imageUrl,
+                                      Vimage: res.user[0].photo,
+                                      vendorname: res.user[0].name,
+                                      title: res.title,
+                                      price: res.price,
+                                      similarproductCount:
+                                          res.similarproductCount,
+                                      membershipColor:
+                                          res.user[0].membership_color,
+                                      membershipTitle:
+                                          res.user[0].membership_title,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
                     },
-                    productid: res.id,
-                    lat: res.user[0].latitude,
-                    long: res.user[0].longitude,
-                    membershipid: res.user[0].membership_id,
-                    posttype: res.post_type_id,
-                    didcountpercentage: res.discount_percentage,
-                    id: int.tryParse(res.id),
-                    shortestDistance: res.user[0].shortestDistance,
-                    issponsored: res.user[0].sponsored ?? false,
-                    distance: res.user[0].shortestDistance,
-                    wow: res.wow.toString(),
-                    discounttedPrice: res.discont,
-                    comment: res.commentnum,
-                    avg_rating: res.avg_rating?.toDouble() ?? 0.0,
-                    offer: res.offers,
-                    productImage: res.imageUrl,
-                    Vimage: res.user[0].photo,
-                    vendorname: res.user[0].name,
-                    title: res.title,
-                    price: res.price,
-                    similarproductCount: res.similarproductCount,
-                    membershipColor: res.user[0].membership_color,
-                    membershipTitle: res.user[0].membership_title,
+                    error: (error, stackTrace) {
+                      return const Text("data");
+                    },
+                    loading: () => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // Two items per row
+                          crossAxisSpacing: 10.w,
+                          mainAxisSpacing: 15.h,
+                          childAspectRatio: 0.75, // Adjust size ratio
+                        ),
+                        itemCount: 6, // Number of shimmer items
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              margin: EdgeInsets.symmetric(horizontal: 5.w),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  },
-  error: (error, stackTrace) {
-    return const Text("data");
-  },
-  loading: () => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
-    child: GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Two items per row
-        crossAxisSpacing: 10.w,
-        mainAxisSpacing: 15.h,
-        childAspectRatio: 0.75, // Adjust size ratio
-      ),
-      itemCount: 6, // Number of shimmer items
-      itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 5.w),
-          ),
-        );
-      },
-    ),
-  ),
-),
-
                   SizedBox(
                     height: 40.h,
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/pending_approval/api/pending_approval_api.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
@@ -82,7 +83,14 @@ class PendingApprovalScreen extends ConsumerWidget {
                     );
                   },
                   loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                      Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!, 
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          height: 150.h,
+                          color: Colors.white, 
+                        ),
+                      ),
                   error: (error, stackTrace) => const Center(
                     child: Text('Please login again'),
                   ),
@@ -197,13 +205,18 @@ class PedingApprovalContainer extends ConsumerWidget {
                         if (loadingProgress == null) return child;
                         return SizedBox(
                           height: 70.h,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
+                          child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey[300]!, 
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            width: 50.w,
+            height: 60.h,
+            color: Colors.white, 
+          ),
+        ),
+      
                           ),
                         );
                       },

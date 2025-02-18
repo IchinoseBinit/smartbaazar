@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -14,6 +19,7 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -43,7 +49,12 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
+
 import 'package:url_launcher/url_launcher.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final int vid;
@@ -60,6 +71,75 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
   bool? showsearch;
+  final ScreenshotController _screenshotController = ScreenshotController();
+  Future<bool> _requestPermission() async {
+    if (await Permission.storage.request().isGranted) {
+      return true;
+    }
+
+    if (await Permission.manageExternalStorage.request().isGranted) {
+      return true;
+    }
+
+    if (await Permission.storage.isPermanentlyDenied) {
+      openAppSettings();
+      return false;
+    }
+
+    return false;
+  }
+
+  Uint8List? _savedImage;
+  Future<void> _captureAndSave() async {
+    if (await _requestPermission()) {
+      await Future.delayed(
+          const Duration(milliseconds: 500)); // Ensure widget renders
+
+      final Uint8List? image = await _screenshotController.capture(
+        delay: const Duration(milliseconds: 500),
+      );
+
+      // if (image != null) {
+      //   try {
+      //     // Save the file in the device's Pictures directory
+      //     final directory = Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
+      //     if (!directory.existsSync()) {
+      //       directory.createSync(recursive: true);
+      //     }
+
+      //     final filePath = '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      //     File file = File(filePath);
+      //     await file.writeAsBytes(image);
+
+      //     // Make sure the image appears in the gallery
+      //     await _refreshGallery(filePath);
+
+      //     setState(() {
+      //       _savedImage = image;
+      //     });
+
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       const SnackBar(content: Text('Image Saved to Gallery')),
+      //     );
+      //   } catch (e) {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text('Failed to Save Image: $e')),
+      //     );
+      //   }
+      // }
+    }
+  }
+
+// This function refreshes the gallery so the image appears
+  Future<void> _refreshGallery(String filePath) async {
+    final channel = const MethodChannel('gallery_scan');
+    try {
+      await channel.invokeMethod('scanFile', {"path": filePath});
+    } catch (e) {
+      debugPrint('Error refreshing gallery: $e');
+    }
+  }
+
   int? _categorieslength;
   final List<Map<String, dynamic>> _items = [
     {
@@ -343,81 +423,306 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     }
 
     return Scaffold(
-      key: _key,
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // Scrollable content
-          Positioned.fill(
-            top: 250.h, // Space for the search bar
-            child: SingleChildScrollView(
-              child: ref.watch(getVendorCardProvider(widget.vid)).when(
-                    data: (vendorcard) {
-                      _vendorimage = vendorcard.data?.vendor_card!.photo!;
+        key: _key,
+        extendBody: true,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification is ScrollUpdateNotification &&
+                notification.metrics.axis == Axis.vertical) {
+              // Check if the scroll is vertical
+              // Check if the SliverAppBar is completely off-screen
+              if (notification.metrics.pixels > 100) {
+                if (isSliverAppBarVisible) {
+                  setState(() {
+                    isSliverAppBarVisible = false;
+                  });
+                  print("SliverAppBar disappeared");
+                }
+              } else {
+                if (!isSliverAppBarVisible) {
+                  setState(() {
+                    _isSectionsVisible = true;
+                    isSliverAppBarVisible = true;
+                  });
+                  print("SliverAppBar visible");
+                }
+              }
+            }
+            return true; // Allow the scroll event to propagate
+          },
+          child: Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  SliverPersistentHeader(
+                      pinned: true,
+                      floating: true,
+                      delegate: StickyHeaderDelegate(
+                          visible: isSliverAppBarVisible,
+                          searchController: _searchController,
+                          onchanged: (value) {
+                            print('value $value');
+                          },
+                          dropdownValueNotifier: dropdownValueNotifier,
+                          filteredSuggestions: [])),
+                  if (isSliverAppBarVisible)
+                    SliverAppBar(
+                        expandedHeight: 90.h,
+                        floating: false,
+                        pinned: false,
+                        flexibleSpace: AnimatedContainer(
+                          padding: EdgeInsets.zero,
+                          duration: Duration(milliseconds: 150),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(40),
+                                  bottomRight: Radius.circular(40)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    // Color(0xFF681b4e),
+                                    // Color(0xFF392574),
+                                    // Color(0xFF681b4e),
+                                    Color(0xff651c50),
+                                    Color(0xff54225f),
+                                    // Color(0xFF392574).
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                SizedBox(
+                                  height: 55.h,
+                                  child: PageView.builder(
+                                    itemCount: _items.length,
+                                    padEnds: false,
+                                    controller: _pageController,
+                                    onPageChanged: (value) {
+                                      ref
+                                          .read(_selectedIndexProvider.notifier)
+                                          .state = value;
+                                    },
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> data = _items[index];
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (vendorcard.data != null)
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.h),
-                              child: DottedContainer(
-                                  firstImage:
-                                      vendorcard.data?.vendor_card?.photo,
-                                  deals: vendorcard.data?.deals,
-                                  vname: vendorcard.data!.vendor_card!.name!),
+                                      // Highlight only when index == 4
+                                      bool isActive = index == 1;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(_selectedIndexProvider
+                                                  .notifier)
+                                              .state = index;
+                                        },
+                                        child: AnimatedContainer(
+                                          padding: EdgeInsets.zero,
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        data['screen']),
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (data['icon']
+                                                    .toString()
+                                                    .endsWith('.svg'))
+                                                  SvgPicture.asset(
+                                                    data['icon'],
+                                                    alignment: Alignment.center,
+                                                    fit: BoxFit.contain,
+                                                    theme: const SvgTheme(
+                                                        currentColor:
+                                                            Color(0xffdd9d9d9)),
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                else
+                                                  Image.asset(
+                                                    data['icon'],
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  data['label'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                              ],
                             ),
-                          if (vendorcard.data != null)
-                            BigContainer(
-                              onsubscribed: () {
-                                refreshAllprovider();
-                              },
-                              lat: double.tryParse(
-                                  vendorcard.data!.vendor_card?.latitude ??
-                                      '0')!,
-                              long: double.tryParse(
-                                vendorcard.data!.vendor_card?.longitude ?? '0',
-                              )!, // Assuming longitude is available in vendor_card
-                              id: vendorcard.data!.vendor_card!
-                                  .membership_id!, // Assuming id is available in the data
-                              title: vendorcard.data!.vendor_card!
-                                  .name!, // Assuming title is in vendor_card
-                              logo: vendorcard.data!.vendor_card!
-                                  .photo!, // Assuming logo URL or widget is in vendor_card
-                              contact: vendorcard.data!.vendor_card!
-                                  .phone!, // Assuming contact info is in vendor_card
-                              storyCount: vendorcard
-                                  .data!.vendor_card!.storycount
-                                  .toString(), // Assuming storyCount is in vendor_card
-                              membershipTitle: vendorcard.data!.vendor_card!
-                                  .membership_title!, // Assuming membershipTitle is in vendor_card
-                              storycount: vendorcard
-                                  .data!.vendor_card!.storycount!
-                                  .toString(),
-                              // Assuming dealsCircle is in vendor_card
-                              total_connections: vendorcard
-                                  .data!.vendor_card!.subscribers!
-                                  .toString(), // Assuming totalConnections is in vendor_card
-                              total_prize_worth: vendorcard
-                                  .data!.vendor_card!.prize_worth!
-                                  .toString(), // Assuming totalPrizeWorth is in vendor_card
-                              location:
-                                  vendorcard.data!.vendor_card!.nearestbranch ??
+                          ),
+                        )),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 11, top: 11),
+                      child: GestureDetector(
+                        onVerticalDragUpdate: _onDragUpdate,
+                        onTap: () {
+                          setState(() {
+                            isSliverAppBarVisible = !isSliverAppBarVisible;
+                          });
+                        },
+                        child: Center(
+                          child: Container(
+                            alignment: AlignmentDirectional.center,
+                            height: 7.h,
+                            width: 60.w,
+                            decoration: BoxDecoration(
+                                color: Color(0xff651c50),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ref.watch(getVendorCardProvider(widget.vid)).when(
+                      data: (vendorcard) {
+                        _vendorimage = vendorcard.data?.vendor_card!.photo!;
+
+                        return Column(
+                          children: [
+                            if (vendorcard.data != null)
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5.h),
+                                child: DottedContainer(
+                                    firstImage:
+                                        vendorcard.data?.vendor_card?.photo,
+                                    deals: vendorcard.data?.deals,
+                                    vname: vendorcard.data!.vendor_card!.name!),
+                              ),
+                                if (vendorcard.data != null)
+                            Screenshot(
+                              controller: _screenshotController,
+                              child: Container(
+                                color: Colors.white,
+                                child: BigContainer(
+                                  ondoenload: _captureAndSave,
+                                  onsubscribed: () {
+                                    refreshAllprovider();
+                                  },
+                                  lat: double.tryParse(
+                                      vendorcard.data!.vendor_card?.latitude ??
+                                          '0')!,
+                                  long: double.tryParse(
+                                    vendorcard.data!.vendor_card?.longitude ??
+                                        '0',
+                                  )!, // Assuming longitude is available in vendor_card
+                                  id: vendorcard.data!.vendor_card!
+                                      .membership_id!, // Assuming id is available in the data
+                                  title: vendorcard.data!.vendor_card!
+                                      .name!, // Assuming title is in vendor_card
+                                  logo: vendorcard.data!.vendor_card!
+                                      .photo!, // Assuming logo URL or widget is in vendor_card
+                                  contact: vendorcard.data!.vendor_card!
+                                      .phone?? '97++', // Assuming contact info is in vendor_card
+                                  storyCount: vendorcard
+                                      .data!.vendor_card!.storycount
+                                      .toString(), // Assuming storyCount is in vendor_card
+                                  membershipTitle: vendorcard.data!.vendor_card!
+                                      .membership_title!, // Assuming membershipTitle is in vendor_card
+                                  storycount: vendorcard
+                                      .data!.vendor_card!.storycount!
+                                      .toString(),
+                                  // Assuming dealsCircle is in vendor_card
+                                  total_connections: vendorcard
+                                      .data!.vendor_card!.subscribers!
+                                      .toString(), // Assuming totalConnections is in vendor_card
+                                  total_prize_worth: vendorcard
+                                      .data!.vendor_card!.prize_worth!
+                                      .toString(), // Assuming totalPrizeWorth is in vendor_card
+                                  location: vendorcard
+                                          .data!.vendor_card!.nearestbranch ??
                                       '', // Assuming location is in vendor_card
-                              Cnumber: vendorcard.data!.vendor_card!
-                                  .phone!, // Assuming contactNumber is in vendor_card
-                              issubbed: vendorcard
-                                          .data!.vendor_card!.subscribed ==
-                                      'subscribed'
-                                  ? true
-                                  : false, // Assuming isSubscribed is in vendor_card
-                              memebertitle: vendorcard.data!.vendor_card!
-                                  .membership_title!, // Assuming memberTitle is in vendor_card
+                                  Cnumber: vendorcard.data!.vendor_card!
+                                      .phone!, // Assuming contactNumber is in vendor_card
+                                  issubbed: vendorcard
+                                              .data!.vendor_card!.subscribed ==
+                                          'subscribed'
+                                      ? true
+                                      : false, // Assuming isSubscribed is in vendor_card
+                                  memebertitle: vendorcard.data!.vendor_card!
+                                      .membership_title!, // Assuming memberTitle is in vendor_card
+                                ),
+                              ),
                             ),
-                          SizedBox(
+                           SizedBox(
                             height: 10.h,
                           ),
                           const DottedLine(
@@ -452,7 +757,32 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ],
                             ),
                           ),
-                          ref
+                          ],
+                        );
+                      },
+                      error: (error, stackTrace) {
+                        return Center(child: Text("Error loading data"));
+                      },
+                      loading: () {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 100, // Adjust the height as needed
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                         ref
                               .watch(getvendorbybrandnameProvider(widget.vid))
                               .when(
                                 data: (data) {
@@ -478,7 +808,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  // Search Field
+                                                  // Search Fieldf
                                                   SizedBox(
                                                     width: 5.w,
                                                   ),
@@ -1143,7 +1473,16 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                   ),
                                 ),
                               ),
-                          SizedBox(
+
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         SizedBox(
                             height: 5.h,
                           ),
                           Padding(
@@ -1153,7 +1492,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 dashColor: Color(0xffD9D9D9),
                                 dashLength: 7),
                           ),
-                          Padding(
+                            Padding(
                             padding: EdgeInsets.only(
                                 left: 18.w, bottom: 10, top: 10),
                             child: Align(
@@ -1167,7 +1506,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                           ),
-                          liveandpost.when(
+                           liveandpost.when(
                             data: (data) {
                               if (data.feedPosts.isEmpty) {
                                 return Center(
@@ -1250,7 +1589,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               ),
                             ),
                           ),
-                          liveandpost.when(
+                            liveandpost.when(
                             data: (data) {
                               if (data.live_prizes == null ||
                                   data.live_prizes!.isEmpty) {
@@ -1320,7 +1659,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                   color: ColorConstant.blackColor),
                             ),
                           ),
-                          allproductsresp.when(
+                            allproductsresp.when(
                             data: (data) {
                               if (data.data.all_products == null ||
                                   data.data.all_products!.isEmpty) {
@@ -1430,45 +1769,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 ),
                               );
                             },
-                            loading: () => SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.vertical,
-                              child: Wrap(
-                                spacing: 5.w,
-                                runSpacing: 15.h,
-                                children: List.generate(
-                                  6, // ✅ Show 6 placeholders during loading
-                                  (index) => SizedBox(
-                                    width: (MediaQuery.of(context).size.width -
-                                            30.w) /
-                                        2,
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Container(
-                                        height: 200.h,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            error: (error, stack) => Center(
-                              child: Text("Error: $error",
-                                  style: const TextStyle(color: Colors.red)),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                    loading: () => SizedBox(
+                            loading: () =>  SizedBox(
                       width: 100.w,
                       height: 100.h,
                       child: Center(
@@ -1481,498 +1782,20 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         ),
                       ),
                     ),
-                    error: (err, stack) {
-                      return Text("please login again $err");
-                    },
-                  ),
-            ),
-          ),
-
-          // Fixed Search Bar
-          Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  SizedBox(
-                    // height: 300.h,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          child: Container(
-                            // height: 170,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(50),
-                                  bottomRight: Radius.circular(50)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF392574),
-                                    Color(0xFF681b4e),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
+                            error: (error, stack) => Center(
+                              child: Text("Error: $error",
+                                  style: const TextStyle(color: Colors.red)),
                             ),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 40,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MySubscriptionScreen(),
-                                              ));
-                                        },
-                                        child: const CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                        )),
-                                    SizedBox(
-                                      height: 40,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 45.h,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF46236a),
-                                              border: Border.all(
-                                                  color: Colors.white),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(19.r),
-                                                bottomLeft:
-                                                    Radius.circular(19.r),
-                                              ),
-                                            ),
-                                            child: DropdownButton<
-                                                Map<String, String>>(
-                                              alignment: Alignment.center,
-                                              value: dropdownValue ??
-                                                  headeritems[postypeid!],
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  dropdownValue = newValue;
-                                                });
-                                              },
-                                              items: headeritems.map((item) {
-                                                return DropdownMenuItem(
-                                                  alignment: Alignment.center,
-                                                  value: item,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        item['icon']!,
-                                                        height: 10.h,
-                                                        color: Colors.white,
-                                                      ),
-                                                      SizedBox(width: 8.w),
-                                                      Text(
-                                                        item['label']!,
-                                                        style: TextStyle(
-                                                            fontSize: 10.sp,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              dropdownColor:
-                                                  const Color(0xff665B6B)
-                                                      .withOpacity(0.5),
-                                              underline: const SizedBox(),
-                                              icon: const SizedBox(),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 180.w,
-                                            height: 45.h,
-                                            padding: const EdgeInsets.all(5),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white),
-                                            child: TextField(
-                                              controller: _searchController,
-                                              onTap: () {
-                                                _onSearchFocusChanged(
-                                                    _searchController
-                                                        .text.isNotEmpty);
-                                              },
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                prefixIcon: const Icon(
-                                                  Icons.search,
-                                                  size: 25,
-                                                  color: Color(0xffD9D9D9),
-                                                ),
-                                                enabledBorder:
-                                                    const OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      width: 0.2,
-                                                      color: Colors.white),
-                                                ),
-                                                hintText: "Search Everything",
-                                                hintStyle: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: const Color(
-                                                        0xffD9D9D9)),
-                                                isCollapsed: true,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 5.h,
-                                                        horizontal: 10.w),
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                isDense: true,
-                                              ),
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (_searchController.text
-                                                  .trim()
-                                                  .isNotEmpty) {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BusinessTabScreen(
-                                                        query: _searchController
-                                                            .text,
-                                                      ),
-                                                    ));
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 45.h,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,
-                                                  vertical: 5.h),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.white),
-                                                color: Colors.transparent,
-                                                borderRadius: BorderRadius.only(
-                                                  topRight:
-                                                      Radius.circular(19.r),
-                                                  bottomRight:
-                                                      Radius.circular(19.r),
-                                                ),
-                                              ),
-                                              child: Icon(
-                                                Icons.search,
-                                                color: Colors.white,
-                                                size: 20.sp,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          )
 
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-
-                                SizedBox(
-                                  height: 80.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      setState(() {
-                                        selectedIndex =
-                                            value; // Update selectedIndex based on page change
-                                      });
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
-
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedIndex = index;
-                                          });
-                                        },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.w),
-                                  child: const Divider(
-                                    thickness: 0.4,
-                                    height: 1,
-                                    color: ColorConstant.grayColor,
-                                  ),
-                                ),
-                                if (_isSectionsVisible)
-                                  Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const BrandBazarScreen(),
-                                                ));
-                                          },
-                                          child: const Text(
-                                            "Brandbazaar",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFFD9D9D9),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MySubscribeAndWinPage(),
-                                                ));
-                                          },
-                                          child: const Text(
-                                            "BuyOrWin",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFFD9D9D9),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                //   ],
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // if (true)
-                        Positioned(
-                          top: 80.h, // Position just below the search bar
-                          left: 10,
-                          right: 10,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5.w),
-                            color: Colors.white,
-                            child: SearchProductModels.when(
-                              data: (results) {
-                                if (results.isEmpty) {
-                                  return const SizedBox.shrink(); // No results
-                                }
-                                return ListView.separated(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    final product = results[index];
-                                    return ListTile(
-                                      dense: true,
-                                      title: Text(
-                                        softWrap: true,
-                                        product.name,
-                                        style: headerstyle.copyWith(
-                                            color: ColorConstant.blackColor,
-                                            fontSize: 10),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                BusinessTabScreen(
-                                              query: _searchController.text,
-                                            ),
-                                          ),
-                                        );
-                                        setState(() {
-                                          _showSearchProductModels = false;
-                                          FocusScope.of(context).unfocus();
-                                        });
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const Divider(),
-                                );
-                              },
-                              loading: () {
-                                return const SizedBox();
-                              },
-                              error: (error, stack) {
-                                return Center(child: Text(error.toString()));
-                              },
-                            ),
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                  GestureDetector(
-                    onVerticalDragUpdate: _onDragUpdate,
-                    onVerticalDragStart: _onDragStart,
-                    onTap: () {
-                      setState(() {
-                        _isSectionsVisible = !_isSectionsVisible;
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 5.h),
-                      child: Center(
-                        child: Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          margin: EdgeInsets.only(top: 5.h),
-                          height: 7.h,
-                          width: 60.w,
-                          decoration: BoxDecoration(
-                              color: const Color(0xFF681b4e),
-                              borderRadius: BorderRadius.circular(5)),
-                        ),
-                      ),
-                    ),
-                  ),
+                  )
                 ],
-              )),
-        ],
-      ),
-    );
+              )
+            ],
+          ),
+        ));
   }
 }
 
@@ -1995,7 +1818,7 @@ class DottedContainer extends StatelessWidget {
         height: 180.h,
         child: Row(
           children: [
-            _buildFirstItem(firstImage!, vname),
+            _buildFirstItem(firstImage!, vname, context),
             Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -2012,38 +1835,54 @@ class DottedContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildFirstItem(String firstImage, String name) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: DottedBorder(
-        color: Colors.black,
-        strokeWidth: 2,
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
-        dashPattern: const [6, 5],
-        child: Stack(
-          children: [
-            SizedBox(
-              width: 100.w,
-              height: 180.h,
-              child: Image.network(
-                firstImage ?? 'https://via.placeholder.com/120',
-                fit: BoxFit.contain,
-              ),
-            ),
-            Positioned(
-              left: 10.w,
-              bottom: 10.h,
-              child: Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13.sp,
-                  color: Colors.black,
+  Widget _buildFirstItem(String firstImage, String name, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (context) => const CreateNewListinScreen(),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: DottedBorder(
+          color: Colors.black,
+          strokeWidth: 2,
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(12),
+          dashPattern: const [6, 5],
+          child: Stack(
+            children: [
+              SizedBox(
+                width: 100.w,
+                height: 180.h,
+                child: Image.network(
+                  firstImage ?? 'https://via.placeholder.com/120',
+                  fit: BoxFit.contain,
                 ),
               ),
-            ),
-          ],
+              Positioned(
+                left: 10.w,
+                bottom: 10.h,
+                child: Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13.sp,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 30.w,
+                bottom: 4,
+                child: Icon(Icons.add),
+                height: 12,
+                width: 12,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -2070,6 +1909,8 @@ class buildDealItemWidget extends StatelessWidget {
         radius: const Radius.circular(12),
         dashPattern: const [6, 5],
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
             Image.network(
@@ -2399,6 +2240,7 @@ class BigContainer extends StatefulWidget {
   final String memebertitle;
   bool issubbed = false;
   final VoidCallback? onsubscribed; // Changed this to VoidCallback?
+  final VoidCallback? ondoenload; // Changed this to VoidCallback?
 
   // Constructor
   BigContainer(
@@ -2419,7 +2261,8 @@ class BigContainer extends StatefulWidget {
       required this.Cnumber,
       required this.issubbed,
       required this.memebertitle,
-      required this.onsubscribed});
+      required this.onsubscribed,
+      required this.ondoenload});
 
   @override
   State<BigContainer> createState() => _BigContainerState();
@@ -2427,7 +2270,7 @@ class BigContainer extends StatefulWidget {
 
 class _BigContainerState extends State<BigContainer> {
   // Future<void> _openGoogleMap(double latitude, double longitude) async {\
-
+  final GlobalKey globalKey = GlobalKey();
   bool? _hassubbed;
   @override
   void initState() {
@@ -2448,21 +2291,54 @@ class _BigContainerState extends State<BigContainer> {
         radius: const Radius.circular(35),
         dashPattern: const [7, 5],
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
+mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,          children: [
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.file_download_outlined,
-                    color: Color(0xFF6D1A49),
+                  IconButton(
+                    onPressed: () {
+                      widget.ondoenload?.call(); // ✅ Make sure it's called
+                    },
+                    icon: Icon(
+                      Icons.file_download_outlined,
+                      color: Color(0xFF6D1A49),
+                    ),
                   ),
-                  Icon(
-                    Icons.more_vert_rounded,
-                    color: Color(0xFF6D1A49),
+                  PopupMenuButton(
+                    icon: const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'ask',
+                        child:
+                            Text('Ask', style: TextStyle(color: Colors.black)),
+                      ),
+                      PopupMenuItem(
+                        value: 'enquire',
+                        child: Text('Enquire',
+                            style: TextStyle(color: Colors.black)),
+                      ),
+                      PopupMenuItem(
+                        value: 'share',
+                        child: Text('Share',
+                            style: TextStyle(color: Colors.black)),
+                      ),
+                    ],
+                    onSelected: (value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("$value Clicked")),
+                      );
+                    },
                   ),
+                  //  IconButton(
+                  //   onPressed: () {
+
+                  //  }, icon:  Icon(
+                  //     Icons.more_vert_rounded,
+                  //     color: Color(0xFF6D1A49),
+                  //   ),)
                 ],
               ),
             ),
@@ -2472,6 +2348,7 @@ class _BigContainerState extends State<BigContainer> {
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Column(
+
                     children: [
                       Text(
                         "Connect",
@@ -2567,6 +2444,7 @@ class _BigContainerState extends State<BigContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
+
                   children: [
                     Row(
                       children: [

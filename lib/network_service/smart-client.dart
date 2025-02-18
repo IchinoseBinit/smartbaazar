@@ -22,6 +22,8 @@ class SmartClient {
   static String laravelSession = '';
   static String phone = '';
   static String userPhoto = '';
+   
+
 
   SmartClient._internal() {
     _loadToken();
@@ -161,6 +163,17 @@ Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
                 queryParameters: queryParameters)
             .timeout(_timeoutDuration);
       case RequestType.post:
+         return await _client
+              .post(
+                
+                url.trim(),
+                queryParameters: queryParameters,
+                data: jsonEncode(parameter),
+                options: Options(
+                   followRedirects: true,
+                  headers: mergedHeaders),
+              )
+              .timeout(_timeoutDuration);
       case RequestType.postWithToken:
         return _client
             .post(url,

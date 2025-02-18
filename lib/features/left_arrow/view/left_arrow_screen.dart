@@ -298,7 +298,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                           },
                           icon: const Icon(Icons.arrow_back_ios_new_rounded),
                         ),
-                        Expanded(
+                        Flexible(
                           // Wrap the Container with Expanded
                           child: CarouselSlider(
                             carouselController: _carouselController,

@@ -18,7 +18,6 @@ class MySubscriptionScreen extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // backgroundColor: ColorConstant.whiteColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 30.h,
@@ -59,12 +58,13 @@ class MySubscriptionScreen extends ConsumerWidget {
             ),
             // Subscription Data UI
             subscriptionAsyncValue.when(
-              data: (subscriptionData) =>
-                  _buildSubscriptionList(subscriptionData, context),
+              data: (subscriptionData) {
+                return _buildSubscriptionList(subscriptionData, context);
+              },
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => const Center(
                 child: Text(
-                  'Please login',
+                  'Error fetching subscriptions',
                   style: TextStyle(color: Colors.red),
                 ),
               ),
@@ -89,39 +89,52 @@ class MySubscriptionScreen extends ConsumerWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: subscriptionData.subscriptions!.map((subscription) {
+          children: subscriptionData.subscriptions?.map((subscription) {
             return Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(subscription.vendor?.name ?? "loading.."),
-                    GeneralTextButton(
-                      marginH: 0,
-                      height: 28.h,
-                      bgColor: const Color(0xff362677),
-                      fgColor: Colors.white,
-                      title: 'Profile',
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VendorHomeScreen(
-                                  vendorName: subscription.vendor!.username!,
-                                  vid: int.tryParse(subscription.vendor!.id)!),
-                            ));
-                        // Handle profile button tap
-                      },
-                    ),
-                  ],
-                ),
+                _buildSubscriptionItem(subscription, context),
                 SizedBox(height: 10.h),
               ],
             );
-          }).toList(),
+          }).toList() ??
+          [ // Handle empty list case gracefully
+            Center(child: Text('No subscriptions available')),
+          ],
         ),
       ),
+    );
+  }
+
+  // Helper widget to display subscription item
+  Widget _buildSubscriptionItem(Subscription subscription, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          subscription.vendor?.name ?? "Loading vendor...",
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+        ),
+        GeneralTextButton(
+          marginH: 0,
+          height: 28.h,
+          bgColor: const Color(0xff362677),
+          fgColor: Colors.white,
+          title: 'Profile',
+          onPressed: () {
+            // Ensure the vendorId is safely parsed
+            final vendorId = int.tryParse(subscription.vendorId ?? '0') ?? 0;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VendorHomeScreen(
+                  vendorName: subscription.vendor?.name ?? 'Unknown Vendor',
+                  vid: vendorId,
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

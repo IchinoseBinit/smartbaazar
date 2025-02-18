@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'add_to_cart_api.dart';
+part of 'generate_api_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$addtocartHash() => r'2a59501f43e21ffb231323d0ab7181eb76894389';
+String _$generateMyQRHash() => r'51bcaa2d96007ab194068425375f952643515037';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [addtocart].
-@ProviderFor(addtocart)
-const addtocartProvider = AddtocartFamily();
+/// See also [generateMyQR].
+@ProviderFor(generateMyQR)
+const generateMyQRProvider = GenerateMyQRFamily();
 
-/// See also [addtocart].
-class AddtocartFamily extends Family<AsyncValue<String>> {
-  /// See also [addtocart].
-  const AddtocartFamily();
+/// See also [generateMyQR].
+class GenerateMyQRFamily extends Family<AsyncValue<String>> {
+  /// See also [generateMyQR].
+  const GenerateMyQRFamily();
 
-  /// See also [addtocart].
-  AddtocartProvider call(
-    String id,
+  /// See also [generateMyQR].
+  GenerateMyQRProvider call(
+    String imagePath,
   ) {
-    return AddtocartProvider(
-      id,
+    return GenerateMyQRProvider(
+      imagePath,
     );
   }
 
   @override
-  AddtocartProvider getProviderOverride(
-    covariant AddtocartProvider provider,
+  GenerateMyQRProvider getProviderOverride(
+    covariant GenerateMyQRProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.imagePath,
     );
   }
 
@@ -68,74 +68,75 @@ class AddtocartFamily extends Family<AsyncValue<String>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'addtocartProvider';
+  String? get name => r'generateMyQRProvider';
 }
 
-/// See also [addtocart].
-class AddtocartProvider extends AutoDisposeFutureProvider<String> {
-  /// See also [addtocart].
-  AddtocartProvider(
-    String id,
+/// See also [generateMyQR].
+class GenerateMyQRProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [generateMyQR].
+  GenerateMyQRProvider(
+    String imagePath,
   ) : this._internal(
-          (ref) => addtocart(
-            ref as AddtocartRef,
-            id,
+          (ref) => generateMyQR(
+            ref as GenerateMyQRRef,
+            imagePath,
           ),
-          from: addtocartProvider,
-          name: r'addtocartProvider',
+          from: generateMyQRProvider,
+          name: r'generateMyQRProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$addtocartHash,
-          dependencies: AddtocartFamily._dependencies,
-          allTransitiveDependencies: AddtocartFamily._allTransitiveDependencies,
-          id: id,
+                  : _$generateMyQRHash,
+          dependencies: GenerateMyQRFamily._dependencies,
+          allTransitiveDependencies:
+              GenerateMyQRFamily._allTransitiveDependencies,
+          imagePath: imagePath,
         );
 
-  AddtocartProvider._internal(
+  GenerateMyQRProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.imagePath,
   }) : super.internal();
 
-  final String id;
+  final String imagePath;
 
   @override
   Override overrideWith(
-    FutureOr<String> Function(AddtocartRef provider) create,
+    FutureOr<String> Function(GenerateMyQRRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: AddtocartProvider._internal(
-        (ref) => create(ref as AddtocartRef),
+      override: GenerateMyQRProvider._internal(
+        (ref) => create(ref as GenerateMyQRRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        imagePath: imagePath,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<String> createElement() {
-    return _AddtocartProviderElement(this);
+    return _GenerateMyQRProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is AddtocartProvider && other.id == id;
+    return other is GenerateMyQRProvider && other.imagePath == imagePath;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, imagePath.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -143,17 +144,17 @@ class AddtocartProvider extends AutoDisposeFutureProvider<String> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AddtocartRef on AutoDisposeFutureProviderRef<String> {
-  /// The parameter `id` of this provider.
-  String get id;
+mixin GenerateMyQRRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `imagePath` of this provider.
+  String get imagePath;
 }
 
-class _AddtocartProviderElement extends AutoDisposeFutureProviderElement<String>
-    with AddtocartRef {
-  _AddtocartProviderElement(super.provider);
+class _GenerateMyQRProviderElement
+    extends AutoDisposeFutureProviderElement<String> with GenerateMyQRRef {
+  _GenerateMyQRProviderElement(super.provider);
 
   @override
-  String get id => (origin as AddtocartProvider).id;
+  String get imagePath => (origin as GenerateMyQRProvider).imagePath;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -5,8 +5,9 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class HeaderBannerWidget extends StatelessWidget {
-  final String title, img, vname, brandname, membershipid;
+  final String title, img, vname, brandname, membershipid,membershiptitle;
   final int id;
+  final String posttypeid;
 
   const HeaderBannerWidget(
       {super.key,
@@ -15,7 +16,10 @@ class HeaderBannerWidget extends StatelessWidget {
       required this.id,
       required this.vname,
       required this.brandname,
-      required this.membershipid});
+      required this.membershipid,
+      required this.posttypeid,
+      required this.membershiptitle,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +40,7 @@ class HeaderBannerWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            VendorHomeScreen(
-                              vendorName: vname,
-                               vid: id),
+                            VendorHomeScreen(vendorName: vname, vid: id),
                       ));
                 },
                 child: CircleAvatar(
@@ -64,10 +66,7 @@ class HeaderBannerWidget extends StatelessWidget {
                   SizedBox(
                     width: 5.w,
                   ),
-
                   Image.asset('assets/images/back.png')
-
-          
                 ],
               ),
             ],
@@ -102,10 +101,15 @@ class HeaderBannerWidget extends StatelessWidget {
                   width: 4.w,
                 ),
                 Text(
-                  brandname,
-                  style: headerstyle.copyWith(
+                      membershiptitle,
+                        style: headerstyle.copyWith(
                       color: Colors.black, fontWeight: FontWeight.w600),
                 ),
+                // Text(
+                //   brandname,
+                //   style: headerstyle.copyWith(
+                //       color: Colors.black, fontWeight: FontWeight.w600),
+                // ),
               ],
             ),
           )

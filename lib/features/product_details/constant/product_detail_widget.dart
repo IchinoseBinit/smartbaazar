@@ -181,7 +181,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                     PopupMenuButton(
                       menuPadding: EdgeInsets.only(left: 10.w),
                       onSelected: (value) {},
-    
+
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
@@ -190,7 +190,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           const BoxConstraints.expand(width: 150, height: 150),
                       // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
-    
+
                       color: Colors.grey,
                       itemBuilder: (context) {
                         return [
@@ -366,11 +366,15 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.title!,
+                      widget.title!.isNotEmpty
+                          ? widget.title![0].toUpperCase() +
+                              widget.title!.substring(1)
+                          : widget.title!,
                       style: headerstyle.copyWith(
-                          color: ColorConstant.blackColor,
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.bold),
+                        color: ColorConstant.blackColor,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                       softWrap: true,
                       maxLines: 1,
                     ),
@@ -389,7 +393,6 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,
                                 fontStyle: FontStyle.normal,
-    
                                 fontWeight: FontWeight.w900),
                           ),
                         ),
@@ -434,7 +437,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 height: 5.h,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 1.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 1.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -454,10 +457,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           ),
                         ),
                         const SizedBox(
-                          width: 1,
+                          width: 0.1,
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 5.w),
+                          margin: EdgeInsets.only(left: 1.w),
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(5),
@@ -551,7 +554,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 height: 8.h,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -648,7 +651,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               color: ColorConstant.blackColor),
                         ),
                         Text(
-                          "WIN",
+                          "BUY",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
@@ -662,7 +665,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               color: ColorConstant.blackColor),
                         ),
                         Text(
-                          "BUY",
+                          "WIN",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,

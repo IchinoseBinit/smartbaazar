@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+// import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -102,7 +103,7 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
               SizedBox(
                 height: 16.h,
               ),
-              const BuyerAccountDetailsWidget(),
+              BuyerAccountDetailsWidget(),
               // SizedBox(
               //   height: 16.h,
               // ),
@@ -121,7 +122,9 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
 }
 
 class BuyerAccountDetailsWidget extends ConsumerStatefulWidget {
-  const BuyerAccountDetailsWidget({super.key});
+  const BuyerAccountDetailsWidget({
+    super.key,
+  });
 
   @override
   ConsumerState<BuyerAccountDetailsWidget> createState() =>
@@ -177,8 +180,8 @@ class _BuyerAccountDetailsWidgetState
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    print("babu ${prefs.getString('userId')}");
-   userId = prefs.getString('userId');
+    userId = prefs.getString('userId');
+    print("babu $userId");
   }
 
   @override
@@ -192,10 +195,11 @@ class _BuyerAccountDetailsWidgetState
     super.dispose();
   }
 
-  void _submitUpdate(UserData data) {
+  void _submitUpdate(UserData data) async {
+    _loadUserId();
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final updatedData = UserData(
+      final updatedData = await UserData(
         name: _fullNameController.text,
         phone: _phoneNumberController.text,
         email: _emailController.text,
@@ -245,17 +249,17 @@ class _BuyerAccountDetailsWidgetState
         const SnackBar(content: Text('User details updated successfully!')),
       );
 
-      setState(() {
-        _fullNameController.clear();
-        _phoneNumberController.clear();
-        _emailController.clear();
-        _userNameController.clear();
-        _genderController.clear();
-        _branchController.clear();
-        userId = null;
-        _isInitialized = false;
-      });
-      _formKey.currentState?.reset();
+      // setState(() {
+      //   _fullNameController.clear();
+      //   _phoneNumberController.clear();
+      //   _emailController.clear();
+      //   _userNameController.clear();
+      //   _genderController.clear();
+      //   _branchController.clear();
+      //   userId = null;
+      //   _isInitialized = false;
+      // });
+      // _formKey.currentState?.reset();
     } catch (error) {
       // Display error message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -482,7 +486,10 @@ class _BuyerAccountDetailsWidgetState
                           //   },
                           // ),
                           LocationFieldWidget(
-                            onSelected: updateStreet,
+                            onSelected: (p0) {
+                              print("kalu $p0");
+                              updateStreet(p0);
+                            },
                             streetController: _branchController,
                           ),
 
@@ -496,7 +503,9 @@ class _BuyerAccountDetailsWidgetState
                             fgColor: Colors.white,
                             bgColor: const Color(0xff362677),
                             isSmallText: true,
-                            onPressed: () => _submitUpdate(data.data!.first),
+                            onPressed: () async {
+                              _submitUpdate(data.data!.first);
+                            },
                             // onPressed: isLoading ? null : _submitUpdate(asyncUserDetails),
                           ),
                         ],
@@ -600,8 +609,9 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         onTap: () {
-                          widget.streetController.text = address.description;
+                          print("kala ${widget.streetController.text}");
                           setState(() {
+                            widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions
 
                             widget.onSelected!(address.description);

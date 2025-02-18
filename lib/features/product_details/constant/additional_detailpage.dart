@@ -61,31 +61,40 @@ class AdditionalDetailsWidget extends StatelessWidget {
 
     final displayValue = getDisplayValue();
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.w),
-      padding: const EdgeInsets.all(10),
-      width: double.infinity,
-      color: const Color(0xFFf9fbfe),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: headerstyle.copyWith(
-              fontWeight: FontWeight.bold,
-              color: ColorConstant.blackColor,
-              fontSize: 13,
-            ),
+  return Container(
+  margin: EdgeInsets.symmetric(horizontal: 10.w),
+  padding: const EdgeInsets.all(10),
+  width: double.infinity,
+  color: const Color(0xFFf9fbfe),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded( // Ensures the title doesn't overflow
+        child: Text(
+          title,
+          style: headerstyle.copyWith(
+            fontWeight: FontWeight.bold,
+            color: ColorConstant.blackColor,
+            fontSize: 13,
           ),
-          const SizedBox(height: 8),
-          Text(
-            displayValue,
-            style: TextStyle(fontSize: 12.sp, color: Colors.black),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          overflow: TextOverflow.ellipsis, // Prevents overflow
+          maxLines: 1, // Limits to one line
+        ),
       ),
-    );
+      const SizedBox(width: 8), // Add spacing
+      Expanded( // Ensures the value text doesn't overflow
+        child: Text(
+          displayValue,
+          style: TextStyle(fontSize: 12.sp, color: Colors.black),
+          overflow: TextOverflow.ellipsis, // Prevents overflow
+          maxLines: 1, // Limits to one line
+          textAlign: TextAlign.end, // Aligns text to the right
+        ),
+      ),
+    ],
+  ),
+);
+
   }
 }

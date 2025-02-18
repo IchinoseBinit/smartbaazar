@@ -98,6 +98,10 @@ class ProductDetailScreen extends ConsumerWidget {
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
+    Future<void> refreshprovider() async {
+      await ref.refresh((productDetailsProvider(productId)));
+      await ref.refresh(selectedIndexProvider);
+    }
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
@@ -158,73 +162,77 @@ class ProductDetailScreen extends ConsumerWidget {
                       ref.watch(addtocartProvider(data.result!.id!.toString()));
 
                       showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Sucessful!',
-                style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xff362677)),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Text(
-                'Product added to the cart sucessfully!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const AddToCartScreen()));
-                },
-                child: Text(
-                  'View Cart',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                height: 40.h,
-                width: 40.w,
-                decoration: const BoxDecoration(
-                    color: Color(0xff362677), shape: BoxShape.circle),
-                child: const Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 24,
-                  weight: 50,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );();
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 14.w, vertical: 12.h),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Sucessful!',
+                                  style: TextStyle(
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xff362677)),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Text(
+                                  'Product added to the cart sucessfully!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                const AddToCartScreen()));
+                                  },
+                                  child: Text(
+                                    'View Cart',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Container(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  decoration: const BoxDecoration(
+                                      color: Color(0xff362677),
+                                      shape: BoxShape.circle),
+                                  child: const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 24,
+                                    weight: 50,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                      ();
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
@@ -388,6 +396,11 @@ class ProductDetailScreen extends ConsumerWidget {
                       // if (data.result != null && data.result?.user!=null &&
                       //     data.result?.user_details != null)
                       HeaderBannerWidget(
+                        membershiptitle: data
+                                .result?.user_details?.membershipTitle
+                                .toString() ??
+                            '',
+                        posttypeid: data.result!.postTypeId!,
                         membershipid: data.result!.user!.id.toString(),
                         brandname: data.result!.postType!.name,
                         id: data.result!.user!.id,
@@ -580,15 +593,15 @@ class ProductDetailScreen extends ConsumerWidget {
                           SizedBox(
                             height: 10.h,
                           ),
-                          const PerksWidget(
-                            first: "COLORS",
-                            fourth: "MODELS",
-                            second: "Sizes",
-                            third: "VARIATIONS",
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
+                          // const PerksWidget(
+                          //   first: "COLORS",
+                          //   fourth: "MODELS",
+                          //   second: "Sizes",
+                          //   third: "VARIATIONS",
+                          // ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
                           if (data.result != null &&
                               data.result?.location?.nearestBranch != null &&
                               data.result?.location != null)
@@ -608,34 +621,50 @@ class ProductDetailScreen extends ConsumerWidget {
                                 horizontal: 24.w, vertical: 5.h),
                             width: double.infinity,
                             decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/shield.png'),
-                                    const Text("WARRANTY\n DETAILS"),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset('assets/images/undo.png'),
-                                    const Text("RETURN\n POLICY"),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset('assets/images/undo.png'),
-                                    const Text("EXCHANGE\n POLICY"),
-                                  ],
-                                ),
-                              ],
+                              gradient: LinearGradient(
+                                colors: [Colors.white, Color(0xFFf3f3f3)],
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              // This will allow horizontal scrolling if content overflows.
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Warranty Details Section
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset('assets/images/shield.png'),
+                                      const Text("WARRANTY\n DETAILS"),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: 16.w), // Add space between columns
+                                  // Return Policy Section
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/undo.png'),
+                                      const Text("RETURN\n POLICY"),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: 16.w), // Add space between columns
+                                  // Exchange Policy Section
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/undo.png'),
+                                      const Text("EXCHANGE\n POLICY"),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+
                           SizedBox(
                             height: 10.h,
                           ),
@@ -758,23 +787,21 @@ class ProductDetailScreen extends ConsumerWidget {
                             ),
                           ),
                           Column(
-                            children: data.extra?.fields?.original?.result
-                                    ?.map(
-                                      (e) => e == null
-                                          ? const SizedBox() // Handle null entries gracefully
-                                          : AdditionalDetailsWidget(
-                                              defaultValue: e.defaultValue,
-                                              options: e.options?.length == 0
-                                                  ? []
-                                                  : e.options,
-                                              title: e.name ??
-                                                  'Unknown Title', // Fallback for null name
-                                              desp: e.defaultValue ??
-                                                  'No default value', // Fallback for null default value
-                                            ),
-                                    )
-                                    .toList() ??
-                                [], // Handle null result gracefully
+                            children: (data.extra?.fields?.original?.result ??
+                                    [])
+                                .where((e) =>
+                                    e != null) // Remove null values safely
+                                .map(
+                                  (e) => AdditionalDetailsWidget(
+                                    defaultValue: e.defaultValue,
+                                    options: (e.options?.isNotEmpty ?? false)
+                                        ? e.options
+                                        : [],
+                                    title: e.name ?? 'Unknown Title',
+                                    desp: e.defaultValue ?? 'No default value',
+                                  ),
+                                )
+                                .toList(),
                           ),
 
                           SizedBox(
@@ -1171,8 +1198,20 @@ class ProductDetailScreen extends ConsumerWidget {
                                               .widgetSimilarPosts!
                                               .posts!
                                               .data[index];
+                                          print(
+                                              "kala ${prod.savedByLoggedUser}");
 
                                           return ProductDetailWidget(
+                                              //  savedid: prod.savedByLoggedUser ==
+                                              //                         null ||
+                                              //                     prod.savedByLoggedUser!
+                                              //                         .isEmpty
+                                              //                 ? []
+                                              //                 : prod
+                                              //                     .savedByLoggedUser,
+                                              onRefresh: () {
+                                                refreshprovider();
+                                              },
                                               lat: prod.latitude,
                                               long: prod.longitude,
                                               posttype: prod.postTypeId,

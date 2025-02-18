@@ -9,6 +9,7 @@ import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
@@ -214,7 +215,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen": const HomeScreen(),
+      "screen": const BrandBazarScreen(),
     },
     {
       "icon": Icons.feed,

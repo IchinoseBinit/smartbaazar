@@ -9,12 +9,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
@@ -33,6 +36,8 @@ import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/api/jobs_provider.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
@@ -43,8 +48,12 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_scree
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/main.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
+
+final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+
 
 class JobssScreen extends ConsumerStatefulWidget {
   const JobssScreen({super.key});
@@ -255,224 +264,83 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
         extendBody: true,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
-        // body: asyncbajarValue.when(
-        //   data: (data) {},
-        //   error: (error, stackTrace) {
-        //     return Text("data")
-        //   },
-        //   loading: () {
-        //     return CircularProgressIndicator();
-        //   },
-        // ),
-        body: Stack(children: [
-          Positioned.fill(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    // height: 300.h,
-                    child: Stack(
-                      children: [
-                        Positioned(
+        body: NotificationListener<ScrollNotification>( 
+  onNotification: (notification) {
+            if (notification is ScrollUpdateNotification &&
+                notification.metrics.axis == Axis.vertical) {
+              // Check if the scroll is vertical
+              // Check if the SliverAppBar is completely off-screen
+              if (notification.metrics.pixels > 100) {
+                if (isSliverAppBarVisible) {
+                  setState(() {
+                    isSliverAppBarVisible = false;
+                  });
+                  print("SliverAppBar disappeared");
+                }
+              } else {
+                if (!isSliverAppBarVisible) {
+                  setState(() {
+                    _isSectionsVisible = true;
+                    isSliverAppBarVisible = true;
+                  });
+                  print("SliverAppBar visible");
+                }
+              }
+            }
+            return true; // Allow the scroll event to propagate
+          },
+          child: Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                    SliverPersistentHeader(
+                      pinned: true,
+                      floating: true,
+                      delegate: StickyHeaderDelegate(
+                          visible: isSliverAppBarVisible,
+                          searchController: _searchController,
+                          onchanged: (value) {
+                            print('value $value');
+                          },
+                          dropdownValueNotifier: dropdownValueNotifier,
+                          filteredSuggestions: [])),
+                  if (isSliverAppBarVisible)
+                    SliverAppBar(
+                        expandedHeight: 90.h,
+                        floating: false,
+                        pinned: false,
+                        flexibleSpace: AnimatedContainer(
+                          padding: EdgeInsets.zero,
+                          duration: Duration(milliseconds: 150),
                           child: Container(
-                            // height: 170,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(50),
-                                  bottomRight: Radius.circular(50)),
+                                  bottomLeft: Radius.circular(40),
+                                  bottomRight: Radius.circular(40)),
                               gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF392574),
-                                    Color(0xFF681b4e),
+                                    // Color(0xFF681b4e),
+                                    // Color(0xFF392574),
+                                    // Color(0xFF681b4e),
+                                    Color(0xff651c50),
+                                    Color(0xff54225f),
+                                    // Color(0xFF392574).
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight),
                             ),
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                const SizedBox(
-                                  height: 40,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    InkWell(
-                                        onTap: () {},
-                                        child: const CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage: AssetImage(
-                                              'assets/images/Smartbazaar-Icon-for-QR.png'),
-                                        )),
-                                    SizedBox(
-                                      height: 40,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 45.h,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF46236a),
-                                              border: Border.all(
-                                                  color: Colors.white),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(19.r),
-                                                bottomLeft:
-                                                    Radius.circular(19.r),
-                                              ),
-                                            ),
-                                            child: DropdownButton<
-                                                Map<String, String>>(
-                                              alignment: Alignment.center,
-                                              value: dropdownValue ??
-                                                  headeritems[postypeid!],
-                                              onChanged: (newValue) {
-                                                setState(() {
-                                                  dropdownValue = newValue;
-                                                });
-                                              },
-                                              items: headeritems.map((item) {
-                                                return DropdownMenuItem(
-                                                  alignment: Alignment.center,
-                                                  value: item,
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        item['icon']!,
-                                                        height: 10.h,
-                                                        color: Colors.white,
-                                                      ),
-                                                      SizedBox(width: 8.w),
-                                                      Text(
-                                                        item['label']!,
-                                                        style: TextStyle(
-                                                            fontSize: 10.sp,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              dropdownColor:
-                                                  const Color(0xff665B6B)
-                                                      .withOpacity(0.5),
-                                              underline: const SizedBox(),
-                                              icon: const SizedBox(),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 180.w,
-                                            height: 45.h,
-                                            padding: const EdgeInsets.all(5),
-                                            decoration: const BoxDecoration(
-                                                color: Colors.white),
-                                            child: TextField(
-                                              controller: _searchController,
-                                              onTap: () {
-                                                _onSearchFocusChanged(
-                                                    _searchController
-                                                        .text.isNotEmpty);
-                                              },
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                prefixIcon: const Icon(
-                                                  Icons.search,
-                                                  size: 25,
-                                                  color: Color(0xffD9D9D9),
-                                                ),
-                                                enabledBorder:
-                                                    const OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      width: 0.2,
-                                                      color: Colors.white),
-                                                ),
-                                                hintText: "Search Everything",
-                                                hintStyle: TextStyle(
-                                                    fontSize: 13.sp,
-                                                    color: const Color(
-                                                        0xffD9D9D9)),
-                                                isCollapsed: true,
-                                                contentPadding:
-                                                    EdgeInsets.symmetric(
-                                                        vertical: 5.h,
-                                                        horizontal: 10.w),
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                isDense: true,
-                                              ),
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              if (_searchController.text
-                                                  .trim()
-                                                  .isNotEmpty) {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BusinessTabScreen(
-                                                        query: _searchController
-                                                            .text,
-                                                      ),
-                                                    ));
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 45.h,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,
-                                                  vertical: 5.h),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.white),
-                                                color: Colors.transparent,
-                                                borderRadius: BorderRadius.only(
-                                                  topRight:
-                                                      Radius.circular(19.r),
-                                                  bottomRight:
-                                                      Radius.circular(19.r),
-                                                ),
-                                              ),
-                                              child: Icon(
-                                                Icons.search,
-                                                color: Colors.white,
-                                                size: 20.sp,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(
-                                  height: 20.h,
-                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: List.generate(4, (index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        setState(() {
-                                          selectedIndex = index;
-                                        });
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
                                         _pageController.animateToPage(
                                           index,
                                           duration:
@@ -495,18 +363,19 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     );
                                   }),
                                 ),
-
                                 SizedBox(
-                                  height: 80.h,
+                                  height: 15.h,
+                                ),
+                                SizedBox(
+                                  height: 55.h,
                                   child: PageView.builder(
                                     itemCount: _items.length,
                                     padEnds: false,
                                     controller: _pageController,
                                     onPageChanged: (value) {
-                                      setState(() {
-                                        selectedIndex =
-                                            value; // Update selectedIndex based on page change
-                                      });
+                                      ref
+                                          .read(_selectedIndexProvider.notifier)
+                                          .state = value;
                                     },
                                     itemBuilder: (context, index) {
                                       Map<String, dynamic> data = _items[index];
@@ -515,9 +384,10 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                       bool isActive = index == 1;
                                       return GestureDetector(
                                         onTap: () {
-                                          setState(() {
-                                            selectedIndex = index;
-                                          });
+                                          ref
+                                              .read(_selectedIndexProvider
+                                                  .notifier)
+                                              .state = index;
                                         },
                                         child: AnimatedContainer(
                                           padding: EdgeInsets.zero,
@@ -588,166 +458,40 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     },
                                   ),
                                 ),
-
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.w),
-                                  child: const Divider(
-                                    thickness: 0.4,
-                                    height: 1,
-                                    color: ColorConstant.grayColor,
-                                  ),
+                                SizedBox(
+                                  height: 10.h,
                                 ),
-                                if (_isSectionsVisible)
-                                  Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const BrandBazarScreen(),
-                                                ));
-                                          },
-                                          child: const Text(
-                                            "Brandbazaar",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFFD9D9D9),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MySubscribeAndWinPage(),
-                                                ));
-                                          },
-                                          child: const Text(
-                                            "BuyOrWin",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFFD9D9D9),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                //   ],
-                                // ),
                               ],
                             ),
                           ),
-                        ),
-                        if (_showSearchProductModels)
-                          Positioned(
-                            top: 80.h, // Position just below the search bar
-                            left: 10,
-                            right: 10,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              color: Colors.white,
-                              child: SearchProductModels.when(
-                                data: (results) {
-                                  if (results.isEmpty) {
-                                    return const SizedBox(
-                                      child: Text('No result found'),
-                                    ); // No results
-                                  }
-                                 ListView.separated(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: results.length,
-                      itemBuilder: (context, index) {
-                        final product = results[index];
-                        return ListTile(
-                          dense: true,
-                          title: Text(
-                            softWrap: true,
-                            product.name,
-                            style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor, fontSize: 10),
-                          ),
-                          onTap: () {
-                            product.id!=null?
-                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VendorHomeScreen(
-                                 vendorName: product.name,
-                                 vid: int.tryParse(product.id!)!,
-                                ),
-                              ),
-                            ):
-                            
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BusinessTabScreen(
-                                  query: _searchController.text,
-                                ),
-                              ),
-                            );
-                            setState(() {
-                              _showSearchProductModels = false;
-                              FocusScope.of(context).unfocus();
-                            });
-                          },
-                        );
-                      },
-                      separatorBuilder: (context, index) => const Divider(),
-                    );
-                                },
-                                loading: () {
-                                  return const SizedBox();
-                                },
-                                error: (error, stack) {
-                                  return Center(child: Text(error.toString()));
-                                },
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onVerticalDragUpdate: _onDragUpdate,
-                    onVerticalDragStart: _onDragStart,
-                    onTap: () {
-                      setState(() {
-                        _isSectionsVisible = !_isSectionsVisible;
-                      });
-                    },
+                        )),
+                  SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Center(
-                        child: Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          margin: EdgeInsets.only(top: 5.h),
-                          height: 7.h,
-                          width: 60.w,
-                          decoration: BoxDecoration(
-                              color: const Color(0xFF681b4e),
-                              borderRadius: BorderRadius.circular(5)),
+                      padding: const EdgeInsets.only(bottom: 11, top: 11),
+                      child: GestureDetector(
+                        onVerticalDragUpdate: _onDragUpdate,
+                        onTap: () {
+                          setState(() {
+                            isSliverAppBarVisible = !isSliverAppBarVisible;
+                          });
+                        },
+                        child: Center(
+                          child: Container(
+                            alignment: AlignmentDirectional.center,
+                            height: 7.h,
+                            width: 60.w,
+                            decoration: BoxDecoration(
+                                color: Color(0xff651c50),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  homecategory.when(
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        homecategory.when(
                     data: (feedStoryData) {
                       List<HomeStoryPost>? homeStory =
                           feedStoryData.home_story?.story.posts;
@@ -1124,7 +868,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     data: (data) {
                       if (data.hotProducts.isNotEmpty) {
                         return SizedBox(
-                          height: 340.h,
+                          // height: 340.h,
                           width: double.infinity,
                           child: ListView.builder(
                             padding: const EdgeInsets.all(3),
@@ -2310,14 +2054,327 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   //   ),
                   //   child: Image.asset('assets/icon/home.png'),
                   // ),
-                ],
-              ),
-            ),
-          ),
-          valuenotifilersidebutton(
-              showSideBar: _showSideBar, isSectionsVisible: _isSectionsVisible),
+                
 
-          //
-        ]));
+                      ],
+                    ),
+                  )
+
+                ],
+              )
+           
+             ,valuenotifilersidebutton(
+                  showSideBar: showSideBar, isSectionsVisible: true),
+                      Positioned(
+                top: 65,
+                left: 48,
+                child: Container(
+                  width: MediaQuery.of(context).size.width -
+                      90, // Add width constraint
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: SearchProductModels.when(
+                    data: (results) {
+                      return ListView.separated(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: results.length > 5
+                            ? 4
+                            : results.length, // Limit results if needed
+                        itemBuilder: (context, index) {
+                          final product = results[index];
+                          return ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 7),
+                            dense: true,
+                            title: Text(
+                              product.name,
+                              style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontSize:
+                                    14, // Increase font size for better readability
+                              ),
+                            ),
+                            onTap: () {
+                              if (product.id != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VendorHomeScreen(
+                                      vendorName: product.name,
+                                      vid: int.tryParse(product.id!)!,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BusinessTabScreen(
+                                      query: _searchController.text,
+                                    ),
+                                  ),
+                                );
+                              }
+                              setState(() {
+                                _showSearchProductModels = false;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) => const Divider(),
+                      );
+                    },
+                    loading: () {
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                    error: (error, stack) {
+                      return Center(child: Text(error.toString()));
+                    },
+                  ),
+                ),
+              )
+           
+            ],
+          ),
+        )
+
+           );
+  }
+    }
+       
+       class valuenotifilersidebutton extends StatelessWidget {
+  const valuenotifilersidebutton({
+    super.key,
+    required this.showSideBar,
+    required this.isSectionsVisible,
+  });
+
+  final ValueNotifier<bool> showSideBar;
+  final bool isSectionsVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: showSideBar,
+      builder: (context, value, child) {
+        return Positioned(
+          top: isSectionsVisible ? 300 : 300,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              showSideBar.value = !value;
+              // print('raju ${showSideBar.value}');
+            },
+            child: value
+                ? Hero(
+                    tag: 'profileHero',
+                    child: TweenAnimationBuilder<Color?>(
+                      tween: ColorTween(
+                        begin: Colors.blue.withOpacity(0.6),
+                        end: Colors.purple.withOpacity(0.6),
+                      ),
+                      duration: const Duration(seconds: 2),
+                      builder: (context, color, child) {
+                        return Container(
+                          margin: EdgeInsets.only(right: 3.w),
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Color.fromARGB(255, 115, 92, 119),
+                                width: 0.7),
+                          ),
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                                NetworkImage(SmartClient.userPhoto),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Container(
+                    width: 70.w,
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffE2DAE5).withOpacity(0.9),
+                      boxShadow: [
+                        // Color(value)
+                      ],
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                    ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 6.h),
+                          Hero(
+                            tag: 'profileHero',
+                            child: Container(
+                              margin: EdgeInsets.only(right: 3.w),
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.black, width: 0.5),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const VendorProfileScreen(),
+                                      ));
+                                },
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundImage:
+                                      NetworkImage(SmartClient.userPhoto),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const ScanScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/scanner.png',
+                                  height: 15,
+                                  color: const Color(0xff918994),
+                                ),
+                                Text(
+                                  "Connect",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AddToCartScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.shopping_cart_outlined,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Cart",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CreateNewListinScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  size: 15,
+                                  color: Color(0xff918994),
+                                ),
+                                Text(
+                                  "Sell",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MyOrderScreen(),
+                                ),
+                              );
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset('assets/images/tennis.png'),
+                                Text(
+                                  "Orders",
+                                  style: headerstyle.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xff918994),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showSideBar.value = !value;
+                            },
+                            icon: Column(
+                              children: [
+                                const Icon(
+                                  Icons.close,
+                                  size: 16,
+                                  color: Color(0xff918994),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -279,6 +279,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         (value) {
           print("kalu $value");
           _card = BigContainer(
+             ondoenload: () {
+                                  
+                                },
             onsubscribed: () {
               
             },

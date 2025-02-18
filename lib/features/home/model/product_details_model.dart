@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
+import 'package:smartbazar/main.dart';
 
 part 'product_details_model.freezed.dart';
 part 'product_details_model.g.dart';
@@ -111,6 +112,8 @@ class PostResult with _$PostResult {
     usermodel? user,
     @JsonKey(name: 'detail_user') required SimilarProducts? userDetails,
     required List<Picture>? pictures,
+    final List<SavedByUser>? savedByLoggedUser,
+
     PostType? postType,
     City? city,
     required MyProductDeailModel? user_details,
@@ -124,6 +127,19 @@ class PostResult with _$PostResult {
 
   factory PostResult.fromJson(Map<String, dynamic> json) =>
       _$PostResultFromJson(json);
+}
+@freezed
+class SavedByUser with _$SavedByUser {
+  const factory SavedByUser({
+    @JsonKey(name: 'id') int? id,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'username') String? username,
+    @JsonKey(name: 'user_id') String? userId,
+    @JsonKey(name: 'post_id') String? postId,
+  }) = _SavedByUser;
+
+  factory SavedByUser.fromJson(Map<String, dynamic> json) =>
+      _$SavedByUserFromJson(json);
 }
 
 @freezed

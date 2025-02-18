@@ -22,6 +22,7 @@ class BusinessResponse {
   });
 
   factory BusinessResponse.fromJson(Map<String, dynamic> json) {
+ 
     return BusinessResponse(
       business: (json['business'] as List?)
           ?.map((e) => Business.fromJson(e))
@@ -39,8 +40,19 @@ class BusinessResponse {
       services: _deserializeGlobalModelList(json['services']),
       jobs: _deserializeGlobalModelList(json['jobs']),
       events: _deserializeGlobalModelList(json['events']),
-      b2b: _deserializeGlobalModelList(json['b2b']),
-      grocery: _deserializeGlobalModelList(json['grocery']),
+      b2b: (json['b2b'] != null && json['b2b']['data'] != null)
+          ? (json['b2b']['data'] as List?)
+              ?.map((e) => GlobalModel.fromJson(e))
+              .toList(): [],
+      
+
+      grocery: (json['grocery'] != null && json['grocery']['data'] != null)
+          ? (json['grocery']['data'] as List?)
+              ?.map((e) => GlobalModel.fromJson(e))
+              .toList(): []
+      // grocery: _deserializeGlobalModelList(json['grocery'],
+      
+      
     );
   }
 
@@ -53,9 +65,7 @@ class BusinessResponse {
   }
 }
 
-
 class Business {
-  
   final String? vendorId;
   final String? vendorName;
   final String? vendorUsername;
@@ -69,32 +79,30 @@ class Business {
   final bool? hasSponsoredGifts;
   final String? membershipId;
   final String? membershipTitle;
-    final String? longitude;
+  final String? longitude;
   final String? latitude;
 
-
-  Business({
-    this.vendorId,
-    this.vendorName,
-    this.vendorUsername,
-    this.logo,
-    this.location,
-    this.contact,
-    this.totalConnections,
-    this.dealsCircle,
-    this.storyCount,
-    this.totalPrizeWorth,
-    this.hasSponsoredGifts,
-    this.membershipId,
-    this.membershipTitle,
-    this.latitude,
-    this.longitude
-  });
+  Business(
+      {this.vendorId,
+      this.vendorName,
+      this.vendorUsername,
+      this.logo,
+      this.location,
+      this.contact,
+      this.totalConnections,
+      this.dealsCircle,
+      this.storyCount,
+      this.totalPrizeWorth,
+      this.hasSponsoredGifts,
+      this.membershipId,
+      this.membershipTitle,
+      this.latitude,
+      this.longitude});
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
-       latitude: json['latitude'],
-       longitude: json['longitude'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       vendorId: json['vendor_id'],
       vendorName: json['vendor_name'],
       vendorUsername: json['vendor_username'],

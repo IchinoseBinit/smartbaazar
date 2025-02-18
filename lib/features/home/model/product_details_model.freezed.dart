@@ -754,6 +754,8 @@ mixin _$PostResult {
   @JsonKey(name: 'detail_user')
   SimilarProducts? get userDetails => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
+  List<SavedByUser>? get savedByLoggedUser =>
+      throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
   MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
@@ -846,6 +848,7 @@ abstract class $PostResultCopyWith<$Res> {
       usermodel? user,
       @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
+      List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
       MyProductDeailModel? user_details,
@@ -945,6 +948,7 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? user = freezed,
     Object? userDetails = freezed,
     Object? pictures = freezed,
+    Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
     Object? user_details = freezed,
@@ -1212,6 +1216,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.pictures
           : pictures // ignore: cast_nullable_to_non_nullable
               as List<Picture>?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<SavedByUser>?,
       postType: freezed == postType
           ? _value.postType
           : postType // ignore: cast_nullable_to_non_nullable
@@ -1437,6 +1445,7 @@ abstract class _$$PostResultImplCopyWith<$Res>
       usermodel? user,
       @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
+      List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
       MyProductDeailModel? user_details,
@@ -1542,6 +1551,7 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? user = freezed,
     Object? userDetails = freezed,
     Object? pictures = freezed,
+    Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
     Object? user_details = freezed,
@@ -1809,6 +1819,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value._pictures
           : pictures // ignore: cast_nullable_to_non_nullable
               as List<Picture>?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<SavedByUser>?,
       postType: freezed == postType
           ? _value.postType
           : postType // ignore: cast_nullable_to_non_nullable
@@ -1918,6 +1932,7 @@ class _$PostResultImpl implements _PostResult {
       this.user,
       @JsonKey(name: 'detail_user') required this.userDetails,
       required final List<Picture>? pictures,
+      final List<SavedByUser>? savedByLoggedUser,
       this.postType,
       this.city,
       required this.user_details,
@@ -1930,6 +1945,7 @@ class _$PostResultImpl implements _PostResult {
       final List<FeedPost>? feedPost = const []})
       : _tags = tags,
         _pictures = pictures,
+        _savedByLoggedUser = savedByLoggedUser,
         _ratingComment = ratingComment,
         _livePrizes = livePrizes,
         _deals = deals,
@@ -2111,6 +2127,17 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<SavedByUser>? _savedByLoggedUser;
+  @override
+  List<SavedByUser>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final PostType? postType;
   @override
@@ -2172,7 +2199,7 @@ class _$PostResultImpl implements _PostResult {
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
   }
 
   @override
@@ -2277,6 +2304,8 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.userDetails, userDetails) ||
                 other.userDetails == userDetails) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser) &&
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
             (identical(other.city, city) || other.city == city) &&
@@ -2361,6 +2390,7 @@ class _$PostResultImpl implements _PostResult {
         user,
         userDetails,
         const DeepCollectionEquality().hash(_pictures),
+        const DeepCollectionEquality().hash(_savedByLoggedUser),
         postType,
         city,
         user_details,
@@ -2456,6 +2486,7 @@ abstract class _PostResult implements PostResult {
       final usermodel? user,
       @JsonKey(name: 'detail_user') required final SimilarProducts? userDetails,
       required final List<Picture>? pictures,
+      final List<SavedByUser>? savedByLoggedUser,
       final PostType? postType,
       final City? city,
       required final MyProductDeailModel? user_details,
@@ -2627,6 +2658,8 @@ abstract class _PostResult implements PostResult {
   @override
   List<Picture>? get pictures;
   @override
+  List<SavedByUser>? get savedByLoggedUser;
+  @override
   PostType? get postType;
   @override
   City? get city;
@@ -2651,6 +2684,256 @@ abstract class _PostResult implements PostResult {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostResultImplCopyWith<_$PostResultImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SavedByUser _$SavedByUserFromJson(Map<String, dynamic> json) {
+  return _SavedByUser.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SavedByUser {
+  @JsonKey(name: 'id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'username')
+  String? get username => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
+  String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_id')
+  String? get postId => throw _privateConstructorUsedError;
+
+  /// Serializes this SavedByUser to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SavedByUserCopyWith<SavedByUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SavedByUserCopyWith<$Res> {
+  factory $SavedByUserCopyWith(
+          SavedByUser value, $Res Function(SavedByUser) then) =
+      _$SavedByUserCopyWithImpl<$Res, SavedByUser>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'post_id') String? postId});
+}
+
+/// @nodoc
+class _$SavedByUserCopyWithImpl<$Res, $Val extends SavedByUser>
+    implements $SavedByUserCopyWith<$Res> {
+  _$SavedByUserCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
+    Object? userId = freezed,
+    Object? postId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postId: freezed == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SavedByUserImplCopyWith<$Res>
+    implements $SavedByUserCopyWith<$Res> {
+  factory _$$SavedByUserImplCopyWith(
+          _$SavedByUserImpl value, $Res Function(_$SavedByUserImpl) then) =
+      __$$SavedByUserImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'post_id') String? postId});
+}
+
+/// @nodoc
+class __$$SavedByUserImplCopyWithImpl<$Res>
+    extends _$SavedByUserCopyWithImpl<$Res, _$SavedByUserImpl>
+    implements _$$SavedByUserImplCopyWith<$Res> {
+  __$$SavedByUserImplCopyWithImpl(
+      _$SavedByUserImpl _value, $Res Function(_$SavedByUserImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
+    Object? userId = freezed,
+    Object? postId = freezed,
+  }) {
+    return _then(_$SavedByUserImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postId: freezed == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SavedByUserImpl implements _SavedByUser {
+  const _$SavedByUserImpl(
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'username') this.username,
+      @JsonKey(name: 'user_id') this.userId,
+      @JsonKey(name: 'post_id') this.postId});
+
+  factory _$SavedByUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SavedByUserImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final int? id;
+  @override
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'username')
+  final String? username;
+  @override
+  @JsonKey(name: 'user_id')
+  final String? userId;
+  @override
+  @JsonKey(name: 'post_id')
+  final String? postId;
+
+  @override
+  String toString() {
+    return 'SavedByUser(id: $id, name: $name, username: $username, userId: $userId, postId: $postId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SavedByUserImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.postId, postId) || other.postId == postId));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, username, userId, postId);
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SavedByUserImplCopyWith<_$SavedByUserImpl> get copyWith =>
+      __$$SavedByUserImplCopyWithImpl<_$SavedByUserImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SavedByUserImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SavedByUser implements SavedByUser {
+  const factory _SavedByUser(
+      {@JsonKey(name: 'id') final int? id,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'username') final String? username,
+      @JsonKey(name: 'user_id') final String? userId,
+      @JsonKey(name: 'post_id') final String? postId}) = _$SavedByUserImpl;
+
+  factory _SavedByUser.fromJson(Map<String, dynamic> json) =
+      _$SavedByUserImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  int? get id;
+  @override
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'username')
+  String? get username;
+  @override
+  @JsonKey(name: 'user_id')
+  String? get userId;
+  @override
+  @JsonKey(name: 'post_id')
+  String? get postId;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SavedByUserImplCopyWith<_$SavedByUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

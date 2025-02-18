@@ -139,6 +139,9 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       pictures: (json['pictures'] as List<dynamic>?)
           ?.map((e) => Picture.fromJson(e as Map<String, dynamic>))
           .toList(),
+      savedByLoggedUser: (json['savedByLoggedUser'] as List<dynamic>?)
+          ?.map((e) => SavedByUser.fromJson(e as Map<String, dynamic>))
+          .toList(),
       postType: json['postType'] == null
           ? null
           : PostType.fromJson(json['postType'] as Map<String, dynamic>),
@@ -237,6 +240,7 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'user': instance.user,
       'detail_user': instance.userDetails,
       'pictures': instance.pictures,
+      'savedByLoggedUser': instance.savedByLoggedUser,
       'postType': instance.postType,
       'city': instance.city,
       'user_details': instance.user_details,
@@ -246,6 +250,24 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'deals': instance.deals,
       'shop': instance.shop,
       'feedPost': instance.feedPost,
+    };
+
+_$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
+    _$SavedByUserImpl(
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      username: json['username'] as String?,
+      userId: json['user_id'] as String?,
+      postId: json['post_id'] as String?,
+    );
+
+Map<String, dynamic> _$$SavedByUserImplToJson(_$SavedByUserImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'username': instance.username,
+      'user_id': instance.userId,
+      'post_id': instance.postId,
     };
 
 _$LocationModelImpl _$$LocationModelImplFromJson(Map<String, dynamic> json) =>

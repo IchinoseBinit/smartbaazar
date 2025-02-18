@@ -648,8 +648,9 @@ class AllProductDetailWidget extends StatelessWidget {
                           fontSize: 11,
                           color: ColorConstant.blackColor),
                     ),
+                  
                     Text(
-                      "WIN",
+                      "BUY",
                       style: headerstyle.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 11,
@@ -662,13 +663,13 @@ class AllProductDetailWidget extends StatelessWidget {
                           fontSize: 11,
                           color: ColorConstant.blackColor),
                     ),
-                    Text(
-                      "BUY",
-                      style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          color: ColorConstant.blackColor),
-                    ),
+                       Text(
+                          "WIN",
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
                   ],
                 ),
               ),

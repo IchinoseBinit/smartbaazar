@@ -115,10 +115,18 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => SizedBox(
-        height: MediaQuery.of(context).size.height, // Full screen height
-        child: CommentSection(id: feedproductid),
-      ),
+      builder: (_) {
+      return   LayoutBuilder(
+          builder: (context, _) {
+            return AnimatedContainer(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              duration: Duration(milliseconds: 150),
+              height: MediaQuery.of(context).size.height, // Full screen height
+              child: CommentSection(id: feedproductid),
+            );
+          },
+        );
+      }
     );
   }
 
@@ -250,7 +258,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           )
                         : Container(),
                     Padding(
-                      padding: const EdgeInsets.all(3),
+                      padding: const EdgeInsets.only(left: 8,top: 3,bottom: 3,right: 8),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -478,34 +486,44 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
             children: [
               // Image Section
 
-              ClipRRect(
-                child: Image.network(
-                  widget.feedDetailImage ?? '',
-                  width: double.infinity,
-                  height: double.infinity, // Make the image take full height
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child; // If no loading, show the image
-                    } else {
-                      return Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          color: Colors.white, // Placeholder color for shimmer
-                        ),
-                      ); // Show shimmer while loading
-                    }
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const SizedBox(
-                      width: 130,
-                      height: 70,
-                      child: Icon(Icons.error),
-                    ); // Show error icon if image fails to load
-                  },
+              InkWell(
+                onTap: () {
+  Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                      builder: (context) => FullscreenImageView(
+                        imagePath: widget.feedDetailImage ?? '',
+                      ),
+                    ));
+                },
+                child: ClipRRect(
+                  child: Image.network(
+                    widget.feedDetailImage ?? '',
+                    width: double.infinity,
+                    height: double.infinity, // Make the image take full height
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; // If no loading, show the image
+                      } else {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            color: Colors.white, // Placeholder color for shimmer
+                          ),
+                        ); // Show shimmer while loading
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return const SizedBox(
+                        width: 130,
+                        height: 70,
+                        child: Icon(Icons.error),
+                      ); // Show error icon if image fails to load
+                    },
+                  ),
                 ),
               ),
 
@@ -972,7 +990,10 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
               // Comment Input Section
               TextField(
                 controller: _commentcontroller,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
+
+                  
                   hintText: "Add a comment...",
                   border: InputBorder.none,
                   suffixIcon: _isLoading

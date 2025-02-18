@@ -162,7 +162,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
-        // usersLocation: jsonEncode({'location': _branchController.text}),
+
+      //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
         _updateUserDetails(updatedData);
@@ -193,25 +194,28 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         to.add(openingHours[dayNames[i]]!['to'] ?? '');
         closed.add(openingHours[dayNames[i]]!['closed']);
       }
+              print("kelaz ${branchControllers}");
 
-      final updateUserDetail = await ref.read(updateUserDetailsProvider(
-        data.name ?? '',
-        data.phone ?? '',
-        data.username ?? '',
-        data.email ?? '',
-        userId ?? '',
-        data.genderId ?? '',
-        branchLocations,
-        description!,
 
-        openingHours.keys.toList(),
-        openingHours.values.map((v) => v['from']).toList().cast<String>(),
-        openingHours.values.map((v) => v['to']).toList().cast<String>(),
-        openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
+      // final updateUserDetail = await ref.read(updateUserDetailsProvider(
+      //   data.name ?? '',
+      //   data.phone ?? '',
+      //   data.username ?? '',
+      //   data.email ?? '',
+      //   userId ?? '',
+      //   data.genderId ?? '',
+      //      branchControllers.isEmpty || branchControllers==null ? branchLocations : branchControllers.map((controller) => controller.text).toList(),
 
-        // description,
-        //  dob!,
-      ).future);
+      //   description!,
+
+      //   openingHours.keys.toList(),
+      //   openingHours.values.map((v) => v['from']).toList().cast<String>(),
+      //   openingHours.values.map((v) => v['to']).toList().cast<String>(),
+      //   openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
+
+      //   // description,
+      //   //  dob!,
+      // ).future);
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -600,7 +604,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             fgColor: Colors.white,
                             bgColor: const Color(0xff362677),
                             isSmallText: true,
-                            onPressed: isLoading ? null : _submitUpdate,
+                            // onPressed: () {
+                            //   // print('pinky ${branchControllers}');
+                            // },
+                             onPressed: isLoading ? null : _submitUpdate,
                           ),
                         ],
                       ),

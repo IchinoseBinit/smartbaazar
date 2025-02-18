@@ -1,54 +1,36 @@
-import 'dart:async';
-import 'dart:convert';
+
+
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/features/auth/view/scan_screen.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
+import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
-import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/services_screen/service_screen.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
+import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:riverpod/riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 
 void main() {
@@ -56,10 +38,8 @@ void main() {
   HttpOverrides.global = MyHttpOverrides();
 
   runApp(const ProviderScope(child: MyApp()));
-SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
-
-      
-
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -88,8 +68,6 @@ class _MyAppState extends State<MyApp> {
   //   print('bibash ${_a['result']['username']}');
   // }
 
- 
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -102,14 +80,90 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
+          home:HomeScreen()
 
-          home: SplashScreen()
           )
-          
     );
   }
 }
 
+
+
+class ImageConvert extends StatefulWidget {
+  ImageConvert({super.key});
+
+  @override
+  _ImageConvertState createState() => _ImageConvertState();
+}
+
+class _ImageConvertState extends State<ImageConvert> {
+  GlobalKey _globalKey = GlobalKey();
+  String? _imagePath;
+
+  Future<void> _captureAndSave() async {
+    try {
+      // Capture the widget as an image
+      RenderRepaintBoundary boundary = _globalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      var image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List uint8List = byteData!.buffer.asUint8List();
+
+      // Get the directory to save the image
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/screenshot.png';
+      final file = File(filePath);
+
+      // Save the image to the file
+      await file.writeAsBytes(uint8List);
+
+      setState(() {
+        _imagePath = filePath; // Store the saved image path
+      });
+
+      print('Image saved to $filePath');
+    } catch (e) {
+      print('Error capturing or saving image: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Capture Widget as Image'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RepaintBoundary(
+              key: _globalKey,
+              child: Container(
+                padding: EdgeInsets.all(20),
+                color: Colors.blue,
+                child: Text(
+                  'This is a widget to capture!',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _captureAndSave,
+              child: Text('Capture and Save Image'),
+            ),
+            SizedBox(height: 20),
+            _imagePath != null
+                ? Image.file(File(_imagePath!)) // Display the saved image
+                : Container(), // Show nothing if no image is saved yet
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class SavedPost {
   final String id;
