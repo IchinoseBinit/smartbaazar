@@ -84,6 +84,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   DateTime? deadlineDate;
 
   Option? selectedProductTYpe;
+  List<Option>? educationrequired;
+  Option? selctededucation;
   Option? fuelType;
   // Option? trasnmsissiontype;
 
@@ -91,6 +93,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   Option? selectedmodel;
   Option? selecetedWarrenty;
   Option? selectedbuildingtype;
+  List<Option>? numberofvacencylist;
+  Option? vacencyselected;
 
   Option? selectedRoom;
   Option? jobtype;
@@ -155,7 +159,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
 
   FieldsResponse? phoneresp;
   FieldsResponse? jobsresp;
+  List<Option>? joblocationlist;
+  Option? selectedjoblocation;
   List<Offer>? getoffer;
+  // List<>
   Offer? selectedoffer;
   bool? _isselected;
   FieldsResponse? furnitureresresp;
@@ -166,6 +173,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
   FieldsResponse? getRoad;
   TextEditingController? eventaddress;
   FieldsResponse? eventresp;
+  List<Option>? listentadddress;
+  Option? eventaddressselected;
 
   FieldsResponse? getcloth;
   MyCategory? childcategory;
@@ -306,8 +315,17 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     ref.watch(GetCategoryResponseProvider(122)).whenData(
       (value) async {
         eventresp = value;
+        listentadddress = value.result[2].options;
       },
     );
+    final clotheasync = ref.watch(getShippingCitiesProvider);
+    ref.watch(GetCategoryResponseProvider(54)).whenData(
+      (value) async {
+        clothresp = value;
+        print('mala ${clotheasync}');
+      },
+    );
+
     final getCategories = ref.watch(GetCategoryResponseProvider(1)).whenData(
       (value) async {
         // print("kala ${value}");
@@ -318,6 +336,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     ref.watch(GetCategoryResponseProvider(73)).whenData(
       (value) async {
         jobsresp = value;
+        educationrequired = jobsresp?.result[6].options;
+        numberofvacencylist = jobsresp?.result[7].options;
+        joblocationlist = jobsresp?.result[8].options;
+
+        print('haka $educationrequired');
       },
     );
     ref.watch(GetCategoryResponseProvider(9)).whenData(
@@ -574,7 +597,6 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       SizedBox(
                         width: 30.w,
                       ),
-
                       Expanded(
                         child: TextField(
                           controller: titlecontroller,
@@ -619,7 +641,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
                                   'cf.${eventresp!.result[2].id}', // Create the key dynamically
-                                  whatsintheboxcontroller.text,
+                                  value
                                 ]);
                               }
                             },
@@ -844,7 +866,11 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (selectedcategory?.id == 9 || selectedcategory?.id == 14)
+                if (selectedcategory?.id == 9 ||
+                    selectedcategory?.id == 14 ||
+                    selectedcategory?.id == 62 ||
+                    selectedcategory?.id == 136 ||
+                    selectedcategory?.id == 198)
                   CreateListingCardWidget(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1010,6 +1036,57 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               setState(() {
                                 selectedRoom = newValue;
                               });
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (selectedcategory?.id == 97)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Event Address',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: listentadddress ?? [],
+                            dropdownValue: eventaddressselected,
+                            onChanged: (newValue) {
+                              setState(() {
+                                eventaddressselected = newValue;
+                              });
+                              if (eventresp?.result[2].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${eventresp!.result[2].id}', // Create the key dynamically
+                                  eventaddressselected?.id,
+                                ]);
+                              }
                             },
                             getItemLabel: (Option item) => item.value,
                           ),
@@ -1266,7 +1343,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     selectedcategory?.id == 30 ||
                     selectedcategory?.id == 9 ||
                     selectedcategory?.id == 14 ||
-                    selectedcategory?.id == 54)
+                    selectedcategory?.id == 54 ||
+                    selectedcategory?.id == 62 ||
+                    selectedcategory?.id == 136 ||
+                    selectedcategory?.id == 192)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1589,13 +1669,14 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               }
                             },
                             child: Text(
-                              selectedStartDate != null
-                                  ? '${selectedStartDate!.toLocal()}'.split(
-                                      ' ')[0] // Display the selected date
+                              selectmanufacturingdate != null
+                                  ? '${selectmanufacturingdate!.toLocal()}'
+                                      .split(
+                                          ' ')[0] // Display the selected date
                                   : 'Select date',
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: selectedStartDate != null
+                                color: selectmanufacturingdate != null
                                     ? Colors.black
                                     : Colors.grey,
                               ),
@@ -1659,8 +1740,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               }
                             },
                             child: Text(
-                              selectedStartDate != null
-                                  ? '${selectedStartDate!.toLocal()}'.split(
+                              grocceryexpiraydate != null
+                                  ? '${grocceryexpiraydate!.toLocal()}'.split(
                                       ' ')[0] // Display the selected date
                                   : 'Select date',
                               style: TextStyle(
@@ -2157,7 +2238,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             ),
                           ],
                         ),
-                       SizedBox(width: 20.w,),
+                        SizedBox(
+                          width: 20.w,
+                        ),
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
@@ -2244,6 +2327,160 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14.sp,
                                     color: const Color(0xffADADAD))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (selectedcategory?.id == 73)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Education Required',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: educationrequired ?? [],
+                            dropdownValue: selctededucation,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selctededucation = newValue;
+                              });
+
+                              if (jobsresp?.result[6].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${jobsresp!.result[6].id}', // Create the key dynamically
+                                  selctededucation?.id,
+                                ]);
+                              }
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id == 73)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nnumber of vacency',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: numberofvacencylist ?? [],
+                            dropdownValue: vacencyselected,
+                            onChanged: (newValue) {
+                              setState(() {
+                                vacencyselected = newValue;
+                              });
+
+                              if (jobsresp?.result[7].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${jobsresp!.result[7].id}', // Create the key dynamically
+                                  vacencyselected?.id,
+                                ]);
+                              }
+                            },
+                            getItemLabel: (Option item) => item.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (selectedcategory?.id == 73)
+                  CreateListingCardWidget(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nnumber of vacency',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        Expanded(
+                          // Wrap the dropdown in Expanded to constrain its width
+                          child: CustomDropdownButton<Option>(
+                            items: joblocationlist ?? [],
+                            dropdownValue: selectedjoblocation,
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedjoblocation = newValue;
+                              });
+
+                              if (jobsresp?.result[8].id != null) {
+                                // Ensure the dynamic key is safe to access
+                                cf?.add([
+                                  'cf.${jobsresp!.result[8].id}', // Create the key dynamically
+                                  selectedjoblocation?.id,
+                                ]);
+                              }
+                            },
+                            getItemLabel: (Option item) => item.value,
                           ),
                         ),
                       ],
@@ -2389,7 +2626,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (typeid != '5')
+                if (typeid != '5' || selectedcategory?.id == 136)
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -3338,7 +3575,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                 if (selectedcategory?.id == 9 ||
                     selectedcategory?.id == 14 ||
                     selectedcategory?.id == 30 ||
-                    selectedcategory?.id == 171)
+                    selectedcategory?.id == 171 ||
+                    selectedcategory?.id == 62 ||
+                    selectedcategory?.id == 192 ||
+                    selectedcategory?.id == 198)
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -4276,7 +4516,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        print('kalu $categoryId');
+                        print('kalu $selectedcategory');
                         setState(() {
                           _acceptterms = newValue;
                         });

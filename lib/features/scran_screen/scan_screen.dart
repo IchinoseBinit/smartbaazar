@@ -11,6 +11,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/scran_screen/api/generate_api_provider.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 
 class ScanScreen extends ConsumerStatefulWidget {
   const ScanScreen({super.key});
@@ -30,6 +33,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
   double _zoomScale = 1.0;
   File? _selectedImage;
   final GlobalKey _cardKey = GlobalKey();
+  BigContainer? _card;
 
   late AnimationController _animationController;
   late Animation<double> _lineAnimation;
@@ -38,6 +42,71 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     setState(() {
       _zoomScale = zoomLevel;
     });
+    _controller.setZoomScale(zoomLevel);
+  }
+
+  void _showQRBottomSheet(String qrData) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.8, // Start at 30% of screen height
+          minChildSize: 0.8, // Minimum 10% of screen height
+          maxChildSize: 1.0, // Allow full screen height
+          builder: (context, scrollController) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        "Your QR Code",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        height: 200.h,
+                        padding: EdgeInsets.all(2),
+                        width: 900.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white)),
+                        child: Image.network(qrData),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("Close"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<void> _captureWidgetAndShowDialog() async {
@@ -127,7 +196,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             await MobileScannerController().analyzeImage(image.path);
 
         if (result != null && result.barcodes.isNotEmpty) {
-          _showDialog(result.barcodes.first.rawValue ?? "No value found");
+          _showDialog(result.barcodes.first.rawValue ?? "No value found", ref);
         } else {
           _showSnackBar("No QR code found in the selected image.");
         }
@@ -144,18 +213,84 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     });
   }
 
-  void _showDialog(String message) {
+  void _showDialog(String message, WidgetRef ref) {
+    // Extract the last part of the URL (the ID)
+    String id =
+        message.split('/').last; // Extracts "9" from "www.smartbajar.com/9"
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("QR Code Found"),
-        content: Text(message),
+        content: Text(
+            "Scanned: $message\nExtracted ID: $id"), // Show extracted ID for debugging
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context), child: const Text("OK")),
+            onPressed: () {
+              Navigator.pop(context); // Close this dialog
+              showcard(ref, id); // Call showcard with the extracted ID
+            },
+            child: const Text("OK"),
+          ),
         ],
       ),
     );
+  }
+
+  void showcard(WidgetRef ref, String id) {
+    /// 1. Fetch data using `ref.read` instead of `watch`
+    ref.read(getVendorCardProvider(int.tryParse(id)!)).whenData((value) {
+      /// 2. Update `_card` inside `setState`
+      setState(() {
+        _card = BigContainer(
+          ondoenload: () {},
+          onsubscribed: () {},
+          key: GlobalKey(),
+          lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
+          long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
+          id: value.data!.vendor_card!.membership_id!,
+          title: value.data!.vendor_card!.name!,
+          logo: value.data!.vendor_card!.photo!,
+          contact: value.data!.vendor_card!.phone!,
+          storyCount: value.data!.vendor_card!.storycount.toString(),
+          membershipTitle: value.data!.vendor_card!.membership_title!,
+          storycount: value.data!.vendor_card!.storycount.toString(),
+          total_connections: value.data!.vendor_card!.subscribers.toString(),
+          total_prize_worth: value.data!.vendor_card!.prize_worth.toString(),
+          location: value.data!.vendor_card!.nearestbranch ?? '',
+          Cnumber: value.data!.vendor_card!.phone!,
+          issubbed: value.data!.vendor_card!.subscribed == 'subscribed',
+          memebertitle: value.data!.vendor_card!.membership_title!,
+        );
+      });
+
+      /// 3. Show the dialog **after** updating `_card`
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          titlePadding: EdgeInsets.symmetric(horizontal: 5),
+          actionsPadding: EdgeInsets.zero,
+          content: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VendorHomeScreen(
+                        vid: int.tryParse(id)!, vendorName: ''),
+                  ));
+            },
+            child: _card ?? const Center(child: CircularProgressIndicator()),
+          ), // Show loader if null
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("OK"),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   void _showSnackBar(String message) {
@@ -165,8 +300,8 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
 
   @override
   Widget build(BuildContext context) {
-    final myqr = ref.watch(generateMyQRProvider(
-        'https://smartbazaar.jianjun-rnd.com.np/images/user.jpg'));
+    final showmyqr = ref.watch(generateMyQRProvider(SmartClient.userPhoto));
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -177,7 +312,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             onDetect: (capture) {
               if (capture.barcodes.isNotEmpty) {
                 _showDialog(
-                    capture.barcodes.first.rawValue ?? "No value found");
+                    capture.barcodes.first.rawValue ?? "No value found", ref);
               }
             },
           ),
@@ -382,37 +517,26 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                     ),
                   ),
                 ),
-                myqr.when(
+                showmyqr.when(
                   data: (data) {
-                    return Image.network(data);
+                    return GestureDetector(
+                      onVerticalDragStart: (details) {
+                        _showQRBottomSheet(
+                            data); // Pass `data` to your function
+                      },
+                      child: Container(
+                        height: 50,
+                        color: Colors.black.withOpacity(0.6),
+                        alignment: Alignment.center,
+                        child: const Icon(Icons.keyboard_arrow_up,
+                            color: Colors.white, size: 60),
+                      ),
+                    );
                   },
-                  error: (error, stackTrace) {
-                    return Text('no internet ');
-                  },
-                  loading: () => CircularProgressIndicator(),
+                  error: (error, stackTrace) =>
+                      Center(child: Text("Error: $error")),
+                  loading: () => Center(child: CircularProgressIndicator()),
                 )
-                // if (_selectedImage != null)
-                //   Consumer(
-                //     builder: (context, ref, _) {
-                //       final qrCode =
-                //           ref.watch(generateMyQRProvider(_selectedImage!));
-
-                //       return qrCode.when(
-                //         data: (imageUrl) {
-                //           return Image.network(
-                //             imageUrl,
-                //             height: 200,
-                //             width: 200,
-                //             fit: BoxFit.cover,
-                //           );
-                //         },
-                //         error: (error, stackTrace) {
-                //           return Text('Error: $error');
-                //         },
-                //         loading: () => const CircularProgressIndicator(),
-                //       );
-                //     },
-                //   ),
               ],
             ),
           ),

@@ -105,10 +105,14 @@ class ProductDetailScreen extends ConsumerWidget {
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
+      
       child: productDetailsAsyncValue.when(
         data: (data) {
           // print("bibash ${data.result?.user_details}");
           return Scaffold(
+            bottomNavigationBar: null,
+            
+          
             extendBody: true,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
@@ -1144,11 +1148,19 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     }).toList(),
                                                   ))
                                             : selectedIndex == 3
-                                                ? SwapablePostCard(
+                                                ? 
+                                                data.result?.feedPost==null || data.result!.feedPost!.isEmpty?
+                                                Center(child: nolistingfound(message: 'feed'),):
+
+                                                SwapablePostCard(
                                                     post:
                                                         data.result!.feedPost!)
                                                 : selectedIndex == 4
-                                                    ? LiveSwapble(
+
+                                                    ? 
+                                                     data.result?.livePrizes==null || data.result!.livePrizes!.isEmpty?
+                                                Center(child: nolistingfound(message: 'prizes'),):
+                                                    LiveSwapble(
                                                         post: data
                                                             .result!.livePrizes)
                                                     : const SizedBox(), // Fallback for other index values
@@ -1261,7 +1273,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               : Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 50.h),
-                                    child: nolistingfound(),
+                                    child: nolistingfound(message: 'Post'),
                                   ),
                                 ),
                           SizedBox(

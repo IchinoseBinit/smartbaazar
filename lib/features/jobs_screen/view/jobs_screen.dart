@@ -306,6 +306,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
                     SliverAppBar(
+                          automaticallyImplyLeading: false,
                         expandedHeight: 90.h,
                         floating: false,
                         pinned: false,
@@ -576,84 +577,87 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   ),
                   asyncbajarValue.when(
                     data: (data) {
-                      return Stack(
-                        children: [
-                          // Carousel Slider
-                          Positioned(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 130.h,
-                                  width: double.infinity,
-                                  child: CarouselSlider(
-                                    items: data.sliders!.map((banner) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const B2bScreen(),
-                                            ),
-                                          );
+                      return Padding(
+                        padding:  EdgeInsets.symmetric(vertical: 5.h),
+                        child: Stack(
+                          children: [
+                            // Carousel Slider
+                            Positioned(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 130.h,
+                                    width: double.infinity,
+                                    child: CarouselSlider(
+                                      items: data.sliders!.map((banner) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const B2bScreen(),
+                                              ),
+                                            );
+                                          },
+                                          child: CachedNetworkImage(
+                                            width: double.infinity,
+                                            fit: BoxFit.fill,
+                                            imageUrl: banner.image!,
+                                            errorWidget: (context, url, error) =>
+                                                const Icon(Icons.error),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      options: CarouselOptions(
+                                        aspectRatio:
+                                            2.5, // Adjust this as per design
+                                        viewportFraction:
+                                            1.0, // Full-screen carousel
+                                        autoPlay: true,
+                                        enlargeCenterPage: false,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _currentIndex =
+                                                index; // Update the current index
+                                          });
                                         },
-                                        child: CachedNetworkImage(
-                                          width: double.infinity,
-                                          fit: BoxFit.fill,
-                                          imageUrl: banner.image!,
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    options: CarouselOptions(
-                                      aspectRatio:
-                                          2.5, // Adjust this as per design
-                                      viewportFraction:
-                                          1.0, // Full-screen carousel
-                                      autoPlay: true,
-                                      enlargeCenterPage: false,
-                                      onPageChanged: (index, reason) {
-                                        setState(() {
-                                          _currentIndex =
-                                              index; // Update the current index
-                                        });
-                                      },
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-
-                          // Dots Indicator
-                          Positioned(
-                            left: MediaQuery.of(context).size.width / 2 -
-                                50, // Center the dots
-                            bottom: 10.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: data.sliders!.map((banner) {
-                                int index = data.sliders!.indexOf(banner);
-                                return AnimatedContainer(
-                                  duration: const Duration(milliseconds: 300),
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0),
-                                  height: 9.0,
-                                  width: _currentIndex == index
-                                      ? 12.0
-                                      : 9.0, // Active dot is wider
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: _currentIndex == index
-                                        ? Colors.white // Active dot color
-                                        : Colors.grey, // Inactive dot color
-                                  ),
-                                );
-                              }).toList(),
+                        
+                            // Dots Indicator
+                            Positioned(
+                              left: MediaQuery.of(context).size.width / 2 -
+                                  50, // Center the dots
+                              bottom: 10.h,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: data.sliders!.map((banner) {
+                                  int index = data.sliders!.indexOf(banner);
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0),
+                                    height: 9.0,
+                                    width: _currentIndex == index
+                                        ? 12.0
+                                        : 9.0, // Active dot is wider
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: _currentIndex == index
+                                          ? Colors.white // Active dot color
+                                          : Colors.grey, // Inactive dot color
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                     error: (error, stackTrace) {
@@ -2041,7 +2045,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     },
                   ),
                   SizedBox(
-                    height: 25.h,
+                    height: 45.h,
                   ),
 
                   // Container(

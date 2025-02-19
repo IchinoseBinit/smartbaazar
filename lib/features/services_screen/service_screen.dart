@@ -320,6 +320,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           filteredSuggestions: [])),
                            if (isSliverAppBarVisible)
                     SliverAppBar(
+                          automaticallyImplyLeading: false,
                         expandedHeight: 90.h,
                         floating: false,
                         pinned: false,

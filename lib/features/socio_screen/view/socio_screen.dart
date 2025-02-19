@@ -334,6 +334,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                   SliverAppBar(
+                        automaticallyImplyLeading: false,
                       expandedHeight: 90.h,
                       floating: false,
                       pinned: false,
@@ -2237,7 +2238,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                     // Calculate height dynamically
                                     double calculatedHeight =
-                                        products.isNotEmpty ? 340.h : 60.h;
+                                        products.isNotEmpty ? 380.h : 60.h;
 
                                     return AnimatedContainer(
                                       alignment: Alignment.topLeft,
@@ -2493,7 +2494,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         ),
                       ),
                       SizedBox(
-                        height: 50.h,
+                        height: 65.h,
                       ),
                     ],
                   ),

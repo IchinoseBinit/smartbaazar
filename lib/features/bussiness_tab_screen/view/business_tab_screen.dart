@@ -146,11 +146,15 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
 
-    Future<void> refreshprovider() async {
-      ref.refresh(getSearchResponseProvider(
-          _query, selectedValue ?? 'price-low-to-high'));
-      ref.refresh(searchProvider(_searchController.text));
-    }
+Future<void> refreshprovider() async {
+  ref.refresh(getSearchResponseProvider(
+      _query, selectedValue ?? 'price-low-to-high'));
+  ref.refresh(searchProvider(_searchController.text));
+
+  // Manually trigger the widget to rebuild after refreshing
+  setState(() {});
+}
+
 
     return Scaffold(
         extendBody: true,
@@ -769,6 +773,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                               ),
                                                               child:
                                                                   AllProductDetailWidget(
+
+
+
+                                                                    
                                                                 savedid: res.savedByLoggedUser ==
                                                                             null ||
                                                                         res.savedByLoggedUser!
@@ -865,6 +873,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                         child: Column(
                                           children: data.business!.map(
                                             (e) {
+                                              // print("bibash ${e.hasSponsoredGifts}")
                                               return BigContainer(
                                                 ondoenload: () {},
                                                 onsubscribed: () {

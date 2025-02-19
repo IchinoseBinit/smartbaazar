@@ -36,12 +36,17 @@ class HeaderBannerWidget extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            VendorHomeScreen(vendorName: vname, vid: id),
-                      ));
+                   Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
+            builder: (context) => VendorHomeScreen(
+                 vendorName: vname,
+                 vid: id,
+                )));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           VendorHomeScreen(vendorName: vname, vid: id),
+                  //     ));
                 },
                 child: CircleAvatar(
                   backgroundColor: ColorConstant.blackColor,

@@ -7,7 +7,7 @@ part of 'get_vendor_posts_api.dart';
 // **************************************************************************
 
 String _$getvendorpostandprizesHash() =>
-    r'8b0fb73996ae3ac1a198e0592b0b66c272e05f0f';
+    r'f506daceb73a6e4eccb906097aef3cd4556a6937';
 
 /// Copied from Dart SDK
 class _SystemHash {

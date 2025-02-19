@@ -314,6 +314,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
                     SliverAppBar(
+                          automaticallyImplyLeading: false,
                         expandedHeight: 90.h,
                         floating: false,
                         pinned: false,
@@ -2178,7 +2179,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         //   child: Image.asset('assets/icon/home.png'),
                         // ),
                         SizedBox(
-                          height: 30.h,
+                          height: 40.h,
                         ),
                       ],
                     ),

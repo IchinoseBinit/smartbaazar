@@ -265,7 +265,10 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
               PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: vendorStories[_currentVendorIndex].length,
+                itemCount: vendorStories.isNotEmpty &&
+                        _currentVendorIndex < vendorStories.length
+                    ? vendorStories[_currentVendorIndex].length
+                    : 0,
                 itemBuilder: (context, index) {
                   int vendorIndex = 0;
                   int storyIndex = index;

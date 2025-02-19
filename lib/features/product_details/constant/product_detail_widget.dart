@@ -1,3 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:sprintf/sprintf.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,6 +18,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -19,98 +26,115 @@ import 'package:smartbazar/main.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProductDetailWidget extends StatefulWidget {
-  ProductDetailWidget(
-      {super.key,
-      // this.membership_title,
-      this.vendorid,
-      this.offer = '',
-      this.title = "Trade",
-      this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage,
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.didcountpercentage,
-      this.avg_rating = 1,
-      this.tradeImage,
-      this.posttype = '1',
-      this.membershipid = '1',
-      required this.productid,
-      required this.lat,
-      required this.long,
-      this.savedid,
-      this.onRefresh});
-
-  String? title;
-  String? price;
-  String? discounttedPrice;
-  int? similarproductCount;
-  String? vendorname;
-  int? didcountpercentage;
-  String? posttype;
-  String productid;
-  String comment;
-
-  // String? membership_title;
-  double? distance;
-  String? Vimage, productImage, lefttile;
-  String? membershipColor;
-  String? membershipTitle;
-  bool issponsored;
-  String? offer, wow;
-  double? avg_rating;
-  double? shortestDistance;
-  String? vendorid;
-  String? tradeImage;
-  String? membershipid;
-  String? lat, long;
-  List<SavedPost>? savedid;
+// This is your ConsumerStatefulWidget to handle all the parameters
+class ProductDetailWidget extends ConsumerStatefulWidget {
+  final String productid;
+  final String? title;
+  final String? price;
+  final String? discounttedPrice;
+  final int? similarproductCount;
+  final String? vendorname;
+  final int? didcountpercentage;
+  final String? posttype;
+  final String? comment;
+  final double? distance;
+  final String? Vimage, productImage, lefttile;
+  final String? membershipColor;
+  final String? membershipTitle;
+  final bool issponsored;
+  final String? offer, wow;
+  final double? avg_rating;
+  final double? shortestDistance;
+  final String? vendorid;
+  final String? tradeImage;
+  final String? membershipid;
+  final String? lat, long;
+  final List<dynamic>? savedid;
   final VoidCallback? onRefresh;
 
+  // Constructor
+  const ProductDetailWidget({
+    Key? key,
+    required this.productid,
+    this.title,
+    this.price,
+    this.discounttedPrice = '0',
+    this.similarproductCount,
+    this.vendorname = 'John',
+    this.didcountpercentage,
+    this.posttype = '1',
+    this.comment = '0',
+    this.distance = 2.0,
+    this.Vimage = '',
+    this.productImage,
+    this.lefttile = 'TradeHub',
+    this.membershipColor,
+    this.membershipTitle,
+    this.issponsored = false,
+    this.offer,
+    this.wow,
+    this.avg_rating = 1.0,
+    this.shortestDistance,
+    this.vendorid,
+    this.tradeImage,
+    this.membershipid = '1',
+    this.lat,
+    this.long,
+    this.savedid,
+    this.onRefresh,
+  }) : super(key: key);
+
   @override
-  State<ProductDetailWidget> createState() => _ProductDetailWidgetState();
+  _ProductDetailWidgetState createState() => _ProductDetailWidgetState();
 }
 
-class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
   String formatToTwoDecimals(double value) {
-    return sprintf("%.2f", [value]); // Formats to 2 decimal places
+    return sprintf("%.2f", [value]); // Format the price to 2 decimal places
   }
 
   String? views, comment, share;
-
   int? userId;
 
+  // Method to get the userId from shared preferences
   void getUserId() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? session = pref.getString('session');
-    if (session != null) userId = jsonDecode(session)['result']['id'];
+    if (session != null) {
+      userId = jsonDecode(session)['result']['id'];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // String showRs = "Rs";
-    getUserId();
+    getUserId(); // Fetch user ID
 
-    // showRs = discounttedPrice == '0' ? 'Rs.' : '';
-    // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
-    String showRs = widget.discounttedPrice == '0' ? '' : '';
+    // Format price and discount
+    String showRs = widget.discounttedPrice == '0' ? '' : 'Rs.';
 
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(
-                  productId: widget.productid,
-                )));
+// Navigator.push(
+//   context,
+//   MaterialPageRoute(
+//     builder: (context) => ProductDetailScreen(p: widget.productid),
+//   ),
+// ).then((_) {
+//   // This will be called when you return to the MainScreen, you can toggle the nav bar visibility
+//   ref.read(currentScreenProvider.notifier).state = 0;  // Restore index
+// });
+
+        navigateWithoutNavBar( context:context,page: ProductDetailScreen(
+              productId: widget.productid,
+            ),);
+       
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => ProductDetailScreen(
+        //       productId: widget.productid,
+        //     ),
+        //   ),
+        // );
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -636,12 +660,18 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "ENQUIRE",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
+                        InkWell(
+                          onTap: () {
+                            // print(object)
+                            //  Navigator.push(context,MaterialPageRoute(builder: (context) =>  ChatScreen(threadId: widget.v, username: username, postId: postId),))
+                          },
+                          child: Text(
+                            "ENQUIRE",
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                                color: ColorConstant.blackColor),
+                          ),
                         ),
                         Text(
                           '|',

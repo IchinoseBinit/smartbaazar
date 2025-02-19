@@ -41,7 +41,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_scree
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/general_widget/story_search_bar.dart';
+import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
@@ -53,7 +53,8 @@ class FeedScreen extends ConsumerStatefulWidget {
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends ConsumerState<FeedScreen> {
+class _FeedScreenState extends ConsumerState<FeedScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchProductModels = false;
@@ -62,6 +63,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
+  late TabController _tabController;
+
   PageController _pageController = PageController(viewportFraction: 0.3);
   final double _currentHeight = 500; // Default height for first tab
   Map<String, String>? dropdownValue;
@@ -120,6 +123,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     super.initState();
 
     // Initialize the PageController with the selected page
+    _tabController = TabController(length: 2, vsync: this);
     _pageController = PageController(
       viewportFraction: 0.3,
       initialPage: selectedIndex,
@@ -142,6 +146,20 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
       ref.refresh(searchProvider(query));
     });
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+        setState(() {
+          isSliverAppBarVisible = true; // Show SliverAppBar when switching tabs
+        });
+      } else if (_tabController.index == 1) {
+        setState(() {
+          isSliverAppBarVisible = true; // Show SliverAppBar when switching tabs
+        });
+      }
+      setState(() {
+        isSliverAppBarVisible = true; // Show SliverAppBar when switching tabs
+      });
+    });
 
     _scrollController.addListener(_handleScroll);
   }
@@ -154,7 +172,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         if (scrollOffset > _lastScrollOffset && scrollOffset > 100) {
           _isSectionsVisible = false;
         } else if (scrollOffset < _lastScrollOffset && scrollOffset < 50) {
-          _isSectionsVisible = true;
+          _isSectionsVisible = true; // Ensure visibility when scrolling up
         }
         _lastScrollOffset = scrollOffset;
       });
@@ -203,6 +221,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     _scrollController.dispose();
     _debouncer.close(); // Close the debouncer if applicable
     _pageController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -211,6 +230,10 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
+
+    Future<void> refreshprovider() async {
+      await ref.watch(bottomNavIndexProvider);
+    }
 
     return DefaultTabController(
       initialIndex: 1,
@@ -265,7 +288,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     SliverAppBar(
                         expandedHeight: 90.h,
                         floating: false,
-                        pinned: false,
+                        pinned: true,
                         flexibleSpace: AnimatedContainer(
                           padding: EdgeInsets.zero,
                           duration: Duration(milliseconds: 150),
@@ -450,7 +473,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         // expandedContainer()
-                        const TabBar(
+                        TabBar(
+                          controller: _tabController,
                           dividerHeight: 0,
                           padding: EdgeInsets.zero,
                           indicatorColor: Color(0xFF392574),
@@ -464,39 +488,37 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       ],
                     ),
                   ),
-         SliverFillRemaining(
-  child: SizedBox(
-    height: MediaQuery.of(context).size.height, // Ensuring it has a height
-    child: TabBarView(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-               _buildForYouTabContent(ref),
-           
-            ],
-          ),
-        ),
-         SingleChildScrollView(
-          child: Column(
-            children: [
-                    _buildFollowingTabContent(ref),
-           
-            ],
-          ),
-        ),
-      ],
-    ),
-  ),
-),
-
-
+                  SliverFillRemaining(
+                    child: SizedBox(
+                      height: MediaQuery.of(context)
+                          .size
+                          .height, // Ensuring it has a height
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _buildForYouTabContent(ref),
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                _buildFollowingTabContent(ref),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            
-             valuenotifilersidebutton(
+              valuenotifilersidebutton(
                   showSideBar: showSideBar, isSectionsVisible: true),
-                    Positioned(
+              Positioned(
                 top: 65,
                 left: 48,
                 child: Container(
@@ -582,27 +604,33 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       ),
     );
   }
-    // Following Tab Content
+
+  // Following Tab Content
   Widget _buildFollowingTabContent(WidgetRef ref) {
     final asyncFollowingFeedContent = ref.watch(getFeedOfFollowingProvider);
     final asyncFollowingStoryContent = ref.watch(getFollowingStoryProvider);
+    Future<void> refreshprovider() async {
+      await ref.refresh(getFollowingStoryProvider);
+      await ref.refresh(getFeedOfFollowingProvider);
+    }
 
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
+        spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(
-            padding:  EdgeInsets.symmetric(vertical: 5.h),
+            padding: EdgeInsets.symmetric(vertical: 5.h),
             child: asyncFollowingStoryContent.when(
                 data: (feedStoryData) {
                   final feedStoryContent = feedStoryData.data?.feedstory;
-            
+
                   return SizedBox(
-                    height:
-                        feedStoryContent == null || feedStoryContent.posts == null
-                            ? 20.h
-                            : 95.h,
+                    height: feedStoryContent == null ||
+                            feedStoryContent.posts == null
+                        ? 20.h
+                        : 95.h,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Row(
@@ -617,8 +645,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: feedStoryContent.posts!.length,
                                 itemBuilder: (context, index) {
-                                  final Post story = feedStoryContent.posts![index];
-                      
+                                  final Post story =
+                                      feedStoryContent.posts![index];
+
                                   return FeedStoryAddWidget(
                                     index: index,
                                     vendorName:
@@ -680,10 +709,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     const Center(child: Text("please login"))),
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(vertical: 10.h),
+            padding: EdgeInsets.symmetric(vertical: 10.h),
             child: asyncFollowingFeedContent.when(
                 data: (feedData) {
-                  if (feedData.data != null && feedData.data!.feedPost != null) {
+                  if (feedData.data != null &&
+                      feedData.data!.feedPost != null) {
                     final feedItems = feedData.data!.feedPost!;
                     return ListView.builder(
                         shrinkWrap: true,
@@ -694,26 +724,33 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           final userDetails = feedItem.userDetail;
                           final interested = feedItem.interested;
                           final feedDetail = feedItem.feedDetail;
-            
+
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 FeedContainer(
+                                  refreshprovider: () {
+                                    refreshprovider();
+                                  },
                                   isLiked: feedItem.wowstatus,
-                                  hassttory:
-                                      userDetails!.storyCount! > 0 ? true : false,
+                                  hassttory: userDetails!.storyCount! > 0
+                                      ? true
+                                      : false,
                                   productCount:
                                       userDetails.productCount.toString(),
-                                  suscribers: userDetails.subscribers.toString(),
+                                  suscribers:
+                                      userDetails.subscribers.toString(),
                                   vendorName: userDetails.vendorName!,
                                   vendorImage: userDetails.vendorImage!,
                                   livePrize: userDetails.livePrize.toString(),
                                   distance:
                                       userDetails.distance?.toStringAsFixed(0),
-                                  interested: interested?.interested?.toString(),
-                                  engagement: interested?.engagement?.toString(),
+                                  interested:
+                                      interested?.interested?.toString(),
+                                  engagement:
+                                      interested?.engagement?.toString(),
                                   views: interested?.views,
                                   feedDetailImage: feedDetail!.image!,
                                   membershipTitle:
@@ -735,7 +772,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                       .toList(),
                                   captionTitle: '${feedItem.captionTitle}',
                                   caption: feedItem.caption ?? '',
-                                  offerText: feedItem.offers ?? 'Special Offer!',
+                                  offerText:
+                                      feedItem.offers ?? 'Special Offer!',
                                 ),
                               ],
                             ),
@@ -754,28 +792,38 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       ),
     );
   }
-   // For You Tab Content
+
+  // For You Tab Content
   Widget _buildForYouTabContent(WidgetRef ref) {
     final asyncForYouFeedContent = ref.watch(getForYouFeedApiProvider);
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
+
+    Future<void> refreshprovider() async {
+      await ref.refresh(getForYouFeedApiProvider);
+      await ref.refresh(getForYouStoryProvider);
+    }
+
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(
-            padding:  EdgeInsets.symmetric(vertical:5.h),
+            padding: EdgeInsets.symmetric(vertical: 5.h),
             child: asyncForYouStoryContent.when(
               data: (feedStoryData) {
                 final feedStoryContent = feedStoryData.data?.feedstory;
                 final posts = feedStoryContent?.posts ?? [];
-            
+
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: SizedBox(
-                    height:
-                        feedStoryContent == null || posts.isEmpty ? 20.h : 100.h,
+                    height: feedStoryContent == null || posts.isEmpty
+                        ? 20.h
+                        : 100.h,
                     child: posts.isNotEmpty
                         ? ListView.builder(
                             padding: EdgeInsets.only(left: 3.w),
@@ -786,7 +834,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                               final story = posts[index];
                               return FeedStoryAddWidget(
                                 index: index,
-                                vendorName: story.vendorName ?? "Unknown Vendor",
+                                vendorName:
+                                    story.vendorName ?? "Unknown Vendor",
                                 vendorImage: story.vendorImage ??
                                     "https://example.com/default-image.png",
                                 storyCount: story.storyCount ?? 0,
@@ -836,80 +885,80 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
               ),
             ),
           ),
-          Padding(
-            padding:  EdgeInsets.symmetric(vertical: 10.h),
-            child: asyncForYouFeedContent.when(
-                data: (feedData) {
-                  if (feedData.data != null && feedData.data!.feedPost != null) {
-                    final feedItems = feedData.data!.feedPost!;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: feedItems.length,
-                      itemBuilder: (context, index) {
-                        final feedItem = feedItems[index];
-                        final userDetails = feedItem.userDetail;
-                        final interested = feedItem.interested;
-                        final feedDetail = feedItem.feedDetail;
-                        // print("kala ${feedItem.wow_status}");
-            
-                        // return _buildFeedItem(feedItems[index]);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 2.0,
-                            //  horizontal: 16,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FeedContainer(
-                                isLiked: feedItem.wow_status,
-                                hassttory:
-                                    userDetails!.storyCount! > 0 ? true : false,
-                                productCount: userDetails.productCount.toString(),
-                                suscribers: userDetails.subscribers.toString(),
-                                vendorName: userDetails.vendorName!,
-                                vendorImage: userDetails.vendorImage!,
-                                livePrize: userDetails.livePrize.toString(),
-                                distance:
-                                    userDetails.distance?.toStringAsFixed(0),
-                                interested: interested?.interested?.toString(),
-                                engagement: interested?.engagement?.toString(),
-                                views: interested?.views,
-                                feedDetailImage: feedDetail!.image!,
-                                membershipTitle: userDetails.membershipTitle,
-                                membershipId: userDetails.membershipId ?? '',
-                                showGift: userDetails.hasSponsoredGifts ?? false,
-                                userId: feedItem.userId ?? '',
-                                feedId: feedItem.id ?? '',
-                                //feedDetail: feedItem.feedDetail,
-                              ),
-                              PromoCard(
-                                products: feedItem.products!
-                                    .map((product) => {
-                                          "imagePath": product.image ??
-                                              "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
-                                          "price": product.price ?? "N/A",
-                                          "id": feedItem.id ?? "",
-                                        })
-                                    .toList(),
-                                captionTitle: '${feedItem.captionTitle}',
-                                caption: feedItem.caption ?? '',
-                                offerText: feedItem.offers ?? 'Special Offer!',
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(child: Text('No feed items available'));
-                  }
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) =>
-                    const Center(child: Text("please login"))),
-          ),
+          asyncForYouFeedContent.when(
+              data: (feedData) {
+                if (feedData.data != null && feedData.data!.feedPost != null) {
+                  final feedItems = feedData.data!.feedPost!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: feedItems.length,
+                    itemBuilder: (context, index) {
+                      final feedItem = feedItems[index];
+                      final userDetails = feedItem.userDetail;
+                      final interested = feedItem.interested;
+                      final feedDetail = feedItem.feedDetail;
+                      // print("kala ${feedItem.wow_status}");
+
+                      // return _buildFeedItem(feedItems[index]);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 2.0,
+                          //  horizontal: 16,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FeedContainer(
+                              refreshprovider: () async {
+                                refreshprovider();
+                              },
+                              isLiked: feedItem.wow_status,
+                              hassttory:
+                                  userDetails!.storyCount! > 0 ? true : false,
+                              productCount: userDetails.productCount.toString(),
+                              suscribers: userDetails.subscribers.toString(),
+                              vendorName: userDetails.vendorName!,
+                              vendorImage: userDetails.vendorImage!,
+                              livePrize: userDetails.livePrize.toString(),
+                              distance:
+                                  userDetails.distance?.toStringAsFixed(0),
+                              interested: interested?.interested?.toString(),
+                              engagement: interested?.engagement?.toString(),
+                              views: interested?.views,
+                              feedDetailImage: feedDetail!.image!,
+                              membershipTitle: userDetails.membershipTitle,
+                              membershipId: userDetails.membershipId ?? '',
+                              showGift: userDetails.hasSponsoredGifts ?? false,
+                              userId: feedItem.userId ?? '',
+                              feedId: feedItem.id ?? '',
+                              //feedDetail: feedItem.feedDetail,
+                            ),
+                            PromoCard(
+                              products: feedItem.products!
+                                  .map((product) => {
+                                        "imagePath": product.image ??
+                                            "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
+                                        "price": product.price ?? "N/A",
+                                        "id": feedItem.id ?? "",
+                                      })
+                                  .toList(),
+                              captionTitle: '${feedItem.captionTitle}',
+                              caption: feedItem.caption ?? '',
+                              offerText: feedItem.offers ?? 'Special Offer!',
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('No feed items available'));
+                }
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) =>
+                  const Center(child: Text("please login"))),
           const SizedBox.shrink()
         ],
       ),
@@ -1044,8 +1093,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
+                                  builder: (context) => const AddToCartScreen(),
                                 ),
                               );
                             },

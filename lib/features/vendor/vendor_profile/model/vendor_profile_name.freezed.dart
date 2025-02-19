@@ -20,7 +20,7 @@ VendorProfile _$VendorProfileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorProfile {
-  String? get subscribed => throw _privateConstructorUsedError;
+  int? get subscribed => throw _privateConstructorUsedError;
   Vendor? get vendor => throw _privateConstructorUsedError;
   VendorCard? get vendor_card => throw _privateConstructorUsedError;
   VendorAbout? get vendor_about => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $VendorProfileCopyWith<$Res> {
       _$VendorProfileCopyWithImpl<$Res, VendorProfile>;
   @useResult
   $Res call(
-      {String? subscribed,
+      {int? subscribed,
       Vendor? vendor,
       VendorCard? vendor_card,
       VendorAbout? vendor_about,
@@ -116,7 +116,7 @@ class _$VendorProfileCopyWithImpl<$Res, $Val extends VendorProfile>
       subscribed: freezed == subscribed
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -236,7 +236,7 @@ abstract class _$$VendorProfileImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? subscribed,
+      {int? subscribed,
       Vendor? vendor,
       VendorCard? vendor_card,
       VendorAbout? vendor_about,
@@ -297,7 +297,7 @@ class __$$VendorProfileImplCopyWithImpl<$Res>
       subscribed: freezed == subscribed
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       vendor: freezed == vendor
           ? _value.vendor
           : vendor // ignore: cast_nullable_to_non_nullable
@@ -404,7 +404,7 @@ class _$VendorProfileImpl implements _VendorProfile {
       _$$VendorProfileImplFromJson(json);
 
   @override
-  final String? subscribed;
+  final int? subscribed;
   @override
   final Vendor? vendor;
   @override
@@ -611,7 +611,7 @@ class _$VendorProfileImpl implements _VendorProfile {
 
 abstract class _VendorProfile implements VendorProfile {
   const factory _VendorProfile(
-      {final String? subscribed,
+      {final int? subscribed,
       final Vendor? vendor,
       final VendorCard? vendor_card,
       final VendorAbout? vendor_about,
@@ -633,7 +633,7 @@ abstract class _VendorProfile implements VendorProfile {
       _$VendorProfileImpl.fromJson;
 
   @override
-  String? get subscribed;
+  int? get subscribed;
   @override
   Vendor? get vendor;
   @override
@@ -2570,7 +2570,8 @@ mixin _$VendorCard {
   String? get membership_id => throw _privateConstructorUsedError;
   String? get membership_title => throw _privateConstructorUsedError;
   String? get membership_color => throw _privateConstructorUsedError;
-  String? get subscribed => throw _privateConstructorUsedError;
+  @JsonKey(name: 'subscribed')
+  int? get subscribed => throw _privateConstructorUsedError;
 
   /// Serializes this VendorCard to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2603,7 +2604,7 @@ abstract class $VendorCardCopyWith<$Res> {
       String? membership_id,
       String? membership_title,
       String? membership_color,
-      String? subscribed});
+      @JsonKey(name: 'subscribed') int? subscribed});
 }
 
 /// @nodoc
@@ -2697,7 +2698,7 @@ class _$VendorCardCopyWithImpl<$Res, $Val extends VendorCard>
       subscribed: freezed == subscribed
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ) as $Val);
   }
 }
@@ -2725,7 +2726,7 @@ abstract class _$$VendorCardImplCopyWith<$Res>
       String? membership_id,
       String? membership_title,
       String? membership_color,
-      String? subscribed});
+      @JsonKey(name: 'subscribed') int? subscribed});
 }
 
 /// @nodoc
@@ -2817,7 +2818,7 @@ class __$$VendorCardImplCopyWithImpl<$Res>
       subscribed: freezed == subscribed
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -2840,7 +2841,7 @@ class _$VendorCardImpl implements _VendorCard {
       this.membership_id,
       this.membership_title,
       this.membership_color,
-      this.subscribed});
+      @JsonKey(name: 'subscribed') this.subscribed});
 
   factory _$VendorCardImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorCardImplFromJson(json);
@@ -2874,7 +2875,8 @@ class _$VendorCardImpl implements _VendorCard {
   @override
   final String? membership_color;
   @override
-  final String? subscribed;
+  @JsonKey(name: 'subscribed')
+  final int? subscribed;
 
   @override
   String toString() {
@@ -2967,7 +2969,7 @@ abstract class _VendorCard implements VendorCard {
       final String? membership_id,
       final String? membership_title,
       final String? membership_color,
-      final String? subscribed}) = _$VendorCardImpl;
+      @JsonKey(name: 'subscribed') final int? subscribed}) = _$VendorCardImpl;
 
   factory _VendorCard.fromJson(Map<String, dynamic> json) =
       _$VendorCardImpl.fromJson;
@@ -3001,7 +3003,8 @@ abstract class _VendorCard implements VendorCard {
   @override
   String? get membership_color;
   @override
-  String? get subscribed;
+  @JsonKey(name: 'subscribed')
+  int? get subscribed;
 
   /// Create a copy of VendorCard
   /// with the given fields replaced by the non-null parameter values.

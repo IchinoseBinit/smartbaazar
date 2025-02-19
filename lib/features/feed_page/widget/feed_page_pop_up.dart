@@ -23,6 +23,7 @@ void showCustomBottomSheet(
   }
 
   showModalBottomSheet(
+     useRootNavigator: true,
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
@@ -123,6 +124,17 @@ void showCustomBottomSheet(
                                               fontSize: 7.sp,
                                               color: Colors.white),
                                         ),
+                                        SizedBox(
+                                          width: 60.w,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: Icon(
+                                              Icons.close_sharp,
+                                              color: Colors.white,
+                                            ))
                                       ],
                                     ),
                                     SizedBox(height: 20.h),

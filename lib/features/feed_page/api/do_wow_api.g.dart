@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vendor_card_api.dart';
+part of 'do_wow_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getVendorCardHash() => r'c7a9c551abc6a1633779937955b8285a9e4bbd65';
+String _$dowowapiHash() => r'50a4a27e373d9df0f0ef743660d8d8b74df672b8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [getVendorCard].
-@ProviderFor(getVendorCard)
-const getVendorCardProvider = GetVendorCardFamily();
+/// See also [dowowapi].
+@ProviderFor(dowowapi)
+const dowowapiProvider = DowowapiFamily();
 
-/// See also [getVendorCard].
-class GetVendorCardFamily extends Family<AsyncValue<VendorCardResponse>> {
-  /// See also [getVendorCard].
-  const GetVendorCardFamily();
+/// See also [dowowapi].
+class DowowapiFamily extends Family<AsyncValue<String>> {
+  /// See also [dowowapi].
+  const DowowapiFamily();
 
-  /// See also [getVendorCard].
-  GetVendorCardProvider call(
-    int id,
+  /// See also [dowowapi].
+  DowowapiProvider call(
+    String userId,
   ) {
-    return GetVendorCardProvider(
-      id,
+    return DowowapiProvider(
+      userId,
     );
   }
 
   @override
-  GetVendorCardProvider getProviderOverride(
-    covariant GetVendorCardProvider provider,
+  DowowapiProvider getProviderOverride(
+    covariant DowowapiProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.userId,
     );
   }
 
@@ -68,76 +68,74 @@ class GetVendorCardFamily extends Family<AsyncValue<VendorCardResponse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getVendorCardProvider';
+  String? get name => r'dowowapiProvider';
 }
 
-/// See also [getVendorCard].
-class GetVendorCardProvider
-    extends AutoDisposeFutureProvider<VendorCardResponse> {
-  /// See also [getVendorCard].
-  GetVendorCardProvider(
-    int id,
+/// See also [dowowapi].
+class DowowapiProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [dowowapi].
+  DowowapiProvider(
+    String userId,
   ) : this._internal(
-          (ref) => getVendorCard(
-            ref as GetVendorCardRef,
-            id,
+          (ref) => dowowapi(
+            ref as DowowapiRef,
+            userId,
           ),
-          from: getVendorCardProvider,
-          name: r'getVendorCardProvider',
+          from: dowowapiProvider,
+          name: r'dowowapiProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getVendorCardHash,
-          dependencies: GetVendorCardFamily._dependencies,
-          allTransitiveDependencies:
-              GetVendorCardFamily._allTransitiveDependencies,
-          id: id,
+                  : _$dowowapiHash,
+          dependencies: DowowapiFamily._dependencies,
+          allTransitiveDependencies: DowowapiFamily._allTransitiveDependencies,
+          userId: userId,
         );
 
-  GetVendorCardProvider._internal(
+  DowowapiProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.userId,
   }) : super.internal();
 
-  final int id;
+  final String userId;
 
   @override
   Override overrideWith(
-    FutureOr<VendorCardResponse> Function(GetVendorCardRef provider) create,
+    FutureOr<String> Function(DowowapiRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetVendorCardProvider._internal(
-        (ref) => create(ref as GetVendorCardRef),
+      override: DowowapiProvider._internal(
+        (ref) => create(ref as DowowapiRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        userId: userId,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorCardResponse> createElement() {
-    return _GetVendorCardProviderElement(this);
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _DowowapiProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetVendorCardProvider && other.id == id;
+    return other is DowowapiProvider && other.userId == userId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,18 +143,17 @@ class GetVendorCardProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetVendorCardRef on AutoDisposeFutureProviderRef<VendorCardResponse> {
-  /// The parameter `id` of this provider.
-  int get id;
+mixin DowowapiRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `userId` of this provider.
+  String get userId;
 }
 
-class _GetVendorCardProviderElement
-    extends AutoDisposeFutureProviderElement<VendorCardResponse>
-    with GetVendorCardRef {
-  _GetVendorCardProviderElement(super.provider);
+class _DowowapiProviderElement extends AutoDisposeFutureProviderElement<String>
+    with DowowapiRef {
+  _DowowapiProviderElement(super.provider);
 
   @override
-  int get id => (origin as GetVendorCardProvider).id;
+  String get userId => (origin as DowowapiProvider).userId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -84,7 +84,7 @@ Future<String> createlisting(
       'latitude': lat?.toString() ?? "85",
       'hyper_del': hyperd,
       'seller_del': seller,
-      'story_display_days': "1",
+      'story_display_days': story,
       'offers': offer ?? "Seasonal Offers",
       'youtube': youtube ?? "jbhjbh",
       'piece_from[]': pieces?.map((e) => e['from']).toList() ?? [],

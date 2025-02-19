@@ -733,6 +733,7 @@ class _SellerInformationWidgetState
                       try {
                         // Call your API
                         String responseMessage = await createlisting(
+                          
                             trending: widget.trending,
                             package: _selectedpackage,
                             pieces: widget.pieces,

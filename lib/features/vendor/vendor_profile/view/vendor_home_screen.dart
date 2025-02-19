@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -99,34 +100,34 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         delay: const Duration(milliseconds: 500),
       );
 
-      // if (image != null) {
-      //   try {
-      //     // Save the file in the device's Pictures directory
-      //     final directory = Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
-      //     if (!directory.existsSync()) {
-      //       directory.createSync(recursive: true);
-      //     }
+      if (image != null) {
+        try {
+          // Save the file in the device's Pictures directory
+          final directory = Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
+          if (!directory.existsSync()) {
+            directory.createSync(recursive: true);
+          }
 
-      //     final filePath = '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      //     File file = File(filePath);
-      //     await file.writeAsBytes(image);
+          final filePath = '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          File file = File(filePath);
+          await file.writeAsBytes(image);
 
-      //     // Make sure the image appears in the gallery
-      //     await _refreshGallery(filePath);
+          // Make sure the image appears in the gallery
+          await _refreshGallery(filePath);
 
-      //     setState(() {
-      //       _savedImage = image;
-      //     });
+          setState(() {
+            _savedImage = image;
+          });
 
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //       const SnackBar(content: Text('Image Saved to Gallery')),
-      //     );
-      //   } catch (e) {
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //       SnackBar(content: Text('Failed to Save Image: $e')),
-      //     );
-      //   }
-      // }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Image Saved to Gallery')),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to Save Image: $e')),
+          );
+        }
+      }
     }
   }
 
@@ -264,7 +265,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     // Listen for tab changes
     _tabController.addListener(() {
       setState(() {
-        tabsize = _tabController.index == 1 ? 520 : 80;
+        tabsize = _tabController.index == 1 ? 370 : 80;
         alldata = [];
         _postType = _tabController
             .index; // Update the postType based on the selected tab
@@ -469,6 +470,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
                     SliverAppBar(
+                        automaticallyImplyLeading: false,
                         expandedHeight: 90.h,
                         floating: false,
                         pinned: false,
@@ -655,6 +657,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     child: ref.watch(getVendorCardProvider(widget.vid)).when(
                       data: (vendorcard) {
                         _vendorimage = vendorcard.data?.vendor_card!.photo!;
+                        print(
+                            'rajuk ${vendorcard.data!.vendor_card!.subscribed}');
 
                         return Column(
                           children: [
@@ -667,96 +671,101 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     deals: vendorcard.data?.deals,
                                     vname: vendorcard.data!.vendor_card!.name!),
                               ),
-                                if (vendorcard.data != null)
-                            Screenshot(
-                              controller: _screenshotController,
-                              child: Container(
-                                color: Colors.white,
-                                child: BigContainer(
-                                  ondoenload: _captureAndSave,
-                                  onsubscribed: () {
-                                    refreshAllprovider();
-                                  },
-                                  lat: double.tryParse(
-                                      vendorcard.data!.vendor_card?.latitude ??
-                                          '0')!,
-                                  long: double.tryParse(
-                                    vendorcard.data!.vendor_card?.longitude ??
-                                        '0',
-                                  )!, // Assuming longitude is available in vendor_card
-                                  id: vendorcard.data!.vendor_card!
-                                      .membership_id!, // Assuming id is available in the data
-                                  title: vendorcard.data!.vendor_card!
-                                      .name!, // Assuming title is in vendor_card
-                                  logo: vendorcard.data!.vendor_card!
-                                      .photo!, // Assuming logo URL or widget is in vendor_card
-                                  contact: vendorcard.data!.vendor_card!
-                                      .phone?? '97++', // Assuming contact info is in vendor_card
-                                  storyCount: vendorcard
-                                      .data!.vendor_card!.storycount
-                                      .toString(), // Assuming storyCount is in vendor_card
-                                  membershipTitle: vendorcard.data!.vendor_card!
-                                      .membership_title!, // Assuming membershipTitle is in vendor_card
-                                  storycount: vendorcard
-                                      .data!.vendor_card!.storycount!
-                                      .toString(),
-                                  // Assuming dealsCircle is in vendor_card
-                                  total_connections: vendorcard
-                                      .data!.vendor_card!.subscribers!
-                                      .toString(), // Assuming totalConnections is in vendor_card
-                                  total_prize_worth: vendorcard
-                                      .data!.vendor_card!.prize_worth!
-                                      .toString(), // Assuming totalPrizeWorth is in vendor_card
-                                  location: vendorcard
-                                          .data!.vendor_card!.nearestbranch ??
-                                      '', // Assuming location is in vendor_card
-                                  Cnumber: vendorcard.data!.vendor_card!
-                                      .phone!, // Assuming contactNumber is in vendor_card
-                                  issubbed: vendorcard
-                                              .data!.vendor_card!.subscribed ==
-                                          'subscribed'
-                                      ? true
-                                      : false, // Assuming isSubscribed is in vendor_card
-                                  memebertitle: vendorcard.data!.vendor_card!
-                                      .membership_title!, // Assuming memberTitle is in vendor_card
+                            if (vendorcard.data != null)
+                              Screenshot(
+                                controller: _screenshotController,
+                                child: Container(
+                                  color: Colors.white,
+                                  child: BigContainer(
+                                    ondoenload: _captureAndSave,
+                                    onsubscribed: () {
+                                      refreshAllprovider();
+                                    },
+                                    lat: double.tryParse(vendorcard
+                                            .data!.vendor_card?.latitude ??
+                                        '0')!,
+                                    long: double.tryParse(
+                                      vendorcard.data!.vendor_card?.longitude ??
+                                          '0',
+                                    )!, // Assuming longitude is available in vendor_card
+                                    id: widget.vid
+                                        .toString(), // Assuming id is available in the data
+                                    title: vendorcard.data!.vendor_card!
+                                        .name!, // Assuming title is in vendor_card
+                                    logo: vendorcard.data!.vendor_card!
+                                        .photo!, // Assuming logo URL or widget is in vendor_card
+                                    contact: vendorcard
+                                            .data!.vendor_card!.phone ??
+                                        '97++', // Assuming contact info is in vendor_card
+                                    storyCount: vendorcard
+                                        .data!.vendor_card!.storycount
+                                        .toString(), // Assuming storyCount is in vendor_card
+                                    membershipTitle: vendorcard
+                                        .data!
+                                        .vendor_card!
+                                        .membership_title!, // Assuming membershipTitle is in vendor_card
+                                    storycount: vendorcard
+                                        .data!.vendor_card!.storycount!
+                                        .toString(),
+                                    // Assuming dealsCircle is in vendor_card
+                                    total_connections: vendorcard
+                                        .data!.vendor_card!.subscribers!
+                                        .toString(), // Assuming totalConnections is in vendor_card
+                                    total_prize_worth: vendorcard
+                                        .data!.vendor_card!.prize_worth!
+                                        .toString(), // Assuming totalPrizeWorth is in vendor_card
+                                    location: vendorcard
+                                            .data!.vendor_card!.nearestbranch ??
+                                        '', // Assuming location is in vendor_card
+                                    Cnumber: vendorcard.data!.vendor_card!
+                                        .phone!, // Assuming contactNumber is in vendor_card
+                                    issubbed: vendorcard.data!.vendor_card!
+                                                .subscribed ==
+                                            'subscribed'
+                                        ? true
+                                        : false, // Assuming isSubscribed is in vendor_card
+                                    memebertitle: vendorcard.data!.vendor_card!
+                                        .membership_title!, // Assuming memberTitle is in vendor_card
+                                  ),
                                 ),
                               ),
+                            SizedBox(
+                              height: 10.h,
                             ),
-                           SizedBox(
-                            height: 10.h,
-                          ),
-                          const DottedLine(
-                              dashRadius: 5,
-                              dashColor: Color(0xffD9D9D9),
-                              dashLength: 7),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: TabBar(
-                              onTap: (value) {
-                                setState(() {
-                                  // Check if the tapped tab index is greater than 1
-                                  dynamicheight = value > 1 ? 50.h : 410.h;
-                                  print("raju ${_tabController.index == 0}");
-                                  showsearch =
-                                      _tabController.index == 0 ? true : false;
-                                });
-                              },
-                              tabAlignment: TabAlignment.start,
-                              isScrollable: true,
-                              controller: _tabController,
-                              tabs: const [
-                                Tab(text: "SHOP"),
-                                Tab(text: "About"),
-                                Tab(text: "BRANDS"),
-                                Tab(text: "GET DIRECTIONS"),
-                                Tab(text: "CUSTOMER SERVICE"),
-                                Tab(text: "CAREER"),
-                              ],
+                            const DottedLine(
+                                dashRadius: 5,
+                                dashColor: Color(0xffD9D9D9),
+                                dashLength: 7),
+                            SizedBox(
+                              height: 10.h,
                             ),
-                          ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: TabBar(
+                                onTap: (value) {
+                                  setState(() {
+                                    // Check if the tapped tab index is greater than 1
+                                    dynamicheight = value > 1 ? 50.h : 410.h;
+                                    print("raju ${_tabController.index == 0}");
+                                    showsearch = _tabController.index == 0
+                                        ? true
+                                        : false;
+                                  });
+                                },
+                                tabAlignment: TabAlignment.start,
+                                isScrollable: true,
+                                controller: _tabController,
+                                tabs: const [
+                                  Tab(text: "SHOP"),
+                                  Tab(text: "About"),
+                                  Tab(text: "BRANDS"),
+                                  Tab(text: "GET DIRECTIONS"),
+                                  Tab(text: "CUSTOMER SERVICE"),
+                                  Tab(text: "CAREER"),
+                                ],
+                              ),
+                            ),
                           ],
                         );
                       },
@@ -782,335 +791,303 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                         ref
-                              .watch(getvendorbybrandnameProvider(widget.vid))
-                              .when(
-                                data: (data) {
-                                  // if (data.data!.b2b?.length == 0) {
-                                  //   categories.where(
-                                  //     (element) => element == 'b2b',
-                                  //   );
-                                  // }
-                                  if (myselectedindex == 0) {
-                                    alldata = data.data?.brandnew;
-                                  }
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        width: double.infinity,
-                                        height: tabsize?.toDouble(),
-                                        child: TabBarView(
-                                          controller: _tabController,
-                                          children: [
-                                            SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  // Search Fieldf
-                                                  SizedBox(
-                                                    width: 5.w,
-                                                  ),
-                                                  AnimatedSwitcher(
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                    child: _isSearchFieldVisible
-                                                        ? SizedBox(
-                                                            key: const ValueKey(
-                                                                'SearchField'),
-                                                            width: 300.0,
-                                                            child: TextField(
-                                                              onSubmitted:
-                                                                  (value) {},
-                                                              controller:
-                                                                  _vendorsearchController,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                contentPadding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        left:
-                                                                            5),
-                                                                hintText:
-                                                                    "Search...",
-                                                                filled: true,
-                                                                fillColor: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.1),
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .withOpacity(
-                                                                            0.4),
-                                                                    width: 1.0,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      const BorderRadius
-                                                                          .all(
-                                                                          Radius.circular(
-                                                                              10.0)),
-                                                                ),
-                                                                focusedBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: Colors
-                                                                        .blue
-                                                                        .withOpacity(
-                                                                            0.6),
-                                                                    width: 1.5,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      const BorderRadius
-                                                                          .all(
-                                                                          Radius.circular(
-                                                                              10.0)),
-                                                                ),
-                                                                suffixIcon:
-                                                                    InkWell(
-                                                                  onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      vendorsearchrespnse =
-                                                                          [];
-                                                                      searchvendor(
-                                                                          _vendorsearchController
-                                                                              .text);
-                                                                    });
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        topRight:
-                                                                            Radius.circular(10),
-                                                                        bottomRight:
-                                                                            Radius.circular(10),
-                                                                      ),
-                                                                      color: Colors
-                                                                          .black, // Replace with `ColorConstant.blackColor`
-                                                                    ),
-                                                                    child:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .search,
-                                                                      color: Colors
-                                                                          .white, // Replace with `ColorConstant.whiteColor`
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : IconButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                _isSearchFieldVisible =
-                                                                    true;
-                                                              });
-                                                            },
-                                                            icon: Container(
-                                                              padding:
+                        ref
+                            .watch(getvendorbybrandnameProvider(widget.vid))
+                            .when(
+                              data: (data) {
+                                // if (data.data!.b2b?.length == 0) {
+                                //   categories.where(
+                                //     (element) => element == 'b2b',
+                                //   );
+                                // }
+                                if (myselectedindex == 0) {
+                                  alldata = data.data?.brandnew;
+                                }
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height:    tabsize?.toDouble(),
+                                      child: TabBarView(
+                                        controller: _tabController,
+                                        children: [
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                // Search Fieldf
+                                                SizedBox(
+                                                  width: 5.w,
+                                                ),
+                                                AnimatedSwitcher(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  child: _isSearchFieldVisible
+                                                      ? SizedBox(
+                                                          key: const ValueKey(
+                                                              'SearchField'),
+                                                          width: 300.0,
+                                                          child: TextField(
+                                                            onSubmitted:
+                                                                (value) {},
+                                                            controller:
+                                                                _vendorsearchController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              contentPadding:
                                                                   const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          5,
-                                                                      vertical:
-                                                                          5),
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
+                                                                      .only(
+                                                                      left: 5),
+                                                              hintText:
+                                                                  "Search...",
+                                                              filled: true,
+                                                              fillColor: Colors
+                                                                  .grey
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  width: 1.0,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .all(
+                                                                        Radius.circular(
+                                                                            10.0)),
+                                                              ),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .blue
+                                                                      .withOpacity(
+                                                                          0.6),
+                                                                  width: 1.5,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .all(
+                                                                        Radius.circular(
+                                                                            10.0)),
+                                                              ),
+                                                              suffixIcon:
+                                                                  InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    vendorsearchrespnse =
+                                                                        [];
+                                                                    searchvendor(
+                                                                        _vendorsearchController
+                                                                            .text);
+                                                                  });
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          10),
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .only(
+                                                                      topRight:
+                                                                          Radius.circular(
                                                                               10),
-                                                                  color: ColorConstant
-                                                                      .blackColor),
-                                                              child: const Icon(
-                                                                Icons.search,
-                                                                color: ColorConstant
-                                                                    .whiteColor,
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    color: Colors
+                                                                        .black, // Replace with `ColorConstant.blackColor`
+                                                                  ),
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons
+                                                                        .search,
+                                                                    color: Colors
+                                                                        .white, // Replace with `ColorConstant.whiteColor`
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                  ),
-
-                                                  SizedBox(
-                                                    height: 50,
-                                                    width: 750.w,
-                                                    child: Row(
-                                                      children: List.generate(
-                                                          _categorieslength!,
-                                                          (index) {
-                                                        return GestureDetector(
-                                                          onTap: () {
+                                                        )
+                                                      : IconButton(
+                                                          onPressed: () {
                                                             setState(() {
-                                                              vendorsearchrespnse =
-                                                                  [];
-                                                              //   print(
-                                                              //   "raja $myselectedindex");
-                                                              print(
-                                                                  "rajali ${data.data?.services?.length}");
-                                                              myselectedindex =
-                                                                  index;
-
-                                                              alldata = [
-                                                                    data.data
-                                                                        ?.brandnew,
-                                                                    data.data
-                                                                        ?.used,
-                                                                    data.data
-                                                                        ?.services,
-                                                                    data.data
-                                                                        ?.events,
-                                                                    data.data
-                                                                        ?.services,
-                                                                    data.data
-                                                                        ?.b2b,
-                                                                    data.data
-                                                                        ?.grocery
-                                                                  ][index] ??
-                                                                  [];
+                                                              _isSearchFieldVisible =
+                                                                  true;
                                                             });
                                                           },
-                                                          child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
+                                                          icon: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
                                                                     horizontal:
-                                                                        10.0,
+                                                                        5,
                                                                     vertical:
-                                                                        5.h),
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        10.w),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: myselectedindex ==
-                                                                      index
-                                                                  ? ColorConstant
-                                                                      .blackColor
-                                                                  : Colors.grey[
-                                                                      300],
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                            ),
-                                                            child: Text(
-                                                              categories[index],
-                                                              style: TextStyle(
-                                                                color: myselectedindex ==
-                                                                        index
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
-                                                              ),
+                                                                        5),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                color: ColorConstant
+                                                                    .blackColor),
+                                                            child: const Icon(
+                                                              Icons.search,
+                                                              color: ColorConstant
+                                                                  .whiteColor,
                                                             ),
                                                           ),
-                                                        );
-                                                      }),
-                                                    ),
+                                                        ),
+                                                ),
+
+                                                SizedBox(
+                                                  height: 50,
+                                                  width: 750.w,
+                                                  child: Row(
+                                                    children: List.generate(
+                                                        _categorieslength!,
+                                                        (index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            vendorsearchrespnse =
+                                                                [];
+                                                            //   print(
+                                                            //   "raja $myselectedindex");
+                                                            print(
+                                                                "rajali ${data.data?.services?.length}");
+                                                            myselectedindex =
+                                                                index;
+
+                                                            alldata = [
+                                                                  data.data
+                                                                      ?.brandnew,
+                                                                  data.data
+                                                                      ?.used,
+                                                                  data.data
+                                                                      ?.services,
+                                                                  data.data
+                                                                      ?.events,
+                                                                  data.data
+                                                                      ?.services,
+                                                                  data.data
+                                                                      ?.b2b,
+                                                                  data.data
+                                                                      ?.grocery
+                                                                ][index] ??
+                                                                [];
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10.0,
+                                                                  vertical:
+                                                                      5.h),
+                                                          margin: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10.w),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: myselectedindex ==
+                                                                    index
+                                                                ? ColorConstant
+                                                                    .blackColor
+                                                                : Colors
+                                                                    .grey[300],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                          child: Text(
+                                                            categories[index],
+                                                            style: TextStyle(
+                                                              color:
+                                                                  myselectedindex ==
+                                                                          index
+                                                                      ? Colors
+                                                                          .white
+                                                                      : Colors
+                                                                          .black,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                            AnimatedContainer(
-                                              margin: const EdgeInsets.all(5),
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut,
-                                              color: Colors.white,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.black,
-                                                    ),
+                                          ),
+                                          AnimatedContainer(
+                                            margin: const EdgeInsets.all(5),
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.easeInOut,
+                                            color: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.black,
                                                   ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 24.w, top: 32.h),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        if (data.data
-                                                                    ?.vendor_about !=
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 24.w, top: 32.h),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      if (data.data
+                                                                  ?.vendor_about !=
+                                                              null &&
+                                                          data
+                                                                  .data
+                                                                  ?.vendor_about
+                                                                  ?.bio
+                                                                  ?.length !=
+                                                              0)
+                                                        if (data.data!
+                                                                    .vendor_about !=
                                                                 null &&
-                                                            data
-                                                                    .data
-                                                                    ?.vendor_about
-                                                                    ?.bio
-                                                                    ?.length !=
-                                                                0)
-                                                          if (data.data!
-                                                                      .vendor_about !=
-                                                                  null &&
-                                                              data.data
-                                                                      ?.vendor_about !=
-                                                                  '')
-                                                            Text(
-                                                                "Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        12.sp)),
-                                                        SizedBox(height: 10.h),
-                                                        if (data.data
-                                                                ?.vendor_about !=
-                                                            null)
-                                                          Row(
-                                                            children: [
-                                                              Icon(Icons.phone,
-                                                                  color: const Color(
-                                                                      0xFF8B6C6C),
-                                                                  size: 14.h),
-                                                              SizedBox(
-                                                                width: 10.w,
-                                                              ),
-                                                              if (data.data
-                                                                      ?.vendor_about !=
-                                                                  null)
-                                                                Text(
-                                                                  data
-                                                                          .data
-                                                                          ?.vendor_about!
-                                                                          .phone ??
-                                                                      '',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        12.sp,
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          ),
-                                                        SizedBox(height: 10.h),
+                                                            data.data
+                                                                    ?.vendor_about !=
+                                                                '')
+                                                          Text("Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize:
+                                                                      12.sp)),
+                                                      SizedBox(height: 10.h),
+                                                      if (data.data
+                                                              ?.vendor_about !=
+                                                          null)
                                                         Row(
                                                           children: [
-                                                            Icon(
-                                                                Icons
-                                                                    .location_on,
+                                                            Icon(Icons.phone,
                                                                 color: const Color(
                                                                     0xFF8B6C6C),
                                                                 size: 14.h),
@@ -1124,8 +1101,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                 data
                                                                         .data
                                                                         ?.vendor_about!
-                                                                        .nearestbranch ??
-                                                                    'The Bio is not yet published stay tuned',
+                                                                        .phone ??
+                                                                    '',
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
@@ -1137,495 +1114,347 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                               ),
                                                           ],
                                                         ),
-                                                        SizedBox(height: 10.h),
-                                                        Row(
-                                                          children: [
-                                                            Icon(Icons.email,
-                                                                color: const Color(
-                                                                    0xFF8B6C6C),
-                                                                size: 14.h),
-                                                            SizedBox(
-                                                              width: 10.w,
+                                                      SizedBox(height: 10.h),
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                              Icons.location_on,
+                                                              color: const Color(
+                                                                  0xFF8B6C6C),
+                                                              size: 14.h),
+                                                          SizedBox(
+                                                            width: 10.w,
+                                                          ),
+                                                          if (data.data
+                                                                  ?.vendor_about !=
+                                                              null)
+                                                            Text(
+                                                              data
+                                                                      .data
+                                                                      ?.vendor_about!
+                                                                      .nearestbranch ??
+                                                                  'The Bio is not yet published stay tuned',
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 12.sp,
+                                                              ),
                                                             ),
-                                                            if (data
-                                                                    .data
-                                                                    ?.vendor_about
-                                                                    ?.email !=
-                                                                null)
-                                                              Text(
-                                                                data
-                                                                    .data!
-                                                                    .vendor_about!
-                                                                    .email!,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      12.sp,
-                                                                ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 10.h),
+                                                      Row(
+                                                        children: [
+                                                          Icon(Icons.email,
+                                                              color: const Color(
+                                                                  0xFF8B6C6C),
+                                                              size: 14.h),
+                                                          SizedBox(
+                                                            width: 10.w,
+                                                          ),
+                                                          if (data
+                                                                  .data
+                                                                  ?.vendor_about
+                                                                  ?.email !=
+                                                              null)
+                                                            Text(
+                                                              data
+                                                                  .data!
+                                                                  .vendor_about!
+                                                                  .email!,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 12.sp,
                                                               ),
-                                                          ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 10.h),
+                                                      Text(
+                                                        "Bio",
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 14.sp,
                                                         ),
-                                                        SizedBox(height: 10.h),
+                                                      ),
+                                                      SizedBox(height: 10.h),
+                                                      if (data
+                                                              .data
+                                                              ?.vendor_about
+                                                              ?.bio !=
+                                                          null)
                                                         Text(
-                                                          "Bio",
+                                                          data
+                                                              .data!
+                                                              .vendor_about!
+                                                              .bio!,
                                                           style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 14.sp,
-                                                          ),
+                                                              fontSize: 12.sp),
                                                         ),
-                                                        SizedBox(height: 10.h),
-                                                        if (data
-                                                                .data
-                                                                ?.vendor_about
-                                                                ?.bio !=
-                                                            null)
-                                                          Text(
-                                                            data
-                                                                .data!
-                                                                .vendor_about!
-                                                                .bio!,
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    12.sp),
-                                                          ),
-                                                      ],
-                                                    ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                            AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Coming Soon.........',
-                                                style: headerstyle.copyWith(
-                                                  color:
-                                                      ColorConstant.blackColor,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                ),
+                                          ),
+                                          AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.easeInOut,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Coming Soon.........',
+                                              style: headerstyle.copyWith(
+                                                color: ColorConstant.blackColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
                                               ),
                                             ),
-                                            AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Coming Soon.........',
-                                                style: headerstyle.copyWith(
-                                                  color:
-                                                      ColorConstant.blackColor,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                ),
+                                          ),
+                                          AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.easeInOut,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Coming Soon.........',
+                                              style: headerstyle.copyWith(
+                                                color: ColorConstant.blackColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
                                               ),
                                             ),
-                                            AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Coming Soon.........',
-                                                style: headerstyle.copyWith(
-                                                  color:
-                                                      ColorConstant.blackColor,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                ),
+                                          ),
+                                          AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.easeInOut,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Coming Soon.........',
+                                              style: headerstyle.copyWith(
+                                                color: ColorConstant.blackColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
                                               ),
                                             ),
-                                            AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 500),
-                                              curve: Curves.easeInOut,
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Coming Soon.........',
-                                                style: headerstyle.copyWith(
-                                                  color:
-                                                      ColorConstant.blackColor,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 12,
-                                                ),
+                                          ),
+                                          AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds: 500),
+                                            curve: Curves.easeInOut,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              'Coming Soon.........',
+                                              style: headerstyle.copyWith(
+                                                color: ColorConstant.blackColor,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      if (showsearch!)
-                                        vendorsearchrespnse == null ||
-                                                    vendorsearchrespnse!
-                                                        .isEmpty ??
-                                                true
-                                            ? (alldata?.isEmpty ?? true
-                                                ? const Padding(
-                                                    padding:
-                                                        EdgeInsets.all(40.0),
-                                                    child: Center(
-                                                      child: Text(
-                                                          "No Listing available....."),
-                                                    ),
-                                                  )
-                                                : AnimatedContainer(
-                                                    duration: const Duration(
-                                                        milliseconds: 400),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      child: Wrap(
-                                                        spacing: 3.w,
-                                                        children: List.generate(
-                                                            alldata?.length ??
-                                                                0, (index) {
-                                                          BrandNewModel prod =
-                                                              alldata![index];
-                                                          return ProductDetailWidget(
-                                                            lat: prod
-                                                                .userdetails
-                                                                ?.latitude,
-                                                            long: prod
-                                                                .userdetails
-                                                                ?.longitude,
-                                                            productid: prod.id,
-                                                            posttype: prod
-                                                                .post_type_id,
-                                                            vendorid: prod
-                                                                .userdetails!
-                                                                .user_id,
-                                                            onRefresh: () {
-                                                              refreshAllprovider();
-                                                              ref.refresh(
-                                                                  getVendorCardProvider(
-                                                                      widget
-                                                                          .vid));
-                                                            },
-                                                            membershipid: prod
-                                                                .userdetails
-                                                                ?.membership_id,
-                                                            didcountpercentage:
-                                                                prod.discount_percentage ??
-                                                                    0,
-                                                            lefttile:
-                                                                "TradeHub",
-                                                            vendorname: prod
-                                                                    .userdetails
-                                                                    ?.name ??
-                                                                "",
-                                                            Vimage: prod
-                                                                    .userdetails
-                                                                    ?.photo ??
-                                                                "",
-                                                            avg_rating: prod
-                                                                    .avg_rating
-                                                                    ?.toDouble() ??
-                                                                0,
-                                                            comment: prod
-                                                                    .commentcount
-                                                                    ?.toString() ??
-                                                                "0",
-                                                            discounttedPrice: prod
-                                                                    .discounted_price
-                                                                    ?.toString() ??
-                                                                "0",
-                                                            distance: double
-                                                                .tryParse(prod
-                                                                        .shortestDistance
-                                                                        ?.toString() ??
-                                                                    "0"),
-                                                            issponsored: prod
-                                                                    .userdetails
-                                                                    ?.sponsored ??
-                                                                false,
-                                                            membershipColor: prod
-                                                                    .userdetails
-                                                                    ?.membership_color ??
-                                                                "",
-                                                            membershipTitle: prod
-                                                                    .userdetails
-                                                                    ?.membership_title ??
-                                                                "",
-                                                            offer:
-                                                                prod.wow ?? "",
-                                                            price: prod.price ??
-                                                                "",
-                                                            productImage:
-                                                                prod.image,
-                                                            shortestDistance:
-                                                                prod.shortestDistance ??
-                                                                    0.0,
-                                                            similarproductCount:
-                                                                prod.similarVendorProfileProductCount ??
-                                                                    0,
-                                                            title: prod.title ??
-                                                                "",
-                                                            wow: prod.wow ?? "",
-                                                          );
-                                                        }),
-                                                      ),
-                                                    ),
-                                                  ))
-                                            : SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Wrap(
-                                                  spacing: 3.w,
-                                                  children: List.generate(
-                                                      vendorsearchrespnse
-                                                              ?.length ??
-                                                          0, (index) {
-                                                    VendorSearchModel prod =
-                                                        vendorsearchrespnse![
-                                                            index];
-                                                    return ProductDetailWidget(
-                                                      lat: prod.userdetails
-                                                          ?.latitude,
-                                                      long: prod.userdetails
-                                                          ?.longitude,
-                                                      productid: prod.id!,
-                                                      posttype: prod.postType,
-                                                      vendorid: prod
-                                                          .userdetails?.userId,
-                                                      onRefresh: () {
-                                                        refreshAllprovider();
-                                                      },
-                                                      membershipid: prod
-                                                          .userdetails
-                                                          ?.membershipId,
-                                                      didcountpercentage: prod
-                                                          .discountPercentage
-                                                          ?.toInt(),
-                                                      lefttile: "TradeHub",
-                                                      vendorname: prod
+                                    ),
+                                    if (showsearch!)
+                                      vendorsearchrespnse == null ||
+                                                  vendorsearchrespnse!
+                                                      .isEmpty ??
+                                              true
+                                          ? (alldata?.isEmpty ?? true
+                                              ? const Padding(
+                                                  padding: EdgeInsets.all(40.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                        "No Listing available....."),
+                                                  ),
+                                                )
+                                              : AnimatedContainer(
+                                                  duration: const Duration(
+                                                      milliseconds: 400),
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Wrap(
+                                                      spacing: 3.w,
+                                                      children: List.generate(
+                                                          alldata?.length ?? 0,
+                                                          (index) {
+                                                        BrandNewModel prod =
+                                                            alldata![index];
+                                                        return ProductDetailWidget(
+                                                          lat: prod.userdetails
+                                                              ?.latitude,
+                                                          long: prod.userdetails
+                                                              ?.longitude,
+                                                          productid: prod.id,
+                                                          posttype:
+                                                              prod.post_type_id,
+                                                          vendorid: prod
+                                                              .userdetails!
+                                                              .user_id,
+                                                          onRefresh: () {
+                                                            refreshAllprovider();
+                                                            ref.refresh(
+                                                                getVendorCardProvider(
+                                                                    widget
+                                                                        .vid));
+                                                          },
+                                                          membershipid: prod
                                                               .userdetails
-                                                              ?.name ??
-                                                          "",
-                                                      Vimage: prod.userdetails
-                                                              ?.photo ??
-                                                          "",
-                                                      avg_rating: prod.avgRating
-                                                              ?.toDouble() ??
-                                                          0,
-                                                      comment: prod.commentCount
-                                                              ?.toString() ??
-                                                          "0",
-                                                      discounttedPrice: prod
-                                                              .discountedPrice
-                                                              ?.toString() ??
-                                                          "0",
-                                                      distance: double.tryParse(prod
-                                                              .userdetails
-                                                              ?.shortestDistance
-                                                              ?.toString() ??
-                                                          "0"),
-                                                      issponsored: prod
-                                                              .userdetails
-                                                              ?.sponsored ??
-                                                          false,
-                                                      membershipColor: prod
-                                                              .userdetails
-                                                              ?.membershipColor ??
-                                                          "",
-                                                      membershipTitle: prod
-                                                              .userdetails
-                                                              ?.membershipTitle ??
-                                                          "",
-                                                      offer: prod.wow ?? "",
-                                                      price: prod.price ?? "",
-                                                      productImage: prod.image,
-                                                      shortestDistance: prod
-                                                              .userdetails
-                                                              ?.shortestDistance ??
-                                                          0.0,
-                                                      similarproductCount:
-                                                          prod.similarProductCount ??
+                                                              ?.membership_id,
+                                                          didcountpercentage:
+                                                              prod.discount_percentage ??
+                                                                  0,
+                                                          lefttile: "TradeHub",
+                                                          vendorname: prod
+                                                                  .userdetails
+                                                                  ?.name ??
+                                                              "",
+                                                          Vimage: prod
+                                                                  .userdetails
+                                                                  ?.photo ??
+                                                              "",
+                                                          avg_rating: prod
+                                                                  .avg_rating
+                                                                  ?.toDouble() ??
                                                               0,
-                                                      title: prod.title ?? "",
-                                                      wow: prod.wow ?? "",
-                                                    );
-                                                  }),
-                                                ),
+                                                          comment: prod
+                                                                  .commentcount
+                                                                  ?.toString() ??
+                                                              "0",
+                                                          discounttedPrice: prod
+                                                                  .discounted_price
+                                                                  ?.toString() ??
+                                                              "0",
+                                                          distance: double.tryParse(prod
+                                                                  .shortestDistance
+                                                                  ?.toString() ??
+                                                              "0"),
+                                                          issponsored: prod
+                                                                  .userdetails
+                                                                  ?.sponsored ??
+                                                              false,
+                                                          membershipColor: prod
+                                                                  .userdetails
+                                                                  ?.membership_color ??
+                                                              "",
+                                                          membershipTitle: prod
+                                                                  .userdetails
+                                                                  ?.membership_title ??
+                                                              "",
+                                                          offer: prod.wow ?? "",
+                                                          price:
+                                                              prod.price ?? "",
+                                                          productImage:
+                                                              prod.image,
+                                                          shortestDistance:
+                                                              prod.shortestDistance ??
+                                                                  0.0,
+                                                          similarproductCount:
+                                                              prod.similarVendorProfileProductCount ??
+                                                                  0,
+                                                          title:
+                                                              prod.title ?? "",
+                                                          wow: prod.wow ?? "",
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ),
+                                                ))
+                                          : SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Wrap(
+                                                spacing: 3.w,
+                                                children: List.generate(
+                                                    vendorsearchrespnse
+                                                            ?.length ??
+                                                        0, (index) {
+                                                  VendorSearchModel prod =
+                                                      vendorsearchrespnse![
+                                                          index];
+                                                  return ProductDetailWidget(
+                                                    lat: prod
+                                                        .userdetails?.latitude,
+                                                    long: prod
+                                                        .userdetails?.longitude,
+                                                    productid: prod.id!,
+                                                    posttype: prod.postType,
+                                                    vendorid: prod
+                                                        .userdetails?.userId,
+                                                    onRefresh: () {
+                                                      refreshAllprovider();
+                                                    },
+                                                    membershipid: prod
+                                                        .userdetails
+                                                        ?.membershipId,
+                                                    didcountpercentage: prod
+                                                        .discountPercentage
+                                                        ?.toInt(),
+                                                    lefttile: "TradeHub",
+                                                    vendorname: prod.userdetails
+                                                            ?.name ??
+                                                        "",
+                                                    Vimage: prod.userdetails
+                                                            ?.photo ??
+                                                        "",
+                                                    avg_rating: prod.avgRating
+                                                            ?.toDouble() ??
+                                                        0,
+                                                    comment: prod.commentCount
+                                                            ?.toString() ??
+                                                        "0",
+                                                    discounttedPrice: prod
+                                                            .discountedPrice
+                                                            ?.toString() ??
+                                                        "0",
+                                                    distance: double.tryParse(prod
+                                                            .userdetails
+                                                            ?.shortestDistance
+                                                            ?.toString() ??
+                                                        "0"),
+                                                    issponsored: prod
+                                                            .userdetails
+                                                            ?.sponsored ??
+                                                        false,
+                                                    membershipColor: prod
+                                                            .userdetails
+                                                            ?.membershipColor ??
+                                                        "",
+                                                    membershipTitle: prod
+                                                            .userdetails
+                                                            ?.membershipTitle ??
+                                                        "",
+                                                    offer: prod.wow ?? "",
+                                                    price: prod.price ?? "",
+                                                    productImage: prod.image,
+                                                    shortestDistance: prod
+                                                            .userdetails
+                                                            ?.shortestDistance ??
+                                                        0.0,
+                                                    similarproductCount:
+                                                        prod.similarProductCount ??
+                                                            0,
+                                                    title: prod.title ?? "",
+                                                    wow: prod.wow ?? "",
+                                                  );
+                                                }),
                                               ),
-                                    ],
-                                  );
-                                },
-                                error: (error, stackTrace) =>
-                                    const Text("login"),
-                                loading: () => Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.grey[100]!,
-                                  child: Container(
-                                    height: 100,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                         SizedBox(
-                            height: 5.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: const DottedLine(
-                                dashRadius: 5,
-                                dashColor: Color(0xffD9D9D9),
-                                dashLength: 7),
-                          ),
-                            Padding(
-                            padding: EdgeInsets.only(
-                                left: 18.w, bottom: 10, top: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "POSTS",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                           liveandpost.when(
-                            data: (data) {
-                              if (data.feedPosts.isEmpty) {
-                                return Center(
-                                    child:
-                                        nolistingfound()); // ✅ Show "No Listing Found" if `feedPosts` is empty
-                              }
-
-                              return SizedBox(
-                                width: double.infinity,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: data.feedPosts.map((dataz) {
-                                      print("raja ${dataz.photo}");
-
-                                      return PostCard(
-                                        id: dataz.id,
-                                        image: dataz.image ?? "",
-                                        name: dataz.name ?? "Unknown",
-                                        caption: dataz.caption ?? "",
-                                        photo: dataz.photo ?? "",
-                                        subscribers:
-                                            dataz.subscribers?.toString() ??
-                                                "0",
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              );
-                            },
-                            loading: () => SizedBox(
-                              height: 295.h,
-                              width: double.infinity,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 5, // ✅ Placeholder shimmer count
-                                itemBuilder: (context, index) =>
-                                    Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.grey[100]!,
-                                  child: Container(
-                                    width: 200.w,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            error: (error, stack) => Center(
-                              child: Text("Error: $error",
-                                  style: const TextStyle(color: Colors.red)),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: const DottedLine(
-                                dashRadius: 5,
-                                dashColor: Color(0xffD9D9D9),
-                                dashLength: 7),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 18.w, top: 10.h),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Live Prizes",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ),
-                            liveandpost.when(
-                            data: (data) {
-                              if (data.live_prizes == null ||
-                                  data.live_prizes!.isEmpty) {
-                                return Center(
-                                    child:
-                                        nolistingfound()); // ✅ Shows "No Listing Found" when empty
-                              }
-
-                              return SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: data.live_prizes!.map((card) {
-                                    return PostCard(
-                                      id: card.id,
-                                      // subscribers: data.subscribers.toString(),
-                                      isLive: false,
-                                      image: card.image!,
-                                      name: card.name!,
-                                      caption: card.caption ?? '',
-                                      photo: card.photo!,
-                                      subscribers: card.subscribers!.toString(),
-                                    );
-                                  }).toList(),
-                                ),
-                              );
-                            },
-                            loading: () => SizedBox(
-                              height: 260,
-                              width: double.infinity,
-                              child: Shimmer.fromColors(
+                                            ),
+                                  ],
+                                );
+                              },
+                              error: (error, stackTrace) => const Text("login"),
+                              loading: () => Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,
                                 child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
+                                  height: 100,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
@@ -1633,161 +1462,315 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 ),
                               ),
                             ),
-                            error: (error, stack) => Center(
-                              child: Text("Error: $error",
-                                  style: const TextStyle(color: Colors.red)),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5.h),
-                            child: const DottedLine(
-                                dashRadius: 5,
-                                dashColor: Color(0xffD9D9D9),
-                                dashLength: 7),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: const DottedLine(
+                              dashRadius: 5,
+                              dashColor: Color(0xffD9D9D9),
+                              dashLength: 7),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 18.w, bottom: 10, top: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
                             child: Text(
-                              "All Products",
+                              "POSTS",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
                               textAlign: TextAlign.left,
-                              style: headerstyle.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 15,
-                                  color: ColorConstant.blackColor),
                             ),
                           ),
-                            allproductsresp.when(
-                            data: (data) {
-                              if (data.data.all_products == null ||
-                                  data.data.all_products!.isEmpty) {
-                                return Center(
-                                    child:
-                                        nolistingfound()); // ✅ Shows "No Listing Found" when empty
-                              }
+                        ),
+                        liveandpost.when(
+                          data: (data) {
+                            if (data.feedPosts.isEmpty) {
+                              return Center(
+                                  child:
+                                      nolistingfound()); // ✅ Show "No Listing Found" if `feedPosts` is empty
+                            }
 
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 20.h),
-                                child: SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollDirection: Axis.vertical,
-                                  child: Wrap(
-                                    spacing: 5.w,
-                                    runSpacing: 15.h,
-                                    children: List.generate(
-                                      data.data.all_products!.length,
-                                      (index) {
-                                        BrandNewModel res =
-                                            data.data.all_products![index];
+                            return SizedBox(
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: data.feedPosts.map((dataz) {
+                                    print("raja ${dataz.photo}");
 
-                                        return SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  30.w) /
-                                              2,
-                                          child: Card(
-                                            clipBehavior: Clip.antiAlias,
-                                            shadowColor: const Color(0xff3D215F)
-                                                .withOpacity(0.5),
-                                            elevation: 9,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
-                                            ),
-                                            child: AllProductDetailWidget(
-                                              savedid: res.savedByLoggedUser
-                                                      ?.map((e) => SavedPost(
-                                                            id: e.id,
-                                                            userId: e.userId,
-                                                            postId: e.postId,
-                                                            createdAt:
-                                                                e.createdAt,
-                                                            updatedAt:
-                                                                e.updatedAt,
-                                                          ))
-                                                      .toList() ??
-                                                  [], // ✅ Ensured `null` safety
-
-                                              onRefresh: () {
-                                                refreshAllprovider();
-                                              },
-                                              lat: res.userdetails?.latitude,
-                                              long: res.userdetails?.longitude,
-                                              productid: res.id,
-                                              posttype: res.post_type_id,
-                                              membershipid: res
-                                                  .userdetails?.membership_id,
-                                              id: int.tryParse(res.id),
-                                              didcountpercentage:
-                                                  res.discount_percentage ?? 0,
-                                              productImage: res.image,
-                                              Vimage:
-                                                  res.userdetails?.photo ?? "",
-                                              avg_rating:
-                                                  res.avg_rating?.toDouble(),
-                                              comment:
-                                                  res.commentcount.toString(),
-                                              discounttedPrice: res
-                                                      .discounted_price
-                                                      ?.toString() ??
-                                                  "0",
-                                              distance:
-                                                  res.shortestDistance ?? 0.0,
-                                              issponsored:
-                                                  res.userdetails?.sponsored ??
-                                                      false,
-                                              lefttile: "All Products",
-                                              membershipColor: res.userdetails
-                                                      ?.membership_color ??
-                                                  "",
-                                              membershipTitle: res.userdetails
-                                                      ?.membership_title ??
-                                                  "",
-                                              offer: res.offers ?? "",
-                                              price: res.price ?? "0",
-                                              shortestDistance:
-                                                  res.shortestDistance ?? 0.0,
-                                              similarproductCount:
-                                                  res.similarVendorProfileProductCount ??
-                                                      0,
-                                              title: res.title ?? "No Title",
-                                              vendorname:
-                                                  res.userdetails?.name ??
-                                                      "Unknown",
-                                              wow: res.wow ?? "",
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                    return PostCard(
+                                      id: dataz.id,
+                                      image: dataz.image ?? "",
+                                      name: dataz.name ?? "Unknown",
+                                      caption: dataz.caption ?? "",
+                                      photo: dataz.photo ?? "",
+                                      subscribers:
+                                          dataz.subscribers?.toString() ?? "0",
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            );
+                          },
+                          loading: () => SizedBox(
+                            height: 295.h,
+                            width: double.infinity,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5, // ✅ Placeholder shimmer count
+                              itemBuilder: (context, index) =>
+                                  Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  width: 200.w,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                              );
-                            },
-                            loading: () =>  SizedBox(
-                      width: 100.w,
-                      height: 100.h,
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/preloader.gif',
-                          width: 100.w,
-                          height: 100.h,
-                          fit: BoxFit
-                              .contain, // Ensures the image fits within its bounds
-                        ),
-                      ),
-                    ),
-                            error: (error, stack) => Center(
-                              child: Text("Error: $error",
-                                  style: const TextStyle(color: Colors.red)),
+                              ),
                             ),
-                          )
+                          ),
+                          error: (error, stack) => Center(
+                            child: Text("Error: $error",
+                                style: const TextStyle(color: Colors.red)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: const DottedLine(
+                              dashRadius: 5,
+                              dashColor: Color(0xffD9D9D9),
+                              dashLength: 7),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 18.w, top: 10.h),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Live Prizes",
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                        liveandpost.when(
+                          data: (data) {
+                            if (data.live_prizes == null ||
+                                data.live_prizes!.isEmpty) {
+                              return Center(
+                                  child:
+                                      nolistingfound()); // ✅ Shows "No Listing Found" when empty
+                            }
 
+                            return SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: data.live_prizes!.map((card) {
+                                  return PostCard(
+                                    id: card.id,
+                                    // subscribers: data.subscribers.toString(),
+                                    isLive: false,
+                                    image: card.image!,
+                                    name: card.name!,
+                                    caption: card.caption ?? '',
+                                    photo: card.photo!,
+                                    subscribers: card.subscribers!.toString(),
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          },
+                          loading: () => SizedBox(
+                            height: 260,
+                            width: double.infinity,
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ),
+                          error: (error, stack) => Center(
+                            child: Text("Error: $error",
+                                style: const TextStyle(color: Colors.red)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.h),
+                          child: const DottedLine(
+                              dashRadius: 5,
+                              dashColor: Color(0xffD9D9D9),
+                              dashLength: 7),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "All Products",
+                            textAlign: TextAlign.left,
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                color: ColorConstant.blackColor),
+                          ),
+                        ),
+                        allproductsresp.when(
+                          data: (data) {
+                            if (data.data.all_products == null ||
+                                data.data.all_products!.isEmpty) {
+                              return Center(
+                                  child:
+                                      nolistingfound()); // ✅ Shows "No Listing Found" when empty
+                            }
+
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20.h),
+                              child: SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                child: Wrap(
+                                  spacing: 5.w,
+                                  runSpacing: 15.h,
+                                  children: List.generate(
+                                    data.data.all_products!.length,
+                                    (index) {
+                                      BrandNewModel res =
+                                          data.data.all_products![index];
+
+                                      return SizedBox(
+                                        width:
+                                            (MediaQuery.of(context).size.width -
+                                                    30.w) /
+                                                2,
+                                        child: Card(
+                                          clipBehavior: Clip.antiAlias,
+                                          shadowColor: const Color(0xff3D215F)
+                                              .withOpacity(0.5),
+                                          elevation: 9,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: AllProductDetailWidget(
+
+                                            savedid: res.savedByLoggedUser
+                                                    ?.map((e) => SavedPost(
+                                                          id: e.id,
+                                                          userId: e.userId,
+                                                          postId: e.postId,
+                                                          createdAt:
+                                                              e.createdAt,
+                                                          updatedAt:
+                                                              e.updatedAt,
+                                                        ))
+                                                    .toList() ??
+                                                [], // ✅ Ensured `null` safety
+
+                                            onRefresh: () {
+                                              refreshAllprovider();
+                                            },
+                                            lat: res.userdetails?.latitude,
+                                            long: res.userdetails?.longitude,
+                                            productid: res.id,
+                                            posttype: res.post_type_id,
+                                            membershipid:
+                                                res.userdetails?.membership_id,
+                                            id: int.tryParse(res.id),
+                                            didcountpercentage:
+                                                res.discount_percentage ?? 0,
+                                            productImage: res.image,
+                                            Vimage:
+                                                res.userdetails?.photo ?? "",
+                                            avg_rating:
+                                                res.avg_rating?.toDouble(),
+                                            comment:
+                                                res.commentcount.toString(),
+                                            discounttedPrice: res
+                                                    .discounted_price
+                                                    ?.toString() ??
+                                                "0",
+                                            distance:
+                                                res.shortestDistance ?? 0.0,
+                                            issponsored:
+                                                res.userdetails?.sponsored ??
+                                                    false,
+                                            lefttile: "All Products",
+                                            membershipColor: res.userdetails
+                                                    ?.membership_color ??
+                                                "",
+                                            membershipTitle: res.userdetails
+                                                    ?.membership_title ??
+                                                "",
+                                            offer: res.offers ?? "",
+                                            price: res.price ?? "0",
+                                            shortestDistance:
+                                                res.shortestDistance ?? 0.0,
+                                            similarproductCount:
+                                                res.similarVendorProfileProductCount ??
+                                                    0,
+                                            title: res.title ?? "No Title",
+                                            vendorname: res.userdetails?.name ??
+                                                "Unknown",
+                                            wow: res.wow ?? "",
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          loading: () => SizedBox(
+                            width: 100.w,
+                            height: 100.h,
+                            child: Center(
+                              child: Image.asset(
+                                'assets/images/preloader.gif',
+                                width: 100.w,
+                                height: 100.h,
+                                fit: BoxFit
+                                    .contain, // Ensures the image fits within its bounds
+                              ),
+                            ),
+                          ),
+                          error: (error, stack) => Center(
+                            child: Text("Error: $error",
+                                style: const TextStyle(color: Colors.red)),
+                          ),
+                        )
                       ],
                     ),
                   )
@@ -2291,8 +2274,9 @@ class _BigContainerState extends State<BigContainer> {
         radius: const Radius.circular(35),
         dashPattern: const [7, 5],
         child: Column(
-mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,          children: [
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
@@ -2321,6 +2305,15 @@ mainAxisAlignment: MainAxisAlignment.start,
                             style: TextStyle(color: Colors.black)),
                       ),
                       PopupMenuItem(
+                        onTap: () {
+                          // Share.shareUri("uri")
+                        },
+                        value: 'share',
+                        child: Text('Share',
+                            style: TextStyle(color: Colors.black)),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {},
                         value: 'share',
                         child: Text('Share',
                             style: TextStyle(color: Colors.black)),
@@ -2348,7 +2341,6 @@ mainAxisAlignment: MainAxisAlignment.start,
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
                   child: Column(
-
                     children: [
                       Text(
                         "Connect",
@@ -2444,7 +2436,6 @@ mainAxisAlignment: MainAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
-
                   children: [
                     Row(
                       children: [
@@ -2662,15 +2653,17 @@ mainAxisAlignment: MainAxisAlignment.start,
             SizedBox(height: 40.h),
             InkWell(
               onTap: () {
-                followUnfollowVendor(widget.id).then(
-                  (value) {
-                    showCustomToast(context, value);
-                  },
-                );
-                widget.onsubscribed!;
-                setState(() {
-                  _hassubbed = !_hassubbed!;
-                });
+                print('bibash ${_hassubbed}');
+                //     followUnfollowVendor(widget.id).then(
+                //       (value) {
+                //         showCustomToast(context, value);
+                //       },
+                //     );
+                //     widget.onsubscribed!;
+                //     setState(() {
+                //       _hassubbed = !_hassubbed!;
+                //     });
+                //  widget.onsubscribed?.call(); // ✅ Make sure it's called
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 5.w, bottom: 5.w),

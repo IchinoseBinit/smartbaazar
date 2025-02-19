@@ -7,18 +7,21 @@ part 'vendor_card_api.g.dart';
 
 @riverpod
 Future<VendorCardResponse> getVendorCard(
-   ref,
+  ref,
   int id,
 ) async {
   final SmartClient client = SmartClient();
-
   try {
     final response = await client.request(
-      requestType: RequestType.get,
-      url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/vendor_detail/$id',
+      requestType: RequestType.getWithToken,
+
+      url: 'http://smartbazaar.jianjun-rnd.com.np/api/users/vendor_detail/$id',
     );
 
+
     // Parse the entire response into the VendorCardResponse model
+    print(
+        'rala ${VendorCardResponse.fromJson(response.data).data!.vendor_card!.subscribed}');
     return VendorCardResponse.fromJson(response.data);
   } catch (e) {
     print("error $e");

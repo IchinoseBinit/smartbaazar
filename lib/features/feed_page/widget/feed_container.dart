@@ -37,7 +37,9 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.membershipTitle,
       required this.membershipId,
       required this.feedId,
-      required this.isLiked});
+      required this.isLiked,
+      required this.refreshprovider});
+
   final String? vendorImage;
   final String? vendorName;
   final String? suscribers;
@@ -55,6 +57,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String feedId;
   final bool hassttory;
   final String? isLiked;
+  final VoidCallback? refreshprovider;
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -107,27 +110,35 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
   void _showCommentSection(BuildContext context, String feedproductid) {
     showModalBottomSheet(
-      useRootNavigator: true,
+        useRootNavigator: true,
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true, // Allows full-screen modal
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) {
+          return LayoutBuilder(
+            builder: (context, _) {
+              return AnimatedContainer(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                duration: Duration(milliseconds: 150),
+                height:
+                    MediaQuery.of(context).size.height, // Full screen height
+                child: CommentSection(id: feedproductid),
+              );
+            },
+          );
+        });
+  }
 
-      useSafeArea: true,
-      context: context,
-      isScrollControlled: true, // Allows full-screen modal
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) {
-      return   LayoutBuilder(
-          builder: (context, _) {
-            return AnimatedContainer(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-              duration: Duration(milliseconds: 150),
-              height: MediaQuery.of(context).size.height, // Full screen height
-              child: CommentSection(id: feedproductid),
-            );
-          },
-        );
-      }
-    );
+  void _shareImage(String imageUrl) {
+    if (imageUrl.isNotEmpty) {
+      Share.share('Check out this image: $imageUrl');
+    } else {
+      print("No image URL provided.");
+    }
   }
 
   // void _showCommentBottomSheet(BuildContext context, String id) {
@@ -211,9 +222,9 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
     final messageThreadProvider =
         ref.watch(getMessageThreadProvider(filter: currentfilter)).whenData(
-      (value)async {
+      (value) async {
         // print("rajukt ${value}");
-         messageList =  value.result?.data;
+        messageList = value.result?.data;
       },
     );
 
@@ -258,7 +269,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           )
                         : Container(),
                     Padding(
-                      padding: const EdgeInsets.only(left: 8,top: 3,bottom: 3,right: 8),
+                      padding: const EdgeInsets.only(
+                          left: 8, top: 3, bottom: 3, right: 8),
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -317,6 +329,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                     ),
                                   ),
                                 );
+                                widget.refreshprovider?.call();
                               },
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -488,12 +501,12 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
               InkWell(
                 onTap: () {
-  Navigator.of(context, rootNavigator: true)
-                        .push(MaterialPageRoute(
-                      builder: (context) => FullscreenImageView(
-                        imagePath: widget.feedDetailImage ?? '',
-                      ),
-                    ));
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(
+                    builder: (context) => FullscreenImageView(
+                      imagePath: widget.feedDetailImage ?? '',
+                    ),
+                  ));
                 },
                 child: ClipRRect(
                   child: Image.network(
@@ -511,7 +524,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           child: Container(
                             width: double.infinity,
                             height: double.infinity,
-                            color: Colors.white, // Placeholder color for shimmer
+                            color:
+                                Colors.white, // Placeholder color for shimmer
                           ),
                         ); // Show shimmer while loading
                       }
@@ -539,6 +553,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                         imagePath: widget.feedDetailImage ?? '',
                       ),
                     ));
+                    widget.refreshprovider?.call();
 
                     // Navigator.push(
                     //   context,
@@ -570,24 +585,32 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     // Like Icon
                     GestureDetector(
                       onTap: () async {
-                        print("Liked!");
                         if (!mounted) return;
+
+                        print("Liked!");
+
                         setState(() {
                           _isLoading = true;
                         });
 
                         try {
-                          // Read the provider and get the AsyncValue
+                          // Await the API response
                           final asyncResult = await ref
                               .read(postFeedWowProvider(widget.feedId).future);
 
-                          // Update the like state on success
-                          setState(() {
-                            _isLiked = !_isLiked!;
-                            _likeCount += _isLiked! ? 1 : -1;
-                          });
+                          // Force the provider to refresh
+                          ref.invalidate(postFeedWowProvider);
+
+                          // Ensure _isLiked is not null before updating
+                          if (_isLiked != null) {
+                            setState(() {
+                              _isLiked = !_isLiked!;
+                              _likeCount += _isLiked! ? 1 : -1;
+                            });
+                          } else {
+                            print("Error: _isLiked is null");
+                          }
                         } catch (e) {
-                          // Handle errors
                           print('Error: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Error liking post: $e')),
@@ -597,6 +620,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             _isLoading = false;
                           });
                         }
+                        widget.refreshprovider?.call();
                       },
                       child: Row(
                         children: [
@@ -604,38 +628,26 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  _isLiked! ? Colors.grey : Colors.white,
+                                  _isLiked == true ? Colors.grey : Colors.white,
                                   Colors.pink
-                                ], // Gradient colors
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
-                              shape: BoxShape
-                                  .circle, // Make the background circular (if needed)
+                              shape: BoxShape.circle,
                             ),
-                            padding: const EdgeInsets.all(
-                                8), // Add padding for space around the image
+                            padding: const EdgeInsets.all(8),
                             child: Image.asset(
                               'assets/icon/heart.png',
-                              color: _isLiked!
-                                  ? Colors.red
-                                  : Colors.white, // Icon color
-                              // width: 24, // You can adjust the size
-                              // height: 24, // You can adjust the size
+                              color:
+                                  _isLiked == true ? Colors.white : Colors.red,
                             ),
                           ),
-
-                          // Icon(
-                          //   _isLiked
-                          //       ? Icons.favorite
-                          //       : Icons.favorite_border_outlined,
-                          //   color: _isLiked ? Colors.red : Colors.white,
-                          //   size: 20.h,
-                          // ),
                           SizedBox(width: 4.w),
                         ],
                       ),
                     ),
+
                     SizedBox(width: 15.w),
                     // Comment Icon
                     GestureDetector(
@@ -725,7 +737,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     // Share Icon
                     GestureDetector(
                         onTap: () {
-                          Share.share('Share this');
+                          _shareImage(widget.feedDetailImage!);
+                          // Share.share('Share this ${widget.feedDetailImage}');
                         },
                         child: Container(
                           decoration: const BoxDecoration(
@@ -782,7 +795,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           // Interested
                           GestureDetector(
                             onTap: () {
-                              print("Interested!");
+                              print('bibash ${widget.feedId}');
+                              // ref.watch(postFeedWowProvider())
                             },
                             child: Row(
                               children: [
@@ -992,8 +1006,6 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                 controller: _commentcontroller,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-
-                  
                   hintText: "Add a comment...",
                   border: InputBorder.none,
                   suffixIcon: _isLoading
@@ -1005,38 +1017,20 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              ref.refresh(
-                                  getfeedcommentProvider(widget.id).future);
-                              // ref.invalidate(commentAsyncValue.value);
 
-                              // Optimistically add the comment to the UI
-                              // final newComment = FeedCommentModel(
-                              //   name: "You",
-                              //   comment: _commentcontroller.text,
-                              //   photo: "", // Provide the photo URL
-                              // );
+                              await ref.read(postcommentProvider(
+                                      widget.id, _commentcontroller.text)
+                                  .future);
 
-                              // Post the comment
-                              ref
-                                  .watch(postcommentProvider(
-                                      widget.id, _commentcontroller.text))
-                                  .whenData((value) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(value)));
-                              });
+                              ref.invalidate(getfeedcommentProvider(widget.id));
+
+                              _commentcontroller.clear();
 
                               setState(() {
                                 _isLoading = false;
                               });
-
-                              // Clear the input field
-                              _commentcontroller.text = '';
-
-                              // Trigger a rebuild of the comment list by refreshing the provider
-                              ref.refresh(getfeedcommentProvider(widget.id));
                             }
-                          },
-                        ),
+                          }),
                 ),
               ),
               SizedBox(
@@ -1049,5 +1043,3 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
     );
   }
 }
-
-

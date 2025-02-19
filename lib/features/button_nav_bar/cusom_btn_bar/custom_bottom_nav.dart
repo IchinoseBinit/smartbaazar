@@ -8,14 +8,21 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
 // Global state provider for managing the current selected index of the bottom nav bar
 final currentScreenProvider = StateProvider<int>((ref) => 3);
+bool _showBottomNavBar = true;
+
+navigateWithoutNavBar({required BuildContext context,required Widget page}) async {
+  _showBottomNavBar = false;
+  await Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+
+  _showBottomNavBar = true;
+}
 
 // List of screens for navigation
 final List<Widget> _screens = [
   const HomeScreen(),
- const MySubscribeAndWinPage(), 
-
+  const MySubscribeAndWinPage(),
   const MessageViewScreen(),
-    const FeedScreen(),
+  const FeedScreen(),
 ];
 
 class MainScreen extends ConsumerWidget {
@@ -34,7 +41,6 @@ class MainScreen extends ConsumerWidget {
     final selectedIndex = ref.watch(currentScreenProvider);
 
     // Decide whether to show the bottom navigation bar
-    bool showBottomNavBar = selectedIndex < _screens.length;
 
     return Scaffold(
       extendBody: true,
@@ -50,7 +56,7 @@ class MainScreen extends ConsumerWidget {
           ),
         ),
       ),
-      bottomNavigationBar: showBottomNavBar
+      bottomNavigationBar: _showBottomNavBar
           ? Customernavbar(
               selectedIndex: selectedIndex,
               onTabChanged: (index) {

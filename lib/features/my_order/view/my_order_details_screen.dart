@@ -184,7 +184,9 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                 title: 'Status',
                                 heading: 'Track Order',
                                 buttonTitle: 'Understood',
-                                callback: () {},
+                                callback: () {
+                                  Navigator.pop(context);
+                                },
                                 widget: TrackOrderDetails(order: order),
                               );
                             },
@@ -261,9 +263,10 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                       image = p5;
                                     },
                                   ),
-                                  title: 'Action',
+                                  title: 'Fill the form',
                                   heading: 'Return Products',
                                 );
+                                Navigator.pop(context);
                               },
                             )
                           ],
@@ -544,7 +547,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                     controller: messagecontroller,
                     onChanged: (value) {
                       widget.message(selectedissue!);
-                                        },
+                    },
                     maxLines: null,
                     decoration: InputDecoration.collapsed(
                         hintText: 'Describe your issue',
@@ -560,7 +563,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
             CityField(
               onCitySelected: (data) {
                 widget.place(data!);
-                            },
+              },
             ),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
@@ -579,7 +582,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   TextField(
                     onChanged: (value) {
                       widget.address(value!);
-                                        },
+                    },
                     decoration: InputDecoration.collapsed(
                         hintText: 'Enter Street Address',
                         hintStyle: TextStyle(

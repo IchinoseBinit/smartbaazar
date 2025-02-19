@@ -17,43 +17,44 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_scree
 import 'package:smartbazar/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AllProductDetailWidget extends StatelessWidget {
-  AllProductDetailWidget(
-      {super.key,
-      // this.membership_title,
-      this.id,
-      this.offer = '',
-      this.title = "Trade",
-      this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
-      this.vendorname = 'John',
-      this.distance = 2,
-      this.Vimage = '',
-      this.productImage,
-      this.lefttile = 'TradeHub',
-      this.similarproductCount,
-      this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
-      this.membershipTitle,
-      this.didcountpercentage,
-      this.avg_rating = 1,
-      this.tradeImage,
-      this.posttype = '1',
-      this.membershipid = '1',
-      required this.productid,
-      required this.lat,
-      required this.long,
-      this.savedid,
-      this.onRefresh});
+class AllProductDetailWidget extends StatefulWidget {
+  AllProductDetailWidget({
+    super.key,
+    // this.membership_title,
+    this.id,
+    this.offer = '',
+    this.title = "Trade",
+    this.discounttedPrice = '0',
+    this.comment = '0',
+    this.price = '1',
+    this.vendorname = 'John',
+    this.distance = 2,
+    this.Vimage = '',
+    this.productImage,
+    this.lefttile = 'TradeHub',
+    this.similarproductCount,
+    this.membershipColor,
+    this.wow,
+    this.issponsored = false,
+    this.shortestDistance,
+    this.membershipTitle,
+    this.didcountpercentage,
+    this.avg_rating = 1,
+    this.tradeImage,
+    this.posttype = '1',
+    this.membershipid = '1',
+    required this.productid,
+    required this.lat,
+    required this.long,
+    this.savedid,
+    this.onRefresh,
+  });
 
   String? title;
   String? price;
   String? discounttedPrice;
   int? similarproductCount;
-  String? views, comment, share;
+  String? comment;
   String? vendorname;
   int? didcountpercentage;
   String? posttype;
@@ -71,10 +72,21 @@ class AllProductDetailWidget extends StatelessWidget {
   int? id;
   String? tradeImage;
   String? membershipid;
-  String? userId;
   String? lat, long;
   List<SavedPost>? savedid;
   final VoidCallback? onRefresh;
+
+  @override
+  State<AllProductDetailWidget> createState() => _AllProductDetailWidgetState();
+}
+
+class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
+  String? views;
+
+  String? share;
+
+  String? userId;
+
   Future<void> getdetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId');
@@ -85,13 +97,13 @@ class AllProductDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     getdetails();
     String showRs = "Rs";
-    showRs = discounttedPrice == '0' ? '' : '';
+    showRs = widget.discounttedPrice == '0' ? '' : '';
 
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
             builder: (context) => ProductDetailScreen(
-                  productId: productid,
+                  productId: widget.productid,
                 )));
       },
       child: Column(
@@ -106,38 +118,38 @@ class AllProductDetailWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
-                      posttype == '1'
+                      widget.posttype == '1'
                           ? productsicon
-                          : posttype == '7'
+                          : widget.posttype == '7'
                               ? b2bIcon
-                              : posttype == '2'
+                              : widget.posttype == '2'
                                   ? usedIcon
-                                  : posttype == '3'
+                                  : widget.posttype == '3'
                                       ? servicesIcon
-                                      : posttype == '4'
+                                      : widget.posttype == '4'
                                           ? jobIcon
-                                          : posttype == '5'
+                                          : widget.posttype == '5'
                                               ? eventIcon
-                                              : posttype == '8'
+                                              : widget.posttype == '8'
                                                   ? grocaryicon
                                                   : 'defaultIcon', // Provide a default icon path if no match is found
                       height: 10,
                       color: Colors.grey,
                     ),
                     Text(
-                      posttype == '1'
+                      widget.posttype == '1'
                           ? 'Products'
-                          : posttype == '7'
+                          : widget.posttype == '7'
                               ? 'B2B'
-                              : posttype == '2'
+                              : widget.posttype == '2'
                                   ? 'Used'
-                                  : posttype == '3'
+                                  : widget.posttype == '3'
                                       ? 'Services'
-                                      : posttype == '4'
+                                      : widget.posttype == '4'
                                           ? 'Jobs'
-                                          : posttype == '5'
+                                          : widget.posttype == '5'
                                               ? 'Events'
-                                              : posttype == '8'
+                                              : widget.posttype == '8'
                                                   ? 'Grocery'
                                                   : '', // Default to an empty string if no match
                       style: headerstyle.copyWith(
@@ -177,16 +189,18 @@ class AllProductDetailWidget extends StatelessWidget {
                           )),
                       PopupMenuItem(
                           onTap: () async {
-                            addToFavorites(null, userId.toString(), productid)
+                            addToFavorites(
+                                    null, userId.toString(), widget.productid)
                                 .then(
                               (value) {
-                                onRefresh?.call();
+                                widget.onRefresh?.call();
                                 final snackBar = SnackBar(
                                   content: Text(value),
                                 );
-                                onRefresh?.call();
+                                widget.onRefresh?.call();
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
+                                setState(() {});
                               },
                             ).catchError((error) {
                               const errorSnackBar = SnackBar(
@@ -195,12 +209,12 @@ class AllProductDetailWidget extends StatelessWidget {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(errorSnackBar);
                             });
-                            onRefresh?.call();
+                            widget.onRefresh?.call();
                           },
                           height: 30,
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            savedid == null || savedid!.isEmpty
+                            widget.savedid == null || widget.savedid!.isEmpty
                                 ? "Save"
                                 : "UnSave",
                             style: headerstyle.copyWith(
@@ -217,8 +231,8 @@ class AllProductDetailWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VendorHomeScreen(
-                                    vendorName: vendorname!,
-                                    vid: id!,
+                                    vendorName: widget.vendorname!,
+                                    vid: widget.id!,
                                   ),
                                 ));
                           },
@@ -233,7 +247,7 @@ class AllProductDetailWidget extends StatelessWidget {
                       PopupMenuItem(
                         onTap: () {
                           launch(
-                              'https://www.google.com/maps?q=${double.tryParse(lat ?? '0')},${double.tryParse(long ?? '0')}');
+                              'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
                         },
                         height: 30,
                         padding: const EdgeInsets.only(left: 5),
@@ -256,7 +270,7 @@ class AllProductDetailWidget extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => ReportComplainScreen(
                                     productId: userId!,
-                                    productName: vendorname!),
+                                    productName: widget.vendorname!),
                               ));
                         },
                         child: Text(
@@ -283,13 +297,13 @@ class AllProductDetailWidget extends StatelessWidget {
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                   builder: (context) => ProductDetailScreen(
-                        productId: productid,
+                        productId: widget.productid,
                       )));
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.w),
               child: CachedNetworkImage(
-                imageUrl: productImage ?? '',
+                imageUrl: widget.productImage ?? '',
                 height: 100.h,
                 width: 150.w,
                 fit: BoxFit.fitWidth,
@@ -304,7 +318,7 @@ class AllProductDetailWidget extends StatelessWidget {
                 ),
                 errorWidget: (context, url, error) {
                   return CachedNetworkImage(
-                    imageUrl: productImage ?? '', // Retry loading
+                    imageUrl: widget.productImage ?? '', // Retry loading
                     height: 100.h,
                     width: 150.w,
                     fit: BoxFit.fitWidth,
@@ -337,7 +351,7 @@ class AllProductDetailWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title!,
+                  widget.title!,
                   style: headerstyle.copyWith(
                       color: ColorConstant.blackColor,
                       fontSize: 13,
@@ -349,7 +363,7 @@ class AllProductDetailWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Rs ${price ?? 0.0}',
+                      'Rs ${widget.price ?? 0.0}',
                       style: headerstyle.copyWith(
                           color: ColorConstant.blackColor,
                           fontSize: 12.sp,
@@ -358,7 +372,7 @@ class AllProductDetailWidget extends StatelessWidget {
                     SizedBox(
                       width: 3.h,
                     ),
-                    offer != null && offer?.length != 0
+                    widget.offer != null && widget.offer?.length != 0
                         ? SizedBox(
                             width: 65
                                 .w, // Ensures the content takes up the defined width
@@ -373,22 +387,22 @@ class AllProductDetailWidget extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment
                                       .center, // Aligns icon and text
                                   children: [
-                                    if (offer != null ||
-                                        discounttedPrice != null ||
-                                        offer?.length != 0)
+                                    if (widget.offer != null ||
+                                        widget.discounttedPrice != null ||
+                                        widget.offer?.length != 0)
                                       const Icon(
                                         Icons.track_changes_sharp,
                                         color: Color(0xff901B41),
                                         size: 12,
                                       ),
-                                    if (offer != null)
+                                    if (widget.offer != null)
                                       SizedBox(
                                           width: 5
                                               .w), // Adds spacing between icon and text
-                                    if (offer != null)
+                                    if (widget.offer != null)
                                       Flexible(
                                         child: Text(
-                                          offer!,
+                                          widget.offer!,
                                           style: headerstyle.copyWith(
                                             fontWeight: FontWeight.w700,
                                             color: const Color(0xff901B41),
@@ -433,12 +447,12 @@ class AllProductDetailWidget extends StatelessWidget {
                     // ),
 
                     const Spacer(),
-                    if (discounttedPrice != null &&
-                        didcountpercentage != 0 &&
-                        discounttedPrice != '0' &&
-                        discounttedPrice!.isNotEmpty)
+                    if (widget.discounttedPrice != null &&
+                        widget.didcountpercentage != 0 &&
+                        widget.discounttedPrice != '0' &&
+                        widget.discounttedPrice!.isNotEmpty)
                       Text(
-                        " Rs$showRs$discounttedPrice",
+                        " Rs$showRs${widget.discounttedPrice}",
                         style: headerstyle.copyWith(
                           fontSize: 8.sp,
                           fontWeight: FontWeight.w600,
@@ -465,9 +479,9 @@ class AllProductDetailWidget extends StatelessWidget {
                       child:
                           // avg_rating.toString() ?? '0',
                           Text(
-                        avg_rating == 0 || avg_rating == null
+                        widget.avg_rating == 0 || widget.avg_rating == null
                             ? "0.0"
-                            : avg_rating.toString(),
+                            : widget.avg_rating.toString(),
                         style: headerstyle.copyWith(fontSize: 8.sp),
                       ),
                     ),
@@ -483,9 +497,10 @@ class AllProductDetailWidget extends StatelessWidget {
                         border: Border.all(color: Colors.grey),
                       ),
                       child: RatingBar.builder(
-                        initialRating: avg_rating == null || avg_rating == 0
-                            ? 0
-                            : avg_rating!,
+                        initialRating:
+                            widget.avg_rating == null || widget.avg_rating == 0
+                                ? 0
+                                : widget.avg_rating!,
                         // Default to 1 when avg_rating is null or 0
                         minRating: 1,
                         direction: Axis.horizontal,
@@ -496,7 +511,8 @@ class AllProductDetailWidget extends StatelessWidget {
                         itemPadding:
                             const EdgeInsets.symmetric(horizontal: 1.0),
                         itemBuilder: (context, index) {
-                          if (avg_rating == null || avg_rating == 0) {
+                          if (widget.avg_rating == null ||
+                              widget.avg_rating == 0) {
                             // Default to 1 star when avg_rating is null or 0
                             return index == 0
                                 ? const Icon(Icons.star,
@@ -506,12 +522,14 @@ class AllProductDetailWidget extends StatelessWidget {
                                     color: Colors.grey); // Grey for others
                           } else {
                             // Color logic based on avg_rating
-                            if (index < avg_rating!.floor()) {
+                            if (index < widget.avg_rating!.floor()) {
                               // Full star if within avg_rating
                               return const Icon(Icons.star,
                                   color: Color(0xff901B41));
-                            } else if (index == avg_rating!.floor() &&
-                                (avg_rating! - avg_rating!.floor()) >= 0.5) {
+                            } else if (index == widget.avg_rating!.floor() &&
+                                (widget.avg_rating! -
+                                        widget.avg_rating!.floor()) >=
+                                    0.5) {
                               // Half star if avg_rating has a decimal >= 0.5
                               return const Icon(Icons.star_half,
                                   color: Color(0xff901B41));
@@ -528,10 +546,10 @@ class AllProductDetailWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                discounttedPrice?.length == 0 ||
-                        discounttedPrice == null ||
-                        discounttedPrice == '0' ||
-                        didcountpercentage == null
+                widget.discounttedPrice?.length == 0 ||
+                        widget.discounttedPrice == null ||
+                        widget.discounttedPrice == '0' ||
+                        widget.didcountpercentage == null
                     ? const SizedBox()
                     : Row(
                         children: [
@@ -542,7 +560,7 @@ class AllProductDetailWidget extends StatelessWidget {
                             color: const Color(0xff901B41),
                           ),
                           Text(
-                            "$didcountpercentage%",
+                            "${widget.didcountpercentage}%",
                             style: headerstyle.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xff901B41),
@@ -572,7 +590,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           width: 3.w,
                         ),
                         Text(
-                          wow != null ? '1' : wow.toString(),
+                          widget.wow != null ? '1' : widget.wow.toString(),
                           style: headerstyle.copyWith(
                               fontSize: 10,
                               color: const Color(0xff807C7C),
@@ -591,7 +609,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           width: 3.w,
                         ),
                         Text(
-                          comment ?? '1',
+                          widget.comment ?? '1',
                           style: headerstyle.copyWith(
                               fontSize: 10,
                               color: const Color(0xff807C7C),
@@ -613,7 +631,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           width: 3.w,
                         ),
                         Text(
-                          similarproductCount?.toString() ?? '0',
+                          widget.similarproductCount?.toString() ?? '0',
                           style: headerstyle.copyWith(
                               fontSize: 10,
                               color: const Color(0xff807C7C),
@@ -648,7 +666,6 @@ class AllProductDetailWidget extends StatelessWidget {
                           fontSize: 11,
                           color: ColorConstant.blackColor),
                     ),
-                  
                     Text(
                       "BUY",
                       style: headerstyle.copyWith(
@@ -663,13 +680,13 @@ class AllProductDetailWidget extends StatelessWidget {
                           fontSize: 11,
                           color: ColorConstant.blackColor),
                     ),
-                       Text(
-                          "WIN",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
+                    Text(
+                      "WIN",
+                      style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: ColorConstant.blackColor),
+                    ),
                   ],
                 ),
               ),
@@ -679,7 +696,7 @@ class AllProductDetailWidget extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => VendorHomeScreen(
-                              vendorName: vendorname!, vid: id!),
+                              vendorName: widget.vendorname!, vid: widget.id!),
                         ));
                   },
                   child: Container(
@@ -687,10 +704,11 @@ class AllProductDetailWidget extends StatelessWidget {
                     margin: EdgeInsets.zero,
                     padding: EdgeInsets.symmetric(vertical: 10.9.h),
                     decoration: BoxDecoration(
-                      color: membershipColor != null
+                      color: widget.membershipColor != null
                           ? Color(
                               int.parse(
-                                membershipColor!.replaceFirst('#', '0xFF'),
+                                widget.membershipColor!
+                                    .replaceFirst('#', '0xFF'),
                               ),
                             )
                           : const Color(0xff3D215F), // Default color
@@ -707,7 +725,7 @@ class AllProductDetailWidget extends StatelessWidget {
                           width: 5.w,
                         ),
                         CircleAvatar(
-                          backgroundImage: NetworkImage(Vimage!),
+                          backgroundImage: NetworkImage(widget.Vimage!),
                           radius: 15.sp,
                         ),
                         SizedBox(
@@ -727,12 +745,14 @@ class AllProductDetailWidget extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        shortestDistance == null
+                                        widget.shortestDistance == null
                                             ? Text(
-                                                vendorname != null &&
-                                                        vendorname!.length > 16
-                                                    ? '${vendorname!.substring(0, 10)}...'
-                                                    : vendorname ?? '',
+                                                widget.vendorname != null &&
+                                                        widget.vendorname!
+                                                                .length >
+                                                            16
+                                                    ? '${widget.vendorname!.substring(0, 10)}...'
+                                                    : widget.vendorname ?? '',
                                                 style: headerstyle.copyWith(
                                                   fontFamily:
                                                       GoogleFonts.quicksand()
@@ -742,10 +762,12 @@ class AllProductDetailWidget extends StatelessWidget {
                                                 ),
                                               )
                                             : Text(
-                                                vendorname != null &&
-                                                        vendorname!.length > 10
-                                                    ? '${vendorname!.substring(0, 10)}...'
-                                                    : vendorname ?? '',
+                                                widget.vendorname != null &&
+                                                        widget.vendorname!
+                                                                .length >
+                                                            10
+                                                    ? '${widget.vendorname!.substring(0, 10)}...'
+                                                    : widget.vendorname ?? '',
                                                 style: headerstyle.copyWith(
                                                   fontFamily:
                                                       GoogleFonts.quicksand()
@@ -767,13 +789,14 @@ class AllProductDetailWidget extends StatelessWidget {
                                     Row(
                                       children: [
                                         Image.asset(
-                                          membershipid == "2"
+                                          widget.membershipid == "2"
                                               ? spotlighticon
-                                              : membershipid == "1"
+                                              : widget.membershipid == "1"
                                                   ? basicsellericon
-                                                  : membershipid == "3"
+                                                  : widget.membershipid == "3"
                                                       ? domesticseller
-                                                      : membershipid == "25"
+                                                      : widget.membershipid ==
+                                                              "25"
                                                           ? globalicon
                                                           : basicsellericon, // Provide a default icon if no match
                                           height: 8.h,
@@ -782,7 +805,8 @@ class AllProductDetailWidget extends StatelessWidget {
                                           width: 2.w,
                                         ),
                                         Text(
-                                          membershipTitle ?? "Domestic Brand",
+                                          widget.membershipTitle ??
+                                              "Domestic Brand",
                                           style: headerstyle.copyWith(
                                             fontSize: 9.sp,
                                             fontFamily: GoogleFonts.quicksand()
@@ -816,8 +840,8 @@ class AllProductDetailWidget extends StatelessWidget {
                               SizedBox(
                                 height: 2.h,
                               ),
-                              shortestDistance != null &&
-                                      shortestDistance != 0.0
+                              widget.shortestDistance != null &&
+                                      widget.shortestDistance != 0.0
                                   ? Row(
                                       children: [
                                         const Icon(
@@ -829,7 +853,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                             width: 2
                                                 .w), // Space between icon and text
                                         Text(
-                                          "${shortestDistance != null ? NumberFormat('#.##', 'en_US').format(shortestDistance) : ''} km",
+                                          "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
                                           style: headerstyle.copyWith(
                                             fontFamily: GoogleFonts.quicksand()
                                                 .fontFamily,
@@ -842,7 +866,7 @@ class AllProductDetailWidget extends StatelessWidget {
                                   : SizedBox(
                                       height: 14.h,
                                     ),
-                              issponsored
+                              widget.issponsored
                                   ? Padding(
                                       padding:
                                           EdgeInsets.only(left: 2.w, top: 5),

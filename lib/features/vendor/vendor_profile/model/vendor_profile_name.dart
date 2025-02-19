@@ -7,7 +7,7 @@ part 'vendor_profile_name.g.dart';
 @freezed
 class VendorProfile with _$VendorProfile {
   const factory VendorProfile({
-    String? subscribed,
+    int? subscribed,
     Vendor? vendor,
     VendorCard? vendor_card,
     VendorAbout? vendor_about,
@@ -171,14 +171,13 @@ class Vendor with _$Vendor {
 }
 
 @freezed
-class   VendorCard with _$VendorCard {
+class VendorCard with _$VendorCard {
   const factory VendorCard({
     String? name,
     String? photo,
-        String? longitude,
+    String? longitude,
     String? latitude,
-    int? subscribers, 
-
+    int? subscribers,
     String? phone,
     String? profile_url,
     int? storycount,
@@ -188,12 +187,14 @@ class   VendorCard with _$VendorCard {
     String? membership_id,
     String? membership_title,
     String? membership_color,
-    String? subscribed
+    
+    @JsonKey(name: 'subscribed') int? subscribed,  // Ensure correct JSON mapping
   }) = _VendorCard;
 
   factory VendorCard.fromJson(Map<String, dynamic> json) =>
       _$VendorCardFromJson(json);
 }
+
 
 @freezed
 class VendorAbout with _$VendorAbout {

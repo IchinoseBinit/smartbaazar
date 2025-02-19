@@ -263,7 +263,8 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     //     _searchController.text)); // Ensure this updates correctly
 
     return Scaffold(
-      extendBody: true,
+      
+      extendBody: false,
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xffF6F1F1),
       body: NotificationListener<ScrollNotification>(
@@ -308,6 +309,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
                     SliverAppBar(
+                            automaticallyImplyLeading: false,
                         expandedHeight: 90.h,
                         floating: false,
                         pinned: false,
@@ -1928,7 +1930,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                             return data.insidearr.isEmpty
                                                 ? nolistingfound()
                                                 : SizedBox(
-                                                    height: 340.h,
                                                     child: ListView.builder(
                                                       clipBehavior:
                                                           Clip.antiAlias,
@@ -2176,12 +2177,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     child: SizedBox(height: 50.h),
                   )
                 ],
-              )
-            
-            
-            ,valuenotifilersidebutton(
+              ),
+              valuenotifilersidebutton(
                   showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
+              Positioned(
                 top: 65,
                 left: 48,
                 child: Container(
@@ -2266,9 +2265,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
     );
   }
 }
-
-
-
 
 class valuenotifilersidebutton extends StatelessWidget {
   const valuenotifilersidebutton({
@@ -2397,8 +2393,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
+                                  builder: (context) => const AddToCartScreen(),
                                 ),
                               );
                             },

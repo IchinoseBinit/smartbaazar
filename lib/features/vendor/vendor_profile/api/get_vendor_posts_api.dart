@@ -6,7 +6,6 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'get_vendor_posts_api.g.dart';
 
 @riverpod
-@riverpod
 Future<VendorLivePrizePostData> getvendorpostandprizes(
    ref,
   int vendorid,

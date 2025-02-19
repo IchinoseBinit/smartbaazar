@@ -515,6 +515,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -613,6 +618,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  gallery_saver_plus:
+    dependency: "direct main"
+    description:
+      name: gallery_saver_plus
+      sha256: "79a3615a56fd5db42db77d6fe8315a0087d3e8f1ec01e6426810d4ed4c02dcbc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   geocoding:
     dependency: "direct main"
     description:
@@ -1021,6 +1034,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.6"
+  multiselect:
+    dependency: "direct main"
+    description:
+      name: multiselect
+      sha256: "21f60b3979adc4b769058b7aba2a124b2d14f769ede948efb61f116e3c3ff435"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
+  navigation_builder:
+    dependency: transitive
+    description:
+      name: navigation_builder
+      sha256: d1b145dde5869849613d9b93ecd8f5a3ae929471ef81d1ba017f476b70bd7c39
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   octo_image:
     dependency: transitive
     description:
@@ -1602,6 +1631,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  states_rebuilder:
+    dependency: transitive
+    description:
+      name: states_rebuilder
+      sha256: f760498bb7adbe12d0d6da67f23c07e6c41de6261052ba8794356222fe27ddf3
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.0"
   stream_channel:
     dependency: transitive
     description:
