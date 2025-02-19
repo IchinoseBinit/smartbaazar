@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 
 part 'brand_bazar_model.freezed.dart';
 part 'brand_bazar_model.g.dart';
@@ -6,7 +7,7 @@ part 'brand_bazar_model.g.dart';
 @freezed
 class BrandBazarModel with _$BrandBazarModel {
   const factory BrandBazarModel({
-    required Data data,
+     Data? data,
     required String msg,
   }) = _BrandBazarModel;
 
@@ -17,21 +18,26 @@ class BrandBazarModel with _$BrandBazarModel {
 @freezed
 class Data with _$Data {
   const factory Data({
-    @JsonKey(name: "new_products") required List<dynamic>? newProducts,
-    @JsonKey(name: "services") required List<dynamic>? services,
-    @JsonKey(name: "jobs") required List<dynamic>? jobs,
-    @JsonKey(name: "events") required List<dynamic>? events,
-    @JsonKey(name: "grocery") required List<dynamic>? grocery,
-    @JsonKey(name: "advertisements")
-    required List<Advertisement>? advertisements,
-    @JsonKey(name: "trand_banners") required List<TrendBanner>? trandBanners,
-    @JsonKey(name: "brandbazarLogos")
-    required List<BrandbazarLogo>? brandbazarLogos,
+    required List<BrandNewModel> new_products,
+    required List<Advertisement> advertisements,
+    required List<TrandBanner> trand_banners,
+    required List<BrandbazarLogo> brandbazarLogos,
   }) = _Data;
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 }
 
+@freezed
+class TrandBanner with _$TrandBanner {
+  const factory TrandBanner({
+    required String id,
+    required String image,
+    required String bazar,
+  }) = _TrandBanner;
+
+  factory TrandBanner.fromJson(Map<String, dynamic> json) =>
+      _$TrandBannerFromJson(json);
+}
 @freezed
 class Advertisement with _$Advertisement {
   const factory Advertisement({

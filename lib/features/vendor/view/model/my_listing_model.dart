@@ -1,116 +1,243 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-part 'my_listing_model.freezed.dart';
 part 'my_listing_model.g.dart';
 
-@freezed
-class MyListingModel with _$MyListingModel {
-  const factory MyListingModel({
-    required Products? products,
-  }) = _MyListingModel;
+@JsonSerializable()
+class MyListingModel {
+  final Products? products;
+
+  MyListingModel({this.products});
 
   factory MyListingModel.fromJson(Map<String, dynamic> json) =>
       _$MyListingModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MyListingModelToJson(this);
 }
 
-@freezed
-class Products with _$Products {
-  const factory Products({
-    @JsonKey(name: 'current_page') int? currentPage,
-    @JsonKey(name: 'data') List<ProductData>? data,
-    @JsonKey(name: 'first_page_url') String? firstPageUrl,
-    int? from,
-    @JsonKey(name: 'last_page') int? lastPage,
-    @JsonKey(name: 'last_page_url') String? lastPageUrl,
-    List<Link>? links,
-    @JsonKey(name: 'next_page_url') String? nextPageUrl,
-    String? path,
-    @JsonKey(name: 'per_page') int? perPage,
-    @JsonKey(name: 'prev_page_url') String? prevPageUrl,
-    int? to,
-    int? total,
-  }) = _Products;
+@JsonSerializable()
+class Products {
+  final List<MyListingProduct>? data;
+  final int? currentPage;
+  final int? from;
+  final int? lastPage;
+  final String? firstPageUrl;
+  final String? lastPageUrl;
+  final String? path;
+  final int? perPage;
+  final String? nextPageUrl;
+  final String? prevPageUrl;
+  final int? to;
+  final int? total;
+  final List<Link>? links;
+
+  Products({
+    this.data,
+    this.currentPage,
+    this.from,
+    this.lastPage,
+    this.firstPageUrl,
+    this.lastPageUrl,
+    this.path,
+    this.perPage,
+    this.nextPageUrl,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+    this.links,
+  });
 
   factory Products.fromJson(Map<String, dynamic> json) =>
       _$ProductsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductsToJson(this);
 }
 
-@freezed
-class ProductData with _$ProductData {
-  const factory ProductData({
-    String? id,
-    @JsonKey(name: 'country_code') String? countryCode,
-    @JsonKey(name: 'user_id') String? userId,
-    @JsonKey(name: 'category_id') String? categoryId,
-    @JsonKey(name: 'post_type_id') String? postTypeId,
-    String? title,
-    String? description,
-    String? tags,
-    String? price,
-    String? negotiable,
-    @JsonKey(name: 'contact_name') String? contactName,
-    String? email,
-    String? phone,
-    @JsonKey(name: 'phone_hidden') String? phoneHidden,
-    String? address,
-    @JsonKey(name: 'city_id') String? cityId,
-    String? lon,
-    String? lat,
-    @JsonKey(name: 'ip_addr') String? ipAddr,
-    String? length,
-    String? width,
-    String? weight,
-    String? height,
-    String? pickup,
-    String? longitude,
-    String? latitude,
-    @JsonKey(name: 'hyper_del') String? hyperDel,
-    @JsonKey(name: 'seller_del') String? sellerDel,
-    String? visits,
-    @JsonKey(name: 'email_token') String? emailToken,
-    @JsonKey(name: 'phone_token') String? phoneToken,
-    @JsonKey(name: 'tmp_token') String? tmpToken,
-    @JsonKey(name: 'verified_email') String? verifiedEmail,
-    @JsonKey(name: 'verified_phone') String? verifiedPhone,
-    @JsonKey(name: 'accept_terms') String? acceptTerms,
-    @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
-    @JsonKey(name: 'is_permanent') String? isPermanent,
-    String? reviewed,
-    String? featured,
-    String? archived,
-    @JsonKey(name: 'archived_at') String? archivedAt,
-    @JsonKey(name: 'archived_manually') String? archivedManually,
-    @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
-    @JsonKey(name: 'fb_profile') String? fbProfile,
-    String? partner,
-    @JsonKey(name: 'discounted_price') String? discountedPrice,
-    String? trending,
-    String? stock,
-    @JsonKey(name: 'min_order') String? minOrder,
-    @JsonKey(name: 'samp_price') String? sampPrice,
-    @JsonKey(name: 'text_one') String? textOne,
-    @JsonKey(name: 'text_two') String? textTwo,
-    @JsonKey(name: 'ava_to') String? avaTo,
-    String? branded,
-    @JsonKey(name: 'deleted_at') String? deletedAt,
-    @JsonKey(name: 'created_at') String? createdAt,
-    @JsonKey(name: 'updated_at') String? updatedAt,
-    String? image,
-    @JsonKey(name: 'avg_rating') int? avgRating,
-    @JsonKey(name: 'savedByLoggedUser') List<dynamic>? savedByLoggedUser,
-  }) = _ProductData;
+@JsonSerializable()
+class MyListingProduct {
+  final String? id;
+  @JsonKey(name: 'country_code')
+  final String? countryCode;
+  @JsonKey(name: 'user_id')
+  final String? userId;
+  @JsonKey(name: 'category_id')
+  final String? categoryId;
+  @JsonKey(name: 'post_type_id')
+  final String? postTypeId;
+  final String? title;
+  final String? description;
+  final String? tags;
+  final String? price;
+  final String? negotiable;
+  @JsonKey(name: 'contact_name')
+  final String? contactName;
+  final String? email;
+  final String? phone;
+  @JsonKey(name: 'phone_hidden')
+  final String? phoneHidden;
+  final String? address;
+  @JsonKey(name: 'city_id')
+  final String? cityId;
+  final String? lon;
+  final String? lat;
+  @JsonKey(name: 'ip_addr')
+  final String? ipAddr;
+  final String? length;
+  final String? width;
+  final String? weight;
+  final String? height;
+  final String? pickup;
+  final String? longitude;
+  final String? latitude;
+  @JsonKey(name: 'hyper_del')
+  final String? hyperDel;
+  @JsonKey(name: 'seller_del')
+  final String? sellerDel;
+  final String? visits;
+  @JsonKey(name: 'email_token')
+  final String? emailToken;
+  @JsonKey(name: 'phone_token')
+  final String? phoneToken;
+  final String? tmpToken;
+  @JsonKey(name: 'verified_email')
+  final String? verifiedEmail;
+  @JsonKey(name: 'verified_phone')
+  final String? verifiedPhone;
+  @JsonKey(name: 'accept_terms')
+  final String? acceptTerms;
+  @JsonKey(name: 'accept_marketing_offers')
+  final String? acceptMarketingOffers;
+  @JsonKey(name: 'is_permanent')
+  final String? isPermanent;
+  final String? reviewed;
+  final String? featured;
+  final String? archived;
+  @JsonKey(name: 'archived_at')
+  final String? archivedAt;
+  @JsonKey(name: 'archived_manually')
+  final String? archivedManually;
+  @JsonKey(name: 'deletion_mail_sent_at')
+  final String? deletionMailSentAt;
+  @JsonKey(name: 'fb_profile')
+  final String? fbProfile;
+  final String? partner;
+  @JsonKey(name: 'discounted_price')
+  final String? discountedPrice;
+  final String? trending;
+  final String? stock;
+  @JsonKey(name: 'min_order')
+  final String? minOrder;
+  @JsonKey(name: 'samp_price')
+  final String? sampPrice;
+  @JsonKey(name: 'text_one')
+  final String? textOne;
+  @JsonKey(name: 'text_two')
+  final String? textTwo;
+  @JsonKey(name: 'ava_to')
+  final String? avaTo;
+  final String? branded;
+  final String? wow;
+  final String? offers;
+  @JsonKey(name: 'story_display_days')
+  final String? storyDisplayDays;
+  final String? barcode;
+  @JsonKey(name: 'b2b_pricing')
+  final String? b2bPricing;
+  @JsonKey(name: 'deleted_at')
+  final String? deletedAt;
+  @JsonKey(name: 'created_at')
+  final String? createdAt;
+  @JsonKey(name: 'updated_at')
+  final String? updatedAt;
+  final String? image;
+  @JsonKey(name: 'avg_rating')
+  final int? avgRating;
 
-  factory ProductData.fromJson(Map<String, dynamic> json) =>
-      _$ProductDataFromJson(json);
+  MyListingProduct({
+    this.id,
+    this.countryCode,
+    this.userId,
+    this.categoryId,
+    this.postTypeId,
+    this.title,
+    this.description,
+    this.tags,
+    this.price,
+    this.negotiable,
+    this.contactName,
+    this.email,
+    this.phone,
+    this.phoneHidden,
+    this.address,
+    this.cityId,
+    this.lon,
+    this.lat,
+    this.ipAddr,
+    this.length,
+    this.width,
+    this.weight,
+    this.height,
+    this.pickup,
+    this.longitude,
+    this.latitude,
+    this.hyperDel,
+    this.sellerDel,
+    this.visits,
+    this.emailToken,
+    this.phoneToken,
+    this.tmpToken,
+    this.verifiedEmail,
+    this.verifiedPhone,
+    this.acceptTerms,
+    this.acceptMarketingOffers,
+    this.isPermanent,
+    this.reviewed,
+    this.featured,
+    this.archived,
+    this.archivedAt,
+    this.archivedManually,
+    this.deletionMailSentAt,
+    this.fbProfile,
+    this.partner,
+    this.discountedPrice,
+    this.trending,
+    this.stock,
+    this.minOrder,
+    this.sampPrice,
+    this.textOne,
+    this.textTwo,
+    this.avaTo,
+    this.branded,
+    this.wow,
+    this.offers,
+    this.storyDisplayDays,
+    this.barcode,
+    this.b2bPricing,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.image,
+    this.avgRating,
+  });
+
+  factory MyListingProduct.fromJson(Map<String, dynamic> json) =>
+      _$MyListingProductFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MyListingProductToJson(this);
 }
 
-@freezed
-class Link with _$Link {
-  const factory Link({
-    String? url,
-    String? label,
-    bool? active,
-  }) = _Link;
+@JsonSerializable()
+class Link {
+  final String? url;
+  final String? label;
+  final bool? active;
+
+  Link({
+    this.url,
+    this.label,
+    this.active,
+  });
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LinkToJson(this);
 }

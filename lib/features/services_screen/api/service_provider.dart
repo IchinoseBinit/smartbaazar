@@ -277,7 +277,7 @@
 
 // @riverpod
 // Future<PostTypeFetch> getServiceProvider(GetServiceProviderRef ref) async {
-//   final SmartClinet client = SmartClinet();
+//   final SmartClient   client = SmartClient  ();
 //   try {
 //     final Response response = await client.request(
 //       requestType: RequestType.getWithToken,
@@ -303,14 +303,15 @@ import 'package:dio/dio.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/main.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'service_provider.g.dart';
 
 class PostTypeFetch {
   final List<Advertisement>? sliders;
-  final List<Story> stories;
+  final List<ServiceStory> stories;
   final List<VProduct> hotProducts;
   final List<LogoData> global;
   final List<LogoData> domestic;
@@ -318,6 +319,10 @@ class PostTypeFetch {
   final List<VProduct> product;
   final List<Advertisement> ads;
   final List<Buynowmodel>? buynow;
+  final List<VProduct>? brandbazar_global;
+  final List<VProduct>? brandbazar_domestic;
+  final List<VProduct>? spotlights;
+
   final List<FetchCategory> cat;
   final List<List<VProduct>> insidearr;
   final List<VProduct> low_price_guarantee;
@@ -346,22 +351,25 @@ class PostTypeFetch {
     required this.Launch_festival_offer,
     required this.clearance_sale,
     required this.seasonal,
+    required this.brandbazar_global,
+    required this.brandbazar_domestic,
+    required this.spotlights,
   });
 
   factory PostTypeFetch.fromJson(Map<String, dynamic> json) {
-    List<Story> storiesList = [];
+    List<ServiceStory> storiesList = [];
 
     if (json['home_story'] is List) {
       // Handle as a list
       storiesList = (json['home_story'] as List)
           .where((value) => value != null) // Filter out null values
-          .map((value) => Story.fromJson(value)) // Map to Story objects
+          .map((value) => ServiceStory.fromJson(value)) // Map to Story objects
           .toList();
     } else if (json['home_story'] is Map) {
       // Handle as a map
       (json['home_story'] as Map).forEach((key, value) {
         if (value != null) {
-          storiesList.add(Story.fromJson(value));
+          storiesList.add(ServiceStory.fromJson(value));
         }
       });
     } else {
@@ -428,12 +436,41 @@ class PostTypeFetch {
     final fes = (json['festival_offer'] as List<dynamic>? ?? [])
         .map((logoJson) => VProduct.fromJson(logoJson))
         .toList();
+
     final clr = (json['clearance_sale'] as List<dynamic>? ?? [])
         .map((logoJson) => VProduct.fromJson(logoJson))
         .toList();
+    final domas =
+        (json['brandbazar_domestic'] as List<dynamic>?)?.expand((innerList) {
+              // Ensure each innerList is properly cast and mapped
+              return (innerList as List<dynamic>).map((item) {
+                return VProduct.fromJson(item as Map<String, dynamic>);
+              });
+            }).toList() ??
+            [];
+
+    final glob =
+        (json['brandbazar_global'] as List<dynamic>?)?.expand((innerList) {
+              // Ensure each innerList is properly cast and mapped
+              return (innerList as List<dynamic>).map((item) {
+                return VProduct.fromJson(item as Map<String, dynamic>);
+              });
+            }).toList() ??
+            [];
+    print("ramu $glob");
+    final spots = (json['spotlights'] as List<dynamic>?)?.expand((innerList) {
+          // Ensure each innerList is properly cast and mapped
+          return (innerList as List<dynamic>).map((item) {
+            return VProduct.fromJson(item as Map<String, dynamic>);
+          });
+        }).toList() ??
+        [];
 
     return PostTypeFetch(
         cat: cato,
+        spotlights: spots,
+        brandbazar_global: glob,
+        brandbazar_domestic: domas,
         stories: storiesList,
         hotProducts: hotProductsList,
         sliders: ads,
@@ -474,14 +511,14 @@ class FetchCategory {
   }
 }
 
-class Story {
+class ServiceStory {
   final String vendorName;
   final String vendorImage;
   final int storyCount;
   final bool hasSponsoredGifts;
   final List<StoryPost> posts;
 
-  Story({
+  ServiceStory({
     required this.vendorName,
     required this.vendorImage,
     required this.storyCount,
@@ -489,12 +526,12 @@ class Story {
     required this.posts,
   });
 
-  factory Story.fromJson(Map<String, dynamic> json) {
+  factory ServiceStory.fromJson(Map<String, dynamic> json) {
     var postsList = (json['posts'] as List? ?? [])
         .where((post) => post != null)
         .map((post) => StoryPost.fromJson(post))
         .toList();
-    return Story(
+    return ServiceStory(
       vendorName: json['vendor_name'] ?? '',
       vendorImage: json['vendor_image'] ?? '',
       storyCount: json['story_count'] ?? 0,
@@ -543,6 +580,11 @@ class VProduct {
   final String? discounted_price;
   final int? similarProductCount;
   final String offers;
+  final  int? avg_rating;
+  final int? discount_percentage;
+  final String? post_type_id;
+    final List<SavedPost>? savedByLoggedUser;
+
 
   VProduct(
       {required this.id,
@@ -556,10 +598,27 @@ class VProduct {
       required this.commentcount,
       required this.offers,
       required this.similarProductCount,
-      required this.discounted_price});
+      required this.discounted_price,
+      required this.avg_rating,
+      this.discount_percentage,
+      required this.post_type_id,
+       this.savedByLoggedUser
+      
+      });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
+      List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
+    
     return VProduct(
+      savedByLoggedUser: savedByLoggedUserList,
+        post_type_id: json['post_type_id'],
+        discount_percentage: json['discount_percentage'],
         offers: json["offers"] ?? '',
         discounted_price: json['discounted_price'] ?? '',
         commentcount: json['commentcount'] ?? 0,
@@ -571,7 +630,8 @@ class VProduct {
         image: json['image'] ?? '',
         price: json['price'] ?? '',
         similarProductCount: json['similarProductCount'] ?? 0,
-        wow: json['wow'] ?? '');
+        wow: json['wow'] ?? '',
+        avg_rating: json['avg_rating']);
   }
 }
 
@@ -581,41 +641,52 @@ class VendorUser {
   final String photo;
   final bool hasSponsoredGifts;
   final bool sponsored;
+  final String? membership_id;
   final String membershipStatus;
-  final String? membercolor;
+  final String? membershipColor; // Renamed to match proper camel case
   final String? membershipTitle;
+  final double? shortestDistance; // Assuming it holds numeric data
+  final String? latitude;
+  final String? longitude;
 
-  // Constructor to initialize the properties
   VendorUser({
+    required this.membership_id,
     required this.id,
     required this.name,
     required this.photo,
     required this.hasSponsoredGifts,
     required this.sponsored,
     required this.membershipStatus,
-    required this.membercolor,
+    required this.shortestDistance,
+    required this.membershipColor,
     required this.membershipTitle,
+    required this.latitude,
+    required this.longitude
   });
 
-  // Factory constructor to create a VendorUser from JSON
   factory VendorUser.fromJson(Map<String, dynamic> json) {
     return VendorUser(
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      membership_id: json['membership_id'],
       id: json['user_id'] ?? '',
       name: json['name'] ?? '',
       photo: json['photo'] ?? '',
-      hasSponsoredGifts:
-          json['has_sponsored_gifts'] ?? false, // Set to false by default
-      sponsored: json['sponsored'] ?? false, // Set to false by default
-      membershipStatus: json['membership_status'] ?? '0', // Default to '0'
-      membercolor: json['membership_color'] ?? '', // Default to '0'
-      membershipTitle: json['membership_title'] ?? '', // Default to '0'
+      hasSponsoredGifts: json['has_sponsored_gifts'] ?? false,
+      sponsored: json['sponsored'] ?? false,
+      membershipStatus: json['membership_status'] ?? '0',
+      membershipColor: json['membership_color'], // Updated key
+      membershipTitle: json['membership_title'],
+      shortestDistance: json['shortestDistance'] != null
+          ? double.tryParse(json['shortestDistance'].toString())
+          : null,
     );
   }
 }
 
 @riverpod
 Future<PostTypeFetch> getServiceProvider(GetServiceProviderRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(
       requestType: RequestType.getWithToken,

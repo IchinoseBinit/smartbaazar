@@ -6,59 +6,56 @@ part of 'my_listing_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MyListingModelImpl _$$MyListingModelImplFromJson(Map<String, dynamic> json) =>
-    _$MyListingModelImpl(
+MyListingModel _$MyListingModelFromJson(Map<String, dynamic> json) =>
+    MyListingModel(
       products: json['products'] == null
           ? null
           : Products.fromJson(json['products'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$MyListingModelImplToJson(
-        _$MyListingModelImpl instance) =>
+Map<String, dynamic> _$MyListingModelToJson(MyListingModel instance) =>
     <String, dynamic>{
       'products': instance.products,
     };
 
-_$ProductsImpl _$$ProductsImplFromJson(Map<String, dynamic> json) =>
-    _$ProductsImpl(
-      currentPage: (json['current_page'] as num?)?.toInt(),
+Products _$ProductsFromJson(Map<String, dynamic> json) => Products(
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => ProductData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MyListingProduct.fromJson(e as Map<String, dynamic>))
           .toList(),
-      firstPageUrl: json['first_page_url'] as String?,
+      currentPage: (json['currentPage'] as num?)?.toInt(),
       from: (json['from'] as num?)?.toInt(),
-      lastPage: (json['last_page'] as num?)?.toInt(),
-      lastPageUrl: json['last_page_url'] as String?,
+      lastPage: (json['lastPage'] as num?)?.toInt(),
+      firstPageUrl: json['firstPageUrl'] as String?,
+      lastPageUrl: json['lastPageUrl'] as String?,
+      path: json['path'] as String?,
+      perPage: (json['perPage'] as num?)?.toInt(),
+      nextPageUrl: json['nextPageUrl'] as String?,
+      prevPageUrl: json['prevPageUrl'] as String?,
+      to: (json['to'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
       links: (json['links'] as List<dynamic>?)
           ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
           .toList(),
-      nextPageUrl: json['next_page_url'] as String?,
-      path: json['path'] as String?,
-      perPage: (json['per_page'] as num?)?.toInt(),
-      prevPageUrl: json['prev_page_url'] as String?,
-      to: (json['to'] as num?)?.toInt(),
-      total: (json['total'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$ProductsImplToJson(_$ProductsImpl instance) =>
-    <String, dynamic>{
-      'current_page': instance.currentPage,
+Map<String, dynamic> _$ProductsToJson(Products instance) => <String, dynamic>{
       'data': instance.data,
-      'first_page_url': instance.firstPageUrl,
+      'currentPage': instance.currentPage,
       'from': instance.from,
-      'last_page': instance.lastPage,
-      'last_page_url': instance.lastPageUrl,
-      'links': instance.links,
-      'next_page_url': instance.nextPageUrl,
+      'lastPage': instance.lastPage,
+      'firstPageUrl': instance.firstPageUrl,
+      'lastPageUrl': instance.lastPageUrl,
       'path': instance.path,
-      'per_page': instance.perPage,
-      'prev_page_url': instance.prevPageUrl,
+      'perPage': instance.perPage,
+      'nextPageUrl': instance.nextPageUrl,
+      'prevPageUrl': instance.prevPageUrl,
       'to': instance.to,
       'total': instance.total,
+      'links': instance.links,
     };
 
-_$ProductDataImpl _$$ProductDataImplFromJson(Map<String, dynamic> json) =>
-    _$ProductDataImpl(
+MyListingProduct _$MyListingProductFromJson(Map<String, dynamic> json) =>
+    MyListingProduct(
       id: json['id'] as String?,
       countryCode: json['country_code'] as String?,
       userId: json['user_id'] as String?,
@@ -90,7 +87,7 @@ _$ProductDataImpl _$$ProductDataImplFromJson(Map<String, dynamic> json) =>
       visits: json['visits'] as String?,
       emailToken: json['email_token'] as String?,
       phoneToken: json['phone_token'] as String?,
-      tmpToken: json['tmp_token'] as String?,
+      tmpToken: json['tmpToken'] as String?,
       verifiedEmail: json['verified_email'] as String?,
       verifiedPhone: json['verified_phone'] as String?,
       acceptTerms: json['accept_terms'] as String?,
@@ -113,15 +110,19 @@ _$ProductDataImpl _$$ProductDataImplFromJson(Map<String, dynamic> json) =>
       textTwo: json['text_two'] as String?,
       avaTo: json['ava_to'] as String?,
       branded: json['branded'] as String?,
+      wow: json['wow'] as String?,
+      offers: json['offers'] as String?,
+      storyDisplayDays: json['story_display_days'] as String?,
+      barcode: json['barcode'] as String?,
+      b2bPricing: json['b2b_pricing'] as String?,
       deletedAt: json['deleted_at'] as String?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       image: json['image'] as String?,
       avgRating: (json['avg_rating'] as num?)?.toInt(),
-      savedByLoggedUser: json['savedByLoggedUser'] as List<dynamic>?,
     );
 
-Map<String, dynamic> _$$ProductDataImplToJson(_$ProductDataImpl instance) =>
+Map<String, dynamic> _$MyListingProductToJson(MyListingProduct instance) =>
     <String, dynamic>{
       'id': instance.id,
       'country_code': instance.countryCode,
@@ -154,7 +155,7 @@ Map<String, dynamic> _$$ProductDataImplToJson(_$ProductDataImpl instance) =>
       'visits': instance.visits,
       'email_token': instance.emailToken,
       'phone_token': instance.phoneToken,
-      'tmp_token': instance.tmpToken,
+      'tmpToken': instance.tmpToken,
       'verified_email': instance.verifiedEmail,
       'verified_phone': instance.verifiedPhone,
       'accept_terms': instance.acceptTerms,
@@ -177,22 +178,25 @@ Map<String, dynamic> _$$ProductDataImplToJson(_$ProductDataImpl instance) =>
       'text_two': instance.textTwo,
       'ava_to': instance.avaTo,
       'branded': instance.branded,
+      'wow': instance.wow,
+      'offers': instance.offers,
+      'story_display_days': instance.storyDisplayDays,
+      'barcode': instance.barcode,
+      'b2b_pricing': instance.b2bPricing,
       'deleted_at': instance.deletedAt,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'image': instance.image,
       'avg_rating': instance.avgRating,
-      'savedByLoggedUser': instance.savedByLoggedUser,
     };
 
-_$LinkImpl _$$LinkImplFromJson(Map<String, dynamic> json) => _$LinkImpl(
+Link _$LinkFromJson(Map<String, dynamic> json) => Link(
       url: json['url'] as String?,
       label: json['label'] as String?,
       active: json['active'] as bool?,
     );
 
-Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
       'url': instance.url,
       'label': instance.label,
       'active': instance.active,

@@ -7,7 +7,7 @@ part of 'grocery_provider.dart';
 // **************************************************************************
 
 String _$getGrocertResponseHash() =>
-    r'921158ee6be6e99ec23c9ee48a259a4dc6e6aa6b';
+    r'a358c77d08ae99084b93f371524013209fe82e23';
 
 /// See also [getGrocertResponse].
 @ProviderFor(getGrocertResponse)
@@ -22,6 +22,8 @@ final getGrocertResponseProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetGrocertResponseRef = AutoDisposeFutureProviderRef<PostTypeFetch>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

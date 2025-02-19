@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 
 class LocationWidget extends StatefulWidget {
-  final double longitute;
-  final double latititute;
+  final double longitude;
+  final double latitude;
+  final double shortestdistance;
 
-  const LocationWidget({
-    super.key,
-    required this.latititute,
-    required this.longitute,
-  });
+  const LocationWidget(
+      {Key? key,
+      required this.latitude,
+      required this.longitude,
+      required this.shortestdistance})
+      : super(key: key);
 
   @override
   _LocationWidgetState createState() => _LocationWidgetState();
@@ -29,18 +32,37 @@ class _LocationWidgetState extends State<LocationWidget> {
   Future<void> _fetchAddress() async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
-        widget.latititute,
-        widget.longitute,
+        widget.latitude,
+        widget.longitude,
       );
-      Placemark place = placemarks.first;
-      setState(() {
-        _address = "${place.locality}, ${place.administrativeArea}";
-      });
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        if (mounted) {
+          setState(() {
+            _address =
+                "${place.locality ?? 'Unknown'}, ${place.administrativeArea ?? 'Unknown'}";
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _address = "Location not available";
+          });
+        }
+      }
     } catch (e) {
-      setState(() {
-        _address = "Location not found";
-      });
+      if (mounted) {
+        setState(() {
+          _address = "Location not found";
+        });
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    // Clean up resources if needed
+    super.dispose();
   }
 
   @override
@@ -91,7 +113,18 @@ class _LocationWidgetState extends State<LocationWidget> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Text(_address),
+                            Text(
+                              _address,
+                              style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontFamily: GoogleFonts.quicksand().fontFamily,
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1, // Restrict text to a single line
+                              overflow: TextOverflow
+                                  .ellipsis, // Add ellipsis when text overflows
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -117,9 +150,9 @@ class _LocationWidgetState extends State<LocationWidget> {
               ),
               const Icon(Icons.location_on),
               SizedBox(
-                width: 10.w,
+                width: 5.w,
               ),
-              const Text("2.5KM"),
+              Text("${widget.shortestdistance.toStringAsFixed(2)} KM"),
               SizedBox(
                 width: 10.w,
               ),

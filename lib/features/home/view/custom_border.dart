@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-
-
 class DashedBorder extends StatelessWidget {
   final Widget child;
   final int dashCount;
@@ -29,7 +27,13 @@ class DashedBorder extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(padding),
-        child: child,
+        child: ConstrainedBox(
+          
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.4, // Set a relative max width based on screen size
+          ),
+          child: child,
+        ),
       ),
     );
   }
@@ -53,7 +57,7 @@ class DashedBorderPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
-    // Adjust dash size and gap
+    // Dash size and gap
     const double dashWidth = 6.0;  // Small dash size
     const double dashGap = 10.0;   // Gap between the dashes
 
@@ -71,23 +75,26 @@ class DashedBorderPainter extends CustomPainter {
     final double directionX = dx / distance;
     final double directionY = dy / distance;
 
-    // Dash size and spacing for rows
-    double totalDashLength = (dashWidth * dashCount) + (dashGap * (dashCount - 1));
+    // Calculate dash spacing to fit the desired dashCount
+    final double totalDashLength = (dashWidth * dashCount) + (dashGap * (dashCount - 1));
     double currentDistance = 0;
 
     // Loop through and draw each dash based on dashCount
-    while (currentDistance < totalDashLength) {
-      final double nextDashEnd = (currentDistance + dashWidth).clamp(0, totalDashLength);
+    for (int i = 0; i < dashCount; i++) {
+      final double startDashDistance = i * (dashWidth + dashGap);
+      final double endDashDistance = startDashDistance + dashWidth;
+
       final Offset dashStart = Offset(
-        start.dx + directionX * currentDistance,
-        start.dy + directionY * currentDistance,
+        start.dx + directionX * startDashDistance,
+        start.dy + directionY * startDashDistance,
       );
+
       final Offset dashEnd = Offset(
-        start.dx + directionX * nextDashEnd,
-        start.dy + directionY * nextDashEnd,
+        start.dx + directionX * endDashDistance,
+        start.dy + directionY * endDashDistance,
       );
+
       canvas.drawLine(dashStart, dashEnd, paint);
-      currentDistance += dashWidth + dashGap; // Move forward by dash width and gap
     }
   }
 

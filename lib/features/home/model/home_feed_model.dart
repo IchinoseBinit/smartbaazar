@@ -1,59 +1,73 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+// class FeedStoryResponse {
+//   final FeedStory feedStory;
+//   final String msg;
 
-part 'home_feed_model.freezed.dart';
-part 'home_feed_model.g.dart';
+//   FeedStoryResponse({required this.feedStory, required this.msg});
 
-@freezed
-class FeedStoryResponse with _$FeedStoryResponse {
-  const factory FeedStoryResponse({
-    required Data? data,
-    required String? msg,
-  }) = _FeedStoryResponse;
+//   factory FeedStoryResponse.fromJson(Map<String, dynamic> json) {
+//     final feedStoryData = json['data']?['feedstory'];
+//     if (feedStoryData == null) {
+//       throw Exception("Missing 'data.feedstory' in JSON response.");
+//     }
+//     return FeedStoryResponse(
+//       feedStory: FeedStory.fromJson(feedStoryData),
+//       msg: json['msg'] ?? '',
+//     );
+//   }
+// }
 
-  factory FeedStoryResponse.fromJson(Map<String, dynamic> json) =>
-      _$FeedStoryResponseFromJson(json);
-}
+// class FeedStory {
+//   final List<Post> posts;
 
-@freezed
-class Data with _$Data {
-  const factory Data({
-    @JsonKey(name: 'feed_story') required List<FeedStory> feedStory,
-  }) = _Data;
+//   FeedStory({required this.posts});
 
-  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
-}
+//   factory FeedStory.fromJson(Map<String, dynamic> json) {
+//     final list = json['posts'] as List? ?? [];
+//     final postsList = list.map((i) => Post.fromJson(i)).toList();
+//     return FeedStory(posts: postsList);
+//   }
+// }
 
-@freezed
-class FeedStory with _$FeedStory {
-  const factory FeedStory({
-    required String id,
-    @JsonKey(name: 'vendor_name') required String vendorName,
-    @JsonKey(name: 'vendor_image') required String vendorImage,
-    @JsonKey(name: 'story_count') required int storyCount,
-    @JsonKey(name: 'has_sponsored_gifts') required bool hasSponsoredGifts,
-    required List<Post> posts,
-  }) = _FeedStory;
+// class Post {
+//   final String vendorId;
+//   final String vendorName;
+//   final String vendorImage;
+//   final int storyCount;
+//   final bool hasSponsoredGifts;
+//   final String id;
+//   final String title;
+//   final String image;
+//   final int similarProductCount;
+//   final int averageRating;
+//   final double? discountPercentage;
 
-  factory FeedStory.fromJson(Map<String, dynamic> json) =>
-      _$FeedStoryFromJson(json);
-}
+//   Post({
+//     required this.vendorId,
+//     required this.vendorName,
+//     required this.vendorImage,
+//     required this.storyCount,
+//     required this.hasSponsoredGifts,
+//     required this.id,
+//     required this.title,
+//     required this.image,
+//     required this.similarProductCount,
+//     required this.averageRating,
+//     this.discountPercentage,
+//   });
 
-@freezed
-class Post with _$Post {
-  const factory Post({
-    @JsonKey(name: 'vendor_name') required String vendorName,
-    @JsonKey(name: 'vendor_image') required String vendorImage,
-    @JsonKey(name: 'story_count') required int storyCount,
-    @JsonKey(name: 'has_sponsored_gifts') required bool hasSponsoredGifts,
-    required String id,
-    required String title,
-    required String image,
-    @JsonKey(name: 'similarproductcount') required int similarProductCount,
-    @JsonKey(name: 'comment_count') required String commentCount,
-    @JsonKey(name: 'average_rating') required double averageRating,
-    @JsonKey(name: 'discount_percentage') double? discountPercentage,
-    String? wow,
-  }) = _Post;
-
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-}
+//   factory Post.fromJson(Map<String, dynamic> json) {
+//     return Post(
+//       vendorId: json['vendor_id'] ?? '',
+//       vendorName: json['vendor_name'] ?? '',
+//       vendorImage: json['vendor_image'] ?? '',
+//       storyCount: json['story_count'] ?? 0,
+//       hasSponsoredGifts: json['has_sponsored_gifts'] ?? false,
+//       id: json['id'] ?? '',
+//       title: json['title'] ?? '',
+//       image: json['image'] ?? '',
+//       similarProductCount: json['similarproductcount'] ?? 0,
+//       averageRating: json['average_rating'] ?? 0,
+//       discountPercentage: json['discount_percentage']?.toDouble(),
+//     );
+//   }
+// }

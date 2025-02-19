@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 List<DropdownMenuItem<IssueDropdownList>> getStaticDropdownMenuItems() {
   return [
     DropdownMenuItem<IssueDropdownList>(
+      
+
       value: IssueDropdownList.productNotAsDescribed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,6 +26,7 @@ List<DropdownMenuItem<IssueDropdownList>> getStaticDropdownMenuItems() {
       ),
     ),
     DropdownMenuItem<IssueDropdownList>(
+
       value: IssueDropdownList.nonDelivery,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

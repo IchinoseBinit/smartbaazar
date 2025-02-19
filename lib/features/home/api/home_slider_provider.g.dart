@@ -7,7 +7,7 @@ part of 'home_slider_provider.dart';
 // **************************************************************************
 
 String _$fetchAdvertisementsHash() =>
-    r'c14ed4d7e9edfc5cf282aa6e28c3d75445fd9ce2';
+    r'1e1973ecef48ab3e66ce19ca280e9e5507ba0449';
 
 /// See also [fetchAdvertisements].
 @ProviderFor(fetchAdvertisements)
@@ -22,6 +22,8 @@ final fetchAdvertisementsProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchAdvertisementsRef = AutoDisposeFutureProviderRef<Homepage1>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

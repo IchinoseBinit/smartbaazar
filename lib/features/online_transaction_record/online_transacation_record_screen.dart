@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/online_transaction_record/api/online_transaction_api.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -110,7 +111,7 @@ class _OnlineTransactionRecordScreenState
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Center(child: Text('Error: $error')),
+            error: (error, stackTrace) => const Center(child: Text('Please login again')),
           ),
         ),
       ),
@@ -159,7 +160,7 @@ class _OnlineTransactionRecordScreenState
     return Column(
       children: [
         Expanded(
-          child: _buildTransactionList(paginatedTransactions),
+          child:  paginatedTransactions.isEmpty? nolistingfound(message: 'transaction'):   _buildTransactionList(paginatedTransactions),
         ),
         _buildPaginationControls(currentPage, totalPages, updatePage),
       ],

@@ -20,15 +20,19 @@ PostModel _$PostModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PostModel {
-  bool get success => throw _privateConstructorUsedError;
+  bool? get success => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
   PostResult? get result => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   WidgetSimilarPosts? get widgetSimilarPosts =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this PostModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PostModelCopyWith<PostModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -39,7 +43,7 @@ abstract class $PostModelCopyWith<$Res> {
       _$PostModelCopyWithImpl<$Res, PostModel>;
   @useResult
   $Res call(
-      {bool success,
+      {bool? success,
       String? message,
       PostResult? result,
       ExtraModel? extra,
@@ -60,20 +64,22 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
+    Object? success = freezed,
     Object? message = freezed,
     Object? result = freezed,
     Object? extra = freezed,
     Object? widgetSimilarPosts = freezed,
   }) {
     return _then(_value.copyWith(
-      success: null == success
+      success: freezed == success
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -93,6 +99,8 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
     ) as $Val);
   }
 
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PostResultCopyWith<$Res>? get result {
@@ -105,6 +113,8 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
     });
   }
 
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ExtraModelCopyWith<$Res>? get extra {
@@ -117,6 +127,8 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
     });
   }
 
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $WidgetSimilarPostsCopyWith<$Res>? get widgetSimilarPosts {
@@ -140,7 +152,7 @@ abstract class _$$PostModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool success,
+      {bool? success,
       String? message,
       PostResult? result,
       ExtraModel? extra,
@@ -162,20 +174,22 @@ class __$$PostModelImplCopyWithImpl<$Res>
       _$PostModelImpl _value, $Res Function(_$PostModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
+    Object? success = freezed,
     Object? message = freezed,
     Object? result = freezed,
     Object? extra = freezed,
     Object? widgetSimilarPosts = freezed,
   }) {
     return _then(_$PostModelImpl(
-      success: null == success
+      success: freezed == success
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -210,7 +224,7 @@ class _$PostModelImpl implements _PostModel {
       _$$PostModelImplFromJson(json);
 
   @override
-  final bool success;
+  final bool? success;
   @override
   final String? message;
   @override
@@ -238,12 +252,14 @@ class _$PostModelImpl implements _PostModel {
                 other.widgetSimilarPosts == widgetSimilarPosts));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, success, message, result, extra, widgetSimilarPosts);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
@@ -259,7 +275,7 @@ class _$PostModelImpl implements _PostModel {
 
 abstract class _PostModel implements PostModel {
   const factory _PostModel(
-      {required final bool success,
+      {required final bool? success,
       required final String? message,
       required final PostResult? result,
       required final ExtraModel? extra,
@@ -269,7 +285,7 @@ abstract class _PostModel implements PostModel {
       _$PostModelImpl.fromJson;
 
   @override
-  bool get success;
+  bool? get success;
   @override
   String? get message;
   @override
@@ -278,8 +294,11 @@ abstract class _PostModel implements PostModel {
   ExtraModel? get extra;
   @override
   WidgetSimilarPosts? get widgetSimilarPosts;
+
+  /// Create a copy of PostModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostModelImplCopyWith<_$PostModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -292,10 +311,14 @@ WidgetSimilarPosts _$WidgetSimilarPostsFromJson(Map<String, dynamic> json) {
 mixin _$WidgetSimilarPosts {
 // required String title,
 // required String link,
-  PostPagination get posts => throw _privateConstructorUsedError;
+  PostPagination? get posts => throw _privateConstructorUsedError;
 
+  /// Serializes this WidgetSimilarPosts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $WidgetSimilarPostsCopyWith<WidgetSimilarPosts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -306,9 +329,9 @@ abstract class $WidgetSimilarPostsCopyWith<$Res> {
           WidgetSimilarPosts value, $Res Function(WidgetSimilarPosts) then) =
       _$WidgetSimilarPostsCopyWithImpl<$Res, WidgetSimilarPosts>;
   @useResult
-  $Res call({PostPagination posts});
+  $Res call({PostPagination? posts});
 
-  $PostPaginationCopyWith<$Res> get posts;
+  $PostPaginationCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -321,23 +344,31 @@ class _$WidgetSimilarPostsCopyWithImpl<$Res, $Val extends WidgetSimilarPosts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? posts = null,
+    Object? posts = freezed,
   }) {
     return _then(_value.copyWith(
-      posts: null == posts
+      posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as PostPagination,
+              as PostPagination?,
     ) as $Val);
   }
 
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PostPaginationCopyWith<$Res> get posts {
-    return $PostPaginationCopyWith<$Res>(_value.posts, (value) {
+  $PostPaginationCopyWith<$Res>? get posts {
+    if (_value.posts == null) {
+      return null;
+    }
+
+    return $PostPaginationCopyWith<$Res>(_value.posts!, (value) {
       return _then(_value.copyWith(posts: value) as $Val);
     });
   }
@@ -351,10 +382,10 @@ abstract class _$$WidgetSimilarPostsImplCopyWith<$Res>
       __$$WidgetSimilarPostsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PostPagination posts});
+  $Res call({PostPagination? posts});
 
   @override
-  $PostPaginationCopyWith<$Res> get posts;
+  $PostPaginationCopyWith<$Res>? get posts;
 }
 
 /// @nodoc
@@ -365,16 +396,18 @@ class __$$WidgetSimilarPostsImplCopyWithImpl<$Res>
       $Res Function(_$WidgetSimilarPostsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? posts = null,
+    Object? posts = freezed,
   }) {
     return _then(_$WidgetSimilarPostsImpl(
-      posts: null == posts
+      posts: freezed == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as PostPagination,
+              as PostPagination?,
     ));
   }
 }
@@ -390,7 +423,7 @@ class _$WidgetSimilarPostsImpl implements _WidgetSimilarPosts {
 // required String title,
 // required String link,
   @override
-  final PostPagination posts;
+  final PostPagination? posts;
 
   @override
   String toString() {
@@ -405,11 +438,13 @@ class _$WidgetSimilarPostsImpl implements _WidgetSimilarPosts {
             (identical(other.posts, posts) || other.posts == posts));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, posts);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WidgetSimilarPostsImplCopyWith<_$WidgetSimilarPostsImpl> get copyWith =>
@@ -425,17 +460,21 @@ class _$WidgetSimilarPostsImpl implements _WidgetSimilarPosts {
 }
 
 abstract class _WidgetSimilarPosts implements WidgetSimilarPosts {
-  const factory _WidgetSimilarPosts({required final PostPagination posts}) =
+  const factory _WidgetSimilarPosts({required final PostPagination? posts}) =
       _$WidgetSimilarPostsImpl;
 
   factory _WidgetSimilarPosts.fromJson(Map<String, dynamic> json) =
       _$WidgetSimilarPostsImpl.fromJson;
 
-  @override // required String title,
+// required String title,
 // required String link,
-  PostPagination get posts;
   @override
-  @JsonKey(ignore: true)
+  PostPagination? get posts;
+
+  /// Create a copy of WidgetSimilarPosts
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WidgetSimilarPostsImplCopyWith<_$WidgetSimilarPostsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -449,8 +488,12 @@ mixin _$PostPagination {
   int get current_page => throw _privateConstructorUsedError;
   List<PostResult> get data => throw _privateConstructorUsedError;
 
+  /// Serializes this PostPagination to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PostPagination
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PostPaginationCopyWith<PostPagination> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -474,6 +517,8 @@ class _$PostPaginationCopyWithImpl<$Res, $Val extends PostPagination>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PostPagination
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -512,6 +557,8 @@ class __$$PostPaginationImplCopyWithImpl<$Res>
       _$PostPaginationImpl _value, $Res Function(_$PostPaginationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PostPagination
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -566,12 +613,14 @@ class _$PostPaginationImpl implements _PostPagination {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PostPagination
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PostPaginationImplCopyWith<_$PostPaginationImpl> get copyWith =>
@@ -598,8 +647,11 @@ abstract class _PostPagination implements PostPagination {
   int get current_page;
   @override
   List<PostResult> get data;
+
+  /// Create a copy of PostPagination
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostPaginationImplCopyWith<_$PostPaginationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -611,32 +663,48 @@ PostResult _$PostResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PostResult {
   int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'country_code')
   String? get countryCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'category_id')
   String? get categoryId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_type_id')
   String? get postTypeId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<String>? get tags => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'discounted_price')
   String? get discountedPrice => throw _privateConstructorUsedError;
   String? get trending => throw _privateConstructorUsedError;
   String? get stock => throw _privateConstructorUsedError;
-  String get user_photo_url => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'min_order')
   String? get minOrder => throw _privateConstructorUsedError;
+  @JsonKey(name: 'samp_price')
   String? get sampPrice => throw _privateConstructorUsedError;
+  @JsonKey(name: 'text_one')
   String? get textOne => throw _privateConstructorUsedError;
+  @JsonKey(name: 'text_two')
   String? get textTwo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ava_to')
   String? get avaTo => throw _privateConstructorUsedError;
+  int? get discount_percentage => throw _privateConstructorUsedError;
   String? get negotiable => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contact_name')
   String? get contactName => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
+  @JsonKey(name: 'city_id')
   String? get cityId => throw _privateConstructorUsedError;
   String? get lat => throw _privateConstructorUsedError;
   String? get lon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ip_addr')
   String? get ipAddr => throw _privateConstructorUsedError;
   String? get length => throw _privateConstructorUsedError;
   String? get width => throw _privateConstructorUsedError;
@@ -645,41 +713,66 @@ mixin _$PostResult {
   String? get pickup => throw _privateConstructorUsedError;
   String? get longitude => throw _privateConstructorUsedError;
   String? get latitude => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hyper_del')
   String? get hyperDel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'seller_del')
   String? get sellerDel => throw _privateConstructorUsedError;
+  @JsonKey(name: 'accept_terms')
   String? get acceptTerms => throw _privateConstructorUsedError;
+  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_permanent')
   String? get isPermanent => throw _privateConstructorUsedError;
   String? get reviewed => throw _privateConstructorUsedError;
   String? get featured => throw _privateConstructorUsedError;
   String? get archived => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+  @JsonKey(name: 'archived_at')
   String? get archivedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fb_profile')
   String? get fbProfile => throw _privateConstructorUsedError;
   String? get partner => throw _privateConstructorUsedError;
+  @JsonKey(name: 'b2b_pricing')
   String? get b2bPricing => throw _privateConstructorUsedError;
-  String? get offer => throw _privateConstructorUsedError;
+  String? get offers => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
   String? get sku => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
   String? get slug => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at_formatted')
   String? get createdAtFormatted => throw _privateConstructorUsedError;
-  String? get userPhotoUrl => throw _privateConstructorUsedError;
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
-  UserDetailsProduct? get user_details => throw _privateConstructorUsedError;
+  LocationModel? get location => throw _privateConstructorUsedError;
+  usermodel? get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'detail_user')
+  SimilarProducts? get userDetails => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
+  List<SavedByUser>? get savedByLoggedUser =>
+      throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
-  List<RatingComment> get rating_comment => throw _privateConstructorUsedError;
-  List<LivePrize> get live_prizes => throw _privateConstructorUsedError;
+  City? get city => throw _privateConstructorUsedError;
+  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
+  int? get similarProductCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
+  List<LivePrize> get livePrizes => throw _privateConstructorUsedError;
   List<Shop>? get deals => throw _privateConstructorUsedError;
   List<Shop>? get shop => throw _privateConstructorUsedError;
-  List<FeedPost>? get feed_post => throw _privateConstructorUsedError;
+  List<FeedPost>? get feedPost => throw _privateConstructorUsedError;
 
+  /// Serializes this PostResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PostResultCopyWith<PostResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -692,33 +785,34 @@ abstract class $PostResultCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
+      @JsonKey(name: 'country_code') String? countryCode,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'category_id') String? categoryId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String? title,
       String? description,
       List<String>? tags,
       String? price,
-      String? discountedPrice,
+      @JsonKey(name: 'discounted_price') String? discountedPrice,
       String? trending,
       String? stock,
-      String user_photo_url,
-      String? minOrder,
-      String? sampPrice,
-      String? textOne,
-      String? textTwo,
-      String? avaTo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'min_order') String? minOrder,
+      @JsonKey(name: 'samp_price') String? sampPrice,
+      @JsonKey(name: 'text_one') String? textOne,
+      @JsonKey(name: 'text_two') String? textTwo,
+      @JsonKey(name: 'ava_to') String? avaTo,
+      int? discount_percentage,
       String? negotiable,
-      String? contactName,
+      @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
-      String? cityId,
+      @JsonKey(name: 'city_id') String? cityId,
       String? lat,
       String? lon,
-      String? ipAddr,
+      @JsonKey(name: 'ip_addr') String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -726,43 +820,53 @@ abstract class $PostResultCopyWith<$Res> {
       String? pickup,
       String? longitude,
       String? latitude,
-      String? hyperDel,
-      String? sellerDel,
-      String? acceptTerms,
-      String? acceptMarketingOffers,
-      String? isPermanent,
+      @JsonKey(name: 'hyper_del') String? hyperDel,
+      @JsonKey(name: 'seller_del') String? sellerDel,
+      @JsonKey(name: 'accept_terms') String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
+      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      String? archivedAt,
-      String? deletionMailSentAt,
-      String? fbProfile,
+      String? image,
+      @JsonKey(name: 'archived_at') String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') String? fbProfile,
       String? partner,
-      String? b2bPricing,
-      String? offer,
+      @JsonKey(name: 'b2b_pricing') String? b2bPricing,
+      String? offers,
       String? wow,
       String? sku,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
       String? slug,
-      String? createdAtFormatted,
-      String? userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') String? createdAtFormatted,
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
-      UserDetailsProduct? user_details,
+      LocationModel? location,
+      usermodel? user,
+      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
+      List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
-      List<RatingComment> rating_comment,
-      List<LivePrize> live_prizes,
+      City? city,
+      MyProductDeailModel? user_details,
+      int? similarProductCount,
+      @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
+      List<LivePrize> livePrizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feed_post});
+      List<FeedPost>? feedPost});
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
-  $UserDetailsProductCopyWith<$Res>? get user_details;
+  $LocationModelCopyWith<$Res>? get location;
+  $usermodelCopyWith<$Res>? get user;
+  $SimilarProductsCopyWith<$Res>? get userDetails;
   $PostTypeCopyWith<$Res>? get postType;
+  $CityCopyWith<$Res>? get city;
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -775,6 +879,8 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -790,12 +896,13 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? discountedPrice = freezed,
     Object? trending = freezed,
     Object? stock = freezed,
-    Object? user_photo_url = null,
+    Object? userPhotoUrl = null,
     Object? minOrder = freezed,
     Object? sampPrice = freezed,
     Object? textOne = freezed,
     Object? textTwo = freezed,
     Object? avaTo = freezed,
+    Object? discount_percentage = freezed,
     Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
@@ -821,30 +928,36 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
+    Object? image = freezed,
     Object? archivedAt = freezed,
     Object? deletionMailSentAt = freezed,
     Object? fbProfile = freezed,
     Object? partner = freezed,
     Object? b2bPricing = freezed,
-    Object? offer = freezed,
+    Object? offers = freezed,
     Object? wow = freezed,
     Object? sku = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? slug = freezed,
     Object? createdAtFormatted = freezed,
-    Object? userPhotoUrl = freezed,
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
-    Object? user_details = freezed,
+    Object? location = freezed,
+    Object? user = freezed,
+    Object? userDetails = freezed,
     Object? pictures = freezed,
+    Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
-    Object? rating_comment = null,
-    Object? live_prizes = null,
+    Object? city = freezed,
+    Object? user_details = freezed,
+    Object? similarProductCount = freezed,
+    Object? ratingComment = null,
+    Object? livePrizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feed_post = freezed,
+    Object? feedPost = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -895,9 +1008,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.stock
           : stock // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_photo_url: null == user_photo_url
-          ? _value.user_photo_url
-          : user_photo_url // ignore: cast_nullable_to_non_nullable
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
               as String,
       minOrder: freezed == minOrder
           ? _value.minOrder
@@ -919,6 +1032,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.avaTo
           : avaTo // ignore: cast_nullable_to_non_nullable
               as String?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       negotiable: freezed == negotiable
           ? _value.negotiable
           : negotiable // ignore: cast_nullable_to_non_nullable
@@ -1019,6 +1136,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -1039,9 +1160,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.b2bPricing
           : b2bPricing // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer: freezed == offer
-          ? _value.offer
-          : offer // ignore: cast_nullable_to_non_nullable
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
               as String?,
       wow: freezed == wow
           ? _value.wow
@@ -1067,10 +1188,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.createdAtFormatted
           : createdAtFormatted // ignore: cast_nullable_to_non_nullable
               as String?,
-      userPhotoUrl: freezed == userPhotoUrl
-          ? _value.userPhotoUrl
-          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -1083,25 +1200,49 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as UserDetailsProduct?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as LocationModel?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as usermodel?,
+      userDetails: freezed == userDetails
+          ? _value.userDetails
+          : userDetails // ignore: cast_nullable_to_non_nullable
+              as SimilarProducts?,
       pictures: freezed == pictures
           ? _value.pictures
           : pictures // ignore: cast_nullable_to_non_nullable
               as List<Picture>?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<SavedByUser>?,
       postType: freezed == postType
           ? _value.postType
           : postType // ignore: cast_nullable_to_non_nullable
               as PostType?,
-      rating_comment: null == rating_comment
-          ? _value.rating_comment
-          : rating_comment // ignore: cast_nullable_to_non_nullable
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as City?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
+      similarProductCount: freezed == similarProductCount
+          ? _value.similarProductCount
+          : similarProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      ratingComment: null == ratingComment
+          ? _value.ratingComment
+          : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      live_prizes: null == live_prizes
-          ? _value.live_prizes
-          : live_prizes // ignore: cast_nullable_to_non_nullable
+      livePrizes: null == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value.deals
@@ -1111,13 +1252,15 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feed_post: freezed == feed_post
-          ? _value.feed_post
-          : feed_post // ignore: cast_nullable_to_non_nullable
+      feedPost: freezed == feedPost
+          ? _value.feedPost
+          : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ) as $Val);
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ExtraModelCopyWith<$Res>? get extra {
@@ -1130,6 +1273,8 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     });
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RatingsCopyWith<$Res>? get ratings {
@@ -1142,18 +1287,50 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     });
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $UserDetailsProductCopyWith<$Res>? get user_details {
-    if (_value.user_details == null) {
+  $LocationModelCopyWith<$Res>? get location {
+    if (_value.location == null) {
       return null;
     }
 
-    return $UserDetailsProductCopyWith<$Res>(_value.user_details!, (value) {
-      return _then(_value.copyWith(user_details: value) as $Val);
+    return $LocationModelCopyWith<$Res>(_value.location!, (value) {
+      return _then(_value.copyWith(location: value) as $Val);
     });
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $usermodelCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $usermodelCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
+  }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SimilarProductsCopyWith<$Res>? get userDetails {
+    if (_value.userDetails == null) {
+      return null;
+    }
+
+    return $SimilarProductsCopyWith<$Res>(_value.userDetails!, (value) {
+      return _then(_value.copyWith(userDetails: value) as $Val);
+    });
+  }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PostTypeCopyWith<$Res>? get postType {
@@ -1163,6 +1340,34 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
     return $PostTypeCopyWith<$Res>(_value.postType!, (value) {
       return _then(_value.copyWith(postType: value) as $Val);
+    });
+  }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CityCopyWith<$Res>? get city {
+    if (_value.city == null) {
+      return null;
+    }
+
+    return $CityCopyWith<$Res>(_value.city!, (value) {
+      return _then(_value.copyWith(city: value) as $Val);
+    });
+  }
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MyProductDeailModelCopyWith<$Res>? get user_details {
+    if (_value.user_details == null) {
+      return null;
+    }
+
+    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
+      return _then(_value.copyWith(user_details: value) as $Val);
     });
   }
 }
@@ -1177,33 +1382,34 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
-      String? countryCode,
-      String? userId,
-      String? categoryId,
-      String? postTypeId,
+      @JsonKey(name: 'country_code') String? countryCode,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'category_id') String? categoryId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
       String? title,
       String? description,
       List<String>? tags,
       String? price,
-      String? discountedPrice,
+      @JsonKey(name: 'discounted_price') String? discountedPrice,
       String? trending,
       String? stock,
-      String user_photo_url,
-      String? minOrder,
-      String? sampPrice,
-      String? textOne,
-      String? textTwo,
-      String? avaTo,
+      @JsonKey(name: 'user_photo_url') String userPhotoUrl,
+      @JsonKey(name: 'min_order') String? minOrder,
+      @JsonKey(name: 'samp_price') String? sampPrice,
+      @JsonKey(name: 'text_one') String? textOne,
+      @JsonKey(name: 'text_two') String? textTwo,
+      @JsonKey(name: 'ava_to') String? avaTo,
+      int? discount_percentage,
       String? negotiable,
-      String? contactName,
+      @JsonKey(name: 'contact_name') String? contactName,
       String? email,
       String? phone,
-      String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') String? phoneHidden,
       String? address,
-      String? cityId,
+      @JsonKey(name: 'city_id') String? cityId,
       String? lat,
       String? lon,
-      String? ipAddr,
+      @JsonKey(name: 'ip_addr') String? ipAddr,
       String? length,
       String? width,
       String? weight,
@@ -1211,47 +1417,61 @@ abstract class _$$PostResultImplCopyWith<$Res>
       String? pickup,
       String? longitude,
       String? latitude,
-      String? hyperDel,
-      String? sellerDel,
-      String? acceptTerms,
-      String? acceptMarketingOffers,
-      String? isPermanent,
+      @JsonKey(name: 'hyper_del') String? hyperDel,
+      @JsonKey(name: 'seller_del') String? sellerDel,
+      @JsonKey(name: 'accept_terms') String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers') String? acceptMarketingOffers,
+      @JsonKey(name: 'is_permanent') String? isPermanent,
       String? reviewed,
       String? featured,
       String? archived,
-      String? archivedAt,
-      String? deletionMailSentAt,
-      String? fbProfile,
+      String? image,
+      @JsonKey(name: 'archived_at') String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') String? fbProfile,
       String? partner,
-      String? b2bPricing,
-      String? offer,
+      @JsonKey(name: 'b2b_pricing') String? b2bPricing,
+      String? offers,
       String? wow,
       String? sku,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: 'created_at') String? createdAt,
+      @JsonKey(name: 'updated_at') String? updatedAt,
       String? slug,
-      String? createdAtFormatted,
-      String? userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') String? createdAtFormatted,
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
-      UserDetailsProduct? user_details,
+      LocationModel? location,
+      usermodel? user,
+      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
       List<Picture>? pictures,
+      List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
-      List<RatingComment> rating_comment,
-      List<LivePrize> live_prizes,
+      City? city,
+      MyProductDeailModel? user_details,
+      int? similarProductCount,
+      @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
+      List<LivePrize> livePrizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feed_post});
+      List<FeedPost>? feedPost});
 
   @override
   $ExtraModelCopyWith<$Res>? get extra;
   @override
   $RatingsCopyWith<$Res>? get ratings;
   @override
-  $UserDetailsProductCopyWith<$Res>? get user_details;
+  $LocationModelCopyWith<$Res>? get location;
+  @override
+  $usermodelCopyWith<$Res>? get user;
+  @override
+  $SimilarProductsCopyWith<$Res>? get userDetails;
   @override
   $PostTypeCopyWith<$Res>? get postType;
+  @override
+  $CityCopyWith<$Res>? get city;
+  @override
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -1262,6 +1482,8 @@ class __$$PostResultImplCopyWithImpl<$Res>
       _$PostResultImpl _value, $Res Function(_$PostResultImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1277,12 +1499,13 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? discountedPrice = freezed,
     Object? trending = freezed,
     Object? stock = freezed,
-    Object? user_photo_url = null,
+    Object? userPhotoUrl = null,
     Object? minOrder = freezed,
     Object? sampPrice = freezed,
     Object? textOne = freezed,
     Object? textTwo = freezed,
     Object? avaTo = freezed,
+    Object? discount_percentage = freezed,
     Object? negotiable = freezed,
     Object? contactName = freezed,
     Object? email = freezed,
@@ -1308,30 +1531,36 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? reviewed = freezed,
     Object? featured = freezed,
     Object? archived = freezed,
+    Object? image = freezed,
     Object? archivedAt = freezed,
     Object? deletionMailSentAt = freezed,
     Object? fbProfile = freezed,
     Object? partner = freezed,
     Object? b2bPricing = freezed,
-    Object? offer = freezed,
+    Object? offers = freezed,
     Object? wow = freezed,
     Object? sku = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? slug = freezed,
     Object? createdAtFormatted = freezed,
-    Object? userPhotoUrl = freezed,
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
-    Object? user_details = freezed,
+    Object? location = freezed,
+    Object? user = freezed,
+    Object? userDetails = freezed,
     Object? pictures = freezed,
+    Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
-    Object? rating_comment = null,
-    Object? live_prizes = null,
+    Object? city = freezed,
+    Object? user_details = freezed,
+    Object? similarProductCount = freezed,
+    Object? ratingComment = null,
+    Object? livePrizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feed_post = freezed,
+    Object? feedPost = freezed,
   }) {
     return _then(_$PostResultImpl(
       id: freezed == id
@@ -1382,9 +1611,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.stock
           : stock // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_photo_url: null == user_photo_url
-          ? _value.user_photo_url
-          : user_photo_url // ignore: cast_nullable_to_non_nullable
+      userPhotoUrl: null == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
               as String,
       minOrder: freezed == minOrder
           ? _value.minOrder
@@ -1406,6 +1635,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.avaTo
           : avaTo // ignore: cast_nullable_to_non_nullable
               as String?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
       negotiable: freezed == negotiable
           ? _value.negotiable
           : negotiable // ignore: cast_nullable_to_non_nullable
@@ -1506,6 +1739,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.archived
           : archived // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -1526,9 +1763,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.b2bPricing
           : b2bPricing // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer: freezed == offer
-          ? _value.offer
-          : offer // ignore: cast_nullable_to_non_nullable
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
               as String?,
       wow: freezed == wow
           ? _value.wow
@@ -1554,10 +1791,6 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.createdAtFormatted
           : createdAtFormatted // ignore: cast_nullable_to_non_nullable
               as String?,
-      userPhotoUrl: freezed == userPhotoUrl
-          ? _value.userPhotoUrl
-          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       commentCount: freezed == commentCount
           ? _value.commentCount
           : commentCount // ignore: cast_nullable_to_non_nullable
@@ -1570,25 +1803,49 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as UserDetailsProduct?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as LocationModel?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as usermodel?,
+      userDetails: freezed == userDetails
+          ? _value.userDetails
+          : userDetails // ignore: cast_nullable_to_non_nullable
+              as SimilarProducts?,
       pictures: freezed == pictures
           ? _value._pictures
           : pictures // ignore: cast_nullable_to_non_nullable
               as List<Picture>?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<SavedByUser>?,
       postType: freezed == postType
           ? _value.postType
           : postType // ignore: cast_nullable_to_non_nullable
               as PostType?,
-      rating_comment: null == rating_comment
-          ? _value._rating_comment
-          : rating_comment // ignore: cast_nullable_to_non_nullable
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as City?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
+      similarProductCount: freezed == similarProductCount
+          ? _value.similarProductCount
+          : similarProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      ratingComment: null == ratingComment
+          ? _value._ratingComment
+          : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      live_prizes: null == live_prizes
-          ? _value._live_prizes
-          : live_prizes // ignore: cast_nullable_to_non_nullable
+      livePrizes: null == livePrizes
+          ? _value._livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value._deals
@@ -1598,9 +1855,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value._shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feed_post: freezed == feed_post
-          ? _value._feed_post
-          : feed_post // ignore: cast_nullable_to_non_nullable
+      feedPost: freezed == feedPost
+          ? _value._feedPost
+          : feedPost // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ));
   }
@@ -1611,33 +1868,34 @@ class __$$PostResultImplCopyWithImpl<$Res>
 class _$PostResultImpl implements _PostResult {
   const _$PostResultImpl(
       {required this.id,
-      required this.countryCode,
-      required this.userId,
-      required this.categoryId,
-      required this.postTypeId,
+      @JsonKey(name: 'country_code') required this.countryCode,
+      @JsonKey(name: 'user_id') required this.userId,
+      @JsonKey(name: 'category_id') required this.categoryId,
+      @JsonKey(name: 'post_type_id') required this.postTypeId,
       required this.title,
       required this.description,
       required final List<String>? tags,
       required this.price,
-      this.discountedPrice,
+      @JsonKey(name: 'discounted_price') this.discountedPrice,
       required this.trending,
       required this.stock,
-      required this.user_photo_url,
-      this.minOrder,
-      this.sampPrice,
-      this.textOne,
-      this.textTwo,
-      this.avaTo,
+      @JsonKey(name: 'user_photo_url') required this.userPhotoUrl,
+      @JsonKey(name: 'min_order') this.minOrder,
+      @JsonKey(name: 'samp_price') this.sampPrice,
+      @JsonKey(name: 'text_one') this.textOne,
+      @JsonKey(name: 'text_two') this.textTwo,
+      @JsonKey(name: 'ava_to') this.avaTo,
+      required this.discount_percentage,
       this.negotiable,
-      required this.contactName,
+      @JsonKey(name: 'contact_name') required this.contactName,
       required this.email,
       required this.phone,
-      this.phoneHidden,
+      @JsonKey(name: 'phone_hidden') this.phoneHidden,
       this.address,
-      required this.cityId,
+      @JsonKey(name: 'city_id') required this.cityId,
       required this.lat,
       required this.lon,
-      required this.ipAddr,
+      @JsonKey(name: 'ip_addr') required this.ipAddr,
       required this.length,
       required this.width,
       required this.weight,
@@ -1645,45 +1903,54 @@ class _$PostResultImpl implements _PostResult {
       required this.pickup,
       required this.longitude,
       required this.latitude,
-      required this.hyperDel,
-      this.sellerDel,
-      required this.acceptTerms,
+      @JsonKey(name: 'hyper_del') required this.hyperDel,
+      @JsonKey(name: 'seller_del') this.sellerDel,
+      @JsonKey(name: 'accept_terms') required this.acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers')
       required this.acceptMarketingOffers,
-      required this.isPermanent,
+      @JsonKey(name: 'is_permanent') required this.isPermanent,
       required this.reviewed,
       required this.featured,
       required this.archived,
-      required this.archivedAt,
-      this.deletionMailSentAt,
-      this.fbProfile,
+      required this.image,
+      @JsonKey(name: 'archived_at') required this.archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') this.deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') this.fbProfile,
       this.partner,
-      this.b2bPricing,
-      this.offer,
+      @JsonKey(name: 'b2b_pricing') this.b2bPricing,
+      this.offers,
       this.wow,
       this.sku,
-      required this.createdAt,
-      required this.updatedAt,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      @JsonKey(name: 'updated_at') required this.updatedAt,
       required this.slug,
-      required this.createdAtFormatted,
-      required this.userPhotoUrl,
+      @JsonKey(name: 'created_at_formatted') required this.createdAtFormatted,
       required this.commentCount,
       required this.extra,
       this.ratings,
-      required this.user_details,
+      this.location,
+      this.user,
+      @JsonKey(name: 'detail_user') required this.userDetails,
       required final List<Picture>? pictures,
+      final List<SavedByUser>? savedByLoggedUser,
       this.postType,
-      required final List<RatingComment> rating_comment,
-      final List<LivePrize> live_prizes = const [],
+      this.city,
+      required this.user_details,
+      this.similarProductCount,
+      @JsonKey(name: 'rating_comment')
+      required final List<RatingComment> ratingComment,
+      final List<LivePrize> livePrizes = const [],
       final List<Shop>? deals = const [],
       final List<Shop>? shop = const [],
-      final List<FeedPost>? feed_post = const []})
+      final List<FeedPost>? feedPost = const []})
       : _tags = tags,
         _pictures = pictures,
-        _rating_comment = rating_comment,
-        _live_prizes = live_prizes,
+        _savedByLoggedUser = savedByLoggedUser,
+        _ratingComment = ratingComment,
+        _livePrizes = livePrizes,
         _deals = deals,
         _shop = shop,
-        _feed_post = feed_post;
+        _feedPost = feedPost;
 
   factory _$PostResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostResultImplFromJson(json);
@@ -1691,12 +1958,16 @@ class _$PostResultImpl implements _PostResult {
   @override
   final int? id;
   @override
+  @JsonKey(name: 'country_code')
   final String? countryCode;
   @override
+  @JsonKey(name: 'user_id')
   final String? userId;
   @override
+  @JsonKey(name: 'category_id')
   final String? categoryId;
   @override
+  @JsonKey(name: 'post_type_id')
   final String? postTypeId;
   @override
   final String? title;
@@ -1715,42 +1986,55 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? price;
   @override
+  @JsonKey(name: 'discounted_price')
   final String? discountedPrice;
   @override
   final String? trending;
   @override
   final String? stock;
   @override
-  final String user_photo_url;
+  @JsonKey(name: 'user_photo_url')
+  final String userPhotoUrl;
   @override
+  @JsonKey(name: 'min_order')
   final String? minOrder;
   @override
+  @JsonKey(name: 'samp_price')
   final String? sampPrice;
   @override
+  @JsonKey(name: 'text_one')
   final String? textOne;
   @override
+  @JsonKey(name: 'text_two')
   final String? textTwo;
   @override
+  @JsonKey(name: 'ava_to')
   final String? avaTo;
+  @override
+  final int? discount_percentage;
   @override
   final String? negotiable;
   @override
+  @JsonKey(name: 'contact_name')
   final String? contactName;
   @override
   final String? email;
   @override
   final String? phone;
   @override
+  @JsonKey(name: 'phone_hidden')
   final String? phoneHidden;
   @override
   final String? address;
   @override
+  @JsonKey(name: 'city_id')
   final String? cityId;
   @override
   final String? lat;
   @override
   final String? lon;
   @override
+  @JsonKey(name: 'ip_addr')
   final String? ipAddr;
   @override
   final String? length;
@@ -1767,14 +2051,19 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? latitude;
   @override
+  @JsonKey(name: 'hyper_del')
   final String? hyperDel;
   @override
+  @JsonKey(name: 'seller_del')
   final String? sellerDel;
   @override
+  @JsonKey(name: 'accept_terms')
   final String? acceptTerms;
   @override
+  @JsonKey(name: 'accept_marketing_offers')
   final String? acceptMarketingOffers;
   @override
+  @JsonKey(name: 'is_permanent')
   final String? isPermanent;
   @override
   final String? reviewed;
@@ -1783,31 +2072,38 @@ class _$PostResultImpl implements _PostResult {
   @override
   final String? archived;
   @override
+  final String? image;
+  @override
+  @JsonKey(name: 'archived_at')
   final String? archivedAt;
   @override
+  @JsonKey(name: 'deletion_mail_sent_at')
   final String? deletionMailSentAt;
   @override
+  @JsonKey(name: 'fb_profile')
   final String? fbProfile;
   @override
   final String? partner;
   @override
+  @JsonKey(name: 'b2b_pricing')
   final String? b2bPricing;
   @override
-  final String? offer;
+  final String? offers;
   @override
   final String? wow;
   @override
   final String? sku;
   @override
+  @JsonKey(name: 'created_at')
   final String? createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   final String? updatedAt;
   @override
   final String? slug;
   @override
+  @JsonKey(name: 'created_at_formatted')
   final String? createdAtFormatted;
-  @override
-  final String? userPhotoUrl;
   @override
   final int? commentCount;
   @override
@@ -1815,7 +2111,12 @@ class _$PostResultImpl implements _PostResult {
   @override
   final Ratings? ratings;
   @override
-  final UserDetailsProduct? user_details;
+  final LocationModel? location;
+  @override
+  final usermodel? user;
+  @override
+  @JsonKey(name: 'detail_user')
+  final SimilarProducts? userDetails;
   final List<Picture>? _pictures;
   @override
   List<Picture>? get pictures {
@@ -1826,23 +2127,41 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<SavedByUser>? _savedByLoggedUser;
   @override
-  final PostType? postType;
-  final List<RatingComment> _rating_comment;
-  @override
-  List<RatingComment> get rating_comment {
-    if (_rating_comment is EqualUnmodifiableListView) return _rating_comment;
+  List<SavedByUser>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_rating_comment);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<LivePrize> _live_prizes;
+  @override
+  final PostType? postType;
+  @override
+  final City? city;
+  @override
+  final MyProductDeailModel? user_details;
+  @override
+  final int? similarProductCount;
+  final List<RatingComment> _ratingComment;
+  @override
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment {
+    if (_ratingComment is EqualUnmodifiableListView) return _ratingComment;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_ratingComment);
+  }
+
+  final List<LivePrize> _livePrizes;
   @override
   @JsonKey()
-  List<LivePrize> get live_prizes {
-    if (_live_prizes is EqualUnmodifiableListView) return _live_prizes;
+  List<LivePrize> get livePrizes {
+    if (_livePrizes is EqualUnmodifiableListView) return _livePrizes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_live_prizes);
+    return EqualUnmodifiableListView(_livePrizes);
   }
 
   final List<Shop>? _deals;
@@ -1867,20 +2186,20 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<FeedPost>? _feed_post;
+  final List<FeedPost>? _feedPost;
   @override
   @JsonKey()
-  List<FeedPost>? get feed_post {
-    final value = _feed_post;
+  List<FeedPost>? get feedPost {
+    final value = _feedPost;
     if (value == null) return null;
-    if (_feed_post is EqualUnmodifiableListView) return _feed_post;
+    if (_feedPost is EqualUnmodifiableListView) return _feedPost;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, user_photo_url: $user_photo_url, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offer: $offer, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, userPhotoUrl: $userPhotoUrl, commentCount: $commentCount, extra: $extra, ratings: $ratings, user_details: $user_details, pictures: $pictures, postType: $postType, rating_comment: $rating_comment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
   }
 
   @override
@@ -1906,8 +2225,8 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.trending, trending) ||
                 other.trending == trending) &&
             (identical(other.stock, stock) || other.stock == stock) &&
-            (identical(other.user_photo_url, user_photo_url) ||
-                other.user_photo_url == user_photo_url) &&
+            (identical(other.userPhotoUrl, userPhotoUrl) ||
+                other.userPhotoUrl == userPhotoUrl) &&
             (identical(other.minOrder, minOrder) ||
                 other.minOrder == minOrder) &&
             (identical(other.sampPrice, sampPrice) ||
@@ -1915,6 +2234,8 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.textOne, textOne) || other.textOne == textOne) &&
             (identical(other.textTwo, textTwo) || other.textTwo == textTwo) &&
             (identical(other.avaTo, avaTo) || other.avaTo == avaTo) &&
+            (identical(other.discount_percentage, discount_percentage) ||
+                other.discount_percentage == discount_percentage) &&
             (identical(other.negotiable, negotiable) ||
                 other.negotiable == negotiable) &&
             (identical(other.contactName, contactName) ||
@@ -1953,6 +2274,7 @@ class _$PostResultImpl implements _PostResult {
                 other.featured == featured) &&
             (identical(other.archived, archived) ||
                 other.archived == archived) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.archivedAt, archivedAt) ||
                 other.archivedAt == archivedAt) &&
             (identical(other.deletionMailSentAt, deletionMailSentAt) ||
@@ -1962,7 +2284,7 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.partner, partner) || other.partner == partner) &&
             (identical(other.b2bPricing, b2bPricing) ||
                 other.b2bPricing == b2bPricing) &&
-            (identical(other.offer, offer) || other.offer == offer) &&
+            (identical(other.offers, offers) || other.offers == offers) &&
             (identical(other.wow, wow) || other.wow == wow) &&
             (identical(other.sku, sku) || other.sku == sku) &&
             (identical(other.createdAt, createdAt) ||
@@ -1972,28 +2294,35 @@ class _$PostResultImpl implements _PostResult {
             (identical(other.slug, slug) || other.slug == slug) &&
             (identical(other.createdAtFormatted, createdAtFormatted) ||
                 other.createdAtFormatted == createdAtFormatted) &&
-            (identical(other.userPhotoUrl, userPhotoUrl) ||
-                other.userPhotoUrl == userPhotoUrl) &&
             (identical(other.commentCount, commentCount) ||
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
-            (identical(other.user_details, user_details) ||
-                other.user_details == user_details) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.userDetails, userDetails) ||
+                other.userDetails == userDetails) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser) &&
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.user_details, user_details) ||
+                other.user_details == user_details) &&
+            (identical(other.similarProductCount, similarProductCount) ||
+                other.similarProductCount == similarProductCount) &&
             const DeepCollectionEquality()
-                .equals(other._rating_comment, _rating_comment) &&
+                .equals(other._ratingComment, _ratingComment) &&
             const DeepCollectionEquality()
-                .equals(other._live_prizes, _live_prizes) &&
+                .equals(other._livePrizes, _livePrizes) &&
             const DeepCollectionEquality().equals(other._deals, _deals) &&
             const DeepCollectionEquality().equals(other._shop, _shop) &&
-            const DeepCollectionEquality()
-                .equals(other._feed_post, _feed_post));
+            const DeepCollectionEquality().equals(other._feedPost, _feedPost));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -2009,12 +2338,13 @@ class _$PostResultImpl implements _PostResult {
         discountedPrice,
         trending,
         stock,
-        user_photo_url,
+        userPhotoUrl,
         minOrder,
         sampPrice,
         textOne,
         textTwo,
         avaTo,
+        discount_percentage,
         negotiable,
         contactName,
         email,
@@ -2040,33 +2370,41 @@ class _$PostResultImpl implements _PostResult {
         reviewed,
         featured,
         archived,
+        image,
         archivedAt,
         deletionMailSentAt,
         fbProfile,
         partner,
         b2bPricing,
-        offer,
+        offers,
         wow,
         sku,
         createdAt,
         updatedAt,
         slug,
         createdAtFormatted,
-        userPhotoUrl,
         commentCount,
         extra,
         ratings,
-        user_details,
+        location,
+        user,
+        userDetails,
         const DeepCollectionEquality().hash(_pictures),
+        const DeepCollectionEquality().hash(_savedByLoggedUser),
         postType,
-        const DeepCollectionEquality().hash(_rating_comment),
-        const DeepCollectionEquality().hash(_live_prizes),
+        city,
+        user_details,
+        similarProductCount,
+        const DeepCollectionEquality().hash(_ratingComment),
+        const DeepCollectionEquality().hash(_livePrizes),
         const DeepCollectionEquality().hash(_deals),
         const DeepCollectionEquality().hash(_shop),
-        const DeepCollectionEquality().hash(_feed_post)
+        const DeepCollectionEquality().hash(_feedPost)
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PostResultImplCopyWith<_$PostResultImpl> get copyWith =>
@@ -2083,33 +2421,34 @@ class _$PostResultImpl implements _PostResult {
 abstract class _PostResult implements PostResult {
   const factory _PostResult(
       {required final int? id,
-      required final String? countryCode,
-      required final String? userId,
-      required final String? categoryId,
-      required final String? postTypeId,
+      @JsonKey(name: 'country_code') required final String? countryCode,
+      @JsonKey(name: 'user_id') required final String? userId,
+      @JsonKey(name: 'category_id') required final String? categoryId,
+      @JsonKey(name: 'post_type_id') required final String? postTypeId,
       required final String? title,
       required final String? description,
       required final List<String>? tags,
       required final String? price,
-      final String? discountedPrice,
+      @JsonKey(name: 'discounted_price') final String? discountedPrice,
       required final String? trending,
       required final String? stock,
-      required final String user_photo_url,
-      final String? minOrder,
-      final String? sampPrice,
-      final String? textOne,
-      final String? textTwo,
-      final String? avaTo,
+      @JsonKey(name: 'user_photo_url') required final String userPhotoUrl,
+      @JsonKey(name: 'min_order') final String? minOrder,
+      @JsonKey(name: 'samp_price') final String? sampPrice,
+      @JsonKey(name: 'text_one') final String? textOne,
+      @JsonKey(name: 'text_two') final String? textTwo,
+      @JsonKey(name: 'ava_to') final String? avaTo,
+      required final int? discount_percentage,
       final String? negotiable,
-      required final String? contactName,
+      @JsonKey(name: 'contact_name') required final String? contactName,
       required final String? email,
       required final String? phone,
-      final String? phoneHidden,
+      @JsonKey(name: 'phone_hidden') final String? phoneHidden,
       final String? address,
-      required final String? cityId,
+      @JsonKey(name: 'city_id') required final String? cityId,
       required final String? lat,
       required final String? lon,
-      required final String? ipAddr,
+      @JsonKey(name: 'ip_addr') required final String? ipAddr,
       required final String? length,
       required final String? width,
       required final String? weight,
@@ -2117,38 +2456,47 @@ abstract class _PostResult implements PostResult {
       required final String? pickup,
       required final String? longitude,
       required final String? latitude,
-      required final String? hyperDel,
-      final String? sellerDel,
-      required final String? acceptTerms,
+      @JsonKey(name: 'hyper_del') required final String? hyperDel,
+      @JsonKey(name: 'seller_del') final String? sellerDel,
+      @JsonKey(name: 'accept_terms') required final String? acceptTerms,
+      @JsonKey(name: 'accept_marketing_offers')
       required final String? acceptMarketingOffers,
-      required final String? isPermanent,
+      @JsonKey(name: 'is_permanent') required final String? isPermanent,
       required final String? reviewed,
       required final String? featured,
       required final String? archived,
-      required final String? archivedAt,
-      final String? deletionMailSentAt,
-      final String? fbProfile,
+      required final String? image,
+      @JsonKey(name: 'archived_at') required final String? archivedAt,
+      @JsonKey(name: 'deletion_mail_sent_at') final String? deletionMailSentAt,
+      @JsonKey(name: 'fb_profile') final String? fbProfile,
       final String? partner,
-      final String? b2bPricing,
-      final String? offer,
+      @JsonKey(name: 'b2b_pricing') final String? b2bPricing,
+      final String? offers,
       final String? wow,
       final String? sku,
-      required final String? createdAt,
-      required final String? updatedAt,
+      @JsonKey(name: 'created_at') required final String? createdAt,
+      @JsonKey(name: 'updated_at') required final String? updatedAt,
       required final String? slug,
+      @JsonKey(name: 'created_at_formatted')
       required final String? createdAtFormatted,
-      required final String? userPhotoUrl,
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
-      required final UserDetailsProduct? user_details,
+      final LocationModel? location,
+      final usermodel? user,
+      @JsonKey(name: 'detail_user') required final SimilarProducts? userDetails,
       required final List<Picture>? pictures,
+      final List<SavedByUser>? savedByLoggedUser,
       final PostType? postType,
-      required final List<RatingComment> rating_comment,
-      final List<LivePrize> live_prizes,
+      final City? city,
+      required final MyProductDeailModel? user_details,
+      final int? similarProductCount,
+      @JsonKey(name: 'rating_comment')
+      required final List<RatingComment> ratingComment,
+      final List<LivePrize> livePrizes,
       final List<Shop>? deals,
       final List<Shop>? shop,
-      final List<FeedPost>? feed_post}) = _$PostResultImpl;
+      final List<FeedPost>? feedPost}) = _$PostResultImpl;
 
   factory _PostResult.fromJson(Map<String, dynamic> json) =
       _$PostResultImpl.fromJson;
@@ -2156,12 +2504,16 @@ abstract class _PostResult implements PostResult {
   @override
   int? get id;
   @override
+  @JsonKey(name: 'country_code')
   String? get countryCode;
   @override
+  @JsonKey(name: 'user_id')
   String? get userId;
   @override
+  @JsonKey(name: 'category_id')
   String? get categoryId;
   @override
+  @JsonKey(name: 'post_type_id')
   String? get postTypeId;
   @override
   String? get title;
@@ -2172,42 +2524,55 @@ abstract class _PostResult implements PostResult {
   @override
   String? get price;
   @override
+  @JsonKey(name: 'discounted_price')
   String? get discountedPrice;
   @override
   String? get trending;
   @override
   String? get stock;
   @override
-  String get user_photo_url;
+  @JsonKey(name: 'user_photo_url')
+  String get userPhotoUrl;
   @override
+  @JsonKey(name: 'min_order')
   String? get minOrder;
   @override
+  @JsonKey(name: 'samp_price')
   String? get sampPrice;
   @override
+  @JsonKey(name: 'text_one')
   String? get textOne;
   @override
+  @JsonKey(name: 'text_two')
   String? get textTwo;
   @override
+  @JsonKey(name: 'ava_to')
   String? get avaTo;
+  @override
+  int? get discount_percentage;
   @override
   String? get negotiable;
   @override
+  @JsonKey(name: 'contact_name')
   String? get contactName;
   @override
   String? get email;
   @override
   String? get phone;
   @override
+  @JsonKey(name: 'phone_hidden')
   String? get phoneHidden;
   @override
   String? get address;
   @override
+  @JsonKey(name: 'city_id')
   String? get cityId;
   @override
   String? get lat;
   @override
   String? get lon;
   @override
+  @JsonKey(name: 'ip_addr')
   String? get ipAddr;
   @override
   String? get length;
@@ -2224,14 +2589,19 @@ abstract class _PostResult implements PostResult {
   @override
   String? get latitude;
   @override
+  @JsonKey(name: 'hyper_del')
   String? get hyperDel;
   @override
+  @JsonKey(name: 'seller_del')
   String? get sellerDel;
   @override
+  @JsonKey(name: 'accept_terms')
   String? get acceptTerms;
   @override
+  @JsonKey(name: 'accept_marketing_offers')
   String? get acceptMarketingOffers;
   @override
+  @JsonKey(name: 'is_permanent')
   String? get isPermanent;
   @override
   String? get reviewed;
@@ -2240,31 +2610,38 @@ abstract class _PostResult implements PostResult {
   @override
   String? get archived;
   @override
+  String? get image;
+  @override
+  @JsonKey(name: 'archived_at')
   String? get archivedAt;
   @override
+  @JsonKey(name: 'deletion_mail_sent_at')
   String? get deletionMailSentAt;
   @override
+  @JsonKey(name: 'fb_profile')
   String? get fbProfile;
   @override
   String? get partner;
   @override
+  @JsonKey(name: 'b2b_pricing')
   String? get b2bPricing;
   @override
-  String? get offer;
+  String? get offers;
   @override
   String? get wow;
   @override
   String? get sku;
   @override
+  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
+  @JsonKey(name: 'updated_at')
   String? get updatedAt;
   @override
   String? get slug;
   @override
+  @JsonKey(name: 'created_at_formatted')
   String? get createdAtFormatted;
-  @override
-  String? get userPhotoUrl;
   @override
   int? get commentCount;
   @override
@@ -2272,24 +2649,1906 @@ abstract class _PostResult implements PostResult {
   @override
   Ratings? get ratings;
   @override
-  UserDetailsProduct? get user_details;
+  LocationModel? get location;
+  @override
+  usermodel? get user;
+  @override
+  @JsonKey(name: 'detail_user')
+  SimilarProducts? get userDetails;
   @override
   List<Picture>? get pictures;
   @override
+  List<SavedByUser>? get savedByLoggedUser;
+  @override
   PostType? get postType;
   @override
-  List<RatingComment> get rating_comment;
+  City? get city;
   @override
-  List<LivePrize> get live_prizes;
+  MyProductDeailModel? get user_details;
+  @override
+  int? get similarProductCount;
+  @override
+  @JsonKey(name: 'rating_comment')
+  List<RatingComment> get ratingComment;
+  @override
+  List<LivePrize> get livePrizes;
   @override
   List<Shop>? get deals;
   @override
   List<Shop>? get shop;
   @override
-  List<FeedPost>? get feed_post;
+  List<FeedPost>? get feedPost;
+
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostResultImplCopyWith<_$PostResultImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SavedByUser _$SavedByUserFromJson(Map<String, dynamic> json) {
+  return _SavedByUser.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SavedByUser {
+  @JsonKey(name: 'id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'username')
+  String? get username => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
+  String? get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'post_id')
+  String? get postId => throw _privateConstructorUsedError;
+
+  /// Serializes this SavedByUser to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SavedByUserCopyWith<SavedByUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SavedByUserCopyWith<$Res> {
+  factory $SavedByUserCopyWith(
+          SavedByUser value, $Res Function(SavedByUser) then) =
+      _$SavedByUserCopyWithImpl<$Res, SavedByUser>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'post_id') String? postId});
+}
+
+/// @nodoc
+class _$SavedByUserCopyWithImpl<$Res, $Val extends SavedByUser>
+    implements $SavedByUserCopyWith<$Res> {
+  _$SavedByUserCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
+    Object? userId = freezed,
+    Object? postId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postId: freezed == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SavedByUserImplCopyWith<$Res>
+    implements $SavedByUserCopyWith<$Res> {
+  factory _$$SavedByUserImplCopyWith(
+          _$SavedByUserImpl value, $Res Function(_$SavedByUserImpl) then) =
+      __$$SavedByUserImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'username') String? username,
+      @JsonKey(name: 'user_id') String? userId,
+      @JsonKey(name: 'post_id') String? postId});
+}
+
+/// @nodoc
+class __$$SavedByUserImplCopyWithImpl<$Res>
+    extends _$SavedByUserCopyWithImpl<$Res, _$SavedByUserImpl>
+    implements _$$SavedByUserImplCopyWith<$Res> {
+  __$$SavedByUserImplCopyWithImpl(
+      _$SavedByUserImpl _value, $Res Function(_$SavedByUserImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? username = freezed,
+    Object? userId = freezed,
+    Object? postId = freezed,
+  }) {
+    return _then(_$SavedByUserImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      postId: freezed == postId
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SavedByUserImpl implements _SavedByUser {
+  const _$SavedByUserImpl(
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'username') this.username,
+      @JsonKey(name: 'user_id') this.userId,
+      @JsonKey(name: 'post_id') this.postId});
+
+  factory _$SavedByUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SavedByUserImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final int? id;
+  @override
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'username')
+  final String? username;
+  @override
+  @JsonKey(name: 'user_id')
+  final String? userId;
+  @override
+  @JsonKey(name: 'post_id')
+  final String? postId;
+
+  @override
+  String toString() {
+    return 'SavedByUser(id: $id, name: $name, username: $username, userId: $userId, postId: $postId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SavedByUserImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.postId, postId) || other.postId == postId));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, username, userId, postId);
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SavedByUserImplCopyWith<_$SavedByUserImpl> get copyWith =>
+      __$$SavedByUserImplCopyWithImpl<_$SavedByUserImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SavedByUserImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SavedByUser implements SavedByUser {
+  const factory _SavedByUser(
+      {@JsonKey(name: 'id') final int? id,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'username') final String? username,
+      @JsonKey(name: 'user_id') final String? userId,
+      @JsonKey(name: 'post_id') final String? postId}) = _$SavedByUserImpl;
+
+  factory _SavedByUser.fromJson(Map<String, dynamic> json) =
+      _$SavedByUserImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  int? get id;
+  @override
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'username')
+  String? get username;
+  @override
+  @JsonKey(name: 'user_id')
+  String? get userId;
+  @override
+  @JsonKey(name: 'post_id')
+  String? get postId;
+
+  /// Create a copy of SavedByUser
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SavedByUserImplCopyWith<_$SavedByUserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+LocationModel _$LocationModelFromJson(Map<String, dynamic> json) {
+  return _LocationModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$LocationModel {
+  NearestBranch? get nearestBranch => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
+
+  /// Serializes this LocationModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $LocationModelCopyWith<LocationModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LocationModelCopyWith<$Res> {
+  factory $LocationModelCopyWith(
+          LocationModel value, $Res Function(LocationModel) then) =
+      _$LocationModelCopyWithImpl<$Res, LocationModel>;
+  @useResult
+  $Res call({NearestBranch? nearestBranch, double? shortestDistance});
+
+  $NearestBranchCopyWith<$Res>? get nearestBranch;
+}
+
+/// @nodoc
+class _$LocationModelCopyWithImpl<$Res, $Val extends LocationModel>
+    implements $LocationModelCopyWith<$Res> {
+  _$LocationModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nearestBranch = freezed,
+    Object? shortestDistance = freezed,
+  }) {
+    return _then(_value.copyWith(
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as NearestBranch?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ) as $Val);
+  }
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $NearestBranchCopyWith<$Res>? get nearestBranch {
+    if (_value.nearestBranch == null) {
+      return null;
+    }
+
+    return $NearestBranchCopyWith<$Res>(_value.nearestBranch!, (value) {
+      return _then(_value.copyWith(nearestBranch: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$LocationModelImplCopyWith<$Res>
+    implements $LocationModelCopyWith<$Res> {
+  factory _$$LocationModelImplCopyWith(
+          _$LocationModelImpl value, $Res Function(_$LocationModelImpl) then) =
+      __$$LocationModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({NearestBranch? nearestBranch, double? shortestDistance});
+
+  @override
+  $NearestBranchCopyWith<$Res>? get nearestBranch;
+}
+
+/// @nodoc
+class __$$LocationModelImplCopyWithImpl<$Res>
+    extends _$LocationModelCopyWithImpl<$Res, _$LocationModelImpl>
+    implements _$$LocationModelImplCopyWith<$Res> {
+  __$$LocationModelImplCopyWithImpl(
+      _$LocationModelImpl _value, $Res Function(_$LocationModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nearestBranch = freezed,
+    Object? shortestDistance = freezed,
+  }) {
+    return _then(_$LocationModelImpl(
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as NearestBranch?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$LocationModelImpl implements _LocationModel {
+  const _$LocationModelImpl(
+      {required this.nearestBranch, required this.shortestDistance});
+
+  factory _$LocationModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LocationModelImplFromJson(json);
+
+  @override
+  final NearestBranch? nearestBranch;
+  @override
+  final double? shortestDistance;
+
+  @override
+  String toString() {
+    return 'LocationModel(nearestBranch: $nearestBranch, shortestDistance: $shortestDistance)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LocationModelImpl &&
+            (identical(other.nearestBranch, nearestBranch) ||
+                other.nearestBranch == nearestBranch) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, nearestBranch, shortestDistance);
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LocationModelImplCopyWith<_$LocationModelImpl> get copyWith =>
+      __$$LocationModelImplCopyWithImpl<_$LocationModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LocationModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _LocationModel implements LocationModel {
+  const factory _LocationModel(
+      {required final NearestBranch? nearestBranch,
+      required final double? shortestDistance}) = _$LocationModelImpl;
+
+  factory _LocationModel.fromJson(Map<String, dynamic> json) =
+      _$LocationModelImpl.fromJson;
+
+  @override
+  NearestBranch? get nearestBranch;
+  @override
+  double? get shortestDistance;
+
+  /// Create a copy of LocationModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LocationModelImplCopyWith<_$LocationModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+NearestBranch _$NearestBranchFromJson(Map<String, dynamic> json) {
+  return _NearestBranch.fromJson(json);
+}
+
+/// @nodoc
+mixin _$NearestBranch {
+  String? get location => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+
+  /// Serializes this NearestBranch to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $NearestBranchCopyWith<NearestBranch> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NearestBranchCopyWith<$Res> {
+  factory $NearestBranchCopyWith(
+          NearestBranch value, $Res Function(NearestBranch) then) =
+      _$NearestBranchCopyWithImpl<$Res, NearestBranch>;
+  @useResult
+  $Res call({String? location, String? longitude, String? latitude});
+}
+
+/// @nodoc
+class _$NearestBranchCopyWithImpl<$Res, $Val extends NearestBranch>
+    implements $NearestBranchCopyWith<$Res> {
+  _$NearestBranchCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? location = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$NearestBranchImplCopyWith<$Res>
+    implements $NearestBranchCopyWith<$Res> {
+  factory _$$NearestBranchImplCopyWith(
+          _$NearestBranchImpl value, $Res Function(_$NearestBranchImpl) then) =
+      __$$NearestBranchImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? location, String? longitude, String? latitude});
+}
+
+/// @nodoc
+class __$$NearestBranchImplCopyWithImpl<$Res>
+    extends _$NearestBranchCopyWithImpl<$Res, _$NearestBranchImpl>
+    implements _$$NearestBranchImplCopyWith<$Res> {
+  __$$NearestBranchImplCopyWithImpl(
+      _$NearestBranchImpl _value, $Res Function(_$NearestBranchImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? location = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_$NearestBranchImpl(
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$NearestBranchImpl implements _NearestBranch {
+  const _$NearestBranchImpl(
+      {required this.location,
+      required this.longitude,
+      required this.latitude});
+
+  factory _$NearestBranchImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NearestBranchImplFromJson(json);
+
+  @override
+  final String? location;
+  @override
+  final String? longitude;
+  @override
+  final String? latitude;
+
+  @override
+  String toString() {
+    return 'NearestBranch(location: $location, longitude: $longitude, latitude: $latitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NearestBranchImpl &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, location, longitude, latitude);
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NearestBranchImplCopyWith<_$NearestBranchImpl> get copyWith =>
+      __$$NearestBranchImplCopyWithImpl<_$NearestBranchImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NearestBranchImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _NearestBranch implements NearestBranch {
+  const factory _NearestBranch(
+      {required final String? location,
+      required final String? longitude,
+      required final String? latitude}) = _$NearestBranchImpl;
+
+  factory _NearestBranch.fromJson(Map<String, dynamic> json) =
+      _$NearestBranchImpl.fromJson;
+
+  @override
+  String? get location;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
+
+  /// Create a copy of NearestBranch
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NearestBranchImplCopyWith<_$NearestBranchImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+MyProductDeailModel _$MyProductDeailModelFromJson(Map<String, dynamic> json) {
+  return _MyProductDeailModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MyProductDeailModel {
+  String? get name => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_photo_url')
+  String? get userPhotoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts => throw _privateConstructorUsedError;
+  int? get livePrizes => throw _privateConstructorUsedError;
+  int? get productCount => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  int? get subscribers => throw _privateConstructorUsedError;
+  double? get distance => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_id')
+  String? get membershipId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_title')
+  String? get membershipTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_color')
+  String? get membershipColor => throw _privateConstructorUsedError;
+
+  /// Serializes this MyProductDeailModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $MyProductDeailModelCopyWith<MyProductDeailModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MyProductDeailModelCopyWith<$Res> {
+  factory $MyProductDeailModelCopyWith(
+          MyProductDeailModel value, $Res Function(MyProductDeailModel) then) =
+      _$MyProductDeailModelCopyWithImpl<$Res, MyProductDeailModel>;
+  @useResult
+  $Res call(
+      {String? name,
+      String? photo,
+      @JsonKey(name: 'user_photo_url') String? userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      int? livePrizes,
+      int? productCount,
+      int? storyCount,
+      int? subscribers,
+      double? distance,
+      @JsonKey(name: 'membership_id') String? membershipId,
+      @JsonKey(name: 'membership_title') String? membershipTitle,
+      @JsonKey(name: 'membership_color') String? membershipColor});
+}
+
+/// @nodoc
+class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
+    implements $MyProductDeailModelCopyWith<$Res> {
+  _$MyProductDeailModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? photo = freezed,
+    Object? userPhotoUrl = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? livePrizes = freezed,
+    Object? productCount = freezed,
+    Object? storyCount = freezed,
+    Object? subscribers = freezed,
+    Object? distance = freezed,
+    Object? membershipId = freezed,
+    Object? membershipTitle = freezed,
+    Object? membershipColor = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userPhotoUrl: freezed == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      livePrizes: freezed == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
+              as int?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribers: freezed == subscribers
+          ? _value.subscribers
+          : subscribers // ignore: cast_nullable_to_non_nullable
+              as int?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      membershipId: freezed == membershipId
+          ? _value.membershipId
+          : membershipId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipTitle: freezed == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipColor: freezed == membershipColor
+          ? _value.membershipColor
+          : membershipColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$MyProductDeailModelImplCopyWith<$Res>
+    implements $MyProductDeailModelCopyWith<$Res> {
+  factory _$$MyProductDeailModelImplCopyWith(_$MyProductDeailModelImpl value,
+          $Res Function(_$MyProductDeailModelImpl) then) =
+      __$$MyProductDeailModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? name,
+      String? photo,
+      @JsonKey(name: 'user_photo_url') String? userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      int? livePrizes,
+      int? productCount,
+      int? storyCount,
+      int? subscribers,
+      double? distance,
+      @JsonKey(name: 'membership_id') String? membershipId,
+      @JsonKey(name: 'membership_title') String? membershipTitle,
+      @JsonKey(name: 'membership_color') String? membershipColor});
+}
+
+/// @nodoc
+class __$$MyProductDeailModelImplCopyWithImpl<$Res>
+    extends _$MyProductDeailModelCopyWithImpl<$Res, _$MyProductDeailModelImpl>
+    implements _$$MyProductDeailModelImplCopyWith<$Res> {
+  __$$MyProductDeailModelImplCopyWithImpl(_$MyProductDeailModelImpl _value,
+      $Res Function(_$MyProductDeailModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? photo = freezed,
+    Object? userPhotoUrl = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? livePrizes = freezed,
+    Object? productCount = freezed,
+    Object? storyCount = freezed,
+    Object? subscribers = freezed,
+    Object? distance = freezed,
+    Object? membershipId = freezed,
+    Object? membershipTitle = freezed,
+    Object? membershipColor = freezed,
+  }) {
+    return _then(_$MyProductDeailModelImpl(
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userPhotoUrl: freezed == userPhotoUrl
+          ? _value.userPhotoUrl
+          : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      livePrizes: freezed == livePrizes
+          ? _value.livePrizes
+          : livePrizes // ignore: cast_nullable_to_non_nullable
+              as int?,
+      productCount: freezed == productCount
+          ? _value.productCount
+          : productCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribers: freezed == subscribers
+          ? _value.subscribers
+          : subscribers // ignore: cast_nullable_to_non_nullable
+              as int?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      membershipId: freezed == membershipId
+          ? _value.membershipId
+          : membershipId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipTitle: freezed == membershipTitle
+          ? _value.membershipTitle
+          : membershipTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipColor: freezed == membershipColor
+          ? _value.membershipColor
+          : membershipColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$MyProductDeailModelImpl implements _MyProductDeailModel {
+  const _$MyProductDeailModelImpl(
+      {this.name,
+      this.photo,
+      @JsonKey(name: 'user_photo_url') this.userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') this.hasSponsoredGifts,
+      this.livePrizes,
+      this.productCount,
+      this.storyCount,
+      this.subscribers,
+      this.distance,
+      @JsonKey(name: 'membership_id') this.membershipId,
+      @JsonKey(name: 'membership_title') this.membershipTitle,
+      @JsonKey(name: 'membership_color') this.membershipColor});
+
+  factory _$MyProductDeailModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MyProductDeailModelImplFromJson(json);
+
+  @override
+  final String? name;
+  @override
+  final String? photo;
+  @override
+  @JsonKey(name: 'user_photo_url')
+  final String? userPhotoUrl;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  final bool? hasSponsoredGifts;
+  @override
+  final int? livePrizes;
+  @override
+  final int? productCount;
+  @override
+  final int? storyCount;
+  @override
+  final int? subscribers;
+  @override
+  final double? distance;
+  @override
+  @JsonKey(name: 'membership_id')
+  final String? membershipId;
+  @override
+  @JsonKey(name: 'membership_title')
+  final String? membershipTitle;
+  @override
+  @JsonKey(name: 'membership_color')
+  final String? membershipColor;
+
+  @override
+  String toString() {
+    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membershipId: $membershipId, membershipTitle: $membershipTitle, membershipColor: $membershipColor)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MyProductDeailModelImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.userPhotoUrl, userPhotoUrl) ||
+                other.userPhotoUrl == userPhotoUrl) &&
+            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
+                other.hasSponsoredGifts == hasSponsoredGifts) &&
+            (identical(other.livePrizes, livePrizes) ||
+                other.livePrizes == livePrizes) &&
+            (identical(other.productCount, productCount) ||
+                other.productCount == productCount) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.subscribers, subscribers) ||
+                other.subscribers == subscribers) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
+            (identical(other.membershipId, membershipId) ||
+                other.membershipId == membershipId) &&
+            (identical(other.membershipTitle, membershipTitle) ||
+                other.membershipTitle == membershipTitle) &&
+            (identical(other.membershipColor, membershipColor) ||
+                other.membershipColor == membershipColor));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      photo,
+      userPhotoUrl,
+      hasSponsoredGifts,
+      livePrizes,
+      productCount,
+      storyCount,
+      subscribers,
+      distance,
+      membershipId,
+      membershipTitle,
+      membershipColor);
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MyProductDeailModelImplCopyWith<_$MyProductDeailModelImpl> get copyWith =>
+      __$$MyProductDeailModelImplCopyWithImpl<_$MyProductDeailModelImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MyProductDeailModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MyProductDeailModel implements MyProductDeailModel {
+  const factory _MyProductDeailModel(
+          {final String? name,
+          final String? photo,
+          @JsonKey(name: 'user_photo_url') final String? userPhotoUrl,
+          @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
+          final int? livePrizes,
+          final int? productCount,
+          final int? storyCount,
+          final int? subscribers,
+          final double? distance,
+          @JsonKey(name: 'membership_id') final String? membershipId,
+          @JsonKey(name: 'membership_title') final String? membershipTitle,
+          @JsonKey(name: 'membership_color') final String? membershipColor}) =
+      _$MyProductDeailModelImpl;
+
+  factory _MyProductDeailModel.fromJson(Map<String, dynamic> json) =
+      _$MyProductDeailModelImpl.fromJson;
+
+  @override
+  String? get name;
+  @override
+  String? get photo;
+  @override
+  @JsonKey(name: 'user_photo_url')
+  String? get userPhotoUrl;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts;
+  @override
+  int? get livePrizes;
+  @override
+  int? get productCount;
+  @override
+  int? get storyCount;
+  @override
+  int? get subscribers;
+  @override
+  double? get distance;
+  @override
+  @JsonKey(name: 'membership_id')
+  String? get membershipId;
+  @override
+  @JsonKey(name: 'membership_title')
+  String? get membershipTitle;
+  @override
+  @JsonKey(name: 'membership_color')
+  String? get membershipColor;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MyProductDeailModelImplCopyWith<_$MyProductDeailModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+SimilarProducts _$SimilarProductsFromJson(Map<String, dynamic> json) {
+  return _SimilarProducts.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SimilarProducts {
+  String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_id')
+  String? get membershipPlanId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_status')
+  String? get membershipStatus => throw _privateConstructorUsedError;
+  String get photo => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'users_location')
+  String? get usersLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'branch_location')
+  String? get branchLocation => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_title')
+  String? get membershipPlanTitle => throw _privateConstructorUsedError;
+  @JsonKey(name: 'membership_plan_color')
+  String? get membershipPlanColor => throw _privateConstructorUsedError;
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts => throw _privateConstructorUsedError;
+  bool? get sponsored => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'shortestDistance')
+  double? get shortestDistance => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nearestBranch')
+  String? get nearestBranch => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+
+  /// Serializes this SimilarProducts to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $SimilarProductsCopyWith<SimilarProducts> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SimilarProductsCopyWith<$Res> {
+  factory $SimilarProductsCopyWith(
+          SimilarProducts value, $Res Function(SimilarProducts) then) =
+      _$SimilarProductsCopyWithImpl<$Res, SimilarProducts>;
+  @useResult
+  $Res call(
+      {String id,
+      @JsonKey(name: 'membership_plan_id') String? membershipPlanId,
+      @JsonKey(name: 'membership_status') String? membershipStatus,
+      String photo,
+      String name,
+      @JsonKey(name: 'users_location') String? usersLocation,
+      @JsonKey(name: 'branch_location') String? branchLocation,
+      @JsonKey(name: 'membership_plan_title') String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      bool? sponsored,
+      int? storyCount,
+      @JsonKey(name: 'shortestDistance') double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') String? nearestBranch,
+      String? longitude,
+      String? latitude});
+}
+
+/// @nodoc
+class _$SimilarProductsCopyWithImpl<$Res, $Val extends SimilarProducts>
+    implements $SimilarProductsCopyWith<$Res> {
+  _$SimilarProductsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? membershipPlanId = freezed,
+    Object? membershipStatus = freezed,
+    Object? photo = null,
+    Object? name = null,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? membershipPlanTitle = freezed,
+    Object? membershipPlanColor = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? sponsored = freezed,
+    Object? storyCount = freezed,
+    Object? shortestDistance = freezed,
+    Object? nearestBranch = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanTitle: freezed == membershipPlanTitle
+          ? _value.membershipPlanTitle
+          : membershipPlanTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanColor: freezed == membershipPlanColor
+          ? _value.membershipPlanColor
+          : membershipPlanColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SimilarProductsImplCopyWith<$Res>
+    implements $SimilarProductsCopyWith<$Res> {
+  factory _$$SimilarProductsImplCopyWith(_$SimilarProductsImpl value,
+          $Res Function(_$SimilarProductsImpl) then) =
+      __$$SimilarProductsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      @JsonKey(name: 'membership_plan_id') String? membershipPlanId,
+      @JsonKey(name: 'membership_status') String? membershipStatus,
+      String photo,
+      String name,
+      @JsonKey(name: 'users_location') String? usersLocation,
+      @JsonKey(name: 'branch_location') String? branchLocation,
+      @JsonKey(name: 'membership_plan_title') String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      bool? sponsored,
+      int? storyCount,
+      @JsonKey(name: 'shortestDistance') double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') String? nearestBranch,
+      String? longitude,
+      String? latitude});
+}
+
+/// @nodoc
+class __$$SimilarProductsImplCopyWithImpl<$Res>
+    extends _$SimilarProductsCopyWithImpl<$Res, _$SimilarProductsImpl>
+    implements _$$SimilarProductsImplCopyWith<$Res> {
+  __$$SimilarProductsImplCopyWithImpl(
+      _$SimilarProductsImpl _value, $Res Function(_$SimilarProductsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? membershipPlanId = freezed,
+    Object? membershipStatus = freezed,
+    Object? photo = null,
+    Object? name = null,
+    Object? usersLocation = freezed,
+    Object? branchLocation = freezed,
+    Object? membershipPlanTitle = freezed,
+    Object? membershipPlanColor = freezed,
+    Object? hasSponsoredGifts = freezed,
+    Object? sponsored = freezed,
+    Object? storyCount = freezed,
+    Object? shortestDistance = freezed,
+    Object? nearestBranch = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+  }) {
+    return _then(_$SimilarProductsImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      membershipPlanId: freezed == membershipPlanId
+          ? _value.membershipPlanId
+          : membershipPlanId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipStatus: freezed == membershipStatus
+          ? _value.membershipStatus
+          : membershipStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      usersLocation: freezed == usersLocation
+          ? _value.usersLocation
+          : usersLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      branchLocation: freezed == branchLocation
+          ? _value.branchLocation
+          : branchLocation // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanTitle: freezed == membershipPlanTitle
+          ? _value.membershipPlanTitle
+          : membershipPlanTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membershipPlanColor: freezed == membershipPlanColor
+          ? _value.membershipPlanColor
+          : membershipPlanColor // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hasSponsoredGifts: freezed == hasSponsoredGifts
+          ? _value.hasSponsoredGifts
+          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      nearestBranch: freezed == nearestBranch
+          ? _value.nearestBranch
+          : nearestBranch // ignore: cast_nullable_to_non_nullable
+              as String?,
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SimilarProductsImpl implements _SimilarProducts {
+  const _$SimilarProductsImpl(
+      {required this.id,
+      @JsonKey(name: 'membership_plan_id') required this.membershipPlanId,
+      @JsonKey(name: 'membership_status') required this.membershipStatus,
+      required this.photo,
+      required this.name,
+      @JsonKey(name: 'users_location') this.usersLocation,
+      @JsonKey(name: 'branch_location') required this.branchLocation,
+      @JsonKey(name: 'membership_plan_title') required this.membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color') required this.membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts') required this.hasSponsoredGifts,
+      required this.sponsored,
+      required this.storyCount,
+      @JsonKey(name: 'shortestDistance') required this.shortestDistance,
+      @JsonKey(name: 'nearestBranch') required this.nearestBranch,
+      required this.longitude,
+      required this.latitude});
+
+  factory _$SimilarProductsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SimilarProductsImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  @JsonKey(name: 'membership_plan_id')
+  final String? membershipPlanId;
+  @override
+  @JsonKey(name: 'membership_status')
+  final String? membershipStatus;
+  @override
+  final String photo;
+  @override
+  final String name;
+  @override
+  @JsonKey(name: 'users_location')
+  final String? usersLocation;
+  @override
+  @JsonKey(name: 'branch_location')
+  final String? branchLocation;
+  @override
+  @JsonKey(name: 'membership_plan_title')
+  final String? membershipPlanTitle;
+  @override
+  @JsonKey(name: 'membership_plan_color')
+  final String? membershipPlanColor;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  final bool? hasSponsoredGifts;
+  @override
+  final bool? sponsored;
+  @override
+  final int? storyCount;
+  @override
+  @JsonKey(name: 'shortestDistance')
+  final double? shortestDistance;
+  @override
+  @JsonKey(name: 'nearestBranch')
+  final String? nearestBranch;
+  @override
+  final String? longitude;
+  @override
+  final String? latitude;
+
+  @override
+  String toString() {
+    return 'SimilarProducts(id: $id, membershipPlanId: $membershipPlanId, membershipStatus: $membershipStatus, photo: $photo, name: $name, usersLocation: $usersLocation, branchLocation: $branchLocation, membershipPlanTitle: $membershipPlanTitle, membershipPlanColor: $membershipPlanColor, hasSponsoredGifts: $hasSponsoredGifts, sponsored: $sponsored, storyCount: $storyCount, shortestDistance: $shortestDistance, nearestBranch: $nearestBranch, longitude: $longitude, latitude: $latitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SimilarProductsImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.membershipPlanId, membershipPlanId) ||
+                other.membershipPlanId == membershipPlanId) &&
+            (identical(other.membershipStatus, membershipStatus) ||
+                other.membershipStatus == membershipStatus) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.usersLocation, usersLocation) ||
+                other.usersLocation == usersLocation) &&
+            (identical(other.branchLocation, branchLocation) ||
+                other.branchLocation == branchLocation) &&
+            (identical(other.membershipPlanTitle, membershipPlanTitle) ||
+                other.membershipPlanTitle == membershipPlanTitle) &&
+            (identical(other.membershipPlanColor, membershipPlanColor) ||
+                other.membershipPlanColor == membershipPlanColor) &&
+            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
+                other.hasSponsoredGifts == hasSponsoredGifts) &&
+            (identical(other.sponsored, sponsored) ||
+                other.sponsored == sponsored) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance) &&
+            (identical(other.nearestBranch, nearestBranch) ||
+                other.nearestBranch == nearestBranch) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      membershipPlanId,
+      membershipStatus,
+      photo,
+      name,
+      usersLocation,
+      branchLocation,
+      membershipPlanTitle,
+      membershipPlanColor,
+      hasSponsoredGifts,
+      sponsored,
+      storyCount,
+      shortestDistance,
+      nearestBranch,
+      longitude,
+      latitude);
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SimilarProductsImplCopyWith<_$SimilarProductsImpl> get copyWith =>
+      __$$SimilarProductsImplCopyWithImpl<_$SimilarProductsImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SimilarProductsImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SimilarProducts implements SimilarProducts {
+  const factory _SimilarProducts(
+      {required final String id,
+      @JsonKey(name: 'membership_plan_id')
+      required final String? membershipPlanId,
+      @JsonKey(name: 'membership_status')
+      required final String? membershipStatus,
+      required final String photo,
+      required final String name,
+      @JsonKey(name: 'users_location') final String? usersLocation,
+      @JsonKey(name: 'branch_location') required final String? branchLocation,
+      @JsonKey(name: 'membership_plan_title')
+      required final String? membershipPlanTitle,
+      @JsonKey(name: 'membership_plan_color')
+      required final String? membershipPlanColor,
+      @JsonKey(name: 'has_sponsored_gifts')
+      required final bool? hasSponsoredGifts,
+      required final bool? sponsored,
+      required final int? storyCount,
+      @JsonKey(name: 'shortestDistance')
+      required final double? shortestDistance,
+      @JsonKey(name: 'nearestBranch') required final String? nearestBranch,
+      required final String? longitude,
+      required final String? latitude}) = _$SimilarProductsImpl;
+
+  factory _SimilarProducts.fromJson(Map<String, dynamic> json) =
+      _$SimilarProductsImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  @JsonKey(name: 'membership_plan_id')
+  String? get membershipPlanId;
+  @override
+  @JsonKey(name: 'membership_status')
+  String? get membershipStatus;
+  @override
+  String get photo;
+  @override
+  String get name;
+  @override
+  @JsonKey(name: 'users_location')
+  String? get usersLocation;
+  @override
+  @JsonKey(name: 'branch_location')
+  String? get branchLocation;
+  @override
+  @JsonKey(name: 'membership_plan_title')
+  String? get membershipPlanTitle;
+  @override
+  @JsonKey(name: 'membership_plan_color')
+  String? get membershipPlanColor;
+  @override
+  @JsonKey(name: 'has_sponsored_gifts')
+  bool? get hasSponsoredGifts;
+  @override
+  bool? get sponsored;
+  @override
+  int? get storyCount;
+  @override
+  @JsonKey(name: 'shortestDistance')
+  double? get shortestDistance;
+  @override
+  @JsonKey(name: 'nearestBranch')
+  String? get nearestBranch;
+  @override
+  String? get longitude;
+  @override
+  String? get latitude;
+
+  /// Create a copy of SimilarProducts
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SimilarProductsImplCopyWith<_$SimilarProductsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+City _$CityFromJson(Map<String, dynamic> json) {
+  return _City.fromJson(json);
+}
+
+/// @nodoc
+mixin _$City {
+  int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'country_code')
+  String get countryCode => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get latitude => throw _privateConstructorUsedError;
+  String get longitude =>
+      throw _privateConstructorUsedError; // @JsonKey(name: 'subadmin1_code') required String subadmin1Code,
+// @JsonKey(name: 'subadmin2_code') required String subadmin2Code,
+  String get population => throw _privateConstructorUsedError;
+  @JsonKey(name: 'time_zone')
+  String get timeZone => throw _privateConstructorUsedError;
+  String get active => throw _privateConstructorUsedError;
+
+  /// Serializes this City to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of City
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $CityCopyWith<City> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CityCopyWith<$Res> {
+  factory $CityCopyWith(City value, $Res Function(City) then) =
+      _$CityCopyWithImpl<$Res, City>;
+  @useResult
+  $Res call(
+      {int id,
+      @JsonKey(name: 'country_code') String countryCode,
+      String name,
+      String latitude,
+      String longitude,
+      String population,
+      @JsonKey(name: 'time_zone') String timeZone,
+      String active});
+}
+
+/// @nodoc
+class _$CityCopyWithImpl<$Res, $Val extends City>
+    implements $CityCopyWith<$Res> {
+  _$CityCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of City
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? countryCode = null,
+    Object? name = null,
+    Object? latitude = null,
+    Object? longitude = null,
+    Object? population = null,
+    Object? timeZone = null,
+    Object? active = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      countryCode: null == countryCode
+          ? _value.countryCode
+          : countryCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      population: null == population
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeZone: null == timeZone
+          ? _value.timeZone
+          : timeZone // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$CityImplCopyWith<$Res> implements $CityCopyWith<$Res> {
+  factory _$$CityImplCopyWith(
+          _$CityImpl value, $Res Function(_$CityImpl) then) =
+      __$$CityImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      @JsonKey(name: 'country_code') String countryCode,
+      String name,
+      String latitude,
+      String longitude,
+      String population,
+      @JsonKey(name: 'time_zone') String timeZone,
+      String active});
+}
+
+/// @nodoc
+class __$$CityImplCopyWithImpl<$Res>
+    extends _$CityCopyWithImpl<$Res, _$CityImpl>
+    implements _$$CityImplCopyWith<$Res> {
+  __$$CityImplCopyWithImpl(_$CityImpl _value, $Res Function(_$CityImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of City
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? countryCode = null,
+    Object? name = null,
+    Object? latitude = null,
+    Object? longitude = null,
+    Object? population = null,
+    Object? timeZone = null,
+    Object? active = null,
+  }) {
+    return _then(_$CityImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      countryCode: null == countryCode
+          ? _value.countryCode
+          : countryCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      population: null == population
+          ? _value.population
+          : population // ignore: cast_nullable_to_non_nullable
+              as String,
+      timeZone: null == timeZone
+          ? _value.timeZone
+          : timeZone // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CityImpl implements _City {
+  const _$CityImpl(
+      {required this.id,
+      @JsonKey(name: 'country_code') required this.countryCode,
+      required this.name,
+      required this.latitude,
+      required this.longitude,
+      required this.population,
+      @JsonKey(name: 'time_zone') required this.timeZone,
+      required this.active});
+
+  factory _$CityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CityImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  @JsonKey(name: 'country_code')
+  final String countryCode;
+  @override
+  final String name;
+  @override
+  final String latitude;
+  @override
+  final String longitude;
+// @JsonKey(name: 'subadmin1_code') required String subadmin1Code,
+// @JsonKey(name: 'subadmin2_code') required String subadmin2Code,
+  @override
+  final String population;
+  @override
+  @JsonKey(name: 'time_zone')
+  final String timeZone;
+  @override
+  final String active;
+
+  @override
+  String toString() {
+    return 'City(id: $id, countryCode: $countryCode, name: $name, latitude: $latitude, longitude: $longitude, population: $population, timeZone: $timeZone, active: $active)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CityImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.countryCode, countryCode) ||
+                other.countryCode == countryCode) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.population, population) ||
+                other.population == population) &&
+            (identical(other.timeZone, timeZone) ||
+                other.timeZone == timeZone) &&
+            (identical(other.active, active) || other.active == active));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, countryCode, name, latitude,
+      longitude, population, timeZone, active);
+
+  /// Create a copy of City
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CityImplCopyWith<_$CityImpl> get copyWith =>
+      __$$CityImplCopyWithImpl<_$CityImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CityImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _City implements City {
+  const factory _City(
+      {required final int id,
+      @JsonKey(name: 'country_code') required final String countryCode,
+      required final String name,
+      required final String latitude,
+      required final String longitude,
+      required final String population,
+      @JsonKey(name: 'time_zone') required final String timeZone,
+      required final String active}) = _$CityImpl;
+
+  factory _City.fromJson(Map<String, dynamic> json) = _$CityImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  @JsonKey(name: 'country_code')
+  String get countryCode;
+  @override
+  String get name;
+  @override
+  String get latitude;
+  @override
+  String
+      get longitude; // @JsonKey(name: 'subadmin1_code') required String subadmin1Code,
+// @JsonKey(name: 'subadmin2_code') required String subadmin2Code,
+  @override
+  String get population;
+  @override
+  @JsonKey(name: 'time_zone')
+  String get timeZone;
+  @override
+  String get active;
+
+  /// Create a copy of City
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CityImplCopyWith<_$CityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2307,8 +4566,12 @@ mixin _$LivePrize {
   String? get gift_qty => throw _privateConstructorUsedError;
   String? get total_worth => throw _privateConstructorUsedError;
 
+  /// Serializes this LivePrize to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LivePrize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LivePrizeCopyWith<LivePrize> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2338,6 +4601,8 @@ class _$LivePrizeCopyWithImpl<$Res, $Val extends LivePrize>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LivePrize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2408,6 +4673,8 @@ class __$$LivePrizeImplCopyWithImpl<$Res>
       _$LivePrizeImpl _value, $Res Function(_$LivePrizeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LivePrize
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2504,12 +4771,14 @@ class _$LivePrizeImpl implements _LivePrize {
                 other.total_worth == total_worth));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, name, photo, subscribers, image, gift_qty, total_worth);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LivePrize
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LivePrizeImplCopyWith<_$LivePrizeImpl> get copyWith =>
@@ -2550,8 +4819,11 @@ abstract class _LivePrize implements LivePrize {
   String? get gift_qty;
   @override
   String? get total_worth;
+
+  /// Create a copy of LivePrize
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LivePrizeImplCopyWith<_$LivePrizeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2562,13 +4834,24 @@ Shop _$ShopFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Shop {
-  String get id => throw _privateConstructorUsedError;
-  String get image => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
+  String? get userid => throw _privateConstructorUsedError;
+  String? get vendor_name => throw _privateConstructorUsedError;
+  String? get vendor_photo => throw _privateConstructorUsedError;
+  String? get wow => throw _privateConstructorUsedError;
+  int? get similarproductcount => throw _privateConstructorUsedError;
+  String? get comment_count => throw _privateConstructorUsedError;
+  int? get average_rating => throw _privateConstructorUsedError;
   @JsonKey(name: 'discount_percentage')
   double? get discountPercentage => throw _privateConstructorUsedError;
 
+  /// Serializes this Shop to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Shop
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ShopCopyWith<Shop> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -2578,8 +4861,15 @@ abstract class $ShopCopyWith<$Res> {
       _$ShopCopyWithImpl<$Res, Shop>;
   @useResult
   $Res call(
-      {String id,
-      String image,
+      {String? id,
+      String? image,
+      String? userid,
+      String? vendor_name,
+      String? vendor_photo,
+      String? wow,
+      int? similarproductcount,
+      String? comment_count,
+      int? average_rating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage});
 }
 
@@ -2593,22 +4883,59 @@ class _$ShopCopyWithImpl<$Res, $Val extends Shop>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Shop
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? image = null,
+    Object? id = freezed,
+    Object? image = freezed,
+    Object? userid = freezed,
+    Object? vendor_name = freezed,
+    Object? vendor_photo = freezed,
+    Object? wow = freezed,
+    Object? similarproductcount = freezed,
+    Object? comment_count = freezed,
+    Object? average_rating = freezed,
     Object? discountPercentage = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
+              as String?,
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      userid: freezed == userid
+          ? _value.userid
+          : userid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendor_name: freezed == vendor_name
+          ? _value.vendor_name
+          : vendor_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendor_photo: freezed == vendor_photo
+          ? _value.vendor_photo
+          : vendor_photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      similarproductcount: freezed == similarproductcount
+          ? _value.similarproductcount
+          : similarproductcount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      comment_count: freezed == comment_count
+          ? _value.comment_count
+          : comment_count // ignore: cast_nullable_to_non_nullable
+              as String?,
+      average_rating: freezed == average_rating
+          ? _value.average_rating
+          : average_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
       discountPercentage: freezed == discountPercentage
           ? _value.discountPercentage
           : discountPercentage // ignore: cast_nullable_to_non_nullable
@@ -2625,8 +4952,15 @@ abstract class _$$ShopImplCopyWith<$Res> implements $ShopCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
-      String image,
+      {String? id,
+      String? image,
+      String? userid,
+      String? vendor_name,
+      String? vendor_photo,
+      String? wow,
+      int? similarproductcount,
+      String? comment_count,
+      int? average_rating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage});
 }
 
@@ -2637,22 +4971,59 @@ class __$$ShopImplCopyWithImpl<$Res>
   __$$ShopImplCopyWithImpl(_$ShopImpl _value, $Res Function(_$ShopImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Shop
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? image = null,
+    Object? id = freezed,
+    Object? image = freezed,
+    Object? userid = freezed,
+    Object? vendor_name = freezed,
+    Object? vendor_photo = freezed,
+    Object? wow = freezed,
+    Object? similarproductcount = freezed,
+    Object? comment_count = freezed,
+    Object? average_rating = freezed,
     Object? discountPercentage = freezed,
   }) {
     return _then(_$ShopImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      image: null == image
+              as String?,
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      userid: freezed == userid
+          ? _value.userid
+          : userid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendor_name: freezed == vendor_name
+          ? _value.vendor_name
+          : vendor_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      vendor_photo: freezed == vendor_photo
+          ? _value.vendor_photo
+          : vendor_photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      similarproductcount: freezed == similarproductcount
+          ? _value.similarproductcount
+          : similarproductcount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      comment_count: freezed == comment_count
+          ? _value.comment_count
+          : comment_count // ignore: cast_nullable_to_non_nullable
+              as String?,
+      average_rating: freezed == average_rating
+          ? _value.average_rating
+          : average_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
       discountPercentage: freezed == discountPercentage
           ? _value.discountPercentage
           : discountPercentage // ignore: cast_nullable_to_non_nullable
@@ -2667,22 +5038,43 @@ class _$ShopImpl implements _Shop {
   _$ShopImpl(
       {required this.id,
       required this.image,
+      required this.userid,
+      required this.vendor_name,
+      required this.vendor_photo,
+      required this.wow,
+      required this.similarproductcount,
+      required this.comment_count,
+      required this.average_rating,
       @JsonKey(name: 'discount_percentage') required this.discountPercentage});
 
   factory _$ShopImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShopImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
-  final String image;
+  final String? image;
+  @override
+  final String? userid;
+  @override
+  final String? vendor_name;
+  @override
+  final String? vendor_photo;
+  @override
+  final String? wow;
+  @override
+  final int? similarproductcount;
+  @override
+  final String? comment_count;
+  @override
+  final int? average_rating;
   @override
   @JsonKey(name: 'discount_percentage')
   final double? discountPercentage;
 
   @override
   String toString() {
-    return 'Shop(id: $id, image: $image, discountPercentage: $discountPercentage)';
+    return 'Shop(id: $id, image: $image, userid: $userid, vendor_name: $vendor_name, vendor_photo: $vendor_photo, wow: $wow, similarproductcount: $similarproductcount, comment_count: $comment_count, average_rating: $average_rating, discountPercentage: $discountPercentage)';
   }
 
   @override
@@ -2692,15 +5084,40 @@ class _$ShopImpl implements _Shop {
             other is _$ShopImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.userid, userid) || other.userid == userid) &&
+            (identical(other.vendor_name, vendor_name) ||
+                other.vendor_name == vendor_name) &&
+            (identical(other.vendor_photo, vendor_photo) ||
+                other.vendor_photo == vendor_photo) &&
+            (identical(other.wow, wow) || other.wow == wow) &&
+            (identical(other.similarproductcount, similarproductcount) ||
+                other.similarproductcount == similarproductcount) &&
+            (identical(other.comment_count, comment_count) ||
+                other.comment_count == comment_count) &&
+            (identical(other.average_rating, average_rating) ||
+                other.average_rating == average_rating) &&
             (identical(other.discountPercentage, discountPercentage) ||
                 other.discountPercentage == discountPercentage));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, image, discountPercentage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      image,
+      userid,
+      vendor_name,
+      vendor_photo,
+      wow,
+      similarproductcount,
+      comment_count,
+      average_rating,
+      discountPercentage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Shop
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ShopImplCopyWith<_$ShopImpl> get copyWith =>
@@ -2716,22 +5133,46 @@ class _$ShopImpl implements _Shop {
 
 abstract class _Shop implements Shop {
   factory _Shop(
-      {required final String id,
-      required final String image,
+      {required final String? id,
+      required final String? image,
+      required final String? userid,
+      required final String? vendor_name,
+      required final String? vendor_photo,
+      required final String? wow,
+      required final int? similarproductcount,
+      required final String? comment_count,
+      required final int? average_rating,
       @JsonKey(name: 'discount_percentage')
       required final double? discountPercentage}) = _$ShopImpl;
 
   factory _Shop.fromJson(Map<String, dynamic> json) = _$ShopImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  String get image;
+  String? get image;
+  @override
+  String? get userid;
+  @override
+  String? get vendor_name;
+  @override
+  String? get vendor_photo;
+  @override
+  String? get wow;
+  @override
+  int? get similarproductcount;
+  @override
+  String? get comment_count;
+  @override
+  int? get average_rating;
   @override
   @JsonKey(name: 'discount_percentage')
   double? get discountPercentage;
+
+  /// Create a copy of Shop
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ShopImplCopyWith<_$ShopImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2750,8 +5191,12 @@ mixin _$Ratings {
       throw _privateConstructorUsedError; // Required as it's a number
   double get averageRating => throw _privateConstructorUsedError;
 
+  /// Serializes this Ratings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RatingsCopyWith<Ratings> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -2783,6 +5228,8 @@ class _$RatingsCopyWithImpl<$Res, $Val extends Ratings>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2821,6 +5268,8 @@ class _$RatingsCopyWithImpl<$Res, $Val extends Ratings>
     ) as $Val);
   }
 
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RatingCopyWith<$Res>? get rating {
@@ -2833,6 +5282,8 @@ class _$RatingsCopyWithImpl<$Res, $Val extends Ratings>
     });
   }
 
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RatingCountsCopyWith<$Res> get ratingCounts {
@@ -2841,6 +5292,8 @@ class _$RatingsCopyWithImpl<$Res, $Val extends Ratings>
     });
   }
 
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RatingCountsCopyWith<$Res> get ratingPercentages {
@@ -2881,6 +5334,8 @@ class __$$RatingsImplCopyWithImpl<$Res>
       _$RatingsImpl _value, $Res Function(_$RatingsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2971,12 +5426,14 @@ class _$RatingsImpl implements _Ratings {
                 other.averageRating == averageRating));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, rating, avg_rating, ratingCounts,
       ratingPercentages, totalRatings, averageRating);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RatingsImplCopyWith<_$RatingsImpl> get copyWith =>
@@ -3010,11 +5467,14 @@ abstract class _Ratings implements Ratings {
   @override
   RatingCounts get ratingPercentages;
   @override
-  int get totalRatings;
-  @override // Required as it's a number
-  double get averageRating;
+  int get totalRatings; // Required as it's a number
   @override
-  @JsonKey(ignore: true)
+  double get averageRating;
+
+  /// Create a copy of Ratings
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RatingsImplCopyWith<_$RatingsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3031,8 +5491,12 @@ mixin _$RatingComment {
   @JsonKey(name: 'ratingstar')
   String get ratingStar => throw _privateConstructorUsedError;
 
+  /// Serializes this RatingComment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RatingComment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RatingCommentCopyWith<RatingComment> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3060,6 +5524,8 @@ class _$RatingCommentCopyWithImpl<$Res, $Val extends RatingComment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RatingComment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3112,6 +5578,8 @@ class __$$RatingCommentImplCopyWithImpl<$Res>
       _$RatingCommentImpl _value, $Res Function(_$RatingCommentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RatingComment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3180,12 +5648,14 @@ class _$RatingCommentImpl implements _RatingComment {
                 other.ratingStar == ratingStar));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, name, photo, comment, ratingStar);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RatingComment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RatingCommentImplCopyWith<_$RatingCommentImpl> get copyWith =>
@@ -3219,8 +5689,11 @@ abstract class _RatingComment implements RatingComment {
   @override
   @JsonKey(name: 'ratingstar')
   String get ratingStar;
+
+  /// Create a copy of RatingComment
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RatingCommentImplCopyWith<_$RatingCommentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3247,8 +5720,12 @@ mixin _$Rating {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Rating to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Rating
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RatingCopyWith<Rating> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -3279,6 +5756,8 @@ class _$RatingCopyWithImpl<$Res, $Val extends Rating>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Rating
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3360,6 +5839,8 @@ class __$$RatingImplCopyWithImpl<$Res>
       _$RatingImpl _value, $Res Function(_$RatingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Rating
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3481,12 +5962,14 @@ class _$RatingImpl implements _Rating {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, postId, userId, rating,
       parentId, comment, replyComment, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Rating
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RatingImplCopyWith<_$RatingImpl> get copyWith =>
@@ -3538,8 +6021,11 @@ abstract class _Rating implements Rating {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
+
+  /// Create a copy of Rating
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RatingImplCopyWith<_$RatingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3553,8 +6039,12 @@ mixin _$PostType {
 // required int id,
   String get name => throw _privateConstructorUsedError;
 
+  /// Serializes this PostType to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PostType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PostTypeCopyWith<PostType> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3577,6 +6067,8 @@ class _$PostTypeCopyWithImpl<$Res, $Val extends PostType>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PostType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3610,6 +6102,8 @@ class __$$PostTypeImplCopyWithImpl<$Res>
       _$PostTypeImpl _value, $Res Function(_$PostTypeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PostType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3649,11 +6143,13 @@ class _$PostTypeImpl implements _PostType {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PostType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PostTypeImplCopyWith<_$PostTypeImpl> get copyWith =>
@@ -3673,10 +6169,14 @@ abstract class _PostType implements PostType {
   factory _PostType.fromJson(Map<String, dynamic> json) =
       _$PostTypeImpl.fromJson;
 
-  @override // required int id,
-  String get name;
+// required int id,
   @override
-  @JsonKey(ignore: true)
+  String get name;
+
+  /// Create a copy of PostType
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostTypeImplCopyWith<_$PostTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3687,16 +6187,25 @@ VendorUserDetail _$VendorUserDetailFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorUserDetail {
-// String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get membership_plan_id => throw _privateConstructorUsedError;
+  String? get membership_status => throw _privateConstructorUsedError;
+  String? get membership_id => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  int? get storyCount => throw _privateConstructorUsedError;
+  bool? get sponsored => throw _privateConstructorUsedError;
+  bool? get has_sponsored_gifts => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorUserDetail to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorUserDetail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorUserDetailCopyWith<VendorUserDetail> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3708,8 +6217,18 @@ abstract class $VendorUserDetailCopyWith<$Res> {
       _$VendorUserDetailCopyWithImpl<$Res, VendorUserDetail>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {String? user_id,
+      String? membership_plan_id,
+      String? membership_status,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color,
+      String? photo,
+      String? name,
+      int? storyCount,
+      bool? sponsored,
+      bool? has_sponsored_gifts,
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -3722,21 +6241,73 @@ class _$VendorUserDetailCopyWithImpl<$Res, $Val extends VendorUserDetail>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorUserDetail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
+    Object? user_id = freezed,
+    Object? membership_plan_id = freezed,
+    Object? membership_status = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
+    Object? photo = freezed,
+    Object? name = freezed,
+    Object? storyCount = freezed,
+    Object? sponsored = freezed,
+    Object? has_sponsored_gifts = freezed,
+    Object? shortestDistance = freezed,
   }) {
     return _then(_value.copyWith(
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_plan_id: freezed == membership_plan_id
+          ? _value.membership_plan_id
+          : membership_plan_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      membership_status: freezed == membership_status
+          ? _value.membership_status
+          : membership_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -3750,8 +6321,18 @@ abstract class _$$VendorUserDetailImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'membership_color') String? memberColor,
-      @JsonKey(name: 'membership_title') String? membershipTitle});
+      {String? user_id,
+      String? membership_plan_id,
+      String? membership_status,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color,
+      String? photo,
+      String? name,
+      int? storyCount,
+      bool? sponsored,
+      bool? has_sponsored_gifts,
+      double? shortestDistance});
 }
 
 /// @nodoc
@@ -3762,21 +6343,73 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
       $Res Function(_$VendorUserDetailImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorUserDetail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? memberColor = freezed,
-    Object? membershipTitle = freezed,
+    Object? user_id = freezed,
+    Object? membership_plan_id = freezed,
+    Object? membership_status = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
+    Object? photo = freezed,
+    Object? name = freezed,
+    Object? storyCount = freezed,
+    Object? sponsored = freezed,
+    Object? has_sponsored_gifts = freezed,
+    Object? shortestDistance = freezed,
   }) {
     return _then(_$VendorUserDetailImpl(
-      memberColor: freezed == memberColor
-          ? _value.memberColor
-          : memberColor // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_plan_id: freezed == membership_plan_id
+          ? _value.membership_plan_id
+          : membership_plan_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      membership_status: freezed == membership_status
+          ? _value.membership_status
+          : membership_status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storyCount: freezed == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sponsored: freezed == sponsored
+          ? _value.sponsored
+          : sponsored // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -3785,25 +6418,50 @@ class __$$VendorUserDetailImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorUserDetailImpl implements _VendorUserDetail {
   const _$VendorUserDetailImpl(
-      {@JsonKey(name: 'membership_color') this.memberColor,
-      @JsonKey(name: 'membership_title') this.membershipTitle});
+      {this.user_id,
+      this.membership_plan_id,
+      this.membership_status,
+      this.membership_id,
+      this.membership_title,
+      this.membership_color,
+      this.photo,
+      this.name,
+      this.storyCount,
+      this.sponsored,
+      this.has_sponsored_gifts,
+      this.shortestDistance});
 
   factory _$VendorUserDetailImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorUserDetailImplFromJson(json);
 
-// String? id,
-// String? name,
-// String? photo,
   @override
-  @JsonKey(name: 'membership_color')
-  final String? memberColor;
+  final String? user_id;
   @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
+  final String? membership_plan_id;
+  @override
+  final String? membership_status;
+  @override
+  final String? membership_id;
+  @override
+  final String? membership_title;
+  @override
+  final String? membership_color;
+  @override
+  final String? photo;
+  @override
+  final String? name;
+  @override
+  final int? storyCount;
+  @override
+  final bool? sponsored;
+  @override
+  final bool? has_sponsored_gifts;
+  @override
+  final double? shortestDistance;
 
   @override
   String toString() {
-    return 'VendorUserDetail(memberColor: $memberColor, membershipTitle: $membershipTitle)';
+    return 'VendorUserDetail(user_id: $user_id, membership_plan_id: $membership_plan_id, membership_status: $membership_status, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color, photo: $photo, name: $name, storyCount: $storyCount, sponsored: $sponsored, has_sponsored_gifts: $has_sponsored_gifts, shortestDistance: $shortestDistance)';
   }
 
   @override
@@ -3811,17 +6469,49 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorUserDetailImpl &&
-            (identical(other.memberColor, memberColor) ||
-                other.memberColor == memberColor) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle));
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.membership_plan_id, membership_plan_id) ||
+                other.membership_plan_id == membership_plan_id) &&
+            (identical(other.membership_status, membership_status) ||
+                other.membership_status == membership_status) &&
+            (identical(other.membership_id, membership_id) ||
+                other.membership_id == membership_id) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title) &&
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount) &&
+            (identical(other.sponsored, sponsored) ||
+                other.sponsored == sponsored) &&
+            (identical(other.has_sponsored_gifts, has_sponsored_gifts) ||
+                other.has_sponsored_gifts == has_sponsored_gifts) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, memberColor, membershipTitle);
+  int get hashCode => Object.hash(
+      runtimeType,
+      user_id,
+      membership_plan_id,
+      membership_status,
+      membership_id,
+      membership_title,
+      membership_color,
+      photo,
+      name,
+      storyCount,
+      sponsored,
+      has_sponsored_gifts,
+      shortestDistance);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorUserDetail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>
@@ -3838,23 +6528,51 @@ class _$VendorUserDetailImpl implements _VendorUserDetail {
 
 abstract class _VendorUserDetail implements VendorUserDetail {
   const factory _VendorUserDetail(
-          {@JsonKey(name: 'membership_color') final String? memberColor,
-          @JsonKey(name: 'membership_title') final String? membershipTitle}) =
-      _$VendorUserDetailImpl;
+      {final String? user_id,
+      final String? membership_plan_id,
+      final String? membership_status,
+      final String? membership_id,
+      final String? membership_title,
+      final String? membership_color,
+      final String? photo,
+      final String? name,
+      final int? storyCount,
+      final bool? sponsored,
+      final bool? has_sponsored_gifts,
+      final double? shortestDistance}) = _$VendorUserDetailImpl;
 
   factory _VendorUserDetail.fromJson(Map<String, dynamic> json) =
       _$VendorUserDetailImpl.fromJson;
 
-  @override // String? id,
-// String? name,
-// String? photo,
-  @JsonKey(name: 'membership_color')
-  String? get memberColor;
   @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
+  String? get user_id;
   @override
-  @JsonKey(ignore: true)
+  String? get membership_plan_id;
+  @override
+  String? get membership_status;
+  @override
+  String? get membership_id;
+  @override
+  String? get membership_title;
+  @override
+  String? get membership_color;
+  @override
+  String? get photo;
+  @override
+  String? get name;
+  @override
+  int? get storyCount;
+  @override
+  bool? get sponsored;
+  @override
+  bool? get has_sponsored_gifts;
+  @override
+  double? get shortestDistance;
+
+  /// Create a copy of VendorUserDetail
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorUserDetailImplCopyWith<_$VendorUserDetailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3876,8 +6594,12 @@ mixin _$RatingCounts {
   @JsonKey(name: '1')
   int? get one => throw _privateConstructorUsedError;
 
+  /// Serializes this RatingCounts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RatingCounts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RatingCountsCopyWith<RatingCounts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3906,6 +6628,8 @@ class _$RatingCountsCopyWithImpl<$Res, $Val extends RatingCounts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RatingCounts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3964,6 +6688,8 @@ class __$$RatingCountsImplCopyWithImpl<$Res>
       _$RatingCountsImpl _value, $Res Function(_$RatingCountsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RatingCounts
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4044,11 +6770,13 @@ class _$RatingCountsImpl implements _RatingCounts {
             (identical(other.one, one) || other.one == one));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, five, four, three, two, one);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RatingCounts
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RatingCountsImplCopyWith<_$RatingCountsImpl> get copyWith =>
@@ -4088,9 +6816,280 @@ abstract class _RatingCounts implements RatingCounts {
   @override
   @JsonKey(name: '1')
   int? get one;
+
+  /// Create a copy of RatingCounts
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RatingCountsImplCopyWith<_$RatingCountsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+usermodel _$usermodelFromJson(Map<String, dynamic> json) {
+  return _usermodel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$usermodel {
+  int get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at_formatted')
+  String get createdAtFormatted => throw _privateConstructorUsedError;
+  @JsonKey(name: 'photo_url')
+  String get photoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'story_count')
+  int get storyCount => throw _privateConstructorUsedError;
+
+  /// Serializes this usermodel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of usermodel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $usermodelCopyWith<usermodel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $usermodelCopyWith<$Res> {
+  factory $usermodelCopyWith(usermodel value, $Res Function(usermodel) then) =
+      _$usermodelCopyWithImpl<$Res, usermodel>;
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String username,
+      @JsonKey(name: 'created_at_formatted') String createdAtFormatted,
+      @JsonKey(name: 'photo_url') String photoUrl,
+      @JsonKey(name: 'story_count') int storyCount});
+}
+
+/// @nodoc
+class _$usermodelCopyWithImpl<$Res, $Val extends usermodel>
+    implements $usermodelCopyWith<$Res> {
+  _$usermodelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of usermodel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+    Object? createdAtFormatted = null,
+    Object? photoUrl = null,
+    Object? storyCount = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAtFormatted: null == createdAtFormatted
+          ? _value.createdAtFormatted
+          : createdAtFormatted // ignore: cast_nullable_to_non_nullable
+              as String,
+      photoUrl: null == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      storyCount: null == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$usermodelImplCopyWith<$Res>
+    implements $usermodelCopyWith<$Res> {
+  factory _$$usermodelImplCopyWith(
+          _$usermodelImpl value, $Res Function(_$usermodelImpl) then) =
+      __$$usermodelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      String name,
+      String username,
+      @JsonKey(name: 'created_at_formatted') String createdAtFormatted,
+      @JsonKey(name: 'photo_url') String photoUrl,
+      @JsonKey(name: 'story_count') int storyCount});
+}
+
+/// @nodoc
+class __$$usermodelImplCopyWithImpl<$Res>
+    extends _$usermodelCopyWithImpl<$Res, _$usermodelImpl>
+    implements _$$usermodelImplCopyWith<$Res> {
+  __$$usermodelImplCopyWithImpl(
+      _$usermodelImpl _value, $Res Function(_$usermodelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of usermodel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? name = null,
+    Object? username = null,
+    Object? createdAtFormatted = null,
+    Object? photoUrl = null,
+    Object? storyCount = null,
+  }) {
+    return _then(_$usermodelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAtFormatted: null == createdAtFormatted
+          ? _value.createdAtFormatted
+          : createdAtFormatted // ignore: cast_nullable_to_non_nullable
+              as String,
+      photoUrl: null == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String,
+      storyCount: null == storyCount
+          ? _value.storyCount
+          : storyCount // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$usermodelImpl implements _usermodel {
+  const _$usermodelImpl(
+      {required this.id,
+      required this.name,
+      required this.username,
+      @JsonKey(name: 'created_at_formatted') required this.createdAtFormatted,
+      @JsonKey(name: 'photo_url') required this.photoUrl,
+      @JsonKey(name: 'story_count') required this.storyCount});
+
+  factory _$usermodelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$usermodelImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String name;
+  @override
+  final String username;
+  @override
+  @JsonKey(name: 'created_at_formatted')
+  final String createdAtFormatted;
+  @override
+  @JsonKey(name: 'photo_url')
+  final String photoUrl;
+  @override
+  @JsonKey(name: 'story_count')
+  final int storyCount;
+
+  @override
+  String toString() {
+    return 'usermodel(id: $id, name: $name, username: $username, createdAtFormatted: $createdAtFormatted, photoUrl: $photoUrl, storyCount: $storyCount)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$usermodelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.createdAtFormatted, createdAtFormatted) ||
+                other.createdAtFormatted == createdAtFormatted) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
+            (identical(other.storyCount, storyCount) ||
+                other.storyCount == storyCount));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, name, username,
+      createdAtFormatted, photoUrl, storyCount);
+
+  /// Create a copy of usermodel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$usermodelImplCopyWith<_$usermodelImpl> get copyWith =>
+      __$$usermodelImplCopyWithImpl<_$usermodelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$usermodelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _usermodel implements usermodel {
+  const factory _usermodel(
+          {required final int id,
+          required final String name,
+          required final String username,
+          @JsonKey(name: 'created_at_formatted')
+          required final String createdAtFormatted,
+          @JsonKey(name: 'photo_url') required final String photoUrl,
+          @JsonKey(name: 'story_count') required final int storyCount}) =
+      _$usermodelImpl;
+
+  factory _usermodel.fromJson(Map<String, dynamic> json) =
+      _$usermodelImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  String get name;
+  @override
+  String get username;
+  @override
+  @JsonKey(name: 'created_at_formatted')
+  String get createdAtFormatted;
+  @override
+  @JsonKey(name: 'photo_url')
+  String get photoUrl;
+  @override
+  @JsonKey(name: 'story_count')
+  int get storyCount;
+
+  /// Create a copy of usermodel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$usermodelImplCopyWith<_$usermodelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -4112,8 +7111,12 @@ mixin _$UserDetailsProduct {
   int get subscribers => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
 
+  /// Serializes this UserDetailsProduct to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserDetailsProduct
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDetailsProductCopyWith<UserDetailsProduct> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4146,6 +7149,8 @@ class _$UserDetailsProductCopyWithImpl<$Res, $Val extends UserDetailsProduct>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserDetailsProduct
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4228,6 +7233,8 @@ class __$$UserDetailsProductImplCopyWithImpl<$Res>
       $Res Function(_$UserDetailsProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserDetailsProduct
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4348,7 +7355,7 @@ class _$UserDetailsProductImpl implements _UserDetailsProduct {
                 other.distance == distance));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -4362,7 +7369,9 @@ class _$UserDetailsProductImpl implements _UserDetailsProduct {
       subscribers,
       distance);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserDetailsProduct
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDetailsProductImplCopyWith<_$UserDetailsProductImpl> get copyWith =>
@@ -4413,9 +7422,198 @@ abstract class _UserDetailsProduct implements UserDetailsProduct {
   int get subscribers;
   @override
   double? get distance;
+
+  /// Create a copy of UserDetailsProduct
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserDetailsProductImplCopyWith<_$UserDetailsProductImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+MembershipPlan _$MembershipPlanFromJson(Map<String, dynamic> json) {
+  return _MembershipPlan.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MembershipPlan {
+  String? get id => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get color => throw _privateConstructorUsedError;
+
+  /// Serializes this MembershipPlan to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of MembershipPlan
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $MembershipPlanCopyWith<MembershipPlan> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MembershipPlanCopyWith<$Res> {
+  factory $MembershipPlanCopyWith(
+          MembershipPlan value, $Res Function(MembershipPlan) then) =
+      _$MembershipPlanCopyWithImpl<$Res, MembershipPlan>;
+  @useResult
+  $Res call({String? id, String? title, String? color});
+}
+
+/// @nodoc
+class _$MembershipPlanCopyWithImpl<$Res, $Val extends MembershipPlan>
+    implements $MembershipPlanCopyWith<$Res> {
+  _$MembershipPlanCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of MembershipPlan
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? color = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$MembershipPlanImplCopyWith<$Res>
+    implements $MembershipPlanCopyWith<$Res> {
+  factory _$$MembershipPlanImplCopyWith(_$MembershipPlanImpl value,
+          $Res Function(_$MembershipPlanImpl) then) =
+      __$$MembershipPlanImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? id, String? title, String? color});
+}
+
+/// @nodoc
+class __$$MembershipPlanImplCopyWithImpl<$Res>
+    extends _$MembershipPlanCopyWithImpl<$Res, _$MembershipPlanImpl>
+    implements _$$MembershipPlanImplCopyWith<$Res> {
+  __$$MembershipPlanImplCopyWithImpl(
+      _$MembershipPlanImpl _value, $Res Function(_$MembershipPlanImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of MembershipPlan
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? color = freezed,
+  }) {
+    return _then(_$MembershipPlanImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$MembershipPlanImpl implements _MembershipPlan {
+  const _$MembershipPlanImpl(
+      {required this.id, required this.title, required this.color});
+
+  factory _$MembershipPlanImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MembershipPlanImplFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String? title;
+  @override
+  final String? color;
+
+  @override
+  String toString() {
+    return 'MembershipPlan(id: $id, title: $title, color: $color)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MembershipPlanImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.color, color) || other.color == color));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title, color);
+
+  /// Create a copy of MembershipPlan
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MembershipPlanImplCopyWith<_$MembershipPlanImpl> get copyWith =>
+      __$$MembershipPlanImplCopyWithImpl<_$MembershipPlanImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MembershipPlanImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MembershipPlan implements MembershipPlan {
+  const factory _MembershipPlan(
+      {required final String? id,
+      required final String? title,
+      required final String? color}) = _$MembershipPlanImpl;
+
+  factory _MembershipPlan.fromJson(Map<String, dynamic> json) =
+      _$MembershipPlanImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get title;
+  @override
+  String? get color;
+
+  /// Create a copy of MembershipPlan
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MembershipPlanImplCopyWith<_$MembershipPlanImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -4429,12 +7627,13 @@ mixin _$Picture {
   String? get postId => throw _privateConstructorUsedError;
   String? get filename => throw _privateConstructorUsedError;
   String? get image_url => throw _privateConstructorUsedError;
-  String? get mimeType => throw _privateConstructorUsedError;
-  String? get position => throw _privateConstructorUsedError;
-  String? get active => throw _privateConstructorUsedError;
 
+  /// Serializes this Picture to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Picture
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PictureCopyWith<Picture> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -4443,14 +7642,7 @@ abstract class $PictureCopyWith<$Res> {
   factory $PictureCopyWith(Picture value, $Res Function(Picture) then) =
       _$PictureCopyWithImpl<$Res, Picture>;
   @useResult
-  $Res call(
-      {int? id,
-      String? postId,
-      String? filename,
-      String? image_url,
-      String? mimeType,
-      String? position,
-      String? active});
+  $Res call({int? id, String? postId, String? filename, String? image_url});
 }
 
 /// @nodoc
@@ -4463,6 +7655,8 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Picture
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4470,9 +7664,6 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
     Object? postId = freezed,
     Object? filename = freezed,
     Object? image_url = freezed,
-    Object? mimeType = freezed,
-    Object? position = freezed,
-    Object? active = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -4491,18 +7682,6 @@ class _$PictureCopyWithImpl<$Res, $Val extends Picture>
           ? _value.image_url
           : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mimeType: freezed == mimeType
-          ? _value.mimeType
-          : mimeType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      position: freezed == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -4514,14 +7693,7 @@ abstract class _$$PictureImplCopyWith<$Res> implements $PictureCopyWith<$Res> {
       __$$PictureImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int? id,
-      String? postId,
-      String? filename,
-      String? image_url,
-      String? mimeType,
-      String? position,
-      String? active});
+  $Res call({int? id, String? postId, String? filename, String? image_url});
 }
 
 /// @nodoc
@@ -4532,6 +7704,8 @@ class __$$PictureImplCopyWithImpl<$Res>
       _$PictureImpl _value, $Res Function(_$PictureImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Picture
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4539,9 +7713,6 @@ class __$$PictureImplCopyWithImpl<$Res>
     Object? postId = freezed,
     Object? filename = freezed,
     Object? image_url = freezed,
-    Object? mimeType = freezed,
-    Object? position = freezed,
-    Object? active = freezed,
   }) {
     return _then(_$PictureImpl(
       id: freezed == id
@@ -4560,18 +7731,6 @@ class __$$PictureImplCopyWithImpl<$Res>
           ? _value.image_url
           : image_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      mimeType: freezed == mimeType
-          ? _value.mimeType
-          : mimeType // ignore: cast_nullable_to_non_nullable
-              as String?,
-      position: freezed == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: freezed == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -4583,10 +7742,7 @@ class _$PictureImpl implements _Picture {
       {required this.id,
       required this.postId,
       required this.filename,
-      required this.image_url,
-      required this.mimeType,
-      required this.position,
-      required this.active});
+      required this.image_url});
 
   factory _$PictureImpl.fromJson(Map<String, dynamic> json) =>
       _$$PictureImplFromJson(json);
@@ -4599,16 +7755,10 @@ class _$PictureImpl implements _Picture {
   final String? filename;
   @override
   final String? image_url;
-  @override
-  final String? mimeType;
-  @override
-  final String? position;
-  @override
-  final String? active;
 
   @override
   String toString() {
-    return 'Picture(id: $id, postId: $postId, filename: $filename, image_url: $image_url, mimeType: $mimeType, position: $position, active: $active)';
+    return 'Picture(id: $id, postId: $postId, filename: $filename, image_url: $image_url)';
   }
 
   @override
@@ -4621,20 +7771,16 @@ class _$PictureImpl implements _Picture {
             (identical(other.filename, filename) ||
                 other.filename == filename) &&
             (identical(other.image_url, image_url) ||
-                other.image_url == image_url) &&
-            (identical(other.mimeType, mimeType) ||
-                other.mimeType == mimeType) &&
-            (identical(other.position, position) ||
-                other.position == position) &&
-            (identical(other.active, active) || other.active == active));
+                other.image_url == image_url));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, postId, filename, image_url, mimeType, position, active);
+  int get hashCode => Object.hash(runtimeType, id, postId, filename, image_url);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Picture
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PictureImplCopyWith<_$PictureImpl> get copyWith =>
@@ -4653,10 +7799,7 @@ abstract class _Picture implements Picture {
       {required final int? id,
       required final String? postId,
       required final String? filename,
-      required final String? image_url,
-      required final String? mimeType,
-      required final String? position,
-      required final String? active}) = _$PictureImpl;
+      required final String? image_url}) = _$PictureImpl;
 
   factory _Picture.fromJson(Map<String, dynamic> json) = _$PictureImpl.fromJson;
 
@@ -4668,14 +7811,11 @@ abstract class _Picture implements Picture {
   String? get filename;
   @override
   String? get image_url;
+
+  /// Create a copy of Picture
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String? get mimeType;
-  @override
-  String? get position;
-  @override
-  String? get active;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PictureImplCopyWith<_$PictureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4688,8 +7828,12 @@ ExtraModel _$ExtraModelFromJson(Map<String, dynamic> json) {
 mixin _$ExtraModel {
   Fields? get fields => throw _privateConstructorUsedError;
 
+  /// Serializes this ExtraModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ExtraModelCopyWith<ExtraModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4715,6 +7859,8 @@ class _$ExtraModelCopyWithImpl<$Res, $Val extends ExtraModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4728,6 +7874,8 @@ class _$ExtraModelCopyWithImpl<$Res, $Val extends ExtraModel>
     ) as $Val);
   }
 
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $FieldsCopyWith<$Res>? get fields {
@@ -4763,6 +7911,8 @@ class __$$ExtraModelImplCopyWithImpl<$Res>
       _$ExtraModelImpl _value, $Res Function(_$ExtraModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4801,11 +7951,13 @@ class _$ExtraModelImpl implements _ExtraModel {
             (identical(other.fields, fields) || other.fields == fields));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, fields);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ExtraModelImplCopyWith<_$ExtraModelImpl> get copyWith =>
@@ -4827,8 +7979,11 @@ abstract class _ExtraModel implements ExtraModel {
 
   @override
   Fields? get fields;
+
+  /// Create a copy of ExtraModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ExtraModelImplCopyWith<_$ExtraModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4839,11 +7994,15 @@ Fields _$FieldsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Fields {
-// Map<String, dynamic>? headers,
+  Map<String, dynamic>? get headers => throw _privateConstructorUsedError;
   Original? get original => throw _privateConstructorUsedError;
 
+  /// Serializes this Fields to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FieldsCopyWith<Fields> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -4852,7 +8011,7 @@ abstract class $FieldsCopyWith<$Res> {
   factory $FieldsCopyWith(Fields value, $Res Function(Fields) then) =
       _$FieldsCopyWithImpl<$Res, Fields>;
   @useResult
-  $Res call({Original? original});
+  $Res call({Map<String, dynamic>? headers, Original? original});
 
   $OriginalCopyWith<$Res>? get original;
 }
@@ -4867,12 +8026,19 @@ class _$FieldsCopyWithImpl<$Res, $Val extends Fields>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? headers = freezed,
     Object? original = freezed,
   }) {
     return _then(_value.copyWith(
+      headers: freezed == headers
+          ? _value.headers
+          : headers // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
       original: freezed == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
@@ -4880,6 +8046,8 @@ class _$FieldsCopyWithImpl<$Res, $Val extends Fields>
     ) as $Val);
   }
 
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $OriginalCopyWith<$Res>? get original {
@@ -4900,7 +8068,7 @@ abstract class _$$FieldsImplCopyWith<$Res> implements $FieldsCopyWith<$Res> {
       __$$FieldsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Original? original});
+  $Res call({Map<String, dynamic>? headers, Original? original});
 
   @override
   $OriginalCopyWith<$Res>? get original;
@@ -4914,12 +8082,19 @@ class __$$FieldsImplCopyWithImpl<$Res>
       _$FieldsImpl _value, $Res Function(_$FieldsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? headers = freezed,
     Object? original = freezed,
   }) {
     return _then(_$FieldsImpl(
+      headers: freezed == headers
+          ? _value._headers
+          : headers // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>?,
       original: freezed == original
           ? _value.original
           : original // ignore: cast_nullable_to_non_nullable
@@ -4931,18 +8106,28 @@ class __$$FieldsImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FieldsImpl implements _Fields {
-  const _$FieldsImpl({this.original});
+  const _$FieldsImpl({final Map<String, dynamic>? headers, this.original})
+      : _headers = headers;
 
   factory _$FieldsImpl.fromJson(Map<String, dynamic> json) =>
       _$$FieldsImplFromJson(json);
 
-// Map<String, dynamic>? headers,
+  final Map<String, dynamic>? _headers;
+  @override
+  Map<String, dynamic>? get headers {
+    final value = _headers;
+    if (value == null) return null;
+    if (_headers is EqualUnmodifiableMapView) return _headers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
   @override
   final Original? original;
 
   @override
   String toString() {
-    return 'Fields(original: $original)';
+    return 'Fields(headers: $headers, original: $original)';
   }
 
   @override
@@ -4950,15 +8135,19 @@ class _$FieldsImpl implements _Fields {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FieldsImpl &&
+            const DeepCollectionEquality().equals(other._headers, _headers) &&
             (identical(other.original, original) ||
                 other.original == original));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, original);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_headers), original);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldsImplCopyWith<_$FieldsImpl> get copyWith =>
@@ -4973,14 +8162,21 @@ class _$FieldsImpl implements _Fields {
 }
 
 abstract class _Fields implements Fields {
-  const factory _Fields({final Original? original}) = _$FieldsImpl;
+  const factory _Fields(
+      {final Map<String, dynamic>? headers,
+      final Original? original}) = _$FieldsImpl;
 
   factory _Fields.fromJson(Map<String, dynamic> json) = _$FieldsImpl.fromJson;
 
-  @override // Map<String, dynamic>? headers,
-  Original? get original;
   @override
-  @JsonKey(ignore: true)
+  Map<String, dynamic>? get headers;
+  @override
+  Original? get original;
+
+  /// Create a copy of Fields
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FieldsImplCopyWith<_$FieldsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4993,10 +8189,14 @@ Original _$OriginalFromJson(Map<String, dynamic> json) {
 mixin _$Original {
 // required bool success,
   String? get message => throw _privateConstructorUsedError;
-  FieldDetails? get result => throw _privateConstructorUsedError;
+  List<FieldDetails>? get result => throw _privateConstructorUsedError;
 
+  /// Serializes this Original to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Original
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OriginalCopyWith<Original> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5006,9 +8206,7 @@ abstract class $OriginalCopyWith<$Res> {
   factory $OriginalCopyWith(Original value, $Res Function(Original) then) =
       _$OriginalCopyWithImpl<$Res, Original>;
   @useResult
-  $Res call({String? message, FieldDetails? result});
-
-  $FieldDetailsCopyWith<$Res>? get result;
+  $Res call({String? message, List<FieldDetails>? result});
 }
 
 /// @nodoc
@@ -5021,6 +8219,8 @@ class _$OriginalCopyWithImpl<$Res, $Val extends Original>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Original
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5035,20 +8235,8 @@ class _$OriginalCopyWithImpl<$Res, $Val extends Original>
       result: freezed == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
-              as FieldDetails?,
+              as List<FieldDetails>?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FieldDetailsCopyWith<$Res>? get result {
-    if (_value.result == null) {
-      return null;
-    }
-
-    return $FieldDetailsCopyWith<$Res>(_value.result!, (value) {
-      return _then(_value.copyWith(result: value) as $Val);
-    });
   }
 }
 
@@ -5060,10 +8248,7 @@ abstract class _$$OriginalImplCopyWith<$Res>
       __$$OriginalImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? message, FieldDetails? result});
-
-  @override
-  $FieldDetailsCopyWith<$Res>? get result;
+  $Res call({String? message, List<FieldDetails>? result});
 }
 
 /// @nodoc
@@ -5074,6 +8259,8 @@ class __$$OriginalImplCopyWithImpl<$Res>
       _$OriginalImpl _value, $Res Function(_$OriginalImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Original
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5086,9 +8273,9 @@ class __$$OriginalImplCopyWithImpl<$Res>
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
       result: freezed == result
-          ? _value.result
+          ? _value._result
           : result // ignore: cast_nullable_to_non_nullable
-              as FieldDetails?,
+              as List<FieldDetails>?,
     ));
   }
 }
@@ -5096,7 +8283,8 @@ class __$$OriginalImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$OriginalImpl implements _Original {
-  const _$OriginalImpl({this.message, this.result});
+  const _$OriginalImpl({this.message, final List<FieldDetails>? result})
+      : _result = result;
 
   factory _$OriginalImpl.fromJson(Map<String, dynamic> json) =>
       _$$OriginalImplFromJson(json);
@@ -5104,8 +8292,15 @@ class _$OriginalImpl implements _Original {
 // required bool success,
   @override
   final String? message;
+  final List<FieldDetails>? _result;
   @override
-  final FieldDetails? result;
+  List<FieldDetails>? get result {
+    final value = _result;
+    if (value == null) return null;
+    if (_result is EqualUnmodifiableListView) return _result;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
@@ -5118,14 +8313,17 @@ class _$OriginalImpl implements _Original {
         (other.runtimeType == runtimeType &&
             other is _$OriginalImpl &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.result, result) || other.result == result));
+            const DeepCollectionEquality().equals(other._result, _result));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, message, result);
+  int get hashCode => Object.hash(
+      runtimeType, message, const DeepCollectionEquality().hash(_result));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Original
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OriginalImplCopyWith<_$OriginalImpl> get copyWith =>
@@ -5140,18 +8338,23 @@ class _$OriginalImpl implements _Original {
 }
 
 abstract class _Original implements Original {
-  const factory _Original({final String? message, final FieldDetails? result}) =
-      _$OriginalImpl;
+  const factory _Original(
+      {final String? message,
+      final List<FieldDetails>? result}) = _$OriginalImpl;
 
   factory _Original.fromJson(Map<String, dynamic> json) =
       _$OriginalImpl.fromJson;
 
-  @override // required bool success,
+// required bool success,
+  @override
   String? get message;
   @override
-  FieldDetails? get result;
+  List<FieldDetails>? get result;
+
+  /// Create a copy of Original
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OriginalImplCopyWith<_$OriginalImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5162,27 +8365,26 @@ FieldDetails _$FieldDetailsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FieldDetails {
-  @JsonKey(name: '4')
-  AvailableColor? get field4 => throw _privateConstructorUsedError;
-  @JsonKey(name: '5')
-  AvailableColor? get field5 => throw _privateConstructorUsedError;
-  @JsonKey(name: '6')
-  AvailableColor? get field6 => throw _privateConstructorUsedError;
-  @JsonKey(name: '10')
-  AvailableColor? get field10 => throw _privateConstructorUsedError;
-  @JsonKey(name: '11')
-  AvailableColor? get field11 => throw _privateConstructorUsedError;
-  @JsonKey(name: '12')
-  AvailableColor? get field12 => throw _privateConstructorUsedError;
-  @JsonKey(name: '13')
-  AvailableColor? get field13 => throw _privateConstructorUsedError;
-  @JsonKey(name: '14')
-  AvailableColor? get field14 => throw _privateConstructorUsedError;
-  @JsonKey(name: '15')
-  AvailableColor? get field15 => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'belongs_to')
+  String? get belongsTo => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'default_value')
+  @DefaultValueConverter()
+  dynamic get defaultValue =>
+      throw _privateConstructorUsedError; // Can be String or JSON
+  String? get required => throw _privateConstructorUsedError;
+  @JsonKey(name: 'use_as_filter')
+  String? get useAsFilter => throw _privateConstructorUsedError;
+  List<FieldOption>? get options => throw _privateConstructorUsedError;
 
+  /// Serializes this FieldDetails to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FieldDetails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FieldDetailsCopyWith<FieldDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5194,25 +8396,16 @@ abstract class $FieldDetailsCopyWith<$Res> {
       _$FieldDetailsCopyWithImpl<$Res, FieldDetails>;
   @useResult
   $Res call(
-      {@JsonKey(name: '4') AvailableColor? field4,
-      @JsonKey(name: '5') AvailableColor? field5,
-      @JsonKey(name: '6') AvailableColor? field6,
-      @JsonKey(name: '10') AvailableColor? field10,
-      @JsonKey(name: '11') AvailableColor? field11,
-      @JsonKey(name: '12') AvailableColor? field12,
-      @JsonKey(name: '13') AvailableColor? field13,
-      @JsonKey(name: '14') AvailableColor? field14,
-      @JsonKey(name: '15') AvailableColor? field15});
-
-  $AvailableColorCopyWith<$Res>? get field4;
-  $AvailableColorCopyWith<$Res>? get field5;
-  $AvailableColorCopyWith<$Res>? get field6;
-  $AvailableColorCopyWith<$Res>? get field10;
-  $AvailableColorCopyWith<$Res>? get field11;
-  $AvailableColorCopyWith<$Res>? get field12;
-  $AvailableColorCopyWith<$Res>? get field13;
-  $AvailableColorCopyWith<$Res>? get field14;
-  $AvailableColorCopyWith<$Res>? get field15;
+      {int? id,
+      @JsonKey(name: 'belongs_to') String? belongsTo,
+      String? name,
+      String? type,
+      @JsonKey(name: 'default_value')
+      @DefaultValueConverter()
+      dynamic defaultValue,
+      String? required,
+      @JsonKey(name: 'use_as_filter') String? useAsFilter,
+      List<FieldOption>? options});
 }
 
 /// @nodoc
@@ -5225,165 +8418,54 @@ class _$FieldDetailsCopyWithImpl<$Res, $Val extends FieldDetails>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FieldDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field4 = freezed,
-    Object? field5 = freezed,
-    Object? field6 = freezed,
-    Object? field10 = freezed,
-    Object? field11 = freezed,
-    Object? field12 = freezed,
-    Object? field13 = freezed,
-    Object? field14 = freezed,
-    Object? field15 = freezed,
+    Object? id = freezed,
+    Object? belongsTo = freezed,
+    Object? name = freezed,
+    Object? type = freezed,
+    Object? defaultValue = freezed,
+    Object? required = freezed,
+    Object? useAsFilter = freezed,
+    Object? options = freezed,
   }) {
     return _then(_value.copyWith(
-      field4: freezed == field4
-          ? _value.field4
-          : field4 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field5: freezed == field5
-          ? _value.field5
-          : field5 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field6: freezed == field6
-          ? _value.field6
-          : field6 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field10: freezed == field10
-          ? _value.field10
-          : field10 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field11: freezed == field11
-          ? _value.field11
-          : field11 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field12: freezed == field12
-          ? _value.field12
-          : field12 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field13: freezed == field13
-          ? _value.field13
-          : field13 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field14: freezed == field14
-          ? _value.field14
-          : field14 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field15: freezed == field15
-          ? _value.field15
-          : field15 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      belongsTo: freezed == belongsTo
+          ? _value.belongsTo
+          : belongsTo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      defaultValue: freezed == defaultValue
+          ? _value.defaultValue
+          : defaultValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      required: freezed == required
+          ? _value.required
+          : required // ignore: cast_nullable_to_non_nullable
+              as String?,
+      useAsFilter: freezed == useAsFilter
+          ? _value.useAsFilter
+          : useAsFilter // ignore: cast_nullable_to_non_nullable
+              as String?,
+      options: freezed == options
+          ? _value.options
+          : options // ignore: cast_nullable_to_non_nullable
+              as List<FieldOption>?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field4 {
-    if (_value.field4 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field4!, (value) {
-      return _then(_value.copyWith(field4: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field5 {
-    if (_value.field5 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field5!, (value) {
-      return _then(_value.copyWith(field5: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field6 {
-    if (_value.field6 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field6!, (value) {
-      return _then(_value.copyWith(field6: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field10 {
-    if (_value.field10 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field10!, (value) {
-      return _then(_value.copyWith(field10: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field11 {
-    if (_value.field11 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field11!, (value) {
-      return _then(_value.copyWith(field11: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field12 {
-    if (_value.field12 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field12!, (value) {
-      return _then(_value.copyWith(field12: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field13 {
-    if (_value.field13 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field13!, (value) {
-      return _then(_value.copyWith(field13: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field14 {
-    if (_value.field14 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field14!, (value) {
-      return _then(_value.copyWith(field14: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AvailableColorCopyWith<$Res>? get field15 {
-    if (_value.field15 == null) {
-      return null;
-    }
-
-    return $AvailableColorCopyWith<$Res>(_value.field15!, (value) {
-      return _then(_value.copyWith(field15: value) as $Val);
-    });
   }
 }
 
@@ -5396,34 +8478,16 @@ abstract class _$$FieldDetailsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '4') AvailableColor? field4,
-      @JsonKey(name: '5') AvailableColor? field5,
-      @JsonKey(name: '6') AvailableColor? field6,
-      @JsonKey(name: '10') AvailableColor? field10,
-      @JsonKey(name: '11') AvailableColor? field11,
-      @JsonKey(name: '12') AvailableColor? field12,
-      @JsonKey(name: '13') AvailableColor? field13,
-      @JsonKey(name: '14') AvailableColor? field14,
-      @JsonKey(name: '15') AvailableColor? field15});
-
-  @override
-  $AvailableColorCopyWith<$Res>? get field4;
-  @override
-  $AvailableColorCopyWith<$Res>? get field5;
-  @override
-  $AvailableColorCopyWith<$Res>? get field6;
-  @override
-  $AvailableColorCopyWith<$Res>? get field10;
-  @override
-  $AvailableColorCopyWith<$Res>? get field11;
-  @override
-  $AvailableColorCopyWith<$Res>? get field12;
-  @override
-  $AvailableColorCopyWith<$Res>? get field13;
-  @override
-  $AvailableColorCopyWith<$Res>? get field14;
-  @override
-  $AvailableColorCopyWith<$Res>? get field15;
+      {int? id,
+      @JsonKey(name: 'belongs_to') String? belongsTo,
+      String? name,
+      String? type,
+      @JsonKey(name: 'default_value')
+      @DefaultValueConverter()
+      dynamic defaultValue,
+      String? required,
+      @JsonKey(name: 'use_as_filter') String? useAsFilter,
+      List<FieldOption>? options});
 }
 
 /// @nodoc
@@ -5434,56 +8498,53 @@ class __$$FieldDetailsImplCopyWithImpl<$Res>
       _$FieldDetailsImpl _value, $Res Function(_$FieldDetailsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FieldDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field4 = freezed,
-    Object? field5 = freezed,
-    Object? field6 = freezed,
-    Object? field10 = freezed,
-    Object? field11 = freezed,
-    Object? field12 = freezed,
-    Object? field13 = freezed,
-    Object? field14 = freezed,
-    Object? field15 = freezed,
+    Object? id = freezed,
+    Object? belongsTo = freezed,
+    Object? name = freezed,
+    Object? type = freezed,
+    Object? defaultValue = freezed,
+    Object? required = freezed,
+    Object? useAsFilter = freezed,
+    Object? options = freezed,
   }) {
     return _then(_$FieldDetailsImpl(
-      field4: freezed == field4
-          ? _value.field4
-          : field4 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field5: freezed == field5
-          ? _value.field5
-          : field5 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field6: freezed == field6
-          ? _value.field6
-          : field6 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field10: freezed == field10
-          ? _value.field10
-          : field10 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field11: freezed == field11
-          ? _value.field11
-          : field11 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field12: freezed == field12
-          ? _value.field12
-          : field12 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field13: freezed == field13
-          ? _value.field13
-          : field13 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field14: freezed == field14
-          ? _value.field14
-          : field14 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
-      field15: freezed == field15
-          ? _value.field15
-          : field15 // ignore: cast_nullable_to_non_nullable
-              as AvailableColor?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      belongsTo: freezed == belongsTo
+          ? _value.belongsTo
+          : belongsTo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      defaultValue: freezed == defaultValue
+          ? _value.defaultValue
+          : defaultValue // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      required: freezed == required
+          ? _value.required
+          : required // ignore: cast_nullable_to_non_nullable
+              as String?,
+      useAsFilter: freezed == useAsFilter
+          ? _value.useAsFilter
+          : useAsFilter // ignore: cast_nullable_to_non_nullable
+              as String?,
+      options: freezed == options
+          ? _value._options
+          : options // ignore: cast_nullable_to_non_nullable
+              as List<FieldOption>?,
     ));
   }
 }
@@ -5492,50 +8553,53 @@ class __$$FieldDetailsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FieldDetailsImpl implements _FieldDetails {
   const _$FieldDetailsImpl(
-      {@JsonKey(name: '4') this.field4,
-      @JsonKey(name: '5') this.field5,
-      @JsonKey(name: '6') this.field6,
-      @JsonKey(name: '10') this.field10,
-      @JsonKey(name: '11') this.field11,
-      @JsonKey(name: '12') this.field12,
-      @JsonKey(name: '13') this.field13,
-      @JsonKey(name: '14') this.field14,
-      @JsonKey(name: '15') this.field15});
+      {this.id,
+      @JsonKey(name: 'belongs_to') this.belongsTo,
+      this.name,
+      this.type,
+      @JsonKey(name: 'default_value')
+      @DefaultValueConverter()
+      this.defaultValue,
+      this.required,
+      @JsonKey(name: 'use_as_filter') this.useAsFilter,
+      final List<FieldOption>? options})
+      : _options = options;
 
   factory _$FieldDetailsImpl.fromJson(Map<String, dynamic> json) =>
       _$$FieldDetailsImplFromJson(json);
 
   @override
-  @JsonKey(name: '4')
-  final AvailableColor? field4;
+  final int? id;
   @override
-  @JsonKey(name: '5')
-  final AvailableColor? field5;
+  @JsonKey(name: 'belongs_to')
+  final String? belongsTo;
   @override
-  @JsonKey(name: '6')
-  final AvailableColor? field6;
+  final String? name;
   @override
-  @JsonKey(name: '10')
-  final AvailableColor? field10;
+  final String? type;
   @override
-  @JsonKey(name: '11')
-  final AvailableColor? field11;
+  @JsonKey(name: 'default_value')
+  @DefaultValueConverter()
+  final dynamic defaultValue;
+// Can be String or JSON
   @override
-  @JsonKey(name: '12')
-  final AvailableColor? field12;
+  final String? required;
   @override
-  @JsonKey(name: '13')
-  final AvailableColor? field13;
+  @JsonKey(name: 'use_as_filter')
+  final String? useAsFilter;
+  final List<FieldOption>? _options;
   @override
-  @JsonKey(name: '14')
-  final AvailableColor? field14;
-  @override
-  @JsonKey(name: '15')
-  final AvailableColor? field15;
+  List<FieldOption>? get options {
+    final value = _options;
+    if (value == null) return null;
+    if (_options is EqualUnmodifiableListView) return _options;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'FieldDetails(field4: $field4, field5: $field5, field6: $field6, field10: $field10, field11: $field11, field12: $field12, field13: $field13, field14: $field14, field15: $field15)';
+    return 'FieldDetails(id: $id, belongsTo: $belongsTo, name: $name, type: $type, defaultValue: $defaultValue, required: $required, useAsFilter: $useAsFilter, options: $options)';
   }
 
   @override
@@ -5543,23 +8607,36 @@ class _$FieldDetailsImpl implements _FieldDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FieldDetailsImpl &&
-            (identical(other.field4, field4) || other.field4 == field4) &&
-            (identical(other.field5, field5) || other.field5 == field5) &&
-            (identical(other.field6, field6) || other.field6 == field6) &&
-            (identical(other.field10, field10) || other.field10 == field10) &&
-            (identical(other.field11, field11) || other.field11 == field11) &&
-            (identical(other.field12, field12) || other.field12 == field12) &&
-            (identical(other.field13, field13) || other.field13 == field13) &&
-            (identical(other.field14, field14) || other.field14 == field14) &&
-            (identical(other.field15, field15) || other.field15 == field15));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.belongsTo, belongsTo) ||
+                other.belongsTo == belongsTo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality()
+                .equals(other.defaultValue, defaultValue) &&
+            (identical(other.required, required) ||
+                other.required == required) &&
+            (identical(other.useAsFilter, useAsFilter) ||
+                other.useAsFilter == useAsFilter) &&
+            const DeepCollectionEquality().equals(other._options, _options));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, field4, field5, field6, field10,
-      field11, field12, field13, field14, field15);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      belongsTo,
+      name,
+      type,
+      const DeepCollectionEquality().hash(defaultValue),
+      required,
+      useAsFilter,
+      const DeepCollectionEquality().hash(_options));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FieldDetails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldDetailsImplCopyWith<_$FieldDetailsImpl> get copyWith =>
@@ -5575,49 +8652,266 @@ class _$FieldDetailsImpl implements _FieldDetails {
 
 abstract class _FieldDetails implements FieldDetails {
   const factory _FieldDetails(
-      {@JsonKey(name: '4') final AvailableColor? field4,
-      @JsonKey(name: '5') final AvailableColor? field5,
-      @JsonKey(name: '6') final AvailableColor? field6,
-      @JsonKey(name: '10') final AvailableColor? field10,
-      @JsonKey(name: '11') final AvailableColor? field11,
-      @JsonKey(name: '12') final AvailableColor? field12,
-      @JsonKey(name: '13') final AvailableColor? field13,
-      @JsonKey(name: '14') final AvailableColor? field14,
-      @JsonKey(name: '15') final AvailableColor? field15}) = _$FieldDetailsImpl;
+      {final int? id,
+      @JsonKey(name: 'belongs_to') final String? belongsTo,
+      final String? name,
+      final String? type,
+      @JsonKey(name: 'default_value')
+      @DefaultValueConverter()
+      final dynamic defaultValue,
+      final String? required,
+      @JsonKey(name: 'use_as_filter') final String? useAsFilter,
+      final List<FieldOption>? options}) = _$FieldDetailsImpl;
 
   factory _FieldDetails.fromJson(Map<String, dynamic> json) =
       _$FieldDetailsImpl.fromJson;
 
   @override
-  @JsonKey(name: '4')
-  AvailableColor? get field4;
+  int? get id;
   @override
-  @JsonKey(name: '5')
-  AvailableColor? get field5;
+  @JsonKey(name: 'belongs_to')
+  String? get belongsTo;
   @override
-  @JsonKey(name: '6')
-  AvailableColor? get field6;
+  String? get name;
   @override
-  @JsonKey(name: '10')
-  AvailableColor? get field10;
+  String? get type;
   @override
-  @JsonKey(name: '11')
-  AvailableColor? get field11;
+  @JsonKey(name: 'default_value')
+  @DefaultValueConverter()
+  dynamic get defaultValue; // Can be String or JSON
   @override
-  @JsonKey(name: '12')
-  AvailableColor? get field12;
+  String? get required;
   @override
-  @JsonKey(name: '13')
-  AvailableColor? get field13;
+  @JsonKey(name: 'use_as_filter')
+  String? get useAsFilter;
   @override
-  @JsonKey(name: '14')
-  AvailableColor? get field14;
+  List<FieldOption>? get options;
+
+  /// Create a copy of FieldDetails
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(name: '15')
-  AvailableColor? get field15;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FieldDetailsImplCopyWith<_$FieldDetailsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+FieldOption _$FieldOptionFromJson(Map<String, dynamic> json) {
+  return _FieldOption.fromJson(json);
+}
+
+/// @nodoc
+mixin _$FieldOption {
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'field_id')
+  String? get fieldId => throw _privateConstructorUsedError;
+  String? get value => throw _privateConstructorUsedError;
+  @JsonKey(name: 'parent_id')
+  String? get parentId => throw _privateConstructorUsedError;
+
+  /// Serializes this FieldOption to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of FieldOption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $FieldOptionCopyWith<FieldOption> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FieldOptionCopyWith<$Res> {
+  factory $FieldOptionCopyWith(
+          FieldOption value, $Res Function(FieldOption) then) =
+      _$FieldOptionCopyWithImpl<$Res, FieldOption>;
+  @useResult
+  $Res call(
+      {int? id,
+      @JsonKey(name: 'field_id') String? fieldId,
+      String? value,
+      @JsonKey(name: 'parent_id') String? parentId});
+}
+
+/// @nodoc
+class _$FieldOptionCopyWithImpl<$Res, $Val extends FieldOption>
+    implements $FieldOptionCopyWith<$Res> {
+  _$FieldOptionCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of FieldOption
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? fieldId = freezed,
+    Object? value = freezed,
+    Object? parentId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      fieldId: freezed == fieldId
+          ? _value.fieldId
+          : fieldId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$FieldOptionImplCopyWith<$Res>
+    implements $FieldOptionCopyWith<$Res> {
+  factory _$$FieldOptionImplCopyWith(
+          _$FieldOptionImpl value, $Res Function(_$FieldOptionImpl) then) =
+      __$$FieldOptionImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int? id,
+      @JsonKey(name: 'field_id') String? fieldId,
+      String? value,
+      @JsonKey(name: 'parent_id') String? parentId});
+}
+
+/// @nodoc
+class __$$FieldOptionImplCopyWithImpl<$Res>
+    extends _$FieldOptionCopyWithImpl<$Res, _$FieldOptionImpl>
+    implements _$$FieldOptionImplCopyWith<$Res> {
+  __$$FieldOptionImplCopyWithImpl(
+      _$FieldOptionImpl _value, $Res Function(_$FieldOptionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FieldOption
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? fieldId = freezed,
+    Object? value = freezed,
+    Object? parentId = freezed,
+  }) {
+    return _then(_$FieldOptionImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      fieldId: freezed == fieldId
+          ? _value.fieldId
+          : fieldId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      value: freezed == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      parentId: freezed == parentId
+          ? _value.parentId
+          : parentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$FieldOptionImpl implements _FieldOption {
+  const _$FieldOptionImpl(
+      {this.id,
+      @JsonKey(name: 'field_id') this.fieldId,
+      this.value,
+      @JsonKey(name: 'parent_id') this.parentId});
+
+  factory _$FieldOptionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FieldOptionImplFromJson(json);
+
+  @override
+  final int? id;
+  @override
+  @JsonKey(name: 'field_id')
+  final String? fieldId;
+  @override
+  final String? value;
+  @override
+  @JsonKey(name: 'parent_id')
+  final String? parentId;
+
+  @override
+  String toString() {
+    return 'FieldOption(id: $id, fieldId: $fieldId, value: $value, parentId: $parentId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FieldOptionImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.fieldId, fieldId) || other.fieldId == fieldId) &&
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.parentId, parentId) ||
+                other.parentId == parentId));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, fieldId, value, parentId);
+
+  /// Create a copy of FieldOption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FieldOptionImplCopyWith<_$FieldOptionImpl> get copyWith =>
+      __$$FieldOptionImplCopyWithImpl<_$FieldOptionImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$FieldOptionImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _FieldOption implements FieldOption {
+  const factory _FieldOption(
+      {final int? id,
+      @JsonKey(name: 'field_id') final String? fieldId,
+      final String? value,
+      @JsonKey(name: 'parent_id') final String? parentId}) = _$FieldOptionImpl;
+
+  factory _FieldOption.fromJson(Map<String, dynamic> json) =
+      _$FieldOptionImpl.fromJson;
+
+  @override
+  int? get id;
+  @override
+  @JsonKey(name: 'field_id')
+  String? get fieldId;
+  @override
+  String? get value;
+  @override
+  @JsonKey(name: 'parent_id')
+  String? get parentId;
+
+  /// Create a copy of FieldOption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FieldOptionImplCopyWith<_$FieldOptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -5630,8 +8924,12 @@ mixin _$ColorOption {
 // int? id,
   String? get value => throw _privateConstructorUsedError;
 
+  /// Serializes this ColorOption to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ColorOption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ColorOptionCopyWith<ColorOption> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5655,6 +8953,8 @@ class _$ColorOptionCopyWithImpl<$Res, $Val extends ColorOption>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ColorOption
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5688,6 +8988,8 @@ class __$$ColorOptionImplCopyWithImpl<$Res>
       _$ColorOptionImpl _value, $Res Function(_$ColorOptionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ColorOption
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5727,11 +9029,13 @@ class _$ColorOptionImpl implements _ColorOption {
             (identical(other.value, value) || other.value == value));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ColorOption
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ColorOptionImplCopyWith<_$ColorOptionImpl> get copyWith =>
@@ -5751,10 +9055,14 @@ abstract class _ColorOption implements ColorOption {
   factory _ColorOption.fromJson(Map<String, dynamic> json) =
       _$ColorOptionImpl.fromJson;
 
-  @override // int? id,
-  String? get value;
+// int? id,
   @override
-  @JsonKey(ignore: true)
+  String? get value;
+
+  /// Create a copy of ColorOption
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ColorOptionImplCopyWith<_$ColorOptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5765,21 +9073,16 @@ AvailableColor _$AvailableColorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AvailableColor {
-  @JsonKey(name: 'belongs_to')
-  String get belongsTo => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
-  int? get max =>
-      throw _privateConstructorUsedError; // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-  String get required => throw _privateConstructorUsedError;
-  @JsonKey(name: 'use_as_filter')
-  String get useAsFilter => throw _privateConstructorUsedError;
-  String? get help => throw _privateConstructorUsedError;
-  String get active => throw _privateConstructorUsedError;
-  List<Option> get options => throw _privateConstructorUsedError;
+  List<Option>? get options => throw _privateConstructorUsedError;
 
+  /// Serializes this AvailableColor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AvailableColor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AvailableColorCopyWith<AvailableColor> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5790,16 +9093,7 @@ abstract class $AvailableColorCopyWith<$Res> {
           AvailableColor value, $Res Function(AvailableColor) then) =
       _$AvailableColorCopyWithImpl<$Res, AvailableColor>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'belongs_to') String belongsTo,
-      String name,
-      String type,
-      int? max,
-      String required,
-      @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
-      List<Option> options});
+  $Res call({String name, String type, List<Option>? options});
 }
 
 /// @nodoc
@@ -5812,24 +9106,16 @@ class _$AvailableColorCopyWithImpl<$Res, $Val extends AvailableColor>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AvailableColor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
-    Object? required = null,
-    Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
-    Object? options = null,
+    Object? options = freezed,
   }) {
     return _then(_value.copyWith(
-      belongsTo: null == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -5838,30 +9124,10 @@ class _$AvailableColorCopyWithImpl<$Res, $Val extends AvailableColor>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
-      required: null == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as String,
-      useAsFilter: null == useAsFilter
-          ? _value.useAsFilter
-          : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
-      options: null == options
+      options: freezed == options
           ? _value.options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
     ) as $Val);
   }
 }
@@ -5874,16 +9140,7 @@ abstract class _$$AvailableColorImplCopyWith<$Res>
       __$$AvailableColorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'belongs_to') String belongsTo,
-      String name,
-      String type,
-      int? max,
-      String required,
-      @JsonKey(name: 'use_as_filter') String useAsFilter,
-      String? help,
-      String active,
-      List<Option> options});
+  $Res call({String name, String type, List<Option>? options});
 }
 
 /// @nodoc
@@ -5894,24 +9151,16 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
       _$AvailableColorImpl _value, $Res Function(_$AvailableColorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AvailableColor
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? belongsTo = null,
     Object? name = null,
     Object? type = null,
-    Object? max = freezed,
-    Object? required = null,
-    Object? useAsFilter = null,
-    Object? help = freezed,
-    Object? active = null,
-    Object? options = null,
+    Object? options = freezed,
   }) {
     return _then(_$AvailableColorImpl(
-      belongsTo: null == belongsTo
-          ? _value.belongsTo
-          : belongsTo // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -5920,30 +9169,10 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      max: freezed == max
-          ? _value.max
-          : max // ignore: cast_nullable_to_non_nullable
-              as int?,
-      required: null == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as String,
-      useAsFilter: null == useAsFilter
-          ? _value.useAsFilter
-          : useAsFilter // ignore: cast_nullable_to_non_nullable
-              as String,
-      help: freezed == help
-          ? _value.help
-          : help // ignore: cast_nullable_to_non_nullable
-              as String?,
-      active: null == active
-          ? _value.active
-          : active // ignore: cast_nullable_to_non_nullable
-              as String,
-      options: null == options
+      options: freezed == options
           ? _value._options
           : options // ignore: cast_nullable_to_non_nullable
-              as List<Option>,
+              as List<Option>?,
     ));
   }
 }
@@ -5952,50 +9181,29 @@ class __$$AvailableColorImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AvailableColorImpl implements _AvailableColor {
   const _$AvailableColorImpl(
-      {@JsonKey(name: 'belongs_to') required this.belongsTo,
-      required this.name,
-      required this.type,
-      this.max,
-      required this.required,
-      @JsonKey(name: 'use_as_filter') required this.useAsFilter,
-      this.help,
-      required this.active,
-      required final List<Option> options})
+      {required this.name, required this.type, final List<Option>? options})
       : _options = options;
 
   factory _$AvailableColorImpl.fromJson(Map<String, dynamic> json) =>
       _$$AvailableColorImplFromJson(json);
 
   @override
-  @JsonKey(name: 'belongs_to')
-  final String belongsTo;
-  @override
   final String name;
   @override
   final String type;
+  final List<Option>? _options;
   @override
-  final int? max;
-// @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-  @override
-  final String required;
-  @override
-  @JsonKey(name: 'use_as_filter')
-  final String useAsFilter;
-  @override
-  final String? help;
-  @override
-  final String active;
-  final List<Option> _options;
-  @override
-  List<Option> get options {
+  List<Option>? get options {
+    final value = _options;
+    if (value == null) return null;
     if (_options is EqualUnmodifiableListView) return _options;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_options);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'AvailableColor(belongsTo: $belongsTo, name: $name, type: $type, max: $max, required: $required, useAsFilter: $useAsFilter, help: $help, active: $active, options: $options)';
+    return 'AvailableColor(name: $name, type: $type, options: $options)';
   }
 
   @override
@@ -6003,35 +9211,19 @@ class _$AvailableColorImpl implements _AvailableColor {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AvailableColorImpl &&
-            (identical(other.belongsTo, belongsTo) ||
-                other.belongsTo == belongsTo) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.max, max) || other.max == max) &&
-            (identical(other.required, required) ||
-                other.required == required) &&
-            (identical(other.useAsFilter, useAsFilter) ||
-                other.useAsFilter == useAsFilter) &&
-            (identical(other.help, help) || other.help == help) &&
-            (identical(other.active, active) || other.active == active) &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      belongsTo,
-      name,
-      type,
-      max,
-      required,
-      useAsFilter,
-      help,
-      active,
-      const DeepCollectionEquality().hash(_options));
+      runtimeType, name, type, const DeepCollectionEquality().hash(_options));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AvailableColor
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AvailableColorImplCopyWith<_$AvailableColorImpl> get copyWith =>
@@ -6048,41 +9240,24 @@ class _$AvailableColorImpl implements _AvailableColor {
 
 abstract class _AvailableColor implements AvailableColor {
   const factory _AvailableColor(
-      {@JsonKey(name: 'belongs_to') required final String belongsTo,
-      required final String name,
+      {required final String name,
       required final String type,
-      final int? max,
-      required final String required,
-      @JsonKey(name: 'use_as_filter') required final String useAsFilter,
-      final String? help,
-      required final String active,
-      required final List<Option> options}) = _$AvailableColorImpl;
+      final List<Option>? options}) = _$AvailableColorImpl;
 
   factory _AvailableColor.fromJson(Map<String, dynamic> json) =
       _$AvailableColorImpl.fromJson;
 
   @override
-  @JsonKey(name: 'belongs_to')
-  String get belongsTo;
-  @override
   String get name;
   @override
   String get type;
   @override
-  int? get max;
-  @override // @JsonKey(name: 'default_value') DefaultValue? defaultValue,
-  String get required;
+  List<Option>? get options;
+
+  /// Create a copy of AvailableColor
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(name: 'use_as_filter')
-  String get useAsFilter;
-  @override
-  String? get help;
-  @override
-  String get active;
-  @override
-  List<Option> get options;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AvailableColorImplCopyWith<_$AvailableColorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6098,8 +9273,12 @@ mixin _$SimilarItems {
   String? get price => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
 
+  /// Serializes this SimilarItems to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SimilarItems
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SimilarItemsCopyWith<SimilarItems> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6123,6 +9302,8 @@ class _$SimilarItemsCopyWithImpl<$Res, $Val extends SimilarItems>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SimilarItems
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6171,6 +9352,8 @@ class __$$SimilarItemsImplCopyWithImpl<$Res>
       _$SimilarItemsImpl _value, $Res Function(_$SimilarItemsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SimilarItems
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6242,12 +9425,14 @@ class _$SimilarItemsImpl implements _SimilarItems {
             const DeepCollectionEquality().equals(other._pictures, _pictures));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, price,
       const DeepCollectionEquality().hash(_pictures));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SimilarItems
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SimilarItemsImplCopyWith<_$SimilarItemsImpl> get copyWith =>
@@ -6279,8 +9464,11 @@ abstract class _SimilarItems implements SimilarItems {
   String? get price;
   @override
   List<Picture>? get pictures;
+
+  /// Create a copy of SimilarItems
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SimilarItemsImplCopyWith<_$SimilarItemsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6293,15 +9481,16 @@ Option _$OptionFromJson(Map<String, dynamic> json) {
 mixin _$Option {
   @JsonKey(name: 'field_id')
   String? get fieldId => throw _privateConstructorUsedError;
-  String? get value => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parent_id')
-  String? get parentId => throw _privateConstructorUsedError;
-  String? get lft => throw _privateConstructorUsedError;
-  String? get rgt => throw _privateConstructorUsedError;
+  String? get value =>
+      throw _privateConstructorUsedError; // @JsonKey(name: 'parent_id') required String? parentId,
   String? get depth => throw _privateConstructorUsedError;
 
+  /// Serializes this Option to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Option
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OptionCopyWith<Option> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -6313,9 +9502,6 @@ abstract class $OptionCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'field_id') String? fieldId,
       String? value,
-      @JsonKey(name: 'parent_id') String? parentId,
-      String? lft,
-      String? rgt,
       String? depth});
 }
 
@@ -6329,14 +9515,13 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Option
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? fieldId = freezed,
     Object? value = freezed,
-    Object? parentId = freezed,
-    Object? lft = freezed,
-    Object? rgt = freezed,
     Object? depth = freezed,
   }) {
     return _then(_value.copyWith(
@@ -6347,18 +9532,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lft: freezed == lft
-          ? _value.lft
-          : lft // ignore: cast_nullable_to_non_nullable
-              as String?,
-      rgt: freezed == rgt
-          ? _value.rgt
-          : rgt // ignore: cast_nullable_to_non_nullable
               as String?,
       depth: freezed == depth
           ? _value.depth
@@ -6378,9 +9551,6 @@ abstract class _$$OptionImplCopyWith<$Res> implements $OptionCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'field_id') String? fieldId,
       String? value,
-      @JsonKey(name: 'parent_id') String? parentId,
-      String? lft,
-      String? rgt,
       String? depth});
 }
 
@@ -6392,14 +9562,13 @@ class __$$OptionImplCopyWithImpl<$Res>
       _$OptionImpl _value, $Res Function(_$OptionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Option
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? fieldId = freezed,
     Object? value = freezed,
-    Object? parentId = freezed,
-    Object? lft = freezed,
-    Object? rgt = freezed,
     Object? depth = freezed,
   }) {
     return _then(_$OptionImpl(
@@ -6410,18 +9579,6 @@ class __$$OptionImplCopyWithImpl<$Res>
       value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lft: freezed == lft
-          ? _value.lft
-          : lft // ignore: cast_nullable_to_non_nullable
-              as String?,
-      rgt: freezed == rgt
-          ? _value.rgt
-          : rgt // ignore: cast_nullable_to_non_nullable
               as String?,
       depth: freezed == depth
           ? _value.depth
@@ -6437,9 +9594,6 @@ class _$OptionImpl implements _Option {
   const _$OptionImpl(
       {@JsonKey(name: 'field_id') required this.fieldId,
       required this.value,
-      @JsonKey(name: 'parent_id') required this.parentId,
-      required this.lft,
-      required this.rgt,
       required this.depth});
 
   factory _$OptionImpl.fromJson(Map<String, dynamic> json) =>
@@ -6450,19 +9604,13 @@ class _$OptionImpl implements _Option {
   final String? fieldId;
   @override
   final String? value;
-  @override
-  @JsonKey(name: 'parent_id')
-  final String? parentId;
-  @override
-  final String? lft;
-  @override
-  final String? rgt;
+// @JsonKey(name: 'parent_id') required String? parentId,
   @override
   final String? depth;
 
   @override
   String toString() {
-    return 'Option(fieldId: $fieldId, value: $value, parentId: $parentId, lft: $lft, rgt: $rgt, depth: $depth)';
+    return 'Option(fieldId: $fieldId, value: $value, depth: $depth)';
   }
 
   @override
@@ -6472,19 +9620,16 @@ class _$OptionImpl implements _Option {
             other is _$OptionImpl &&
             (identical(other.fieldId, fieldId) || other.fieldId == fieldId) &&
             (identical(other.value, value) || other.value == value) &&
-            (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
-            (identical(other.lft, lft) || other.lft == lft) &&
-            (identical(other.rgt, rgt) || other.rgt == rgt) &&
             (identical(other.depth, depth) || other.depth == depth));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, fieldId, value, parentId, lft, rgt, depth);
+  int get hashCode => Object.hash(runtimeType, fieldId, value, depth);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Option
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
@@ -6502,9 +9647,6 @@ abstract class _Option implements Option {
   const factory _Option(
       {@JsonKey(name: 'field_id') required final String? fieldId,
       required final String? value,
-      @JsonKey(name: 'parent_id') required final String? parentId,
-      required final String? lft,
-      required final String? rgt,
       required final String? depth}) = _$OptionImpl;
 
   factory _Option.fromJson(Map<String, dynamic> json) = _$OptionImpl.fromJson;
@@ -6513,18 +9655,14 @@ abstract class _Option implements Option {
   @JsonKey(name: 'field_id')
   String? get fieldId;
   @override
-  String? get value;
-  @override
-  @JsonKey(name: 'parent_id')
-  String? get parentId;
-  @override
-  String? get lft;
-  @override
-  String? get rgt;
+  String? get value; // @JsonKey(name: 'parent_id') required String? parentId,
   @override
   String? get depth;
+
+  /// Create a copy of Option
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

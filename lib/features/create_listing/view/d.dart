@@ -1,83 +1,70 @@
-// import 'package:flutter/material.dart';
-// import 'package:textfield_tags/textfield_tags.dart';
+// class ReturnPolicyWidget extends StatefulWidget {
+//   final dynamic phoneresp;
 
-// class TagsExample extends StatefulWidget {
-//   const TagsExample({Key? key}) : super(key: key);
+//   const ReturnPolicyWidget({Key? key, required this.phoneresp})
+//       : super(key: key);
 
 //   @override
-//   _TagsExampleState createState() => _TagsExampleState();
+//   _ReturnPolicyWidgetState createState() => _ReturnPolicyWidgetState();
 // }
 
-// class _TagsExampleState extends State<TagsExample> {
-//   late TextfieldTagsController _controller;
-//   List<String> somethingHere = [];
+// class _ReturnPolicyWidgetState extends State<ReturnPolicyWidget> {
+//   Map<int, bool> _selectedOptions = {}; // Track selected options dynamically
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     _controller = TextfieldTagsController();
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   void onDelete(int index) {
-//     setState(() {
-//       somethingHere.removeAt(index);
-//     });
+//     // Initialize the selected options map
+//     for (var option in widget.phoneresp.result[4].options) {
+//       _selectedOptions[option.id] = false; // Default to unchecked
+//     }
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Simple Textfield Tags Example'),
-//         centerTitle: true,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(14.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               const SizedBox(height: 12.0),
-//               const Text(
-//                 'In just a few words, what are 3 positive things about dogs? (optional)',
-//                 style: TextStyle(
-//                   fontWeight: FontWeight.bold,
-//                   fontSize: 16.0,
-//                 ),
-//               ),
-//               Padding(
-//                   padding: const EdgeInsets.only(top: 16.0),
-//                   child: TextFieldTags(
-//                     textfieldTagsController: _controller,
-                    
-//                     inputFieldBuilder: (context, textFieldTagValues) {
-//                       return Container(
-                        
-//                       );
-//                     },
-//                   )),
-//               Wrap(
-//                 spacing: 6.0,
-//                 children: somethingHere.map((tag) {
-//                   return Chip(
-//                     label: Text(tag),
-//                     onDeleted: () {
-//                       setState(() {
-//                         somethingHere.remove(tag);
-//                       });
-//                     },
-//                   );
-//                 }).toList(),
-//               ),
-//             ],
+//     return CreateListingCardWidget(
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             'Return Policy',
+//             style: TextStyle(
+//               fontSize: 14.sp,
+//               fontWeight: FontWeight.w600,
+//               color: Colors.black,
+//             ),
 //           ),
-//         ),
+//           ...widget.phoneresp.result[4].options.map<Widget>((option) {
+//             return Row(
+//               children: [
+//                 Checkbox(
+//                   value: _selectedOptions[option.id] ?? false,
+//                   onChanged: (bool? value) {
+//                     setState(() {
+//                       _selectedOptions[option.id] = value ?? false;
+//                     });
+
+//                     // Add logic to handle changes
+//                     cf?.add([
+//                       'cf.${widget.phoneresp.result[4]?.id}',
+//                       option.id,
+//                     ]);
+//                   },
+//                 ),
+//                 Flexible(
+//                   child: Text(
+//                     option.value,
+//                     style: TextStyle(
+//                       fontSize: 14.sp,
+//                       fontWeight: FontWeight.w600,
+//                       color: Colors.black,
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             );
+//           }).toList(),
+//         ],
 //       ),
 //     );
 //   }

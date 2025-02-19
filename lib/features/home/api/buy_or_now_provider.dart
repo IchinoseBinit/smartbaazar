@@ -1,7 +1,7 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/main.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'buy_or_now_provider.g.dart';
@@ -124,18 +124,27 @@ class LogoData {
 class Buynowmodel {
   final String image;
   final String vendorImage;
+  final String? worth;
   final String name;
-  final int winners;
+  final String? gift_qty;
+  String? wow;
 
-  Buynowmodel({
-    required this.image,
-    required this.vendorImage,
-    required this.name,
-    required this.winners,
-  });
+  final int? winners;
+
+  Buynowmodel(
+      {required this.worth,
+      required this.image,
+      required this.vendorImage,
+      required this.name,
+      required this.winners,
+      required this.gift_qty,
+      required this.wow});
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      wow: json['wow']?.toString() ?? '0', // Safely handle null values
+      gift_qty: json['gift_qty'] as String,
+      worth: json['worth'] as String,
       image: json['image'] as String,
       vendorImage: json['vendor_image'] as String,
       name: json['vendor_name'] as String,
@@ -215,14 +224,14 @@ class Home1GlobalModel {
 // Riverpod Provider
 @riverpod
 Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/homeSections',
     );
-
     final data = response.data;
+    print("baby ${response.data['buy_or_win']}");
 
     final newProducts = (data['new_products'] as List<dynamic>?)
             ?.map((productJson) => Home1GlobalModel.fromJson(productJson))
@@ -243,20 +252,19 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               return LogoData.fromJson(winJson);
             }).toList() ??
             [];
-                          print("Mapping JSON: ${global.length}"); // Debug each item
-
+    print("Mapping JSON: ${global.length}"); // Debug each item
 
     final locald = (data['domestic_brandbazarLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                          print("Mapping doma: ${locald.length}"); // Debug each item
+    print("Mapping doma: ${locald.length}"); // Debug each item
 
     final spotd = (data['spotlightLogos'] as List<dynamic>?)
             ?.map((winJson) => LogoData.fromJson(winJson))
             .toList() ??
         [];
-                                  print("Mapping spot: ${spotd.length}"); // Debug each item
+    print("Mapping spot: ${spotd.length}"); // Debug each item
 
     final rawBrandbazarGlobal =
         data['brandbazar_global'] as List<dynamic>? ?? [];
@@ -288,16 +296,22 @@ Future<HotWithBuy> fetchBuyAndHot(FetchBuyAndHotRef ref) async {
               GlobalModel.fromJson(logoJson as Map<String, dynamic>))
           .toList();
     }).toList();
-                                      print("Mapping spot: ${spotd.length}"); // Debug each item
 
-    final Map<String, VendorModel> homestory = (data['home_story']
-                as Map<String, dynamic>?)
-            ?.map((key, value) => MapEntry(
-                key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
-        {};
+    // final Map<String, VendorModel> homestory = (data['home_story']
+    //             as Map<String, dynamic>?)
+    //         ?.map((key, value) => MapEntry(
+    //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+    //     {};
+    print("Mapping spot: ${spotd.length}"); // Debug each item
+
+    // final Map<String, VendorModel> homestory = (data['home_story']
+    //             as Map<String, dynamic>?)
+    //         ?.map((key, value) => MapEntry(
+    //             key, VendorModel.fromJson(value as Map<String, dynamic>))) ??
+    //     {};
 
     return HotWithBuy(
-        homestory: homestory,
+        homestory: {},
         doma: domas,
         spot: spotl,
         home: newProducts,
@@ -319,15 +333,20 @@ class GlobalModel {
   final String price;
   final String imageUrl;
   final String discont;
+  final String post_type_id;
   final List<UserDetailsModel> user;
   final String contactName;
   final String wow;
   final String commentnum;
   final String stock;
   final String offers;
+  final int? discount_percentage;
 
   final double? avg_rating;
   final double? shortestDistance;
+  final String? posttypename;
+    final List<SavedPost>? savedByLoggedUser;
+
 
   final int? similarproductCount;
 
@@ -345,12 +364,28 @@ class GlobalModel {
       required this.contactName,
       required this.similarproductCount,
       required this.shortestDistance,
+      required this.post_type_id,
       required this.avg_rating,
-      required this.discont});
+      this.discount_percentage,
+      required this.discont,
+      this.posttypename,
+      this.savedByLoggedUser});
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
+       List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
+    
     return GlobalModel(
+      savedByLoggedUser: savedByLoggedUserList,
+      post_type_id: json['post_type_id'],
+      posttypename: json['posttypename'],
+      discount_percentage: json['discount_percentage'],
       offers: json['offers'] ?? '',
       shortestDistance: json['shortestDistance'] ?? 0.0,
       avg_rating: json['average_rating'] ?? 0,

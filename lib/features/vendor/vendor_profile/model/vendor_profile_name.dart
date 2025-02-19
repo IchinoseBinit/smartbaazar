@@ -7,12 +7,12 @@ part 'vendor_profile_name.g.dart';
 @freezed
 class VendorProfile with _$VendorProfile {
   const factory VendorProfile({
-    String? subscribed,
+    int? subscribed,
     Vendor? vendor,
     VendorCard? vendor_card,
     VendorAbout? vendor_about,
     List<Deal>? deals,
-    List<BrandNewModel>? all_products,
+    List<BrandNewModel>? all_VendorProfileProducts,
     List<FeedPost>? feedPosts,
     List<FeedPost>? live_prizes, 
     List<BrandNewModel>? brandnew,
@@ -24,7 +24,7 @@ class VendorProfile with _$VendorProfile {
     List<BrandNewModel>? grocery,
     String? scratch_banner,
     List<Advertisement>? advertisements,
-    // List<Product>? BrandNewModel,
+    // List<VendorProfileProduct>? BrandNewModel,
   }) = _VendorProfile;
 
   factory VendorProfile.fromJson(Map<String, dynamic> json) =>
@@ -49,18 +49,33 @@ class BrandNewModel with _$BrandNewModel {
     String? price,
     String? wow,
     required String? city,
-    required int? similarProductCount,
-    required int? discounted_price,
-    required String? shortestDistance,
+    required int? similarVendorProfileProductCount,
+    required String? discounted_price,
+    required double? shortestDistance,
     required int? commentcount,
+    required int? discount_percentage,
     required int? avg_rating,
     required UserDetailsModel? userdetails,
+      final List<FezzedSaved>? savedByLoggedUser,
+
   }) = _BrandNewModel;
 
   factory BrandNewModel.fromJson(Map<String, dynamic> json) =>
       _$BrandNewModelFromJson(json);
 }
 
+@freezed
+class FezzedSaved with _$FezzedSaved {
+  const factory FezzedSaved({
+    required String id,
+    required String userId,
+    required String postId,
+    required String createdAt,
+    required String updatedAt,
+  }) = _FezzedSaved;
+
+  factory FezzedSaved.fromJson(Map<String, dynamic> json) => _$FezzedSavedFromJson(json);
+}
 @freezed
 class UserDetailsModel with _$UserDetailsModel {
   const factory UserDetailsModel({
@@ -70,12 +85,16 @@ class UserDetailsModel with _$UserDetailsModel {
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    String? longitude,
+    String? latitude,
+    
     String? photo,
     required String name,
     int? storyCount,
     bool? sponsored,
     bool? has_sponsored_gifts,
-    List<dynamic>? nearestBranch,
+    // String? nearestBranch,
+    double? shortestDistance, 
   }) = _UserDetailsModel;
 
   factory UserDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -144,36 +163,38 @@ class Vendor with _$Vendor {
     // String? deleted_at,
     // String? created_at,
     // String? updated_at,
-    String? shortestDistance,
-    String? nearestBranch,
+    double? shortestDistance,
+    // String? nearestBranch,
   }) = _Vendor;
 
   factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);
 }
 
 @freezed
-class   VendorCard with _$VendorCard {
+class VendorCard with _$VendorCard {
   const factory VendorCard({
     String? name,
     String? photo,
-        String? longitude,
+    String? longitude,
     String? latitude,
-
+    int? subscribers,
     String? phone,
     String? profile_url,
     int? storycount,
-    int? subscribers,
     int? prize_worth,
     bool? has_sponsored_gifts,
     String? nearestbranch,
     String? membership_id,
     String? membership_title,
     String? membership_color,
+    
+    @JsonKey(name: 'subscribed') int? subscribed,  // Ensure correct JSON mapping
   }) = _VendorCard;
 
   factory VendorCard.fromJson(Map<String, dynamic> json) =>
       _$VendorCardFromJson(json);
 }
+
 
 @freezed
 class VendorAbout with _$VendorAbout {
@@ -194,7 +215,7 @@ class Deal with _$Deal {
   const factory Deal({
     String? id,
     String? image,
-    String? discount_percentage,
+    double? discount_percentage,
   }) = _Deal;
 
   factory Deal.fromJson(Map<String, dynamic> json) => _$DealFromJson(json);
@@ -218,8 +239,8 @@ class FeedPost with _$FeedPost {
 }
 
 @freezed
-class Product with _$Product {
-  const factory Product({
+class VendorProfileProduct with _$VendorProfileProduct {
+  const factory VendorProfileProduct({
     String? id,
     String? title,
     String? description,
@@ -242,19 +263,19 @@ class Product with _$Product {
     String? longitude,
     String? latitude,
     String? city,
-    int? similarProductCount,
+    int? similarVendorProfileProductCount,
     int? commentcount,
     double? avg_rating,
-    ProductUserDetailsModel? UserDetailsModel,
-  }) = _Product;
+    VendorProfileProductUserDetailsModel? UserDetailsModel,
+  }) = _VendorProfileProduct;
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory VendorProfileProduct.fromJson(Map<String, dynamic> json) =>
+      _$VendorProfileProductFromJson(json);
 }
 
 @freezed
-class ProductUserDetailsModel with _$ProductUserDetailsModel {
-  const factory ProductUserDetailsModel({
+class VendorProfileProductUserDetailsModel with _$VendorProfileProductUserDetailsModel {
+  const factory VendorProfileProductUserDetailsModel({
     String? user_id,
     String? membership_plan_id,
     String? membership_status,
@@ -268,8 +289,8 @@ class ProductUserDetailsModel with _$ProductUserDetailsModel {
     bool? has_sponsored_gifts,
     double? shortestDistance,
     String? nearestBranch,
-  }) = _ProductUserDetailsModel;
+  }) = _VendorProfileProductUserDetailsModel;
 
-  factory ProductUserDetailsModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductUserDetailsModelFromJson(json);
+  factory VendorProfileProductUserDetailsModel.fromJson(Map<String, dynamic> json) =>
+      _$VendorProfileProductUserDetailsModelFromJson(json);
 }

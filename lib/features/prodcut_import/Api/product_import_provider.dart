@@ -3,13 +3,12 @@ import 'package:dio/dio.dart'; // Ensure you have Dio imported
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
-
 
 @riverpod
 Future<String> storeProductImport(File myfile) async {
-  SmartClinet client = SmartClinet();
+  SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData.fromMap({

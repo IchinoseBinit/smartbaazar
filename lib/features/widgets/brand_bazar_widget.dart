@@ -85,7 +85,7 @@ class _BrandBazarWidgetState extends ConsumerState<BrandBazarWidget> {
             // Fetch and display trend banners
             brandBazarData.when(
               data: (brandBazarModel) {
-                final brandbazarLogos = brandBazarModel.data.brandbazarLogos;
+                final brandbazarLogos = brandBazarModel.data?.brandbazarLogos;
 
                 if (brandbazarLogos == null || brandbazarLogos.isEmpty) {
                   return const Text('No trend banners available');
@@ -130,7 +130,7 @@ class _BrandBazarWidgetState extends ConsumerState<BrandBazarWidget> {
             // Fetch and display advertisement banners
             brandBazarData.when(
               data: (brandBazarModel) {
-                final advertisements = brandBazarModel.data.advertisements;
+                final advertisements = brandBazarModel.data?.advertisements;
 
                 if (advertisements == null || advertisements.isEmpty) {
                   return const Text('No advertisements available');

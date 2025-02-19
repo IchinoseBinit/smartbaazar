@@ -6,7 +6,7 @@ part of 'subscribe_vendor_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$subscribevendorHash() => r'9c0223cd3ffdc22ef45e2fbc58fa2545486d65a8';
+String _$subscribevendorHash() => r'2ee8a10228ad2c0f303102d2830f045845459cbe';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class SubscribevendorProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SubscribevendorRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `vendorid` of this provider.
   String get vendorid;
@@ -155,4 +157,4 @@ class _SubscribevendorProviderElement
   String get vendorid => (origin as SubscribevendorProvider).vendorid;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -9,10 +9,9 @@ class ApiConstants {
   static String logoUrl = '$baseUrl/app_logo_loader';
   static String logoutUrl = '$baseUrl/auth/logout/';
   static String getcontactSellerUrl = '$baseUrl/threads';
-    static String getHotDealScreen = '$baseUrl/homeSections';
-        static String getStoryHome = '$baseUrl/users/getrandomstory';
-
-
+  static String getHotDealScreen = '$baseUrl/homeSections';
+  static String getStoryHome = '$baseUrl/users/getrandomstory';
+  static String postreview = '$baseUrl/posts/reviewcomment';
 
   static String sponsoredUrl = "$baseUrl/homeSections/home1";
   static String signUpUrl = '$baseUrl/users';
@@ -53,8 +52,7 @@ class ApiConstants {
   static String fetchProductType = '$baseUrl/packages';
   static String fetchCities = '$baseUrl/countries/NP/cities';
   static String postlisting = '$baseUrl/posts';
-    static String getoffers = '$reportComplainUrl/getoffers';
-
+  static String getoffers = '$reportComplainUrl/getoffers';
 
   //vendor profile
   static String getVendorProfileDataByUserName = '$baseUrl/users/vendorname';
@@ -83,7 +81,7 @@ class ApiConstants {
   static String getMessageThreadUrl = '$baseUrl/threads';
   static String getMessageListUrl = '$baseUrl/threads';
   static String getAlertMessageUrl = '$baseUrl/alerts';
-  static String markMessageIsImportantUrl ='$baseUrl/threads/is_important';
+  static String markMessageIsImportantUrl = '$baseUrl/threads/is_important';
   //my order and returns
   static String getMyOrderUrl = '$baseUrl/myorders';
   static String getMyReturnsUrl = '$baseUrl/myreturns';
@@ -120,4 +118,15 @@ class ApiConstants {
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
   //product import
   static String productimportapi = '$baseUrl/posts/product_import';
+
+  //feed screen
+  static String getFeedScreenFollowingUrl = '$baseUrl/users/getfeed';
+  static String getForYouFeedUrl = '$baseUrl/users/getrandomfeed';
+  static String getFollowingfeedstory = '$baseUrl/users/getstory';
+  static String getForYoufeedstory = '$baseUrl/users/getrandomstory';
+  static String getFeedGiftCardUrl = '$baseUrl/users/buyorwin/';
+  static String getFeedProductDropDownUrl = '$baseUrl/users/products_feed';
+  static String postFeedForm = '$baseUrl/users/storefeed';
+  static String getOffersUrl = '$baseUrl/posts/getoffers';
+  static String postFeedWOwUrl = '$baseUrl/users/feed_wow';
 }

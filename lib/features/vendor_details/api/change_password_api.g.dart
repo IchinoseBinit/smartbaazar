@@ -6,7 +6,7 @@ part of 'change_password_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordHash() => r'167a3d0ce6ab4cedaf2d3109009887c8444ce6c9';
+String _$changePasswordHash() => r'6f0abc50d8772d450b851b79555889c9ff3c12dc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -188,6 +188,8 @@ class ChangePasswordProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ChangePasswordRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
   /// The parameter `password` of this provider.
   String get password;
@@ -223,4 +225,4 @@ class _ChangePasswordProviderElement
   String get userName => (origin as ChangePasswordProvider).userName;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

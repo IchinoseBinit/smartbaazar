@@ -7,7 +7,7 @@ part of 'pending_approval_api.dart';
 // **************************************************************************
 
 String _$getPendingApprovalResponseHash() =>
-    r'40514ad1f8a45943930e40db4dd6ff6d8ab6f05b';
+    r'9e7e362a880d4caf3288f5b1feb90abf114c1e18';
 
 /// See also [getPendingApprovalResponse].
 @ProviderFor(getPendingApprovalResponse)
@@ -22,7 +22,9 @@ final getPendingApprovalResponseProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetPendingApprovalResponseRef
     = AutoDisposeFutureProviderRef<PendingApprovalModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

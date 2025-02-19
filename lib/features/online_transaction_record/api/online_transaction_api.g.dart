@@ -7,7 +7,7 @@ part of 'online_transaction_api.dart';
 // **************************************************************************
 
 String _$getOnlineTransactionResponseHash() =>
-    r'a6ac981ccb1a44a9b10f6940bd8fc34c91d2e9b7';
+    r'c1627d05bdc78eda4831984a0f9499dd46b1c2fb';
 
 /// See also [getOnlineTransactionResponse].
 @ProviderFor(getOnlineTransactionResponse)
@@ -22,7 +22,9 @@ final getOnlineTransactionResponseProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetOnlineTransactionResponseRef
     = AutoDisposeFutureProviderRef<OnlineTransactionModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

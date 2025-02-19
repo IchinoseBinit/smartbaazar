@@ -6,7 +6,7 @@ part of 'message_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getMessageListHash() => r'1c0d0ae2c518285548ac5dabb9c817da1ffe14e0';
+String _$getMessageListHash() => r'f8b68bb8b04efaa1471ea380e2741eb7c159a203';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -155,6 +155,8 @@ class GetMessageListProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetMessageListRef on AutoDisposeFutureProviderRef<MessageListModel> {
   /// The parameter `threadId` of this provider.
   String get threadId;
@@ -174,4 +176,4 @@ class _GetMessageListProviderElement
   int get page => (origin as GetMessageListProvider).page;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

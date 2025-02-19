@@ -3,7 +3,8 @@ import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/brand_bazar/model/brand_bazar_model.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/main.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part "home_slider_provider.g.dart";
@@ -17,28 +18,61 @@ class VProduct {
   final String image;
   final int? similarProductCount;
   final VendorUserDetail userDetail;
+  final String? offers;
+  final String? discountedPrice;
+  final int? avgRating;
+  final int? commentCount;
+  final String? wow;
+  final int? discount_percentage;
+  final String? post_type_id;
+    final List<SavedPost>? savedByLoggedUser;
 
-  VProduct(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.similarProductCount,
-      required this.user,
-      required this.image,
-      required this.price,
-      required this.userDetail});
+
+  VProduct({
+    required this.id,
+    required this.title,
+    required this.avgRating,
+    required this.commentCount,
+    required this.wow,
+    required this.discountedPrice,
+    required this.description,
+    required this.similarProductCount,
+    required this.user,
+    required this.image,
+    required this.price,
+    required this.offers,
+    required this.userDetail,
+    this.discount_percentage,
+    required this.post_type_id,
+    this.savedByLoggedUser
+  });
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
+       List<SavedPost> savedByLoggedUserList = [];
+    if (json['savedByLoggedUser'] != null &&
+        json['savedByLoggedUser'] is List) {
+      savedByLoggedUserList = (json['savedByLoggedUser'] as List)
+          .map((item) => SavedPost.fromJson(item))
+          .toList();
+    }
+    
     return VProduct(
-      image: json['image'] ?? '',
-      price: json['price'] ?? '',
-      id: json['id'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      similarProductCount: json['similarProductCount'] ?? '',
-      userDetail: VendorUserDetail.fromJson(json['userDetail']?? {}),
-      user: VendorUser.fromJson(
-          json['user'] ?? {}), // Parsing user within each product
+      savedByLoggedUser: savedByLoggedUserList,
+      post_type_id: json['post_type_id'],
+      discount_percentage: json['discount_percentage'],
+      wow: json['wow'],
+      discountedPrice: json['discounted_price'],
+      commentCount: json['commentcount'],
+      avgRating: json['avg_rating'],
+      offers: json['offers'],
+      image: json['image'],
+      price: json['price'],
+      id: json['id'],
+      title: json['title'],
+      description: json['description'],
+      similarProductCount: json['similarProductCount'],
+      userDetail: VendorUserDetail.fromJson(json['userDetail'] ?? {}),
+      user: VendorUser.fromJson(json['user'] ?? {}),
     );
   }
 }
@@ -69,27 +103,23 @@ class Homepage1 {
   }
 }
 
+
 @riverpod
 Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.homeSlider2BannerUrl,
     );
+
     final data = response.data;
-    print("Response data: $data"); // Log the raw response data
 
     if (data == null) {
       throw Exception("No data returned from API");
     }
 
     final homepage = Homepage1.fromJson(data);
-    print("binod ${homepage.allProducts.first.image}");
-
-    // Log all users from products
-    print(
-        "All products user data: ${homepage.allProducts.map((product) => product.user).toList()}");
 
     return homepage;
   } catch (e) {

@@ -15,6 +15,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final TextInputAction? textInputType;
   final double? hinttextFontSize;
   final Color? iconColor;
+  final Color? hintTextColor;
 
   const CustomTextFieldWidget({
     super.key,
@@ -31,6 +32,7 @@ class CustomTextFieldWidget extends StatefulWidget {
     this.textInputType,
     this.hinttextFontSize,
     this.iconColor,
+    this.hintTextColor,
   });
 
   @override
@@ -38,6 +40,7 @@ class CustomTextFieldWidget extends StatefulWidget {
 }
 
 class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
+  bool _isEdited = false;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -45,6 +48,9 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
       readOnly: widget.readOnly ?? false,
       controller: widget.controller,
       onChanged: (newValue) {
+        setState(() {
+          _isEdited = true;
+        });
         widget.onChanged?.call(newValue);
       },
       obscureText: widget.obscureText,
@@ -77,7 +83,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         suffixIcon: widget.suffixIcon,
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          color: const Color(0xFFADADAD),
+          color: widget.hintTextColor ?? const Color(0xFFADADAD),
           fontSize: widget.hinttextFontSize ?? 14.sp,
         ),
       ),

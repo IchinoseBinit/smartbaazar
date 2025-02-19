@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/post_offline_listing.dart';
-import 'package:smartbazar/features/vendor/view/update_listing_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +19,7 @@ class MyListingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final listingResponse = ref.watch(getMyListingResponseProvider);
 
-    return GenericSafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
@@ -75,7 +74,7 @@ class MyListingScreen extends ConsumerWidget {
                         );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(child: Text('Error: $err')),
+                error: (err, stack) => const Center(child: Text('please login and try again')),
               ),
             ],
           ),
@@ -86,7 +85,7 @@ class MyListingScreen extends ConsumerWidget {
 }
 
 class MyListinDetails extends ConsumerWidget {
-  final ProductData product;
+  final MyListingProduct product;
 
   const MyListinDetails({super.key, required this.product});
 
@@ -123,10 +122,18 @@ class MyListinDetails extends ConsumerWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const UpdateListing()),
-                  );
+                  // print("niko ${product.postTypeId}");
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateListing(
+                                prod: product,
+                              )));
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (_) => UpdateListing(prod: product)),
+                  // );
                 },
                 child: const Icon(
                   Icons.edit,

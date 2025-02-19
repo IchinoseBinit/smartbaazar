@@ -5,8 +5,8 @@
 // import 'package:smartbazar/utils/request_type.dart';
 
 // final adsProvider = FutureProvider<List<AdModel>>((ref) async {
-//   final smartClient = SmartClinet(); // Initialize your SmartClient
-//   final response = await smartClient.request(
+//   final SmartClient   = SmartClient  (); // Initialize your SmartClient
+//   final response = await SmartClient  .request(
 //     requestType: RequestType.get,
 //     url: ApiConstants.adsLoadingUrl,
 //   );

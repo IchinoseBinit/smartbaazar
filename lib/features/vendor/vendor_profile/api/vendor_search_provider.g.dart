@@ -7,7 +7,7 @@ part of 'vendor_search_provider.dart';
 // **************************************************************************
 
 String _$geDataBySearchvendorHash() =>
-    r'566890aa82542043579bcb731bd85b089be76dff';
+    r'6ef1f403559819c3568a34b9805ec8f49f1dc00e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -145,6 +145,8 @@ class GeDataBySearchvendorProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GeDataBySearchvendorRef
     on AutoDisposeFutureProviderRef<List<GetOnlyData>> {
   /// The parameter `id` of this provider.
@@ -160,4 +162,4 @@ class _GeDataBySearchvendorProviderElement
   String get id => (origin as GeDataBySearchvendorProvider).id;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

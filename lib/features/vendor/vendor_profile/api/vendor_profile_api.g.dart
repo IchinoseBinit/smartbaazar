@@ -7,7 +7,7 @@ part of 'vendor_profile_api.dart';
 // **************************************************************************
 
 String _$getVendorProfileDataHash() =>
-    r'd3862f95d6a0edfea80982753373bc7fceb4fc53';
+    r'c4e4b545acfb0e3c400fb2f18e31513f4cbf55bd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -167,6 +167,8 @@ class GetVendorProfileDataProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetVendorProfileDataRef on AutoDisposeFutureProviderRef<VendorProfile> {
   /// The parameter `vendorName` of this provider.
   String get vendorName;
@@ -191,4 +193,4 @@ class _GetVendorProfileDataProviderElement
   String get category => (origin as GetVendorProfileDataProvider).category;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

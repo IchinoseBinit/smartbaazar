@@ -5,18 +5,15 @@ part 'subscribe_and_win_model.g.dart';
 
 @freezed
 class SubscribeAndWinModel with _$SubscribeAndWinModel {
-  factory SubscribeAndWinModel({
-    required List<ContentBlock>? content1,
-    required List<ContentBlock>? content2,
-    required List<ContentBlock> content3,
-    required List<ContentBlock> content4,
-    required List<Scratch> scratchs,
-     @JsonKey(name: "total_gifts") required int totalGifts,
-    @JsonKey(name: "total_gift_worth") required int totalGiftWorth,
-    @JsonKey(name: "participants_count") required String? participantsCount,
-    @JsonKey(name: "sponsor_vendors") required List<SponsorVendor> sponsorVendors,
-    required List<Gift> gifts,
-     required List<Winner> winners,
+  const factory SubscribeAndWinModel({
+    @JsonKey(name: 'content3') List<Content>? content3,
+    @JsonKey(name: 'content4') List<Content>? content4,
+    @JsonKey(name: 'user') User? user,
+    @JsonKey(name: 'gifts') List<Gift>? gifts,
+    @JsonKey(name: 'sponsor_vendors') List<SponsorVendor>? sponsorVendors,
+    @JsonKey(name: 'total_worth') int? totalWorth,
+    @JsonKey(name: 'gift_count') int? giftCount,
+    @JsonKey(name: 'winners') List<Winner>? winners,
   }) = _SubscribeAndWinModel;
 
   factory SubscribeAndWinModel.fromJson(Map<String, dynamic> json) =>
@@ -24,47 +21,73 @@ class SubscribeAndWinModel with _$SubscribeAndWinModel {
 }
 
 @freezed
-class ContentBlock with _$ContentBlock {
-  factory ContentBlock({
-    required String? title,
-    required String? content,
-  }) = _ContentBlock;
+class Content with _$Content {
+  const factory Content({
+    @JsonKey(name: 'title') String? title,
+    @JsonKey(name: 'content') String? content,
+  }) = _Content;
 
-  factory ContentBlock.fromJson(Map<String, dynamic> json) =>
-      _$ContentBlockFromJson({
-        'title': _parseTitleOrContent(json['title']),
-        'content': _parseTitleOrContent(json['content']),
-      });
-  
-  static String _parseTitleOrContent(dynamic field) {
-    if (field is Map<String, dynamic>) {
-      return field['en'] ?? '';
-    }
-    return field?.toString() ?? '';
-  }
+  factory Content.fromJson(Map<String, dynamic> json) => _$ContentFromJson(json);
 }
 
 @freezed
-class Scratch with _$Scratch {
-  factory Scratch({
-    required String? id,
-    required String? bazar,
-    required String? image,
-    // required String createdAt,
-    // required String updatedAt,
-    // required String imageUrl,
-  }) = _Scratch;
+class User with _$User {
+  const factory User({
+    @JsonKey(name: 'photo') String? photo,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'username') String? username,
+  }) = _User;
 
-  factory Scratch.fromJson(Map<String, dynamic> json) =>
-      _$ScratchFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@freezed
+class Gift with _$Gift {
+  const factory Gift({
+    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'user_id') String? userId,
+    @JsonKey(name: 'gift_id') String? giftId,
+    @JsonKey(name: 'status') String? status,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'gifts') GiftDetails? gifts,
+    @JsonKey(name: 'vendors') Vendor? vendors,
+  }) = _Gift;
+
+  factory Gift.fromJson(Map<String, dynamic> json) => _$GiftFromJson(json);
+}
+
+@freezed
+class GiftDetails with _$GiftDetails {
+  const factory GiftDetails({
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'image') String? image,
+    @JsonKey(name: 'worth') String? worth,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'image_url') String? imageUrl,
+  }) = _GiftDetails;
+
+  factory GiftDetails.fromJson(Map<String, dynamic> json) =>
+      _$GiftDetailsFromJson(json);
+}
+
+@freezed
+class Vendor with _$Vendor {
+  const factory Vendor({
+    @JsonKey(name: 'photo') String? photo,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'username') String? username,
+  }) = _Vendor;
+
+  factory Vendor.fromJson(Map<String, dynamic> json) => _$VendorFromJson(json);
 }
 
 @freezed
 class SponsorVendor with _$SponsorVendor {
-  factory SponsorVendor({
-    required String? name,
-    required String? photo,
-    // required String username,
+  const factory SponsorVendor({
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'photo') String? photo,
+    @JsonKey(name: 'username') String? username,
   }) = _SponsorVendor;
 
   factory SponsorVendor.fromJson(Map<String, dynamic> json) =>
@@ -72,33 +95,35 @@ class SponsorVendor with _$SponsorVendor {
 }
 
 @freezed
-class Gift with _$Gift {
-  factory Gift({
-    required String? name,
-    @JsonKey(name: "user_id") required String? userId,
-    required String? worth,
-    required String? image,
-    @JsonKey(name: "vendor_name") required VendorName vendorName,
-    @JsonKey(name: "image_url")required String? imageUrl,
-  }) = _Gift;
-
-  factory Gift.fromJson(Map<String, dynamic> json) => _$GiftFromJson(json);
-}
-
-@freezed
-class VendorName with _$VendorName {
-  factory VendorName({
-    required String? name,
-  }) = _VendorName;
-
-  factory VendorName.fromJson(Map<String, dynamic> json) =>
-      _$VendorNameFromJson(json);
-}
-@freezed
 class Winner with _$Winner {
-  factory Winner({
-    required String? name,
+  const factory Winner({
+    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'user_id') String? userId,
+    @JsonKey(name: 'gift_id') String? giftId,
+    @JsonKey(name: 'status') String? status,
+    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+    @JsonKey(name: 'name') Name? name,
   }) = _Winner;
 
   factory Winner.fromJson(Map<String, dynamic> json) => _$WinnerFromJson(json);
+}
+
+@freezed
+class GiftWorth with _$GiftWorth {
+  const factory GiftWorth({
+    @JsonKey(name: 'worth') String? worth,
+  }) = _GiftWorth;
+
+  factory GiftWorth.fromJson(Map<String, dynamic> json) => _$GiftWorthFromJson(json);
+}
+
+@freezed
+class Name with _$Name {
+  const factory Name({
+    @JsonKey(name: 'name') String? name,
+  }) = _Name;
+
+  factory Name.fromJson(Map<String, dynamic> json) => _$NameFromJson(json);
 }

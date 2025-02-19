@@ -252,7 +252,7 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
                                 loading: () =>
                                     const CircularProgressIndicator(),
                                 error: (error, stackTrace) =>
-                                    Text('Error: $error'),
+                                    const Text('Please login again'),
                               ),
                             ],
                           ),

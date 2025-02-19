@@ -6,7 +6,7 @@ part of 'last_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getLastMessageHash() => r'e7005985f698ba85864b5099461025db1a44d2d1';
+String _$getLastMessageHash() => r'ca27810fd2f532ff2155a116d8950fa93fa7b3e2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class GetLastMessageProvider extends AutoDisposeFutureProvider<MessageData?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetLastMessageRef on AutoDisposeFutureProviderRef<MessageData?> {
   /// The parameter `threadId` of this provider.
   String get threadId;
@@ -156,4 +158,4 @@ class _GetLastMessageProviderElement
   String get threadId => (origin as GetLastMessageProvider).threadId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

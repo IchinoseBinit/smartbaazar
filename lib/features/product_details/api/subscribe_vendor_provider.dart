@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'subscribe_vendor_provider.g.dart';
@@ -10,7 +10,7 @@ part 'subscribe_vendor_provider.g.dart';
 Future<String> subscribevendor(SubscribevendorRef ref,
     {required String vendorid}) async {
   try {
-    final SmartClinet clinet = SmartClinet();
+    final SmartClient clinet = SmartClient();
     final response = await clinet.request(
       requestType: RequestType.postWithToken,
       url: ApiConstants.followunfollowvendorurl,
@@ -20,7 +20,8 @@ Future<String> subscribevendor(SubscribevendorRef ref,
     if (response.statusCode == 200) {
       final result = response.data['data'];
 
-      return response.data['msg']; // Expecting "0" for unfollow, other values for follow
+      return response
+          .data['msg']; // Expecting "0" for unfollow, other values for follow
     } else {
       print("Failed to subscribe/unsubscribe: ${response.statusCode}");
       return 'Error: ${response.statusCode}';

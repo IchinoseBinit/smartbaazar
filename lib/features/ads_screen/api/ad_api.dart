@@ -1,19 +1,18 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/ads_screen/model/ad_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'ad_api.g.dart';
 
-
 @riverpod
 Future<List<LoadingAd>> fetchAds(FetchAdsRef ref) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
-      requestType: RequestType.getWithToken,
+      requestType: RequestType.get,
       url: ApiConstants.getAdsUrl,
     );
 
@@ -25,7 +24,8 @@ Future<List<LoadingAd>> fetchAds(FetchAdsRef ref) async {
 
       return data.map((item) => LoadingAd.fromJson(item)).toList();
     } else {
-      throw Exception('Failed to load ads: ${response.statusCode} - ${response.statusMessage}');
+      throw Exception(
+          'Failed to load ads: ${response.statusCode} - ${response.statusMessage}');
     }
   } catch (e) {
     throw Exception('Failed to load ads: $e');

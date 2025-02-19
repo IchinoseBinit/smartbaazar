@@ -6,7 +6,7 @@ part of 'ad_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAdsHash() => r'5feaf797438d8b0080821120454a5193ad6ad91c';
+String _$fetchAdsHash() => r'2a135c0bda1333a784d289d0f345516ca608b315';
 
 /// See also [fetchAds].
 @ProviderFor(fetchAds)
@@ -19,6 +19,8 @@ final fetchAdsProvider = AutoDisposeFutureProvider<List<LoadingAd>>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchAdsRef = AutoDisposeFutureProviderRef<List<LoadingAd>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

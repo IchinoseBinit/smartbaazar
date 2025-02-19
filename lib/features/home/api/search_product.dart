@@ -7,11 +7,14 @@ import 'package:smartbazar/features/home/model/search_product_model.dart';
 part 'search_product.g.dart';
 
 @riverpod
-Future<List<SearchProductModel>> search(SearchRef ref, String query) async {
+Future<List<SearchProductModel>> search( ref, String query) async {
   if (query.isEmpty) return [];
 
   final client = Dio(
     BaseOptions(
+      sendTimeout: const Duration(seconds: 30),
+      receiveTimeout:const Duration(seconds: 30) ,
+       connectTimeout: const Duration(seconds: 30), // 60 seconds
       followRedirects: false, // Disable automatic redirection
       validateStatus: (status) =>
           status != null && status >= 200 && status < 400,

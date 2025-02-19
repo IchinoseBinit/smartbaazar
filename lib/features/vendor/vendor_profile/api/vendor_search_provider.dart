@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'vendor_search_provider.g.dart';
 
 @riverpod
-Future<List<GetOnlyData>> geDataBySearchvendor(
-    GeDataBySearchvendorRef ref, String id) async {
-  final SmartClinet client = SmartClinet();
+Future<List<GetOnlyData>> geDataBySearchvendor(ref, String id) async {
+  final SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.get,
@@ -24,7 +22,7 @@ Future<List<GetOnlyData>> geDataBySearchvendor(
     final List<dynamic> postsJson = response.data['data']['posts']['data'];
 
     // Map the JSON data to a list of Post objects
-    print("raju $postsJson");
+   // print("raju $postsJson");
     return postsJson.map((postJson) => GetOnlyData.fromJson(postJson)).toList();
   } catch (e) {
     print("Error occurred: $e");

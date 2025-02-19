@@ -6,7 +6,7 @@ part of 'hot_deals_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getHotDealsHash() => r'9fcb12e6d800df3dc75df808649ca6423f429c02';
+String _$getHotDealsHash() => r'0a47970c163ec05d9470a482f24501688e9bba79';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class GetHotDealsProvider extends AutoDisposeFutureProvider<List<GlobalModel>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetHotDealsRef on AutoDisposeFutureProviderRef<List<GlobalModel>> {
   /// The parameter `header` of this provider.
   String get header;
@@ -156,4 +158,4 @@ class _GetHotDealsProviderElement
   String get header => (origin as GetHotDealsProvider).header;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

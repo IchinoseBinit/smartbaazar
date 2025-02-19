@@ -255,10 +255,10 @@ class StoryAddWidget extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: -25.h,
+                bottom: -22.h,
                 child: Column(
                   children: [
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 5.h),
                     SizedBox(
                       width: 100.w,
                       child: Text(

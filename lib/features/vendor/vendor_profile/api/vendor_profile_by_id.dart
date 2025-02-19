@@ -11,7 +11,7 @@
 // @riverpod
 // Future<VendorModelByID> getVendorProfileDataByID(
 //     GetVendorProfileDataByIDRef ref, String id) async {
-//   final SmartClinet client = SmartClinet();
+//   final SmartClient   client = SmartClient  ();
 
 //   try {
 //     final response = await client.request(
@@ -39,7 +39,7 @@
 //       final vendorModel = VendorModelByID.fromJson(vendorMap);
 
 //       return vendorModel;
-      
+
 //     } else {
 //       throw Exception('Failed to load Vendor data');
 //     }
