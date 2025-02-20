@@ -47,7 +47,8 @@ import 'package:smartbazar/network_service/smart-client.dart';
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
 
 class FeedScreen extends ConsumerStatefulWidget {
-  const FeedScreen({super.key});
+
+  const FeedScreen({super.key,});
 
   @override
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
@@ -80,7 +81,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen': const FeedScreen()
+      'screen':  FeedScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -235,370 +236,384 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       await ref.watch(bottomNavIndexProvider);
     }
 
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 2, // Two tabs: "Following" and "For You"
-      child: Scaffold(
-        extendBody: true,
 
-        // backgroundColor: Colors.transparent,
-        key: _key,
-        resizeToAvoidBottomInset: false,
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollUpdateNotification &&
-                notification.metrics.axis == Axis.vertical) {
-              // Check if the scroll is vertical
-              // Check if the SliverAppBar is completely off-screen
-              if (notification.metrics.pixels > 100) {
-                if (isSliverAppBarVisible) {
-                  setState(() {
-                    isSliverAppBarVisible = false;
-                  });
-                  print("SliverAppBar disappeared");
-                }
-              } else {
-                if (!isSliverAppBarVisible) {
-                  setState(() {
-                    _isSectionsVisible = true;
-                    isSliverAppBarVisible = true;
-                  });
-                  print("SliverAppBar visible");
+  Future<void> refreshProvider() async {
+    // You can perform any necessary refresh actions here.
+    // For example, re-fetching data or resetting some state.
+    await ref.refresh(bottomNavIndexProvider);
+    await ref.refresh(searchProvider(_searchController.text));
+    setState(() {
+      
+    });
+  }
+    return RefreshIndicator(
+      onRefresh: refreshProvider,
+      child: DefaultTabController(
+        initialIndex: 1,
+        length: 2, // Two tabs: "Following" and "For You"
+        child: Scaffold(
+          extendBody: true,
+      
+          // backgroundColor: Colors.transparent,
+          key: _key,
+          resizeToAvoidBottomInset: false,
+          body: NotificationListener<ScrollNotification>(
+            
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification &&
+                  notification.metrics.axis == Axis.vertical) {
+                // Check if the scroll is vertical
+                // Check if the SliverAppBar is completely off-screen
+                if (notification.metrics.pixels > 100) {
+                  if (isSliverAppBarVisible) {
+                    setState(() {
+                      isSliverAppBarVisible = false;
+                    });
+                    print("SliverAppBar disappeared");
+                  }
+                } else {
+                  if (!isSliverAppBarVisible) {
+                    setState(() {
+                      _isSectionsVisible = true;
+                      isSliverAppBarVisible = true;
+                    });
+                    print("SliverAppBar visible");
+                  }
                 }
               }
-            }
-            return true; // Allow the scroll event to propagate
-          },
-          child: Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: StickyHeaderDelegate(
-                          visible: isSliverAppBarVisible,
-                          searchController: _searchController,
-                          onchanged: (value) {
-                            print('value $value');
-                          },
-                          dropdownValueNotifier: dropdownValueNotifier,
-                          filteredSuggestions: [])),
-                  if (isSliverAppBarVisible)
-                    SliverAppBar(
-                        expandedHeight: 90.h,
-                        floating: false,
+              return true; // Allow the scroll event to propagate
+            },
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverPersistentHeader(
                         pinned: true,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = value;
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
-
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
+                        floating: true,
+                        delegate: StickyHeaderDelegate(
+                            visible: isSliverAppBarVisible,
+                            searchController: _searchController,
+                            onchanged: (value) {
+                              print('value $value');
+                            },
+                            dropdownValueNotifier: dropdownValueNotifier,
+                            filteredSuggestions: [])),
+                    if (isSliverAppBarVisible)
+                      SliverAppBar(
+                          expandedHeight: 90.h,
+                          floating: false,
+                          pinned: true,
+                          flexibleSpace: AnimatedContainer(
+                            padding: EdgeInsets.zero,
+                            duration: Duration(milliseconds: 150),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(40),
+                                    bottomRight: Radius.circular(40)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      // Color(0xFF681b4e),
+                                      // Color(0xFF392574),
+                                      // Color(0xFF681b4e),
+                                      Color(0xff651c50),
+                                      Color(0xff54225f),
+                                      // Color(0xFF392574).
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(4, (index) {
                                       return GestureDetector(
                                         onTap: () {
                                           ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
+                                              .read(
+                                                  _selectedIndexProvider.notifier)
                                               .state = index;
+                                          _pageController.animateToPage(
+                                            index,
+                                            duration:
+                                                const Duration(milliseconds: 50),
+                                            curve: Curves.easeInOut,
+                                          );
                                         },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                        child: Container(
+                                          height: 5.h,
+                                          width: 5.w,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          decoration: BoxDecoration(
+                                            color: selectedIndex == index
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
                                       );
-                                    },
+                                    }),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
+                                  SizedBox(
+                                    height: 55.h,
+                                    child: PageView.builder(
+                                      itemCount: _items.length,
+                                      padEnds: false,
+                                      controller: _pageController,
+                                      onPageChanged: (value) {
+                                        ref
+                                            .read(_selectedIndexProvider.notifier)
+                                            .state = value;
+                                      },
+                                      itemBuilder: (context, index) {
+                                        Map<String, dynamic> data = _items[index];
+      
+                                        // Highlight only when index == 4
+                                        bool isActive = index == 1;
+                                        return GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(_selectedIndexProvider
+                                                    .notifier)
+                                                .state = index;
+                                          },
+                                          child: AnimatedContainer(
+                                            padding: EdgeInsets.zero,
+                                            duration:
+                                                const Duration(milliseconds: 300),
+                                            alignment: Alignment.center,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          data['screen']),
+                                                );
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  if (data['icon']
+                                                      .toString()
+                                                      .endsWith('.svg'))
+                                                    SvgPicture.asset(
+                                                      data['icon'],
+                                                      alignment: Alignment.center,
+                                                      fit: BoxFit.contain,
+                                                      theme: const SvgTheme(
+                                                          currentColor:
+                                                              Color(0xffdd9d9d9)),
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
+                                                      height: 20,
+                                                    )
+                                                  else
+                                                    Image.asset(
+                                                      data['icon'],
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    data['label'],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        )),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8, top: 11),
-                      child: GestureDetector(
-                        onVerticalDragUpdate: _onDragUpdate,
-                        onTap: () {
-                          setState(() {
-                            isSliverAppBarVisible = !isSliverAppBarVisible;
-                          });
-                        },
-                        child: Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            height: 7.h,
-                            width: 60.w,
-                            decoration: BoxDecoration(
-                                color: Color(0xff651c50),
-                                borderRadius: BorderRadius.circular(5)),
+                          )),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8, top: 11),
+                        child: GestureDetector(
+                          onVerticalDragUpdate: _onDragUpdate,
+                          onTap: () {
+                            setState(() {
+                              isSliverAppBarVisible = !isSliverAppBarVisible;
+                            });
+                          },
+                          child: Center(
+                            child: Container(
+                              alignment: AlignmentDirectional.center,
+                              height: 7.h,
+                              width: 60.w,
+                              decoration: BoxDecoration(
+                                  color: Color(0xff651c50),
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        // expandedContainer()
-                        TabBar(
-                          controller: _tabController,
-                          dividerHeight: 0,
-                          padding: EdgeInsets.zero,
-                          indicatorColor: Color(0xFF392574),
-                          labelColor: Colors.black,
-                          unselectedLabelColor: Colors.grey,
-                          tabs: [
-                            Tab(text: "For You"),
-                            Tab(text: "Following"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverFillRemaining(
-                    child: SizedBox(
-                      height: MediaQuery.of(context)
-                          .size
-                          .height, // Ensuring it has a height
-                      child: TabBarView(
-                        controller: _tabController,
+                    SliverToBoxAdapter(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                _buildForYouTabContent(ref),
-                              ],
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                _buildFollowingTabContent(ref),
-                              ],
-                            ),
+                          // expandedContainer()
+                          TabBar(
+                            controller: _tabController,
+                            dividerHeight: 0,
+                            padding: EdgeInsets.zero,
+                            indicatorColor: Color(0xFF392574),
+                            labelColor: Colors.black,
+                            unselectedLabelColor: Colors.grey,
+                            tabs: [
+                              Tab(text: "For You"),
+                              Tab(text: "Following"),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              valuenotifilersidebutton(
-                  showSideBar: showSideBar, isSectionsVisible: true),
-              Positioned(
-                top: 65,
-                left: 48,
-                child: Container(
-                  width: MediaQuery.of(context).size.width -
-                      90, // Add width constraint
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: SearchProductModels.when(
-                    data: (results) {
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: results.length > 5
-                            ? 4
-                            : results.length, // Limit results if needed
-                        itemBuilder: (context, index) {
-                          final product = results[index];
-                          return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 7),
-                            dense: true,
-                            title: Text(
-                              product.name,
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize:
-                                    14, // Increase font size for better readability
+                    SliverFillRemaining(
+                      child: SizedBox(
+                        height: MediaQuery.of(context)
+                            .size
+                            .height, // Ensuring it has a height
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  _buildForYouTabContent(ref),
+                                ],
                               ),
                             ),
-                            onTap: () {
-                              if (product.id != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VendorHomeScreen(
-                                      vendorName: product.name,
-                                      vid: int.tryParse(product.id!)!,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BusinessTabScreen(
-                                      query: _searchController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                              setState(() {
-                                _showSearchProductModels = false;
-                                FocusScope.of(context).unfocus();
-                              });
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) => const Divider(),
-                      );
-                    },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                    error: (error, stack) {
-                      return Center(child: Text(error.toString()));
-                    },
-                  ),
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  _buildFollowingTabContent(ref),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
+                valuenotifilersidebutton(
+                    showSideBar: showSideBar, isSectionsVisible: true),
+                Positioned(
+                  top: 65,
+                  left: 48,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width -
+                        90, // Add width constraint
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8.0,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: SearchProductModels.when(
+                      data: (results) {
+                        return ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: results.length > 5
+                              ? 4
+                              : results.length, // Limit results if needed
+                          itemBuilder: (context, index) {
+                            final product = results[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 7),
+                              dense: true,
+                              title: Text(
+                                product.name,
+                                style: headerstyle.copyWith(
+                                  color: ColorConstant.blackColor,
+                                  fontSize:
+                                      14, // Increase font size for better readability
+                                ),
+                              ),
+                              onTap: () {
+                                if (product.id != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => VendorHomeScreen(
+                                        vendorName: product.name,
+                                        vid: int.tryParse(product.id!)!,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BusinessTabScreen(
+                                        query: _searchController.text,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                setState(() {
+                                  _showSearchProductModels = false;
+                                  FocusScope.of(context).unfocus();
+                                });
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) => const Divider(),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                      error: (error, stack) {
+                        return Center(child: Text(error.toString()));
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -336,7 +336,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             filteredSuggestions: [])),
                     if (isSliverAppBarVisible)
                       SliverAppBar(
-                            automaticallyImplyLeading: false,
+                          automaticallyImplyLeading: false,
                           expandedHeight: 90.h,
                           floating: false,
                           pinned: false,
@@ -609,7 +609,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 10.h),
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
                         child: asyncbajarValue.when(
                           data: (data) {
                             return Stack(
@@ -662,7 +662,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     ],
                                   ),
                                 ),
-                        
+
                                 // Dots Indicator
                                 Positioned(
                                   left: MediaQuery.of(context).size.width / 2 -
@@ -685,7 +685,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           shape: BoxShape.circle,
                                           color: _currentIndex == index
                                               ? Colors.white // Active dot color
-                                              : Colors.grey, // Inactive dot color
+                                              : Colors
+                                                  .grey, // Inactive dot color
                                         ),
                                       );
                                     }).toList(),
@@ -714,190 +715,197 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child:  category.when(
-                    data: (data) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
-                        child: Column(
-                          children: [
-                            // Row for "ALL" and other services
-                            SizedBox(
-                              height: 100.h, // Adjust height as necessary
-                              width: double.infinity,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    // "ALL" Services (Standalone)
-                                    DottedBorder(
-                                      strokeWidth: 2,
-                                      color: Colors.grey,
-                                      borderType: BorderType.RRect,
-                                      radius: const Radius.circular(10),
-                                      dashPattern: const [15, 15],
-                                      child: SizedBox(
-                                        width: 100,
-                                        height: 100,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "ALL",
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Used",
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Other Services List
-                                    ListView(
-                                      physics: const BouncingScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      children: data.map((e) {
-                                        return Padding(
-                                          padding: EdgeInsets.zero,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showMenu(
-                                                context: context,
-                                                position:
-                                                    const RelativeRect.fromLTRB(
-                                                        0,
-                                                        0,
-                                                        0,
-                                                        0), // Base position
-                                                items: [
-                                                  PopupMenuItem(
-                                                    value: 1,
-                                                    child: ListTile(
-                                                      title: const Text(
-                                                          "View Story"),
-                                                      leading: const Icon(
-                                                          Icons.book),
-                                                      onTap: () {
-                                                        // Implement onTap logic
-                                                      },
-                                                    ),
+                      child: category.when(
+                        data: (data) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            child: Column(
+                              children: [
+                                // Row for "ALL" and other services
+                                SizedBox(
+                                  height: 100.h, // Adjust height as necessary
+                                  width: double.infinity,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        // "ALL" Services (Standalone)
+                                        DottedBorder(
+                                          strokeWidth: 2,
+                                          color: Colors.grey,
+                                          borderType: BorderType.RRect,
+                                          radius: const Radius.circular(10),
+                                          dashPattern: const [15, 15],
+                                          child: SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "ALL",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  // Check if parentClosure is not null and show it
-                                                  if (e.parentClosure != null)
-                                                    PopupMenuItem(
-                                                      value: 2,
-                                                      child: ListTile(
-                                                        title: Text(e
-                                                                .parentClosure
-                                                                ?.slug ??
-                                                            'N/A'),
-                                                        leading: const Icon(
-                                                            Icons.info),
-                                                      ),
-                                                    ),
-                                                ],
-                                              );
-                                            },
-                                            child: PopupMenuButton<int>(
-                                              offset: const Offset(0,
-                                                  60), // Position for the menu
-                                              itemBuilder: (context) => [
-                                                const PopupMenuItem(
-                                                  value: 1,
-                                                  child: Text("View Story",
-                                                      style: TextStyle(
-                                                          fontSize: 16.0)),
                                                 ),
-                                                if (e.parentClosure != null)
-                                                  PopupMenuItem(
-                                                    value: 2,
-                                                    child: Text(
-                                                      e.parentClosure?.slug ??
-                                                          'No Parent',
-                                                      style: const TextStyle(
-                                                          fontSize: 16.0),
-                                                    ),
+                                                Text(
+                                                  "Used",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
+                                                ),
                                               ],
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.w),
-                                                child: DashedBorder(
-                                                  dashCount: 3,
-                                                  child: SizedBox(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Image.asset(
-                                                            'assets/images/cloth.png'),
-                                                        Center(
-                                                          child: Text(
-                                                            e.name ?? 'No Name',
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
+                                        ),
+
+                                        // Other Services List
+                                        ListView(
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          children: data.map((e) {
+                                            return Padding(
+                                              padding: EdgeInsets.zero,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showMenu(
+                                                    context: context,
+                                                    position: const RelativeRect
+                                                        .fromLTRB(0, 0, 0,
+                                                        0), // Base position
+                                                    items: [
+                                                      PopupMenuItem(
+                                                        value: 1,
+                                                        child: ListTile(
+                                                          title: const Text(
+                                                              "View Story"),
+                                                          leading: const Icon(
+                                                              Icons.book),
+                                                          onTap: () {
+                                                            // Implement onTap logic
+                                                          },
+                                                        ),
+                                                      ),
+                                                      // Check if parentClosure is not null and show it
+                                                      if (e.parentClosure !=
+                                                          null)
+                                                        PopupMenuItem(
+                                                          value: 2,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                                e.parentClosure
+                                                                        ?.slug ??
+                                                                    'N/A'),
+                                                            leading: const Icon(
+                                                                Icons.info),
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  );
+                                                },
+                                                child: PopupMenuButton<int>(
+                                                  offset: const Offset(0,
+                                                      60), // Position for the menu
+                                                  itemBuilder: (context) => [
+                                                    const PopupMenuItem(
+                                                      value: 1,
+                                                      child: Text("View Story",
+                                                          style: TextStyle(
+                                                              fontSize: 16.0)),
+                                                    ),
+                                                    if (e.parentClosure != null)
+                                                      PopupMenuItem(
+                                                        value: 2,
+                                                        child: Text(
+                                                          e.parentClosure
+                                                                  ?.slug ??
+                                                              'No Parent',
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      16.0),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w),
+                                                    child: DashedBorder(
+                                                      dashCount: 3,
+                                                      child: SizedBox(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Image.asset(
+                                                                'assets/images/cloth.png'),
+                                                            Center(
+                                                              child: Text(
+                                                                e.name ??
+                                                                    'No Name',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 13,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return Text(error.toString());
+                        },
+                        loading: () => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
@@ -1157,1226 +1165,1403 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       ),
                     ),
                     SliverToBoxAdapter(
-  child: asyncbajarValue.when(
-    data: (data) {
-      return data.cat.isNotEmpty
-          ? Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        data.cat[1].slug.toUpperCase(),
-                        style: headerstyle.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  SizedBox(
-                    height: 340.h,
-                    width: double.infinity,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(3),
-                      clipBehavior: Clip.antiAlias,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: data.insidearr[1].length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        VProduct pro = data.insidearr[1][index];
-                        return ProductDetailWidget(
-                          savedid: pro.savedByLoggedUser == null ||
-                                  pro.savedByLoggedUser!.isEmpty
-                              ? []
-                              : pro.savedByLoggedUser
-                                  ?.map(
-                                    (e) => SavedPost(
-                                      id: e.id,
-                                      userId: e.userId,
-                                      postId: e.postId,
-                                      createdAt: e.createdAt,
-                                      updatedAt: e.updatedAt,
-                                    ),
-                                  )
-                                  .toList(),
-                          onRefresh: () {
-                            refreshAllProviders();
-                          },
-                          lat: pro.user.latitude,
-                          long: pro.user.longitude,
-                          productid: pro.id,
-                          shortestDistance: pro.user.shortestDistance,
-                          vendorid: pro.user.id,
-                          membershipid: pro.user.membership_id,
-                          offer: pro.offers,
-                          posttype: pro.post_type_id,
-                          didcountpercentage: pro.discount_percentage,
-                          avg_rating: pro.avg_rating?.toDouble(),
-                          wow: pro.wow,
-                          comment: pro.commentcount.toString(),
-                          issponsored: pro.user.sponsored,
-                          discounttedPrice: pro.discounted_price,
-                          lefttile: "Used",
-                          Vimage: pro.user.photo,
-                          price: pro.price,
-                          title: pro.title,
-                          vendorname: pro.user.name,
-                          productImage: pro.image,
-                          similarproductCount: pro.similarProductCount,
-                          membershipColor: pro.user.membershipColor,
-                          membershipTitle: pro.user.membershipTitle,
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : const SizedBox();
-    },
-    error: (error, stackTrace) {
-      return Text("error $error");
-    },
-    loading: () => Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        width: 70.w,
-        height: 100.h,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    ),
-  ),
-),
-SliverToBoxAdapter(
-  child: Column(
-    children: [
-       asyncbajarValue.when(
-                    data: (data) {
-                      return data.cat.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Row(
+                      child: asyncbajarValue.when(
+                        data: (data) {
+                          return data.cat.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
                                     children: [
-                                      Text(
-                                        data.cat[2].slug,
-                                        style: headerstyle.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 17,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 340.h,
-                                    width: double.infinity,
-                                    child: ListView.builder(
-                                      padding: const EdgeInsets.all(3),
-                                      clipBehavior: Clip.antiAlias,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: data.insidearr[2].length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        VProduct pro = data.insidearr[2][index];
-                                        return ProductDetailWidget(
-                                          savedid: pro.savedByLoggedUser ==
-                                                      null ||
-                                                  pro.savedByLoggedUser!.isEmpty
-                                              ? []
-                                              : pro.savedByLoggedUser
-                                                  ?.map(
-                                                    (e) => SavedPost(
-                                                        id: e.id,
-                                                        userId: e.userId,
-                                                        postId: e.postId,
-                                                        createdAt: e.createdAt,
-                                                        updatedAt: e.updatedAt),
-                                                  )
-                                                  .toList(),
-                                          onRefresh: () {
-                                            refreshAllProviders();
-                                          },
-                                          lat: pro.user.latitude,
-                                          long: pro.user.longitude,
-                                          productid: pro.id,
-                                          shortestDistance:
-                                              pro.user.shortestDistance,
-                                          offer: pro.offers,
-                                          posttype: pro.post_type_id,
-                                          membershipid: pro.user.membership_id,
-                                          vendorid: pro.user.id,
-                                          didcountpercentage:
-                                              pro.discount_percentage,
-                                          avg_rating:
-                                              pro.avg_rating?.toDouble(),
-                                          comment: pro.commentcount.toString(),
-                                          wow: pro.wow,
-                                          discounttedPrice:
-                                              pro.discounted_price,
-                                          issponsored: pro.user.sponsored,
-                                          lefttile: "Used",
-                                          Vimage: pro.user.photo,
-                                          price: pro.price,
-                                          title: pro.title,
-                                          vendorname: pro.user.name,
-                                          productImage: pro.image,
-                                          similarproductCount:
-                                              pro.similarProductCount,
-                                          membershipColor:
-                                              pro.user.membershipColor,
-                                          membershipTitle:
-                                              pro.user.membershipTitle,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : const SizedBox();
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return data.cat.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        data.cat[4].slug.toUpperCase(),
-                                        style: headerstyle.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                            color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 340.h,
-                                    width: double.infinity,
-                                    child: ListView.builder(
-                                      padding: const EdgeInsets.all(3),
-                                      clipBehavior: Clip.antiAlias,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: data.insidearr[4].length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        VProduct pro = data.insidearr[4][index];
-                                        return ProductDetailWidget(
-                                          savedid: pro.savedByLoggedUser ==
-                                                      null ||
-                                                  pro.savedByLoggedUser!.isEmpty
-                                              ? []
-                                              : pro.savedByLoggedUser
-                                                  ?.map(
-                                                    (e) => SavedPost(
-                                                        id: e.id,
-                                                        userId: e.userId,
-                                                        postId: e.postId,
-                                                        createdAt: e.createdAt,
-                                                        updatedAt: e.updatedAt),
-                                                  )
-                                                  .toList(),
-                                          onRefresh: () {
-                                            refreshAllProviders();
-                                          },
-                                          lat: pro.user.latitude,
-                                          long: pro.user.longitude,
-                                          productid: pro.id,
-                                          shortestDistance:
-                                              pro.user.shortestDistance,
-                                          offer: pro.offers,
-                                          posttype: pro.post_type_id,
-                                          membershipid: pro.user.membership_id,
-                                          vendorid: pro.user.id,
-                                          didcountpercentage:
-                                              pro.discount_percentage,
-                                          avg_rating:
-                                              pro.avg_rating?.toDouble(),
-                                          wow: pro.wow,
-                                          comment: pro.commentcount.toString(),
-                                          discounttedPrice:
-                                              pro.discounted_price,
-                                          issponsored: pro.user.sponsored,
-                                          lefttile: "Used",
-                                          Vimage: pro.user.photo,
-                                          price: pro.price,
-                                          title: pro.title,
-                                          vendorname: pro.user.name,
-                                          productImage: pro.image,
-                                          similarproductCount:
-                                              pro.similarProductCount,
-                                          membershipColor:
-                                              pro.user.membershipColor,
-                                          membershipTitle:
-                                              pro.user.membershipTitle,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : const SizedBox();
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: TabBar(
-                      controller: tabController,
-                      tabs: const [
-                        Tab(
-                          text: ' Global\n Brands',
-                        ),
-                        Tab(text: ' Domestic\n Brands'),
-                        Tab(
-                            text:
-                                ' Spotlight\n Sellers'), // Changed label for clarity
-                      ],
-                      labelColor: const Color(0xff909090),
-                    ),
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      double dynamicHeight;
-
-                      if (tabController.index == 0) {
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                                ? 150
-                                : 430;
-                      } else if (tabController.index == 1) {
-                        // Ensure data.doma[0] is valid and has length
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                                ? 150
-                                : 430;
-                      } else if (tabController.index == 2)
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                                ? 150
-                                : 430;
-                      else
-                        dynamicHeight = 200;
-                      return SizedBox(
-                        // Use Expanded for better layout management
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          height: dynamicHeight,
-                          width: double.infinity,
-                          child: TabBarView(
-                            controller: tabController,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 10.h),
-                                    child: Row(
-                                      children: [
-                                        if (data.global.isNotEmpty)
-                                          ...data.global.map((e) {
-                                            return NotStoryWidget(
-                                              vImage: e
-                                                  .brandLogo, // Use the correct variable name
-                                              index: data.global
-                                                  .indexOf(e), // Get the index
-                                              brandname: e.brandName,
-                                            );
-                                          }).toList(),
-                                      ],
-                                    ),
-                                  ),
-                                  data.insidearr.isNotEmpty &&
-                                          data.insidearr[0].isNotEmpty
-                                      ? SizedBox(
-                                          height: 330.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[0].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[0][index];
-                                              return ProductDetailWidget(
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refreshAllProviders();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                vendorid: prod.user.id,
-                                                posttype: prod.post_type_id,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                offer: prod.offers,
-                                                tradeImage:
-                                                    'assets/icon/b2bIcon.svg',
-                                                didcountpercentage:
-                                                    prod.discount_percentage,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                wow: prod.wow,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                lefttile: "Used",
-                                                vendorname: prod.user.name,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.title,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: Center(
-                                            child: nolistingfound(),
-                                          ),
-                                        ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: data.domestic.map((e) {
-                                          return NotStoryWidget(
-                                            vImage: e.brandLogo,
-                                            index: data.domestic.indexOf(e),
-                                            brandname: e.brandName,
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ),
-                                  data.insidearr.isEmpty
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 18.h),
-                                          child: Center(
-                                            child: nolistingfound(),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 340.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[1].length,
-                                            itemBuilder: (context, index) {
-                                              dynamicsize =
-                                                  data.insidearr[1].isEmpty
-                                                      ? 100
-                                                      : 500;
-                                              VProduct prod =
-                                                  data.insidearr[1][index];
-
-                                              return ProductDetailWidget(
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refreshAllProviders();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                didcountpercentage:
-                                                    prod.discount_percentage,
-                                                vendorid: prod.user.id,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                offer: prod.offers,
-                                                posttype: prod.post_type_id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                wow: prod.wow,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "Used",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: data.spotlight.map((e) {
-                                          return NotStoryWidget(
-                                            vImage: e.brandLogo,
-                                            index: data.spotlight.indexOf(e),
-                                            brandname: e.brandName,
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ),
-                                  data.insidearr.isEmpty
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: Center(
-                                            child: nolistingfound(),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 340.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[2].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[2][index];
-                                              return ProductDetailWidget(
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refreshAllProviders();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                didcountpercentage:
-                                                    prod.avg_rating,
-                                                vendorid: prod.user.id,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                offer: prod.offers,
-                                                posttype: prod.post_type_id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                wow: prod.wow,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "Used",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          "BuyOrWin",
-                          textAlign: TextAlign.center,
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: const Color(0xff551b55)),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.centerStart,
-                            margin: EdgeInsets.only(bottom: 5.h),
-                            height: 5.h,
-                            width: 100.w,
-                            decoration: BoxDecoration(
-                                color: const Color(0xFF681b4e),
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: 300.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: data.buynow!.length,
-                          itemBuilder: (context, index) {
-                            Buynowmodel resp = data.buynow![index];
-
-                            return buyorwin_widget(
-                                wow: resp.wow ?? '0',
-                                gift_qty: resp.gift_qty!,
-                                worth: resp.worth!,
-                                productname: resp.name,
-                                vendorImage: resp.vendorImage,
-                                vendorname: resp.name,
-                                winners: resp.winners.toString(),
-                                proctimage: resp.image ?? '');
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: 70.h,
-                        width: double.infinity,
-                        child: PageView.builder(
-                          controller: _adscontroller,
-                          reverse: true,
-                          allowImplicitScrolling: true,
-                          itemCount: data.ads.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              data.ads[index].image!,
-                              // height: 150.h,
-                              width: double.infinity,
-                              // fit: BoxFit.fill,
-                            );
-                            // Image.asset(
-                            //     height: 150.h,
-                            //     width: double.infinity,
-                            //     fit: BoxFit.fill,
-                            //     );
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 100.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      List<List<VProduct>> productsList = [
-                        data.low_price_guarantee, // Corresponds to SHOPZONE
-                        data.Launch_offer, // Corresponds to HOB
-
-                        data.seasonal, // Corresponds to SERVICES
-
-                        data.promotional, // Corresponds to TRADEHUB
-                        data.clearance_sale,
-                        data.Launch_festival_offer, // Corresponds to USED
-                      ];
-
-                      return SizedBox(
-                        width: double.infinity,
-                        height:
-                            productsList[selectedTab!].isEmpty ? 10 : 420.h,
-                        child: ValueListenableBuilder<int>(
-                          valueListenable: selectedIndexNotifier,
-                          builder: (context, selectedTab, child) {
-                            // Map category labels to their respective product lists
-                            List<String> categories = services
-                                .map((e) => e['label'] as String)
-                                .toList();
-
-                            return Column(
-                              children: [
-                                // Category Selector Row
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: categories.length,
-                                    itemBuilder: (context, index) {
-                                      bool isSelected = index == selectedTab;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          // Update the selected index
-                                          selectedIndexNotifier.value = index;
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          margin: const EdgeInsets.all(5),
-                                          width: 150.w,
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? const Color(0xFF681b4e)
-                                                : const Color(0xffA5A5A5),
-                                          ),
-                                          child: Text(
-                                            categories[index],
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorConstant.whiteColor,
+                                      Row(
+                                        children: [
+                                          Text(
+                                            data.cat[1].slug.toUpperCase(),
+                                            style: headerstyle.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.black,
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      SizedBox(
+                                        height: 340.h,
+                                        width: double.infinity,
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.all(3),
+                                          clipBehavior: Clip.antiAlias,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: data.insidearr[1].length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (context, index) {
+                                            VProduct pro =
+                                                data.insidearr[1][index];
+                                            return ProductDetailWidget(
+                                              savedid: pro.savedByLoggedUser ==
+                                                          null ||
+                                                      pro.savedByLoggedUser!
+                                                          .isEmpty
+                                                  ? []
+                                                  : pro.savedByLoggedUser
+                                                      ?.map(
+                                                        (e) => SavedPost(
+                                                          id: e.id,
+                                                          userId: e.userId,
+                                                          postId: e.postId,
+                                                          createdAt:
+                                                              e.createdAt,
+                                                          updatedAt:
+                                                              e.updatedAt,
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                              onRefresh: () {
+                                                refreshAllProviders();
+                                              },
+                                              lat: pro.user.latitude,
+                                              long: pro.user.longitude,
+                                              productid: pro.id,
+                                              shortestDistance:
+                                                  pro.user.shortestDistance,
+                                              vendorid: pro.user.id,
+                                              membershipid:
+                                                  pro.user.membership_id,
+                                              offer: pro.offers,
+                                              posttype: pro.post_type_id,
+                                              didcountpercentage:
+                                                  pro.discount_percentage,
+                                              avg_rating:
+                                                  pro.avg_rating?.toDouble(),
+                                              wow: pro.wow,
+                                              comment:
+                                                  pro.commentcount.toString(),
+                                              issponsored: pro.user.sponsored,
+                                              discounttedPrice:
+                                                  pro.discounted_price,
+                                              lefttile: "Used",
+                                              Vimage: pro.user.photo,
+                                              price: pro.price,
+                                              title: pro.title,
+                                              vendorname: pro.user.name,
+                                              productImage: pro.image,
+                                              similarproductCount:
+                                                  pro.similarProductCount,
+                                              membershipColor:
+                                                  pro.user.membershipColor,
+                                              membershipTitle:
+                                                  pro.user.membershipTitle,
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox();
+                        },
+                        error: (error, stackTrace) {
+                          return Text("error $error");
+                        },
+                        loading: () => Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 70.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          asyncbajarValue.when(
+                            data: (data) {
+                              return data.cat.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data.cat[2].slug,
+                                                style: headerstyle.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 340.h,
+                                            width: double.infinity,
+                                            child: ListView.builder(
+                                              padding: const EdgeInsets.all(3),
+                                              clipBehavior: Clip.antiAlias,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  data.insidearr[2].length,
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                VProduct pro =
+                                                    data.insidearr[2][index];
+                                                return ProductDetailWidget(
+                                                  savedid: pro.savedByLoggedUser ==
+                                                              null ||
+                                                          pro.savedByLoggedUser!
+                                                              .isEmpty
+                                                      ? []
+                                                      : pro.savedByLoggedUser
+                                                          ?.map(
+                                                            (e) => SavedPost(
+                                                                id: e.id,
+                                                                userId:
+                                                                    e.userId,
+                                                                postId:
+                                                                    e.postId,
+                                                                createdAt:
+                                                                    e.createdAt,
+                                                                updatedAt: e
+                                                                    .updatedAt),
+                                                          )
+                                                          .toList(),
+                                                  onRefresh: () {
+                                                    refreshAllProviders();
+                                                  },
+                                                  lat: pro.user.latitude,
+                                                  long: pro.user.longitude,
+                                                  productid: pro.id,
+                                                  shortestDistance:
+                                                      pro.user.shortestDistance,
+                                                  offer: pro.offers,
+                                                  posttype: pro.post_type_id,
+                                                  membershipid:
+                                                      pro.user.membership_id,
+                                                  vendorid: pro.user.id,
+                                                  didcountpercentage:
+                                                      pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating
+                                                      ?.toDouble(),
+                                                  comment: pro.commentcount
+                                                      .toString(),
+                                                  wow: pro.wow,
+                                                  discounttedPrice:
+                                                      pro.discounted_price,
+                                                  issponsored:
+                                                      pro.user.sponsored,
+                                                  lefttile: "Used",
+                                                  Vimage: pro.user.photo,
+                                                  price: pro.price,
+                                                  title: pro.title,
+                                                  vendorname: pro.user.name,
+                                                  productImage: pro.image,
+                                                  similarproductCount:
+                                                      pro.similarProductCount,
+                                                  membershipColor:
+                                                      pro.user.membershipColor,
+                                                  membershipTitle:
+                                                      pro.user.membershipTitle,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : const SizedBox();
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 70.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          asyncbajarValue.when(
+                            data: (data) {
+                              return data.cat.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data.cat[4].slug.toUpperCase(),
+                                                style: headerstyle.copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                    color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 340.h,
+                                            width: double.infinity,
+                                            child: ListView.builder(
+                                              padding: const EdgeInsets.all(3),
+                                              clipBehavior: Clip.antiAlias,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  data.insidearr[4].length,
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                VProduct pro =
+                                                    data.insidearr[4][index];
+                                                return ProductDetailWidget(
+                                                  savedid: pro.savedByLoggedUser ==
+                                                              null ||
+                                                          pro.savedByLoggedUser!
+                                                              .isEmpty
+                                                      ? []
+                                                      : pro.savedByLoggedUser
+                                                          ?.map(
+                                                            (e) => SavedPost(
+                                                                id: e.id,
+                                                                userId:
+                                                                    e.userId,
+                                                                postId:
+                                                                    e.postId,
+                                                                createdAt:
+                                                                    e.createdAt,
+                                                                updatedAt: e
+                                                                    .updatedAt),
+                                                          )
+                                                          .toList(),
+                                                  onRefresh: () {
+                                                    refreshAllProviders();
+                                                  },
+                                                  lat: pro.user.latitude,
+                                                  long: pro.user.longitude,
+                                                  productid: pro.id,
+                                                  shortestDistance:
+                                                      pro.user.shortestDistance,
+                                                  offer: pro.offers,
+                                                  posttype: pro.post_type_id,
+                                                  membershipid:
+                                                      pro.user.membership_id,
+                                                  vendorid: pro.user.id,
+                                                  didcountpercentage:
+                                                      pro.discount_percentage,
+                                                  avg_rating: pro.avg_rating
+                                                      ?.toDouble(),
+                                                  wow: pro.wow,
+                                                  comment: pro.commentcount
+                                                      .toString(),
+                                                  discounttedPrice:
+                                                      pro.discounted_price,
+                                                  issponsored:
+                                                      pro.user.sponsored,
+                                                  lefttile: "Used",
+                                                  Vimage: pro.user.photo,
+                                                  price: pro.price,
+                                                  title: pro.title,
+                                                  vendorname: pro.user.name,
+                                                  productImage: pro.image,
+                                                  similarproductCount:
+                                                      pro.similarProductCount,
+                                                  membershipColor:
+                                                      pro.user.membershipColor,
+                                                  membershipTitle:
+                                                      pro.user.membershipTitle,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : const SizedBox();
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 70.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: TabBar(
+                              controller: tabController,
+                              tabs: const [
+                                Tab(
+                                  text: ' Global\n Brands',
+                                ),
+                                Tab(text: ' Domestic\n Brands'),
+                                Tab(
+                                    text:
+                                        ' Spotlight\n Sellers'), // Changed label for clarity
+                              ],
+                              labelColor: const Color(0xff909090),
+                            ),
+                          ),
+                          asyncbajarValue.when(
+                            data: (data) {
+                              // print("kalu ${data.brandbazar_domestic?.length}");
+                              double dynamicHeight;
+
+                              if (tabController.index == 0) {
+                                dynamicHeight = data.insidearr.isEmpty ||
+                                        data.global.length == 0
+                                    ? 150
+                                    : 440;
+                              } else if (tabController.index == 1) {
+                                // Ensure data.doma[0] is valid and has length
+                                dynamicHeight = data.insidearr.isEmpty &&
+                                        data.brandbazar_domestic?.length == 0
+                                    ? 150
+                                    : 470;
+                              } else if (tabController.index == 2)
+                                dynamicHeight = data.insidearr.isEmpty ||
+                                        data.spotlights?.length == 0
+                                    ? 150
+                                    : 470;
+                              else
+                                dynamicHeight = 200;
+                              return SizedBox(
+                                // Use Expanded for better layout management
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  height: dynamicHeight,
+                                  width: double.infinity,
+                                  child: TabBarView(
+                                    controller: tabController,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.h),
+                                            child: Row(
+                                              children: [
+                                                if (data.global.isNotEmpty)
+                                                  ...data.global.map((e) {
+                                                    return NotStoryWidget(
+                                                      vImage: e
+                                                          .brandLogo, // Use the correct variable name
+                                                      index: data.global.indexOf(
+                                                          e), // Get the index
+                                                      brandname: e.brandName,
+                                                    );
+                                                  }).toList(),
+                                              ],
+                                            ),
+                                          ),
+                                          data.brandbazar_global!.isNotEmpty &&
+                                                  data.brandbazar_global
+                                                          ?.length !=
+                                                      0
+                                              ? SizedBox(
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection: Axis
+                                                        .horizontal, // Horizontal scrolling
+                                                    child: Wrap(
+                                                      spacing: 0
+                                                          .w, // Horizontal space between items
+                                                      runSpacing: 20
+                                                          .h, // Vertical space between rows
+                                                      children: List.generate(
+                                                          data.insidearr[0]
+                                                              .length, (index) {
+                                                        VProduct prod =
+                                                            data.brandbazar_global![
+                                                                index];
+
+                                                        return Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            child:
+                                                                ProductDetailWidget(
+                                                              savedid: prod.savedByLoggedUser ==
+                                                                          null ||
+                                                                      prod.savedByLoggedUser!
+                                                                          .isEmpty
+                                                                  ? []
+                                                                  : prod
+                                                                      .savedByLoggedUser
+                                                                      ?.map(
+                                                                        (e) => SavedPost(
+                                                                            id: e
+                                                                                .id,
+                                                                            userId:
+                                                                                e.userId,
+                                                                            postId: e.postId,
+                                                                            createdAt: e.createdAt,
+                                                                            updatedAt: e.updatedAt),
+                                                                      )
+                                                                      .toList(),
+                                                              onRefresh: () {
+                                                                refreshAllProviders();
+                                                              },
+                                                              lat: prod.user
+                                                                  .latitude,
+                                                              long: prod.user
+                                                                  .longitude,
+                                                              productid:
+                                                                  prod.id,
+                                                              shortestDistance: prod
+                                                                  .user
+                                                                  .shortestDistance,
+                                                              vendorid:
+                                                                  prod.user.id,
+                                                              posttype: prod
+                                                                  .post_type_id,
+                                                              membershipid: prod
+                                                                  .user
+                                                                  .membership_id,
+                                                              offer:
+                                                                  prod.offers,
+                                                              tradeImage:
+                                                                  'assets/icon/b2bIcon.svg',
+                                                              didcountpercentage:
+                                                                  prod.discount_percentage,
+                                                              avg_rating: prod
+                                                                  .avg_rating
+                                                                  ?.toDouble(),
+                                                              wow: prod.wow,
+                                                              comment: prod
+                                                                  .commentcount
+                                                                  .toString(),
+                                                              lefttile: "Used",
+                                                              vendorname: prod
+                                                                  .user.name,
+                                                              discounttedPrice:
+                                                                  prod.discounted_price,
+                                                              Vimage:
+                                                                  prod.title,
+                                                              issponsored: prod
+                                                                  .user
+                                                                  .sponsored,
+                                                              price: prod.price,
+                                                              title: prod.title,
+                                                              productImage:
+                                                                  prod.image,
+                                                              similarproductCount:
+                                                                  prod.similarProductCount,
+                                                              membershipColor: prod
+                                                                  .user
+                                                                  .membershipColor,
+                                                              membershipTitle: prod
+                                                                  .user
+                                                                  .membershipTitle,
+                                                            ));
+                                                      }),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 15.h),
+                                                  child: Center(
+                                                    child: nolistingfound(),
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5),
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.domestic.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.domestic
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ),
+                                          data.brandbazar_domestic!.isEmpty
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 18.h),
+                                                  child: Center(
+                                                    child: nolistingfound(),
+                                                  ),
+                                                )
+                                              : SizedBox(
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection: Axis
+                                                        .horizontal, // Horizontal scrolling
+                                                    child: Wrap(
+                                                      spacing: 0
+                                                          .w, // Horizontal space between items
+                                                      runSpacing: 20
+                                                          .h, // Vertical space between rows
+                                                      children: List.generate(
+                                                          data.brandbazar_domestic!
+                                                              .length, (index) {
+                                                        VProduct prod =
+                                                            data.brandbazar_domestic![
+                                                                index];
+
+                                                        return Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        5.w),
+                                                            child:
+                                                                ProductDetailWidget(
+                                                              savedid: prod.savedByLoggedUser ==
+                                                                          null ||
+                                                                      prod.savedByLoggedUser!
+                                                                          .isEmpty
+                                                                  ? []
+                                                                  : prod
+                                                                      .savedByLoggedUser
+                                                                      ?.map(
+                                                                        (e) => SavedPost(
+                                                                            id: e
+                                                                                .id,
+                                                                            userId:
+                                                                                e.userId,
+                                                                            postId: e.postId,
+                                                                            createdAt: e.createdAt,
+                                                                            updatedAt: e.updatedAt),
+                                                                      )
+                                                                      .toList(),
+                                                              onRefresh: () {
+                                                                refreshAllProviders();
+                                                              },
+                                                              lat: prod.user
+                                                                  .latitude,
+                                                              long: prod.user
+                                                                  .longitude,
+                                                              productid:
+                                                                  prod.id,
+                                                              avg_rating: prod
+                                                                  .avg_rating
+                                                                  ?.toDouble(),
+                                                              didcountpercentage:
+                                                                  prod.discount_percentage,
+                                                              vendorid:
+                                                                  prod.user.id,
+                                                              membershipid: prod
+                                                                  .user
+                                                                  .membership_id,
+                                                              offer:
+                                                                  prod.offers,
+                                                              posttype: prod
+                                                                  .post_type_id,
+                                                              shortestDistance: prod
+                                                                  .user
+                                                                  .shortestDistance,
+                                                              wow: prod.wow,
+                                                              comment: prod
+                                                                  .commentcount
+                                                                  .toString(),
+                                                              issponsored: prod
+                                                                  .user
+                                                                  .sponsored,
+                                                              lefttile: "Used",
+                                                              vendorname: prod
+                                                                  .user.name,
+                                                              discounttedPrice:
+                                                                  prod.discounted_price,
+                                                              Vimage: prod
+                                                                  .user.photo,
+                                                              price: prod.price,
+                                                              title: prod.title,
+                                                              productImage:
+                                                                  prod.image,
+                                                              similarproductCount:
+                                                                  prod.similarProductCount,
+                                                              membershipColor: prod
+                                                                  .user
+                                                                  .membershipColor,
+                                                              membershipTitle: prod
+                                                                  .user
+                                                                  .membershipTitle,
+                                                            ));
+                                                      }),
+                                                    ),
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 5),
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children:
+                                                    data.spotlight.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e.brandLogo,
+                                                    index: data.spotlight
+                                                        .indexOf(e),
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ),
+                                          data.insidearr.isEmpty
+                                              ? Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 15.h),
+                                                  child: Center(
+                                                    child: nolistingfound(),
+                                                  ),
+                                                )
+                                              : SizedBox(
+                                                  height: 340.h,
+                                                  child: ListView.builder(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    padding:
+                                                        const EdgeInsets.all(3),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: data
+                                                        .insidearr[2].length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      VProduct prod = data
+                                                          .insidearr[2][index];
+                                                      return ProductDetailWidget(
+                                                        savedid: prod.savedByLoggedUser ==
+                                                                    null ||
+                                                                prod.savedByLoggedUser!
+                                                                    .isEmpty
+                                                            ? []
+                                                            : prod
+                                                                .savedByLoggedUser
+                                                                ?.map(
+                                                                  (e) => SavedPost(
+                                                                      id: e.id,
+                                                                      userId: e
+                                                                          .userId,
+                                                                      postId: e
+                                                                          .postId,
+                                                                      createdAt: e
+                                                                          .createdAt,
+                                                                      updatedAt:
+                                                                          e.updatedAt),
+                                                                )
+                                                                .toList(),
+                                                        onRefresh: () {
+                                                          refreshAllProviders();
+                                                        },
+                                                        lat: prod.user.latitude,
+                                                        long:
+                                                            prod.user.longitude,
+                                                        productid: prod.id,
+                                                        avg_rating: prod
+                                                            .avg_rating
+                                                            ?.toDouble(),
+                                                        didcountpercentage:
+                                                            prod.avg_rating,
+                                                        vendorid: prod.user.id,
+                                                        membershipid: prod
+                                                            .user.membership_id,
+                                                        offer: prod.offers,
+                                                        posttype:
+                                                            prod.post_type_id,
+                                                        shortestDistance: prod
+                                                            .user
+                                                            .shortestDistance,
+                                                        wow: prod.wow,
+                                                        comment: prod
+                                                            .commentcount
+                                                            .toString(),
+                                                        issponsored:
+                                                            prod.user.sponsored,
+                                                        lefttile: "Used",
+                                                        vendorname: prod.title,
+                                                        discounttedPrice: prod
+                                                            .discounted_price,
+                                                        Vimage: prod.user.photo,
+                                                        price: prod.price,
+                                                        title: prod.title,
+                                                        productImage:
+                                                            prod.image,
+                                                        similarproductCount: prod
+                                                            .similarProductCount,
+                                                        membershipColor: prod
+                                                            .user
+                                                            .membershipColor,
+                                                        membershipTitle: prod
+                                                            .user
+                                                            .membershipTitle,
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-
-                                // Spacer
-                                SizedBox(height: 5.h),
-
-                                // Display Products for the selected category
-                                asyncbajarValue.when(
-                                  data: (data) {
-                                    // Define the products list corresponding to each category
-
-                                    // Ensure the index is valid
-                                    if (selectedTab < 0 ||
-                                        selectedTab >= productsList.length) {
-                                      selectedTab =
-                                          0; // Default to the first category if index is out of bounds
-                                    }
-
-                                    List<VProduct> products =
-                                        productsList[selectedTab];
-
-                                    return data.insidearr.isEmpty
-                                        ? nolistingfound()
-                                        : ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: products.length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod = products[index];
-
-                                              return ProductDetailWidget(
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refreshAllProviders();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                didcountpercentage:
-                                                    prod.avg_rating,
-                                                vendorid: prod.user.id,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                offer: prod.offers,
-                                                posttype: prod.post_type_id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                wow: prod.wow,
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "Used",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          );
-
-                                    // SizedBox(
-                                    //    height: 340.h,
-                                    //   child: ListView.builder(
-                                    //     scrollDirection: Axis.horizontal,
-                                    //     itemCount: products.length,
-                                    //     itemBuilder: (context, index) {
-                                    //       return InkWell(
-                                    //         onTap: () {}, // Handle onTap if needed
-                                    //         child: ProductDetailWidget(
-                                    //           vendorname: prod.user.name,
-                                    //           discounttedPrice: "0",
-                                    //           Vimage: prod.user.photo,
-                                    //           price: prod.price,
-                                    //           title: prod.title,
-                                    //           productImage: prod.image,
-                                    //         ), // Replace with your actual product widget
-                                    //       );
-                                    //     },
-                                    //   ),
-                                    // );
-                                  },
-                                  error: (error, stackTrace) =>
-                                      Text("Error: $error"),
-                                  loading: () => Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      width: 70.w,
-                                      height: 100.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 70.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "BuyOrWin",
+                                  textAlign: TextAlign.center,
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: const Color(0xff551b55)),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    margin: EdgeInsets.only(bottom: 5.h),
+                                    height: 5.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFF681b4e),
+                                        borderRadius: BorderRadius.circular(5)),
                                   ),
                                 ),
                               ],
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("$error");
-                    },
-                    loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        width: 70.w,
-                        height: 10.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                            ),
+                          ),
+                          asyncbajarValue.when(
+                            data: (data) {
+                              return SizedBox(
+                                height: 300.h,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: data.buynow!.length,
+                                  itemBuilder: (context, index) {
+                                    Buynowmodel resp = data.buynow![index];
+
+                                    return buyorwin_widget(
+                                        wow: resp.wow ?? '0',
+                                        gift_qty: resp.gift_qty!,
+                                        worth: resp.worth!,
+                                        productname: resp.name,
+                                        vendorImage: resp.vendorImage,
+                                        vendorname: resp.name,
+                                        winners: resp.winners.toString(),
+                                        proctimage: resp.image ?? '');
+                                  },
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text("error $error");
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 70.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          asyncbajarValue.when(
+                            data: (data) {
+                              return SizedBox(
+                                height: 70.h,
+                                width: double.infinity,
+                                child: PageView.builder(
+                                  controller: _adscontroller,
+                                  reverse: true,
+                                  allowImplicitScrolling: true,
+                                  itemCount: data.ads.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return Image.network(
+                                      data.ads[index].image!,
+                                      // height: 150.h,
+                                      width: double.infinity,
+                                      // fit: BoxFit.fill,
+                                    );
+                                    // Image.asset(
+                                    //     height: 150.h,
+                                    //     width: double.infinity,
+                                    //     fit: BoxFit.fill,
+                                    //     );
+                                  },
+                                ),
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return Text(error.toString());
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 70.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Sponsored",
+                                  textAlign: TextAlign.center,
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: const Color(0xff551b55),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Center(
+                                  child: Container(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    margin: EdgeInsets.only(bottom: 5.h),
+                                    height: 5.h,
+                                    width: 100.w,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff901B41),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                nolistingfound(),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ValueListenableBuilder<int>(
+                              valueListenable: selectedIndexNotifier,
+                              builder: (context, selectedIndex, child) {
+                                // Map category labels to their respective product lists
+                                List<String> categories = services
+                                    .map((e) => e['label'] as String)
+                                    .toList();
+
+                                return Column(
+                                  children: [
+                                    // Category Selector Row
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 50.h,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: categories.length,
+                                        itemBuilder: (context, index) {
+                                          bool isSelected =
+                                              index == selectedIndex;
+                                          return GestureDetector(
+                                            onTap: () {
+                                              // Update the selected index
+                                              selectedIndexNotifier.value =
+                                                  index;
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              margin: const EdgeInsets.all(5),
+                                              width: 150.w,
+                                              decoration: BoxDecoration(
+                                                color: isSelected
+                                                    ? const Color(0xFF681b4e)
+                                                    : const Color(0xffA5A5A5),
+                                              ),
+                                              child: Text(
+                                                categories[index],
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors
+                                                      .white, // Use color directly or define in constants
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+
+                                    // Spacer
+                                    SizedBox(height: 5.h),
+
+                                    // Display Products for the selected category
+                                    asyncbajarValue.when(
+                                      data: (data) {
+                                        // Define the products list corresponding to each category
+                                        List<List<VProduct>> productsList = [
+                                          data.low_price_guarantee, // Corresponds to SHOPZONE
+                                          data.Launch_offer, // Corresponds to HOB
+                                          data.seasonal, // Corresponds to SERVICES
+                                          data.promotional, // Corresponds to TRADEHUB
+                                          data.clearance_sale, // Corresponds to USED
+                                          data.Launch_festival_offer, // Corresponds to USED
+                                        ];
+
+                                        // Ensure the index is valid
+                                        if (selectedIndex < 0 ||
+                                            selectedIndex >=
+                                                productsList.length) {
+                                          selectedIndex =
+                                              0; // Default to the first category if index is out of bounds
+                                        }
+
+                                        List<VProduct> products =
+                                            productsList[selectedIndex];
+
+                                        // Calculate height dynamically
+                                        double calculatedHeight =
+                                            products.isNotEmpty ? 380.h : 60.h;
+
+                                        return AnimatedContainer(
+                                          alignment: Alignment.topLeft,
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          height: calculatedHeight,
+                                          child: products.isEmpty
+                                              ? Center(child: nolistingfound())
+                                              : SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Wrap(
+                                                    spacing: 0
+                                                        .w, // Horizontal spacing between items
+                                                    runSpacing: 0
+                                                        .h, // Vertical spacing between rows
+                                                    children: List.generate(
+                                                        products.length,
+                                                        (index) {
+                                                      VProduct prod =
+                                                          products[index];
+
+                                                      return Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    2.w),
+                                                        child:
+                                                            ProductDetailWidget(
+                                                          savedid: prod.savedByLoggedUser ==
+                                                                      null ||
+                                                                  prod.savedByLoggedUser!
+                                                                      .isEmpty
+                                                              ? []
+                                                              : prod
+                                                                  .savedByLoggedUser
+                                                                  ?.map(
+                                                                    (e) => SavedPost(
+                                                                        id: e
+                                                                            .id,
+                                                                        userId: e
+                                                                            .userId,
+                                                                        postId: e
+                                                                            .postId,
+                                                                        createdAt: e
+                                                                            .createdAt,
+                                                                        updatedAt:
+                                                                            e.updatedAt),
+                                                                  )
+                                                                  .toList(),
+                                                          onRefresh: () {
+                                                            refreshAllProviders();
+                                                          },
+                                                          lat: prod
+                                                              .user.latitude,
+                                                          long: prod
+                                                              .user.longitude,
+                                                          productid: prod.id,
+                                                          vendorid:
+                                                              prod.user.id,
+                                                          membershipid: prod
+                                                              .user
+                                                              .membership_id,
+                                                          posttype:
+                                                              prod.post_type_id,
+                                                          shortestDistance: prod
+                                                              .user
+                                                              .shortestDistance,
+                                                          didcountpercentage: prod
+                                                              .discount_percentage,
+                                                          avg_rating: prod
+                                                              .avg_rating
+                                                              ?.toDouble(),
+                                                          offer: prod.offers,
+                                                          comment: prod
+                                                              .commentcount
+                                                              .toString(),
+                                                          wow: prod.wow,
+                                                          issponsored: prod
+                                                              .user.sponsored,
+                                                          lefttile:
+                                                              "Socio-Shop",
+                                                          vendorname:
+                                                              prod.user.name,
+                                                          discounttedPrice: prod
+                                                              .discounted_price,
+                                                          Vimage:
+                                                              prod.user.photo,
+                                                          price: prod.price,
+                                                          title: prod.title,
+                                                          productImage:
+                                                              prod.image,
+                                                          similarproductCount: prod
+                                                              .similarProductCount,
+                                                          membershipColor: prod
+                                                              .user
+                                                              .membershipColor,
+                                                          membershipTitle: prod
+                                                              .user
+                                                              .membershipTitle,
+                                                        ),
+                                                      );
+                                                    }),
+                                                  ),
+                                                ),
+                                        );
+                                      },
+                                      error: (error, stackTrace) =>
+                                          const Center(
+                                        child: Text("Error loading data"),
+                                      ),
+                                      loading: () => Center(
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            width: 40.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.w, bottom: 8.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'All Products',
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          asyncbajarValue.when(
+                            data: (data) {
+                              return SingleChildScrollView(
+                                scrollDirection:
+                                    Axis.vertical, // Scroll vertically
+                                child: Wrap(
+                                  runSpacing:
+                                      15.h, // Vertical spacing between rows
+                                  children: List.generate(data.product.length,
+                                      (index) {
+                                    var res = data.product[index];
+                                    return SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width) /
+                                              2, // Adjust for two items per row
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        shadowColor: const Color(0xff3D215F)
+                                            .withOpacity(0.5),
+                                        elevation: 9,
+                                        // margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: AllProductDetailWidget(
+                                          savedid: res.savedByLoggedUser ==
+                                                      null ||
+                                                  res.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : res.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refreshAllProviders();
+                                          },
+                                          lat: res.user.latitude,
+                                          long: res.user.longitude,
+                                          productid: res.id,
+                                          shortestDistance:
+                                              res.user.shortestDistance,
+                                          id: int.tryParse(res.id),
+                                          membershipid: res.user.membership_id,
+                                          offer: res.offers,
+                                          posttype: res.post_type_id,
+                                          didcountpercentage:
+                                              res.discount_percentage,
+                                          avg_rating:
+                                              res.avg_rating?.toDouble(),
+                                          wow: res.wow,
+                                          comment: res.commentcount.toString(),
+                                          issponsored: res.user.sponsored,
+                                          discounttedPrice:
+                                              res.discounted_price,
+                                          lefttile: "Used",
+                                          productImage: res.image,
+                                          Vimage: res.user.photo,
+                                          vendorname: res.user.name,
+                                          title: res.title,
+                                          price: res.price,
+                                          similarproductCount:
+                                              res.similarProductCount,
+                                          membershipColor:
+                                              res.user.membershipColor,
+                                          membershipTitle:
+                                              res.user.membershipTitle,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              );
+
+                              // SizedBox(
+                              //    height: 340.h,
+                              //   width: double.infinity,
+                              //   child: ListView.builder(
+                              //     padding: EdgeInsets.zero,
+                              //     clipBehavior: Clip.antiAlias,
+                              //     scrollDirection: Axis.horizontal,
+                              //     itemCount: data.allProducts.length,
+                              //     shrinkWrap: true,
+                              //     itemBuilder: (context, index) {
+                              //       // print(
+                              //       //     "ram ${}");
+                              //       return ProductDetailWidget(
+                              //         // productImage: data.allProducts[index].image,
+                              //         Vimage:
+                              //             data.allProducts[index].user.photo,
+
+                              //         vendorname:
+                              //             data.allProducts[index].user.name,
+                              //         title: data.allProducts[index].title,
+                              //         price: data.allProducts[index].price,
+                              //       );
+                              //     },
+                              //   ),
+                              // );
+                            },
+                            error: (error, stackTrace) {
+                              return Text('error is $error');
+                            },
+                            loading: () {
+                              return const CircularProgressIndicator();
+                            },
+                          ),
+                          SizedBox(
+                            height: 10.w,
+                          )
+                        ],
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w, bottom: 8.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'All Products',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.black),
+                    )
+                  ],
+                ),
+                valuenotifilersidebutton(
+                    showSideBar: showSideBar, isSectionsVisible: true),
+                Positioned(
+                  top: 65,
+                  left: 48,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width -
+                        90, // Add width constraint
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.circular(12), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8.0,
+                          offset: Offset(0, 2),
                         ),
                       ],
                     ),
-                  ),
-
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.vertical, // Scroll vertically
-                        child: Wrap(
-                          runSpacing: 15.h, // Vertical spacing between rows
-                          children: List.generate(data.product.length, (index) {
-                            var res = data.product[index];
-                            return SizedBox(
-                              width: (MediaQuery.of(context).size.width) /
-                                  2, // Adjust for two items per row
-                              child: Card(
-                                clipBehavior: Clip.antiAlias,
-                                shadowColor:
-                                    const Color(0xff3D215F).withOpacity(0.5),
-                                elevation: 9,
-                                // margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: AllProductDetailWidget(
-                                  savedid: res.savedByLoggedUser == null ||
-                                          res.savedByLoggedUser!.isEmpty
-                                      ? []
-                                      : res.savedByLoggedUser
-                                          ?.map(
-                                            (e) => SavedPost(
-                                                id: e.id,
-                                                userId: e.userId,
-                                                postId: e.postId,
-                                                createdAt: e.createdAt,
-                                                updatedAt: e.updatedAt),
-                                          )
-                                          .toList(),
-                                  onRefresh: () {
-                                    refreshAllProviders();
-                                  },
-                                  lat: res.user.latitude,
-                                  long: res.user.longitude,
-                                  productid: res.id,
-                                  shortestDistance: res.user.shortestDistance,
-                                  id: int.tryParse(res.id),
-                                  membershipid: res.user.membership_id,
-                                  offer: res.offers,
-                                  posttype: res.post_type_id,
-                                  didcountpercentage: res.discount_percentage,
-                                  avg_rating: res.avg_rating?.toDouble(),
-                                  wow: res.wow,
-                                  comment: res.commentcount.toString(),
-                                  issponsored: res.user.sponsored,
-                                  discounttedPrice: res.discounted_price,
-                                  lefttile: "Used",
-                                  productImage: res.image,
-                                  Vimage: res.user.photo,
-                                  vendorname: res.user.name,
-                                  title: res.title,
-                                  price: res.price,
-                                  similarproductCount: res.similarProductCount,
-                                  membershipColor: res.user.membershipColor,
-                                  membershipTitle: res.user.membershipTitle,
+                    child: SearchProductModels.when(
+                      data: (results) {
+                        return ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: results.length > 5
+                              ? 4
+                              : results.length, // Limit results if needed
+                          itemBuilder: (context, index) {
+                            final product = results[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 7),
+                              dense: true,
+                              title: Text(
+                                product.name,
+                                style: headerstyle.copyWith(
+                                  color: ColorConstant.blackColor,
+                                  fontSize:
+                                      14, // Increase font size for better readability
                                 ),
                               ),
+                              onTap: () {
+                                if (product.id != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => VendorHomeScreen(
+                                        vendorName: product.name,
+                                        vid: int.tryParse(product.id!)!,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BusinessTabScreen(
+                                        query: _searchController.text,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                setState(() {
+                                  _showSearchProductModels = false;
+                                  FocusScope.of(context).unfocus();
+                                });
+                              },
                             );
-                          }),
-                        ),
-                      );
-
-                      // SizedBox(
-                      //    height: 340.h,
-                      //   width: double.infinity,
-                      //   child: ListView.builder(
-                      //     padding: EdgeInsets.zero,
-                      //     clipBehavior: Clip.antiAlias,
-                      //     scrollDirection: Axis.horizontal,
-                      //     itemCount: data.allProducts.length,
-                      //     shrinkWrap: true,
-                      //     itemBuilder: (context, index) {
-                      //       // print(
-                      //       //     "ram ${}");
-                      //       return ProductDetailWidget(
-                      //         // productImage: data.allProducts[index].image,
-                      //         Vimage:
-                      //             data.allProducts[index].user.photo,
-
-                      //         vendorname:
-                      //             data.allProducts[index].user.name,
-                      //         title: data.allProducts[index].title,
-                      //         price: data.allProducts[index].price,
-                      //       );
-                      //     },
-                      //   ),
-                      // );
-                    },
-                    error: (error, stackTrace) {
-                      return Text('error is $error');
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
+                          },
+                          separatorBuilder: (context, index) => const Divider(),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                      error: (error, stack) {
+                        return Center(child: Text(error.toString()));
+                      },
+                    ),
                   ),
-                  SizedBox(
-                    height: 10.w,
-                  )
-    ],
-  ),
-)
-
-                  ],
                 )
-             
-               ,valuenotifilersidebutton(
-                  showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
-                top: 65,
-                left: 48,
-                child: Container(
-                  width: MediaQuery.of(context).size.width -
-                      90, // Add width constraint
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: SearchProductModels.when(
-                    data: (results) {
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: results.length > 5
-                            ? 4
-                            : results.length, // Limit results if needed
-                        itemBuilder: (context, index) {
-                          final product = results[index];
-                          return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 7),
-                            dense: true,
-                            title: Text(
-                              product.name,
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize:
-                                    14, // Increase font size for better readability
-                              ),
-                            ),
-                            onTap: () {
-                              if (product.id != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VendorHomeScreen(
-                                      vendorName: product.name,
-                                      vid: int.tryParse(product.id!)!,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BusinessTabScreen(
-                                      query: _searchController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                              setState(() {
-                                _showSearchProductModels = false;
-                                FocusScope.of(context).unfocus();
-                              });
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) => const Divider(),
-                      );
-                    },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                    error: (error, stack) {
-                      return Center(child: Text(error.toString()));
-                    },
-                  ),
-                ),
-              )
-             
               ],
             )));
   }
@@ -2509,8 +2694,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
+                                  builder: (context) => const AddToCartScreen(),
                                 ),
                               );
                             },

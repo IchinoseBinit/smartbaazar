@@ -9,7 +9,9 @@ import 'package:smartbazar/features/vendor_details/api/get_subscription_api.dart
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
 
 class MySubscriptionScreen extends ConsumerWidget {
-  const MySubscriptionScreen({super.key});
+    final ScrollController? scrollController;
+
+  const MySubscriptionScreen({super.key,this.scrollController});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +25,7 @@ class MySubscriptionScreen extends ConsumerWidget {
         toolbarHeight: 30.h,
       ),
       body: SingleChildScrollView(
+        controller: scrollController,
         child: Column(
           children: [
             Padding(
@@ -39,16 +42,17 @@ class MySubscriptionScreen extends ConsumerWidget {
                         color: Colors.black),
                   ),
                   const Spacer(),
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Text(
-                      'Go back',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff888888)),
-                    ),
-                  ),
+                  SizedBox()
+                  // InkWell(
+                  //   onTap: () => Navigator.pop(context),
+                  //   child: Text(
+                  //     'Go back',
+                  //     style: TextStyle(
+                  //         fontSize: 14.sp,
+                  //         fontWeight: FontWeight.w700,
+                  //         color: const Color(0xff888888)),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

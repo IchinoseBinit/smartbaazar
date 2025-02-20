@@ -14,6 +14,7 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
@@ -105,14 +106,12 @@ class ProductDetailScreen extends ConsumerWidget {
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
-      
       child: productDetailsAsyncValue.when(
         data: (data) {
           // print("bibash ${data.result?.user_details}");
           return Scaffold(
-            bottomNavigationBar: null,
-            
-          
+            bottomNavigationBar: SizedBox.shrink(),
+
             extendBody: true,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
@@ -127,14 +126,16 @@ class ProductDetailScreen extends ConsumerWidget {
                   if (data.result != null)
                     InkWell(
                       onTap: () {
-                        // print("bibash ${data.result!.user!.id}");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VendorHomeScreen(
-                                  vendorName: data.result!.user!.name,
-                                  vid: data.result!.user!.id),
-                            ));
+                        navigateToPage(
+                          context: context,
+                          page: VendorHomeScreen(
+                            vendorName: data.result!.user!.name,
+                            vid: data.result!.user!.id,
+                          ),
+                          ref: ref,
+                          showNavBar:
+                              true, // Hide the navbar when moving to this screen
+                        );
                       },
                       child: CircleAvatar(
                         radius: 25,
@@ -166,77 +167,89 @@ class ProductDetailScreen extends ConsumerWidget {
                       ref.watch(addtocartProvider(data.result!.id!.toString()));
 
                       showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          backgroundColor: Colors.white,
-                          title: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 14.w, vertical: 12.h),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Sucessful!',
-                                  style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color(0xff362677)),
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 14.w, vertical: 12.h),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Sucessful!',
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xff362677)),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Text(
+                                      'Product added to the cart sucessfully!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop('dialog');
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddToCartScreen()));
+                                      },
+                                      child: Text(
+                                        'View Cart',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop('dialog');
+                                      },
+                                      child: Container(
+                                        height: 40.h,
+                                        width: 40.w,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff362677),
+                                            shape: BoxShape.circle),
+                                        child: const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 24,
+                                          weight: 50,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Text(
-                                  'Product added to the cart sucessfully!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) =>
-                                                const AddToCartScreen()));
-                                  },
-                                  child: Text(
-                                    'View Cart',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                                Container(
-                                  height: 40.h,
-                                  width: 40.w,
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xff362677),
-                                      shape: BoxShape.circle),
-                                  child: const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 24,
-                                    weight: 50,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                      ();
+                              ),
+                            );
+                          });
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
@@ -1148,21 +1161,32 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     }).toList(),
                                                   ))
                                             : selectedIndex == 3
-                                                ? 
-                                                data.result?.feedPost==null || data.result!.feedPost!.isEmpty?
-                                                Center(child: nolistingfound(message: 'feed'),):
-
-                                                SwapablePostCard(
-                                                    post:
-                                                        data.result!.feedPost!)
-                                                : selectedIndex == 4
-
-                                                    ? 
-                                                     data.result?.livePrizes==null || data.result!.livePrizes!.isEmpty?
-                                                Center(child: nolistingfound(message: 'prizes'),):
-                                                    LiveSwapble(
+                                                ? data.result?.feedPost ==
+                                                            null ||
+                                                        data.result!.feedPost!
+                                                            .isEmpty
+                                                    ? Center(
+                                                        child: nolistingfound(
+                                                            message: 'feed'),
+                                                      )
+                                                    : SwapablePostCard(
                                                         post: data
-                                                            .result!.livePrizes)
+                                                            .result!.feedPost!)
+                                                : selectedIndex == 4
+                                                    ? data.result?.livePrizes ==
+                                                                null ||
+                                                            data
+                                                                .result!
+                                                                .livePrizes!
+                                                                .isEmpty
+                                                        ? Center(
+                                                            child: nolistingfound(
+                                                                message:
+                                                                    'prizes'),
+                                                          )
+                                                        : LiveSwapble(
+                                                            post: data.result!
+                                                                .livePrizes)
                                                     : const SizedBox(), // Fallback for other index values
                                   ),
                                 )

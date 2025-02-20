@@ -78,7 +78,9 @@ final ValueNotifier<bool> showSideBar = ValueNotifier(true);
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  final ScrollController? scrollController;
+
+  const HomeScreen({super.key, this.scrollController});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -353,6 +355,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         child: Stack(
           children: [
             CustomScrollView(
+              controller: widget.scrollController,
               slivers: [
                 SliverPersistentHeader(
                     pinned: true,
@@ -559,151 +562,156 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     ),
                   ),
                 SliverToBoxAdapter(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _isPopupVisible = !_isPopupVisible;
-                                });
-                              },
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                alignment: Alignment.center,
-                                children: [
-                                  // Outer Circle
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
-                                    width: 95.r,
-                                    height: 95.r,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
+                  child: SizedBox(
+                    height: 145.h,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isPopupVisible = !_isPopupVisible;
+                                  });
+                                },
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  alignment: Alignment.center,
+                                  children: [
+                                    // Outer Circle
+                                    Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      width: 95.r,
+                                      height: 95.r,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
                                           width: 3.w,
-                                          color: const Color(0xffEACACB)),
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-
-                                  // Vendor Image
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 38.r,
-                                      backgroundColor: const Color(0x7F7F7F73)
-                                          .withOpacity(0.45),
-                                      backgroundImage:
-                                          NetworkImage(SmartClient.userPhoto),
-                                    ),
-                                  ),
-
-                                  // Vendor Name
-                                  Positioned(
-                                    bottom: -25.h,
-                                    child: SizedBox(
-                                      width: 100.w,
-                                      child: Text(
-                                        'bibash',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.sp,
+                                          color: const Color(0xffEACACB),
                                         ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-
-                                  Positioned(
-                                    bottom: -5.h,
-                                    right: 0,
-                                    left: 0,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
                                         shape: BoxShape.circle,
                                       ),
-                                      padding: EdgeInsets.all(2.r),
-                                      child: Icon(
-                                        Icons.search,
-                                        color: const Color(0xffAA0018),
-                                        size: 24.r,
+                                    ),
+
+                                    // Vendor Image
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 38.r,
+                                        backgroundColor: const Color(0x7F7F7F73)
+                                            .withOpacity(0.45),
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Home Story Section
-                        category.when(
-                          data: (feedStoryData) {
-                            List<HomeStoryPost>? homeStory =
-                                feedStoryData.home_story?.story.posts;
-                            if (homeStory != null) {
-                              return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: homeStory.map((story) {
-                                    return HomePageStoryContainer(
-                                      feedStoryContent: Story(
-                                        posts: homeStory.map((e) {
-                                          return Post(
-                                            hasSponsoredGifts:
-                                                e.hasSponsoredGifts,
-                                            id: e.id,
-                                            image: e.image,
-                                            storyCount: e.storyCount,
-                                            title: e.title,
-                                            vendorId: e.vendorId,
-                                            vendorImage: e.vendorImage,
-                                            vendorName: e.vendorName,
-                                          );
-                                        }).toList(),
+
+                                    // Vendor Name - Adjusted Position
+                                    Positioned(
+                                      bottom: -25
+                                          .h, // Adjust bottom value to create more space
+                                      child: SizedBox(
+                                        width: 100.w,
+                                        child: Text(
+                                          SmartClient.userName ?? 'search',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 11.sp,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
-                                      userId: story.id,
-                                      index: homeStory.indexOf(story),
-                                      vendorName:
-                                          story.vendorName ?? "Unknown Vendor",
-                                      vendorImage: story.vendorImage ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story.storyCount ?? 0,
-                                      showGift:
-                                          story.hasSponsoredGifts ?? false,
-                                    );
-                                  }).toList(),
+                                    ),
+
+                                    // Search Icon
+                                    Positioned(
+                                      bottom: -5.h,
+                                      right: 0,
+                                      left: 0,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: EdgeInsets.all(2.r),
+                                        child: Icon(
+                                          Icons.search,
+                                          color: const Color(0xffAA0018),
+                                          size: 24.r,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            }
-                            return const Center(
-                                child: Text('No stories available.'));
-                          },
-                          loading: () => CircularProgressIndicator(),
-                          error: (error, stack) =>
-                              Center(child: Text('Error: $error')),
-                        ),
-                      ],
+                              ),
+                            ],
+                          ),
+
+                          // Home Story Section
+                          category.when(
+                            data: (feedStoryData) {
+                              List<HomeStoryPost>? homeStory =
+                                  feedStoryData.home_story?.story.posts;
+                              if (homeStory != null) {
+                                return SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: homeStory.map((story) {
+                                      return HomePageStoryContainer(
+                                        feedStoryContent: Story(
+                                          posts: homeStory.map((e) {
+                                            return Post(
+                                              hasSponsoredGifts:
+                                                  e.hasSponsoredGifts,
+                                              id: e.id,
+                                              image: e.image,
+                                              storyCount: e.storyCount,
+                                              title: e.title,
+                                              vendorId: e.vendorId,
+                                              vendorImage: e.vendorImage,
+                                              vendorName: e.vendorName,
+                                            );
+                                          }).toList(),
+                                        ),
+                                        userId: story.id,
+                                        index: homeStory.indexOf(story),
+                                        vendorName: story.vendorName ??
+                                            "Unknown Vendor",
+                                        vendorImage: story.vendorImage ??
+                                            "https://example.com/default-image.png",
+                                        storyCount: story.storyCount ?? 0,
+                                        showGift:
+                                            story.hasSponsoredGifts ?? false,
+                                      );
+                                    }).toList(),
+                                  ),
+                                );
+                              }
+                              return const Center(
+                                  child: Text('No stories available.'));
+                            },
+                            loading: () => CircularProgressIndicator(),
+                            error: (error, stack) =>
+                                Center(child: Text('Error: $error')),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
                     child: Center(
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 25.h,
-                          ),
                           Text(
                             "BuyOrWin",
                             textAlign: TextAlign.center,
@@ -1027,20 +1035,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
-                                    data.insidearr[0].isEmpty ? 140.h : 430.h;
+                                    data.insidearr[0].isEmpty ? 140.h : 470.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
                                         data.doma[0].isNotEmpty)
-                                    ? 430.h
+                                    ? 470.h
                                     : 140.h;
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 430.h
+                                    ? 470.h
                                     : 140.h;
                               else
-                                dynamicHeight = 420;
+                                dynamicHeight = 470;
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -1889,7 +1897,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                       },
                       child: Icon(Icons.arrow_back_ios_rounded))
                   : Image.asset(
-                      height:40.h,
+                      height: 40.h,
                       width: 40.w,
                       'assets/images/Smartbazaar-Icon-for-QR.png'),
               SizedBox(
@@ -2046,7 +2054,7 @@ class valuenotifilersidebutton extends StatelessWidget {
       valueListenable: showSideBar,
       builder: (context, value, child) {
         return Positioned(
-          top: isSectionsVisible ? 300 : 300,
+          top: isSectionsVisible ? 320 : 320,
           right: 0,
           child: InkWell(
             onTap: () {
@@ -2065,15 +2073,19 @@ class valuenotifilersidebutton extends StatelessWidget {
                       builder: (context, color, child) {
                         return Container(
                           margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.white, Colors.white],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter),
                             shape: BoxShape.circle,
                             border: Border.all(
                                 color: Color.fromARGB(255, 115, 92, 119),
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
-                            radius: 18,
+                            radius: 25,
                             backgroundImage:
                                 NetworkImage(SmartClient.userPhoto),
                           ),

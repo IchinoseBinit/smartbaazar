@@ -91,13 +91,17 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
     _startAutoScroll();
   }
 
-  int _calculatePageForVendor(int vendorIndex, int storyIndex) {
-    int storyOffset = 0;
-    for (int i = 0; i < vendorIndex; i++) {
-      storyOffset += vendorStories[i].length;
-    }
-    return storyOffset + storyIndex;
+int _calculatePageForVendor(int vendorIndex, int storyIndex) {
+  if (vendorIndex < 0 || vendorIndex >= vendorStories.length) {
+    return 0; // Return a valid page index or handle the case appropriately
   }
+  int storyOffset = 0;
+  for (int i = 0; i < vendorIndex; i++) {
+    storyOffset += vendorStories[i].length;
+  }
+  return storyOffset + storyIndex;
+}
+
 
   void _setupPageController() {
     _pageController.addListener(_handlePageChange);

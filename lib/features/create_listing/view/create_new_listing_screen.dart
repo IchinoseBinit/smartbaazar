@@ -641,7 +641,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 // Ensure the dynamic key is safe to access
                                 cf?.add([
                                   'cf.${eventresp!.result[2].id}', // Create the key dynamically
-                                  value
+                                  eventaddress
                                 ]);
                               }
                             },
@@ -657,7 +657,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (typeid == '122' || typeid == '5')
+                if (typeid == '122' ||
+                    typeid == '5' ||
+                    selectedcategory?.id == 122)
                   CreateListingCardWidget(
                     child: Row(
                       children: [
@@ -1615,8 +1617,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     ),
                   ),
 
-                if (selectedcategory?.id ==
-                    171) // Conditionally show the calendar
+                if (selectedcategory?.id == 171 ||
+                    selectedcategory?.id == 172 ||
+                    typeid == '8') // Conditionally show the calendar
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1686,8 +1689,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       ],
                     ),
                   ),
-                if (selectedcategory?.id ==
-                    171) // Conditionally show the calendar
+                if (selectedcategory?.id == 171 ||
+                    typeid == '8') // Conditionally show the calendar
                   CreateListingCardWidget(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -1837,12 +1840,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Mobile brand',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                            Tooltip(
+                              message: 'Mobile brand here',
+                              child: Text(
+                                'Mobile brand',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
                             ),
                             Text(
                               ' *',
@@ -1888,12 +1894,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Automobile Brand',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                            Tooltip(
+                              message: 'automobile brand',
+                              child: Text(
+                                'Automobile Brand',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
                             ),
                             Text(
                               ' *',
@@ -1940,12 +1949,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Transmission TYpe',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                            Tooltip(
+                              message: 'Transmission type',
+                              child: Text(
+                                'Transmission TYpe',
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
                             ),
                             Text(
                               ' *',
@@ -2007,12 +2019,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Automobile Model',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
+                          Tooltip(
+                            message: 'Automobile model',
+                            child: Text(
+                              'Automobile Model',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
                           ),
                           Text(
                             ' *',
@@ -2053,12 +2068,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Road Size',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
+                          Tooltip(
+                            message: 'size of road',
+                            child: Text(
+                              'Road Size',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
                           ),
                           Text(
                             ' *',
@@ -2099,12 +2117,15 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Size of road ',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
+                          Tooltip(
+                            message: 'size of road ana or ropani',
+                            child: Text(
+                              'Size of road ',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
                           ),
                           Text(
                             ' *',
@@ -3578,7 +3599,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     selectedcategory?.id == 171 ||
                     selectedcategory?.id == 62 ||
                     selectedcategory?.id == 192 ||
-                    selectedcategory?.id == 198)
+                    selectedcategory?.id == 198 ||
+                    typeid == '8')
                   CreateListingCardWidget(
                       child: Row(
                     children: [
@@ -3988,7 +4010,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           child: Row(
                         children: [
                           Text(
-                            'Weight (Kg)',
+                            'Weight (Kg)/(Gram)/(liters)',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.sp,
@@ -4516,7 +4538,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        print('kalu $selectedcategory');
+                        print('kalu $typeid');
                         setState(() {
                           _acceptterms = newValue;
                         });

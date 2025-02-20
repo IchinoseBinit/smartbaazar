@@ -11,6 +11,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/scran_screen/api/generate_api_provider.dart';
+import 'package:smartbazar/features/scran_screen/api/get_vendor_id_by_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
@@ -31,6 +32,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
   final ImagePicker _imagePicker = ImagePicker();
   bool _flashOn = false;
   double _zoomScale = 1.0;
+  int? generatedvendorid;
   File? _selectedImage;
   final GlobalKey _cardKey = GlobalKey();
   BigContainer? _card;
@@ -237,9 +239,15 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     );
   }
 
-  void showcard(WidgetRef ref, String id) {
-    /// 1. Fetch data using `ref.read` instead of `watch`
-    ref.read(getVendorCardProvider(int.tryParse(id)!)).whenData((value) {
+  void showcard(WidgetRef ref, String name) {
+    GiveVendorid().givemeid(name).then(
+      (value) {
+        generatedvendorid = int.tryParse(value);
+      },
+    );
+
+   if(generatedvendorid!=null)
+    ref.read(getVendorCardProvider(generatedvendorid!)).whenData((value) {
       /// 2. Update `_card` inside `setState`
       setState(() {
         _card = BigContainer(
@@ -277,7 +285,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                   context,
                   MaterialPageRoute(
                     builder: (context) => VendorHomeScreen(
-                        vid: int.tryParse(id)!, vendorName: ''),
+                        vid: int.tryParse(generatedvendorid.toString())!, vendorName: ''),
                   ));
             },
             child: _card ?? const Center(child: CircularProgressIndicator()),

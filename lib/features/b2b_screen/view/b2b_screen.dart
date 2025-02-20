@@ -1695,6 +1695,40 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          "BuyOrWin",
+                          textAlign: TextAlign.center,
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: const Color(0xff551b55)),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Center(
+                          child: Container(
+                            alignment: AlignmentDirectional.centerStart,
+                            margin: EdgeInsets.only(bottom: 5.h),
+                            height: 5.h,
+                            width: 100.w,
+                            decoration: BoxDecoration(
+                                color: const Color(0xFF681b4e),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
                     child: asyncbajarValue.when(
                       data: (data) {
                         return SizedBox(

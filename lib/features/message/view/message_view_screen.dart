@@ -10,13 +10,15 @@ import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 
 class MessageViewScreen extends ConsumerWidget {
-  const MessageViewScreen({super.key});
+
+  const MessageViewScreen({super.key,});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
+        
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),

@@ -114,27 +114,12 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
 
     return InkWell(
       onTap: () {
-// Navigator.push(
-//   context,
-//   MaterialPageRoute(
-//     builder: (context) => ProductDetailScreen(p: widget.productid),
-//   ),
-// ).then((_) {
-//   // This will be called when you return to the MainScreen, you can toggle the nav bar visibility
-//   ref.read(currentScreenProvider.notifier).state = 0;  // Restore index
-// });
-
-        navigateWithoutNavBar( context:context,page: ProductDetailScreen(
-              productId: widget.productid,
-            ),);
-       
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => ProductDetailScreen(
-        //       productId: widget.productid,
-        //     ),
-        //   ),
-        // );
+        navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: widget.productid),
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
+        );
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -275,14 +260,21 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => VendorHomeScreen(
-                                        vendorName: widget.vendorname!,
-                                        vid: int.parse(widget.vendorid!),
-                                      ),
-                                    ));
+
+                                  navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: widget.productid),
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
+        );
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => VendorHomeScreen(
+                                //         vendorName: widget.vendorname!,
+                                //         vid: int.parse(widget.vendorid!),
+                                //       ),
+                                //     ));
                               },
                               child: Text(
                                 "Conatct Seller",
@@ -315,13 +307,21 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             padding: const EdgeInsets.only(left: 5),
                             onTap: () {
                               // print('value ${userId}');
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReportComplainScreen(
+                                navigateToPage(
+          context: context,
+          page:  ReportComplainScreen(
                                         productId: userId.toString(),
                                         productName: widget.vendorname!),
-                                  ));
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
+        );
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => ReportComplainScreen(
+                              //           productId: userId.toString(),
+                              //           productName: widget.vendorname!),
+                              //     ));
                             },
                             child: Text(
                               "Report",
@@ -731,13 +731,19 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                         // Left Avatar
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VendorHomeScreen(
+                              navigateToPage(
+          context: context,
+          page: VendorHomeScreen(
                                       vendorName: widget.vendorname!,
                                       vid: int.tryParse(widget.vendorid!)!),
-                                ));
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
+        );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => 
+                            //     ));
                           },
                           child: Padding(
                               padding: EdgeInsets.only(left: 13.w, right: 3.w),
