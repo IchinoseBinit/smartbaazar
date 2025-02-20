@@ -24,6 +24,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       genderID,
       //  dob,
       openingHours,
+      bio,
       description;
   String? userId; // Updated to nullable type since we are loading it
   bool isLoading = false;
@@ -83,6 +84,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email!,
         userId!,
         genderID!,
+      //  bio,
         // branchControllers,
         // openingHours,
         // description,
