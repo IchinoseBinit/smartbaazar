@@ -6,13 +6,20 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/advertisement/view/advertisement_screen.dart';
 import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
 import 'package:smartbazar/features/faq/view/faq_screen.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
+import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/offline_listing/offline_lisiting_screen.dart';
@@ -23,14 +30,13 @@ import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
-import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class VendorProfileScreen extends StatefulWidget {
   // final String vendorName;
@@ -54,7 +60,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   Future<void> _loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      vendorName = prefs.getString('userName');
+      vendorName = prefs.getString('name');
     });
   }
 
@@ -114,7 +120,30 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "subtitle": '',
       "screen": const DisputesScreen(),
     },
+    {
+      "icon": Icons.emergency,
+      "title": 'Hot',
+      "subtitle": 'Products',
+      "screen": HotViewScreen(
+        header: 'hotdeals',
+      ),
+    },
+    {
+      "icon": Icons.card_membership,
+      "title": 'Mermbership',
+      "subtitle": '',
+      "screen": const LeftArrowScreen(),
+    },
+    {
+      "icon": Icons.settings_applications_rounded,
+      "title": 'Sponsored',
+      "subtitle": '',
+      "screen": HotViewScreen(
+        header: 'sponsored',
+      ),
+    },
   ];
+
   final List<Map<String, dynamic>> sellerCenterListing = [
     {
       "icon": Icons.mail,
@@ -186,7 +215,19 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen": const BottomNavigationScreen(),
+      "screen": const BrandBazarScreen(),
+    },
+    {
+      "icon": Icons.feed,
+      "title": 'Create',
+      "subtitle": 'Feed',
+      "screen": const FeedFormScreen(),
+    },
+    {
+      "icon": Icons.rss_feed_sharp,
+      "title": 'Create',
+      "subtitle": 'Buy-or-win',
+      "screen": const BuyOrWinFormScreen(),
     },
   ];
 
@@ -194,186 +235,191 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     {
       "icon": Icons.mail,
       "title": 'Messenger',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.money,
       "title": 'Transaction',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.notifications,
       "title": 'Log Out',
+      "screen": const MessageViewScreen()
     },
     {
       "icon": Icons.volume_down,
       "title": 'Close account',
+      "screen": const MessageViewScreen()
     },
   ];
   @override
   Widget build(BuildContext context) {
-    return GenericSafeArea(
-      child: Scaffold(
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: const Color(0xffF6F1F1),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xffF6F1F1),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xffF6F1F1),
-          toolbarHeight: 85.h,
-          leadingWidth: 30.h,
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (_) => const VendroDetailsScreen()));
-                },
-                child: Container(
-                  height: 40.h,
-                  width: 40.h,
-                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffF5BF05),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 1.w,
-                      )),
-                  child: Image.asset(
-                    ImageConstant.personImage,
+        toolbarHeight: 85.h,
+        leadingWidth: 30.h,
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            GestureDetector(
+              onTap: () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (_) => const VendroDetailsScreen()));
+              },
+              child: Container(
+                height: 40.h,
+                width: 40.h,
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                decoration: BoxDecoration(
+                    color: const Color(0xffF5BF05),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      width: 1.w,
+                    )),
+                child: Image.asset(
+                  ImageConstant.personImage,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10.h,
+            ),
+            Text(
+              '$vendorName',
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black),
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AddToCartScreen(),
                   ),
+                );
+              },
+              child: Container(
+                height: 32.h,
+                width: 32.h,
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 1.w, color: Colors.black)),
+                child: SvgPicture.asset(openCart),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.w,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              VendorProfileGridWidget(
+                profileData: profileList,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 18.h),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Buyer Center'),
+                    ),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                      child: BuyerCenterWidget(
+                        buyerData: buyerListing,
+                      ),
+                    )
+                  ],
                 ),
               ),
               SizedBox(
-                width: 10.h,
+                height: 20.h,
               ),
-              Text(
-                '$vendorName',
-                style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () {
-                     Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const AddToCartScreen(),
-              ),
-            );
-                },
-                child: Container(
-                  height: 32.h,
-                  width: 32.h,
-                  padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 1.w, color: Colors.black)),
-                  child: SvgPicture.asset(openCart),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('Seller Center'),
+                    ),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: BuyerCenterWidget(
+                        buyerData: sellerCenterListing,
+                      ),
+                    )
+                  ],
                 ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border:
+                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('My Account'),
+                    ),
+                    const Divider(
+                      color: Color(0xffADADAD),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: MyAccountWidget(
+                        accountData: accointProfileList,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              const VendorProfileExtraLinkWidget(),
+              SizedBox(
+                height: 240.h,
               ),
             ],
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                VendorProfileGridWidget(
-                  profileData: profileList,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Buyer Center'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
-                        child: BuyerCenterWidget(
-                          buyerData: buyerListing,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Seller Center'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 14.w),
-                        child: BuyerCenterWidget(
-                          buyerData: sellerCenterListing,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      border: Border.all(
-                          width: 1.w, color: const Color(0xffADADAD))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('My Account'),
-                      ),
-                      const Divider(
-                        color: Color(0xffADADAD),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: MyAccountWidget(
-                          accountData: accointProfileList,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                const VendorProfileExtraLinkWidget(),
-                SizedBox(
-                  height: 40.h,
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -534,50 +580,66 @@ class VendorProfileGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero, // Ensure no extra padding
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 4.0, // Adjusted spacing between columns
-        mainAxisSpacing: 4.0, // Adjusted spacing between rows
-      ),
-      itemCount: profileData.length,
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.zero, // Removed horizontal padding
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 14.r, // Adjusted radius
-                backgroundColor: const Color(0xff362677),
-                child: Icon(
-                  profileData[index]['icon'],
-                  color: Colors.white,
-                  size: 14.sp, // Adjusted icon size
+    return Wrap(
+      direction: Axis.horizontal, // Arrange children horizontally
+      spacing: 8.0, // Space between items horizontally
+      runSpacing: 20.0, // Space between rows vertically
+      children: profileData.map((data) {
+        return InkWell(
+          onTap: () {
+            if (data['subtitle'] == 'listing')
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyListingScreen(),
+                  ));
+                   if (data['subtitle'] == 'followers')
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MySubscriptionScreen(),
+                  ));
+                   if (data['subtitle'] == 'favourite')
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FavouriteListingScreen(),
+                  ));
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min, // Minimize the Row width
+              children: [
+                CircleAvatar(
+                  radius: 14, // Adjusted radius
+                  backgroundColor: const Color(0xff362677),
+                  child: Icon(
+                    data['icon'],
+                    color: Colors.white,
+                    size: 14, // Adjusted icon size
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 4.0, // Reduced space between CircleAvatar and Column
-              ),
-              Expanded(
-                child: Column(
+                const SizedBox(
+                  width: 8.0, // Space between avatar and text
+                ),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      profileData[index]['title'],
-                      style: TextStyle(
-                        fontSize: 12.sp, // Adjusted font size
+                      data['title'],
+                      style: const TextStyle(
+                        fontSize: 12, // Adjusted font size
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
                       overflow: TextOverflow.ellipsis, // Handle overflow
                     ),
                     Text(
-                      profileData[index]['subtitle'],
-                      style: TextStyle(
-                        fontSize: 10.sp, // Adjusted font size
+                      data['subtitle'],
+                      style: const TextStyle(
+                        fontSize: 10, // Adjusted font size
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
                       ),
@@ -585,11 +647,11 @@ class VendorProfileGridWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
-      },
+      }).toList(),
     );
   }
 }
@@ -601,53 +663,54 @@ class BuyerCenterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 2.0,
-      ),
-      itemCount: buyerData.length,
-      itemBuilder: (context, index) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => buyerData[index]['screen'] as Widget,
-                  ),
-                );
-              },
-              child: Column(
-                children: [
-                  Icon(
-                    buyerData[index]['icon'],
-                    color: Colors.black,
-                    size: 20.sp,
-                  ),
-                  Text(
-                    buyerData[index]['title'],
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  ),
-                  Text(
-                    buyerData[index]['subtitle'],
-                    style: TextStyle(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black),
-                  )
-                ],
-              ),
-            )
-          ],
+    return Wrap(
+      alignment: WrapAlignment.start, // Align items to the start
+      spacing: 2.0, // Horizontal space between items
+      runSpacing: 15.0, // Vertical space between rows
+      children: List.generate(buyerData.length, (index) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width / 4 -
+              15, // Fit 4 items in a row
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => buyerData[index]['screen'] as Widget,
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Center items within the column
+              children: [
+                Icon(
+                  buyerData[index]['icon'],
+                  color: Colors.black,
+                  size: 20.sp,
+                ),
+                const SizedBox(height: 8.0), // Space between icon and text
+                Text(
+                  buyerData[index]['title'],
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+                Text(
+                  buyerData[index]['subtitle'],
+                  style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+              ],
+            ),
+          ),
         );
-      },
+      }),
     );
   }
 }
@@ -657,71 +720,53 @@ class MyAccountWidget extends StatelessWidget {
 
   const MyAccountWidget({super.key, required this.accountData});
 
+  Future<void> _handleAction(BuildContext context, String title) async {
+    if (title == 'Log Out') {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      LogoutApi();
+      showCustomToast(context, "logged out successfully");
+      await preferences.clear();
+      Navigator.of(context, rootNavigator: true).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } else if (title == 'Messenger') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MessageViewScreen()),
+      );
+    } else if (title == 'Transaction') {
+      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+          builder: (context) => const OnlineTransactionRecordScreen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> logout(BuildContext context) async {
-      final prefs = await SharedPreferences.getInstance();
-      final String? userId = prefs.getString("userId");
-
-      if (userId != null) {
-        LogoutApi logoutApi = LogoutApi(); // Create an instance of LogoutApi
-        await logoutApi.logout(userId, context); // Call the logout method
-
-        // After logout, navigate to the login screen or home
-      } else {
-        // Handle case where userId is not found in SharedPreferences
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Logged out succesfully !')),
-        );
-      }
-    }
-
-    return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 4.0,
-        ),
-        itemCount: accountData.length,
-        itemBuilder: (context, index) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: accountData.map((data) {
+        return InkWell(
+          onTap: () => _handleAction(context, data['title']),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
-                onTap: () async {
-                  if (accountData[index]['title'] == 'Log Out') {
-                    logout(context);
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    await preferences.clear();
-
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ));
-                  }
-                },
-                child: Column(
-                  children: [
-                    Icon(
-                      accountData[index]['icon'],
-                      color: Colors.black,
-                      size: 20.sp,
-                    ),
-                    Text(
-                      accountData[index]['title'],
-                      style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    ),
-                  ],
+              Icon(
+                data['icon'],
+                color: Colors.black,
+                size: 20.0,
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                data['title'],
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
                 ),
-              )
+              ),
             ],
-          );
-        });
+          ),
+        );
+      }).toList(),
+    );
   }
 }

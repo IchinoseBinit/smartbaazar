@@ -22,6 +22,8 @@ final newListingRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef NewListingRepositoryRef = AutoDisposeProviderRef<NewListingRepository>;
 String _$typeListProviderHash() => r'c6cc4e2a2b04eb0a6b1be86cfa15755c32f0d7fb';
 
@@ -38,9 +40,11 @@ final typeListProviderProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef TypeListProviderRef = AutoDisposeFutureProviderRef<List<TypeList>>;
 String _$categoryListProviderHash() =>
-    r'929b6a077cf47dc019746b4a35de178d95f69083';
+    r'5b06c89fbba9c00294c0fa6ca76f2a7728a837e1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -68,7 +72,7 @@ class _SystemHash {
 const categoryListProviderProvider = CategoryListProviderFamily();
 
 /// See also [categoryListProvider].
-class CategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
+class CategoryListProviderFamily extends Family<AsyncValue<List<MyCategory>>> {
   /// See also [categoryListProvider].
   const CategoryListProviderFamily();
 
@@ -107,7 +111,7 @@ class CategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
 
 /// See also [categoryListProvider].
 class CategoryListProviderProvider
-    extends AutoDisposeFutureProvider<List<Category>> {
+    extends AutoDisposeFutureProvider<List<MyCategory>> {
   /// See also [categoryListProvider].
   CategoryListProviderProvider({
     String? parentId,
@@ -142,7 +146,8 @@ class CategoryListProviderProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<Category>> Function(CategoryListProviderRef provider) create,
+    FutureOr<List<MyCategory>> Function(CategoryListProviderRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -159,7 +164,7 @@ class CategoryListProviderProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+  AutoDisposeFutureProviderElement<List<MyCategory>> createElement() {
     return _CategoryListProviderProviderElement(this);
   }
 
@@ -177,13 +182,16 @@ class CategoryListProviderProvider
   }
 }
 
-mixin CategoryListProviderRef on AutoDisposeFutureProviderRef<List<Category>> {
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin CategoryListProviderRef
+    on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
   String? get parentId;
 }
 
 class _CategoryListProviderProviderElement
-    extends AutoDisposeFutureProviderElement<List<Category>>
+    extends AutoDisposeFutureProviderElement<List<MyCategory>>
     with CategoryListProviderRef {
   _CategoryListProviderProviderElement(super.provider);
 
@@ -192,14 +200,15 @@ class _CategoryListProviderProviderElement
 }
 
 String _$subCategoryListProviderHash() =>
-    r'fd2645cf4d5d01ac52c440d754c996671d60cdd5';
+    r'9c4e5ed52e0ca11fbb6ed69df3649975ff62f104';
 
 /// See also [subCategoryListProvider].
 @ProviderFor(subCategoryListProvider)
 const subCategoryListProviderProvider = SubCategoryListProviderFamily();
 
 /// See also [subCategoryListProvider].
-class SubCategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
+class SubCategoryListProviderFamily
+    extends Family<AsyncValue<List<MyCategory>>> {
   /// See also [subCategoryListProvider].
   const SubCategoryListProviderFamily();
 
@@ -238,7 +247,7 @@ class SubCategoryListProviderFamily extends Family<AsyncValue<List<Category>>> {
 
 /// See also [subCategoryListProvider].
 class SubCategoryListProviderProvider
-    extends AutoDisposeFutureProvider<List<Category>> {
+    extends AutoDisposeFutureProvider<List<MyCategory>> {
   /// See also [subCategoryListProvider].
   SubCategoryListProviderProvider(
     int parentId,
@@ -273,7 +282,7 @@ class SubCategoryListProviderProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<Category>> Function(SubCategoryListProviderRef provider)
+    FutureOr<List<MyCategory>> Function(SubCategoryListProviderRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -291,7 +300,7 @@ class SubCategoryListProviderProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+  AutoDisposeFutureProviderElement<List<MyCategory>> createElement() {
     return _SubCategoryListProviderProviderElement(this);
   }
 
@@ -310,14 +319,16 @@ class SubCategoryListProviderProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SubCategoryListProviderRef
-    on AutoDisposeFutureProviderRef<List<Category>> {
+    on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
   int get parentId;
 }
 
 class _SubCategoryListProviderProviderElement
-    extends AutoDisposeFutureProviderElement<List<Category>>
+    extends AutoDisposeFutureProviderElement<List<MyCategory>>
     with SubCategoryListProviderRef {
   _SubCategoryListProviderProviderElement(super.provider);
 
@@ -341,6 +352,8 @@ final productTypeProviderProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ProductTypeProviderRef
     = AutoDisposeFutureProviderRef<List<ProductType>>;
 String _$cityListProviderHash() => r'542baf7c1076be39287b92361da056d4b975e8dd';
@@ -459,6 +472,8 @@ class CityListProviderProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CityListProviderRef on AutoDisposeFutureProviderRef<List<CityList>> {
   /// The parameter `page` of this provider.
   int get page;
@@ -473,4 +488,4 @@ class _CityListProviderProviderElement
   int get page => (origin as CityListProviderProvider).page;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

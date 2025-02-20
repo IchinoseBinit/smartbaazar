@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'post_profile_bg_and_desc.api.g.dart';
@@ -10,7 +10,7 @@ part 'post_profile_bg_and_desc.api.g.dart';
 @riverpod
 Future<bool> postProfileBGAndDesc(PostProfileBGAndDescRef ref, File? imageFile,
     String? desc, File? profileImageFile) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     FormData formData = FormData();

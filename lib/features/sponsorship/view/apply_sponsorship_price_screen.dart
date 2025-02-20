@@ -551,7 +551,7 @@ class _ApplySponsorshipPriceScreenState
                             SingleChildScrollView(
                               child: Padding(
                                   padding: EdgeInsets.symmetric(vertical: 10.h),
-                                  child: const CouponWidget()),
+                                  child: CouponWidget()),
                             )
                           ],
                         ),
@@ -613,7 +613,8 @@ class ReadContainer extends StatelessWidget {
 }
 
 class CouponWidget extends ConsumerStatefulWidget {
-  const CouponWidget({super.key});
+  int? coupunqty;
+  CouponWidget({super.key, this.coupunqty});
 
   @override
   ConsumerState<CouponWidget> createState() => _CouponWidgetState();
@@ -629,6 +630,7 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
   @override
   void initState() {
     super.initState();
+    // couponQtyController.text = widget.coupunqty.toString();
 
     couponQtyController.addListener(_calculateTotalWorthofCoupon);
     discountuptoController.addListener(_calculateTotalWorthofCoupon);
@@ -644,7 +646,8 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
   void _calculateTotalWorthofCoupon() {
     final String discountUptoText = discountuptoController.text;
     final String couponQtyText = couponQtyController.text;
-    if (discountUptoText.isNotEmpty) {
+
+    if (discountUptoText.isNotEmpty && couponQtyText.isNotEmpty) {
       try {
         final double discountUpto = double.parse(discountUptoText);
         final int couponQty = int.parse(couponQtyText);
@@ -654,11 +657,12 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
         final double totalWithFee = total + fee;
 
         setState(() {
-          totalWorth = 'Rs $total';
-          sponsorshipFee = 'Rs $fee';
-          totalCost = 'Rs $totalWithFee';
+          totalWorth = 'Rs ${total.toStringAsFixed(2)}';
+          sponsorshipFee = 'Rs ${fee.toStringAsFixed(2)}';
+          totalCost = 'Rs ${totalWithFee.toStringAsFixed(2)}';
         });
       } catch (e) {
+        print('Error: $e');
         setState(() {
           totalWorth = 'Invalid input';
           sponsorshipFee = 'Invalid fee';
@@ -719,7 +723,7 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
         discountUptoText,
         couponQuantityText,
         couponTotalWorth,
-        'Coupon', // giftType
+        totalWithFee.toString(), // giftType
 
         couponImpression,
       ).future);

@@ -5,7 +5,6 @@ import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/signup_api.dart';
 import 'package:smartbazar/features/auth/model/signup_model.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
-import 'package:smartbazar/utils/custom_exception.dart';
 
 final singUpProvider = Provider<SignUpAPi>((ref) {
   return SignUpAPi();
@@ -32,7 +31,7 @@ class SignUpController extends StateNotifier<GenericState> {
     try {
       final SignupModel singUpData = await _signUpApi.signUp(
           name: name,
-          phone: phone,
+          phone: int.tryParse(phone)!,
           email: email,
           passsword: passsword,
           dob: dateofb,

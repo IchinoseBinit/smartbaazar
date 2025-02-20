@@ -115,7 +115,7 @@ class FAQScreen extends ConsumerWidget {
               ),
             );
           },
-          error: (error, stack) => Center(child: Text('Error: $error')),
+          error: (error, stack) =>  const Center(child: Text("please login")),
           loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),

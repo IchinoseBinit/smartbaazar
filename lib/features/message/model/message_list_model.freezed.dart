@@ -24,8 +24,12 @@ mixin _$MessageListModel {
   String? get message => throw _privateConstructorUsedError;
   MessageResult? get result => throw _privateConstructorUsedError;
 
+  /// Serializes this MessageListModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessageListModelCopyWith<MessageListModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +55,8 @@ class _$MessageListModelCopyWithImpl<$Res, $Val extends MessageListModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,6 +80,8 @@ class _$MessageListModelCopyWithImpl<$Res, $Val extends MessageListModel>
     ) as $Val);
   }
 
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MessageResultCopyWith<$Res>? get result {
@@ -109,6 +117,8 @@ class __$$MessageListModelImplCopyWithImpl<$Res>
       $Res Function(_$MessageListModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,11 +174,13 @@ class _$MessageListModelImpl implements _MessageListModel {
             (identical(other.result, result) || other.result == result));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, result);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageListModelImplCopyWith<_$MessageListModelImpl> get copyWith =>
@@ -198,8 +210,11 @@ abstract class _MessageListModel implements MessageListModel {
   String? get message;
   @override
   MessageResult? get result;
+
+  /// Create a copy of MessageListModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessageListModelImplCopyWith<_$MessageListModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -214,8 +229,12 @@ mixin _$MessageResult {
   PaginationLinks? get links => throw _privateConstructorUsedError;
   PaginationMeta? get meta => throw _privateConstructorUsedError;
 
+  /// Serializes this MessageResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessageResultCopyWith<MessageResult> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -243,6 +262,8 @@ class _$MessageResultCopyWithImpl<$Res, $Val extends MessageResult>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -266,6 +287,8 @@ class _$MessageResultCopyWithImpl<$Res, $Val extends MessageResult>
     ) as $Val);
   }
 
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PaginationLinksCopyWith<$Res>? get links {
@@ -278,6 +301,8 @@ class _$MessageResultCopyWithImpl<$Res, $Val extends MessageResult>
     });
   }
 
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PaginationMetaCopyWith<$Res>? get meta {
@@ -316,6 +341,8 @@ class __$$MessageResultImplCopyWithImpl<$Res>
       _$MessageResultImpl _value, $Res Function(_$MessageResultImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -382,12 +409,14 @@ class _$MessageResultImpl implements _MessageResult {
             (identical(other.meta, meta) || other.meta == meta));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_data), links, meta);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageResultImplCopyWith<_$MessageResultImpl> get copyWith =>
@@ -416,8 +445,11 @@ abstract class _MessageResult implements MessageResult {
   PaginationLinks? get links;
   @override
   PaginationMeta? get meta;
+
+  /// Create a copy of MessageResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessageResultImplCopyWith<_$MessageResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -436,8 +468,12 @@ mixin _$MessageData {
   String? get body => throw _privateConstructorUsedError;
   String? get filename => throw _privateConstructorUsedError;
 
+  /// Serializes this MessageData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessageData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessageDataCopyWith<MessageData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -466,6 +502,8 @@ class _$MessageDataCopyWithImpl<$Res, $Val extends MessageData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessageData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -524,6 +562,8 @@ class __$$MessageDataImplCopyWithImpl<$Res>
       _$MessageDataImpl _value, $Res Function(_$MessageDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessageData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -603,12 +643,14 @@ class _$MessageDataImpl implements _MessageData {
                 other.filename == filename));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, threadId, userId, body, filename);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessageData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageDataImplCopyWith<_$MessageDataImpl> get copyWith =>
@@ -645,8 +687,11 @@ abstract class _MessageData implements MessageData {
   String? get body;
   @override
   String? get filename;
+
+  /// Create a copy of MessageData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessageDataImplCopyWith<_$MessageDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -662,8 +707,12 @@ mixin _$PaginationLinks {
   String? get prev => throw _privateConstructorUsedError;
   String? get next => throw _privateConstructorUsedError;
 
+  /// Serializes this PaginationLinks to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaginationLinks
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PaginationLinksCopyWith<PaginationLinks> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -687,6 +736,8 @@ class _$PaginationLinksCopyWithImpl<$Res, $Val extends PaginationLinks>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PaginationLinks
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -735,6 +786,8 @@ class __$$PaginationLinksImplCopyWithImpl<$Res>
       _$PaginationLinksImpl _value, $Res Function(_$PaginationLinksImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaginationLinks
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -797,11 +850,13 @@ class _$PaginationLinksImpl implements _PaginationLinks {
             (identical(other.next, next) || other.next == next));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, first, last, prev, next);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaginationLinks
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaginationLinksImplCopyWith<_$PaginationLinksImpl> get copyWith =>
@@ -834,8 +889,11 @@ abstract class _PaginationLinks implements PaginationLinks {
   String? get prev;
   @override
   String? get next;
+
+  /// Create a copy of PaginationLinks
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaginationLinksImplCopyWith<_$PaginationLinksImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -858,8 +916,12 @@ mixin _$PaginationMeta {
   int? get to => throw _privateConstructorUsedError;
   int? get total => throw _privateConstructorUsedError;
 
+  /// Serializes this PaginationMeta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PaginationMeta
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PaginationMetaCopyWith<PaginationMeta> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -891,6 +953,8 @@ class _$PaginationMetaCopyWithImpl<$Res, $Val extends PaginationMeta>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PaginationMeta
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -967,6 +1031,8 @@ class __$$PaginationMetaImplCopyWithImpl<$Res>
       _$PaginationMetaImpl _value, $Res Function(_$PaginationMetaImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PaginationMeta
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1083,12 +1149,14 @@ class _$PaginationMetaImpl implements _PaginationMeta {
             (identical(other.total, total) || other.total == total));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, currentPage, from, lastPage,
       const DeepCollectionEquality().hash(_links), path, perPage, to, total);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PaginationMeta
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PaginationMetaImplCopyWith<_$PaginationMetaImpl> get copyWith =>
@@ -1136,8 +1204,11 @@ abstract class _PaginationMeta implements PaginationMeta {
   int? get to;
   @override
   int? get total;
+
+  /// Create a copy of PaginationMeta
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PaginationMetaImplCopyWith<_$PaginationMetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1152,8 +1223,12 @@ mixin _$PageLink {
   String? get label => throw _privateConstructorUsedError;
   bool? get active => throw _privateConstructorUsedError;
 
+  /// Serializes this PageLink to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PageLink
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PageLinkCopyWith<PageLink> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1176,6 +1251,8 @@ class _$PageLinkCopyWithImpl<$Res, $Val extends PageLink>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PageLink
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1219,6 +1296,8 @@ class __$$PageLinkImplCopyWithImpl<$Res>
       _$PageLinkImpl _value, $Res Function(_$PageLinkImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PageLink
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1273,11 +1352,13 @@ class _$PageLinkImpl implements _PageLink {
             (identical(other.active, active) || other.active == active));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, url, label, active);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PageLink
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PageLinkImplCopyWith<_$PageLinkImpl> get copyWith =>
@@ -1306,8 +1387,11 @@ abstract class _PageLink implements PageLink {
   String? get label;
   @override
   bool? get active;
+
+  /// Create a copy of PageLink
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PageLinkImplCopyWith<_$PageLinkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

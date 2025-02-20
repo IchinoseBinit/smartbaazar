@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'verify_vendor_account_api.g.dart';
@@ -11,7 +11,7 @@ part 'verify_vendor_account_api.g.dart';
 @riverpod
 Future<String?> verifyVendorAccount(VerifyVendorAccountRef ref, File panVat,
     File taxCertificate, File registerCertificate) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
       'pan_vat': await MultipartFile.fromFile(panVat.path,

@@ -6,7 +6,7 @@ part of 'post_coupon_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCouponHash() => r'035416b0479a6ef6472ff8cf1b61e5200f17cd7d';
+String _$postCouponHash() => r'f73346c2c558afb89167fc0aebf674d197448f50';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -198,6 +198,8 @@ class PostCouponProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostCouponRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `couponPercentage` of this provider.
   String get couponPercentage;
@@ -239,4 +241,4 @@ class _PostCouponProviderElement extends AutoDisposeFutureProviderElement<bool>
       (origin as PostCouponProvider).couponImpression;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

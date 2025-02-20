@@ -1,14 +1,14 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'scratch_and_win_provider.g.dart';
 
 @riverpod
-Future<String> getScratchAndWinResponse(GetScratchAndWinResponseRef ref) async {
+Future<String> getScratchAndWinResponse( ref) async {
   try {
-    final SmartClinet client = SmartClinet();
+    final SmartClient client = SmartClient();
 
     // Make the request with the payload
     final response = await client.request(

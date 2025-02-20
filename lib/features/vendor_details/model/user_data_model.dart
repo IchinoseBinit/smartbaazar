@@ -67,10 +67,22 @@ class UserData with _$UserData {
     @JsonKey(name: 'user_verify') String? userVerify,
     @JsonKey(name: 'gender') String? gender,
     @JsonKey(name: 'dob') String? dob,
+    @JsonKey(name: "membership_plan_id")  String? membershipPlanId,
+    @JsonKey(name: "membership_payment_status")
+     String? membershipPaymentStatus,
+    @JsonKey(name: "membership_start")  String? membershipStart,
+    @JsonKey(name: "membership_end")  String? membershipEnd,
+    @JsonKey(name: "membership_status")  String? membershipStatus,
+    @JsonKey(name: "bio")  String? bio,
+    @JsonKey(name: "opening_hours")  String? openingHours,
+    @JsonKey(name: "users_location")  String? usersLocation,
+    @JsonKey(name: "branch_location")  String? branchLocation,
+    @JsonKey(name: "device_token")  String? deviceToken,
     @JsonKey(name: 'deleted_at') String? deletedAt,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
   }) = _UserData;
 
-  factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
+  factory UserData.fromJson(Map<String, dynamic> json) =>
+      _$UserDataFromJson(json);
 }

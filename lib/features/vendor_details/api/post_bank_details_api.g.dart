@@ -7,7 +7,7 @@ part of 'post_bank_details_api.dart';
 // **************************************************************************
 
 String _$postUserBankDetailsHash() =>
-    r'8df84b7701e8768e96b71d9efa422b9500c2dbc5';
+    r'022e3956e67d8f678833ef253bd99927e2291f44';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -188,6 +188,8 @@ class PostUserBankDetailsProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostUserBankDetailsRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `bankName` of this provider.
   String get bankName;
@@ -221,4 +223,4 @@ class _PostUserBankDetailsProviderElement
   File get imageFile => (origin as PostUserBankDetailsProvider).imageFile;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

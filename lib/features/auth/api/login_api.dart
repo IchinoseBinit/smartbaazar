@@ -1,21 +1,17 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/model/login_model.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginApi {
-  final SmartClinet _client = SmartClinet(); // Ensure consistent naming
+  final SmartClient _client = SmartClient();
 
-  Future<LoginData?> login(String email, String password) async {
-    final loginBody = {
-      'login': email,
-      'password': password,
-    };
+  Future<LoginData> login(String email, String password) async {
+    final loginBody = {'login': email, 'password': password};
 
     try {
       final response = await _client.request(
@@ -24,56 +20,124 @@ class LoginApi {
         parameter: loginBody,
       );
 
-      // Check for successful response
-      if (response.statusCode != null &&
-          response.statusCode! >= 200 &&
-          response.statusCode! < 300) {
-        if (response.data != null) {
-          // Parse user data from response
-          final user = LoginData.fromJson(response.data);
-          // final name = user.result.name;
-          // Update tokens
-          SmartClinet.token = user.extra.authToken;
-          SmartClinet.refresh = user.extra.refreshToken;
+      // Extract session cookie
+      String? getSessionCookie(List<String>? cookies) {
+        if (cookies == null) return null;
+        return cookies
+            .firstWhere(
+              (cookie) => cookie.startsWith('laravel_session='),
+              orElse: () => '',
+            )
+            .split(';')
+            .first
+            .split('=')
+            .last;
+      }
 
-          // Store session and tokens in SharedPreferences
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString("session", json.encode(user.toJson()));
-          await prefs.setString("accessToken", SmartClinet.token);
-          await prefs.setString("refreshToken", SmartClinet.refresh);
-          await prefs.setString('userName', user.result.username);
-          await prefs.setString('name', user.result.name);
-          await prefs.setString('userId', user.result.id.toString());
-          await prefs.setString("email", user.result.email!);
-          await prefs.setString('userEmail', user.result.id.toString());
-          await prefs.setString('phone', user.result.phone!);
+      final sessionCookie = getSessionCookie(response.headers['set-cookie']);
+      print("papaz $sessionCookie");
+      SmartClient.laravelSession = sessionCookie!;
 
-          if (kDebugMode) {
-            print("Login successful: $response");
-          }
-          return user; // Return logged-in user
-        } else {
-          throw Exception("No user data found in response");
-        }
+      // Save session cookie
+      SharedPreferences sfr = await SharedPreferences.getInstance();
+      await sfr.setString('laravel', sessionCookie);
+
+      debugPrint("Login response: ${response.data}");
+
+      // Check if response is successful
+      if (_isSuccessfulResponse(response)) {
+        return await _handleSuccessfulLogin(response);
       } else {
-        if (response.data is Map<String, dynamic> &&
-            response.data.containsKey('message')) {
-          throw Exception(response.data['message']);
-        }
-        throw Exception("Login failed. Status code: ${response.statusCode}");
+        _handleErrorResponse(response);
       }
     } on DioException catch (e) {
-      String errorMessage = 'An unexpected error occurred.';
-      if (e.response != null) {
-        errorMessage = e.response?.data['message'] ?? 'Unknown server error';
-      } else if (e.type == DioExceptionType.connectionTimeout) {
-        errorMessage = 'Connection timeout. Please try again.';
-      } else {
-        errorMessage = 'Something went wrong. Please check your connection.';
-      }
-      throw Exception(e.response?.data['message'] ?? errorMessage);
+      // Handle Dio exceptions
+      debugPrint("Dio error: $e");
+      throw Exception(_handleDioError(e));
     } catch (e) {
-      throw Exception(' $e');
+      // Handle any other unexpected exceptions
+      debugPrint("Unexpected error: $e");
+      throw Exception('An unexpected error occurred: $e');
+    }
+
+    // Ensure that the function doesn't return null if control reaches here
+    throw Exception('Login failed due to an unexpected issue');
+  }
+
+  // Refresh token method
+  Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
+    final refreshBody = {'refreshToken': refreshToken};
+
+    try {
+      final response = await _client.request(
+        requestType: RequestType.post,
+        url: ApiConstants.refreshTokenUrl,
+        parameter: refreshBody,
+      );
+
+      if (_isSuccessfulResponse(response)) {
+        return response.data;
+      } else {
+        throw Exception("Failed to refresh token");
+      }
+    } on DioException catch (e) {
+      throw Exception(_handleDioError(e));
     }
   }
+
+  // Check if the response is successful
+  bool _isSuccessfulResponse(Response response) {
+    return response.statusCode != null &&
+        response.statusCode! >= 200 &&
+        response.statusCode! < 300;
+  }
+
+  // Handle a successful login response
+  Future<LoginData> _handleSuccessfulLogin(Response response) async {
+    final user = LoginData.fromJson(response.data);
+    await _storeSessionDetails(user);
+    return user;
+  }
+
+  // Store session details (tokens and user data)
+  Future<void> _storeSessionDetails(LoginData user) async {
+  final prefs = await SharedPreferences.getInstance();
+  final data = user.toJson();
+  await prefs.setString("session", json.encode(data));
+  await prefs.setString("accessToken", SmartClient.token);
+  await prefs.setString("refreshToken", SmartClient.refresh);
+  await prefs.setString("name", SmartClient.userName);
+  await prefs.setString("email", SmartClient.userEmail);
+  await prefs.setString("phone", SmartClient.phone);
+  await prefs.setString("photo", SmartClient.userPhoto);
+  await prefs.setString("userId", SmartClient.userId);
+}
+
+
+  // Handle error response (non-2xx HTTP status)
+  void _handleErrorResponse(Response response) {
+    if (response.data is Map<String, dynamic>) {
+      final errorMessage =
+          response.data['message'] ?? 'Unexpected error occurred';
+      throw Exception(errorMessage);
+    }
+    throw Exception("Login failed. Status code: ${response.statusCode}");
+  }
+
+  // Handle Dio-specific errors (e.g., timeouts, server issues)
+ String _handleDioError(DioException e) {
+  if (e.response != null) {
+    return e.response?.data['message'] ?? 'Unknown server error';
+  }
+  switch (e.type) {
+    case DioExceptionType.connectionTimeout:
+      return 'Connection timeout. Please try again.';
+    case DioExceptionType.receiveTimeout:
+      return 'Server took too long to respond. Please try again.';
+    case DioExceptionType.sendTimeout:
+      return 'Request timed out. Please check your connection.';
+    default:
+      return 'Something went wrong. Please check your connection.';
+  }
+}
 }

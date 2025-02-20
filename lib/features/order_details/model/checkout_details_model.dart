@@ -64,8 +64,20 @@ class Item with _$Item {
     String? image,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
+    @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
     @JsonKey(name: 'item_total') int? itemTotal,
+    @JsonKey(name: 'post_type_id') String? postTypeId,
   }) = _Item;
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+}
+@freezed
+class DiscountOnBulk with _$DiscountOnBulk {
+  const factory DiscountOnBulk({
+    @JsonKey(name: 'piece_from') String? pieceFrom,
+    @JsonKey(name: 'piece_to') String? pieceTo,
+    @JsonKey(name: 'rate') String? rate,
+  }) = _DiscountOnBulk;
+
+  factory DiscountOnBulk.fromJson(Map<String, dynamic> json) => _$DiscountOnBulkFromJson(json);
 }

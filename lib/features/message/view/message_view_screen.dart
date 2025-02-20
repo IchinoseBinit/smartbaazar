@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class MessageViewScreen extends ConsumerWidget {
   const MessageViewScreen({super.key});
@@ -15,330 +15,356 @@ class MessageViewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentfilter = ref.watch(messageFilterStateProvider);
-    return GenericSafeArea(
-      child: Scaffold(
-        body: DefaultTabController(
-          length: 2,
-          child: Padding(
-            padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Message",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    DropdownButton<String>(
-                      underline: const SizedBox(),
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.zero,
-                      elevation: 0,
-                      value: currentfilter,
-                      items: const [
-                        DropdownMenuItem(
-                            value: 'unread', child: Text('Unread')),
-                        DropdownMenuItem(
-                            value: 'important', child: Text('Important')),
-                        DropdownMenuItem(
-                            value: 'Started', child: Text('Started')),
-                      ],
-                      onChanged: (value) {
-                        if (value != null) {
-                          ref
-                              .read(messageFilterStateProvider.notifier)
-                              .updateFilter(value); // Update the filter
-                          ref.refresh(getMessageThreadProvider(
-                              filter:
-                                  value)); // Refetch messages with the new filter
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                const TabBar(
-                  tabs: [
-                    Tab(text: 'Chat'),
-                    Tab(text: 'Alerts'),
-                  ],
-                ),
-                SizedBox(height: 11.h),
-                Text(
-                  'Previous Message',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xff000000).withOpacity(0.5),
+    return Scaffold(
+      body: DefaultTabController(
+        length: 2,
+        child: Padding(
+          padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Message",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
+                  DropdownButton<String>(
+                    underline: const SizedBox(),
+                    padding: EdgeInsets.zero,
+                    borderRadius: BorderRadius.zero,
+                    elevation: 0,
+                    value: currentfilter,
+                    items: const [
+                      DropdownMenuItem(value: 'unread', child: Text('Unread')),
+                      DropdownMenuItem(
+                          value: 'important', child: Text('Important')),
+                      DropdownMenuItem(
+                          value: 'Started', child: Text('Started')),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        ref
+                            .read(messageFilterStateProvider.notifier)
+                            .updateFilter(value); // Update the filter
+                        ref.refresh(getMessageThreadProvider(
+                            filter:
+                                value)); // Refetch messages with the new filter
+                      }
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              const TabBar(
+                tabs: [
+                  Tab(text: 'Chat'),
+                  Tab(text: 'Alerts'),
+                ],
+              ),
+              SizedBox(height: 11.h),
+              Text(
+                'Previous Message',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff000000).withOpacity(0.5),
                 ),
-                SizedBox(height: 12.h),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      // Chat Tab
-                      Consumer(
-                        builder: (context, ref, _) {
-                          final messageThreadProvider = ref.watch(
-                              getMessageThreadProvider(filter: currentfilter));
-                          return messageThreadProvider.when(
-                            data: (messageThread) {
-                              final messages = messageThread.result!.data;
-                              return ListView.separated(
-                                itemCount: messages!.length,
-                                itemBuilder: (context, index) {
-                                  final message = messages[index];
-                                  return Consumer(
-                                    builder: (context, ref, _) {
-                                      final lastMessageAsync = ref.watch(
-                                          getLastMessageProvider(
-                                              message.id.toString()));
-                                      return lastMessageAsync.when(
-                                        data: (lastMessage) {
-                                          return ListOfMessages(
-                                            threadId: message.id.toString(),
-                                            postId: message.postId.toString(),
-                                            subject: message.subject!,
-                                            isImportant: message.isImportant!,
-                                            body: lastMessage?.body ??
-                                                'No messages yet',
-                                          );
-                                        },
-                                        loading: () =>
-                                            const CircularProgressIndicator(),
-                                        error: (error, stack) =>
-                                            Text('Error: $error'),
-                                      );
-                                    },
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 20.h),
-                              );
-                            },
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, stack) =>
-                                Center(child: Text('Error: $error')),
-                          );
-                        },
-                      ),
-                      Consumer(
-                        builder: (context, ref, _) {
-                          final alertProvider =
-                              ref.watch(getAlertMessageProvider);
-
-                          return alertProvider.when(
-                            data: (alertList) {
-                              final alerts = alertList.alerts;
-
-                              return ListView.separated(
-                                itemCount: alerts!.length,
-                                itemBuilder: (context, index) {
-                                  final alert = alerts[index];
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => ProductDetailScreen(
-                                            productId: alert.clickAction!,
+              ),
+              SizedBox(height: 12.h),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    // Chat Tab
+                    Consumer(
+                      builder: (context, ref, _) {
+                        final messageThreadProvider = ref.watch(
+                            getMessageThreadProvider(filter: currentfilter));
+                        return messageThreadProvider.when(
+                          data: (messageThread) {
+                            final messages = messageThread.result!.data;
+                            return ListView.separated(
+                              itemCount: messages!.length,
+                              itemBuilder: (context, index) {
+                                final message = messages[index];
+                                return Consumer(
+                                  builder: (context, ref, _) {
+                                    final lastMessageAsync = ref.watch(
+                                        getLastMessageProvider(
+                                            message.id.toString()));
+                                    return lastMessageAsync.when(
+                                      data: (lastMessage) {
+                                        return ListOfMessages(
+                                          threadId: message.id.toString(),
+                                          postId: message.postId.toString(),
+                                          subject: message.subject!,
+                                          isImportant: message.isImportant!,
+                                          body: lastMessage?.body ??
+                                              'No messages yet',
+                                        );
+                                      },
+                                      loading: () => Center(
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            width: 40.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(16.w),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.1),
-                                            blurRadius: 6,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      error: (error, stack) => InkWell(
+                                          onTap: () => const LoginScreen(),
+                                          child: const Text(
+                                              'Please login and try again')),
+                                    );
+                                  },
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 20.h),
+                            );
+                          },
+                          loading: () => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 40.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          error: (error, stack) => const InkWell(
+                              child: Center(child: Text('Please login again'))),
+                        );
+                      },
+                    ),
+                    Consumer(
+                      builder: (context, ref, _) {
+                        final alertProvider =
+                            ref.watch(getAlertMessageProvider);
+
+                        return alertProvider.when(
+                          data: (alertList) {
+                            final alerts = alertList.alerts;
+
+                            return ListView.separated(
+                              itemCount: alerts!.length,
+                              itemBuilder: (context, index) {
+                                final alert = alerts[index];
+                                return Container(
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Alert Icon and Title
+                                      Row(
                                         children: [
-                                          // Alert Icon and Title
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.notifications,
-                                                color: Colors.green
-                                                    .withOpacity(0.9),
-                                              ),
-                                              SizedBox(width: 8.w),
-                                              Expanded(
-                                                child: Text(
-                                                  alert.title ?? 'No title',
-                                                  style: TextStyle(
-                                                    fontSize: 18.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  softWrap: true,
-                                                ),
-                                              ),
-                                            ],
+                                          Icon(
+                                            Icons.notifications,
+                                            color:
+                                                Colors.green.withOpacity(0.9),
                                           ),
-                                          SizedBox(height: 10.h),
-
-                                          // Alert Body Text
-                                          Text(
-                                            alert.body ?? 'No body',
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
-                                            ),
-                                            maxLines: 5,
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: true,
-                                          ),
-                                          SizedBox(height: 20.h),
-
-                                          // Promotional Image
-                                          if (alert.image != null)
-                                            Center(
-                                              child: Image.network(
-                                                alert.image!,
-                                                fit: BoxFit.cover,
-                                                height: 100.h,
-                                                width: 180.h,
+                                          SizedBox(width: 8.w),
+                                          Expanded(
+                                            child: Text(
+                                              alert.title ?? 'No title',
+                                              style: TextStyle(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
                                               ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
                                             ),
-                                          SizedBox(height: 20.h),
-
-                                          // Date and Time Row
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                alert.createdAt!,
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: Colors.black
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 20.h),
-                              );
-                            },
-                            loading: () => const Center(
-                                child: CircularProgressIndicator()),
-                            error: (error, stack) =>
-                                Center(child: Text('Error: $error')),
-                          );
-                        },
-                      ),
+                                      SizedBox(height: 10.h),
 
-                      // Alerts Tab
-                      // Consumer(
-                      //   builder: (context, ref, _) {
-                      //     final alertProvider =
-                      //         ref.watch(getAlertMessageProvider);
+                                      // Alert Body Text
+                                      Text(
+                                        alert.body ?? 'No body',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: Colors.black.withOpacity(0.8),
+                                        ),
+                                        maxLines: 5,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                      ),
+                                      SizedBox(height: 20.h),
 
-                      //     return alertProvider.when(
-                      //       data: (alertList) {
-                      //         // Now `alertList.data` contains the list of alerts
-                      //         final alerts = alertList.alerts;
+                                      // Promotional Image
+                                      if (alert.image != null)
+                                        Center(
+                                          child: Image.network(
+                                            alert.image!,
+                                            fit: BoxFit.cover,
+                                            height: 100.h,
+                                            width: 180.h,
+                                          ),
+                                        ),
+                                      SizedBox(height: 20.h),
 
-                      //         return ListView.separated(
-                      //           itemCount: alerts!.length,
-                      //           itemBuilder: (context, index) {
-                      //             final alert = alerts[index];
-                      //             return InkWell(
-                      //               onTap: () {
-                      //                 Navigator.push(
-                      //                   context,
-                      //                   MaterialPageRoute(
-                      //                     builder: (_) => AlertScreen(
-                      //                       alertTitle:
-                      //                           alert.title ?? 'No title',
-                      //                       alertBody: alert.body ?? 'No body',
-                      //                       alertImage: alert.image,
-                      //                       alertDateTime: alert.createdAt!,
-                      //                     ),
-                      //                   ),
-                      //                 );
-                      //               },
-                      //               child: ListTile(
-                      //                 leading: CircleAvatar(
-                      //                   backgroundImage: alert.image != null
-                      //                       ? NetworkImage(alert.image!)
-                      //                       : const AssetImage(
-                      //                               'assets/images/default_avatar.png')
-                      //                           as ImageProvider,
-                      //                 ),
-                      //                 title: Text(
-                      //                   alert.title ?? 'No title',
-                      //                   style: TextStyle(
-                      //                     fontSize: 14.sp,
-                      //                     fontWeight: FontWeight.w700,
-                      //                     overflow: TextOverflow.ellipsis,
-                      //                   ),
-                      //                   maxLines: 1,
-                      //                 ),
-                      //                 subtitle: Text(
-                      //                   alert.body ?? 'No body',
-                      //                   style: TextStyle(
-                      //                     fontSize: 12.sp,
-                      //                     overflow: TextOverflow.ellipsis,
-                      //                     color: const Color(0xff000000)
-                      //                         .withOpacity(0.45),
-                      //                     fontWeight: FontWeight.w600,
-                      //                   ),
-                      //                   maxLines: 2,
-                      //                 ),
-                      //                 trailing: IconButton(
-                      //                   icon:
-                      //                       const Icon(Icons.arrow_forward_ios),
-                      //                   onPressed: () {
-                      //                     // Handle navigation or action
-                      //                   },
-                      //                 ),
-                      //               ),
-                      //             );
-                      //           },
-                      //           separatorBuilder: (context, index) =>
-                      //               SizedBox(height: 20.h),
-                      //         );
-                      //       },
-                      //       loading: () => const Center(
-                      //           child: CircularProgressIndicator()),
-                      //       error: (error, stack) =>
-                      //           Center(child: Text('Error: $error')),
-                      //     );
-                      //   },
-                      // ),
-                    ],
-                  ),
+                                      // Date and Time Row
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            alert.createdAt!,
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 20.h),
+                            );
+                          },
+                          loading: () => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 40.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          error: (error, stack) =>
+                              Center(child: Text('Error: $error')),
+                        );
+                      },
+                    ),
+
+                    // Alerts Tab
+                    // Consumer(
+                    //   builder: (context, ref, _) {
+                    //     final alertProvider =
+                    //         ref.watch(getAlertMessageProvider);
+
+                    //     return alertProvider.when(
+                    //       data: (alertList) {
+                    //         // Now `alertList.data` contains the list of alerts
+                    //         final alerts = alertList.alerts;
+
+                    //         return ListView.separated(
+                    //           itemCount: alerts!.length,
+                    //           itemBuilder: (context, index) {
+                    //             final alert = alerts[index];
+                    //             return InkWell(
+                    //               onTap: () {
+                    //                 Navigator.push(
+                    //                   context,
+                    //                   MaterialPageRoute(
+                    //                     builder: (_) => AlertScreen(
+                    //                       alertTitle:
+                    //                           alert.title ?? 'No title',
+                    //                       alertBody: alert.body ?? 'No body',
+                    //                       alertImage: alert.image,
+                    //                       alertDateTime: alert.createdAt!,
+                    //                     ),
+                    //                   ),
+                    //                 );
+                    //               },
+                    //               child: ListTile(
+                    //                 leading: CircleAvatar(
+                    //                   backgroundImage: alert.image != null
+                    //                       ? NetworkImage(alert.image!)
+                    //                       : const AssetImage(
+                    //                               'assets/images/default_avatar.png')
+                    //                           as ImageProvider,
+                    //                 ),
+                    //                 title: Text(
+                    //                   alert.title ?? 'No title',
+                    //                   style: TextStyle(
+                    //                     fontSize: 14.sp,
+                    //                     fontWeight: FontWeight.w700,
+                    //                     overflow: TextOverflow.ellipsis,
+                    //                   ),
+                    //                   maxLines: 1,
+                    //                 ),
+                    //                 subtitle: Text(
+                    //                   alert.body ?? 'No body',
+                    //                   style: TextStyle(
+                    //                     fontSize: 12.sp,
+                    //                     overflow: TextOverflow.ellipsis,
+                    //                     color: const Color(0xff000000)
+                    //                         .withOpacity(0.45),
+                    //                     fontWeight: FontWeight.w600,
+                    //                   ),
+                    //                   maxLines: 2,
+                    //                 ),
+                    //                 trailing: IconButton(
+                    //                   icon:
+                    //                       const Icon(Icons.arrow_forward_ios),
+                    //                   onPressed: () {
+                    //                     // Handle navigation or action
+                    //                   },
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           },
+                    //           separatorBuilder: (context, index) =>
+                    //               SizedBox(height: 20.h),
+                    //         );
+                    //       },
+                    //       loading: () => const Center(
+                    //           child: CircularProgressIndicator()),
+                    //       error: (error, stack) =>
+                    //           Center(child: Text('Error: $error')),
+                    //     );
+                    //   },
+                    // ),
+                  ],
                 ),
-                SizedBox(height: 40.h),
-              ],
-            ),
+              ),
+              // SizedBox(height: 40.h),
+            ],
           ),
         ),
       ),
@@ -366,29 +392,27 @@ class ListOfMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
+        Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
-            builder: (_) => ChatScreen(
-                threadId: threadId,
-                username: subject,
-                postId: postId,
+            builder: (context) => ChatScreen(
+              
+              threadId: threadId,
+              username: subject,
+              postId: postId,
               //  isImportant: isImportant,
-                ),
+            ),
           ),
         );
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.h),
+        // padding: EdgeInsets.symmetric(vertical: 8.h),
         child: Row(
           children: [
             // Profile Icon
             Container(
               padding: EdgeInsets.all(12.h),
               decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffD9D9D9),
-              ),
+                  shape: BoxShape.circle, color: Color(0xffD9D9D9)),
               child: const Icon(Icons.person_3_outlined),
             ),
             SizedBox(width: 11.w),

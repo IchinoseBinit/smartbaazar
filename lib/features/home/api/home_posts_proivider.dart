@@ -1,61 +1,48 @@
-import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
+import 'package:smartbazar/features/home/model/product_model.dart'; // Ensure Product model is imported
+import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:smartbazar/utils/request_type.dart';
 
 part "home_posts_proivider.g.dart";
 
 @riverpod
 Future<HomePosts> homePosts(HomePostsRef ref) async {
-  final client = Dio();
+  final SmartClient client = SmartClient();
+  try {
+    final response = await client.request(
+      requestType: RequestType.getWithToken,
+      url: ApiConstants.homeSlider2BannerUrl,
+    );
 
-  final response = await Future.wait([
-    client.get(
-      ApiConstants.homeSliderBannerUrl,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': '*/*',
-          'Connection': 'Keep-Alive',
-          'X-AppApiToken': 'Yala@Techies_Nepal'
-        },
-      ),
-    ),
-    client.get(
-      ApiConstants.homeSlider1BannerUrl,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': '*/*',
-          'Connection': 'Keep-Alive',
-          'X-AppApiToken': 'Yala@Techies_Nepal'
-        },
-      ),
-    ),
-    client.get(
-      ApiConstants.homeSlider2BannerUrl,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'accept': '*/*',
-          'Connection': 'Keep-Alive',
-          'X-AppApiToken': 'Yala@Techies_Nepal'
-        },
-      ),
-    ),
-  ]).then((res) {
-    return {
-      'sponsored_post': res[1].data['sponsored_posts'],
-      'trending': res[1].data['trending'],
-      'hot_products': res[0].data['hot_products'],
-      'new_products': res[0].data['new_products'],
-      'jobs': res[0].data['jobs'],
-      'events': res[0].data['events'],
-      'b2b_products': res[0].data['b2b_products'],
-      'all_products': res[2].data['all_products'],
-      'advertisements': res[2].data['advertisements'],
-    };
-  });
+    final Map<String, dynamic> data = response.data;
 
-  return HomePosts.fromJson(response);
+    final List<dynamic> sponsoredPostsList = data['sponsored_posts'] ?? [];
+    final List<dynamic> trendingList = data['trending'] ?? [];
+    final List<dynamic> sliderslist = data['sliders'] ?? [];
+
+    // Ensure the response data contains the expected structure
+    // Safely parse the 'sponsored_posts' and 'trending' lists into Product objects
+    final sponsoredPosts = sponsoredPostsList
+        .map((item) => Product.fromJson(item as Map<String, dynamic>))
+        .toList();
+    final trending = trendingList
+        .map((item) => Product.fromJson(item as Map<String, dynamic>))
+        .toList();
+    final sliders = sliderslist
+        .map((item) => SliderModel.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return HomePosts(
+      sliders: sliders,
+      sponsored_posts: sponsoredPosts,
+      trending: trending,
+    );
+  } catch (e) {
+    print("Error fetching home posts: $e");
+  }
+
+  // Return an empty HomePosts object in case of an error or unexpected response
+  return HomePosts(sponsored_posts: [], trending: [], sliders: []);
 }

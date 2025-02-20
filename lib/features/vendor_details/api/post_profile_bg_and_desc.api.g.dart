@@ -7,7 +7,7 @@ part of 'post_profile_bg_and_desc.api.dart';
 // **************************************************************************
 
 String _$postProfileBGAndDescHash() =>
-    r'f27ccf1952a918e81c8a06316847ce96f59e5a9e';
+    r'401a4ad54983aa3ac27b758634c0c3c0b3c19303';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -166,6 +166,8 @@ class PostProfileBGAndDescProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostProfileBGAndDescRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `imageFile` of this provider.
   File? get imageFile;
@@ -191,4 +193,4 @@ class _PostProfileBGAndDescProviderElement
       (origin as PostProfileBGAndDescProvider).profileImageFile;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

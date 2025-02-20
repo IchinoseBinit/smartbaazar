@@ -6,7 +6,7 @@ part of 'home_posts_proivider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homePostsHash() => r'6c9981f5e8452fc2049ec5ef3a880c639fc11c2e';
+String _$homePostsHash() => r'70748f9fda042f8a3b9c43d01ec9e817b7dc234b';
 
 /// See also [homePosts].
 @ProviderFor(homePosts)
@@ -19,6 +19,8 @@ final homePostsProvider = AutoDisposeFutureProvider<HomePosts>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef HomePostsRef = AutoDisposeFutureProviderRef<HomePosts>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

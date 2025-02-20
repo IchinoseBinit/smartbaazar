@@ -6,7 +6,7 @@ part of 'delete_saved_search_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$deleteSavedSearchHash() => r'c26062dfcc7aa62b63a2aa9072fbf939fb0e8196';
+String _$deleteSavedSearchHash() => r'de0e47b365d5aed06052fec0a4ec7b0d04352ab7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class DeleteSavedSearchProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin DeleteSavedSearchRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `productItemId` of this provider.
   String get productItemId;
@@ -157,4 +159,4 @@ class _DeleteSavedSearchProviderElement
       (origin as DeleteSavedSearchProvider).productItemId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

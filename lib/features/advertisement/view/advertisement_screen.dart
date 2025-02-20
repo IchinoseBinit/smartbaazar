@@ -81,8 +81,8 @@ class AdvertisementScreen extends ConsumerWidget {
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (error, stackTrace) => Center(
-                    child: Text('Error: ${error.toString()}'),
+                  error: (error, stackTrace) => const Center(
+                    child: Text('Please login again'),
                   ),
                 ),
               ),

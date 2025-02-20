@@ -3,7 +3,7 @@
 // // import 'package:smartbazar/utils/request_type.dart';
 
 // // Future<String> ForgotPasswordApi(String? phone, String? email) async {
-// //   final SmartClinet _clinet = SmartClinet();
+// //   final SmartClient   _clinet = SmartClient  ();
 // //   try {
 // //     final response = await _clinet.request(
 // //       requestType: RequestType.post,

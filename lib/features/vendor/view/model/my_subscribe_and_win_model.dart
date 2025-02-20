@@ -116,7 +116,7 @@ class Winner with _$Winner {
     @JsonKey(name: 'status') String? status,
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'updated_at') String? updatedAt,
-    @JsonKey(name: 'gift_worth') GiftWorth? giftWorth,
+    @JsonKey(name: 'gift_worth') int? giftWorth,
     @JsonKey(name: 'name') WinnerName? name,
   }) = _Winner;
 

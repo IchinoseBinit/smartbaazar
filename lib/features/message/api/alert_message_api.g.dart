@@ -6,7 +6,7 @@ part of 'alert_message_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAlertMessageHash() => r'3298a77bfee2ac16b1e75520e4d02d8530451dbe';
+String _$getAlertMessageHash() => r'beae4d965113d7aae14836e999d0f3c9f6f1df9a';
 
 /// See also [getAlertMessage].
 @ProviderFor(getAlertMessage)
@@ -20,6 +20,8 @@ final getAlertMessageProvider = AutoDisposeFutureProvider<AlertModel>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetAlertMessageRef = AutoDisposeFutureProviderRef<AlertModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

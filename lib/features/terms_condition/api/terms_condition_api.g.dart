@@ -6,7 +6,7 @@ part of 'terms_condition_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getTermsConditionHash() => r'd58bb96131254745c35f8bb5c7960a4ec9abc3b8';
+String _$getTermsConditionHash() => r'ebce0ee288d4587ad97ea1bfa33db91add0a85a3';
 
 /// See also [getTermsCondition].
 @ProviderFor(getTermsCondition)
@@ -21,7 +21,9 @@ final getTermsConditionProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetTermsConditionRef
     = AutoDisposeFutureProviderRef<TermsConditionsModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

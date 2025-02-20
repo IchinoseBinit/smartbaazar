@@ -20,10 +20,16 @@ SearchProductModel _$SearchProductModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SearchProductModel {
-  String get title => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
 
+  /// Serializes this SearchProductModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SearchProductModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SearchProductModelCopyWith<SearchProductModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -34,7 +40,7 @@ abstract class $SearchProductModelCopyWith<$Res> {
           SearchProductModel value, $Res Function(SearchProductModel) then) =
       _$SearchProductModelCopyWithImpl<$Res, SearchProductModel>;
   @useResult
-  $Res call({String title});
+  $Res call({String name, String? id, String? username});
 }
 
 /// @nodoc
@@ -47,16 +53,28 @@ class _$SearchProductModelCopyWithImpl<$Res, $Val extends SearchProductModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SearchProductModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? name = null,
+    Object? id = freezed,
+    Object? username = freezed,
   }) {
     return _then(_value.copyWith(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -69,7 +87,7 @@ abstract class _$$SearchProductModelImplCopyWith<$Res>
       __$$SearchProductModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({String name, String? id, String? username});
 }
 
 /// @nodoc
@@ -80,16 +98,28 @@ class __$$SearchProductModelImplCopyWithImpl<$Res>
       $Res Function(_$SearchProductModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SearchProductModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? name = null,
+    Object? id = freezed,
+    Object? username = freezed,
   }) {
     return _then(_$SearchProductModelImpl(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -97,17 +127,21 @@ class __$$SearchProductModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SearchProductModelImpl implements _SearchProductModel {
-  _$SearchProductModelImpl({required this.title});
+  _$SearchProductModelImpl({required this.name, this.id, this.username});
 
   factory _$SearchProductModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SearchProductModelImplFromJson(json);
 
   @override
-  final String title;
+  final String name;
+  @override
+  final String? id;
+  @override
+  final String? username;
 
   @override
   String toString() {
-    return 'SearchProductModel(title: $title)';
+    return 'SearchProductModel(name: $name, id: $id, username: $username)';
   }
 
   @override
@@ -115,14 +149,19 @@ class _$SearchProductModelImpl implements _SearchProductModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SearchProductModelImpl &&
-            (identical(other.title, title) || other.title == title));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.username, username) ||
+                other.username == username));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode => Object.hash(runtimeType, name, id, username);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchProductModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchProductModelImplCopyWith<_$SearchProductModelImpl> get copyWith =>
@@ -138,16 +177,25 @@ class _$SearchProductModelImpl implements _SearchProductModel {
 }
 
 abstract class _SearchProductModel implements SearchProductModel {
-  factory _SearchProductModel({required final String title}) =
-      _$SearchProductModelImpl;
+  factory _SearchProductModel(
+      {required final String name,
+      final String? id,
+      final String? username}) = _$SearchProductModelImpl;
 
   factory _SearchProductModel.fromJson(Map<String, dynamic> json) =
       _$SearchProductModelImpl.fromJson;
 
   @override
-  String get title;
+  String get name;
   @override
-  @JsonKey(ignore: true)
+  String? get id;
+  @override
+  String? get username;
+
+  /// Create a copy of SearchProductModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchProductModelImplCopyWith<_$SearchProductModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

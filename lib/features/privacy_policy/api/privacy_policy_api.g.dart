@@ -6,7 +6,7 @@ part of 'privacy_policy_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPrivacyPolicyHash() => r'9cae77af13cea47615b62ba0765367f0915415a2';
+String _$getPrivacyPolicyHash() => r'3b567ce95de086931970daf1485445534bb3745a';
 
 /// See also [getPrivacyPolicy].
 @ProviderFor(getPrivacyPolicy)
@@ -21,6 +21,8 @@ final getPrivacyPolicyProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetPrivacyPolicyRef = AutoDisposeFutureProviderRef<PrivacyPolicyModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

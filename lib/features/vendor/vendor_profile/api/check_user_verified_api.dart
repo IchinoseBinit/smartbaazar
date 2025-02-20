@@ -1,19 +1,34 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-@riverpod
-Future<String> checkuserverified() async {
-  SmartClinet client = SmartClinet();
+class VerifyUser {
+  final String id;
+  final String userVerify;
+
+  VerifyUser({required this.id, required this.userVerify});
+
+  factory VerifyUser.fromJson(Map<String, dynamic> json) {
+    return VerifyUser(
+      id: json['id'].toString(),
+      userVerify: json['user_verify'].toString(),
+    );
+  }
+}
+
+Future<VerifyUser?> checkUserVerified() async {
+  SmartClient client = SmartClient();
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.checkuserverifyurl,
     );
-    return response.data['user_verify'];
+
+    if (response.data != null && response.data['user_verify'] != null) {
+      return VerifyUser.fromJson(response.data);
+    }
   } catch (e) {
-    print("error has come $e");
+    print("Error occurred: $e");
   }
-  return '0';
+  return null;
 }

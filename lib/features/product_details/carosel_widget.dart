@@ -1,14 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
 
 class CarsoselWidget extends StatefulWidget {
-  const CarsoselWidget({Key? key, required this.items, int? dots})
-      : dots = dots ?? items.length,  // Sets dots to a stable value
+  const CarsoselWidget(
+      {Key? key,
+      required this.items,
+      int? dots,
+      required this.avg_rating,
+      required this.comment,
+      required this.VImage,
+      required this.wow})
+      : dots = dots ?? items.length, // Sets dots to a stable value
         super(key: key);
 
-  final List<String> items;
+  final List<Picture> items;
   final int dots;
+  final String wow, comment, avg_rating, VImage;
 
   @override
   State<CarsoselWidget> createState() => _CarsoselWidgetState();
@@ -20,12 +33,12 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CarouselSlider(
+        child: Stack(
+      children: [
+        Positioned(
+          child: CarouselSlider(
             options: CarouselOptions(
-              height: 250.0.h, // Responsive height
+              height: 300.0, // Set height of carousel
               viewportFraction: 1.0,
               initialPage: 0,
               onPageChanged: (index, reason) {
@@ -35,18 +48,52 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
               },
             ),
             items: widget.items.map((item) {
-              return SizedBox(
-                width: double.infinity,
-                child: Image.network(
-                  item,
-                  fit: BoxFit.fill,
+              return GestureDetector(
+                onTap: () {
+                  // Open full-screen zoomable image on tap
+                  showDialog(
+                    context: context,
+                    builder: (_) => Dialog(
+                      insetPadding: EdgeInsets.zero, // Remove dialog padding
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: PhotoViewGallery.builder(
+                          itemCount: widget.items.length,
+                          builder: (context, index) {
+                            return PhotoViewGalleryPageOptions(
+                              imageProvider:
+                                  NetworkImage(widget.items[index].image_url!),
+                              minScale: PhotoViewComputedScale.contained,
+                              maxScale: PhotoViewComputedScale.covered,
+                            );
+                          },
+                          scrollPhysics: const BouncingScrollPhysics(),
+                          backgroundDecoration: const BoxDecoration(
+                            color: Colors.black,
+                          ),
+                          pageController:
+                              PageController(initialPage: currentIndex),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Image.network(
+                    item.image_url!,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               );
             }).toList(),
           ),
-          SizedBox(height: 10.h),
-          // Dots representing the current index
-          Row(
+        ),
+        Positioned(
+          left: 200.w,
+          bottom: 50,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(widget.dots, (index) {
               return GestureDetector(
@@ -67,14 +114,154 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                     shape: BoxShape.circle,
                     color: currentIndex == index
                         ? const Color.fromARGB(255, 83, 81, 81)
-                        : Colors.grey,
+                        : Colors.white,
                   ),
                 ),
               );
             }),
           ),
-        ],
+        ),
+        Positioned(
+          left: 40.w,
+          bottom: 15.h,
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 1),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10.h),
+                decoration: const BoxDecoration(
+                    color: ColorConstant.whiteColor,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        bottomLeft: Radius.circular(30))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/tire.png",
+                      color: ColorConstant.blackColor,
+                    ),
+                    SizedBox(
+                      width: 7.w,
+                    ),
+                    Text(
+                      widget.wow == 'null' ? "1" : widget.wow,
+                      style: headerstyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ColorConstant.blackColor),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Image.asset(
+                      "assets/images/Frame.png",
+                      color: ColorConstant.blackColor,
+                      height: 30,
+                      width: 30,
+                    ),
+                    SizedBox(
+                      width: 7.w,
+                    ),
+                    Text(
+                      widget.comment,
+                      style: headerstyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ColorConstant.blackColor),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Image.asset("assets/icon/Frame.png"),
+                    SizedBox(
+                      width: 7.w,
+                    ),
+                    Text(
+                      widget.avg_rating,
+                      style: headerstyle.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: ColorConstant.blackColor),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5.h),
+                decoration: const BoxDecoration(
+                    color: ColorConstant.whiteColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        bottomRight: Radius.circular(30))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MessageViewScreen(),
+                            ));
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/wave.png',
+                          ),
+                          Text(
+                            "ASk",
+                            style: headerstyle.copyWith(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                color: const Color(0xff362677)),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    CircleAvatar(backgroundImage: NetworkImage(widget.VImage)),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+       Positioned(
+  top: 10,
+  right: 15,
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      color: Colors.black.withOpacity(0.6),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Text(
+      "${currentIndex + 1}/${widget.items.length}", // Display current index + 1 / total images
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
       ),
-    );
+    ),
+  ),
+),
+
+      ],
+    )
+
+        );
   }
 }

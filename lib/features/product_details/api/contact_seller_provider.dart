@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/network_service/smart-clinet.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
 part 'contact_seller_provider.g.dart';
@@ -10,12 +10,13 @@ part 'contact_seller_provider.g.dart';
 Future<bool> contactSeller(
   ContactSellerRef? ref1, // Optional ref for Riverpod state
   String username,
-  String phoneNumber, // Assuming phone number is an int, will convert to string later
+  String
+      phoneNumber, // Assuming phone number is an int, will convert to string later
   String body,
   int postId,
-   String email,
+  String email,
 ) async {
-  final SmartClinet client = SmartClinet();
+  final SmartClient client = SmartClient();
 
   try {
     // Check that mandatory fields are not empty

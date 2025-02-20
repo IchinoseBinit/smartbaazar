@@ -7,7 +7,7 @@ part of 'my_subscribe_and_win_api.dart';
 // **************************************************************************
 
 String _$getMySubscribeAndWinResponseHash() =>
-    r'91a24ffc817463187934256f520f59893dd3e5c8';
+    r'7fd48aebfdf0c5094f57f7a6ea10df2878b0cdc8';
 
 /// See also [getMySubscribeAndWinResponse].
 @ProviderFor(getMySubscribeAndWinResponse)
@@ -22,7 +22,9 @@ final getMySubscribeAndWinResponseProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetMySubscribeAndWinResponseRef
     = AutoDisposeFutureProviderRef<MySubscribeAndWinModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

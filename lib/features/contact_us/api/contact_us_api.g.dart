@@ -6,7 +6,7 @@ part of 'contact_us_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postContactUsHash() => r'4804902920387c3cc1168e0bbfc5d6127f313af7';
+String _$postContactUsHash() => r'17fbd72ba939eb3855bfb620d9dcd13fea09bb7b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class PostContactUsProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostContactUsRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `contactUsModel` of this provider.
   ContactUsModel get contactUsModel;
@@ -157,4 +159,4 @@ class _PostContactUsProviderElement
       (origin as PostContactUsProvider).contactUsModel;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,7 +6,7 @@ part of 'post_advertisement_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postAdvertisementHash() => r'b02bedc53b84ad0c41341f4a793c4352840b9267';
+String _$postAdvertisementHash() => r'869b829a0f1cfdafcaa3c0298a4edc53ac758d93';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -154,6 +154,8 @@ class PostAdvertisementProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostAdvertisementRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `imageFile` of this provider.
   File get imageFile;
@@ -172,4 +174,4 @@ class _PostAdvertisementProviderElement
   String get link => (origin as PostAdvertisementProvider).link;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

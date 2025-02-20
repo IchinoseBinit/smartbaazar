@@ -6,7 +6,7 @@ part of 'splash_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSplashApiHash() => r'e40440b82e4dfe9bba4d1a52b156a8f2f3d3eb88';
+String _$getSplashApiHash() => r'8ea32be48a01dfa75378d4abf296808344b579c6';
 
 /// See also [getSplashApi].
 @ProviderFor(getSplashApi)
@@ -19,6 +19,8 @@ final getSplashApiProvider = AutoDisposeFutureProvider<SplashModel>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GetSplashApiRef = AutoDisposeFutureProviderRef<SplashModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
