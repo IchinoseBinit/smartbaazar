@@ -1,5 +1,3 @@
-
-
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -11,34 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/auth/view/generate_qr.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
-import 'package:smartbazar/features/scran_screen/scan_screen.dart';
-import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
-import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
-import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
-import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+
 import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/services_screen/service_screen.dart';
-import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
-import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
-import 'package:smartbazar/features/used_screen/view/used_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
-import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
-import 'package:smartbazar/practice.dart';
 
 void main() {
   // Set custom HttpOverrides globally
@@ -78,31 +51,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          
-          
-          home:SplashScreen()
-
-          )
-    );
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: GoogleFonts.quicksand().fontFamily,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: const SplashScreen()));
   }
 }
 
-
-
 class ImageConvert extends StatefulWidget {
-  ImageConvert({super.key});
+  const ImageConvert({super.key});
 
   @override
-  _ImageConvertState createState() => _ImageConvertState();
+  State<ImageConvert> createState() => _ImageConvertState();
 }
 
 class _ImageConvertState extends State<ImageConvert> {
@@ -141,7 +107,7 @@ class _ImageConvertState extends State<ImageConvert> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Capture Widget as Image'),
+        title: const Text('Capture Widget as Image'),
       ),
       body: Center(
         child: Column(
@@ -150,20 +116,20 @@ class _ImageConvertState extends State<ImageConvert> {
             RepaintBoundary(
               key: _globalKey,
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   'This is a widget to capture!',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _captureAndSave,
-              child: Text('Capture and Save Image'),
+              child: const Text('Capture and Save Image'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _imagePath != null
                 ? Image.file(File(_imagePath!)) // Display the saved image
                 : Container(), // Show nothing if no image is saved yet

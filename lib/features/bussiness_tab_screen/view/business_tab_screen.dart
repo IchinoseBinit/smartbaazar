@@ -466,7 +466,7 @@ Future<void> refreshprovider() async {
                         DefaultTabController(
                             length: 7,
                             child: Column(
-                              spacing: 4,
+                             // spacing: 4,
                               children: [
                                 TabBar(
                                   tabAlignment: TabAlignment.start,

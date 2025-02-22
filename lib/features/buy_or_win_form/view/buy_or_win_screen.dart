@@ -193,7 +193,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                               blurRadius: 10,
                               offset: const Offset(0, 3),
                             ),
-                             BoxShadow(
+                            BoxShadow(
                               color: Colors.grey.withOpacity(0.4),
                               spreadRadius: 0,
                               blurRadius: 10,
