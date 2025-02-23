@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -30,7 +31,7 @@ final List<Widget> _screens = [
   const HomeScreen(),
   const MySubscriptionScreen(),
   const MessageViewScreen(),
-  const FeedScreen(),
+  FeedScreen(),
 ];
 
 /// Main Screen with Bottom Navigation Bar
@@ -66,16 +67,18 @@ class MainScreen extends ConsumerWidget {
       bottomNavigationBar: showBottomNavBar
           ? Customernavbar(
               selectedIndex: selectedIndex,
-              onTabChanged: (index) {
-                if (index == selectedIndex) {
-                  _navigatorKeys[index]
-                      .currentState
-                      ?.popUntil((route) => route.isFirst);
-                } else {
-                  ref.read(currentScreenProvider.notifier).state = index;
-                }
-              },
-            )
+          onTabChanged: (index) {
+  if (index == 3) {
+    ref.read(scrollToTopProvider.notifier).state = true; // Trigger scroll
+  }
+
+  if (index == selectedIndex) {
+    _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+  } else {
+    ref.read(currentScreenProvider.notifier).state = index;
+  }
+}
+              )
           : null,
     );
   }
@@ -119,12 +122,18 @@ class Customernavbar extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   height: 40.h,
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xff362677) : const Color(0xfff5f2f6),
+                    color: isSelected
+                        ? const Color(0xff362677)
+                        : const Color(0xfff5f2f6),
                     shape: BoxShape.circle,
-                    border: Border.all(color: isSelected ? const Color(0xff362677) : Colors.black),
+                    border: Border.all(
+                        color: isSelected
+                            ? const Color(0xff362677)
+                            : Colors.black),
                   ),
                   padding: const EdgeInsets.all(10),
-                  child: Image.asset(iconPaths[index], color: isSelected ? Colors.white : Colors.black),
+                  child: Image.asset(iconPaths[index],
+                      color: isSelected ? Colors.white : Colors.black),
                 ),
               );
             }),

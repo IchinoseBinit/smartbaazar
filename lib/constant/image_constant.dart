@@ -10,6 +10,9 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+final scrollToTopProvider = StateProvider<bool>((ref) => false);
+
+
 final List<Map<String, dynamic>> services = [
   {'label': 'Low Price Guarantee', 'id': 1},
   {'label': 'Launch Offer', 'id': 2},

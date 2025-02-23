@@ -10,6 +10,7 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
@@ -48,9 +49,11 @@ final _selectedIndexProvider = StateProvider<int>((ref) => 3);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class FeedScreen extends ConsumerStatefulWidget {
-  const FeedScreen({
+   FeedScreen({
     super.key,
   });
+    final ScrollController _totopscrollController = ScrollController();
+
 
   @override
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
@@ -230,6 +233,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
 
   @override
   Widget build(BuildContext context) {
+    void _scrollToTop() {
+  if (_scrollController.hasClients) {
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+}
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -237,6 +249,16 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     Future<void> refreshprovider() async {
       await ref.watch(bottomNavIndexProvider);
     }
+     void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    ref.listen<bool>(scrollToTopProvider, (previous, next) {
+      if (next) {
+        _scrollToTop();
+        ref.read(scrollToTopProvider.notifier).state = false; // Reset trigger
+      }
+    });
+  }
 
     Future<void> refreshProvider() async {
       // You can perform any necessary refresh actions here.
@@ -245,6 +267,17 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       await ref.refresh(searchProvider(_searchController.text));
       setState(() {});
     }
+        // final scrollToTop = ref.watch(scrollToTopProvider);
+
+  //  void _scrollToTop() {
+  //   if (_scrollController.hasClients) {
+  //     _scrollController.animateTo(
+  //       0.0,
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
     return RefreshIndicator(
       onRefresh: refreshProvider,
@@ -285,6 +318,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
             child: Stack(
               children: [
                 CustomScrollView(
+                  controller: widget._totopscrollController,
                   slivers: [
                     SliverPersistentHeader(
                         pinned: true,

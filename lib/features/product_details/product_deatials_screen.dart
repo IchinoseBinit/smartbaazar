@@ -163,8 +163,49 @@ class ProductDetailScreen extends ConsumerWidget {
                     width: 10.w,
                   ),
                   InkWell(
-                    onTap: () {
-                      ref.watch(addtocartProvider(data.result!.id!.toString()));
+                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop('dialog');
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddToCartScreen()));
+                                      },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              colors: [Color(0xff808080), Color(0xFF40246f)]),
+                          border: Border.all(
+                              color: ColorConstant.toastBackgroundColor)),
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.check_box_rounded,
+                            color: ColorConstant.toastBackgroundColor,
+                          ),
+                          SizedBox(
+                            width: 3.h,
+                          ),
+                          Text(
+                            "Buy",
+                            style: headerstyle.copyWith(),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  InkWell(
+          onTap: () {
+              ref.watch(addtocartProvider(data.result!.id!.toString()));
 
                       showDialog(
                           context: context,
@@ -200,7 +241,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                       height: 5.h,
                                     ),
                                     InkWell(
-                                      onTap: () {
+                                         onTap: () {
                                         Navigator.of(context,
                                                 rootNavigator: true)
                                             .pop('dialog');
@@ -211,6 +252,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                 builder: (_) =>
                                                     const AddToCartScreen()));
                                       },
+                                   
                                       child: Text(
                                         'View Cart',
                                         textAlign: TextAlign.center,
@@ -250,52 +292,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                             );
                           });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 5),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
-                      decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                              colors: [Color(0xff808080), Color(0xFF40246f)]),
-                          border: Border.all(
-                              color: ColorConstant.toastBackgroundColor)),
-                      child: Column(
-                        children: [
-                          const Icon(
-                            Icons.check_box_rounded,
-                            color: ColorConstant.toastBackgroundColor,
-                          ),
-                          SizedBox(
-                            width: 3.h,
-                          ),
-                          Text(
-                            "Buy",
-                            style: headerstyle.copyWith(),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  OrderDetailsScreen(selectedProductIds: [
-                                    productDetailsAsyncValue.value!.result!.id!
-                                        .toString()
-                                  ], selectedVendorIds: [
-                                    productDetailsAsyncValue
-                                        .value?.result?.user?.id
-                                        .toString()
-                                  ])));
-                    },
+          },
                     child: const CircleAvatar(
                         backgroundColor: Colors.grey,
                         child: Icon(Icons.shopping_bag_outlined)),
