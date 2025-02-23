@@ -1,84 +1,132 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
-// import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
-// import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-// import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_api.dart';
+import 'package:smartbazar/features/feed-form_screen/model/products_feed_dropdown.dart';
 
-// final subscribedProvider = StateProvider<bool>((ref) => false);
+class Practice extends ConsumerStatefulWidget {
+  final int vid;
 
-// class Practice extends ConsumerWidget {
-//   final int vid;
+  const Practice({super.key, required this.vid});
 
-//   const Practice({super.key, required this.vid});
+  @override
+  ConsumerState<Practice> createState() => _PracticeState();
+}
 
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final vendorCardAsync = ref.watch(getVendorCardProvider(vid)); // Corrected watch syntax
+class _PracticeState extends ConsumerState<Practice> {
+  List<String> selectedIds = []; // Local list to store selected product IDs as strings
 
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           vendorCardAsync.when(
-//             data: (vendorcard) {
-//               final vendorData = vendorcard.data?.vendor_card;
+  @override
+  Widget build(BuildContext context) {
+    final productsFeedAsync = ref.watch(getProductsFeedDropdownProvider);
 
-//               if (vendorData == null) {
-//                 return const Center(child: Text("No vendor data available"));
-//               }
+    return Scaffold(
+      appBar: AppBar(title: Text('Multi-Select Dropdown')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            productsFeedAsync.when(
+              data: (productsFeed) {
+                final products = productsFeed.products ?? [];
 
-//               return SingleChildScrollView(
-//                 child: Column(
-//                   children: [
-//                     Padding(
-//                       padding: const EdgeInsets.symmetric(vertical: 5),
-//                       child: DottedContainer(
-//                         firstImage: vendorData.photo,
-//                         deals: vendorcard.data?.deals ?? [],
-//                         vname: vendorData.name ?? "Unknown Vendor",
-//                       ),
-//                     ),
-//                     Container(
-//                       color: Colors.white,
-//                       child: BigContainer(
-//                         storycount: '9',
-//                         ondoenload: () {}, // Placeholder function
-//                         onsubscribed: () {
-//                           ref.read(subscribedProvider.state).state =
-//                               !ref.read(subscribedProvider.state).state; // Toggle subscription state
+                if (products.isEmpty) {
+                  return Text("No products available");
+                }
 
-//                           // Manually force a refresh by invalidating the provider
-//                           ref.invalidate(getVendorCardProvider(vid)); // Invalidate provider to refresh the data
-//                         },
-//                         lat: double.tryParse(vendorData.latitude ?? '0') ?? 0.0,
-//                         long: double.tryParse(vendorData.longitude ?? '0') ?? 0.0,
-//                         id: vid.toString(),
-//                         title: vendorData.name ?? "Vendor",
-//                         logo: vendorData.photo ?? "",
-//                         contact: vendorData.phone ?? "N/A",
-//                         storyCount: vendorData.storycount?.toString() ?? "0",
-//                         membershipTitle: vendorData.membership_title ?? "N/A",
-//                         total_connections: vendorData.subscribers?.toString() ?? "0",
-//                         total_prize_worth: vendorData.prize_worth?.toString() ?? "0",
-//                         location: vendorData.nearestbranch ?? "Unknown",
-//                         Cnumber: vendorData.phone ?? "",
-//                         issubbed: vendorcard.data?.subscribed == 1,
-//                         memebertitle: vendorData.membership_title ?? "N/A",
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               );
-//             },
-//             error: (error, stackTrace) {
-//               return Center(child: Text('Error: $error'));
-//             },
-//             loading: () {
-//               return const Center(child: CircularProgressIndicator());
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+                return TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Select Products',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                  ),
+                  onTap: () async {
+                    final selected = await showDialog<List<String>>(
+                      context: context,
+                      builder: (context) => MultiSelectDialog(
+                        products: products,
+                        initiallySelected: selectedIds,
+                      ),
+                    );
+
+                    if (selected != null) {
+                      setState(() {
+                        selectedIds = selected;
+                      });
+                    }
+                  },
+                );
+              },
+              loading: () => CircularProgressIndicator(),
+              error: (e, _) => Text('Error: $e'),
+            ),
+            SizedBox(height: 20),
+            Text('Selected IDs: ${selectedIds.join(", ")}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MultiSelectDialog extends StatefulWidget {
+  final List<Product> products;
+  final List<String> initiallySelected;
+
+  const MultiSelectDialog({
+    Key? key,
+    required this.products,
+    required this.initiallySelected,
+  }) : super(key: key);
+
+  @override
+  _MultiSelectDialogState createState() => _MultiSelectDialogState();
+}
+
+class _MultiSelectDialogState extends State<MultiSelectDialog> {
+  late List<String> selectedIds;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIds = List.from(widget.initiallySelected);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Select Products'),
+      content: SingleChildScrollView(
+        child: Column(
+          children: widget.products.map((product) {
+            final String productId = product.id ?? ""; // Keep as String
+
+            return CheckboxListTile(
+              title: Text(product.title ?? "Unknown"),
+              value: selectedIds.contains(productId),
+              onChanged: (bool? checked) {
+                setState(() {
+                  if (checked == true) {
+                    selectedIds.add(productId);
+                  } else {
+                    selectedIds.remove(productId);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context, selectedIds),
+          child: Text('OK'),
+        ),
+      ],
+    );
+  }
+}

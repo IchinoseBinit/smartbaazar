@@ -12,6 +12,9 @@ import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_
 import 'package:smartbazar/features/feed-form_screen/api/submit_feed_form.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/practice.dart';
+
+final selectedProductIdsProvider = StateProvider<List<String>>((ref) => []);
 
 class FeedFormScreen extends ConsumerStatefulWidget {
   const FeedFormScreen({super.key});
@@ -30,8 +33,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
   TextEditingController captionController = TextEditingController();
   TextEditingController offersController = TextEditingController();
   bool isSubmitting = false;
-List<File> imageFiles = []; // Update to a list of images
-
+  List<File> imageFiles = []; // Update to a list of images
 
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ChooseFileWidgetState> _imageWidgetKey =
@@ -43,17 +45,20 @@ List<File> imageFiles = []; // Update to a list of images
     });
   }
 
-void _updateImages(List<File> images) {
-  setState(() {
-    imageFiles = images;
-  });
-}
+  void _updateImages(List<File> images) {
+    setState(() {
+      imageFiles = images;
+    });
+  }
+
   void _removeProductField(int index) {
     setState(() {
       selectProductController.removeAt(index);
       selectedValues.removeAt(index);
     });
   }
+
+  List<String> selectedIds = []; // Local list to store selected product IDs
 
   void submitForm() async {
     bool isFormValid = _formKey.currentState!.validate();
@@ -79,10 +84,7 @@ void _updateImages(List<File> images) {
     final captionTitle = captionTitleController.text.trim();
     final caption = captionController.text.trim();
     final offersId = offersController.text.trim();
-    final productsIds = selectedValues
-        .where((element) => element != null)
-        .map((e) => e.toString())
-        .toList();
+    final productsIds = selectedIds;
 
     ref
         .read(postFeedFormProvider(
@@ -148,6 +150,8 @@ void _updateImages(List<File> images) {
   @override
   Widget build(BuildContext context) {
     final productsFeedAsync = ref.watch(getProductsFeedDropdownProvider);
+    final selectedProductIds = ref.watch(selectedProductIdsProvider);
+
     final offersAsync = ref.watch(getOffersModelDropdownProvider);
 
     return GenericSafeArea(
@@ -196,8 +200,8 @@ void _updateImages(List<File> images) {
                         border: Border.all(
                             width: 1, color: const Color(0xffEDECEC))),
                     child: productsFeedAsync.when(
-                      data: (productsFeedDropdown) {
-                        final products = productsFeedDropdown.products ?? [];
+                      data: (productsFeed) {
+                        final products = productsFeed.products ?? [];
                         print(
                             'Number of products received: ${products.length}');
                         return Column(
@@ -211,12 +215,12 @@ void _updateImages(List<File> images) {
                             SizedBox(
                               height: 2.h,
                             ),
-                         ChooseFileWidget(
-  key: _imageWidgetKey,
-  textColor: Colors.red,
-  onImagesSelected: _updateImages,
-  initialImages: imageFiles,
-),
+                            ChooseFileWidget(
+                              key: _imageWidgetKey,
+                              textColor: Colors.red,
+                              onImagesSelected: _updateImages,
+                              initialImages: imageFiles,
+                            ),
 
                             // ChooseFile(
                             //   showbtn: false,
@@ -360,105 +364,28 @@ void _updateImages(List<File> images) {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            ...List.generate(
-                              selectProductController.length,
-                              (index) => SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Card(
-                                            elevation: 3,
-                                            color: Colors.grey.shade50,
-                                            child: DropdownButton<String>(
-                                              alignment: Alignment.center,
-                                              icon: const Icon(
-                                                  Icons.arrow_drop_down),
-                                              isExpanded: true,
-                                              underline: const SizedBox(),
-                                              hint: Text(
-                                                products.isEmpty
-                                                    ? "No Product"
-                                                    : "Select Product",
-                                                style: const TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 108, 93, 93),
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              value: selectedValues[index],
-                                              items: products.map((product) {
-                                                // print(
-                                                //     'Number of products: ${products.length}');
-
-                                                return DropdownMenuItem<String>(
-                                                  value: product.id,
-                                                  child: Container(
-                                                    height: 60,
-                                                    color: Colors.grey.shade50,
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      product.title ?? '',
-                                                      style: TextStyle(
-                                                        fontSize: 11.sp,
-                                                      ),
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged: (String? newValue) {
-                                                setState(() {
-                                                  selectedValues[index] =
-                                                      newValue;
-                                                });
-                                              },
-                                              menuMaxHeight: 800
-                                                  .h, // Adjust the dropdown menu height here.
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        if (index == 0)
-                                          GestureDetector(
-                                            onTap: _addProductField,
-                                            child: const Icon(
-                                              Icons.add_circle,
-                                              color: Color(0xFF362677),
-                                            ),
-                                          )
-                                        else
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: _addProductField,
-                                                child: const Icon(
-                                                  Icons.add_circle,
-                                                  color: Color(0xFF362677),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              GestureDetector(
-                                                onTap: () =>
-                                                    _removeProductField(index),
-                                                child: const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
-                                ),
+                            TextFormField(
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelText: selectedIds.isEmpty? 'Select Products': 'products selected',
+                                border: OutlineInputBorder(),
+                                suffixIcon: Icon(Icons.arrow_drop_down),
                               ),
+                              onTap: () async {
+                                final selected = await showDialog<List<String>>(
+                                  context: context,
+                                  builder: (context) => MultiSelectDialog(
+                                    products: products,
+                                    initiallySelected: selectedIds,
+                                  ),
+                                );
+
+                                if (selected != null) {
+                                  setState(() {
+                                    selectedIds = selected;
+                                  });
+                                }
+                              },
                             ),
                           ],
                         );
@@ -499,8 +426,6 @@ void _updateImages(List<File> images) {
 }
 
 //for multiple image selecting made this
-
-
 
 class ChooseFileWidget extends StatefulWidget {
   final Function(List<File>) onImagesSelected;
@@ -569,7 +494,8 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(width: 1, color: const Color(0xffADADAD)),
               ),
-              child: SingleChildScrollView( // Enable scrolling if images exceed available space
+              child: SingleChildScrollView(
+                // Enable scrolling if images exceed available space
                 child: Wrap(
                   spacing: 10.w,
                   runSpacing: 10.h,

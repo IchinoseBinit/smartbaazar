@@ -116,7 +116,7 @@ class FavouriteListingScreen extends ConsumerWidget {
 class FavouriteListProductDetails extends ConsumerStatefulWidget {
   // final bool isSelected;
   // final ValueChanged<bool> onSelected;
-  final Product item;
+  final FavouriteProduct item;
 
   const FavouriteListProductDetails(
       {
