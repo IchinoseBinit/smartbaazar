@@ -369,6 +369,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                   SliverAppBar(
+                    automaticallyImplyLeading: false,
                       expandedHeight: 90.h,
                       floating: false,
                       pinned: false,
@@ -721,7 +722,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 Text("No stories available"));
                                   },
                                   loading: () => SizedBox(
-                                    height: 70.h,
+                                    height: 40.h,
                                     child: ListView.builder(
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
@@ -746,7 +747,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     ),
                                   ),
                                   error: (error, _) => SizedBox(
-                                    height: 65.h,
+                                    height: 60.h,
                                     child: Center(
                                       child: Text(
                                         error
@@ -765,7 +766,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    padding: EdgeInsets.symmetric(vertical: 1.h),
                     child: Center(
                       child: Column(
                         children: [

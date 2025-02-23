@@ -48,6 +48,8 @@ import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_n
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
+import 'package:smartbazar/features/vendor/view/added_disputes_screen.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/main.dart';
@@ -63,15 +65,13 @@ import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
-  final GlobalKey _widgetKey = GlobalKey(); // Key to reference the widget
+final GlobalKey _widgetKey = GlobalKey(); // Key to reference the widget
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final int vid;
   final String vendorName;
-  
 
   const VendorHomeScreen(
       {super.key, required this.vid, required this.vendorName});
@@ -83,7 +83,7 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
-        BigContainer? _card;
+  BigContainer? _card;
 
   bool? showsearch;
   final ScreenshotController _screenshotController = ScreenshotController();
@@ -103,10 +103,10 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
     return false;
   }
-    String? _savedImagePath;
 
+  String? _savedImagePath;
 
- Future<void> _captureAndSendImage() async {
+  Future<void> _captureAndSendImage() async {
     try {
       await Future.delayed(
           const Duration(seconds: 1)); // Ensure rendering completion
@@ -151,8 +151,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       print('Error capturing image: $e');
     }
   }
+
   Uint8List? _savedImage;
-  
+
   Future<void> _captureAndSave() async {
     if (await _requestPermission()) {
       await Future.delayed(
@@ -275,27 +276,28 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   int _postType = 0; // Default to 'Home' tab with postType 0
   String? _vendorimage;
   PageController _pageController = PageController(viewportFraction: 0.3);
-Future<void> captureAndShare() async {
-  try {
-    RenderRepaintBoundary? boundary =
-        _widgetKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
-    if (boundary == null) return;
+  Future<void> captureAndShare() async {
+    try {
+      RenderRepaintBoundary? boundary = _widgetKey.currentContext
+          ?.findRenderObject() as RenderRepaintBoundary?;
+      if (boundary == null) return;
 
-    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData!.buffer.asUint8List();
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-    // Save to temporary directory
-    final tempDir = await getTemporaryDirectory();
-    final file = File('${tempDir.path}/shared_image.png');
-    await file.writeAsBytes(pngBytes);
+      // Save to temporary directory
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/shared_image.png');
+      await file.writeAsBytes(pngBytes);
 
-    // Share the image
-await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
-  } catch (e) {
-    debugPrint('Error capturing image: $e');
+      // Share the image
+      await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
+    } catch (e) {
+      debugPrint('Error capturing image: $e');
+    }
   }
-}
   // Future<void> gets() async {
   //   final a = followvendor("9").then(
   //     (value) {
@@ -419,6 +421,8 @@ await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
   @override
   Widget build(BuildContext context) {
     final allproductsresp = ref.watch(getVendorAllProductsProvider(widget.vid));
+    final vendorCardAsync =
+        ref.watch(getVendorCardProvider(widget.vid)); // Corrected watch syntax
 
     Future<void> refreshAllprovider() async {
       ref.refresh(getVendorAllProductsProvider(widget.vid));
@@ -755,61 +759,116 @@ await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
                                     vname: vendorcard.data!.vendor_card!.name!),
                               ),
                             if (vendorcard.data != null)
-                              Screenshot(
-                                controller: _screenshotController,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: BigContainer(
-                                    ondoenload: _captureAndSave,
-                                    onsubscribed: () {
-                                      refreshAllprovider();
-                                    },
-                                    lat: double.tryParse(vendorcard
-                                            .data!.vendor_card?.latitude ??
-                                        '0')!,
-                                    long: double.tryParse(
-                                      vendorcard.data!.vendor_card?.longitude ??
-                                          '0',
-                                    )!, // Assuming longitude is available in vendor_card
-                                    id: widget.vid
-                                        .toString(), // Assuming id is available in the data
-                                    title: vendorcard.data!.vendor_card!
-                                        .name!, // Assuming title is in vendor_card
-                                    logo: vendorcard.data!.vendor_card!
-                                        .photo!, // Assuming logo URL or widget is in vendor_card
-                                    contact: vendorcard
-                                            .data!.vendor_card!.phone ??
-                                        '97++', // Assuming contact info is in vendor_card
-                                    storyCount: vendorcard
-                                        .data!.vendor_card!.storycount
-                                        .toString(), // Assuming storyCount is in vendor_card
-                                    membershipTitle: vendorcard
-                                        .data!
-                                        .vendor_card!
-                                        .membership_title!, // Assuming membershipTitle is in vendor_card
-                                    storycount: vendorcard
-                                        .data!.vendor_card!.storycount!
-                                        .toString(),
-                                    // Assuming dealsCircle is in vendor_card
-                                    total_connections: vendorcard
-                                        .data!.vendor_card!.subscribers!
-                                        .toString(), // Assuming totalConnections is in vendor_card
-                                    total_prize_worth: vendorcard
-                                        .data!.vendor_card!.prize_worth!
-                                        .toString(), // Assuming totalPrizeWorth is in vendor_card
-                                    location: vendorcard
-                                            .data!.vendor_card!.nearestbranch ??
-                                        '', // Assuming location is in vendor_card
-                                    Cnumber: vendorcard
-                                            .data!.vendor_card!.phone ??
-                                        '', // Assuming contactNumber is in vendor_card
-                                    issubbed: vendorcard.data?.subscribed == 1
-                                        ? true
-                                        : false,
-                                    memebertitle: vendorcard.data!.vendor_card!
-                                        .membership_title!, // Assuming memberTitle is in vendor_card
-                                  ),
-                                ),
+                              vendorCardAsync.when(
+                                data: (data) {
+                                  return Screenshot(
+                                    controller: _screenshotController,
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: BigContainer(
+                                        ondoenload: _captureAndSave,
+                                        onsubscribed: () {
+                                          ref.invalidate(getVendorCardProvider(
+                                              widget
+                                                  .vid)); // Invalidate provider to refresh the data
+//                               !ref.read(subscribedProvider.state).state; //
+                                        },
+                                        lat: double.tryParse(vendorcard
+                                                .data!.vendor_card?.latitude ??
+                                            '0')!,
+                                        long: double.tryParse(vendorcard
+                                                .data!.vendor_card?.longitude ??
+                                            '0')!,
+                                        id: widget.vid.toString(),
+                                        title:
+                                            vendorcard.data!.vendor_card!.name!,
+                                        logo: vendorcard
+                                            .data!.vendor_card!.photo!,
+                                        contact: vendorcard
+                                                .data!.vendor_card!.phone ??
+                                            '97++',
+                                        storyCount: vendorcard
+                                            .data!.vendor_card!.storycount
+                                            .toString(),
+                                        membershipTitle: vendorcard.data!
+                                            .vendor_card!.membership_title!,
+                                        storycount: vendorcard
+                                            .data!.vendor_card!.storycount!
+                                            .toString(),
+                                        total_connections: vendorcard
+                                            .data!.vendor_card!.subscribers!
+                                            .toString(),
+                                        total_prize_worth: vendorcard
+                                            .data!.vendor_card!.prize_worth!
+                                            .toString(),
+                                        location: vendorcard.data!.vendor_card!
+                                                .nearestbranch ??
+                                            '',
+                                        Cnumber: vendorcard
+                                                .data!.vendor_card!.phone ??
+                                            '',
+                                        issubbed:
+                                            vendorcard.data?.subscribed == 1
+                                                ? true
+                                                : false,
+                                        memebertitle: vendorcard.data!
+                                            .vendor_card!.membership_title!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                error: (error, stackTrace) {
+                                  return Center(child: Text('Error: $error'));
+                                },
+                                loading: () {
+                                  return Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: ListView.builder(
+                                      itemCount:
+                                          5, // Number of shimmer items you want to show
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Container(
+                                            height: 120,
+                                            color: Colors.white,
+                                            child: Row(
+                                              children: <Widget>[
+                                                // Shimmer effect for image
+                                                Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                // Shimmer effect for text
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: 150,
+                                                      height: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    Container(
+                                                      width: 100,
+                                                      height: 15,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               ),
                             SizedBox(
                               height: 10.h,
@@ -1766,21 +1825,27 @@ await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
-                                            savedid: res.savedByLoggedUser
-                                                    ?.map((e) => SavedPost(
-                                                          id: e.id,
-                                                          userId: e.userId,
-                                                          postId: e.postId,
+                                            savedid: res.savedByLoggedUser ==
+                                                        null ||
+                                                    res.savedByLoggedUser!
+                                                        .isEmpty
+                                                ? []
+                                                : res.savedByLoggedUser
+                                                    ?.map(
+                                                      (e) => SavedPost(
+                                                          id: e.id!,
+                                                          userId: e.user_id!,
+                                                          postId: e.post_id!,
                                                           createdAt:
-                                                              e.createdAt,
+                                                              e.createdAt ?? '',
                                                           updatedAt:
-                                                              e.updatedAt,
-                                                        ))
-                                                    .toList() ??
-                                                [], // ✅ Ensured `null` safety
-
+                                                              e.updatedAt ??
+                                                                  ''),
+                                                    )
+                                                    .toList(),
                                             onRefresh: () {
-                                              refreshAllprovider();
+                                              ref.invalidate(
+                                                  getVendorAllProductsProvider); // This will force a fresh fetch
                                             },
                                             lat: res.userdetails?.latitude,
                                             long: res.userdetails?.longitude,
@@ -1834,16 +1899,18 @@ await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
                               ),
                             );
                           },
-                          loading: () => SizedBox(
-                            width: 100.w,
-                            height: 100.h,
-                            child: Center(
-                              child: Image.asset(
-                                'assets/images/preloader.gif',
-                                width: 100.w,
-                                height: 100.h,
-                                fit: BoxFit
-                                    .contain, // Ensures the image fits within its bounds
+                          loading: () => Center(
+                            child: SizedBox(
+                              width: 100.w,
+                              height: 100.h,
+                              child: Center(
+                                child: Image.asset(
+                                  'assets/images/preloader.gif',
+                                  width: 100.w,
+                                  height: 100.h,
+                                  fit: BoxFit
+                                      .contain, // Ensures the image fits within its bounds
+                                ),
                               ),
                             ),
                           ),
@@ -2333,16 +2400,9 @@ class BigContainer extends StatefulWidget {
 }
 
 class _BigContainerState extends State<BigContainer> {
+  bool _loading = false;
   // Future<void> _openGoogleMap(double latitude, double longitude) async {\
   final GlobalKey globalKey = GlobalKey();
-  bool? _hassubbed;
-  @override
-  void initState() {
-    // TODO: implement initState
-    _hassubbed = widget.issubbed;
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -2382,66 +2442,80 @@ class _BigContainerState extends State<BigContainer> {
                       ),
                       PopupMenuItem(
                         onTap: () {
-                           
-                       
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddNewDisputes(
+                                  vendorname: widget.title,
+                                ),
+                              ));
                         },
                         value: 'Report',
                         child: Text('Report',
                             style: TextStyle(color: Colors.black)),
                       ),
-           PopupMenuItem(
-  onTap: () async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(const Duration(milliseconds: 300), () async {
-          Navigator.of(context).pop(); // Close dialog after 300ms
-          await captureAndShare(); // Capture and share image
-        });
+                      PopupMenuItem(
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              Future.delayed(const Duration(milliseconds: 300),
+                                  () async {
+                                Navigator.of(context)
+                                    .pop(); // Close dialog after 300ms
+                                await captureAndShare(); // Capture and share image
+                              });
 
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(10),
-          child: Center(
-            child: RepaintBoundary(
-              key: _widgetKey,
-              child: Container(
-                color: Colors.white, // Ensure background color
-                padding: EdgeInsets.all(10), // Avoid layout issues
-                child: SizedBox(
-                  height: 600.h,
-                  width: 450.w,
-                  child: BigContainer(
-
-                    storycount: widget.storyCount,
-                    lat: widget.lat,
-                    long: widget.long,
-                    id: widget.id,
-                    title: widget.title,
-                    logo: widget.logo,
-                    contact: widget.contact,
-                    storyCount: widget.storyCount,
-                    membershipTitle: widget.membershipTitle,
-                    total_connections: widget.total_connections,
-                    total_prize_worth: widget.total_prize_worth,
-                    location: widget.location,
-                    Cnumber: widget.Cnumber,
-                    issubbed: widget.issubbed == 1 ? true : false,
-                    memebertitle: widget.membershipTitle,
-                    onsubscribed: widget.onsubscribed,
-                    ondoenload: () {},
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  },
-  value: 'Share',
-  child: Text('Share', style: TextStyle(color: Colors.black)),
-),
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                insetPadding: const EdgeInsets.all(10),
+                                child: Center(
+                                  child: RepaintBoundary(
+                                    key: _widgetKey,
+                                    child: Container(
+                                      color: Colors
+                                          .white, // Ensure background color
+                                      padding: EdgeInsets.all(
+                                          10), // Avoid layout issues
+                                      child: SizedBox(
+                                        height: 600.h,
+                                        width: 450.w,
+                                        child: BigContainer(
+                                          storycount: widget.storyCount,
+                                          lat: widget.lat,
+                                          long: widget.long,
+                                          id: widget.id,
+                                          title: widget.title,
+                                          logo: widget.logo,
+                                          contact: widget.contact,
+                                          storyCount: widget.storyCount,
+                                          membershipTitle:
+                                              widget.membershipTitle,
+                                          total_connections:
+                                              widget.total_connections,
+                                          total_prize_worth:
+                                              widget.total_prize_worth,
+                                          location: widget.location,
+                                          Cnumber: widget.Cnumber,
+                                          issubbed: widget.issubbed == 1
+                                              ? true
+                                              : false,
+                                          memebertitle: widget.membershipTitle,
+                                          onsubscribed: widget.onsubscribed,
+                                          ondoenload: () {},
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        value: 'Share',
+                        child: Text('Share',
+                            style: TextStyle(color: Colors.black)),
+                      ),
                     ],
                     onSelected: (value) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -2449,13 +2523,6 @@ class _BigContainerState extends State<BigContainer> {
                       );
                     },
                   ),
-                  //  IconButton(
-                  //   onPressed: () {
-
-                  //  }, icon:  Icon(
-                  //     Icons.more_vert_rounded,
-                  //     color: Color(0xFF6D1A49),
-                  //   ),)
                 ],
               ),
             ),
@@ -2740,40 +2807,51 @@ class _BigContainerState extends State<BigContainer> {
                   left: MediaQuery.sizeOf(context).width / 2 -
                       50, // Center the avatar
                   child: ClipOval(
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                              followUnfollowVendor(widget.id).then(
-                  (value) {
-                    showCustomToast(context, value.msg!);
-                    if(value.scratchAva=='1')
-                         showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Dialog(
-                              backgroundColor: Colors.transparent,
-                              insetPadding: EdgeInsets.all(10),
-                              child: ScratchCard());
-                        },
-                      );
-                  },
-                );
-                        },
-                        child: Image.asset(
-                          'assets/images/zoomlogo.png',
-                          fit: BoxFit.cover,
-                          width: 140,
-                          height: 140,
-                        ),
-                      ),
-                    ),
-                  ),
+                      child: _loading
+                          ? CircularProgressIndicator()
+                          : Container(
+                              width: 60,
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: InkWell(
+                                onTap: () async {
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  await Future.delayed(const Duration(
+                                      seconds: 2)); // Simulate some delay
+
+                                  followUnfollowVendor(widget.id).then(
+                                    (value) {
+                                      showCustomToast(context, value.msg!);
+                                      if (value.scratchAva == '1')
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return const Dialog(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                insetPadding:
+                                                    EdgeInsets.all(10),
+                                                child: ScratchCard());
+                                          },
+                                        );
+                                    },
+                                  );
+                                  widget.onsubscribed?.call();
+                                  _loading = false;
+                                },
+                                child: Image.asset(
+                                  'assets/images/zoomlogo.png',
+                                  fit: BoxFit.cover,
+                                  width: 140,
+                                  height: 140,
+                                ),
+                              ),
+                            )),
                 ),
               ],
             ),
@@ -2789,7 +2867,7 @@ class _BigContainerState extends State<BigContainer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(_hassubbed! ? "Connected" : "Connect",
+                    Text(widget.issubbed ? "Connected" : "Connect",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
@@ -2867,28 +2945,29 @@ class _BigContainerState extends State<BigContainer> {
       ),
     );
   }
-  
- Future<void> captureAndShare() async {
-  try {
-    RenderRepaintBoundary boundary =
-        _widgetKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
-    if (boundary == null) return;
 
-    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData!.buffer.asUint8List();
+  Future<void> captureAndShare() async {
+    try {
+      RenderRepaintBoundary boundary = _widgetKey.currentContext
+          ?.findRenderObject() as RenderRepaintBoundary;
+      if (boundary == null) return;
 
-    // Save to temporary directory
-    final tempDir = await getTemporaryDirectory();
-    final file = File('${tempDir.path}/shared_image.png');
-    await file.writeAsBytes(pngBytes);
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-    // Share the image
-    await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
-  } catch (e) {
-    debugPrint('Error capturing image: $e');
+      // Save to temporary directory
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/shared_image.png');
+      await file.writeAsBytes(pngBytes);
+
+      // Share the image
+      await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
+    } catch (e) {
+      debugPrint('Error capturing image: $e');
+    }
   }
-}
 }
 
 // class VendorSearchContainer extends StatelessWidget {

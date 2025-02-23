@@ -142,18 +142,18 @@ Map<String, dynamic> _$$BrandNewModelImplToJson(_$BrandNewModelImpl instance) =>
 
 _$FezzedSavedImpl _$$FezzedSavedImplFromJson(Map<String, dynamic> json) =>
     _$FezzedSavedImpl(
-      id: json['id'] as String,
-      userId: json['userId'] as String,
-      postId: json['postId'] as String,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
+      id: json['id'] as String?,
+      user_id: json['user_id'] as String?,
+      post_id: json['post_id'] as String?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
     );
 
 Map<String, dynamic> _$$FezzedSavedImplToJson(_$FezzedSavedImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'postId': instance.postId,
+      'user_id': instance.user_id,
+      'post_id': instance.post_id,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };

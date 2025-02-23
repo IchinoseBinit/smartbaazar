@@ -67,11 +67,11 @@ class BrandNewModel with _$BrandNewModel {
 @freezed
 class FezzedSaved with _$FezzedSaved {
   const factory FezzedSaved({
-    required String id,
-    required String userId,
-    required String postId,
-    required String createdAt,
-    required String updatedAt,
+    required String? id,
+    required String? user_id,
+    required String? post_id,
+    required String? createdAt,
+    required String? updatedAt,
   }) = _FezzedSaved;
 
   factory FezzedSaved.fromJson(Map<String, dynamic> json) => _$FezzedSavedFromJson(json);

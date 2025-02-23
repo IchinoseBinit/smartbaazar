@@ -969,11 +969,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                             : hot.savedByLoggedUser
                                                 ?.map(
                                                   (e) => SavedPost(
-                                                      id: e.id,
-                                                      userId: e.userId,
-                                                      postId: e.postId,
-                                                      createdAt: e.createdAt,
-                                                      updatedAt: e.updatedAt),
+                                                      id: e.id!,
+                                                      userId: e.user_id!,
+                                                      postId: e.post_id!,
+                                                      createdAt: e.createdAt!,
+                                                      updatedAt: e.updatedAt!),
                                                 )
                                                 .toList(),
                                         onRefresh: () {
@@ -1382,11 +1382,11 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           : hot.savedByLoggedUser
                                               ?.map(
                                                 (e) => SavedPost(
-                                                    id: e.id,
-                                                    userId: e.userId,
-                                                    postId: e.postId,
-                                                    createdAt: e.createdAt,
-                                                    updatedAt: e.updatedAt),
+                                                    id: e.id!,
+                                                    userId: e.user_id!,
+                                                    postId: e.post_id!,
+                                                    createdAt: e.createdAt!,
+                                                    updatedAt: e.updatedAt!),
                                               )
                                               .toList(),
                                       onRefresh: () {

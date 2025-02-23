@@ -259,6 +259,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     // asyncbajarValue.when(data: (data) {
     ref.refresh(bottomNavIndexProvider);
     ref.refresh(getPostTypeStoryApiProvider('3'));
+
     void refreshAllProviders() {
       ref.refresh(bottomNavIndexProvider);
       ref.refresh(homeCategoryProvider);
@@ -335,7 +336,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                   SliverAppBar(
-                        automaticallyImplyLeading: false,
+                      automaticallyImplyLeading: false,
                       expandedHeight: 90.h,
                       floating: false,
                       pinned: false,
@@ -602,7 +603,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         height: 6.h,
                       ),
                       Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 5.h),
+                        padding: EdgeInsets.symmetric(vertical: 5.h),
                         child: asyncbajarValue.when(
                           data: (data) {
                             return Stack(
@@ -655,7 +656,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                     ],
                                   ),
                                 ),
-                        
+
                                 // Dots Indicator
                                 Positioned(
                                   left: MediaQuery.of(context).size.width / 2 -
@@ -679,7 +680,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                           shape: BoxShape.circle,
                                           color: _currentIndex == index
                                               ? Colors.white // Active dot color
-                                              : Colors.grey, // Inactive dot color
+                                              : Colors
+                                                  .grey, // Inactive dot color
                                         ),
                                       );
                                     }).toList(),
@@ -696,7 +698,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                               baseColor: Colors.grey[300]!,
                               highlightColor: Colors.grey[100]!,
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 width: 40.w,
                                 height: 100.h,
                                 decoration: BoxDecoration(
@@ -715,181 +718,190 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         data: (data) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: Column(
-                              children: [
-                                 Padding(
-                                  padding:  EdgeInsets.only(left: 5.w),
-                                  child: SizedBox(
-                                    height: 100.h, // Adjust height as necessary
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          // "ALL" Services (Standalone)
-                                          DottedBorder(
-                                            strokeWidth: 2,
-                                            color: Colors.grey,
-                                            borderType: BorderType.RRect,
-                                            radius: const Radius.circular(10),
-                                            dashPattern: const [15, 15],
-                                            child: SizedBox(
-                                              width: 100,
-                                              height: 100,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "ALL",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
+                            child: Column(children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: SizedBox(
+                                  height: 100.h, // Adjust height as necessary
+                                  width: double.infinity,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        // "ALL" Services (Standalone)
+                                        DottedBorder(
+                                          strokeWidth: 2,
+                                          color: Colors.grey,
+                                          borderType: BorderType.RRect,
+                                          radius: const Radius.circular(10),
+                                          dashPattern: const [15, 15],
+                                          child: SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "ALL",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  Text(
-                                                    "Socio",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
+                                                ),
+                                                Text(
+                                                  "Socio",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                  
-                                          // Other Services List
-                                          ListView(
-                                            physics:
-                                                const BouncingScrollPhysics(),
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            children: data.map((e) {
-                                              return Container(
-                                    width: 150.w,
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: Color(0xff651c50)),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
-                                      child: Text(
-                                        e.name,
-                                        textAlign: TextAlign.center, // Centers text
-                                        maxLines: 2, // Allows text to wrap into two lines
-                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
-                                        style: TextStyle(fontSize: 14), // Adjust font size if needed
-                                      ),
-                                    ),
-                                  );
-                                  
-                                              // return Padding(
-                                              //   padding: EdgeInsets.zero,
-                                              //   child: GestureDetector(
-                                              //     onTap: () {
-                                              //       showMenu(
-                                              //         context: context,
-                                              //         position: const RelativeRect
-                                              //             .fromLTRB(0, 0, 0,
-                                              //             0), // Base position; offset is handled by PopupMenuButton
-                                              //         items: [
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: ListTile(
-                                              //               title: const Text(
-                                              //                   "View Story"),
-                                              //               leading: const Icon(
-                                              //                   Icons.book),
-                                              //               onTap: () {
-                                              //                 // Implement onTap logic
-                                              //               },
-                                              //             ),
-                                              //           ),
-                                              //         ],
-                                              //       );
-                                              //     },
-                                              //     child: PopupMenuButton<int>(
-                                              //       offset: const Offset(0,
-                                              //           60), // The offset to position the menu above the widget
-                                              //       itemBuilder: (context) => [
-                                              //         const PopupMenuItem(
-                                              //           value: 1,
-                                              //           child: Text("View Story",
-                                              //               style: TextStyle(
-                                              //                   fontSize: 16.0)),
-                                              //         ),
-                                              //         if (e.parentClosure != null)
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: Text(
-                                              //               e.slug,
-                                              //               style: const TextStyle(
-                                              //                   fontSize: 16.0),
-                                              //             ),
-                                              //           ),
-                                              //       ],
-                                              //       child: Padding(
-                                              //         padding: EdgeInsets.symmetric(
-                                              //             horizontal: 10.w),
-                                              //         child: DashedBorder(
-                                              //           padding: 0,
-                                              //           dashCount: 2,
-                                              //           child: SizedBox(
-                                              //             // width: 100.w,
-                                              //             // height: 100.h,
-                                              //             child: Column(
-                                              //               mainAxisAlignment:
-                                              //                   MainAxisAlignment
-                                              //                       .center,
-                                              //               crossAxisAlignment:
-                                              //                   CrossAxisAlignment
-                                              //                       .center,
-                                              //               children: [
-                                              //                 Image.asset(
-                                              //                     'assets/images/cloth.png'),
-                                              //                 Center(
-                                              //                   child: Text(
-                                              //                     e.name ?? 'No Name',
-                                              //                     style:
-                                              //                         const TextStyle(
-                                              //                       color:
-                                              //                           Colors.black,
-                                              //                       fontWeight:
-                                              //                           FontWeight
-                                              //                               .w500,
-                                              //                       fontSize: 13,
-                                              //                     ),
-                                              //                     textAlign: TextAlign
-                                              //                         .center,
-                                              //                   ),
-                                              //                 )
-                                              //               ],
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // );
-                                            }).toList(),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+
+                                        // Other Services List
+                                        ListView(
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          children: data.map((e) {
+                                            return Container(
+                                              width: 150.w,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                    color: Color(0xff651c50)),
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5,
+                                                    vertical:
+                                                        5), // Adds spacing
+                                                child: Text(
+                                                  e.name,
+                                                  textAlign: TextAlign
+                                                      .center, // Centers text
+                                                  maxLines:
+                                                      2, // Allows text to wrap into two lines
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Shows "..." if too long
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          14), // Adjust font size if needed
+                                                ),
+                                              ),
+                                            );
+
+                                            // return Padding(
+                                            //   padding: EdgeInsets.zero,
+                                            //   child: GestureDetector(
+                                            //     onTap: () {
+                                            //       showMenu(
+                                            //         context: context,
+                                            //         position: const RelativeRect
+                                            //             .fromLTRB(0, 0, 0,
+                                            //             0), // Base position; offset is handled by PopupMenuButton
+                                            //         items: [
+                                            //           PopupMenuItem(
+                                            //             value: 1,
+                                            //             child: ListTile(
+                                            //               title: const Text(
+                                            //                   "View Story"),
+                                            //               leading: const Icon(
+                                            //                   Icons.book),
+                                            //               onTap: () {
+                                            //                 // Implement onTap logic
+                                            //               },
+                                            //             ),
+                                            //           ),
+                                            //         ],
+                                            //       );
+                                            //     },
+                                            //     child: PopupMenuButton<int>(
+                                            //       offset: const Offset(0,
+                                            //           60), // The offset to position the menu above the widget
+                                            //       itemBuilder: (context) => [
+                                            //         const PopupMenuItem(
+                                            //           value: 1,
+                                            //           child: Text("View Story",
+                                            //               style: TextStyle(
+                                            //                   fontSize: 16.0)),
+                                            //         ),
+                                            //         if (e.parentClosure != null)
+                                            //           PopupMenuItem(
+                                            //             value: 1,
+                                            //             child: Text(
+                                            //               e.slug,
+                                            //               style: const TextStyle(
+                                            //                   fontSize: 16.0),
+                                            //             ),
+                                            //           ),
+                                            //       ],
+                                            //       child: Padding(
+                                            //         padding: EdgeInsets.symmetric(
+                                            //             horizontal: 10.w),
+                                            //         child: DashedBorder(
+                                            //           padding: 0,
+                                            //           dashCount: 2,
+                                            //           child: SizedBox(
+                                            //             // width: 100.w,
+                                            //             // height: 100.h,
+                                            //             child: Column(
+                                            //               mainAxisAlignment:
+                                            //                   MainAxisAlignment
+                                            //                       .center,
+                                            //               crossAxisAlignment:
+                                            //                   CrossAxisAlignment
+                                            //                       .center,
+                                            //               children: [
+                                            //                 Image.asset(
+                                            //                     'assets/images/cloth.png'),
+                                            //                 Center(
+                                            //                   child: Text(
+                                            //                     e.name ?? 'No Name',
+                                            //                     style:
+                                            //                         const TextStyle(
+                                            //                       color:
+                                            //                           Colors.black,
+                                            //                       fontWeight:
+                                            //                           FontWeight
+                                            //                               .w500,
+                                            //                       fontSize: 13,
+                                            //                     ),
+                                            //                     textAlign: TextAlign
+                                            //                         .center,
+                                            //                   ),
+                                            //                 )
+                                            //               ],
+                                            //             ),
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // );
+                                          }).toList(),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ]
-                            ),
+                              ),
+                            ]),
                           );
                         },
                         error: (error, stackTrace) {
@@ -2335,7 +2347,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                                       issponsored:
                                                           prod.user.sponsored,
                                                       lefttile: "Socio-Shop",
-                                                      vendorname: prod.user.name,
+                                                      vendorname:
+                                                          prod.user.name,
                                                       discounttedPrice:
                                                           prod.discounted_price,
                                                       Vimage: prod.user.photo,
@@ -2438,7 +2451,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                               )
                                               .toList(),
                                       onRefresh: () {
-                                        refreshAllProviders();
+                                        ref.invalidate(getPostTypeStoryApiProvider('3'));
                                       },
                                       lat: res.user.latitude,
                                       long: res.user.longitude,
@@ -2525,90 +2538,89 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                   ),
                 )
               ],
-            )
-         
-           ,valuenotifilersidebutton(
-                  showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
-                top: 65,
-                left: 48,
-                child: Container(
-                  width: MediaQuery.of(context).size.width -
-                      90, // Add width constraint
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: SearchProductModels.when(
-                    data: (results) {
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: results.length > 5
-                            ? 4
-                            : results.length, // Limit results if needed
-                        itemBuilder: (context, index) {
-                          final product = results[index];
-                          return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 7),
-                            dense: true,
-                            title: Text(
-                              product.name,
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize:
-                                    14, // Increase font size for better readability
-                              ),
-                            ),
-                            onTap: () {
-                              if (product.id != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VendorHomeScreen(
-                                      vendorName: product.name,
-                                      vid: int.tryParse(product.id!)!,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BusinessTabScreen(
-                                      query: _searchController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                              setState(() {
-                                _showSearchProductModels = false;
-                                FocusScope.of(context).unfocus();
-                              });
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) => const Divider(),
-                      );
-                    },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                    error: (error, stack) {
-                      return Center(child: Text(error.toString()));
-                    },
-                  ),
+            ),
+            valuenotifilersidebutton(
+                showSideBar: showSideBar, isSectionsVisible: true),
+            Positioned(
+              top: 65,
+              left: 48,
+              child: Container(
+                width: MediaQuery.of(context).size.width -
+                    90, // Add width constraint
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8.0,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
-              )
+                child: SearchProductModels.when(
+                  data: (results) {
+                    return ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: results.length > 5
+                          ? 4
+                          : results.length, // Limit results if needed
+                      itemBuilder: (context, index) {
+                        final product = results[index];
+                        return ListTile(
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 2, horizontal: 7),
+                          dense: true,
+                          title: Text(
+                            product.name,
+                            style: headerstyle.copyWith(
+                              color: ColorConstant.blackColor,
+                              fontSize:
+                                  14, // Increase font size for better readability
+                            ),
+                          ),
+                          onTap: () {
+                            if (product.id != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                    vendorName: product.name,
+                                    vid: int.tryParse(product.id!)!,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BusinessTabScreen(
+                                    query: _searchController.text,
+                                  ),
+                                ),
+                              );
+                            }
+                            setState(() {
+                              _showSearchProductModels = false;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                    );
+                  },
+                  loading: () {
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                  error: (error, stack) {
+                    return Center(child: Text(error.toString()));
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -2743,8 +2755,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
+                                  builder: (context) => const AddToCartScreen(),
                                 ),
                               );
                             },

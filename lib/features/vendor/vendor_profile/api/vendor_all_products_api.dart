@@ -20,6 +20,7 @@ Future<VendorAllProductsResponse> getVendorAllProducts(
     );
 
     // Parse the entire response into the VendorAllProductsResponse model
+    print('raju ${VendorAllProductsResponse.fromJson(response.data)}');
     return VendorAllProductsResponse.fromJson(response.data);
   } catch (e) {
     print("error $e");

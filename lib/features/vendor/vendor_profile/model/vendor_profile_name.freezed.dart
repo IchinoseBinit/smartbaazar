@@ -1348,11 +1348,11 @@ FezzedSaved _$FezzedSavedFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$FezzedSaved {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get postId => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
-  String get updatedAt => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get post_id => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
+  String? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this FezzedSaved to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1371,11 +1371,11 @@ abstract class $FezzedSavedCopyWith<$Res> {
       _$FezzedSavedCopyWithImpl<$Res, FezzedSaved>;
   @useResult
   $Res call(
-      {String id,
-      String userId,
-      String postId,
-      String createdAt,
-      String updatedAt});
+      {String? id,
+      String? user_id,
+      String? post_id,
+      String? createdAt,
+      String? updatedAt});
 }
 
 /// @nodoc
@@ -1393,33 +1393,33 @@ class _$FezzedSavedCopyWithImpl<$Res, $Val extends FezzedSaved>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? postId = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? id = freezed,
+    Object? user_id = freezed,
+    Object? post_id = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      postId: null == postId
-          ? _value.postId
-          : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post_id: freezed == post_id
+          ? _value.post_id
+          : post_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
-      updatedAt: null == updatedAt
+              as String?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -1433,11 +1433,11 @@ abstract class _$$FezzedSavedImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String userId,
-      String postId,
-      String createdAt,
-      String updatedAt});
+      {String? id,
+      String? user_id,
+      String? post_id,
+      String? createdAt,
+      String? updatedAt});
 }
 
 /// @nodoc
@@ -1453,33 +1453,33 @@ class __$$FezzedSavedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? postId = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? id = freezed,
+    Object? user_id = freezed,
+    Object? post_id = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$FezzedSavedImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      postId: null == postId
-          ? _value.postId
-          : postId // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
+              as String?,
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      post_id: freezed == post_id
+          ? _value.post_id
+          : post_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
-      updatedAt: null == updatedAt
+              as String?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -1489,8 +1489,8 @@ class __$$FezzedSavedImplCopyWithImpl<$Res>
 class _$FezzedSavedImpl implements _FezzedSaved {
   const _$FezzedSavedImpl(
       {required this.id,
-      required this.userId,
-      required this.postId,
+      required this.user_id,
+      required this.post_id,
       required this.createdAt,
       required this.updatedAt});
 
@@ -1498,19 +1498,19 @@ class _$FezzedSavedImpl implements _FezzedSaved {
       _$$FezzedSavedImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
-  final String userId;
+  final String? user_id;
   @override
-  final String postId;
+  final String? post_id;
   @override
-  final String createdAt;
+  final String? createdAt;
   @override
-  final String updatedAt;
+  final String? updatedAt;
 
   @override
   String toString() {
-    return 'FezzedSaved(id: $id, userId: $userId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'FezzedSaved(id: $id, user_id: $user_id, post_id: $post_id, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1519,8 +1519,8 @@ class _$FezzedSavedImpl implements _FezzedSaved {
         (other.runtimeType == runtimeType &&
             other is _$FezzedSavedImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.postId, postId) || other.postId == postId) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.post_id, post_id) || other.post_id == post_id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1530,7 +1530,7 @@ class _$FezzedSavedImpl implements _FezzedSaved {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, userId, postId, createdAt, updatedAt);
+      Object.hash(runtimeType, id, user_id, post_id, createdAt, updatedAt);
 
   /// Create a copy of FezzedSaved
   /// with the given fields replaced by the non-null parameter values.
@@ -1550,25 +1550,25 @@ class _$FezzedSavedImpl implements _FezzedSaved {
 
 abstract class _FezzedSaved implements FezzedSaved {
   const factory _FezzedSaved(
-      {required final String id,
-      required final String userId,
-      required final String postId,
-      required final String createdAt,
-      required final String updatedAt}) = _$FezzedSavedImpl;
+      {required final String? id,
+      required final String? user_id,
+      required final String? post_id,
+      required final String? createdAt,
+      required final String? updatedAt}) = _$FezzedSavedImpl;
 
   factory _FezzedSaved.fromJson(Map<String, dynamic> json) =
       _$FezzedSavedImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  String get userId;
+  String? get user_id;
   @override
-  String get postId;
+  String? get post_id;
   @override
-  String get createdAt;
+  String? get createdAt;
   @override
-  String get updatedAt;
+  String? get updatedAt;
 
   /// Create a copy of FezzedSaved
   /// with the given fields replaced by the non-null parameter values.

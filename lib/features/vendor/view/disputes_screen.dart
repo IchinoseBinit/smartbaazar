@@ -99,7 +99,7 @@ class DisputesScreen extends ConsumerWidget {
                 onPresssed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const AddNewDisputes()),
+                    MaterialPageRoute(builder: (_) =>  AddNewDisputes()),
                   );
                 },
               ),
