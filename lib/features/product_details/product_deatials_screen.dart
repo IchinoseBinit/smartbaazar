@@ -108,7 +108,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          // print("bibash ${data.result?.user_details}");
+         print("bibash ${data.widgetSimilarPosts?.posts?.data.length}");
           return Scaffold(
             bottomNavigationBar: SizedBox.shrink(),
 
@@ -283,6 +283,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(
+
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
@@ -413,6 +414,7 @@ class ProductDetailScreen extends ConsumerWidget {
                       // if (data.result != null && data.result?.user!=null &&
                       //     data.result?.user_details != null)
                       HeaderBannerWidget(
+                        ref: ref,
                         membershiptitle: data
                                 .result?.user_details?.membershipTitle
                                 .toString() ??
@@ -606,7 +608,9 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                           if (data.result != null) const FeaturesBannerWidget(),
                           if (data.result?.postTypeId == "7")
-                            const DiscountBoxWidget(),
+                             DiscountBoxWidget(
+                              b2bPricingString:data.result?.b2bPricing?? '' ,
+                             ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -1161,9 +1165,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     }).toList(),
                                                   ))
                                             : selectedIndex == 3
-                                                ? data.result?.feedPost ==
+                                                ? data.result?.feed_post ==
                                                             null ||
-                                                        data.result!.feedPost!
+                                                        data.result!.feed_post!
                                                             .isEmpty
                                                     ? Center(
                                                         child: nolistingfound(
@@ -1171,13 +1175,13 @@ class ProductDetailScreen extends ConsumerWidget {
                                                       )
                                                     : SwapablePostCard(
                                                         post: data
-                                                            .result!.feedPost!)
+                                                            .result!.feed_post!)
                                                 : selectedIndex == 4
-                                                    ? data.result?.livePrizes ==
+                                                    ? data.result?.live_prizes ==
                                                                 null ||
                                                             data
                                                                 .result!
-                                                                .livePrizes!
+                                                                .live_prizes!
                                                                 .isEmpty
                                                         ? Center(
                                                             child: nolistingfound(
@@ -1186,7 +1190,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                           )
                                                         : LiveSwapble(
                                                             post: data.result!
-                                                                .livePrizes)
+                                                                .live_prizes)
                                                     : const SizedBox(), // Fallback for other index values
                                   ),
                                 )

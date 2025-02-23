@@ -274,41 +274,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_currentUserId != null) {
-      ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!)).whenData(
-        (value) {
-          print("kalu $value");
-          _card = BigContainer(
-             ondoenload: () {
+    // if (_currentUserId != null) {
+    //   ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!)).whenData(
+    //     (value) {
+    //       print("kalu $value");
+    //       _card = BigContainer(
+    //          ondoenload: () {
                                   
-                                },
-            onsubscribed: () {
+    //                             },
+    //         onsubscribed: () {
               
-            },
-              key: GlobalKey(),
-              lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
-              long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
-              id: value.data!.vendor_card!.membership_id!,
-              title: value.data!.vendor_card!.name!,
-              logo: value.data!.vendor_card!.photo!,
-              contact: value.data!.vendor_card!.phone!,
-              storyCount: value.data!.vendor_card!.storycount.toString(),
-              membershipTitle: value.data!.vendor_card!.membership_title!,
-              storycount: value.data!.vendor_card!.storycount.toString(),
-              total_connections:
-                  value.data!.vendor_card!.subscribers.toString(),
-              total_prize_worth:
-                  value.data!.vendor_card!.prize_worth.toString(),
-              location: value.data!.vendor_card!.nearestbranch ?? '',
-              Cnumber: value.data!.vendor_card!.phone!,
-              issubbed: value.data!.vendor_card!.subscribed == 'subscribed'
-                  ? true
-                  : false, // Assuming isSubscribed is in vendor_card
+    //         },
+    //           key: GlobalKey(),
+    //           lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
+    //           long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
+    //           id: value.data!.vendor_card!.membership_id!,
+    //           title: value.data!.vendor_card!.name!,
+    //           logo: value.data!.vendor_card!.photo!,
+    //           contact: value.data!.vendor_card!.phone!,
+    //           storyCount: value.data!.vendor_card!.storycount.toString(),
+    //           membershipTitle: value.data!.vendor_card!.membership_title!,
+    //           storycount: value.data!.vendor_card!.storycount.toString(),
+    //           total_connections:
+    //               value.data!.vendor_card!.subscribers.toString(),
+    //           total_prize_worth:
+    //               value.data!.vendor_card!.prize_worth.toString(),
+    //           location: value.data!.vendor_card!.nearestbranch ?? '',
+    //           Cnumber: value.data!.vendor_card!.phone!,
+    //           issubbed: value.data!.vendor_card!.subscribed == 'subscribed'
+    //               ? true
+    //               : false, // Assuming isSubscribed is in vendor_card
 
-              memebertitle: value.data!.vendor_card!.membership_title!);
-        },
-      );
-    }
+    //           memebertitle: value.data!.vendor_card!.membership_title!);
+    //     },
+    //   );
+    // }
 
     // Fetch messages based on threadId using Riverpod provider
     final messagesAsyncValue =

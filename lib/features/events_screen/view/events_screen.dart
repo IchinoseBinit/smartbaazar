@@ -54,6 +54,7 @@ import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class EventsScreen extends ConsumerStatefulWidget {
   const EventsScreen({super.key});
@@ -530,9 +531,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
 
                                       return HomePageStoryContainer(
                                         feedStoryContent: Story(
-                                            posts: feedStoryData
+                                            HomeStoryAllPosts: feedStoryData
                                                 .home_story?.story.posts
-                                                ?.map((e) => Post(
+                                                ?.map((e) => HomeStoryAllPost(
                                                     hasSponsoredGifts:
                                                         e.hasSponsoredGifts,
                                                     id: e.id,
@@ -702,8 +703,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               padding: EdgeInsets.symmetric(vertical: 10.h),
                               child: Column(
                                 children: [
-                                  // Row for "ALL" and other services
-                                  SizedBox(
+                                   Padding(
+                                  padding:  EdgeInsets.only(left: 5.w),
+                                  child: SizedBox(
                                     height: 100.h, // Adjust height as necessary
                                     width: double.infinity,
                                     child: SingleChildScrollView(
@@ -730,8 +732,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
@@ -740,15 +741,17 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                  
                                           // Other Services List
                                           ListView(
                                             physics:
@@ -756,128 +759,122 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                             scrollDirection: Axis.horizontal,
                                             shrinkWrap: true,
                                             children: data.map((e) {
-                                              return Padding(
-                                                padding: EdgeInsets.zero,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    showMenu(
-                                                      context: context,
-                                                      position: const RelativeRect
-                                                          .fromLTRB(0, 0, 0,
-                                                          0), // Base position
-                                                      items: [
-                                                        PopupMenuItem(
-                                                          value: 1,
-                                                          child: ListTile(
-                                                            title: const Text(
-                                                                "View Story"),
-                                                            leading: const Icon(
-                                                                Icons.book),
-                                                            onTap: () {
-                                                              // Implement onTap logic
-                                                            },
-                                                          ),
-                                                        ),
-                                                        // Check if parentClosure is not null and show it
-                                                        if (e.parentClosure !=
-                                                            null)
-                                                          PopupMenuItem(
-                                                            value: 2,
-                                                            child: ListTile(
-                                                              title: Text(e
-                                                                      .parentClosure
-                                                                      ?.slug ??
-                                                                  'N/A'),
-                                                              leading:
-                                                                  const Icon(
-                                                                      Icons
-                                                                          .info),
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    );
-                                                  },
-                                                  child: PopupMenuButton<int>(
-                                                    offset: const Offset(0,
-                                                        60), // Position for the menu
-                                                    itemBuilder: (context) => [
-                                                      const PopupMenuItem(
-                                                        value: 1,
-                                                        child: Text(
-                                                            "View Story",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    16.0)),
-                                                      ),
-                                                      if (e.parentClosure !=
-                                                          null)
-                                                        PopupMenuItem(
-                                                          value: 2,
-                                                          child: Text(
-                                                            e.parentClosure
-                                                                    ?.slug ??
-                                                                'No Parent',
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        16.0),
-                                                          ),
-                                                        ),
-                                                    ],
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10.w),
-                                                      child: DashedBorder(
-                                                        dashCount:
-                                                            1, // Number of dashes in the border
-                                                        child: SizedBox(
-                                                          width: 200
-                                                              .w, // Fixed width for the container
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Image.asset(
-                                                                  'assets/images/cloth.png'),
-                                                              Center(
-                                                                child: Text(
-                                                                  e.name ??
-                                                                      'No Name',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    fontSize:
-                                                                        13,
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
+                                              return Container(
+                                    width: 150.w,
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: Color(0xff651c50)),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
+                                      child: Text(
+                                        e.name,
+                                        textAlign: TextAlign.center, // Centers text
+                                        maxLines: 2, // Allows text to wrap into two lines
+                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
+                                        style: TextStyle(fontSize: 14), // Adjust font size if needed
+                                      ),
+                                    ),
+                                  );
+                                  
+                                              // return Padding(
+                                              //   padding: EdgeInsets.zero,
+                                              //   child: GestureDetector(
+                                              //     onTap: () {
+                                              //       showMenu(
+                                              //         context: context,
+                                              //         position: const RelativeRect
+                                              //             .fromLTRB(0, 0, 0,
+                                              //             0), // Base position; offset is handled by PopupMenuButton
+                                              //         items: [
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: ListTile(
+                                              //               title: const Text(
+                                              //                   "View Story"),
+                                              //               leading: const Icon(
+                                              //                   Icons.book),
+                                              //               onTap: () {
+                                              //                 // Implement onTap logic
+                                              //               },
+                                              //             ),
+                                              //           ),
+                                              //         ],
+                                              //       );
+                                              //     },
+                                              //     child: PopupMenuButton<int>(
+                                              //       offset: const Offset(0,
+                                              //           60), // The offset to position the menu above the widget
+                                              //       itemBuilder: (context) => [
+                                              //         const PopupMenuItem(
+                                              //           value: 1,
+                                              //           child: Text("View Story",
+                                              //               style: TextStyle(
+                                              //                   fontSize: 16.0)),
+                                              //         ),
+                                              //         if (e.parentClosure != null)
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: Text(
+                                              //               e.slug,
+                                              //               style: const TextStyle(
+                                              //                   fontSize: 16.0),
+                                              //             ),
+                                              //           ),
+                                              //       ],
+                                              //       child: Padding(
+                                              //         padding: EdgeInsets.symmetric(
+                                              //             horizontal: 10.w),
+                                              //         child: DashedBorder(
+                                              //           padding: 0,
+                                              //           dashCount: 2,
+                                              //           child: SizedBox(
+                                              //             // width: 100.w,
+                                              //             // height: 100.h,
+                                              //             child: Column(
+                                              //               mainAxisAlignment:
+                                              //                   MainAxisAlignment
+                                              //                       .center,
+                                              //               crossAxisAlignment:
+                                              //                   CrossAxisAlignment
+                                              //                       .center,
+                                              //               children: [
+                                              //                 Image.asset(
+                                              //                     'assets/images/cloth.png'),
+                                              //                 Center(
+                                              //                   child: Text(
+                                              //                     e.name ?? 'No Name',
+                                              //                     style:
+                                              //                         const TextStyle(
+                                              //                       color:
+                                              //                           Colors.black,
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .w500,
+                                              //                       fontSize: 13,
+                                              //                     ),
+                                              //                     textAlign: TextAlign
+                                              //                         .center,
+                                              //                   ),
+                                              //                 )
+                                              //               ],
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // );
                                             }).toList(),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ],
+                                ),
+                                ]
                               ),
                             );
                           },

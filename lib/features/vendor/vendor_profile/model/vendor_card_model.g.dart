@@ -24,6 +24,7 @@ Map<String, dynamic> _$$VendorCardResponseImplToJson(
 
 _$VendorCardDataImpl _$$VendorCardDataImplFromJson(Map<String, dynamic> json) =>
     _$VendorCardDataImpl(
+      subscribed: (json['subscribed'] as num?)?.toInt(),
       vendor_card: json['vendor_card'] == null
           ? null
           : VendorCard.fromJson(json['vendor_card'] as Map<String, dynamic>),
@@ -35,6 +36,7 @@ _$VendorCardDataImpl _$$VendorCardDataImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$VendorCardDataImplToJson(
         _$VendorCardDataImpl instance) =>
     <String, dynamic>{
+      'subscribed': instance.subscribed,
       'vendor_card': instance.vendor_card,
       'deals': instance.deals,
     };

@@ -126,6 +126,7 @@ class MyListinDetails extends ConsumerWidget {
                   Navigator.of(context, rootNavigator: true)
                       .push(MaterialPageRoute(
                           builder: (context) => UpdateListing(
+                            ref: ref,
                                 prod: product,
                               )));
 

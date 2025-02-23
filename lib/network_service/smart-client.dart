@@ -72,7 +72,6 @@ void _enableKeepAlive() {
 
   handler.next(options);
 },
-
         onError: (error, handler) async {
           if (error.response?.statusCode == 401 && !_isRefreshingToken) {
             _isRefreshingToken = true;
@@ -178,7 +177,6 @@ Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
       case RequestType.post:
          return await _client
               .post(
-                
                 url.trim(),
                 queryParameters: queryParameters,
                 data: jsonEncode(parameter),

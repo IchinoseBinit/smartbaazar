@@ -28,9 +28,11 @@ import 'package:smartbazar/features/home/model/search_product_model.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -55,11 +57,21 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' as http;
+
+
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
+  final GlobalKey _widgetKey = GlobalKey(); // Key to reference the widget
 
 class VendorHomeScreen extends ConsumerStatefulWidget {
   final int vid;
   final String vendorName;
+  
 
   const VendorHomeScreen(
       {super.key, required this.vid, required this.vendorName});
@@ -71,6 +83,8 @@ class VendorHomeScreen extends ConsumerStatefulWidget {
 
 class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     with TickerProviderStateMixin {
+        BigContainer? _card;
+
   bool? showsearch;
   final ScreenshotController _screenshotController = ScreenshotController();
   Future<bool> _requestPermission() async {
@@ -89,8 +103,56 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
     return false;
   }
+    String? _savedImagePath;
 
+
+ Future<void> _captureAndSendImage() async {
+    try {
+      await Future.delayed(
+          const Duration(seconds: 1)); // Ensure rendering completion
+
+      if (_widgetKey.currentContext == null) {
+        print('Vendor Card Widget is not yet rendered.');
+        return;
+      }
+
+      RenderRepaintBoundary? boundary = _widgetKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary?;
+
+      if (boundary == null) {
+        print("Render boundary not found!");
+        return;
+      }
+
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      // Get the temporary directory
+      final directory = await getTemporaryDirectory();
+      final filePath = '${directory.path}/vendor_card.png';
+      final file = File(filePath);
+
+      // Save the image file
+      await file.writeAsBytes(pngBytes);
+
+      // Update state to send in chat
+      setState(() {
+        _savedImagePath = filePath;
+      });
+
+      ref.read(selectedImageProvider.notifier).state = XFile(filePath);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Card selected !')),
+      );
+    } catch (e) {
+      print('Error capturing image: $e');
+    }
+  }
   Uint8List? _savedImage;
+  
   Future<void> _captureAndSave() async {
     if (await _requestPermission()) {
       await Future.delayed(
@@ -103,12 +165,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       if (image != null) {
         try {
           // Save the file in the device's Pictures directory
-          final directory = Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
+          final directory =
+              Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
           if (!directory.existsSync()) {
             directory.createSync(recursive: true);
           }
 
-          final filePath = '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          final filePath =
+              '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.jpg';
           File file = File(filePath);
           await file.writeAsBytes(image);
 
@@ -211,7 +275,27 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   int _postType = 0; // Default to 'Home' tab with postType 0
   String? _vendorimage;
   PageController _pageController = PageController(viewportFraction: 0.3);
+Future<void> captureAndShare() async {
+  try {
+    RenderRepaintBoundary? boundary =
+        _widgetKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary == null) return;
 
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    // Save to temporary directory
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/shared_image.png');
+    await file.writeAsBytes(pngBytes);
+
+    // Share the image
+await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
+  } catch (e) {
+    debugPrint('Error capturing image: $e');
+  }
+}
   // Future<void> gets() async {
   //   final a = followvendor("9").then(
   //     (value) {
@@ -657,8 +741,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     child: ref.watch(getVendorCardProvider(widget.vid)).when(
                       data: (vendorcard) {
                         _vendorimage = vendorcard.data?.vendor_card!.photo!;
-                        print(
-                            'rajuk ${vendorcard.data!.vendor_card!.subscribed}');
+                        print('rajuk ${vendorcard.data?.subscribed}');
 
                         return Column(
                           children: [
@@ -717,13 +800,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     location: vendorcard
                                             .data!.vendor_card!.nearestbranch ??
                                         '', // Assuming location is in vendor_card
-                                    Cnumber: vendorcard.data!.vendor_card!
-                                        .phone!, // Assuming contactNumber is in vendor_card
-                                    issubbed: vendorcard.data!.vendor_card!
-                                                .subscribed ==
-                                            'subscribed'
+                                    Cnumber: vendorcard
+                                            .data!.vendor_card!.phone ??
+                                        '', // Assuming contactNumber is in vendor_card
+                                    issubbed: vendorcard.data?.subscribed == 1
                                         ? true
-                                        : false, // Assuming isSubscribed is in vendor_card
+                                        : false,
                                     memebertitle: vendorcard.data!.vendor_card!
                                         .membership_title!, // Assuming memberTitle is in vendor_card
                                   ),
@@ -807,7 +889,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                   children: [
                                     SizedBox(
                                       width: double.infinity,
-                                      height:    tabsize?.toDouble(),
+                                      height: tabsize?.toDouble(),
                                       child: TabBarView(
                                         controller: _tabController,
                                         children: [
@@ -1684,7 +1766,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
-
                                             savedid: res.savedByLoggedUser
                                                     ?.map((e) => SavedPost(
                                                           id: e.id,
@@ -2295,29 +2376,72 @@ class _BigContainerState extends State<BigContainer> {
                     icon: const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        value: 'ask',
-                        child:
-                            Text('Ask', style: TextStyle(color: Colors.black)),
-                      ),
-                      PopupMenuItem(
-                        value: 'enquire',
+                        value: 'Enquire',
                         child: Text('Enquire',
                             style: TextStyle(color: Colors.black)),
                       ),
                       PopupMenuItem(
                         onTap: () {
-                          // Share.shareUri("uri")
+                           
+                       
                         },
-                        value: 'share',
-                        child: Text('Share',
+                        value: 'Report',
+                        child: Text('Report',
                             style: TextStyle(color: Colors.black)),
                       ),
-                      PopupMenuItem(
-                        onTap: () {},
-                        value: 'share',
-                        child: Text('Share',
-                            style: TextStyle(color: Colors.black)),
-                      ),
+           PopupMenuItem(
+  onTap: () async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(const Duration(milliseconds: 300), () async {
+          Navigator.of(context).pop(); // Close dialog after 300ms
+          await captureAndShare(); // Capture and share image
+        });
+
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(10),
+          child: Center(
+            child: RepaintBoundary(
+              key: _widgetKey,
+              child: Container(
+                color: Colors.white, // Ensure background color
+                padding: EdgeInsets.all(10), // Avoid layout issues
+                child: SizedBox(
+                  height: 600.h,
+                  width: 450.w,
+                  child: BigContainer(
+
+                    storycount: widget.storyCount,
+                    lat: widget.lat,
+                    long: widget.long,
+                    id: widget.id,
+                    title: widget.title,
+                    logo: widget.logo,
+                    contact: widget.contact,
+                    storyCount: widget.storyCount,
+                    membershipTitle: widget.membershipTitle,
+                    total_connections: widget.total_connections,
+                    total_prize_worth: widget.total_prize_worth,
+                    location: widget.location,
+                    Cnumber: widget.Cnumber,
+                    issubbed: widget.issubbed == 1 ? true : false,
+                    memebertitle: widget.membershipTitle,
+                    onsubscribed: widget.onsubscribed,
+                    ondoenload: () {},
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  },
+  value: 'Share',
+  child: Text('Share', style: TextStyle(color: Colors.black)),
+),
                     ],
                     onSelected: (value) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -2615,9 +2739,21 @@ class _BigContainerState extends State<BigContainer> {
                       -40, // Adjust based on how much the CircleAvatar should overlap
                   left: MediaQuery.sizeOf(context).width / 2 -
                       50, // Center the avatar
-                  child: InkWell(
-                    onTap: () async {
-                      showDialog(
+                  child: ClipOval(
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                              followUnfollowVendor(widget.id).then(
+                  (value) {
+                    showCustomToast(context, value.msg!);
+                    if(value.scratchAva=='1')
+                         showDialog(
                         context: context,
                         builder: (context) {
                           return const Dialog(
@@ -2626,15 +2762,9 @@ class _BigContainerState extends State<BigContainer> {
                               child: ScratchCard());
                         },
                       );
-                    },
-                    child: ClipOval(
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
+                  },
+                );
+                        },
                         child: Image.asset(
                           'assets/images/zoomlogo.png',
                           fit: BoxFit.cover,
@@ -2651,37 +2781,22 @@ class _BigContainerState extends State<BigContainer> {
               height: 5.h,
             ),
             SizedBox(height: 40.h),
-            InkWell(
-              onTap: () {
-                print('bibash ${_hassubbed}');
-                //     followUnfollowVendor(widget.id).then(
-                //       (value) {
-                //         showCustomToast(context, value);
-                //       },
-                //     );
-                //     widget.onsubscribed!;
-                //     setState(() {
-                //       _hassubbed = !_hassubbed!;
-                //     });
-                //  widget.onsubscribed?.call(); // ✅ Make sure it's called
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 5.w, bottom: 5.w),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(_hassubbed! ? "Connected" : "Connect",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.sp,
-                            color: const Color(0xff370C6B),
-                          ),
-                          textAlign: TextAlign.center),
-                    ],
-                  ),
+            Padding(
+              padding: EdgeInsets.only(left: 8.w, bottom: 5.w),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(_hassubbed! ? "Connected" : "Connect",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: const Color(0xff370C6B),
+                        ),
+                        textAlign: TextAlign.center),
+                  ],
                 ),
               ),
             ),
@@ -2752,6 +2867,28 @@ class _BigContainerState extends State<BigContainer> {
       ),
     );
   }
+  
+ Future<void> captureAndShare() async {
+  try {
+    RenderRepaintBoundary boundary =
+        _widgetKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    if (boundary == null) return;
+
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    // Save to temporary directory
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/shared_image.png');
+    await file.writeAsBytes(pngBytes);
+
+    // Share the image
+    await Share.shareXFiles([XFile(file.path)], text: 'Check this out!');
+  } catch (e) {
+    debugPrint('Error capturing image: $e');
+  }
+}
 }
 
 // class VendorSearchContainer extends StatelessWidget {

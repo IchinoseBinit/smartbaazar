@@ -156,7 +156,7 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratingComment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      livePrizes: (json['livePrizes'] as List<dynamic>?)
+      live_prizes: (json['live_prizes'] as List<dynamic>?)
               ?.map((e) => LivePrize.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -168,7 +168,7 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => Shop.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      feedPost: (json['feedPost'] as List<dynamic>?)
+      feed_post: (json['feed_post'] as List<dynamic>?)
               ?.map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -246,10 +246,10 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'user_details': instance.user_details,
       'similarProductCount': instance.similarProductCount,
       'rating_comment': instance.ratingComment,
-      'livePrizes': instance.livePrizes,
+      'live_prizes': instance.live_prizes,
       'deals': instance.deals,
       'shop': instance.shop,
-      'feedPost': instance.feedPost,
+      'feed_post': instance.feed_post,
     };
 
 _$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>

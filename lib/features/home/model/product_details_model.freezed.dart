@@ -762,10 +762,10 @@ mixin _$PostResult {
   int? get similarProductCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
-  List<LivePrize> get livePrizes => throw _privateConstructorUsedError;
+  List<LivePrize> get live_prizes => throw _privateConstructorUsedError;
   List<Shop>? get deals => throw _privateConstructorUsedError;
   List<Shop>? get shop => throw _privateConstructorUsedError;
-  List<FeedPost>? get feedPost => throw _privateConstructorUsedError;
+  List<FeedPost>? get feed_post => throw _privateConstructorUsedError;
 
   /// Serializes this PostResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -854,10 +854,10 @@ abstract class $PostResultCopyWith<$Res> {
       MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
-      List<LivePrize> livePrizes,
+      List<LivePrize> live_prizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feedPost});
+      List<FeedPost>? feed_post});
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
@@ -954,10 +954,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
-    Object? livePrizes = null,
+    Object? live_prizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feedPost = freezed,
+    Object? feed_post = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1240,9 +1240,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratingComment
           : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      livePrizes: null == livePrizes
-          ? _value.livePrizes
-          : livePrizes // ignore: cast_nullable_to_non_nullable
+      live_prizes: null == live_prizes
+          ? _value.live_prizes
+          : live_prizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value.deals
@@ -1252,9 +1252,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feedPost: freezed == feedPost
-          ? _value.feedPost
-          : feedPost // ignore: cast_nullable_to_non_nullable
+      feed_post: freezed == feed_post
+          ? _value.feed_post
+          : feed_post // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ) as $Val);
   }
@@ -1451,10 +1451,10 @@ abstract class _$$PostResultImplCopyWith<$Res>
       MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
-      List<LivePrize> livePrizes,
+      List<LivePrize> live_prizes,
       List<Shop>? deals,
       List<Shop>? shop,
-      List<FeedPost>? feedPost});
+      List<FeedPost>? feed_post});
 
   @override
   $ExtraModelCopyWith<$Res>? get extra;
@@ -1557,10 +1557,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
-    Object? livePrizes = null,
+    Object? live_prizes = null,
     Object? deals = freezed,
     Object? shop = freezed,
-    Object? feedPost = freezed,
+    Object? feed_post = freezed,
   }) {
     return _then(_$PostResultImpl(
       id: freezed == id
@@ -1843,9 +1843,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value._ratingComment
           : ratingComment // ignore: cast_nullable_to_non_nullable
               as List<RatingComment>,
-      livePrizes: null == livePrizes
-          ? _value._livePrizes
-          : livePrizes // ignore: cast_nullable_to_non_nullable
+      live_prizes: null == live_prizes
+          ? _value._live_prizes
+          : live_prizes // ignore: cast_nullable_to_non_nullable
               as List<LivePrize>,
       deals: freezed == deals
           ? _value._deals
@@ -1855,9 +1855,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value._shop
           : shop // ignore: cast_nullable_to_non_nullable
               as List<Shop>?,
-      feedPost: freezed == feedPost
-          ? _value._feedPost
-          : feedPost // ignore: cast_nullable_to_non_nullable
+      feed_post: freezed == feed_post
+          ? _value._feed_post
+          : feed_post // ignore: cast_nullable_to_non_nullable
               as List<FeedPost>?,
     ));
   }
@@ -1939,18 +1939,18 @@ class _$PostResultImpl implements _PostResult {
       this.similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
-      final List<LivePrize> livePrizes = const [],
+      final List<LivePrize> live_prizes = const [],
       final List<Shop>? deals = const [],
       final List<Shop>? shop = const [],
-      final List<FeedPost>? feedPost = const []})
+      final List<FeedPost>? feed_post = const []})
       : _tags = tags,
         _pictures = pictures,
         _savedByLoggedUser = savedByLoggedUser,
         _ratingComment = ratingComment,
-        _livePrizes = livePrizes,
+        _live_prizes = live_prizes,
         _deals = deals,
         _shop = shop,
-        _feedPost = feedPost;
+        _feed_post = feed_post;
 
   factory _$PostResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostResultImplFromJson(json);
@@ -2155,13 +2155,13 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(_ratingComment);
   }
 
-  final List<LivePrize> _livePrizes;
+  final List<LivePrize> _live_prizes;
   @override
   @JsonKey()
-  List<LivePrize> get livePrizes {
-    if (_livePrizes is EqualUnmodifiableListView) return _livePrizes;
+  List<LivePrize> get live_prizes {
+    if (_live_prizes is EqualUnmodifiableListView) return _live_prizes;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_livePrizes);
+    return EqualUnmodifiableListView(_live_prizes);
   }
 
   final List<Shop>? _deals;
@@ -2186,20 +2186,20 @@ class _$PostResultImpl implements _PostResult {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<FeedPost>? _feedPost;
+  final List<FeedPost>? _feed_post;
   @override
   @JsonKey()
-  List<FeedPost>? get feedPost {
-    final value = _feedPost;
+  List<FeedPost>? get feed_post {
+    final value = _feed_post;
     if (value == null) return null;
-    if (_feedPost is EqualUnmodifiableListView) return _feedPost;
+    if (_feed_post is EqualUnmodifiableListView) return _feed_post;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, livePrizes: $livePrizes, deals: $deals, shop: $shop, feedPost: $feedPost)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
   }
 
   @override
@@ -2316,10 +2316,11 @@ class _$PostResultImpl implements _PostResult {
             const DeepCollectionEquality()
                 .equals(other._ratingComment, _ratingComment) &&
             const DeepCollectionEquality()
-                .equals(other._livePrizes, _livePrizes) &&
+                .equals(other._live_prizes, _live_prizes) &&
             const DeepCollectionEquality().equals(other._deals, _deals) &&
             const DeepCollectionEquality().equals(other._shop, _shop) &&
-            const DeepCollectionEquality().equals(other._feedPost, _feedPost));
+            const DeepCollectionEquality()
+                .equals(other._feed_post, _feed_post));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2396,10 +2397,10 @@ class _$PostResultImpl implements _PostResult {
         user_details,
         similarProductCount,
         const DeepCollectionEquality().hash(_ratingComment),
-        const DeepCollectionEquality().hash(_livePrizes),
+        const DeepCollectionEquality().hash(_live_prizes),
         const DeepCollectionEquality().hash(_deals),
         const DeepCollectionEquality().hash(_shop),
-        const DeepCollectionEquality().hash(_feedPost)
+        const DeepCollectionEquality().hash(_feed_post)
       ]);
 
   /// Create a copy of PostResult
@@ -2493,10 +2494,10 @@ abstract class _PostResult implements PostResult {
       final int? similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
-      final List<LivePrize> livePrizes,
+      final List<LivePrize> live_prizes,
       final List<Shop>? deals,
       final List<Shop>? shop,
-      final List<FeedPost>? feedPost}) = _$PostResultImpl;
+      final List<FeedPost>? feed_post}) = _$PostResultImpl;
 
   factory _PostResult.fromJson(Map<String, dynamic> json) =
       _$PostResultImpl.fromJson;
@@ -2671,13 +2672,13 @@ abstract class _PostResult implements PostResult {
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment;
   @override
-  List<LivePrize> get livePrizes;
+  List<LivePrize> get live_prizes;
   @override
   List<Shop>? get deals;
   @override
   List<Shop>? get shop;
   @override
-  List<FeedPost>? get feedPost;
+  List<FeedPost>? get feed_post;
 
   /// Create a copy of PostResult
   /// with the given fields replaced by the non-null parameter values.

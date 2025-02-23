@@ -45,10 +45,12 @@ import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class FeedScreen extends ConsumerStatefulWidget {
-
-  const FeedScreen({super.key,});
+  const FeedScreen({
+    super.key,
+  });
 
   @override
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
@@ -81,7 +83,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
-      'screen':  FeedScreen()
+      'screen': FeedScreen()
     },
     {
       'icon': 'assets/icon/usedIcon.svg',
@@ -236,16 +238,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       await ref.watch(bottomNavIndexProvider);
     }
 
+    Future<void> refreshProvider() async {
+      // You can perform any necessary refresh actions here.
+      // For example, re-fetching data or resetting some state.
+      await ref.refresh(bottomNavIndexProvider);
+      await ref.refresh(searchProvider(_searchController.text));
+      setState(() {});
+    }
 
-  Future<void> refreshProvider() async {
-    // You can perform any necessary refresh actions here.
-    // For example, re-fetching data or resetting some state.
-    await ref.refresh(bottomNavIndexProvider);
-    await ref.refresh(searchProvider(_searchController.text));
-    setState(() {
-      
-    });
-  }
     return RefreshIndicator(
       onRefresh: refreshProvider,
       child: DefaultTabController(
@@ -253,12 +253,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
         length: 2, // Two tabs: "Following" and "For You"
         child: Scaffold(
           extendBody: true,
-      
+
           // backgroundColor: Colors.transparent,
           key: _key,
           resizeToAvoidBottomInset: false,
           body: NotificationListener<ScrollNotification>(
-            
             onNotification: (notification) {
               if (notification is ScrollUpdateNotification &&
                   notification.metrics.axis == Axis.vertical) {
@@ -332,13 +331,13 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                       return GestureDetector(
                                         onTap: () {
                                           ref
-                                              .read(
-                                                  _selectedIndexProvider.notifier)
+                                              .read(_selectedIndexProvider
+                                                  .notifier)
                                               .state = index;
                                           _pageController.animateToPage(
                                             index,
-                                            duration:
-                                                const Duration(milliseconds: 50),
+                                            duration: const Duration(
+                                                milliseconds: 50),
                                             curve: Curves.easeInOut,
                                           );
                                         },
@@ -368,12 +367,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                       controller: _pageController,
                                       onPageChanged: (value) {
                                         ref
-                                            .read(_selectedIndexProvider.notifier)
+                                            .read(
+                                                _selectedIndexProvider.notifier)
                                             .state = value;
                                       },
                                       itemBuilder: (context, index) {
-                                        Map<String, dynamic> data = _items[index];
-      
+                                        Map<String, dynamic> data =
+                                            _items[index];
+
                                         // Highlight only when index == 4
                                         bool isActive = index == 1;
                                         return GestureDetector(
@@ -385,8 +386,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                           },
                                           child: AnimatedContainer(
                                             padding: EdgeInsets.zero,
-                                            duration:
-                                                const Duration(milliseconds: 300),
+                                            duration: const Duration(
+                                                milliseconds: 300),
                                             alignment: Alignment.center,
                                             child: InkWell(
                                               onTap: () {
@@ -406,11 +407,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                                       .endsWith('.svg'))
                                                     SvgPicture.asset(
                                                       data['icon'],
-                                                      alignment: Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
                                                       fit: BoxFit.contain,
                                                       theme: const SvgTheme(
-                                                          currentColor:
-                                                              Color(0xffdd9d9d9)),
+                                                          currentColor: Color(
+                                                              0xffdd9d9d9)),
                                                       color: isActive
                                                           ? Colors.amber
                                                           : const Color(
@@ -436,7 +438,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.w700,
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                       color: isActive
                                                           ? Colors.amber
                                                           : const Color(
@@ -540,7 +543,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                         90, // Add width constraint
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12), // Rounded corners
+                      borderRadius:
+                          BorderRadius.circular(12), // Rounded corners
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -739,6 +743,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           final userDetails = feedItem.userDetail;
                           final interested = feedItem.interested;
                           final feedDetail = feedItem.feedDetail;
+                        //  print('kala ${feedItem?.captionTitle}');
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),
@@ -746,6 +751,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 FeedContainer(
+                                  productinfo: feedItem.captionTitle,
                                   refreshprovider: () {
                                     refreshprovider();
                                   },
@@ -925,6 +931,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FeedContainer(
+                              productinfo: feedItem.captionTitle,
                               refreshprovider: () async {
                                 refreshprovider();
                               },

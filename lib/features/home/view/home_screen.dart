@@ -12,57 +12,41 @@ import 'package:flutter_svg/svg.dart';
 // import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
+import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/home/api/story_search_api.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
-import 'package:smartbazar/features/home/api/get_story_provider.dart';
 import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
 import 'package:smartbazar/features/home/api/home_story_api.dart';
-import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/sponsored_provider.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/api/shopzone_provider.dart';
 import 'package:smartbazar/features/home/model/home_posts_model.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart';
-import 'package:smartbazar/features/home/model/product_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
 import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/home/view/home_page_story_container.dart';
-import 'package:smartbazar/features/home/view/home_story_screen.dart';
-import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/pending_approval/pending_approval.dart';
-import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/follow_vendor_provider.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
-import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
-import 'package:smartbazar/features/widgets/product_card.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart'
+    as home_model;
 
 import '../../events_screen/view/events_screen.dart';
 import '../../grocessary_screen/view/grocary_screen.dart';
@@ -80,7 +64,8 @@ final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 class HomeScreen extends ConsumerStatefulWidget {
   final ScrollController? scrollController;
 
-  const HomeScreen({super.key, this.scrollController});
+  const 
+  HomeScreen({super.key, this.scrollController});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -88,6 +73,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
+  List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
+
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -112,8 +99,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     Map<String, dynamic> data = jsonDecode(pref.getString('session') ?? '');
 
     String? imageUrl = data["result"]["photo_url"];
-
-    print("kaju URL: $imageUrl and ${SmartClient.userPhoto}");
   }
 
   final List<Map<String, dynamic>> _items = [
@@ -168,6 +153,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final prefs = await SharedPreferences.getInstance();
     print("reku ${prefs.getString('userId')}");
   }
+
+  final TextEditingController _storysearchcontroller = TextEditingController();
+
+  // List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
 
   @override
   void initState() {
@@ -277,7 +266,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   int selectedIndexx = 0; // State variable for selected index
-  bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
+  bool isSliverAppBarVisible = true;
+
+  Future<void> _searchStories(String query) async {
+    if (query.isNotEmpty) {
+      final stories = await ref.read(searchstoryapiProvider(query).future);
+      setState(() {
+        _storysearchresult = stories; // ✅ Update local list
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -320,6 +318,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
+    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -552,6 +551,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   SliverToBoxAdapter(
                     child: Center(
                       child: StorySearchBar(
+                        unchanged: (value) {
+                          if (value.isEmpty) {
+                            setState(() {
+                              _storysearchresult = []; // ✅ Clear list if empty
+                            });
+                          }
+                        },
+                        searchcontroller: _storysearchcontroller,
+                        onsubmitted: _searchStories,
                         onClose: () {
                           setState(() {
                             _isPopupVisible =
@@ -653,54 +661,103 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               ),
                             ],
                           ),
-
-                          // Home Story Section
-                          category.when(
-                            data: (feedStoryData) {
-                              List<HomeStoryPost>? homeStory =
-                                  feedStoryData.home_story?.story.posts;
-                              if (homeStory != null) {
-                                return SingleChildScrollView(
+                          _storysearchresult.isNotEmpty
+                              ? ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: homeStory.map((story) {
-                                      return HomePageStoryContainer(
-                                        feedStoryContent: Story(
-                                          posts: homeStory.map((e) {
-                                            return Post(
-                                              hasSponsoredGifts:
-                                                  e.hasSponsoredGifts,
-                                              id: e.id,
-                                              image: e.image,
-                                              storyCount: e.storyCount,
-                                              title: e.title,
-                                              vendorId: e.vendorId,
-                                              vendorImage: e.vendorImage,
-                                              vendorName: e.vendorName,
-                                            );
-                                          }).toList(),
+                                  itemCount: _storysearchresult.length,
+                                  itemBuilder: (context, index) {
+                                    final story = _storysearchresult[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent:
+                                          FeedStory(posts: _storysearchresult),
+                                      userId: story.vendorId ?? '',
+                                    );
+                                  },
+                                )
+                              : asyncForYouStoryContent.when(
+                                  data: (feedStoryData) {
+                                    final feedStoryContent =
+                                        feedStoryData.data?.feedstory;
+                                    final posts = feedStoryContent?.posts ?? [];
+
+                                    return posts.isNotEmpty
+                                        ? ListView.builder(
+                                            padding: EdgeInsets.only(left: 3.w),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: posts.length,
+                                            itemBuilder: (context, index) {
+                                              final story = posts[index];
+                                              return FeedStoryAddWidget(
+                                                index: index,
+                                                vendorName: story.vendorName ??
+                                                    "Unknown Vendor",
+                                                vendorImage: story
+                                                        .vendorImage ??
+                                                    "https://example.com/default-image.png",
+                                                storyCount:
+                                                    story.storyCount ?? 0,
+                                                showGift:
+                                                    story.hasSponsoredGifts ??
+                                                        false,
+                                                feedStoryContent:
+                                                    feedStoryContent!,
+                                                userId: story.vendorId ?? '',
+                                              );
+                                            },
+                                          )
+                                        : const Center(
+                                            child:
+                                                Text("No stories available"));
+                                  },
+                                  loading: () => SizedBox(
+                                    height: 70.h,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: 5,
+                                      itemBuilder: (_, __) => Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: 80,
+                                            height: 50,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                        userId: story.id,
-                                        index: homeStory.indexOf(story),
-                                        vendorName: story.vendorName ??
-                                            "Unknown Vendor",
-                                        vendorImage: story.vendorImage ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story.storyCount ?? 0,
-                                        showGift:
-                                            story.hasSponsoredGifts ?? false,
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ),
                                   ),
-                                );
-                              }
-                              return const Center(
-                                  child: Text('No stories available.'));
-                            },
-                            loading: () => CircularProgressIndicator(),
-                            error: (error, stack) =>
-                                Center(child: Text('Error: $error')),
-                          ),
+                                  error: (error, _) => SizedBox(
+                                    height: 65.h,
+                                    child: Center(
+                                      child: Text(
+                                        error
+                                                .toString()
+                                                .contains('Session has expired')
+                                            ? 'Please log in again.'
+                                            : 'Error: $error',
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -2085,7 +2142,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
-                            radius: 25,
+                            radius: 18,
                             backgroundImage:
                                 NetworkImage(SmartClient.userPhoto),
                           ),

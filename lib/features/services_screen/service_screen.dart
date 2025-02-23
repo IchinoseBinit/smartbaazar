@@ -50,6 +50,7 @@ import '../product_details/constant/all_product_detail_widget.dart';
 
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class ServicesScreen extends ConsumerStatefulWidget {
   const ServicesScreen({super.key});
@@ -529,9 +530,9 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
 
                                 return HomePageStoryContainer(
                                   feedStoryContent: Story(
-                                      posts: feedStoryData
+                                      HomeStoryAllPosts: feedStoryData
                                           .home_story?.story.posts
-                                          ?.map((e) => Post(
+                                          ?.map((e) => HomeStoryAllPost(
                                               hasSponsoredGifts:
                                                   e.hasSponsoredGifts,
                                               id: e.id,

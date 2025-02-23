@@ -38,7 +38,9 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.membershipId,
       required this.feedId,
       required this.isLiked,
-      required this.refreshprovider});
+      required this.refreshprovider,
+      required this.productinfo
+      });
 
   final String? vendorImage;
   final String? vendorName;
@@ -57,7 +59,9 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String feedId;
   final bool hassttory;
   final String? isLiked;
+  final String? productinfo;
   final VoidCallback? refreshprovider;
+  
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -133,9 +137,12 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
         });
   }
 
-  void _shareImage(String imageUrl) {
+  void _shareImage(String imageUrl,String bio) {
     if (imageUrl.isNotEmpty) {
-      Share.share('Check out this image: $imageUrl');
+      Share.share("It's about $bio\n : $imageUrl",
+      subject: bio
+
+      );
     } else {
       print("No image URL provided.");
     }
@@ -620,7 +627,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             _isLoading = false;
                           });
                         }
-                        widget.refreshprovider?.call();
+                        // widget.refreshprovider?.call();
                       },
                       child: Row(
                         children: [
@@ -737,7 +744,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     // Share Icon
                     GestureDetector(
                         onTap: () {
-                          _shareImage(widget.feedDetailImage!);
+                          _shareImage(widget.feedDetailImage!,widget.productinfo?? 'info');
                           // Share.share('Share this ${widget.feedDetailImage}');
                         },
                         child: Container(

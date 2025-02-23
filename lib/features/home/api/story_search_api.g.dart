@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vendor_card_api.dart';
+part of 'story_search_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getVendorCardHash() => r'763d40319eb522199df2078dd299ab61535d42ce';
+String _$searchstoryapiHash() => r'1d164b66d1be7678dd2111d92e37218d963abafc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [getVendorCard].
-@ProviderFor(getVendorCard)
-const getVendorCardProvider = GetVendorCardFamily();
+/// See also [searchstoryapi].
+@ProviderFor(searchstoryapi)
+const searchstoryapiProvider = SearchstoryapiFamily();
 
-/// See also [getVendorCard].
-class GetVendorCardFamily extends Family<AsyncValue<VendorCardResponse>> {
-  /// See also [getVendorCard].
-  const GetVendorCardFamily();
+/// See also [searchstoryapi].
+class SearchstoryapiFamily extends Family<AsyncValue<List<Post>>> {
+  /// See also [searchstoryapi].
+  const SearchstoryapiFamily();
 
-  /// See also [getVendorCard].
-  GetVendorCardProvider call(
-    int id,
+  /// See also [searchstoryapi].
+  SearchstoryapiProvider call(
+    String query,
   ) {
-    return GetVendorCardProvider(
-      id,
+    return SearchstoryapiProvider(
+      query,
     );
   }
 
   @override
-  GetVendorCardProvider getProviderOverride(
-    covariant GetVendorCardProvider provider,
+  SearchstoryapiProvider getProviderOverride(
+    covariant SearchstoryapiProvider provider,
   ) {
     return call(
-      provider.id,
+      provider.query,
     );
   }
 
@@ -68,76 +68,75 @@ class GetVendorCardFamily extends Family<AsyncValue<VendorCardResponse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getVendorCardProvider';
+  String? get name => r'searchstoryapiProvider';
 }
 
-/// See also [getVendorCard].
-class GetVendorCardProvider
-    extends AutoDisposeFutureProvider<VendorCardResponse> {
-  /// See also [getVendorCard].
-  GetVendorCardProvider(
-    int id,
+/// See also [searchstoryapi].
+class SearchstoryapiProvider extends AutoDisposeFutureProvider<List<Post>> {
+  /// See also [searchstoryapi].
+  SearchstoryapiProvider(
+    String query,
   ) : this._internal(
-          (ref) => getVendorCard(
-            ref as GetVendorCardRef,
-            id,
+          (ref) => searchstoryapi(
+            ref as SearchstoryapiRef,
+            query,
           ),
-          from: getVendorCardProvider,
-          name: r'getVendorCardProvider',
+          from: searchstoryapiProvider,
+          name: r'searchstoryapiProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getVendorCardHash,
-          dependencies: GetVendorCardFamily._dependencies,
+                  : _$searchstoryapiHash,
+          dependencies: SearchstoryapiFamily._dependencies,
           allTransitiveDependencies:
-              GetVendorCardFamily._allTransitiveDependencies,
-          id: id,
+              SearchstoryapiFamily._allTransitiveDependencies,
+          query: query,
         );
 
-  GetVendorCardProvider._internal(
+  SearchstoryapiProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.id,
+    required this.query,
   }) : super.internal();
 
-  final int id;
+  final String query;
 
   @override
   Override overrideWith(
-    FutureOr<VendorCardResponse> Function(GetVendorCardRef provider) create,
+    FutureOr<List<Post>> Function(SearchstoryapiRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetVendorCardProvider._internal(
-        (ref) => create(ref as GetVendorCardRef),
+      override: SearchstoryapiProvider._internal(
+        (ref) => create(ref as SearchstoryapiRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        id: id,
+        query: query,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<VendorCardResponse> createElement() {
-    return _GetVendorCardProviderElement(this);
+  AutoDisposeFutureProviderElement<List<Post>> createElement() {
+    return _SearchstoryapiProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetVendorCardProvider && other.id == id;
+    return other is SearchstoryapiProvider && other.query == query;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,18 +144,18 @@ class GetVendorCardProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetVendorCardRef on AutoDisposeFutureProviderRef<VendorCardResponse> {
-  /// The parameter `id` of this provider.
-  int get id;
+mixin SearchstoryapiRef on AutoDisposeFutureProviderRef<List<Post>> {
+  /// The parameter `query` of this provider.
+  String get query;
 }
 
-class _GetVendorCardProviderElement
-    extends AutoDisposeFutureProviderElement<VendorCardResponse>
-    with GetVendorCardRef {
-  _GetVendorCardProviderElement(super.provider);
+class _SearchstoryapiProviderElement
+    extends AutoDisposeFutureProviderElement<List<Post>>
+    with SearchstoryapiRef {
+  _SearchstoryapiProviderElement(super.provider);
 
   @override
-  int get id => (origin as GetVendorCardProvider).id;
+  String get query => (origin as SearchstoryapiProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

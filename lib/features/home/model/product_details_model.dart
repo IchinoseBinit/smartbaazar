@@ -119,10 +119,10 @@ class PostResult with _$PostResult {
     required MyProductDeailModel? user_details,
     int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
-    @Default([]) List<LivePrize> livePrizes,
+    @Default([]) List<LivePrize> live_prizes,
     @Default([]) List<Shop>? deals,
     @Default([]) List<Shop>? shop,
-    @Default([]) List<FeedPost>? feedPost,
+    @Default([]) List<FeedPost>? feed_post,
   }) = _PostResult;
 
   factory PostResult.fromJson(Map<String, dynamic> json) =>

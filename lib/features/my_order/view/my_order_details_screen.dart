@@ -214,37 +214,64 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                               bgColor: const Color(0xff362677),
                               title: 'Return',
                               onPressed: () {
+                                BuildContext rootContext =
+                                    context; // ✅ Store valid context
+
                                 CustomDialougeBox().orderDetailDialouge(
-                                  context,
+                                  rootContext,
                                   buttonTitle: 'Submit',
-                                  callback: () {
+                                  callback: () async {
                                     print("lala $order");
-                                    ref
-                                        .watch(postmyreturnProvider(
-                                      order.id, // Random order ID
-                                      order.vendorId, // Random vendor ID
-                                      order.postId, // Random post ID
-                                      issue!, // Random issue description
-                                      message!, // Random message
-                                      place!
-                                          .description!, // Random place description
-                                      '123', // Random city name
-                                      address!, // Random address
-                                      place!.latitude!
-                                          .toString(), // Random latitude
-                                      place!.longitude!
-                                          .toString(), // Random longitude
-                                      image!,
-                                    ))
-                                        .whenData(
-                                      (value) {
+
+                                    try {
+                                      final result =
+                                          await ref.read(postmyreturnProvider(
+                                        order.id,
+                                        order.vendorId,
+                                        order.postId,
+                                        issue!,
+                                        message!,
+                                        place!.description!,
+                                        '123',
+                                        address!,
+                                        place!.latitude!.toString(),
+                                        place!.longitude!.toString(),
+                                        image!,
+                                      ).future); // ✅ Await API call completion
+
+                                      if (!context.mounted)
+                                        return; // ✅ Ensure widget is still valid
+
+                                      // ✅ Show confirmation dialog
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Success"),
+                                            content: Text(
+                                                "Data has been inserted successfully!"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(
+                                                      context); // ✅ Close dialog
+                                                  Navigator.pop(
+                                                      context); // ✅ Close form after confirmation
+                                                },
+                                                child: Text("OK"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } catch (e) {
+                                      if (context.mounted) {
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Data inserted")));
-                                        Navigator.pop(context);
-                                      },
-                                    );
+                                            .showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
                                   },
                                   widget: ReturnProductDetails(
                                     issue: (p1) {
@@ -266,7 +293,6 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                   title: 'Fill the form',
                                   heading: 'Return Products',
                                 );
-                                Navigator.pop(context);
                               },
                             )
                           ],

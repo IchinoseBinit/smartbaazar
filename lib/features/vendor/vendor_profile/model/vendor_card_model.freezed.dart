@@ -207,6 +207,7 @@ VendorCardData _$VendorCardDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VendorCardData {
+  int? get subscribed => throw _privateConstructorUsedError;
   VendorCard? get vendor_card => throw _privateConstructorUsedError;
   List<Deal>? get deals => throw _privateConstructorUsedError;
 
@@ -226,7 +227,7 @@ abstract class $VendorCardDataCopyWith<$Res> {
           VendorCardData value, $Res Function(VendorCardData) then) =
       _$VendorCardDataCopyWithImpl<$Res, VendorCardData>;
   @useResult
-  $Res call({VendorCard? vendor_card, List<Deal>? deals});
+  $Res call({int? subscribed, VendorCard? vendor_card, List<Deal>? deals});
 
   $VendorCardCopyWith<$Res>? get vendor_card;
 }
@@ -246,10 +247,15 @@ class _$VendorCardDataCopyWithImpl<$Res, $Val extends VendorCardData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? subscribed = freezed,
     Object? vendor_card = freezed,
     Object? deals = freezed,
   }) {
     return _then(_value.copyWith(
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as int?,
       vendor_card: freezed == vendor_card
           ? _value.vendor_card
           : vendor_card // ignore: cast_nullable_to_non_nullable
@@ -284,7 +290,7 @@ abstract class _$$VendorCardDataImplCopyWith<$Res>
       __$$VendorCardDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({VendorCard? vendor_card, List<Deal>? deals});
+  $Res call({int? subscribed, VendorCard? vendor_card, List<Deal>? deals});
 
   @override
   $VendorCardCopyWith<$Res>? get vendor_card;
@@ -303,10 +309,15 @@ class __$$VendorCardDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? subscribed = freezed,
     Object? vendor_card = freezed,
     Object? deals = freezed,
   }) {
     return _then(_$VendorCardDataImpl(
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
+              as int?,
       vendor_card: freezed == vendor_card
           ? _value.vendor_card
           : vendor_card // ignore: cast_nullable_to_non_nullable
@@ -323,12 +334,16 @@ class __$$VendorCardDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorCardDataImpl implements _VendorCardData {
   const _$VendorCardDataImpl(
-      {required this.vendor_card, required final List<Deal>? deals})
+      {this.subscribed,
+      required this.vendor_card,
+      required final List<Deal>? deals})
       : _deals = deals;
 
   factory _$VendorCardDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorCardDataImplFromJson(json);
 
+  @override
+  final int? subscribed;
   @override
   final VendorCard? vendor_card;
   final List<Deal>? _deals;
@@ -343,7 +358,7 @@ class _$VendorCardDataImpl implements _VendorCardData {
 
   @override
   String toString() {
-    return 'VendorCardData(vendor_card: $vendor_card, deals: $deals)';
+    return 'VendorCardData(subscribed: $subscribed, vendor_card: $vendor_card, deals: $deals)';
   }
 
   @override
@@ -351,6 +366,8 @@ class _$VendorCardDataImpl implements _VendorCardData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorCardDataImpl &&
+            (identical(other.subscribed, subscribed) ||
+                other.subscribed == subscribed) &&
             (identical(other.vendor_card, vendor_card) ||
                 other.vendor_card == vendor_card) &&
             const DeepCollectionEquality().equals(other._deals, _deals));
@@ -358,8 +375,8 @@ class _$VendorCardDataImpl implements _VendorCardData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, vendor_card, const DeepCollectionEquality().hash(_deals));
+  int get hashCode => Object.hash(runtimeType, subscribed, vendor_card,
+      const DeepCollectionEquality().hash(_deals));
 
   /// Create a copy of VendorCardData
   /// with the given fields replaced by the non-null parameter values.
@@ -380,12 +397,15 @@ class _$VendorCardDataImpl implements _VendorCardData {
 
 abstract class _VendorCardData implements VendorCardData {
   const factory _VendorCardData(
-      {required final VendorCard? vendor_card,
+      {final int? subscribed,
+      required final VendorCard? vendor_card,
       required final List<Deal>? deals}) = _$VendorCardDataImpl;
 
   factory _VendorCardData.fromJson(Map<String, dynamic> json) =
       _$VendorCardDataImpl.fromJson;
 
+  @override
+  int? get subscribed;
   @override
   VendorCard? get vendor_card;
   @override

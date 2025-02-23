@@ -110,7 +110,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
         // mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+            padding: EdgeInsets.symmetric(
+                horizontal: 10.w, vertical: 5.h), // Responsive padding
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -133,7 +134,7 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                                               : widget.posttype == '8'
                                                   ? grocaryicon
                                                   : 'defaultIcon', // Provide a default icon path if no match is found
-                      height: 10,
+                      height: 10.h, // Responsive height for the icon
                       color: Colors.grey,
                     ),
                     Text(
@@ -153,28 +154,28 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                                                   ? 'Grocery'
                                                   : '', // Default to an empty string if no match
                       style: headerstyle.copyWith(
-                          fontSize: 9.sp, color: Colors.grey),
+                          fontSize: 9.sp,
+                          color: Colors.grey), // Responsive font size
                     ),
                   ],
                 ),
                 PopupMenuButton(
-                  menuPadding: EdgeInsets.only(left: 10.w),
+                  menuPadding:
+                      EdgeInsets.only(left: 10.w), // Responsive menu padding
                   onSelected: (value) {},
-
-                  padding: EdgeInsets.symmetric(horizontal: 5.h),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 5.h), // Responsive padding
                   elevation: 0,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(6))),
                   constraints:
                       const BoxConstraints.expand(width: 150, height: 150),
-                  // menuPadding: const EdgeInsets.only(left: 10),
                   iconColor: const Color(0xffB6B4B4),
-
                   color: Colors.grey,
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(
-                          height: 30,
+                          height: 30.h, // Responsive height
                           padding: EdgeInsets.only(left: 5.w, top: 10.h),
                           onTap: () {
                             Share.share('Share this');
@@ -184,7 +185,7 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                             style: headerstyle.copyWith(
                               fontFamily: GoogleFonts.quicksand().fontFamily,
                               fontWeight: FontWeight.w600,
-                              fontSize: 9,
+                              fontSize: 9.sp, // Responsive font size
                             ),
                           )),
                       PopupMenuItem(
@@ -211,8 +212,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                             });
                             widget.onRefresh?.call();
                           },
-                          height: 30,
-                          padding: const EdgeInsets.only(left: 5),
+                          height: 30.h, // Responsive height
+                          padding: EdgeInsets.only(left: 5.w),
                           child: Text(
                             widget.savedid == null || widget.savedid!.isEmpty
                                 ? "Save"
@@ -220,12 +221,12 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                             style: headerstyle.copyWith(
                               fontFamily: GoogleFonts.quicksand().fontFamily,
                               fontWeight: FontWeight.w600,
-                              fontSize: 8,
+                              fontSize: 8.sp, // Responsive font size
                             ),
                           )),
                       PopupMenuItem(
-                          height: 30,
-                          padding: const EdgeInsets.only(left: 5),
+                          height: 30.h, // Responsive height
+                          padding: EdgeInsets.only(left: 5.w),
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -237,11 +238,11 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                                 ));
                           },
                           child: Text(
-                            "Conatct Seller",
+                            "Contact Seller",
                             style: headerstyle.copyWith(
                               fontFamily: GoogleFonts.quicksand().fontFamily,
                               fontWeight: FontWeight.w600,
-                              fontSize: 8,
+                              fontSize: 8.sp, // Responsive font size
                             ),
                           )),
                       PopupMenuItem(
@@ -249,22 +250,21 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                           launch(
                               'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
                         },
-                        height: 30,
-                        padding: const EdgeInsets.only(left: 5),
+                        height: 30.h, // Responsive height
+                        padding: EdgeInsets.only(left: 5.w),
                         child: Text(
-                          "Get Seller Directives",
+                          "Get Seller Directions",
                           style: headerstyle.copyWith(
                             fontFamily: GoogleFonts.quicksand().fontFamily,
                             fontWeight: FontWeight.w600,
-                            fontSize: 8,
+                            fontSize: 8.sp, // Responsive font size
                           ),
                         ),
                       ),
                       PopupMenuItem(
-                        height: 30,
-                        padding: const EdgeInsets.only(left: 5),
+                        height: 30.h, // Responsive height
+                        padding: EdgeInsets.only(left: 5.w),
                         onTap: () {
-                          // print('value ${userId}');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -278,7 +278,7 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                           style: headerstyle.copyWith(
                             fontFamily: GoogleFonts.quicksand().fontFamily,
                             fontWeight: FontWeight.w600,
-                            fontSize: 8,
+                            fontSize: 8.sp, // Responsive font size
                           ),
                         ),
                       ),
@@ -577,7 +577,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            padding:
+                EdgeInsets.symmetric(horizontal: 10.w), // Responsive padding
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -587,14 +588,15 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                       children: [
                         Image.asset('assets/icon/Rectangle.png'),
                         SizedBox(
-                          width: 3.w,
+                          width: 3.w, // Responsive spacing
                         ),
                         Text(
                           widget.wow != null ? '1' : widget.wow.toString(),
                           style: headerstyle.copyWith(
-                              fontSize: 10,
-                              color: const Color(0xff807C7C),
-                              fontWeight: FontWeight.w700),
+                            fontSize: 10.sp, // Responsive font size
+                            color: const Color(0xff807C7C),
+                            fontWeight: FontWeight.w700,
+                          ),
                         )
                       ],
                     )
@@ -606,14 +608,15 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                       children: [
                         Image.asset("assets/icon/Vector.png"),
                         SizedBox(
-                          width: 3.w,
+                          width: 3.w, // Responsive spacing
                         ),
                         Text(
                           widget.comment ?? '1',
                           style: headerstyle.copyWith(
-                              fontSize: 10,
-                              color: const Color(0xff807C7C),
-                              fontWeight: FontWeight.w700),
+                            fontSize: 10.sp, // Responsive font size
+                            color: const Color(0xff807C7C),
+                            fontWeight: FontWeight.w700,
+                          ),
                         )
                       ],
                     )
@@ -628,14 +631,15 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                           color: Colors.grey,
                         ),
                         SizedBox(
-                          width: 3.w,
+                          width: 3.w, // Responsive spacing
                         ),
                         Text(
                           widget.similarproductCount?.toString() ?? '0',
                           style: headerstyle.copyWith(
-                              fontSize: 10,
-                              color: const Color(0xff807C7C),
-                              fontWeight: FontWeight.w700),
+                            fontSize: 10.sp, // Responsive font size
+                            color: const Color(0xff807C7C),
+                            fontWeight: FontWeight.w700,
+                          ),
                         )
                       ],
                     )
@@ -647,7 +651,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
           Column(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(
+                    horizontal: 15.w, vertical: 5.h), // Responsive padding
                 decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -655,245 +660,250 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                     Text(
                       "ENQUIRE",
                       style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          color: ColorConstant.blackColor),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.sp, // Responsive font size
+                        color: ColorConstant.blackColor,
+                      ),
                     ),
                     Text(
                       '|',
                       style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          color: ColorConstant.blackColor),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.sp, // Responsive font size
+                        color: ColorConstant.blackColor,
+                      ),
                     ),
                     Text(
                       "BUY",
                       style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          color: ColorConstant.blackColor),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.sp, // Responsive font size
+                        color: ColorConstant.blackColor,
+                      ),
                     ),
                     Text(
                       '|',
                       style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                          color: ColorConstant.blackColor),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11.sp, // Responsive font size
+                        color: ColorConstant.blackColor,
+                      ),
                     ),
                     Text(
                       "WIN",
                       style: headerstyle.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: ColorConstant.blackColor),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13.sp, // Responsive font size
+                        color: ColorConstant.blackColor,
+                      ),
                     ),
                   ],
                 ),
               ),
               InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VendorHomeScreen(
-                              vendorName: widget.vendorname!, vid: widget.id!),
-                        ));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(vertical: 10.9.h),
-                    decoration: BoxDecoration(
-                      color: widget.membershipColor != null
-                          ? Color(
-                              int.parse(
-                                widget.membershipColor!
-                                    .replaceFirst('#', '0xFF'),
-                              ),
-                            )
-                          : const Color(0xff3D215F), // Default color
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(13),
-                        bottomRight: Radius.circular(13),
-                      ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VendorHomeScreen(
+                          vendorName: widget.vendorname!, vid: widget.id!),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(widget.Vimage!),
-                          radius: 15.sp,
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        widget.shortestDistance == null
-                                            ? Text(
-                                                widget.vendorname != null &&
-                                                        widget.vendorname!
-                                                                .length >
-                                                            16
-                                                    ? '${widget.vendorname!.substring(0, 10)}...'
-                                                    : widget.vendorname ?? '',
-                                                style: headerstyle.copyWith(
-                                                  fontFamily:
-                                                      GoogleFonts.quicksand()
-                                                          .fontFamily,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              )
-                                            : Text(
-                                                widget.vendorname != null &&
-                                                        widget.vendorname!
-                                                                .length >
-                                                            10
-                                                    ? '${widget.vendorname!.substring(0, 10)}...'
-                                                    : widget.vendorname ?? '',
-                                                style: headerstyle.copyWith(
-                                                  fontFamily:
-                                                      GoogleFonts.quicksand()
-                                                          .fontFamily,
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        const Icon(
-                                          Icons.logout,
-                                          color: Colors.white,
-                                          size: 11,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          widget.membershipid == "2"
-                                              ? spotlighticon
-                                              : widget.membershipid == "1"
-                                                  ? basicsellericon
-                                                  : widget.membershipid == "3"
-                                                      ? domesticseller
-                                                      : widget.membershipid ==
-                                                              "25"
-                                                          ? globalicon
-                                                          : basicsellericon, // Provide a default icon if no match
-                                          height: 8.h,
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text(
-                                          widget.membershipTitle ??
-                                              "Domestic Brand",
-                                          style: headerstyle.copyWith(
-                                            fontSize: 9.sp,
-                                            fontFamily: GoogleFonts.quicksand()
-                                                .fontFamily,
-
-                                            // Adjust font size based on length
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          // overflow: TextOverflow.ellipsis,
-                                          // Apply ellipsis for overflow
-                                          // maxLines:
-                                          //     1, // Restrict to a single line
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 1.w),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.symmetric(vertical: 10.9.h),
+                  decoration: BoxDecoration(
+                    color: widget.membershipColor != null
+                        ? Color(
+                            int.parse(
+                              widget.membershipColor!.replaceFirst('#', '0xFF'),
+                            ),
+                          )
+                        : const Color(0xff3D215F), // Default color
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(13),
+                      bottomRight: Radius.circular(13),
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 5
+                            .w, // Using flutter_screenutil for responsive width
+                      ),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(widget.Vimage!),
+                        radius: 15.sp, // Responsive size for CircleAvatar
+                      ),
+                      SizedBox(
+                        width: 2.w, // Responsive padding
+                      ),
+                      Row(
+                        children: [
+                          Column(
                             children: [
-                              SizedBox(
-                                height: 2.h,
-                              ),
-                              widget.shortestDistance != null &&
-                                      widget.shortestDistance != 0.0
-                                  ? Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.location_on,
-                                          color: Colors.white,
-                                          size: 11,
-                                        ),
-                                        SizedBox(
-                                            width: 2
-                                                .w), // Space between icon and text
-                                        Text(
-                                          "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
-                                          style: headerstyle.copyWith(
-                                            fontFamily: GoogleFonts.quicksand()
-                                                .fontFamily,
-                                            fontSize: 9.sp,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : SizedBox(
-                                      height: 14.h,
-                                    ),
-                              widget.issponsored
-                                  ? Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 2.w, top: 5),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 2.h,
-                                          ),
-                                          Image.asset("assets/images/mike.png"),
-                                          Text(
-                                            "SPONSORED",
-                                            style: headerstyle.copyWith(
-                                                fontSize: 7.sp,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        ],
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      widget.shortestDistance == null
+                                          ? Text(
+                                              widget.vendorname != null &&
+                                                      widget.vendorname!
+                                                              .length >
+                                                          16
+                                                  ? '${widget.vendorname!.substring(0, 10)}...'
+                                                  : widget.vendorname ?? '',
+                                              style: headerstyle.copyWith(
+                                                fontFamily:
+                                                    GoogleFonts.quicksand()
+                                                        .fontFamily,
+                                                fontSize: 12
+                                                    .sp, // Responsive font size
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            )
+                                          : Text(
+                                              widget.vendorname != null &&
+                                                      widget.vendorname!
+                                                              .length >
+                                                          10
+                                                  ? '${widget.vendorname!.substring(0, 12)}...'
+                                                  : widget.vendorname ?? '',
+                                              style: headerstyle.copyWith(
+                                                fontFamily:
+                                                    GoogleFonts.quicksand()
+                                                        .fontFamily,
+                                                fontSize: 12
+                                                    .sp, // Responsive font size
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                      SizedBox(
+                                        width: 2.w, // Responsive padding
                                       ),
-                                    )
-                                  : SizedBox(
-                                      height: 11.h,
-                                    ),
+                                      const Icon(
+                                        Icons.logout,
+                                        color: Colors.white,
+                                        size: 11,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        widget.membershipid == "2"
+                                            ? spotlighticon
+                                            : widget.membershipid == "1"
+                                                ? basicsellericon
+                                                : widget.membershipid == "3"
+                                                    ? domesticseller
+                                                    : widget.membershipid ==
+                                                            "25"
+                                                        ? globalicon
+                                                        : basicsellericon, // Provide a default icon if no match
+                                        height: 8.h, // Responsive image height
+                                      ),
+                                      SizedBox(
+                                        width: 2.w, // Responsive padding
+                                      ),
+                                      Text(
+                                        widget.membershipTitle ??
+                                            "Domestic Brand",
+                                        style: headerstyle.copyWith(
+                                          fontSize:
+                                              9.sp, // Responsive font size
+                                          fontFamily: GoogleFonts.quicksand()
+                                              .fontFamily,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                  ))
+                        ],
+                      ),
+                      SizedBox(
+                        width: 4.w, // Responsive spacing
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 1.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 2.h, // Responsive height
+                            ),
+                            widget.shortestDistance != null &&
+                                    widget.shortestDistance != 0.0
+                                ? Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.location_on,
+                                        color: Colors.white,
+                                        size: 11,
+                                      ),
+                                      SizedBox(
+                                        width: 2.w, // Responsive spacing
+                                      ),
+                                      Text(
+                                        "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
+                                        style: headerstyle.copyWith(
+                                          fontFamily: GoogleFonts.quicksand()
+                                              .fontFamily,
+                                          fontSize:
+                                              9.sp, // Responsive font size
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(
+                                    height: 14
+                                        .h, // Responsive height when no distance
+                                  ),
+                            widget.issponsored
+                                ? Padding(
+                                    padding: EdgeInsets.only(left: 2.w, top: 5),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 2.h, // Responsive height
+                                        ),
+                                        Image.asset("assets/images/mike.png"),
+                                        Text(
+                                          "SPONSORED",
+                                          style: headerstyle.copyWith(
+                                              fontSize:
+                                                  7.sp, // Responsive font size
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 11
+                                        .h, // Responsive height when no sponsored text
+                                  ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ],

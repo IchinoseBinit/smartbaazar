@@ -1,8 +1,18 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gallery_saver_plus/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
@@ -27,7 +37,9 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_sc
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
+import 'dart:ui' as ui;
 
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class BusinessTabScreen extends ConsumerStatefulWidget {
@@ -47,6 +59,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   int? selectedIndex = 3;
   // final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
+  final ScreenshotController _screenshotController = ScreenshotController();
+
   // double _lastScrollOffset = 0;
   Offset _initialDragPosition = Offset.zero;
   // final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
@@ -87,6 +101,56 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     });
   }
 
+  GlobalKey _globalKey = GlobalKey();
+
+  Future<bool> _requestPermission() async {
+    if (Platform.isAndroid) {
+      if (await Permission.storage.request().isGranted) {
+        return true;
+      } else {
+        return await Permission.manageExternalStorage.request().isGranted;
+      }
+    }
+    return false;
+  }
+
+  Future<void> _captureAndSave() async {
+    if (await _requestPermission()) {
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      try {
+        RenderRepaintBoundary boundary = _globalKey.currentContext!
+            .findRenderObject() as RenderRepaintBoundary;
+
+        ui.Image image = await boundary.toImage();
+        ByteData? byteData =
+            await image.toByteData(format: ui.ImageByteFormat.png);
+        Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+        final directory =
+            Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
+        if (!directory.existsSync()) {
+          directory.createSync(recursive: true);
+        }
+
+        final filePath =
+            '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.png';
+        File file = File(filePath);
+        await file.writeAsBytes(pngBytes);
+
+        await GallerySaver.saveImage(filePath);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image Saved to Gallery')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to Save Image: $e')),
+        );
+      }
+    }
+  }
+
   int selectedTabIndex = 0;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
@@ -120,6 +184,19 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
         // _showSearchProductModels = query.isNotEmpty;
       });
     });
+    tabController.animation?.addListener(() {
+      double? currentScrollValue = tabController.animation?.value;
+      print("bibash Scrolling: $currentScrollValue");
+    });
+  }
+
+  Future<void> _refreshGallery(String filePath) async {
+    final channel = const MethodChannel('gallery_scan');
+    try {
+      await channel.invokeMethod('scanFile', {"path": filePath});
+    } catch (e) {
+      debugPrint('Error refreshing gallery: $e');
+    }
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
@@ -146,15 +223,31 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
 
-Future<void> refreshprovider() async {
-  ref.refresh(getSearchResponseProvider(
-      _query, selectedValue ?? 'price-low-to-high'));
-  ref.refresh(searchProvider(_searchController.text));
+    Future<void> refreshprovider() async {
+      ref.refresh(getSearchResponseProvider(
+          _query, selectedValue ?? 'price-low-to-high'));
+      ref.refresh(searchProvider(_searchController.text));
 
-  // Manually trigger the widget to rebuild after refreshing
-  setState(() {});
-}
+      // Manually trigger the widget to rebuild after refreshing
+      setState(() {});
+    }
 
+    Future<bool> _requestPermission() async {
+      if (await Permission.storage.request().isGranted) {
+        return true;
+      }
+
+      if (await Permission.manageExternalStorage.request().isGranted) {
+        return true;
+      }
+
+      if (await Permission.storage.isPermanentlyDenied) {
+        openAppSettings();
+        return false;
+      }
+
+      return false;
+    }
 
     return Scaffold(
         extendBody: true,
@@ -185,290 +278,214 @@ Future<void> refreshprovider() async {
           },
           child: Stack(
             children: [
-              CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: StickyHeaderDelegate(
-                          visible: isSliverAppBarVisible,
-                          searchController: _searchController,
-                          onchanged: (value) {
-                            print('value $value');
-                          },
-                          dropdownValueNotifier: dropdownValueNotifier,
-                          filteredSuggestions: [])),
-                  if (isSliverAppBarVisible)
-                    SliverAppBar(
-                        expandedHeight: 90.h,
-                        floating: false,
-                        pinned: false,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
+              CustomScrollView(slivers: [
+                SliverPersistentHeader(
+                    pinned: true,
+                    floating: true,
+                    delegate: StickyHeaderDelegate(
+                        visible: isSliverAppBarVisible,
+                        searchController: _searchController,
+                        onchanged: (value) {
+                          print('value $value');
+                        },
+                        dropdownValueNotifier: dropdownValueNotifier,
+                        filteredSuggestions: [])),
+                if (isSliverAppBarVisible)
+                  SliverAppBar(
+                      expandedHeight: 90.h,
+                      floating: false,
+                      pinned: false,
+                      flexibleSpace: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        duration: Duration(milliseconds: 150),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  // Color(0xFF681b4e),
+                                  // Color(0xFF392574),
+                                  // Color(0xFF681b4e),
+                                  Color(0xff651c50),
+                                  Color(0xff54225f),
+                                  // Color(0xFF392574).
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(4, (index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      ref
+                                          .read(_selectedIndexProvider.notifier)
+                                          .state = index;
+                                      _pageController.animateToPage(
+                                        index,
+                                        duration:
+                                            const Duration(milliseconds: 50),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 5.h,
+                                      width: 5.w,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      decoration: BoxDecoration(
+                                        color: selectedIndex == index
+                                            ? Colors.amber
+                                            : Colors.grey,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              SizedBox(
+                                height: 55.h,
+                                child: PageView.builder(
+                                  itemCount: items.length,
+                                  padEnds: false,
+                                  controller: _pageController,
+                                  onPageChanged: (value) {
+                                    ref
+                                        .read(_selectedIndexProvider.notifier)
+                                        .state = value;
+                                  },
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> data = items[index];
+
+                                    // Highlight only when index == 4
+                                    bool isActive = index == 1;
                                     return GestureDetector(
                                       onTap: () {
                                         ref
                                             .read(
                                                 _selectedIndexProvider.notifier)
                                             .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
                                       },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
+                                      child: AnimatedContainer(
+                                        padding: EdgeInsets.zero,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      data['screen']),
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (data['icon']
+                                                  .toString()
+                                                  .endsWith('.svg'))
+                                                SvgPicture.asset(
+                                                  data['icon'],
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  theme: const SvgTheme(
+                                                      currentColor:
+                                                          Color(0xffdd9d9d9)),
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              else
+                                                Image.asset(
+                                                  data['icon'],
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                data['label'],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
-                                  }),
+                                  },
                                 ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = value;
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = items[index];
-
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                        },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                            ],
                           ),
-                        )),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 11, top: 11),
-                      child: GestureDetector(
-                        onVerticalDragUpdate: _onDragUpdate,
-                        onTap: () {
-                          setState(() {
-                            isSliverAppBarVisible = !isSliverAppBarVisible;
-                          });
-                        },
-                        child: Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            height: 7.h,
-                            width: 60.w,
-                            decoration: BoxDecoration(
-                                color: Color(0xff651c50),
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
+                        ),
+                      )),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 11, top: 11),
+                    child: GestureDetector(
+                      onVerticalDragUpdate: _onDragUpdate,
+                      onTap: () {
+                        setState(() {
+                          isSliverAppBarVisible = !isSliverAppBarVisible;
+                        });
+                      },
+                      child: Center(
+                        child: Container(
+                          alignment: AlignmentDirectional.center,
+                          height: 7.h,
+                          width: 60.w,
+                          decoration: BoxDecoration(
+                              color: Color(0xff651c50),
+                              borderRadius: BorderRadius.circular(5)),
                         ),
                       ),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: 5.h,),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 5.h,
                   ),
-                  SliverToBoxAdapter(
-                    child:Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          searchData.when(
-                  data: (data) {
-                    // print("bibash ${data.brandNew?.first.id?? 0}");
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: Text(
-                            "Showing results for ${widget.query}",
-                            style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                color: ColorConstant.blackColor),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: ColorConstant.blackColor,
-                                    width: 0.9,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: DropdownButton<String>(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 2.h),
-                                  isDense: true,
-                                  icon: const Icon(Icons.keyboard_arrow_down,
-                                      color: ColorConstant.blackColor),
-                                  isExpanded: false,
-                                  underline: const SizedBox(),
-                                  elevation: 0,
-                                  hint: Text(
-                                    "Sort by",
-                                    style: headerstyle.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: ColorConstant.blackColor,
-                                    ),
-                                  ),
-                                  value: selectedValue, // Set selected value
-                                  items: sortOptions.entries.map((entry) {
-                                    return DropdownMenuItem<String>(
-                                      value: entry.value,
-                                      child: Text(entry
-                                          .key), // Show the price option text
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedValue =
-                                          value; // Update selected value
-                                    });
-                                    ref.refresh(getSearchResponseProvider(
-                                            _query, selectedValue!)
-                                        .future);
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        DefaultTabController(
+                ),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      searchData.when(
+                        data: (data) {
+                          return DefaultTabController(
                             length: 7,
                             child: Column(
-                              spacing: 4,
                               children: [
                                 TabBar(
+                                  controller: tabController,
                                   tabAlignment: TabAlignment.start,
                                   isScrollable: true,
                                   onTap: (index) {
@@ -708,183 +725,220 @@ Future<void> refreshprovider() async {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height.h+750.h,
-                                  child: TabBarView(
-                                    children: [
-                                    data.brandNew!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 30),
-                                              child: SingleChildScrollView(
-                                                physics:
-                                                    const BouncingScrollPhysics(),
-                                                scrollDirection: Axis
-                                                    .vertical, // Scroll vertically if needed
-                                                child: Wrap(
-                                                  alignment: WrapAlignment.center,
-                                                  spacing: 10
-                                                      .w, // Horizontal space between items
-                                                  runSpacing: 10
-                                                      .h, // Vertical space between rows
-                                                  children: List.generate(
-                                                    data.brandNew!.length,
-                                                    (index) {
-                                                      GlobalModel res =
-                                                          data.brandNew![index];
-                                          
-                                                      return SizedBox(
-                                                        width: (MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2) -
-                                                            15, // Adjust width for two columns
-                                                        child: Column(
-                                                          children: [
-                                                            Card(
-                                                              clipBehavior:
-                                                                  Clip.antiAlias,
-                                                              shadowColor:
-                                                                  const Color(
-                                                                          0xff3D215F)
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                              elevation: 9,
-                                                              margin: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          5.w),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            15.0),
-                                                              ),
-                                                              child:
-                                                                  AllProductDetailWidget(
-
-
-
-                                                                    
-                                                                savedid: res.savedByLoggedUser ==
-                                                                            null ||
-                                                                        res.savedByLoggedUser!
-                                                                            .isEmpty
-                                                                    ? []
-                                                                    : res
-                                                                        .savedByLoggedUser
-                                                                        ?.map(
-                                                                          (e) => SavedPost(
-                                                                              id: e
-                                                                                  .id,
-                                                                              userId:
-                                                                                  e.userId,
-                                                                              postId: e.postId,
-                                                                              createdAt: e.createdAt,
-                                                                              updatedAt: e.updatedAt),
-                                                                        )
-                                                                        .toList(),
-                                                                onRefresh: () {
-                                                                  refreshprovider();
-                                                                },
-                                                                productid: res.id,
-                                                                lat: res.user[0]
-                                                                    .latitude,
-                                                                long: res.user[0]
-                                                                    .longitude,
-                                                                membershipid: res
-                                                                    .user[0]
-                                                                    .membership_id,
-                                                                posttype: res
-                                                                    .post_type_id,
-                                                                didcountpercentage:
-                                                                    res.discount_percentage,
-                                                                id: int.tryParse(
-                                                                    res.user[0]
-                                                                        .user_id),
-                                                                shortestDistance: res
-                                                                    .user[0]
-                                                                    .shortestDistance,
-                                                                issponsored: res
-                                                                        .user[0]
-                                                                        .sponsored ??
-                                                                    false,
-                                                                distance: res
-                                                                    .user[0]
-                                                                    .shortestDistance,
-                                                                wow: res.wow
-                                                                    .toString(),
-                                                                discounttedPrice:
-                                                                    res.discont,
-                                                                comment: res
-                                                                    .commentnum
-                                                                    .toString(),
-                                                                avg_rating: res
-                                                                        .avg_rating
-                                                                        ?.toDouble() ??
-                                                                    0.0,
-                                                                offer: res.offers,
-                                                                productImage:
-                                                                    res.imageUrl,
-                                                                Vimage: res
-                                                                    .user[0]
-                                                                    .photo,
-                                                                vendorname: res
-                                                                    .user[0].name,
-                                                                title: res.title,
-                                                                price: res.price,
-                                                                similarproductCount:
-                                                                    res.similarproductCount,
-                                                                membershipColor: res
-                                                                    .user[0]
-                                                                    .membership_color,
-                                                                membershipTitle: res
-                                                                    .user[0]
-                                                                    .membership_title,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 10.h),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                        ),
-                                    Padding(
+                                // Rest of your code
+                              ],
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("An error occurred");
+                        },
+                        loading: () => Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Column(
+                            children: List.generate(7, (index) {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 5.h, horizontal: 10.w),
+                                  height: 45.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+              searchData.when(
+                data: (data) {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: isSliverAppBarVisible ? 280.h : 200.h,
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            data.brandNew!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: Padding(
                                       padding:
-                                          const EdgeInsets.only(bottom: 20),
+                                          const EdgeInsets.only(bottom: 30),
                                       child: SingleChildScrollView(
-                                        scrollDirection: Axis.vertical,
-                                        child: Column(
-                                          children: data.business!.map(
-                                            (e) {
-                                              // print("bibash ${e.hasSponsoredGifts}")
-                                              return BigContainer(
-                                                ondoenload: () {},
+                                        physics: const BouncingScrollPhysics(),
+                                        scrollDirection: Axis
+                                            .vertical, // Scroll vertically if needed
+                                        child: Wrap(
+                                          alignment: WrapAlignment.center,
+                                          spacing: 10
+                                              .w, // Horizontal space between items
+                                          runSpacing: 10
+                                              .h, // Vertical space between rows
+                                          children: List.generate(
+                                            data.brandNew!.length,
+                                            (index) {
+                                              GlobalModel res =
+                                                  data.brandNew![index];
+
+                                              return SizedBox(
+                                                width: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        2) -
+                                                    15, // Adjust width for two columns
+                                                child: Column(
+                                                  children: [
+                                                    Card(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      shadowColor: const Color(
+                                                              0xff3D215F)
+                                                          .withOpacity(0.5),
+                                                      elevation: 9,
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 5.w),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15.0),
+                                                      ),
+                                                      child:
+                                                          AllProductDetailWidget(
+                                                        savedid: res.savedByLoggedUser ==
+                                                                    null ||
+                                                                res.savedByLoggedUser!
+                                                                    .isEmpty
+                                                            ? []
+                                                            : res
+                                                                .savedByLoggedUser
+                                                                ?.map(
+                                                                  (e) => SavedPost(
+                                                                      id: e.id,
+                                                                      userId: e
+                                                                          .userId,
+                                                                      postId: e
+                                                                          .postId,
+                                                                      createdAt: e
+                                                                          .createdAt,
+                                                                      updatedAt:
+                                                                          e.updatedAt),
+                                                                )
+                                                                .toList(),
+                                                        onRefresh: () {
+                                                          refreshprovider();
+                                                        },
+                                                        productid: res.id,
+                                                        lat: res
+                                                            .user[0].latitude,
+                                                        long: res
+                                                            .user[0].longitude,
+                                                        membershipid: res
+                                                            .user[0]
+                                                            .membership_id,
+                                                        posttype:
+                                                            res.post_type_id,
+                                                        didcountpercentage: res
+                                                            .discount_percentage,
+                                                        id: int.tryParse(res
+                                                            .user[0].user_id),
+                                                        shortestDistance: res
+                                                            .user[0]
+                                                            .shortestDistance,
+                                                        issponsored: res.user[0]
+                                                                .sponsored ??
+                                                            false,
+                                                        distance: res.user[0]
+                                                            .shortestDistance,
+                                                        wow: res.wow.toString(),
+                                                        discounttedPrice:
+                                                            res.discont,
+                                                        comment: res.commentnum
+                                                            .toString(),
+                                                        avg_rating: res
+                                                                .avg_rating
+                                                                ?.toDouble() ??
+                                                            0.0,
+                                                        offer: res.offers,
+                                                        productImage:
+                                                            res.imageUrl,
+                                                        Vimage:
+                                                            res.user[0].photo,
+                                                        vendorname:
+                                                            res.user[0].name,
+                                                        title: res.title,
+                                                        price: res.price,
+                                                        similarproductCount: res
+                                                            .similarproductCount,
+                                                        membershipColor: res
+                                                            .user[0]
+                                                            .membership_color,
+                                                        membershipTitle: res
+                                                            .user[0]
+                                                            .membership_title,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 10.h),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            data.business == null || data.brandNew!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ))
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 20),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                        children: data.business!.map((e) {
+                                          // Create a new ScreenshotController for each item
+                                          ScreenshotController
+                                              screenshotController =
+                                              ScreenshotController();
+
+                                          return RepaintBoundary(
+                                            key:
+                                                _globalKey, // Use a new instance here
+                                            child: Container(
+                                              color: Colors.white,
+                                              child: BigContainer(
+                                                ondoenload: () =>
+                                                    _captureAndSave(),
                                                 onsubscribed: () {
                                                   refreshprovider();
                                                 },
                                                 storycount:
                                                     e.storyCount.toString(),
                                                 id: e.vendorId!,
-                                                issubbed: false,
-                                                memebertitle:
-                                                    e.membershipTitle!,
+                                                issubbed: e.subscribed == 1
+                                                    ? true
+                                                    : false,
+                                                memebertitle: e.membershipTitle!,
                                                 lat: double.tryParse(
                                                         e.latitude ?? '0') ??
                                                     0,
@@ -906,705 +960,663 @@ Future<void> refreshprovider() async {
                                                     e.membershipTitle!,
                                                 storyCount: e.storyCount!,
                                                 hasSpo: e.hasSponsoredGifts!,
-                                              );
-                                            },
-                                          ).toList(),
-                                        ),
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
                                       ),
                                     ),
-                                    data.used!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 2),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .vertical, // Scroll vertically if needed
-                                              child: LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                                  return Wrap(
-                                                    spacing: 4
-                                                        .w, // Horizontal space between items
-                                                    runSpacing: 8
-                                                        .h, // Vertical space between rows
-                                                    children: List.generate(
-                                                      data.used?.length ?? 0,
-                                                      (index) {
-                                                        GlobalModel res =
-                                                            data.used![index];
+                                  ),
+                            data.used!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 2),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis
+                                          .vertical, // Scroll vertically if needed
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return Wrap(
+                                            spacing: 4
+                                                .w, // Horizontal space between items
+                                            runSpacing: 8
+                                                .h, // Vertical space between rows
+                                            children: List.generate(
+                                              data.used?.length ?? 0,
+                                              (index) {
+                                                GlobalModel res =
+                                                    data.used![index];
 
-                                                        return SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  7.w) /
-                                                              2, // Dynamically adjust to fit two items per row
-                                                          child: Card(
-                                                            clipBehavior:
-                                                                Clip.antiAlias,
-                                                            shadowColor:
-                                                                const Color(
-                                                                        0xff3D215F)
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                            elevation: 9,
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            child:
-                                                                AllProductDetailWidget(
-                                                              savedid: res.savedByLoggedUser ==
-                                                                          null ||
-                                                                      res.savedByLoggedUser!
-                                                                          .isEmpty
-                                                                  ? []
-                                                                  : res
-                                                                      .savedByLoggedUser
-                                                                      ?.map(
-                                                                        (e) => SavedPost(
-                                                                            id: e
-                                                                                .id,
-                                                                            userId:
-                                                                                e.userId,
-                                                                            postId: e.postId,
-                                                                            createdAt: e.createdAt,
-                                                                            updatedAt: e.updatedAt),
-                                                                      )
-                                                                      .toList(),
-                                                              onRefresh: () {
-                                                                refreshprovider();
-                                                              },
-                                                              lat: res.user[0]
-                                                                  .latitude,
-                                                              long: res.user[0]
-                                                                  .longitude,
-                                                              productid: res.id,
-                                                              posttype: res
-                                                                  .posttypename,
-                                                              membershipid: res
-                                                                  .user[0]
-                                                                  .membership_id,
-                                                              id: int.tryParse(
-                                                                  res.id),
-                                                              didcountpercentage:
-                                                                  res.discount_percentage,
-                                                              avg_rating: res
-                                                                  .avg_rating,
-                                                              comment: res
-                                                                  .commentnum,
-                                                              discounttedPrice:
-                                                                  res.discont,
-                                                              offer: res.offers,
-                                                              shortestDistance:
-                                                                  res.shortestDistance,
-                                                              wow: res.wow,
-                                                              issponsored: res
-                                                                      .user[0]
-                                                                      .sponsored ??
-                                                                  false,
-                                                              productImage:
-                                                                  res.imageUrl,
-                                                              Vimage: res
-                                                                  .user[0]
-                                                                  .photo!,
-                                                              vendorname: res
-                                                                  .user[0].name,
-                                                              title: res.title,
-                                                              price: res.price,
-                                                              similarproductCount:
-                                                                  res.similarproductCount,
-                                                              membershipColor: res
-                                                                  .user[0]
-                                                                  .membership_color!,
-                                                              membershipTitle: res
-                                                                  .user[0]
-                                                                  .membership_title!,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
+                                                return SizedBox(
+                                                  width: (MediaQuery.of(context)
+                                                              .size
+                                                              .width -
+                                                          7.w) /
+                                                      2, // Dynamically adjust to fit two items per row
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shadowColor:
+                                                        const Color(0xff3D215F)
+                                                            .withOpacity(0.5),
+                                                    elevation: 9,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5.w),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
                                                     ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                    data.services!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 30),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .vertical, // Scroll vertically if needed
-                                              child: LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                                  return Wrap(
-                                                    spacing: 5
-                                                        .w, // Horizontal space between items
-                                                    runSpacing: 15
-                                                        .h, // Vertical space between rows
-                                                    children: List.generate(
-                                                      data.services?.length ??
-                                                          0,
-                                                      (index) {
-                                                        GlobalModel res = data
-                                                            .services![index];
-
-                                                        return SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  30.w) /
-                                                              2, // Dynamically adjust to fit two items per row
-                                                          child: Card(
-                                                            clipBehavior:
-                                                                Clip.antiAlias,
-                                                            shadowColor:
-                                                                const Color(
-                                                                        0xff3D215F)
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                            elevation: 9,
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            child:
-                                                                AllProductDetailWidget(
-                                                              savedid: res.savedByLoggedUser ==
-                                                                          null ||
-                                                                      res.savedByLoggedUser!
-                                                                          .isEmpty
-                                                                  ? []
-                                                                  : res
-                                                                      .savedByLoggedUser
-                                                                      ?.map(
-                                                                        (e) => SavedPost(
-                                                                            id: e
-                                                                                .id,
-                                                                            userId:
-                                                                                e.userId,
-                                                                            postId: e.postId,
-                                                                            createdAt: e.createdAt,
-                                                                            updatedAt: e.updatedAt),
-                                                                      )
-                                                                      .toList(),
-                                                              onRefresh: () {
-                                                                refreshprovider();
-                                                              },
-                                                              productid: res.id,
-                                                              lat: res.user[0]
-                                                                  .latitude,
-                                                              long: res.user[9]
-                                                                  .longitude,
-                                                              didcountpercentage:
-                                                                  res.discount_percentage,
-                                                              membershipid: res
-                                                                  .user[0]
-                                                                  .membership_id,
-                                                              shortestDistance: res
-                                                                  .user[0]
-                                                                  .shortestDistance,
-                                                              posttype: res
-                                                                  .post_type_id,
-                                                              avg_rating: res
-                                                                  .avg_rating,
-                                                              comment: res
-                                                                  .commentnum,
-                                                              discounttedPrice:
-                                                                  res.discont,
-                                                              offer: res.offers,
-                                                              wow: res.wow,
-                                                              id: int.tryParse(
-                                                                  res.user.first
-                                                                      .user_id),
-                                                              issponsored: res
-                                                                  .user[0]
-                                                                  .sponsored!,
-                                                              productImage:
-                                                                  res.imageUrl,
-                                                              Vimage: res
-                                                                  .user[0]
-                                                                  .photo!,
-                                                              vendorname: res
-                                                                  .user[0].name,
-                                                              title: res.title,
-                                                              price: res.price,
-                                                              similarproductCount:
-                                                                  res.similarproductCount,
-                                                              membershipColor: res
-                                                                  .user[0]
-                                                                  .membership_color!,
-                                                              membershipTitle: res
-                                                                  .user[0]
-                                                                  .membership_title!,
-                                                            ),
-                                                          ),
-                                                        );
+                                                    child:
+                                                        AllProductDetailWidget(
+                                                      savedid: res.savedByLoggedUser ==
+                                                                  null ||
+                                                              res.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : res
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refreshprovider();
                                                       },
+                                                      lat: res.user[0].latitude,
+                                                      long:
+                                                          res.user[0].longitude,
+                                                      productid: res.id,
+                                                      posttype:
+                                                          res.post_type_id,
+                                                      membershipid: res.user[0]
+                                                          .membership_id,
+                                                      id: int.tryParse(res.id),
+                                                      didcountpercentage: res
+                                                          .discount_percentage,
+                                                      avg_rating:
+                                                          res.avg_rating,
+                                                      comment: res.commentnum,
+                                                      discounttedPrice:
+                                                          res.discont,
+                                                      offer: res.offers,
+                                                      shortestDistance:
+                                                          res.shortestDistance,
+                                                      wow: res.wow,
+                                                      issponsored: res.user[0]
+                                                              .sponsored ??
+                                                          false,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!,
                                                     ),
-                                                  );
-                                                },
-                                              ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
-                                    data.events!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 30),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .vertical, // Scroll vertically if needed
-                                              child: LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                                  return Wrap(
-                                                    spacing: 5
-                                                        .w, // Horizontal space between items
-                                                    runSpacing: 15
-                                                        .h, // Vertical space between rows
-                                                    children: List.generate(
-                                                      data.events?.length ?? 0,
-                                                      (index) {
-                                                        GlobalModel res =
-                                                            data.events![index];
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            data.services!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis
+                                          .vertical, // Scroll vertically if needed
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return Wrap(
+                                            spacing: 5
+                                                .w, // Horizontal space between items
+                                            runSpacing: 15
+                                                .h, // Vertical space between rows
+                                            children: List.generate(
+                                              data.services?.length ?? 0,
+                                              (index) {
+                                                GlobalModel res =
+                                                    data.services![index];
 
-                                                        return SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  30.w) /
-                                                              2, // Dynamically adjust to fit two items per row
-                                                          child: Card(
-                                                            clipBehavior:
-                                                                Clip.antiAlias,
-                                                            shadowColor:
-                                                                const Color(
-                                                                        0xff3D215F)
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                            elevation: 9,
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            child:
-                                                                AllProductDetailWidget(
-                                                              savedid: res.savedByLoggedUser ==
-                                                                          null ||
-                                                                      res.savedByLoggedUser!
-                                                                          .isEmpty
-                                                                  ? []
-                                                                  : res
-                                                                      .savedByLoggedUser
-                                                                      ?.map(
-                                                                        (e) => SavedPost(
-                                                                            id: e
-                                                                                .id,
-                                                                            userId:
-                                                                                e.userId,
-                                                                            postId: e.postId,
-                                                                            createdAt: e.createdAt,
-                                                                            updatedAt: e.updatedAt),
-                                                                      )
-                                                                      .toList(),
-                                                              onRefresh: () {
-                                                                refreshprovider();
-                                                              },
-                                                              productid: res.id,
-                                                              lat: res.user[0]
-                                                                  .latitude,
-                                                              long: res.user[9]
-                                                                  .longitude,
-                                                              didcountpercentage:
-                                                                  res.discount_percentage,
-                                                              membershipid: res
-                                                                  .user[0]
-                                                                  .membership_id,
-                                                              shortestDistance: res
-                                                                  .user[0]
-                                                                  .shortestDistance,
-                                                              posttype: res
-                                                                  .post_type_id,
-                                                              avg_rating: res
-                                                                  .avg_rating,
-                                                              comment: res
-                                                                  .commentnum,
-                                                              discounttedPrice:
-                                                                  res.discont,
-                                                              offer: res.offers,
-                                                              wow: res.wow,
-                                                              id: int.tryParse(
-                                                                  res.user.first
-                                                                      .user_id),
-                                                              issponsored: res
-                                                                  .user[0]
-                                                                  .sponsored!,
-                                                              productImage:
-                                                                  res.imageUrl,
-                                                              Vimage: res
-                                                                  .user[0]
-                                                                  .photo!,
-                                                              vendorname: res
-                                                                  .user[0].name,
-                                                              title: res.title,
-                                                              price: res.price,
-                                                              similarproductCount:
-                                                                  res.similarproductCount,
-                                                              membershipColor: res
-                                                                  .user[0]
-                                                                  .membership_color!,
-                                                              membershipTitle: res
-                                                                  .user[0]
-                                                                  .membership_title!,
-                                                            ),
-                                                          ),
-                                                        );
+                                                return SizedBox(
+                                                  width: (MediaQuery.of(context)
+                                                              .size
+                                                              .width -
+                                                          30.w) /
+                                                      2, // Dynamically adjust to fit two items per row
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shadowColor:
+                                                        const Color(0xff3D215F)
+                                                            .withOpacity(0.5),
+                                                    elevation: 9,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5.w),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child:
+                                                        AllProductDetailWidget(
+                                                      savedid: res.savedByLoggedUser ==
+                                                                  null ||
+                                                              res.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : res
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refreshprovider();
                                                       },
+                                                      productid: res.id,
+                                                      lat: res.user[0].latitude,
+                                                      long:
+                                                          res.user[9].longitude,
+                                                      didcountpercentage: res
+                                                          .discount_percentage,
+                                                      membershipid: res.user[0]
+                                                          .membership_id,
+                                                      shortestDistance: res
+                                                          .user[0]
+                                                          .shortestDistance,
+                                                      posttype:
+                                                          res.post_type_id,
+                                                      avg_rating:
+                                                          res.avg_rating,
+                                                      comment: res.commentnum,
+                                                      discounttedPrice:
+                                                          res.discont,
+                                                      offer: res.offers,
+                                                      wow: res.wow,
+                                                      id: int.tryParse(res
+                                                          .user.first.user_id),
+                                                      issponsored: res
+                                                          .user[0].sponsored!,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!,
                                                     ),
-                                                  );
-                                                },
-                                              ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
-                                    data.jobs!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 30),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .vertical, // Scroll vertically if needed
-                                              child: LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                                  return Wrap(
-                                                    spacing: 5
-                                                        .w, // Horizontal space between items
-                                                    runSpacing: 15
-                                                        .h, // Vertical space between rows
-                                                    children: List.generate(
-                                                      data.jobs?.length ?? 0,
-                                                      (index) {
-                                                        GlobalModel res =
-                                                            data.jobs![index];
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            data.events!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis
+                                          .vertical, // Scroll vertically if needed
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return Wrap(
+                                            spacing: 5
+                                                .w, // Horizontal space between items
+                                            runSpacing: 15
+                                                .h, // Vertical space between rows
+                                            children: List.generate(
+                                              data.events?.length ?? 0,
+                                              (index) {
+                                                GlobalModel res =
+                                                    data.events![index];
 
-                                                        return SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  30.w) /
-                                                              2, // Dynamically adjust to fit two items per row
-                                                          child: Card(
-                                                            clipBehavior:
-                                                                Clip.antiAlias,
-                                                            shadowColor:
-                                                                const Color(
-                                                                        0xff3D215F)
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                            elevation: 9,
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            child:
-                                                                AllProductDetailWidget(
-                                                              savedid: res.savedByLoggedUser ==
-                                                                          null ||
-                                                                      res.savedByLoggedUser!
-                                                                          .isEmpty
-                                                                  ? []
-                                                                  : res
-                                                                      .savedByLoggedUser
-                                                                      ?.map(
-                                                                        (e) => SavedPost(
-                                                                            id: e
-                                                                                .id,
-                                                                            userId:
-                                                                                e.userId,
-                                                                            postId: e.postId,
-                                                                            createdAt: e.createdAt,
-                                                                            updatedAt: e.updatedAt),
-                                                                      )
-                                                                      .toList(),
-                                                              onRefresh: () {
-                                                                refreshprovider();
-                                                              },
-                                                              productid: res.id,
-                                                              lat: res.user[0]
-                                                                  .latitude,
-                                                              long: res.user[9]
-                                                                  .longitude,
-                                                              didcountpercentage:
-                                                                  res.discount_percentage,
-                                                              membershipid: res
-                                                                  .user[0]
-                                                                  .membership_id,
-                                                              shortestDistance: res
-                                                                  .user[0]
-                                                                  .shortestDistance,
-                                                              posttype: res
-                                                                  .post_type_id,
-                                                              avg_rating: res
-                                                                  .avg_rating,
-                                                              comment: res
-                                                                  .commentnum,
-                                                              discounttedPrice:
-                                                                  res.discont,
-                                                              offer: res.offers,
-                                                              wow: res.wow,
-                                                              id: int.tryParse(
-                                                                  res.user.first
-                                                                      .user_id),
-                                                              issponsored: res
-                                                                  .user[0]
-                                                                  .sponsored!,
-                                                              productImage:
-                                                                  res.imageUrl,
-                                                              Vimage: res
-                                                                  .user[0]
-                                                                  .photo!,
-                                                              vendorname: res
-                                                                  .user[0].name,
-                                                              title: res.title,
-                                                              price: res.price,
-                                                              similarproductCount:
-                                                                  res.similarproductCount,
-                                                              membershipColor: res
-                                                                  .user[0]
-                                                                  .membership_color!,
-                                                              membershipTitle: res
-                                                                  .user[0]
-                                                                  .membership_title!,
-                                                            ),
-                                                          ),
-                                                        );
+                                                return SizedBox(
+                                                  width: (MediaQuery.of(context)
+                                                              .size
+                                                              .width -
+                                                          30.w) /
+                                                      2, // Dynamically adjust to fit two items per row
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shadowColor:
+                                                        const Color(0xff3D215F)
+                                                            .withOpacity(0.5),
+                                                    elevation: 9,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5.w),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child:
+                                                        AllProductDetailWidget(
+                                                      savedid: res.savedByLoggedUser ==
+                                                                  null ||
+                                                              res.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : res
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refreshprovider();
                                                       },
+                                                      productid: res.id,
+                                                      lat: res.user[0].latitude,
+                                                      long:
+                                                          res.user[0].longitude,
+                                                      didcountpercentage: res
+                                                          .discount_percentage,
+                                                      membershipid: res.user[0]
+                                                          .membership_id,
+                                                      shortestDistance: res
+                                                          .user[0]
+                                                          .shortestDistance,
+                                                      posttype:
+                                                          res.post_type_id,
+                                                      avg_rating:
+                                                          res.avg_rating,
+                                                      comment: res.commentnum,
+                                                      discounttedPrice:
+                                                          res.discont,
+                                                      offer: res.offers,
+                                                      wow: res.wow,
+                                                      id: int.tryParse(res
+                                                          .user.first.user_id),
+                                                      issponsored: res
+                                                          .user[0].sponsored!,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!,
                                                     ),
-                                                  );
-                                                },
-                                              ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                          ),
-                                    data.grocery!.isEmpty
-                                        ? Padding(
-                                            padding: EdgeInsets.only(top: 15.h),
-                                            child: Center(
-                                              child: nolistingfound(),
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 30),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis
-                                                  .vertical, // Scroll vertically if needed
-                                              child: LayoutBuilder(
-                                                builder:
-                                                    (context, constraints) {
-                                                  return Wrap(
-                                                    spacing: 5
-                                                        .w, // Horizontal space between items
-                                                    runSpacing: 15
-                                                        .h, // Vertical space between rows
-                                                    children: List.generate(
-                                                      data.grocery?.length ??
-                                                          0,
-                                                      (index) {
-                                                        GlobalModel res = data
-                                                            .grocery![index];
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            data.jobs!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis
+                                          .vertical, // Scroll vertically if needed
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return Wrap(
+                                            spacing: 5
+                                                .w, // Horizontal space between items
+                                            runSpacing: 15
+                                                .h, // Vertical space between rows
+                                            children: List.generate(
+                                              data.jobs?.length ?? 0,
+                                              (index) {
+                                                GlobalModel res =
+                                                    data.jobs![index];
 
-                                                        return SizedBox(
-                                                          width: (MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width -
-                                                                  30.w) /
-                                                              2, // Dynamically adjust to fit two items per row
-                                                          child: Card(
-                                                            clipBehavior:
-                                                                Clip.antiAlias,
-                                                            shadowColor:
-                                                                const Color(
-                                                                        0xff3D215F)
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                            elevation: 9,
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            child:
-                                                                AllProductDetailWidget(
-                                                              savedid: res.savedByLoggedUser ==
-                                                                          null ||
-                                                                      res.savedByLoggedUser!
-                                                                          .isEmpty
-                                                                  ? []
-                                                                  : res
-                                                                      .savedByLoggedUser
-                                                                      ?.map(
-                                                                        (e) => SavedPost(
-                                                                            id: e
-                                                                                .id,
-                                                                            userId:
-                                                                                e.userId,
-                                                                            postId: e.postId,
-                                                                            createdAt: e.createdAt,
-                                                                            updatedAt: e.updatedAt),
-                                                                      )
-                                                                      .toList(),
-                                                              onRefresh: () {
-                                                                refreshprovider();
-                                                              },
-                                                              productid: res.id,
-                                                              lat: res.user[0]
-                                                                  .latitude,
-                                                              long: res.user[0]
-                                                                  .longitude,
-                                                              didcountpercentage:
-                                                                  res.discount_percentage,
-                                                              membershipid: res
-                                                                  .user[0]
-                                                                  .membership_id,
-                                                              shortestDistance: res
-                                                                  .user[0]
-                                                                  .shortestDistance,
-                                                              posttype: res
-                                                                  .post_type_id,
-                                                              avg_rating: res
-                                                                  .avg_rating,
-                                                              comment: res
-                                                                  .commentnum,
-                                                              discounttedPrice:
-                                                                  res.discont,
-                                                              offer: res.offers,
-                                                              wow: res.wow,
-                                                              id: int.tryParse(
-                                                                  res.user.first
-                                                                      .user_id),
-                                                              issponsored: res
-                                                                  .user[0]
-                                                                  .sponsored!,
-                                                              productImage:
-                                                                  res.imageUrl,
-                                                              Vimage: res
-                                                                  .user[0]
-                                                                  .photo!,
-                                                              vendorname: res
-                                                                  .user[0].name,
-                                                              title: res.title,
-                                                              price: res.price,
-                                                              similarproductCount:
-                                                                  res.similarproductCount,
-                                                              membershipColor: res
-                                                                  .user[0]
-                                                                  .membership_color!,
-                                                              membershipTitle: res
-                                                                  .user[0]
-                                                                  .membership_title!,
-                                                            ),
-                                                          ),
-                                                        );
+                                                return SizedBox(
+                                                  width: (MediaQuery.of(context)
+                                                              .size
+                                                              .width -
+                                                          30.w) /
+                                                      2, // Dynamically adjust to fit two items per row
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shadowColor:
+                                                        const Color(0xff3D215F)
+                                                            .withOpacity(0.5),
+                                                    elevation: 9,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5.w),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child:
+                                                        AllProductDetailWidget(
+                                                      savedid: res.savedByLoggedUser ==
+                                                                  null ||
+                                                              res.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : res
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refreshprovider();
                                                       },
+                                                      productid: res.id,
+                                                      lat: res.user[0].latitude,
+                                                      long:
+                                                          res.user[9].longitude,
+                                                      didcountpercentage: res
+                                                          .discount_percentage,
+                                                      membershipid: res.user[0]
+                                                          .membership_id,
+                                                      shortestDistance: res
+                                                          .user[0]
+                                                          .shortestDistance,
+                                                      posttype:
+                                                          res.post_type_id,
+                                                      avg_rating:
+                                                          res.avg_rating,
+                                                      comment: res.commentnum,
+                                                      discounttedPrice:
+                                                          res.discont,
+                                                      offer: res.offers,
+                                                      wow: res.wow,
+                                                      id: int.tryParse(res
+                                                          .user.first.user_id),
+                                                      issponsored: res
+                                                          .user[0].sponsored!,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!,
                                                     ),
-                                                  );
-                                                },
-                                              ),
+                                                  ),
+                                                );
+                                              },
                                             ),
-                                            
-                                          ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                            data.grocery!.isEmpty
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 15.h),
+                                    child: Center(
+                                      child: nolistingfound(),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis
+                                          .vertical, // Scroll vertically if needed
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return Wrap(
+                                            spacing: 5
+                                                .w, // Horizontal space between items
+                                            runSpacing: 15
+                                                .h, // Vertical space between rows
+                                            children: List.generate(
+                                              data.grocery?.length ?? 0,
+                                              (index) {
+                                                GlobalModel res =
+                                                    data.grocery![index];
 
-                                  ]),
-                                ),
-                                SizedBox(
-                                  height: 40.h,
-                                ),
-                              ],
-                            )),
+                                                return SizedBox(
+                                                  width: (MediaQuery.of(context)
+                                                              .size
+                                                              .width -
+                                                          30.w) /
+                                                      2, // Dynamically adjust to fit two items per row
+                                                  child: Card(
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shadowColor:
+                                                        const Color(0xff3D215F)
+                                                            .withOpacity(0.5),
+                                                    elevation: 9,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5.w),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                    ),
+                                                    child:
+                                                        AllProductDetailWidget(
+                                                      savedid: res.savedByLoggedUser ==
+                                                                  null ||
+                                                              res.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : res
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refreshprovider();
+                                                      },
+                                                      productid: res.id,
+                                                      lat: res.user[0].latitude,
+                                                      long:
+                                                          res.user[0].longitude,
+                                                      didcountpercentage: res
+                                                          .discount_percentage,
+                                                      membershipid: res.user[0]
+                                                          .membership_id,
+                                                      shortestDistance: res
+                                                          .user[0]
+                                                          .shortestDistance,
+                                                      posttype:
+                                                          res.post_type_id,
+                                                      avg_rating:
+                                                          res.avg_rating,
+                                                      comment: res.commentnum,
+                                                      discounttedPrice:
+                                                          res.discont,
+                                                      offer: res.offers,
+                                                      wow: res.wow,
+                                                      id: int.tryParse(res
+                                                          .user.first.user_id),
+                                                      issponsored: res
+                                                          .user[0].sponsored!,
+                                                      productImage:
+                                                          res.imageUrl,
+                                                      Vimage:
+                                                          res.user[0].photo!,
+                                                      vendorname:
+                                                          res.user[0].name,
+                                                      title: res.title,
+                                                      price: res.price,
+                                                      similarproductCount: res
+                                                          .similarproductCount,
+                                                      membershipColor: res
+                                                          .user[0]
+                                                          .membership_color!,
+                                                      membershipTitle: res
+                                                          .user[0]
+                                                          .membership_title!,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                error: (error, stackTrace) {
+                  return Text('Internet not found');
+                },
+                loading: () {
+                  // Shimmer effect for loading state
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300, // Base color
+                          highlightColor:
+                              Colors.grey.shade100, // Highlight color
+                          child: Container(
+                            height: 200, // Adjust height for the shimmer area
+                            color: Colors.white, // Background color
+                          ),
+                        ),
+                        // Add other shimmer widgets for the other containers if needed
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            height: 200,
+                            color: Colors.white,
+                          ),
+                        ),
                         SizedBox(
-                          height: 60.h,
+                          height: 50.h,
                         ),
                       ],
-                    );
-                  },
-                  error: (error, stackTrace) {
-                    return const Text("Please login again");
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                ),
-                      ],
-                    )
-                  )
-                ],
+                    ),
+                  );
+                },
               ),
-               valuenotifilersidebutton(
+              valuenotifilersidebutton(
                   showSideBar: showSideBar, isSectionsVisible: true),
               Positioned(
                 top: 65,
@@ -1819,8 +1831,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
+                                  builder: (context) => const AddToCartScreen(),
                                 ),
                               );
                             },

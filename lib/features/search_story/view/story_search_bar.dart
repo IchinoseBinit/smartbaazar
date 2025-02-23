@@ -1,15 +1,16 @@
-
-
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class StorySearchBar extends StatefulWidget {
   final VoidCallback onClose;
+  final TextEditingController? searchcontroller;
+  final Function(String)? unchanged;
+  final Function(String)? onsubmitted;
 
-  const StorySearchBar({Key? key, required this.onClose}) : super(key: key);
+  const StorySearchBar(
+      {Key? key, required this.onClose, this.searchcontroller, this.unchanged, this.onsubmitted})
+      : super(key: key);
 
   @override
   State<StorySearchBar> createState() => _StorySearchBarState();
@@ -17,11 +18,8 @@ class StorySearchBar extends StatefulWidget {
 
 class _StorySearchBarState extends State<StorySearchBar> {
   String searchQuery = '';
-  List<StoryList> filteredStories = [];
   bool isLoading = false;
   Timer? debounceTimer;
-
-  
 
   void viewStory(String imageUrl) {
     showDialog(
@@ -75,14 +73,9 @@ class _StorySearchBarState extends State<StorySearchBar> {
             height: 50.h,
             width: 300.w,
             child: TextField(
-              onChanged: (value) {
-                if (debounceTimer?.isActive ?? false) debounceTimer?.cancel();
-                debounceTimer = Timer(const Duration(milliseconds: 500), () {
-                  setState(() {
-                    searchQuery = value;
-                  });
-                });
-              },
+              onSubmitted: widget.onsubmitted,
+              controller: widget.searchcontroller,
+              onChanged: widget.unchanged,
               decoration: InputDecoration(
                 hintText: 'Enter Vendor Name',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
@@ -96,12 +89,10 @@ class _StorySearchBarState extends State<StorySearchBar> {
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius:
-                    BorderRadius.horizontal(right: Radius.circular(7.r)),
+                        BorderRadius.horizontal(right: Radius.circular(7.r)),
                   ),
                   child: IconButton(
-                    onPressed: () {
-                      
-                    },
+                    onPressed: () {},
                     icon: const Icon(
                       Icons.search,
                       color: Colors.white,
@@ -111,62 +102,39 @@ class _StorySearchBarState extends State<StorySearchBar> {
               ),
             ),
           ),
-          SizedBox(height: 16.h),
-          if (isLoading)
-            const CircularProgressIndicator()
-          else if (filteredStories.isEmpty)
-            const Center(child: Text('No stories found'))
-          else
-            Expanded(
-              child: GridView.builder(
-                itemCount: filteredStories.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 8.w,
-                  mainAxisSpacing: 8.h,
-                ),
-                itemBuilder: (context, index) {
-                  final story = filteredStories[index];
-                  return GestureDetector(
-                    onTap: () => viewStory(story.image),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        image: DecorationImage(
-                          image: NetworkImage(story.image),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+          // SizedBox(height: 16.h),
+          // if (isLoading)
+          //   const CircularProgressIndicator()
+          // else if (filteredStories.isEmpty)
+          //   const Center(child: Text('No stories found'))
+          // else
+          //   Expanded(
+          //     child: GridView.builder(
+          //       itemCount: filteredStories.length,
+          //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //         crossAxisCount: 3,
+          //         crossAxisSpacing: 8.w,
+          //         mainAxisSpacing: 8.h,
+          //       ),
+          //       itemBuilder: (context, index) {
+          //         final story = filteredStories[index];
+          //         return GestureDetector(
+          //           onTap: () => viewStory(story.image),
+          //           child: Container(
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(8.r),
+          //               image: DecorationImage(
+          //                 image: NetworkImage(story.image),
+          //                 fit: BoxFit.cover,
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
         ],
       ),
     );
   }
 }
-
-class StoryList {
-  final String id;
-  final String image;
-  final String title;
-
-  StoryList({
-    required this.id,
-    required this.image,
-    required this.title,
-  });
-
-  factory StoryList.fromJson(Map<String, dynamic> json) {
-    return StoryList(
-      id: json['id'] ?? '',
-      image: json['image'] ?? '',
-      title: json['title'] ?? '',
-    );
-  }
-}
-
-
-

@@ -53,6 +53,7 @@ import 'package:smartbazar/network_service/smart-client.dart';
 import '../../product_details/constant/all_product_detail_widget.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 
 class JobssScreen extends ConsumerStatefulWidget {
@@ -515,9 +516,9 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
                                 return HomePageStoryContainer(
                                   feedStoryContent: Story(
-                                      posts: feedStoryData
+                                      HomeStoryAllPosts: feedStoryData
                                           .home_story?.story.posts
-                                          ?.map((e) => Post(
+                                          ?.map((e) => HomeStoryAllPost(
                                               hasSponsoredGifts:
                                                   e.hasSponsoredGifts,
                                               id: e.id,

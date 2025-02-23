@@ -365,13 +365,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
       (value) async {
         furnitureresresp = value;
       },
-    ); //car
+    ); //furniture
     final road = ref.watch(GetCategoryResponseProvider(37)).whenData(
       (value) async {
         getRoad = value;
         print('bibash ${getRoad?.result[3]}');
       },
-    ); //car
+    ); //road
     final clothfirst = ref.watch(GetCategoryResponseProvider(54)).whenData(
       (value) async {
         getcloth = value;

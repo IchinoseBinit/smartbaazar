@@ -57,6 +57,7 @@ import 'package:smartbazar/network_service/smart-client.dart';
 import '../../product_details/constant/all_product_detail_widget.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class SocioShopScreen extends ConsumerStatefulWidget {
   const SocioShopScreen({super.key});
@@ -539,9 +540,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                     return HomePageStoryContainer(
                                       feedStoryContent: Story(
-                                          posts: feedStoryData
+                                          HomeStoryAllPosts: feedStoryData
                                               .home_story?.story.posts
-                                              ?.map((e) => Post(
+                                              ?.map((e) => HomeStoryAllPost(
                                                   hasSponsoredGifts:
                                                       e.hasSponsoredGifts,
                                                   id: e.id,
@@ -716,154 +717,178 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             padding: EdgeInsets.symmetric(vertical: 10.h),
                             child: Column(
                               children: [
-                                // Row for "ALL" and other services
-                                SizedBox(
-                                  height: 100.h, // Adjust height as necessary
-                                  width: double.infinity,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: [
-                                        // "ALL" Services (Standalone)
-                                        DottedBorder(
-                                          strokeWidth: 2,
-                                          color: Colors.grey,
-                                          borderType: BorderType.RRect,
-                                          radius: const Radius.circular(10),
-                                          dashPattern: const [15, 15],
-                                          child: SizedBox(
-                                            width: 100,
-                                            height: 100,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "ALL",
-                                                  style: headerstyle.copyWith(
-                                                    color: ColorConstant
-                                                        .blackColor,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
+                                 Padding(
+                                  padding:  EdgeInsets.only(left: 5.w),
+                                  child: SizedBox(
+                                    height: 100.h, // Adjust height as necessary
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          // "ALL" Services (Standalone)
+                                          DottedBorder(
+                                            strokeWidth: 2,
+                                            color: Colors.grey,
+                                            borderType: BorderType.RRect,
+                                            radius: const Radius.circular(10),
+                                            dashPattern: const [15, 15],
+                                            child: SizedBox(
+                                              width: 100,
+                                              height: 100,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "ALL",
+                                                    style: headerstyle.copyWith(
+                                                      color: ColorConstant
+                                                          .blackColor,
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  "Brands",
-                                                  style: headerstyle.copyWith(
-                                                    color: ColorConstant
-                                                        .blackColor,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
+                                                  Text(
+                                                    "Socio",
+                                                    style: headerstyle.copyWith(
+                                                      color: ColorConstant
+                                                          .blackColor,
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-
-                                        // Other Services List
-                                        ListView(
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          children: data.map((e) {
-                                            return Padding(
-                                              padding: EdgeInsets.zero,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  showMenu(
-                                                    context: context,
-                                                    position: const RelativeRect
-                                                        .fromLTRB(0, 0, 0, 0),
-                                                    items: [
-                                                      PopupMenuItem(
-                                                        value: 1,
-                                                        child: ListTile(
-                                                          title: const Text(
-                                                              "View Story"),
-                                                          leading: const Icon(
-                                                              Icons.book),
-                                                          onTap: () {
-                                                            // Implement onTap logic
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                                child: PopupMenuButton<int>(
-                                                  offset: const Offset(0, 60),
-                                                  itemBuilder: (context) => [
-                                                    const PopupMenuItem(
-                                                      value: 1,
-                                                      child: Text("View Story",
-                                                          style: TextStyle(
-                                                              fontSize: 16.0)),
-                                                    ),
-                                                    if (e.parentClosure != null)
-                                                      PopupMenuItem(
-                                                        value: 1,
-                                                        child: Text(
-                                                          e.slug,
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize:
-                                                                      16.0),
-                                                        ),
-                                                      ),
-                                                  ],
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10.w),
-                                                    child: DashedBorder(
-                                                      padding: 0,
-                                                      dashCount: 2,
-                                                      child: SizedBox(
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Image.asset(
-                                                                'assets/images/cloth.png'),
-                                                            Center(
-                                                              child: Text(
-                                                                e.name ??
-                                                                    'No Name',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 13,
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+                                  
+                                          // Other Services List
+                                          ListView(
+                                            physics:
+                                                const BouncingScrollPhysics(),
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            children: data.map((e) {
+                                              return Container(
+                                    width: 150.w,
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: Color(0xff651c50)),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
+                                      child: Text(
+                                        e.name,
+                                        textAlign: TextAlign.center, // Centers text
+                                        maxLines: 2, // Allows text to wrap into two lines
+                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
+                                        style: TextStyle(fontSize: 14), // Adjust font size if needed
+                                      ),
+                                    ),
+                                  );
+                                  
+                                              // return Padding(
+                                              //   padding: EdgeInsets.zero,
+                                              //   child: GestureDetector(
+                                              //     onTap: () {
+                                              //       showMenu(
+                                              //         context: context,
+                                              //         position: const RelativeRect
+                                              //             .fromLTRB(0, 0, 0,
+                                              //             0), // Base position; offset is handled by PopupMenuButton
+                                              //         items: [
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: ListTile(
+                                              //               title: const Text(
+                                              //                   "View Story"),
+                                              //               leading: const Icon(
+                                              //                   Icons.book),
+                                              //               onTap: () {
+                                              //                 // Implement onTap logic
+                                              //               },
+                                              //             ),
+                                              //           ),
+                                              //         ],
+                                              //       );
+                                              //     },
+                                              //     child: PopupMenuButton<int>(
+                                              //       offset: const Offset(0,
+                                              //           60), // The offset to position the menu above the widget
+                                              //       itemBuilder: (context) => [
+                                              //         const PopupMenuItem(
+                                              //           value: 1,
+                                              //           child: Text("View Story",
+                                              //               style: TextStyle(
+                                              //                   fontSize: 16.0)),
+                                              //         ),
+                                              //         if (e.parentClosure != null)
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: Text(
+                                              //               e.slug,
+                                              //               style: const TextStyle(
+                                              //                   fontSize: 16.0),
+                                              //             ),
+                                              //           ),
+                                              //       ],
+                                              //       child: Padding(
+                                              //         padding: EdgeInsets.symmetric(
+                                              //             horizontal: 10.w),
+                                              //         child: DashedBorder(
+                                              //           padding: 0,
+                                              //           dashCount: 2,
+                                              //           child: SizedBox(
+                                              //             // width: 100.w,
+                                              //             // height: 100.h,
+                                              //             child: Column(
+                                              //               mainAxisAlignment:
+                                              //                   MainAxisAlignment
+                                              //                       .center,
+                                              //               crossAxisAlignment:
+                                              //                   CrossAxisAlignment
+                                              //                       .center,
+                                              //               children: [
+                                              //                 Image.asset(
+                                              //                     'assets/images/cloth.png'),
+                                              //                 Center(
+                                              //                   child: Text(
+                                              //                     e.name ?? 'No Name',
+                                              //                     style:
+                                              //                         const TextStyle(
+                                              //                       color:
+                                              //                           Colors.black,
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .w500,
+                                              //                       fontSize: 13,
+                                              //                     ),
+                                              //                     textAlign: TextAlign
+                                              //                         .center,
+                                              //                   ),
+                                              //                 )
+                                              //               ],
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ],
+                              ]
                             ),
                           );
                         },
