@@ -120,7 +120,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
   int _selectedTab = 0;
   final List<Widget> _pages = [
     const HomeScreen(),
-    const FeedScreen(),
+     FeedScreen(),
     const MessageViewScreen(),
     const VendorProfileScreen(),
   ];
