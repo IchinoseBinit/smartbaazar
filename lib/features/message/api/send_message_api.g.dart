@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'reply_message_model_api.dart';
+part of 'send_message_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendReplyMessageHash() => r'4670497beeff6b7655f9da22a04e4eb951fbf7ff';
+String _$sendNewMessageHash() => r'eb6791416b87931a3615e1fa059c15771635b8ac';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,35 +29,38 @@ class _SystemHash {
   }
 }
 
-/// See also [sendReplyMessage].
-@ProviderFor(sendReplyMessage)
-const sendReplyMessageProvider = SendReplyMessageFamily();
+/// See also [sendNewMessage].
+@ProviderFor(sendNewMessage)
+const sendNewMessageProvider = SendNewMessageFamily();
 
-/// See also [sendReplyMessage].
-class SendReplyMessageFamily extends Family<AsyncValue<ReplyMessageModel>> {
-  /// See also [sendReplyMessage].
-  const SendReplyMessageFamily();
+/// See also [sendNewMessage].
+class SendNewMessageFamily extends Family<AsyncValue<String>> {
+  /// See also [sendNewMessage].
+  const SendNewMessageFamily();
 
-  /// See also [sendReplyMessage].
-  SendReplyMessageProvider call(
-    String threadId,
+  /// See also [sendNewMessage].
+  SendNewMessageProvider call(
+    String postid,
     String? body,
+    String? subject,
     File? imageFile,
   ) {
-    return SendReplyMessageProvider(
-      threadId,
+    return SendNewMessageProvider(
+      postid,
       body,
+      subject,
       imageFile,
     );
   }
 
   @override
-  SendReplyMessageProvider getProviderOverride(
-    covariant SendReplyMessageProvider provider,
+  SendNewMessageProvider getProviderOverride(
+    covariant SendNewMessageProvider provider,
   ) {
     return call(
-      provider.threadId,
+      provider.postid,
       provider.body,
+      provider.subject,
       provider.imageFile,
     );
   }
@@ -74,92 +77,99 @@ class SendReplyMessageFamily extends Family<AsyncValue<ReplyMessageModel>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'sendReplyMessageProvider';
+  String? get name => r'sendNewMessageProvider';
 }
 
-/// See also [sendReplyMessage].
-class SendReplyMessageProvider
-    extends AutoDisposeFutureProvider<ReplyMessageModel> {
-  /// See also [sendReplyMessage].
-  SendReplyMessageProvider(
-    String threadId,
+/// See also [sendNewMessage].
+class SendNewMessageProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [sendNewMessage].
+  SendNewMessageProvider(
+    String postid,
     String? body,
+    String? subject,
     File? imageFile,
   ) : this._internal(
-          (ref) => sendReplyMessage(
-            ref as SendReplyMessageRef,
-            threadId,
+          (ref) => sendNewMessage(
+            ref as SendNewMessageRef,
+            postid,
             body,
+            subject,
             imageFile,
           ),
-          from: sendReplyMessageProvider,
-          name: r'sendReplyMessageProvider',
+          from: sendNewMessageProvider,
+          name: r'sendNewMessageProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$sendReplyMessageHash,
-          dependencies: SendReplyMessageFamily._dependencies,
+                  : _$sendNewMessageHash,
+          dependencies: SendNewMessageFamily._dependencies,
           allTransitiveDependencies:
-              SendReplyMessageFamily._allTransitiveDependencies,
-          threadId: threadId,
+              SendNewMessageFamily._allTransitiveDependencies,
+          postid: postid,
           body: body,
+          subject: subject,
           imageFile: imageFile,
         );
 
-  SendReplyMessageProvider._internal(
+  SendNewMessageProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.threadId,
+    required this.postid,
     required this.body,
+    required this.subject,
     required this.imageFile,
   }) : super.internal();
 
-  final String threadId;
+  final String postid;
   final String? body;
+  final String? subject;
   final File? imageFile;
 
   @override
   Override overrideWith(
-    FutureOr<ReplyMessageModel> Function(SendReplyMessageRef provider) create,
+    FutureOr<String> Function(SendNewMessageRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SendReplyMessageProvider._internal(
-        (ref) => create(ref as SendReplyMessageRef),
+      override: SendNewMessageProvider._internal(
+        (ref) => create(ref as SendNewMessageRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        threadId: threadId,
+        postid: postid,
         body: body,
+        subject: subject,
         imageFile: imageFile,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<ReplyMessageModel> createElement() {
-    return _SendReplyMessageProviderElement(this);
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _SendNewMessageProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SendReplyMessageProvider &&
-        other.threadId == threadId &&
+    return other is SendNewMessageProvider &&
+        other.postid == postid &&
         other.body == body &&
+        other.subject == subject &&
         other.imageFile == imageFile;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, threadId.hashCode);
+    hash = _SystemHash.combine(hash, postid.hashCode);
     hash = _SystemHash.combine(hash, body.hashCode);
+    hash = _SystemHash.combine(hash, subject.hashCode);
     hash = _SystemHash.combine(hash, imageFile.hashCode);
 
     return _SystemHash.finish(hash);
@@ -168,28 +178,32 @@ class SendReplyMessageProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SendReplyMessageRef on AutoDisposeFutureProviderRef<ReplyMessageModel> {
-  /// The parameter `threadId` of this provider.
-  String get threadId;
+mixin SendNewMessageRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `postid` of this provider.
+  String get postid;
 
   /// The parameter `body` of this provider.
   String? get body;
+
+  /// The parameter `subject` of this provider.
+  String? get subject;
 
   /// The parameter `imageFile` of this provider.
   File? get imageFile;
 }
 
-class _SendReplyMessageProviderElement
-    extends AutoDisposeFutureProviderElement<ReplyMessageModel>
-    with SendReplyMessageRef {
-  _SendReplyMessageProviderElement(super.provider);
+class _SendNewMessageProviderElement
+    extends AutoDisposeFutureProviderElement<String> with SendNewMessageRef {
+  _SendNewMessageProviderElement(super.provider);
 
   @override
-  String get threadId => (origin as SendReplyMessageProvider).threadId;
+  String get postid => (origin as SendNewMessageProvider).postid;
   @override
-  String? get body => (origin as SendReplyMessageProvider).body;
+  String? get body => (origin as SendNewMessageProvider).body;
   @override
-  File? get imageFile => (origin as SendReplyMessageProvider).imageFile;
+  String? get subject => (origin as SendNewMessageProvider).subject;
+  @override
+  File? get imageFile => (origin as SendNewMessageProvider).imageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

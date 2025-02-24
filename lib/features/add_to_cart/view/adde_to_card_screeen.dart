@@ -7,8 +7,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 

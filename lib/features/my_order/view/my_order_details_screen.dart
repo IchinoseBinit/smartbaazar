@@ -239,16 +239,17 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                         image!,
                                       ).future); // ✅ Await API call completion
 
-                                      if (!context.mounted)
+                                      if (!context.mounted) {
                                         return; // ✅ Ensure widget is still valid
+                                      }
 
                                       // ✅ Show confirmation dialog
                                       await showDialog(
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
-                                            title: Text("Success"),
-                                            content: Text(
+                                            title: const Text("Success"),
+                                            content: const Text(
                                                 "Data has been inserted successfully!"),
                                             actions: [
                                               TextButton(
@@ -258,7 +259,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                                                   Navigator.pop(
                                                       context); // ✅ Close form after confirmation
                                                 },
-                                                child: Text("OK"),
+                                                child: const Text("OK"),
                                               ),
                                             ],
                                           );
@@ -588,7 +589,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
             SizedBox(height: 5.h),
             CityField(
               onCitySelected: (data) {
-                widget.place(data!);
+                widget.place(data);
               },
             ),
             SizedBox(height: 5.h),
@@ -607,7 +608,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   SizedBox(height: 10.h),
                   TextField(
                     onChanged: (value) {
-                      widget.address(value!);
+                      widget.address(value);
                     },
                     decoration: InputDecoration.collapsed(
                         hintText: 'Enter Street Address',

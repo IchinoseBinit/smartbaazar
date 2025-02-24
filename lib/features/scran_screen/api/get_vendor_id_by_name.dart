@@ -1,4 +1,3 @@
-import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -9,7 +8,7 @@ class GiveVendorid {
 
       // Make the request with the payload
       final response = await client.request(
-        requestType: RequestType.postWithToken, // POST request with token
+        requestType: RequestType.get, // POST request with token
         url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/vendor_card/$name',
       );
 

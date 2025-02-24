@@ -587,24 +587,27 @@ class VendorProfileGridWidget extends StatelessWidget {
       children: profileData.map((data) {
         return InkWell(
           onTap: () {
-            if (data['subtitle'] == 'listing')
+            if (data['subtitle'] == 'listing') {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyListingScreen(),
+                    builder: (context) => const MyListingScreen(),
                   ));
-                   if (data['subtitle'] == 'followers')
-              Navigator.push(
+            }
+                   if (data['subtitle'] == 'followers') {
+                     Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MySubscriptionScreen(),
+                    builder: (context) => const MySubscriptionScreen(),
                   ));
-                   if (data['subtitle'] == 'favourite')
-              Navigator.push(
+                   }
+                   if (data['subtitle'] == 'favourite') {
+                     Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FavouriteListingScreen(),
+                    builder: (context) => const FavouriteListingScreen(),
                   ));
+                   }
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0.w),

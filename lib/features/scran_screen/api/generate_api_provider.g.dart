@@ -6,7 +6,7 @@ part of 'generate_api_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$generateMyQRHash() => r'e370dd0513e992e5df1eb8831fd902ea995f6705';
+String _$generateMyQRHash() => r'77deabe0263f8ad9d4c0a94377ab8b6895ac46c5';
 
 /// Copied from Dart SDK
 class _SystemHash {

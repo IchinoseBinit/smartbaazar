@@ -91,19 +91,20 @@ class _MyAppState extends State<MyApp> {
               useMaterial3: true,
             ),
             home:SplashScreen()
-            ));
+            ),
+            );
   }
 }
 
 class ImageConvert extends StatefulWidget {
-  ImageConvert({super.key});
+  const ImageConvert({super.key});
 
   @override
   _ImageConvertState createState() => _ImageConvertState();
 }
 
 class _ImageConvertState extends State<ImageConvert> {
-  GlobalKey _globalKey = GlobalKey();
+  final GlobalKey _globalKey = GlobalKey();
   String? _imagePath;
 
   Future<void> _captureAndSave() async {
@@ -138,7 +139,7 @@ class _ImageConvertState extends State<ImageConvert> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Capture Widget as Image'),
+        title: const Text('Capture Widget as Image'),
       ),
       body: Center(
         child: Column(
@@ -147,20 +148,20 @@ class _ImageConvertState extends State<ImageConvert> {
             RepaintBoundary(
               key: _globalKey,
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 color: Colors.blue,
-                child: Text(
+                child: const Text(
                   'This is a widget to capture!',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _captureAndSave,
-              child: Text('Capture and Save Image'),
+              child: const Text('Capture and Save Image'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _imagePath != null
                 ? Image.file(File(_imagePath!)) // Display the saved image
                 : Container(), // Show nothing if no image is saved yet

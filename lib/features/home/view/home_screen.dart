@@ -12,14 +12,20 @@ import 'package:flutter_svg/svg.dart';
 // import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
 import 'package:smartbazar/features/home/api/story_search_api.dart';
+import 'package:smartbazar/features/home/model/home_search_model.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
@@ -64,8 +70,7 @@ final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 class HomeScreen extends ConsumerStatefulWidget {
   final ScrollController? scrollController;
 
-  const 
-  HomeScreen({super.key, this.scrollController});
+  const HomeScreen({super.key, this.scrollController});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -73,6 +78,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
+  HomeSearchResopnse? _storysearchresponse;
   List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
 
   bool _isPopupVisible = false;
@@ -84,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   late TabController dynamictabController;
   // final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
-  double _lastScrollOffset = 1;
+  final double _lastScrollOffset = 1;
   Offset _initialDragPosition = Offset.zero; // Track initial drag position
   PageController _pageController = PageController(viewportFraction: 0.3);
 // Default height for first tab
@@ -253,7 +259,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     {'label': 'Event', 'id': 6},
     {'label': 'Grocery', 'id': 7},
   ];
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   @override
   void dispose() {
@@ -272,7 +278,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     if (query.isNotEmpty) {
       final stories = await ref.read(searchstoryapiProvider(query).future);
       setState(() {
-        _storysearchresult = stories; // ✅ Update local list
+        _storysearchresponse = stories;
+        _storysearchresult =
+            stories.data.home_story.story.posts!; // ✅ Update local list
       });
     }
   }
@@ -280,6 +288,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(_selectedIndexProvider);
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
 
     _pageController = PageController(
       viewportFraction: 0.3,
@@ -322,7 +338,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      drawerScrimColor: Color(0xff651c50),
+      drawerScrimColor: const Color(0xff651c50),
       key: _key,
       backgroundColor: ColorConstant.whiteColor,
       // drawer: const CustomDrawer(),
@@ -369,13 +385,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                   SliverAppBar(
-                    automaticallyImplyLeading: false,
+                      automaticallyImplyLeading: false,
                       expandedHeight: 90.h,
                       floating: false,
                       pinned: false,
                       flexibleSpace: AnimatedContainer(
                         padding: EdgeInsets.zero,
-                        duration: Duration(milliseconds: 150),
+                        duration: const Duration(milliseconds: 150),
                         child: Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
@@ -541,7 +557,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           height: 7.h,
                           width: 60.w,
                           decoration: BoxDecoration(
-                              color: Color(0xff651c50),
+                              color: const Color(0xff651c50),
                               borderRadius: BorderRadius.circular(5)),
                         ),
                       ),
@@ -669,19 +685,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _storysearchresult.length,
                                   itemBuilder: (context, index) {
-                                    final story = _storysearchresult[index];
+                                    final searchstory =
+                                        _storysearchresult[index];
+                                    // print('lamta ${_storysearchresult.l}');
                                     return FeedStoryAddWidget(
                                       index: index,
-                                      vendorName:
-                                          story.vendorName ?? "Unknown Vendor",
-                                      vendorImage: story.vendorImage ??
+                                      vendorName: searchstory.vendorName ??
+                                          "Unknown Vendor",
+                                      vendorImage: searchstory.vendorImage ??
                                           "https://example.com/default-image.png",
-                                      storyCount: story.storyCount ?? 0,
-                                      showGift:
-                                          story.hasSponsoredGifts ?? false,
-                                      feedStoryContent:
-                                          FeedStory(posts: _storysearchresult),
-                                      userId: story.vendorId ?? '',
+                                      storyCount: searchstory.storyCount ?? 0,
+                                      showGift: searchstory.hasSponsoredGifts ??
+                                          false,
+                                      feedStoryContent: _storysearchresponse!
+                                          .data.home_story!.story!,
+                                      userId: searchstory.vendorId ?? '',
                                     );
                                   },
                                 )
@@ -943,8 +961,75 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       products.length, (index) {
                                                     CategoryProduct prod =
                                                         products[index];
+                                                    //yeaiho
 
                                                     return ProductDetailWidget(
+                                                      
+                                                       onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       onRefresh: () {
                                                         refresh();
                                                         // ref.refresh(
@@ -1169,6 +1254,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                       5.w),
                                                           child:
                                                               ProductDetailWidget(
+                                                            onenquiredclicked:
+                                                                () {
+                                                              print(
+                                                                  'lanka ${prod.id}');
+                                                              getEnquire(ref,
+                                                                      prod.id)
+                                                                  .then(
+                                                                (value) {
+                                                                  print(
+                                                                      'lapu ${value.data?.enquire == 0}');
+                                                                  // if ()
+
+                                                                  // SendMessageBottomWidget(
+                                                                  //     ref: ref,
+                                                                  //     productidid:
+                                                                  //         prod.id);
+                                                                },
+                                                              ).catchError(
+                                                                      (error) {
+                                                                print(
+                                                                    'Error: $error');
+                                                              });
+                                                            },
                                                             savedid: prod.savedByLoggedUser ==
                                                                         null ||
                                                                     prod.savedByLoggedUser!
@@ -1286,6 +1394,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             "laukatp ${prod.post_type_id} and ${prod.title}");
 
                                                         return ProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                           savedid: prod.savedByLoggedUser ==
                                                                       null ||
                                                                   prod.savedByLoggedUser!
@@ -1302,8 +1475,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           long: prod.user[0]
                                                                   .longitude ??
                                                               '0.0',
-                                                          productid:
-                                                              prod.post_type_id,
+                                                          productid: prod.id,
                                                           membershipid: prod
                                                               .user
                                                               .first
@@ -1400,6 +1572,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       data.spot[0][index];
 
                                                   return ProductDetailWidget(
+                                                      onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                     savedid: prod.savedByLoggedUser ==
                                                                 null ||
                                                             prod.savedByLoggedUser!
@@ -1542,6 +1779,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             SponsoredProduct prefs =
                                                 data[index];
                                             return ProductDetailWidget(
+                                              onenquiredclicked: () {
+                                                print('lanka ${prefs.id}');
+                                                getEnquire(ref, prefs.id)
+                                                    .then((value) {
+                                                  // Debugging: log the response data
+                                                  print(
+                                                      'Enquire value: ${value.data?.enquire}');
+
+                                                  if (value.data?.enquire ==
+                                                      0) {
+                                                    print("salla");
+
+                                                    // Show the bottom widget as a modal bottom sheet
+                                                    showModalBottomSheet(
+                                                      useSafeArea: true,
+                                                      isScrollControlled: true,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return SizedBox(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.8, // Use 80% of the screen height
+
+                                                          child:
+                                                              SendMessageBottomWidget(
+                                                            ref: ref,
+                                                            productidid:
+                                                                prefs.id,
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  } else {
+                                                    // This will handle cases when the condition is false
+                                                    print(
+                                                        "Condition not met for sending message");
+                                                  }
+                                                }).catchError((error) {
+                                                  // Handle error gracefully
+                                                  print('Error: $error');
+                                                });
+                                              },
                                               savedid: prefs.savedByLoggedUser ==
                                                           null ||
                                                       prefs.savedByLoggedUser!
@@ -1688,6 +1970,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+                                            
+                                              onenquiredclicked: () {
+                                                        
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                             savedid:
                                                 res.savedByLoggedUser == null ||
                                                         res.savedByLoggedUser!
@@ -1811,7 +2158,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12), // Rounded corners
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 8.0,
@@ -1831,8 +2178,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       itemBuilder: (context, index) {
                         final product = results[index];
                         return ListTile(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 2, horizontal: 7),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 7),
                           dense: true,
                           title: Text(
                             product.name,
@@ -1927,11 +2274,11 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       decoration: BoxDecoration(
         borderRadius: !visible!
-            ? BorderRadius.only(
+            ? const BorderRadius.only(
                 bottomLeft: Radius.circular(40),
                 bottomRight: Radius.circular(40))
             : null,
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             Color(0xff651c50),
             Color(0xff54225f),
@@ -1953,7 +2300,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.arrow_back_ios_rounded))
+                      child: const Icon(Icons.arrow_back_ios_rounded))
                   : Image.asset(
                       height: 40.h,
                       width: 40.w,
@@ -2133,13 +2480,13 @@ class valuenotifilersidebutton extends StatelessWidget {
                           margin: EdgeInsets.only(right: 3.w),
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 colors: [Colors.white, Colors.white],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter),
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Color.fromARGB(255, 115, 92, 119),
+                                color: const Color.fromARGB(255, 115, 92, 119),
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
@@ -2156,7 +2503,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     decoration: BoxDecoration(
                       color: const Color(0xffE2DAE5).withOpacity(0.9),
-                      boxShadow: [
+                      boxShadow: const [
                         // Color(value)
                       ],
                       borderRadius: const BorderRadius.only(
@@ -2303,9 +2650,9 @@ class valuenotifilersidebutton extends StatelessWidget {
                             onPressed: () {
                               showSideBar.value = !value;
                             },
-                            icon: Column(
+                            icon: const Column(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.close,
                                   size: 16,
                                   color: Color(0xff918994),
@@ -2382,7 +2729,7 @@ Widget _sidebarButton(IconData icon, String text, VoidCallback onTap) {
         Icon(icon, size: 15, color: const Color(0xff918994)),
         Text(
           text,
-          style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700),
+          style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700),
         ),
       ],
     ),

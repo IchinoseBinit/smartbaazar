@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'story_search_api.dart';
+part of 'check_enquire_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchstoryapiHash() => r'e6280d2c30ba860fbd63c475c06f27a744abd378';
+String _$checkEnquireHash() => r'f105fb0cc9754cbc7f329a0ec36e0dc8a5f9affa';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [searchstoryapi].
-@ProviderFor(searchstoryapi)
-const searchstoryapiProvider = SearchstoryapiFamily();
+/// See also [checkEnquire].
+@ProviderFor(checkEnquire)
+const checkEnquireProvider = CheckEnquireFamily();
 
-/// See also [searchstoryapi].
-class SearchstoryapiFamily extends Family<AsyncValue<HomeSearchResopnse>> {
-  /// See also [searchstoryapi].
-  const SearchstoryapiFamily();
+/// See also [checkEnquire].
+class CheckEnquireFamily extends Family<AsyncValue<EnquireResponse>> {
+  /// See also [checkEnquire].
+  const CheckEnquireFamily();
 
-  /// See also [searchstoryapi].
-  SearchstoryapiProvider call(
-    String query,
+  /// See also [checkEnquire].
+  CheckEnquireProvider call(
+    String id,
   ) {
-    return SearchstoryapiProvider(
-      query,
+    return CheckEnquireProvider(
+      id,
     );
   }
 
   @override
-  SearchstoryapiProvider getProviderOverride(
-    covariant SearchstoryapiProvider provider,
+  CheckEnquireProvider getProviderOverride(
+    covariant CheckEnquireProvider provider,
   ) {
     return call(
-      provider.query,
+      provider.id,
     );
   }
 
@@ -68,76 +68,75 @@ class SearchstoryapiFamily extends Family<AsyncValue<HomeSearchResopnse>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchstoryapiProvider';
+  String? get name => r'checkEnquireProvider';
 }
 
-/// See also [searchstoryapi].
-class SearchstoryapiProvider
-    extends AutoDisposeFutureProvider<HomeSearchResopnse> {
-  /// See also [searchstoryapi].
-  SearchstoryapiProvider(
-    String query,
+/// See also [checkEnquire].
+class CheckEnquireProvider extends AutoDisposeFutureProvider<EnquireResponse> {
+  /// See also [checkEnquire].
+  CheckEnquireProvider(
+    String id,
   ) : this._internal(
-          (ref) => searchstoryapi(
-            ref as SearchstoryapiRef,
-            query,
+          (ref) => checkEnquire(
+            ref as CheckEnquireRef,
+            id,
           ),
-          from: searchstoryapiProvider,
-          name: r'searchstoryapiProvider',
+          from: checkEnquireProvider,
+          name: r'checkEnquireProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchstoryapiHash,
-          dependencies: SearchstoryapiFamily._dependencies,
+                  : _$checkEnquireHash,
+          dependencies: CheckEnquireFamily._dependencies,
           allTransitiveDependencies:
-              SearchstoryapiFamily._allTransitiveDependencies,
-          query: query,
+              CheckEnquireFamily._allTransitiveDependencies,
+          id: id,
         );
 
-  SearchstoryapiProvider._internal(
+  CheckEnquireProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.query,
+    required this.id,
   }) : super.internal();
 
-  final String query;
+  final String id;
 
   @override
   Override overrideWith(
-    FutureOr<HomeSearchResopnse> Function(SearchstoryapiRef provider) create,
+    FutureOr<EnquireResponse> Function(CheckEnquireRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchstoryapiProvider._internal(
-        (ref) => create(ref as SearchstoryapiRef),
+      override: CheckEnquireProvider._internal(
+        (ref) => create(ref as CheckEnquireRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        query: query,
+        id: id,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<HomeSearchResopnse> createElement() {
-    return _SearchstoryapiProviderElement(this);
+  AutoDisposeFutureProviderElement<EnquireResponse> createElement() {
+    return _CheckEnquireProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchstoryapiProvider && other.query == query;
+    return other is CheckEnquireProvider && other.id == id;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,18 +144,18 @@ class SearchstoryapiProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SearchstoryapiRef on AutoDisposeFutureProviderRef<HomeSearchResopnse> {
-  /// The parameter `query` of this provider.
-  String get query;
+mixin CheckEnquireRef on AutoDisposeFutureProviderRef<EnquireResponse> {
+  /// The parameter `id` of this provider.
+  String get id;
 }
 
-class _SearchstoryapiProviderElement
-    extends AutoDisposeFutureProviderElement<HomeSearchResopnse>
-    with SearchstoryapiRef {
-  _SearchstoryapiProviderElement(super.provider);
+class _CheckEnquireProviderElement
+    extends AutoDisposeFutureProviderElement<EnquireResponse>
+    with CheckEnquireRef {
+  _CheckEnquireProviderElement(super.provider);
 
   @override
-  String get query => (origin as SearchstoryapiProvider).query;
+  String get id => (origin as CheckEnquireProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

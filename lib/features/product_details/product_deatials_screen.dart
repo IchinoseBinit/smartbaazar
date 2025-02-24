@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scratcher/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
@@ -22,9 +23,11 @@ import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/order_details/api/add_to_cart_api.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
@@ -39,6 +42,7 @@ import 'package:smartbazar/features/product_details/constant/people_review_widge
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/ratingbar_widget.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -96,12 +100,20 @@ class ProductDetailScreen extends ConsumerWidget {
     // print("binod is $adslist");
     final selectedIndex = ref.watch(selectedIndexProvider);
     final rating = ref.watch(ratingProvider);
+      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
     Future<void> refreshprovider() async {
-      await ref.refresh((productDetailsProvider(productId)));
-      await ref.refresh(selectedIndexProvider);
+      ref.refresh((productDetailsProvider(productId)));
+      ref.refresh(selectedIndexProvider);
     }
 
     // final AsyncValue<PostResponse> getdetails=ref
@@ -110,7 +122,7 @@ class ProductDetailScreen extends ConsumerWidget {
         data: (data) {
          print("bibash ${data.widgetSimilarPosts?.posts?.data.length}");
           return Scaffold(
-            bottomNavigationBar: SizedBox.shrink(),
+            bottomNavigationBar: const SizedBox.shrink(),
 
             extendBody: true,
             floatingActionButtonLocation:
@@ -1178,7 +1190,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                                 null ||
                                                             data
                                                                 .result!
-                                                                .live_prizes!
+                                                                .live_prizes
                                                                 .isEmpty
                                                         ? Center(
                                                             child: nolistingfound(
@@ -1239,6 +1251,71 @@ class ProductDetailScreen extends ConsumerWidget {
                                               "kala ${prod.savedByLoggedUser}");
 
                                           return ProductDetailWidget(
+                                              onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id.toString())
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id.toString(),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                               //  savedid: prod.savedByLoggedUser ==
                                               //                         null ||
                                               //                     prod.savedByLoggedUser!

@@ -12,7 +12,7 @@ class HeaderBannerWidget extends StatelessWidget {
   final int id;
   final String posttypeid;
 
-  HeaderBannerWidget(
+  const HeaderBannerWidget(
       {super.key,
       required this.title,
       required this.img,
@@ -42,7 +42,7 @@ class HeaderBannerWidget extends StatelessWidget {
                   navigateToPage(
                     context: context,
                     page: VendorHomeScreen(vendorName: vname, vid: id),
-                    ref: ref!,
+                    ref: ref,
                     showNavBar:
                         true, // Hide the navbar when moving to this screen
                   );

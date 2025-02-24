@@ -13,9 +13,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/api/search_result_provider.dart';
@@ -70,6 +75,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     (item) => item['label'] == 'Everything',
     orElse: () => headeritems.first, // Fallback to the first item if not found
   );
+  final Map<String, GlobalKey> _captureKeys = {};
 
   // final List<String> _services = [
   //   'SHOPZONE',
@@ -101,7 +107,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     });
   }
 
-  GlobalKey _globalKey = GlobalKey();
+  final GlobalKey _globalKey = GlobalKey();
 
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
@@ -114,12 +120,12 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     return false;
   }
 
-  Future<void> _captureAndSave() async {
+  Future<void> _captureAndSave(GlobalKey repaintKey) async {
     if (await _requestPermission()) {
       await Future.delayed(const Duration(milliseconds: 500));
 
       try {
-        RenderRepaintBoundary boundary = _globalKey.currentContext!
+        RenderRepaintBoundary boundary = repaintKey.currentContext!
             .findRenderObject() as RenderRepaintBoundary;
 
         ui.Image image = await boundary.toImage();
@@ -191,7 +197,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
   }
 
   Future<void> _refreshGallery(String filePath) async {
-    final channel = const MethodChannel('gallery_scan');
+    const channel = MethodChannel('gallery_scan');
     try {
       await channel.invokeMethod('scanFile', {"path": filePath});
     } catch (e) {
@@ -218,6 +224,14 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
 
   @override
   Widget build(BuildContext context) {
+      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
     final searchData = ref.watch(getSearchResponseProvider(
         _query, selectedValue ?? 'price-low-to-high'));
     final SearchProductModels =
@@ -232,7 +246,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
       setState(() {});
     }
 
-    Future<bool> _requestPermission() async {
+    Future<bool> requestPermission() async {
       if (await Permission.storage.request().isGranted) {
         return true;
       }
@@ -292,12 +306,13 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                   SliverAppBar(
+                    automaticallyImplyLeading: false,
                       expandedHeight: 90.h,
                       floating: false,
                       pinned: false,
                       flexibleSpace: AnimatedContainer(
                         padding: EdgeInsets.zero,
-                        duration: Duration(milliseconds: 150),
+                        duration: const Duration(milliseconds: 150),
                         child: Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
@@ -463,7 +478,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           height: 7.h,
                           width: 60.w,
                           decoration: BoxDecoration(
-                              color: Color(0xff651c50),
+                              color: const Color(0xff651c50),
                               borderRadius: BorderRadius.circular(5)),
                         ),
                       ),
@@ -821,6 +836,71 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                       ),
                                                       child:
                                                           AllProductDetailWidget(
+                                                            
+                                                              onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                         savedid: res.savedByLoggedUser ==
                                                                     null ||
                                                                 res.savedByLoggedUser!
@@ -909,28 +989,35 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     padding: EdgeInsets.only(top: 15.h),
                                     child: Center(
                                       child: nolistingfound(),
-                                    ))
+                                    ),
+                                  )
                                 : Padding(
                                     padding: const EdgeInsets.only(bottom: 20),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Column(
                                         children: data.business!.map((e) {
-                                          // Create a new ScreenshotController for each item
-                                          ScreenshotController
-                                              screenshotController =
-                                              ScreenshotController();
+                                          // // Create a new ScreenshotController for each item
+                                          // ScreenshotController
+                                          //     screenshotController =
+                                          //     ScreenshotController();
 
                                           return RepaintBoundary(
-                                            key:
-                                                _globalKey, // Use a new instance here
+                                            key: _captureKeys.putIfAbsent(
+                                                e.vendorId!, () => GlobalKey()),
                                             child: Container(
                                               color: Colors.white,
                                               child: BigContainer(
                                                 ondoenload: () =>
-                                                    _captureAndSave(),
+                                                    _captureAndSave(
+                                                        _captureKeys[
+                                                            e.vendorId]!),
                                                 onsubscribed: () {
-                                                  refreshprovider();
+                                                  ref.invalidate(
+                                                      getSearchResponseProvider(
+                                                          _query,
+                                                          selectedValue ??
+                                                              'price-low-to-high'));
                                                 },
                                                 storycount:
                                                     e.storyCount.toString(),
@@ -938,7 +1025,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                 issubbed: e.subscribed == 1
                                                     ? true
                                                     : false,
-                                                memebertitle: e.membershipTitle!,
+                                                memebertitle:
+                                                    e.membershipTitle!,
                                                 lat: double.tryParse(
                                                         e.latitude ?? '0') ??
                                                     0,
@@ -1016,6 +1104,70 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       savedid: res.savedByLoggedUser ==
                                                                   null ||
                                                               res.savedByLoggedUser!
@@ -1137,6 +1289,70 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       savedid: res.savedByLoggedUser ==
                                                                   null ||
                                                               res.savedByLoggedUser!
@@ -1259,6 +1475,70 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       savedid: res.savedByLoggedUser ==
                                                                   null ||
                                                               res.savedByLoggedUser!
@@ -1381,6 +1661,70 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       savedid: res.savedByLoggedUser ==
                                                                   null ||
                                                               res.savedByLoggedUser!
@@ -1503,6 +1847,70 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                       savedid: res.savedByLoggedUser ==
                                                                   null ||
                                                               res.savedByLoggedUser!
@@ -1583,7 +1991,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   );
                 },
                 error: (error, stackTrace) {
-                  return Text('Internet not found');
+                  return const Text('Internet not found');
                 },
                 loading: () {
                   // Shimmer effect for loading state
@@ -1627,7 +2035,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 8.0,
@@ -1647,7 +2055,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                         itemBuilder: (context, index) {
                           final product = results[index];
                           return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 7),
                             dense: true,
                             title: Text(
@@ -1743,7 +2151,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Color.fromARGB(255, 115, 92, 119),
+                                color: const Color.fromARGB(255, 115, 92, 119),
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
@@ -1760,7 +2168,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     decoration: BoxDecoration(
                       color: const Color(0xffE2DAE5).withOpacity(0.9),
-                      boxShadow: [
+                      boxShadow: const [
                         // Color(value)
                       ],
                       borderRadius: const BorderRadius.only(
@@ -1907,9 +2315,9 @@ class valuenotifilersidebutton extends StatelessWidget {
                             onPressed: () {
                               showSideBar.value = !value;
                             },
-                            icon: Column(
+                            icon: const Column(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.close,
                                   size: 16,
                                   color: Color(0xff918994),

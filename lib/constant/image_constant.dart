@@ -23,7 +23,7 @@ final List<Map<String, dynamic>> services = [
 ];
 Padding nolistingfound({String message = 'listing'}) {
   return Padding(
-    padding: EdgeInsets.only(top: 10, left: 10),
+    padding: const EdgeInsets.only(top: 10, left: 10),
     child: SizedBox(
       child: Text("No $message found"),
     ),

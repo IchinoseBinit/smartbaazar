@@ -12,7 +12,6 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
@@ -21,15 +20,9 @@ import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/del.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/network_service/smart-client.dart';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 

@@ -44,7 +44,12 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     super.initState();
 
     // Initialize stories
-    stories = widget.feedStoryContent?.posts ?? [];
+    if (widget.feedStoryContent?.posts == null || widget.feedStoryContent!.posts!.isEmpty) {
+  stories = [];
+} else {
+  stories = widget.feedStoryContent!.posts!;
+}
+
 
     // Group stories by vendor ID
     groupedStories = {};
@@ -82,6 +87,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
             context,
             MaterialPageRoute(
               builder: (_) => FeedStoryScreen(
+                
                 
                 selectedVendorIndex: widget.index,
                 initialIndex: widget.index,

@@ -127,7 +127,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
               return AnimatedContainer(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                duration: Duration(milliseconds: 150),
+                duration: const Duration(milliseconds: 150),
                 height:
                     MediaQuery.of(context).size.height, // Full screen height
                 child: CommentSection(id: feedproductid),

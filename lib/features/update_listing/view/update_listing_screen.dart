@@ -386,7 +386,7 @@ class _UpdateListingState extends State<UpdateListing> {
     widget.ref!.watch(GetCategoryResponseProvider(54)).whenData(
       (value) async {
         clothresp = value;
-        print('mala ${clotheasync}');
+        print('mala $clotheasync');
       },
     );
     final getCategories =
@@ -2329,7 +2329,7 @@ class _updatephotoescontainerState extends State<updatephotoescontainer> {
       // Pick images using the ImagePicker
       final List<XFile> selectedImages = await _picker.pickMultiImage();
 
-      if (selectedImages != null && selectedImages.isNotEmpty) {
+      if (selectedImages.isNotEmpty) {
         setState(() {
           images.addAll(selectedImages.map((e) => File(e.path)).toList());
         });

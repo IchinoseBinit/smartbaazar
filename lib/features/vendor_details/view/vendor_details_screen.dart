@@ -277,8 +277,8 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
                 ],
               ),
             ),
-          if (_isverified == '1') Text("Request pending"),
-          if (_isLoading == '2') Text('Please contact adminstrator'),
+          if (_isverified == '1') const Text("Request pending"),
+          if (_isLoading == '2') const Text('Please contact adminstrator'),
           const SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 12.w),

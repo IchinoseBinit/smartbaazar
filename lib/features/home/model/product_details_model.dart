@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
-import 'package:smartbazar/main.dart';
 
 part 'product_details_model.freezed.dart';
 part 'product_details_model.g.dart';

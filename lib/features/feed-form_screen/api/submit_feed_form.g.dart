@@ -6,7 +6,7 @@ part of 'submit_feed_form.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postFeedFormHash() => r'bbef37768472e573da38144a8c4081b8d9bdece8';
+String _$postFeedFormHash() => r'e6533f89c82771655dd06a407d49f03dce969ace';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,14 +44,14 @@ class PostFeedFormFamily extends Family<AsyncValue<bool>> {
     String caption,
     String offers,
     List<String> products,
-    List<File> imageFiles,
+    File imageFile,
   ) {
     return PostFeedFormProvider(
       captionTitle,
       caption,
       offers,
       products,
-      imageFiles,
+      imageFile,
     );
   }
 
@@ -64,7 +64,7 @@ class PostFeedFormFamily extends Family<AsyncValue<bool>> {
       provider.caption,
       provider.offers,
       provider.products,
-      provider.imageFiles,
+      provider.imageFile,
     );
   }
 
@@ -91,7 +91,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
     String caption,
     String offers,
     List<String> products,
-    List<File> imageFiles,
+    File imageFile,
   ) : this._internal(
           (ref) => postFeedForm(
             ref as PostFeedFormRef,
@@ -99,7 +99,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
             caption,
             offers,
             products,
-            imageFiles,
+            imageFile,
           ),
           from: postFeedFormProvider,
           name: r'postFeedFormProvider',
@@ -114,7 +114,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
           caption: caption,
           offers: offers,
           products: products,
-          imageFiles: imageFiles,
+          imageFile: imageFile,
         );
 
   PostFeedFormProvider._internal(
@@ -128,14 +128,14 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
     required this.caption,
     required this.offers,
     required this.products,
-    required this.imageFiles,
+    required this.imageFile,
   }) : super.internal();
 
   final String captionTitle;
   final String caption;
   final String offers;
   final List<String> products;
-  final List<File> imageFiles;
+  final File imageFile;
 
   @override
   Override overrideWith(
@@ -154,7 +154,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
         caption: caption,
         offers: offers,
         products: products,
-        imageFiles: imageFiles,
+        imageFile: imageFile,
       ),
     );
   }
@@ -171,7 +171,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
         other.caption == caption &&
         other.offers == offers &&
         other.products == products &&
-        other.imageFiles == imageFiles;
+        other.imageFile == imageFile;
   }
 
   @override
@@ -181,7 +181,7 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, caption.hashCode);
     hash = _SystemHash.combine(hash, offers.hashCode);
     hash = _SystemHash.combine(hash, products.hashCode);
-    hash = _SystemHash.combine(hash, imageFiles.hashCode);
+    hash = _SystemHash.combine(hash, imageFile.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -202,8 +202,8 @@ mixin PostFeedFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `products` of this provider.
   List<String> get products;
 
-  /// The parameter `imageFiles` of this provider.
-  List<File> get imageFiles;
+  /// The parameter `imageFile` of this provider.
+  File get imageFile;
 }
 
 class _PostFeedFormProviderElement
@@ -219,7 +219,7 @@ class _PostFeedFormProviderElement
   @override
   List<String> get products => (origin as PostFeedFormProvider).products;
   @override
-  List<File> get imageFiles => (origin as PostFeedFormProvider).imageFiles;
+  File get imageFile => (origin as PostFeedFormProvider).imageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

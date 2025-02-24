@@ -19,7 +19,6 @@ import 'package:smartbazar/features/create_listing/api/get_location_provider.dar
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
 import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';

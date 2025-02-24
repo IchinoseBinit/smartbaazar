@@ -64,7 +64,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchProductModels = false;
-  bool _isPopupVisible = false;
+  final bool _isPopupVisible = false;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 1;
@@ -233,7 +233,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
 
   @override
   Widget build(BuildContext context) {
-    void _scrollToTop() {
+    void scrollToTop() {
   if (_scrollController.hasClients) {
     _scrollController.animateTo(
       0.0,
@@ -247,14 +247,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
         ref.watch(searchProvider(_searchController.text));
 
     Future<void> refreshprovider() async {
-      await ref.watch(bottomNavIndexProvider);
+      ref.watch(bottomNavIndexProvider);
     }
      void didChangeDependencies() {
     super.didChangeDependencies();
 
     ref.listen<bool>(scrollToTopProvider, (previous, next) {
       if (next) {
-        _scrollToTop();
+        scrollToTop();
         ref.read(scrollToTopProvider.notifier).state = false; // Reset trigger
       }
     });
@@ -263,8 +263,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     Future<void> refreshProvider() async {
       // You can perform any necessary refresh actions here.
       // For example, re-fetching data or resetting some state.
-      await ref.refresh(bottomNavIndexProvider);
-      await ref.refresh(searchProvider(_searchController.text));
+      ref.refresh(bottomNavIndexProvider);
+      ref.refresh(searchProvider(_searchController.text));
       setState(() {});
     }
         // final scrollToTop = ref.watch(scrollToTopProvider);
@@ -338,7 +338,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           pinned: true,
                           flexibleSpace: AnimatedContainer(
                             padding: EdgeInsets.zero,
-                            duration: Duration(milliseconds: 150),
+                            duration: const Duration(milliseconds: 150),
                             child: Container(
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(
@@ -512,7 +512,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               height: 7.h,
                               width: 60.w,
                               decoration: BoxDecoration(
-                                  color: Color(0xff651c50),
+                                  color: const Color(0xff651c50),
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
@@ -528,10 +528,10 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                             controller: _tabController,
                             dividerHeight: 0,
                             padding: EdgeInsets.zero,
-                            indicatorColor: Color(0xFF392574),
+                            indicatorColor: const Color(0xFF392574),
                             labelColor: Colors.black,
                             unselectedLabelColor: Colors.grey,
-                            tabs: [
+                            tabs: const [
                               Tab(text: "For You"),
                               Tab(text: "Following"),
                             ],
@@ -579,7 +579,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                       color: Colors.white,
                       borderRadius:
                           BorderRadius.circular(12), // Rounded corners
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black26,
                           blurRadius: 8.0,
@@ -599,7 +599,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           itemBuilder: (context, index) {
                             final product = results[index];
                             return ListTile(
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                   vertical: 2, horizontal: 7),
                               dense: true,
                               title: Text(
@@ -663,8 +663,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     final asyncFollowingFeedContent = ref.watch(getFeedOfFollowingProvider);
     final asyncFollowingStoryContent = ref.watch(getFollowingStoryProvider);
     Future<void> refreshprovider() async {
-      await ref.refresh(getFollowingStoryProvider);
-      await ref.refresh(getFeedOfFollowingProvider);
+      ref.refresh(getFollowingStoryProvider);
+      ref.refresh(getFeedOfFollowingProvider);
     }
 
     return SingleChildScrollView(
@@ -854,8 +854,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     Future<void> refreshprovider() async {
-      await ref.refresh(getForYouFeedApiProvider);
-      await ref.refresh(getForYouStoryProvider);
+      ref.refresh(getForYouFeedApiProvider);
+      ref.refresh(getForYouStoryProvider);
     }
 
     return SingleChildScrollView(
@@ -1061,7 +1061,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Color.fromARGB(255, 115, 92, 119),
+                                color: const Color.fromARGB(255, 115, 92, 119),
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
@@ -1078,7 +1078,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     decoration: BoxDecoration(
                       color: const Color(0xffE2DAE5).withOpacity(0.9),
-                      boxShadow: [
+                      boxShadow: const [
                         // Color(value)
                       ],
                       borderRadius: const BorderRadius.only(
@@ -1225,9 +1225,9 @@ class valuenotifilersidebutton extends StatelessWidget {
                             onPressed: () {
                               showSideBar.value = !value;
                             },
-                            icon: Column(
+                            icon: const Column(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.close,
                                   size: 16,
                                   color: Color(0xff918994),

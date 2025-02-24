@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,12 +17,11 @@ Future<String> generateMyQR(ref, String imagePath) async {
         'https://qrcode.jianjun-rnd.com.np/api/qr-code',
         data: FormData.fromMap({
           'qr_data': 'www.smartbazaar.com.np', // QR code data
-          'background_image_url': 'https://qrcode.jianjun-rnd.com.np/qrcodes/67b36c9b332d8.png'
+          'background_url': imagePath
         }),
         options: Options(headers: {
           'Content-Type': 'multipart/form-data',
           'X-AppApiToken': 'Yala@Techies_Nepal',  // ✅ Add API token
-          'Authorization': 'Bearer 1293|17UMy8BvRKMjLpZG0qLVzO7g2via47YywEan5tTj'  // ✅ Add Bearer token
         }),
       );
 

@@ -59,7 +59,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
           maxChildSize: 1.0, // Allow full screen height
           builder: (context, scrollController) {
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
@@ -79,7 +79,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                         ),
                       ),
                       const SizedBox(height: 15),
-                      Text(
+                      const Text(
                         "Your QR Code",
                         style: TextStyle(
                             color: Colors.white,
@@ -89,7 +89,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                       const SizedBox(height: 20),
                       Container(
                         height: 200.h,
-                        padding: EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(2),
                         width: 900.w,
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white)),
@@ -164,6 +164,8 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     setState(() {});
   }
 
+  String? id;
+
   @override
   void initState() {
     super.initState();
@@ -215,10 +217,13 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     });
   }
 
+  // Future<void> _getdetails(String _id) async {
+
+  // }
+
   void _showDialog(String message, WidgetRef ref) {
     // Extract the last part of the URL (the ID)
-    String id =
-        message.split('/').last; // Extracts "9" from "www.smartbajar.com/9"
+    id = message.split('/').last; // Extracts "9" from "www.smartbajar.com/9"
 
     showDialog(
       context: context,
@@ -228,9 +233,21 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             "Scanned: $message\nExtracted ID: $id"), // Show extracted ID for debugging
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close this dialog
-              showcard(ref, id); // Call showcard with the extracted ID
+            onPressed: () async {
+              await GiveVendorid().givemeid(id!).then(
+                (value) {
+                //  print('bibash ${value}');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VendorHomeScreen(
+                            vid: int.tryParse(value)!, vendorName: id!),
+                      ));
+                },
+              );
+              // print('kala ${genid}');
+              // Navigator.pop(context); // Close this dialog
+              showcard(ref, id!); // Call showcard with the extracted ID
             },
             child: const Text("OK"),
           ),
@@ -246,59 +263,61 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
       },
     );
 
-   if(generatedvendorid!=null)
-    ref.read(getVendorCardProvider(generatedvendorid!)).whenData((value) {
-      /// 2. Update `_card` inside `setState`
-      setState(() {
-        _card = BigContainer(
-          ondoenload: () {},
-          onsubscribed: () {},
-          key: GlobalKey(),
-          lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
-          long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
-          id: value.data!.vendor_card!.membership_id!,
-          title: value.data!.vendor_card!.name!,
-          logo: value.data!.vendor_card!.photo!,
-          contact: value.data!.vendor_card!.phone!,
-          storyCount: value.data!.vendor_card!.storycount.toString(),
-          membershipTitle: value.data!.vendor_card!.membership_title!,
-          storycount: value.data!.vendor_card!.storycount.toString(),
-          total_connections: value.data!.vendor_card!.subscribers.toString(),
-          total_prize_worth: value.data!.vendor_card!.prize_worth.toString(),
-          location: value.data!.vendor_card!.nearestbranch ?? '',
-          Cnumber: value.data!.vendor_card!.phone!,
-          issubbed: value.data!.vendor_card!.subscribed == 'subscribed',
-          memebertitle: value.data!.vendor_card!.membership_title!,
+    if (generatedvendorid != null) {
+      ref.read(getVendorCardProvider(generatedvendorid!)).whenData((value) {
+        /// 2. Update `_card` inside `setState`
+        setState(() {
+          _card = BigContainer(
+            ondoenload: () {},
+            onsubscribed: () {},
+            key: GlobalKey(),
+            lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
+            long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
+            id: value.data!.vendor_card!.membership_id!,
+            title: value.data!.vendor_card!.name!,
+            logo: value.data!.vendor_card!.photo!,
+            contact: value.data!.vendor_card!.phone!,
+            storyCount: value.data!.vendor_card!.storycount.toString(),
+            membershipTitle: value.data!.vendor_card!.membership_title!,
+            storycount: value.data!.vendor_card!.storycount.toString(),
+            total_connections: value.data!.vendor_card!.subscribers.toString(),
+            total_prize_worth: value.data!.vendor_card!.prize_worth.toString(),
+            location: value.data!.vendor_card!.nearestbranch ?? '',
+            Cnumber: value.data!.vendor_card!.phone!,
+            issubbed: value.data!.vendor_card!.subscribed == 'subscribed',
+            memebertitle: value.data!.vendor_card!.membership_title!,
+          );
+        });
+
+        /// 3. Show the dialog **after** updating `_card`
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            contentPadding: EdgeInsets.zero,
+            titlePadding: const EdgeInsets.symmetric(horizontal: 5),
+            actionsPadding: EdgeInsets.zero,
+            content: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VendorHomeScreen(
+                          vid: int.tryParse(generatedvendorid.toString())!,
+                          vendorName: ''),
+                    ));
+              },
+              child: _card ?? const Center(child: CircularProgressIndicator()),
+            ), // Show loader if null
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"),
+              ),
+            ],
+          ),
         );
       });
-
-      /// 3. Show the dialog **after** updating `_card`
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          titlePadding: EdgeInsets.symmetric(horizontal: 5),
-          actionsPadding: EdgeInsets.zero,
-          content: InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => VendorHomeScreen(
-                        vid: int.tryParse(generatedvendorid.toString())!, vendorName: ''),
-                  ));
-            },
-            child: _card ?? const Center(child: CircularProgressIndicator()),
-          ), // Show loader if null
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
-            ),
-          ],
-        ),
-      );
-    });
+    }
   }
 
   void _showSnackBar(String message) {
@@ -337,9 +356,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Colors.grey, shape: BoxShape.circle),
-                          child: Icon(
+                          child: const Icon(
                             Icons.info_outline_rounded,
                             color: Colors.white,
                           )),
@@ -354,7 +373,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                         child: IconButton(
                           padding: EdgeInsets.zero, // Removes extra padding
                           constraints:
-                              BoxConstraints(), // Ensures no unnecessary space
+                              const BoxConstraints(), // Ensures no unnecessary space
                           iconSize: 14.sp, // Responsive icon size
                           onPressed: () {
                             Navigator.pop(context);
@@ -543,7 +562,8 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                   },
                   error: (error, stackTrace) =>
                       Center(child: Text("Error: $error")),
-                  loading: () => Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                 )
               ],
             ),
