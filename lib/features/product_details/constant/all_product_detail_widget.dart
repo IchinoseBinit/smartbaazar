@@ -160,8 +160,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                   ],
                 ),
                 PopupMenuButton(
-                  menuPadding:
-                      EdgeInsets.only(left: 10.w), // Responsive menu padding
+                 // menuPadding:
+                  //    EdgeInsets.only(left: 10.w), // Responsive menu padding
                   onSelected: (value) {},
                   padding: EdgeInsets.symmetric(
                       horizontal: 5.h), // Responsive padding

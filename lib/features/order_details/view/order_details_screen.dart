@@ -7,6 +7,7 @@ import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
 import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
@@ -523,6 +524,10 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                     onPressed: () {
                       // Navigate to the BottomNavigationScreen when the user clicks "OK"
                       Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

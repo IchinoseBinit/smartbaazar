@@ -54,7 +54,7 @@ dependencies:
   # multiple_images_picker: ^1.0.1
   share_plus: ^10.1.4
   flutter_html: ^3.0.0-beta.2
-  rxdart: ^0.28.0
+  rxdart: ^0.27.7
   cached_network_image: ^3.4.1
   google_fonts: ^6.2.1
   url_launcher: ^6.3.1
@@ -91,7 +91,7 @@ dependencies:
 
 
 dependency_overrides:
-   custom_lint: 0.7.0
+   custom_lint: 0.6.0
 
 
 dev_dependencies:

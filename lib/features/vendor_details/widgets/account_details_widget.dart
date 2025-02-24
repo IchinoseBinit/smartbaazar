@@ -28,6 +28,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   late TextEditingController _emailController;
   late TextEditingController _userNameController;
   late TextEditingController _genderController;
+  late TextEditingController _bioController;
   String? description;
   String? userId;
   bool isLoading = false;
@@ -56,6 +57,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _userNameController = TextEditingController(text: '');
     _genderController = TextEditingController(text: '');
     branchControllers = [TextEditingController()];
+    _bioController = TextEditingController(text: '');
     // _branchController = TextEditingController(text: '');
   }
 
@@ -73,6 +75,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _emailController.text = userData.email ?? '';
         _userNameController.text = userData.username ?? '';
         _genderController.text = userData.genderId ?? '';
+        _bioController.text = userData.bio ?? '';
         description = userData.about ?? '';
         _isInitialized = true;
         // Parse branch locations
@@ -162,8 +165,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
+        bio: _bioController.text,
 
-      //  usersLocation: jsonEncode({'location': _branchController.text}),
+        //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
         _updateUserDetails(updatedData);
@@ -181,6 +185,20 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       isLoading = true;
     });
     try {
+      //  List<Map<String, String>> branchLocations = branchControllers
+      //   .where((controller) => controller.text.isNotEmpty)
+      //   .map((controller) => {'location': controller.text})
+      //   .toList();
+      // Extract opening hours data
+      // List<Map<String, dynamic>> openingHoursData = openingHours.entries.map((entry) {
+      //   return {
+      //     'day': entry.key,
+      //     'from': entry.value['from'] ?? '',
+      //     'to': entry.value['to'] ?? '',
+      //     'closed': entry.value['closed'] ?? false,
+      //   };
+      // }).toList();
+
       List<String> branchLocations =
           branchControllers.map((controller) => controller.text).toList();
 
@@ -194,28 +212,29 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         to.add(openingHours[dayNames[i]]!['to'] ?? '');
         closed.add(openingHours[dayNames[i]]!['closed']);
       }
-              print("kelaz ${branchControllers}");
+      print("kelaz ${branchControllers}");
 
+      final updateUserDetail = await ref.read(updateUserDetailsProvider(
+        data.name ?? '',
+        data.phone ?? '',
+        data.username ?? '',
+        data.email ?? '',
+        userId ?? '',
+        data.genderId ?? '',
+        branchControllers.isEmpty || branchControllers == null
+            ? branchLocations
+            : branchControllers.map((controller) => controller.text).toList(),
 
-      // final updateUserDetail = await ref.read(updateUserDetailsProvider(
-      //   data.name ?? '',
-      //   data.phone ?? '',
-      //   data.username ?? '',
-      //   data.email ?? '',
-      //   userId ?? '',
-      //   data.genderId ?? '',
-      //      branchControllers.isEmpty || branchControllers==null ? branchLocations : branchControllers.map((controller) => controller.text).toList(),
+        data.bio ?? '',
 
-      //   description!,
+        openingHours.keys.toList(),
+        openingHours.values.map((v) => v['from']).toList().cast<String>(),
+        openingHours.values.map((v) => v['to']).toList().cast<String>(),
+        openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
 
-      //   openingHours.keys.toList(),
-      //   openingHours.values.map((v) => v['from']).toList().cast<String>(),
-      //   openingHours.values.map((v) => v['to']).toList().cast<String>(),
-      //   openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
-
-      //   // description,
-      //   //  dob!,
-      // ).future);
+        // description,
+        //  dob!,
+      ).future);
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -228,6 +247,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _userNameController.clear();
         _genderController.clear();
         branchControllers.clear();
+        _bioController.clear();
         description = '';
         // dayNames = [];
         // from = [];
@@ -571,6 +591,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
                           SizedBox(height: 10.2.h),
                           TextFormField(
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
+                            controller: _bioController,
                             decoration: InputDecoration(
                               hintText: 'Write in your bio...',
                               hintStyle: TextStyle(
@@ -585,12 +609,12 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             keyboardType: TextInputType.multiline,
                             textInputAction: TextInputAction.done,
                             onChanged: (value) {
-                              description = value;
+                              _bioController.text = value;
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a description';
-                              }
+                              // if (value == null || value.isEmpty) {
+                              //   return 'Please enter a description';
+                              // }
                               return null;
                             },
                           ),
@@ -607,7 +631,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             // onPressed: () {
                             //   // print('pinky ${branchControllers}');
                             // },
-                             onPressed: isLoading ? null : _submitUpdate,
+                            onPressed: isLoading ? null : _submitUpdate,
                           ),
                         ],
                       ),

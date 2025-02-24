@@ -670,7 +670,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
-        spacing: 5.h,
+       // spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(
@@ -862,7 +862,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 5.h,
+      //  spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(

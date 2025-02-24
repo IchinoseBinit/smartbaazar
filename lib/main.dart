@@ -76,8 +76,6 @@ class _MyAppState extends State<MyApp> {
   //   print('bibash ${_a['result']['username']}');
   // }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -90,8 +88,7 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home:SocioShopScreen()
-            ));
+            home: SplashScreen()));
   }
 }
 
