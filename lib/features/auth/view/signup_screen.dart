@@ -248,7 +248,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 showAlertDialog(context);
                               }).onError(
                                 (error, stackTrace) {
-                                  return Text('Fill up the ');
+                                  return const Text('Fill up the ');
                                 },
                               );
                             }
@@ -280,20 +280,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 showAlertDialog(BuildContext context) {
   // set up the button
   Widget okButton = TextButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ));
     },
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Congeatulation"),
-    content: Text("Your account has been created"),
+    title: const Text("Congeatulation"),
+    content: const Text("Your account has been created"),
     actions: [
       okButton,
     ],

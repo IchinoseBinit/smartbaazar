@@ -562,7 +562,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
             SizedBox(height: 5.h),
             CityField(
               onCitySelected: (data) {
-                widget.place(data!);
+                widget.place(data);
               },
             ),
             SizedBox(height: 5.h),
@@ -581,7 +581,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   SizedBox(height: 10.h),
                   TextField(
                     onChanged: (value) {
-                      widget.address(value!);
+                      widget.address(value);
                     },
                     decoration: InputDecoration.collapsed(
                         hintText: 'Enter Street Address',

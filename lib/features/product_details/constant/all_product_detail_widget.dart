@@ -48,6 +48,8 @@ class AllProductDetailWidget extends StatefulWidget {
     required this.long,
     this.savedid,
     this.onRefresh,
+        this.onenquiredclicked
+
   });
 
   String? title;
@@ -75,6 +77,8 @@ class AllProductDetailWidget extends StatefulWidget {
   String? lat, long;
   List<SavedPost>? savedid;
   final VoidCallback? onRefresh;
+    final Function()? onenquiredclicked;
+
 
   @override
   State<AllProductDetailWidget> createState() => _AllProductDetailWidgetState();
@@ -160,8 +164,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                   ],
                 ),
                 PopupMenuButton(
-                 // menuPadding:
-                  //    EdgeInsets.only(left: 10.w), // Responsive menu padding
+                  menuPadding:
+                     EdgeInsets.only(left: 10.w), // Responsive menu padding
                   onSelected: (value) {},
                   padding: EdgeInsets.symmetric(
                       horizontal: 5.h), // Responsive padding
@@ -657,12 +661,15 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      "ENQUIRE",
-                      style: headerstyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11.sp, // Responsive font size
-                        color: ColorConstant.blackColor,
+                    InkWell(
+                      onTap: widget.onenquiredclicked,
+                      child: Text(
+                        "ENQUIRE",
+                        style: headerstyle.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11.sp, // Responsive font size
+                          color: ColorConstant.blackColor,
+                        ),
                       ),
                     ),
                     Text(

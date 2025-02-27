@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smartbazar/features/message/model/reply_message_model.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
-part 'reply_message_model_api.g.dart';
+part 'send_message_api.g.dart';
 
 @riverpod
-Future<ReplyMessageModel> sendReplyMessage(
-   ref,
-    String threadId, String? body, File? imageFile) async {
+Future<String> sendNewMessage(
+  ref,
+  String postid, 
+  String? body, 
+  String? subject,
+  File? imageFile, // Ensure you handle the image file as well
+) async {
   final SmartClient client = SmartClient();
 
   try {
@@ -31,7 +34,7 @@ Future<ReplyMessageModel> sendReplyMessage(
     print("User: $name, Email: $email, Phone: $phone");
 
     FormData formData = FormData.fromMap({
-      'post_id': threadId,
+      'post_id': postid,
       'filename': imageFile != null
           ? await MultipartFile.fromFile(imageFile.path,
               filename: imageFile.path.split('/').last)
@@ -44,12 +47,15 @@ Future<ReplyMessageModel> sendReplyMessage(
 
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
-      url: 'https://smartbazaar.jianjun-rnd.com.np/api/threads/$threadId?body=$body',
+      url: 'https://smartbazaar.jianjun-rnd.com.np/api/threads',
       parameter: formData,
     );
 
     if (response.statusCode! >= 200 && response.statusCode! < 300) {
-      return ReplyMessageModel.fromJson(response.data);
+      // Parse the response to extract the message
+      final responseBody = response.data as Map<String, dynamic>;
+      final message = responseBody['message'];
+      return message; // Return the success message
     } else {
       throw Exception('Failed to send your message: ${response.statusCode}');
     }

@@ -7,23 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
-import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/main.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // This is your ConsumerStatefulWidget to handle all the parameters
@@ -51,38 +45,40 @@ class ProductDetailWidget extends ConsumerStatefulWidget {
   final String? lat, long;
   final List<dynamic>? savedid;
   final VoidCallback? onRefresh;
+  final Function()? onenquiredclicked;
 
   // Constructor
-  const ProductDetailWidget({
-    Key? key,
-    required this.productid,
-    this.title,
-    this.price,
-    this.discounttedPrice = '0',
-    this.similarproductCount,
-    this.vendorname = 'John',
-    this.didcountpercentage,
-    this.posttype = '1',
-    this.comment = '0',
-    this.distance = 2.0,
-    this.Vimage = '',
-    this.productImage,
-    this.lefttile = 'TradeHub',
-    this.membershipColor,
-    this.membershipTitle,
-    this.issponsored = false,
-    this.offer,
-    this.wow,
-    this.avg_rating = 1.0,
-    this.shortestDistance,
-    this.vendorid,
-    this.tradeImage,
-    this.membershipid = '1',
-    this.lat,
-    this.long,
-    this.savedid,
-    this.onRefresh,
-  }) : super(key: key);
+  const ProductDetailWidget(
+      {Key? key,
+      required this.productid,
+      this.title,
+      this.price,
+      this.discounttedPrice = '0',
+      this.similarproductCount,
+      this.vendorname = 'John',
+      this.didcountpercentage,
+      this.posttype = '1',
+      this.comment = '0',
+      this.distance = 2.0,
+      this.Vimage = '',
+      this.productImage,
+      this.lefttile = 'TradeHub',
+      this.membershipColor,
+      this.membershipTitle,
+      this.issponsored = false,
+      this.offer,
+      this.wow,
+      this.avg_rating = 1.0,
+      this.shortestDistance,
+      this.vendorid,
+      this.tradeImage,
+      this.membershipid = '1',
+      this.lat,
+      this.long,
+      this.savedid,
+      this.onRefresh,
+      this.onenquiredclicked})
+      : super(key: key);
 
   @override
   _ProductDetailWidgetState createState() => _ProductDetailWidgetState();
@@ -188,18 +184,15 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                       ],
                     ),
                     PopupMenuButton(
-                     // menuPadding: EdgeInsets.only(left: 10.w),
+                      menuPadding: EdgeInsets.only(left: 10.w),
                       onSelected: (value) {},
-
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
                           const BoxConstraints.expand(width: 150, height: 150),
-                      // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
-
                       color: Colors.grey,
                       itemBuilder: (context) {
                         return [
@@ -260,13 +253,13 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
                               onTap: () {
-
-                                  navigateToPage(
-          context: context,
-          page: ProductDetailScreen(productId: widget.productid),
-          ref: ref,
-          showNavBar: false, // Hide bottom navbar
-        );
+                                navigateToPage(
+                                  context: context,
+                                  page: ProductDetailScreen(
+                                      productId: widget.productid),
+                                  ref: ref,
+                                  showNavBar: false, // Hide bottom navbar
+                                );
                                 // Navigator.push(
                                 //     context,
                                 //     MaterialPageRoute(
@@ -307,14 +300,14 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             padding: const EdgeInsets.only(left: 5),
                             onTap: () {
                               // print('value ${userId}');
-                                navigateToPage(
-          context: context,
-          page:  ReportComplainScreen(
-                                        productId: userId.toString(),
-                                        productName: widget.vendorname!),
-          ref: ref,
-          showNavBar: false, // Hide bottom navbar
-        );
+                              navigateToPage(
+                                context: context,
+                                page: ReportComplainScreen(
+                                    productId: userId.toString(),
+                                    productName: widget.vendorname!),
+                                ref: ref,
+                                showNavBar: false, // Hide bottom navbar
+                              );
                               // Navigator.push(
                               //     context,
                               //     MaterialPageRoute(
@@ -661,10 +654,7 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: () {
-                            // print(object)
-                            //  Navigator.push(context,MaterialPageRoute(builder: (context) =>  ChatScreen(threadId: widget.v, username: username, postId: postId),))
-                          },
+                          onTap: widget.onenquiredclicked,
                           child: Text(
                             "ENQUIRE",
                             style: headerstyle.copyWith(
@@ -731,19 +721,21 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                         // Left Avatar
                         InkWell(
                           onTap: () {
-                              navigateToPage(
-          context: context,
-          page: VendorHomeScreen(
+                            // navigateToPage(
+                            //   context: context,
+                            //   page: VendorHomeScreen(
+                            //       vendorName: widget.vendorname!,
+                            //       vid: int.tryParse(widget.vendorid!)!),
+                            //   ref: ref,
+                            //   showNavBar: false, // Hide bottom navbar
+                            // );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
                                       vendorName: widget.vendorname!,
                                       vid: int.tryParse(widget.vendorid!)!),
-          ref: ref,
-          showNavBar: false, // Hide bottom navbar
-        );
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => 
-                            //     ));
+                                ));
                           },
                           child: Padding(
                               padding: EdgeInsets.only(left: 13.w, right: 3.w),
@@ -785,8 +777,8 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                                       widget.shortestDistance == null
                                           ? widget.vendorname.toString()
                                           : widget.vendorname != null &&
-                                                  widget.vendorname!.length > 11
-                                              ? '${widget.vendorname!.substring(0, 11)}..' // Truncate after 11 characters
+                                                  widget.vendorname!.length > 17
+                                              ? '${widget.vendorname!.substring(0, 17)}..' // Truncate after 11 characters
                                               : widget.vendorname ??
                                                   '', // If vendorname is null or short enough, show it fully
                                       style: headerstyle.copyWith(

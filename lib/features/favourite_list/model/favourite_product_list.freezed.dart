@@ -382,7 +382,7 @@ mixin _$SavedProducts {
   @JsonKey(name: "current_page")
   int? get currentPage => throw _privateConstructorUsedError;
   @JsonKey(name: "data")
-  List<Product>? get data => throw _privateConstructorUsedError;
+  List<FavouriteProduct>? get data => throw _privateConstructorUsedError;
 
   /// Serializes this SavedProducts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -402,7 +402,7 @@ abstract class $SavedProductsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<Product>? data});
+      @JsonKey(name: "data") List<FavouriteProduct>? data});
 }
 
 /// @nodoc
@@ -431,7 +431,7 @@ class _$SavedProductsCopyWithImpl<$Res, $Val extends SavedProducts>
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
+              as List<FavouriteProduct>?,
     ) as $Val);
   }
 }
@@ -446,7 +446,7 @@ abstract class _$$SavedProductsImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<Product>? data});
+      @JsonKey(name: "data") List<FavouriteProduct>? data});
 }
 
 /// @nodoc
@@ -473,7 +473,7 @@ class __$$SavedProductsImplCopyWithImpl<$Res>
       data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
+              as List<FavouriteProduct>?,
     ));
   }
 }
@@ -483,7 +483,7 @@ class __$$SavedProductsImplCopyWithImpl<$Res>
 class _$SavedProductsImpl implements _SavedProducts {
   const _$SavedProductsImpl(
       {@JsonKey(name: "current_page") required this.currentPage,
-      @JsonKey(name: "data") required final List<Product>? data})
+      @JsonKey(name: "data") required final List<FavouriteProduct>? data})
       : _data = data;
 
   factory _$SavedProductsImpl.fromJson(Map<String, dynamic> json) =>
@@ -492,10 +492,10 @@ class _$SavedProductsImpl implements _SavedProducts {
   @override
   @JsonKey(name: "current_page")
   final int? currentPage;
-  final List<Product>? _data;
+  final List<FavouriteProduct>? _data;
   @override
   @JsonKey(name: "data")
-  List<Product>? get data {
+  List<FavouriteProduct>? get data {
     final value = _data;
     if (value == null) return null;
     if (_data is EqualUnmodifiableListView) return _data;
@@ -542,7 +542,7 @@ class _$SavedProductsImpl implements _SavedProducts {
 abstract class _SavedProducts implements SavedProducts {
   const factory _SavedProducts(
           {@JsonKey(name: "current_page") required final int? currentPage,
-          @JsonKey(name: "data") required final List<Product>? data}) =
+          @JsonKey(name: "data") required final List<FavouriteProduct>? data}) =
       _$SavedProductsImpl;
 
   factory _SavedProducts.fromJson(Map<String, dynamic> json) =
@@ -553,7 +553,7 @@ abstract class _SavedProducts implements SavedProducts {
   int? get currentPage;
   @override
   @JsonKey(name: "data")
-  List<Product>? get data;
+  List<FavouriteProduct>? get data;
 
   /// Create a copy of SavedProducts
   /// with the given fields replaced by the non-null parameter values.
@@ -563,12 +563,12 @@ abstract class _SavedProducts implements SavedProducts {
       throw _privateConstructorUsedError;
 }
 
-Product _$ProductFromJson(Map<String, dynamic> json) {
-  return _Product.fromJson(json);
+FavouriteProduct _$FavouriteProductFromJson(Map<String, dynamic> json) {
+  return _FavouriteProduct.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Product {
+mixin _$FavouriteProduct {
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: "country_code")
   String? get countryCode => throw _privateConstructorUsedError;
@@ -637,19 +637,21 @@ mixin _$Product {
   List<SavedByLoggedUser>? get savedByLoggedUser =>
       throw _privateConstructorUsedError;
 
-  /// Serializes this Product to a JSON map.
+  /// Serializes this FavouriteProduct to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Product
+  /// Create a copy of FavouriteProduct
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
+  $FavouriteProductCopyWith<FavouriteProduct> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ProductCopyWith<$Res> {
-  factory $ProductCopyWith(Product value, $Res Function(Product) then) =
-      _$ProductCopyWithImpl<$Res, Product>;
+abstract class $FavouriteProductCopyWith<$Res> {
+  factory $FavouriteProductCopyWith(
+          FavouriteProduct value, $Res Function(FavouriteProduct) then) =
+      _$FavouriteProductCopyWithImpl<$Res, FavouriteProduct>;
   @useResult
   $Res call(
       {String? id,
@@ -666,16 +668,16 @@ abstract class $ProductCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ProductCopyWithImpl<$Res, $Val extends Product>
-    implements $ProductCopyWith<$Res> {
-  _$ProductCopyWithImpl(this._value, this._then);
+class _$FavouriteProductCopyWithImpl<$Res, $Val extends FavouriteProduct>
+    implements $FavouriteProductCopyWith<$Res> {
+  _$FavouriteProductCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Product
+  /// Create a copy of FavouriteProduct
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -742,10 +744,11 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
 }
 
 /// @nodoc
-abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
-  factory _$$ProductImplCopyWith(
-          _$ProductImpl value, $Res Function(_$ProductImpl) then) =
-      __$$ProductImplCopyWithImpl<$Res>;
+abstract class _$$FavouriteProductImplCopyWith<$Res>
+    implements $FavouriteProductCopyWith<$Res> {
+  factory _$$FavouriteProductImplCopyWith(_$FavouriteProductImpl value,
+          $Res Function(_$FavouriteProductImpl) then) =
+      __$$FavouriteProductImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -763,14 +766,14 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$ProductImplCopyWithImpl<$Res>
-    extends _$ProductCopyWithImpl<$Res, _$ProductImpl>
-    implements _$$ProductImplCopyWith<$Res> {
-  __$$ProductImplCopyWithImpl(
-      _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
+class __$$FavouriteProductImplCopyWithImpl<$Res>
+    extends _$FavouriteProductCopyWithImpl<$Res, _$FavouriteProductImpl>
+    implements _$$FavouriteProductImplCopyWith<$Res> {
+  __$$FavouriteProductImplCopyWithImpl(_$FavouriteProductImpl _value,
+      $Res Function(_$FavouriteProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Product
+  /// Create a copy of FavouriteProduct
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -787,7 +790,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? savedByLoggedUser = freezed,
   }) {
-    return _then(_$ProductImpl(
+    return _then(_$FavouriteProductImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -838,8 +841,8 @@ class __$$ProductImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ProductImpl implements _Product {
-  const _$ProductImpl(
+class _$FavouriteProductImpl implements _FavouriteProduct {
+  const _$FavouriteProductImpl(
       {required this.id,
       @JsonKey(name: "country_code") required this.countryCode,
       @JsonKey(name: "user_id") required this.userId,
@@ -853,8 +856,8 @@ class _$ProductImpl implements _Product {
       required final List<SavedByLoggedUser>? savedByLoggedUser})
       : _savedByLoggedUser = savedByLoggedUser;
 
-  factory _$ProductImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProductImplFromJson(json);
+  factory _$FavouriteProductImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FavouriteProductImplFromJson(json);
 
   @override
   final String? id;
@@ -945,14 +948,14 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, price: $price, discountedPrice: $discountedPrice, image: $image, savedByLoggedUser: $savedByLoggedUser)';
+    return 'FavouriteProduct(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, price: $price, discountedPrice: $discountedPrice, image: $image, savedByLoggedUser: $savedByLoggedUser)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ProductImpl &&
+            other is _$FavouriteProductImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.countryCode, countryCode) ||
                 other.countryCode == countryCode) &&
@@ -988,24 +991,25 @@ class _$ProductImpl implements _Product {
       image,
       const DeepCollectionEquality().hash(_savedByLoggedUser));
 
-  /// Create a copy of Product
+  /// Create a copy of FavouriteProduct
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
-      __$$ProductImplCopyWithImpl<_$ProductImpl>(this, _$identity);
+  _$$FavouriteProductImplCopyWith<_$FavouriteProductImpl> get copyWith =>
+      __$$FavouriteProductImplCopyWithImpl<_$FavouriteProductImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ProductImplToJson(
+    return _$$FavouriteProductImplToJson(
       this,
     );
   }
 }
 
-abstract class _Product implements Product {
-  const factory _Product(
+abstract class _FavouriteProduct implements FavouriteProduct {
+  const factory _FavouriteProduct(
       {required final String? id,
       @JsonKey(name: "country_code") required final String? countryCode,
       @JsonKey(name: "user_id") required final String? userId,
@@ -1017,9 +1021,10 @@ abstract class _Product implements Product {
       @JsonKey(name: "discounted_price") required final String? discountedPrice,
       required final String? image,
       required final List<SavedByLoggedUser>?
-          savedByLoggedUser}) = _$ProductImpl;
+          savedByLoggedUser}) = _$FavouriteProductImpl;
 
-  factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
+  factory _FavouriteProduct.fromJson(Map<String, dynamic> json) =
+      _$FavouriteProductImpl.fromJson;
 
   @override
   String? get id;
@@ -1095,11 +1100,11 @@ abstract class _Product implements Product {
   @override
   List<SavedByLoggedUser>? get savedByLoggedUser;
 
-  /// Create a copy of Product
+  /// Create a copy of FavouriteProduct
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
+  _$$FavouriteProductImplCopyWith<_$FavouriteProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

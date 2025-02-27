@@ -42,7 +42,7 @@ class MySubscriptionScreen extends ConsumerWidget {
                         color: Colors.black),
                   ),
                   const Spacer(),
-                  SizedBox()
+                  const SizedBox()
                   // InkWell(
                   //   onTap: () => Navigator.pop(context),
                   //   child: Text(
@@ -102,7 +102,7 @@ class MySubscriptionScreen extends ConsumerWidget {
             );
           }).toList() ??
           [ // Handle empty list case gracefully
-            Center(child: Text('No subscriptions available')),
+            const Center(child: Text('No subscriptions available')),
           ],
         ),
       ),

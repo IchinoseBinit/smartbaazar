@@ -1,6 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
-import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 import 'package:dio/dio.dart'; // For better error handling with Dio

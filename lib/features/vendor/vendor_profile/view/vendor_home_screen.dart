@@ -15,11 +15,13 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
@@ -29,8 +31,10 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
@@ -198,7 +202,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
 // This function refreshes the gallery so the image appears
   Future<void> _refreshGallery(String filePath) async {
-    final channel = const MethodChannel('gallery_scan');
+    const channel = MethodChannel('gallery_scan');
     try {
       await channel.invokeMethod('scanFile', {"path": filePath});
     } catch (e) {
@@ -421,6 +425,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   @override
   Widget build(BuildContext context) {
     final allproductsresp = ref.watch(getVendorAllProductsProvider(widget.vid));
+      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
     final vendorCardAsync =
         ref.watch(getVendorCardProvider(widget.vid)); // Corrected watch syntax
 
@@ -564,7 +576,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         pinned: false,
                         flexibleSpace: AnimatedContainer(
                           padding: EdgeInsets.zero,
-                          duration: Duration(milliseconds: 150),
+                          duration: const Duration(milliseconds: 150),
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -734,7 +746,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             height: 7.h,
                             width: 60.w,
                             decoration: BoxDecoration(
-                                color: Color(0xff651c50),
+                                color: const Color(0xff651c50),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
@@ -911,7 +923,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         );
                       },
                       error: (error, stackTrace) {
-                        return Center(child: Text("Error loading data"));
+                        return const Center(child: Text("Error loading data"));
                       },
                       loading: () {
                         return Shimmer.fromColors(
@@ -1428,6 +1440,71 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         BrandNewModel prod =
                                                             alldata![index];
                                                         return ProductDetailWidget(
+                                                            onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                           lat: prod.userdetails
                                                               ?.latitude,
                                                           long: prod.userdetails
@@ -1519,6 +1596,71 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                       vendorsearchrespnse![
                                                           index];
                                                   return ProductDetailWidget(
+                                                      onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id.toString())
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                                     lat: prod
                                                         .userdetails?.latitude,
                                                     long: prod
@@ -1825,6 +1967,70 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+                                              onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                             savedid: res.savedByLoggedUser ==
                                                         null ||
                                                     res.savedByLoggedUser!
@@ -2008,9 +2214,9 @@ class DottedContainer extends StatelessWidget {
               Positioned(
                 left: 30.w,
                 bottom: 4,
-                child: Icon(Icons.add),
                 height: 12,
                 width: 12,
+                child: Icon(Icons.add),
               )
             ],
           ),
@@ -2419,7 +2625,7 @@ class _BigContainerState extends State<BigContainer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -2427,7 +2633,7 @@ class _BigContainerState extends State<BigContainer> {
                     onPressed: () {
                       widget.ondoenload?.call(); // ✅ Make sure it's called
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.file_download_outlined,
                       color: Color(0xFF6D1A49),
                     ),
@@ -2435,7 +2641,7 @@ class _BigContainerState extends State<BigContainer> {
                   PopupMenuButton(
                     icon: const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
                     itemBuilder: (context) => [
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         value: 'Enquire',
                         child: Text('Enquire',
                             style: TextStyle(color: Colors.black)),
@@ -2451,7 +2657,7 @@ class _BigContainerState extends State<BigContainer> {
                               ));
                         },
                         value: 'Report',
-                        child: Text('Report',
+                        child: const Text('Report',
                             style: TextStyle(color: Colors.black)),
                       ),
                       PopupMenuItem(
@@ -2475,7 +2681,7 @@ class _BigContainerState extends State<BigContainer> {
                                     child: Container(
                                       color: Colors
                                           .white, // Ensure background color
-                                      padding: EdgeInsets.all(
+                                      padding: const EdgeInsets.all(
                                           10), // Avoid layout issues
                                       child: SizedBox(
                                         height: 600.h,
@@ -2513,7 +2719,7 @@ class _BigContainerState extends State<BigContainer> {
                           );
                         },
                         value: 'Share',
-                        child: Text('Share',
+                        child: const Text('Share',
                             style: TextStyle(color: Colors.black)),
                       ),
                     ],
@@ -2808,7 +3014,7 @@ class _BigContainerState extends State<BigContainer> {
                       50, // Center the avatar
                   child: ClipOval(
                       child: _loading
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : Container(
                               width: 60,
                               height: 60,
@@ -2827,7 +3033,7 @@ class _BigContainerState extends State<BigContainer> {
                                   followUnfollowVendor(widget.id).then(
                                     (value) {
                                       showCustomToast(context, value.msg!);
-                                      if (value.scratchAva == '1')
+                                      if (value.scratchAva == '1') {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
@@ -2839,6 +3045,7 @@ class _BigContainerState extends State<BigContainer> {
                                                 child: ScratchCard());
                                           },
                                         );
+                                      }
                                     },
                                   );
                                   widget.onsubscribed?.call();
@@ -2950,7 +3157,6 @@ class _BigContainerState extends State<BigContainer> {
     try {
       RenderRepaintBoundary boundary = _widgetKey.currentContext
           ?.findRenderObject() as RenderRepaintBoundary;
-      if (boundary == null) return;
 
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       ByteData? byteData =

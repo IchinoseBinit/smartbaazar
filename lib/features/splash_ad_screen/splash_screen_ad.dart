@@ -101,7 +101,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
             children: [
               const Text("No ads available. Retrying..."),
               SizedBox(height: 10.h),
-              CircularProgressIndicator(),
+              const CircularProgressIndicator(),
             ],
           ),
         ),

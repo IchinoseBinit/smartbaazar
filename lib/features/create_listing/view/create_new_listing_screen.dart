@@ -322,7 +322,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     ref.watch(GetCategoryResponseProvider(54)).whenData(
       (value) async {
         clothresp = value;
-        print('mala ${clotheasync}');
+        print('mala $clotheasync');
       },
     );
 
@@ -860,7 +860,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   ),
                 ),
                 if (showWarning)
-                  Text(
+                  const Text(
                     'desription shoulbe be more than 10 character',
                     style: TextStyle(fontSize: 10, color: Colors.red),
                   ),

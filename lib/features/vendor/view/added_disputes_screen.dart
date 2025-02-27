@@ -73,8 +73,9 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
   @override
   void initState() {
     // TODO: implement initState
-      if (widget.vendorname != null)
-      _vendorNameController.text = widget.vendorname?? '';
+      if (widget.vendorname != null) {
+        _vendorNameController.text = widget.vendorname?? '';
+      }
     super.initState();
   }
 

@@ -103,7 +103,7 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
               SizedBox(
                 height: 16.h,
               ),
-              BuyerAccountDetailsWidget(),
+              const BuyerAccountDetailsWidget(),
               // SizedBox(
               //   height: 16.h,
               // ),
@@ -199,7 +199,7 @@ class _BuyerAccountDetailsWidgetState
     _loadUserId();
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final updatedData = await UserData(
+      final updatedData = UserData(
         name: _fullNameController.text,
         phone: _phoneNumberController.text,
         email: _emailController.text,

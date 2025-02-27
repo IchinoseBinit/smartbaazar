@@ -38,7 +38,7 @@ _$SavedProductsImpl _$$SavedProductsImplFromJson(Map<String, dynamic> json) =>
     _$SavedProductsImpl(
       currentPage: (json['current_page'] as num?)?.toInt(),
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => FavouriteProduct.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -48,8 +48,9 @@ Map<String, dynamic> _$$SavedProductsImplToJson(_$SavedProductsImpl instance) =>
       'data': instance.data,
     };
 
-_$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
-    _$ProductImpl(
+_$FavouriteProductImpl _$$FavouriteProductImplFromJson(
+        Map<String, dynamic> json) =>
+    _$FavouriteProductImpl(
       id: json['id'] as String?,
       countryCode: json['country_code'] as String?,
       userId: json['user_id'] as String?,
@@ -65,7 +66,8 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
+Map<String, dynamic> _$$FavouriteProductImplToJson(
+        _$FavouriteProductImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'country_code': instance.countryCode,

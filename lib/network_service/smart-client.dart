@@ -33,7 +33,7 @@ SmartClient._internal() {
 }
 
 void _enableKeepAlive() {
-  (_client.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+  (_client.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
       (HttpClient client) {
     client.connectionTimeout = _timeoutDuration;
     client.idleTimeout = const Duration(seconds: 30); // Keep-Alive timeout
@@ -97,15 +97,15 @@ Future<bool> _refreshToken() async {
         await container.read(getRefreshTokenProvider.future);
 
     // Validate the response
-    if (refreshTokenResponse.authToken == null || refreshTokenResponse.refreshToken == null) {
+    if (refreshTokenResponse.refreshToken == null) {
       if (kDebugMode) {
         print("Invalid token response: $refreshTokenResponse");
       }
       return false;
     }
 
-    token = refreshTokenResponse.authToken!;
-    refresh = refreshTokenResponse.refreshToken!;
+    token = refreshTokenResponse.authToken;
+    refresh = refreshTokenResponse.refreshToken;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('accessToken', token);

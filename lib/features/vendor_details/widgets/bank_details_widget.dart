@@ -254,8 +254,8 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
           onTap: pickImage,
           child: Center(
             child: Container(
-              height: 75.h,
-              width: 95.w,
+              height: 90.h,
+              width: 100.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.r),
                 border: Border.all(width: 1, color: const Color(0xffADADAD)),

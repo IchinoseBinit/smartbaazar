@@ -212,7 +212,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         to.add(openingHours[dayNames[i]]!['to'] ?? '');
         closed.add(openingHours[dayNames[i]]!['closed']);
       }
-      print("kelaz ${branchControllers}");
+              print("kelaz $branchControllers");
 
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         data.name ?? '',

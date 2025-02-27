@@ -169,7 +169,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
   //   });
   // }
 
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   int? dynamicsize;
 
@@ -341,7 +341,7 @@ final mySubscribeAndWinAsyncValue =
                         pinned: false,
                         flexibleSpace: AnimatedContainer(
                           padding: EdgeInsets.zero,
-                          duration: Duration(milliseconds: 150),
+                          duration: const Duration(milliseconds: 150),
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -511,7 +511,7 @@ final mySubscribeAndWinAsyncValue =
                             height: 7.h,
                             width: 60.w,
                             decoration: BoxDecoration(
-                                color: Color(0xff651c50),
+                                color: const Color(0xff651c50),
                                 borderRadius: BorderRadius.circular(5)),
                           ),
                         ),
@@ -552,9 +552,9 @@ final mySubscribeAndWinAsyncValue =
               ],
             );
                     }, error:(error, stackTrace) {
-                       return Text(' Please check your Internet ');
+                       return const Text(' Please check your Internet ');
                     }, loading: () {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },),
                 ),
               ),
@@ -573,7 +573,7 @@ final mySubscribeAndWinAsyncValue =
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 8.0,
@@ -593,7 +593,7 @@ final mySubscribeAndWinAsyncValue =
                         itemBuilder: (context, index) {
                           final product = results[index];
                           return ListTile(
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 7),
                             dense: true,
                             title: Text(
@@ -1116,7 +1116,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Color.fromARGB(255, 115, 92, 119),
+                                color: const Color.fromARGB(255, 115, 92, 119),
                                 width: 0.7),
                           ),
                           child: CircleAvatar(
@@ -1133,7 +1133,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     decoration: BoxDecoration(
                       color: const Color(0xffE2DAE5).withOpacity(0.9),
-                      boxShadow: [
+                      boxShadow: const [
                         // Color(value)
                       ],
                       borderRadius: const BorderRadius.only(
@@ -1281,9 +1281,9 @@ class valuenotifilersidebutton extends StatelessWidget {
                             onPressed: () {
                               showSideBar.value = !value;
                             },
-                            icon: Column(
+                            icon: const Column(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.close,
                                   size: 16,
                                   color: Color(0xff918994),

@@ -44,7 +44,7 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
             padding: EdgeInsets.symmetric(
               vertical: 20.h,
             ),
-            child: Text('Please contact administrator'),
+            child: const Text('Please contact administrator'),
 
           //   child: Column(
           //     crossAxisAlignment: CrossAxisAlignment.start,

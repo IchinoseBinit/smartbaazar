@@ -5,10 +5,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
@@ -16,9 +18,12 @@ import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/hot_deals/api/hot_deals_provider.dart';
 import 'package:smartbazar/features/hot_deals/view/components/hot_deals_components.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -132,6 +137,14 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
 
   @override
   Widget build(BuildContext context) {
+      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final getHotData = ref.watch(getHotDealsProvider(widget.header));
@@ -142,7 +155,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        drawerScrimColor: Color(0xff651c50),
+        drawerScrimColor: const Color(0xff651c50),
         backgroundColor: ColorConstant.whiteColor,
         body: NotificationListener<ScrollNotification>(
             onNotification: (notification) {
@@ -192,7 +205,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                         pinned: false,
                         flexibleSpace: AnimatedContainer(
                           padding: EdgeInsets.zero,
-                          duration: Duration(milliseconds: 150),
+                          duration: const Duration(milliseconds: 150),
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
@@ -363,14 +376,14 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                               height: 7.h,
                               width: 60.w,
                               decoration: BoxDecoration(
-                                  color: Color(0xff651c50),
+                                  color: const Color(0xff651c50),
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: hot_deals_container(),
                     ),
                     SliverToBoxAdapter(
@@ -464,6 +477,70 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
+                                        onenquiredclicked: () {
+                                           
+
+                                                        getEnquire(ref, res.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              res.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
                                       savedid: res.savedByLoggedUser == null ||
                                               res.savedByLoggedUser!.isEmpty
                                           ? []
@@ -488,7 +565,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                       posttype: res.post_type_id,
                                       didcountpercentage:
                                           res.discount_percentage,
-                                      id: int.tryParse(res.user[0].user_id!),
+                                      id: int.tryParse(res.user[0].user_id),
                                       shortestDistance:
                                           res.user[0].shortestDistance,
                                       issponsored:

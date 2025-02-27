@@ -197,7 +197,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                               color: Colors.grey.withOpacity(0.4),
                               spreadRadius: 0,
                               blurRadius: 10,
-                              offset: Offset(0, 0),
+                              offset: const Offset(0, 0),
                             ),
                           ],
                         ),
@@ -242,7 +242,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                                 },
                               );
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Form added")));
+                                  const SnackBar(content: Text("Form added")));
                               qtycontroller.text = '';
                               Navigator.pop(context);
                             },
