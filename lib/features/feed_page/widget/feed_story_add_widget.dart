@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
@@ -81,18 +82,30 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
       child: GestureDetector(
         onTap: () {
           // print("raju ${widget.feedStoryContent}");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => FeedStoryScreen(
-                selectedVendorIndex: widget.index,
-                initialIndex: widget.index,
-                author: widget.vendorName ?? '',
-                storyCount: widget.storyCount ?? 0,
-                feedStory: widget.feedStoryContent!,
-              ),
+          navigateToPage(
+            context: context,
+            page: FeedStoryScreen(
+              selectedVendorIndex: widget.index,
+              initialIndex: widget.index,
+              author: widget.vendorName ?? '',
+              storyCount: widget.storyCount ?? 0,
+              feedStory: widget.feedStoryContent!,
             ),
+            ref: ref,
+            showNavBar: false, // Hide bottom navbar
           );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => FeedStoryScreen(
+          //       selectedVendorIndex: widget.index,
+          //       initialIndex: widget.index,
+          //       author: widget.vendorName ?? '',
+          //       storyCount: widget.storyCount ?? 0,
+          //       feedStory: widget.feedStoryContent!,
+          //     ),
+          //   ),
+          // );
         },
         child: Column(
           children: [
