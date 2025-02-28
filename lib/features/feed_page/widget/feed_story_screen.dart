@@ -37,10 +37,11 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   late List<String?> title;
   late List<String?> price;
   late List<String?>? discountprice;
-  late List<String>? wowcount;
-  late List<int>? commentcount;
+  late List<List<String>>? wowcount;
+  late List<List<int>>? commentcount;
+  late List<List<int>>? similarProductCount;
 
-  late List<int>? avgratingcount;
+  late List<List<int>>? avgratingcount;
 
   late List<double>? discountpercentagelist;
 
@@ -101,7 +102,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
         .toList();
     wowcount = groupedStories.entries
         .map(
-          (e) => e.value.first.wow ?? '0',
+          (e) => e.value.map((post) => post.wow ?? '0').toList(),
         )
         .toList();
 
@@ -117,15 +118,19 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
         .toList();
     commentcount = groupedStories.entries
         .map(
-          (e) => e.value.first.commentCount!,
+          (e) => e.value.map((post) => post.commentCount ?? 0).toList(),
         )
         .toList();
     avgratingcount = groupedStories.entries
         .map(
-          (e) => e.value.first.averageRating!,
+          (e) => e.value.map((post) => post.averageRating ?? 0).toList(),
         )
         .toList();
-
+    similarProductCount = groupedStories.entries
+        .map(
+          (e) => e.value.map((post) => post.similarProductCount ?? 0).toList(),
+        )
+        .toList();
     _currentVendorIndex = widget.selectedVendorIndex;
     _currentStoryIndex = 0;
 
@@ -205,65 +210,64 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }
   }
 
- void _moveToNextVendor() {
-  setState(() {
-    if (_showdialog) _showdialog = !_showdialog;
+  void _moveToNextVendor() {
+    setState(() {
+      if (_showdialog) _showdialog = !_showdialog;
 
-    // Ensure _currentVendorIndex is within bounds
-    if (_currentVendorIndex >= vendorStories.length) {
-      print("Error: _currentVendorIndex out of range");
-      _currentVendorIndex = vendorStories.length - 1;
-      return;
-    }
-
-    // Ensure _currentStoryIndex is within bounds
-    if (_currentStoryIndex >= vendorStories[_currentVendorIndex].length) {
-      print("Error: _currentStoryIndex out of range");
-      _currentStoryIndex = 0;
-      return;
-    }
-
-    // Check if there are more stories in the current vendor
-    if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
-      _currentStoryIndex++;
-    }
-    // Move to the next vendor if there are no more stories
-    else if (_currentVendorIndex < vendorStories.length - 1) {
-      _currentVendorIndex++;
-
-      // If the new vendor has no stories, find the next valid one
-      while (_currentVendorIndex < vendorStories.length &&
-          vendorStories[_currentVendorIndex].isEmpty) {
-        _currentVendorIndex++;
+      // Ensure _currentVendorIndex is within bounds
+      if (_currentVendorIndex >= vendorStories.length) {
+        print("Error: _currentVendorIndex out of range");
+        _currentVendorIndex = vendorStories.length - 1;
+        return;
       }
 
-      _currentStoryIndex = 0;
-    } else {
-      Navigator.pop(context); // Exit if it's the last story
-      return;
+      // Ensure _currentStoryIndex is within bounds
+      if (_currentStoryIndex >= vendorStories[_currentVendorIndex].length) {
+        print("Error: _currentStoryIndex out of range");
+        _currentStoryIndex = 0;
+        return;
+      }
+
+      // Check if there are more stories in the current vendor
+      if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
+        _currentStoryIndex++;
+      }
+      // Move to the next vendor if there are no more stories
+      else if (_currentVendorIndex < vendorStories.length - 1) {
+        _currentVendorIndex++;
+
+        // If the new vendor has no stories, find the next valid one
+        while (_currentVendorIndex < vendorStories.length &&
+            vendorStories[_currentVendorIndex].isEmpty) {
+          _currentVendorIndex++;
+        }
+
+        _currentStoryIndex = 0;
+      } else {
+        Navigator.pop(context); // Exit if it's the last story
+        return;
+      }
+    });
+
+    // Recalculate the new page index
+    int totalStoriesBeforeCurrent = 0;
+    for (int i = 0; i < _currentVendorIndex; i++) {
+      totalStoriesBeforeCurrent += vendorStories[i].length;
     }
-  });
 
-  // Recalculate the new page index
-  int totalStoriesBeforeCurrent = 0;
-  for (int i = 0; i < _currentVendorIndex; i++) {
-    totalStoriesBeforeCurrent += vendorStories[i].length;
+    final newPage = totalStoriesBeforeCurrent + _currentStoryIndex;
+
+    if (_pageController.hasClients) {
+      _pageController.animateToPage(
+        newPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    }
+
+    _animationController.reset();
+    _startAutoScroll();
   }
-
-  final newPage = totalStoriesBeforeCurrent + _currentStoryIndex;
-
-  if (_pageController.hasClients) {
-    _pageController.animateToPage(
-      newPage,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
-  }
-
-  _animationController.reset();
-  _startAutoScroll();
-}
-
 
   void _selectVendor(int vendorIndex) {
     setState(() {
@@ -326,12 +330,14 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     super.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     print("biabsh $price");
     return GenericSafeArea(
       child: Scaffold(
-        extendBody: true,
+     //   extendBody: true,
         backgroundColor: Colors.transparent,
         body: GestureDetector(
           onTapUp: (details) {
@@ -434,51 +440,51 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 left: 10,
                 right: 10,
                 child: Row(
-                children: List.generate(
-  (vendorStories.isNotEmpty && _currentVendorIndex < vendorStories.length) 
-      ? vendorStories[_currentVendorIndex].length 
-      : 0,  // Safe Fallback
-  (index) => Expanded(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2.0),
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          double progressValue = 0.0;
-          if (index < _currentStoryIndex) {
-            progressValue = 1.0;
-          } else if (index == _currentStoryIndex) {
-            progressValue = _animationController.value;
-          }
-          return Stack(
-            children: [
-              // Background Bar
-              Container(
-                height: 4.0,
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              // Progress Bar
-              FractionallySizedBox(
-                widthFactor: progressValue,
-                child: Container(
-                  height: 4.0,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(8.0),
+                  children: List.generate(
+                    (vendorStories.isNotEmpty &&
+                            _currentVendorIndex < vendorStories.length)
+                        ? vendorStories[_currentVendorIndex].length
+                        : 0, // Safe Fallback
+                    (index) => Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        child: AnimatedBuilder(
+                          animation: _animationController,
+                          builder: (context, child) {
+                            double progressValue = 0.0;
+                            if (index < _currentStoryIndex) {
+                              progressValue = 1.0;
+                            } else if (index == _currentStoryIndex) {
+                              progressValue = _animationController.value;
+                            }
+                            return Stack(
+                              children: [
+                                // Background Bar
+                                Container(
+                                  height: 4.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                // Progress Bar
+                                FractionallySizedBox(
+                                  widthFactor: progressValue,
+                                  child: Container(
+                                    height: 4.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    ),
-  ),
-),
-
                 ),
               ),
               Positioned(
@@ -506,11 +512,20 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       ),
                     ),
                     Text(
-                      (wowcount != null &&
-                              wowcount!.isNotEmpty &&
-                              _currentStoryIndex < wowcount!.length)
-                          ? wowcount![_currentStoryIndex].toString()
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              similarProductCount != null &&
+                              similarProductCount!.isNotEmpty)
+                          ? similarProductCount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
                           : '0',
+                      // (similarProductCount != null &&
+                      //         similarProductCount!.isNotEmpty &&
+                      //         _currentStoryIndex < similarProductCount!.length)
+                      //     ? similarProductCount![_currentStoryIndex].toString()
+                      //     : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 30.h),
@@ -522,12 +537,19 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       ),
                     ),
                     Text(
-                      (commentcount != null &&
-                              commentcount!.isNotEmpty &&
-                              _currentStoryIndex < commentcount!.length)
-                          ? commentcount![_currentStoryIndex]
-                              .toString() // Explicit conversion to String
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              wowcount != null &&
+                              wowcount!.isNotEmpty)
+                          ? wowcount![_currentVendorIndex][_currentStoryIndex]
                           : '0',
+                      // (wowcount != null &&
+                      //         wowcount!.isNotEmpty &&
+                      //         _currentStoryIndex < wowcount!.length)
+                      //     ? wowcount![_currentStoryIndex]
+                      //         .toString() // Explicit conversion to String
+                      //     : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
@@ -537,11 +559,14 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           color: Colors.grey),
                     ),
                     Text(
-                      (avgratingcount != null &&
-                              avgratingcount!.isNotEmpty &&
-                              _currentStoryIndex < avgratingcount!.length)
-                          ? avgratingcount![_currentStoryIndex]
-                              .toString() // Explicit conversion to String
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              commentcount != null &&
+                              commentcount!.isNotEmpty)
+                          ? commentcount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
                           : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
@@ -552,7 +577,15 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           color: Colors.grey),
                     ),
                     Text(
-                      "1.4k",
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              avgratingcount != null &&
+                              avgratingcount!.isNotEmpty)
+                          ? avgratingcount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
+                          : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),

@@ -44,12 +44,12 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     super.initState();
 
     // Initialize stories
-    if (widget.feedStoryContent?.posts == null || widget.feedStoryContent!.posts!.isEmpty) {
-  stories = [];
-} else {
-  stories = widget.feedStoryContent!.posts!;
-}
-
+    if (widget.feedStoryContent?.posts == null ||
+        widget.feedStoryContent!.posts!.isEmpty) {
+      stories = [];
+    } else {
+      stories = widget.feedStoryContent!.posts!;
+    }
 
     // Group stories by vendor ID
     groupedStories = {};
@@ -77,9 +77,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
         ref.watch(getFeedGiftCardProvider(widget.userId));
     print(widget.showGift);
     return Padding(
-
-
-      padding:  EdgeInsets.symmetric(horizontal: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: GestureDetector(
         onTap: () {
           // print("raju ${widget.feedStoryContent}");
@@ -87,8 +85,6 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
             context,
             MaterialPageRoute(
               builder: (_) => FeedStoryScreen(
-                
-                
                 selectedVendorIndex: widget.index,
                 initialIndex: widget.index,
                 author: widget.vendorName ?? '',
@@ -111,14 +107,14 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                     width: 95.r,
                     height: 95.r,
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 3.w, color: const Color(0xffEACACB)),
+                      border: Border.all(
+                          width: 3.w, color: const Color(0xffEACACB)),
                       shape: BoxShape.circle,
                     ),
                   ),
-      
+
                   // Vendor Image
-      
+
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
@@ -126,11 +122,12 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                     ),
                     child: CircleAvatar(
                       radius: 38.r,
-                      backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
+                      backgroundColor:
+                          const Color(0x7F7F7F73).withOpacity(0.45),
                       backgroundImage: NetworkImage(vendorImage[widget.index]),
                     ),
                   ),
-      
+
                   // Vendor Name
                   Positioned(
                     bottom: -23.h,
