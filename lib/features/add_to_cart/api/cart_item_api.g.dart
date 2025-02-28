@@ -6,7 +6,7 @@ part of 'cart_item_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getCartItemHash() => r'e97d7d3d289b92f8c80982d0b817193baca4cfe5';
+String _$getCartItemHash() => r'49380c264f272ff2647e1215d16ffcb66abc9c78';
 
 /// See also [getCartItem].
 @ProviderFor(getCartItem)
@@ -20,8 +20,6 @@ final getCartItemProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef GetCartItemRef
     = AutoDisposeFutureProviderRef<Map<String, List<Object>>>;
 String _$deleteCartItemHash() => r'6e984e9f8ae802346207c03c6586d77eb2dcba5a';
@@ -160,8 +158,6 @@ class DeleteCartItemProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin DeleteCartItemRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `cartItemId` of this provider.
   String get cartItemId;
@@ -175,4 +171,4 @@ class _DeleteCartItemProviderElement
   String get cartItemId => (origin as DeleteCartItemProvider).cartItemId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -6,7 +6,7 @@ part of 'checkout_form_submission_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCheckoutFormHash() => r'bb9fa453fadf4a5bfe688622e1c6c3afb8bc0970';
+String _$postCheckoutFormHash() => r'54850a399ca8d409173b57d84cf6115fd800e289';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,7 +46,6 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
     String payMethod,
     String delivery,
     String deliveryType,
-    String city,
     String street,
     String? coupon,
     List<String?> postId,
@@ -63,7 +62,6 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       payMethod,
       delivery,
       deliveryType,
-      city,
       street,
       coupon,
       postId,
@@ -86,7 +84,6 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       provider.payMethod,
       provider.delivery,
       provider.deliveryType,
-      provider.city,
       provider.street,
       provider.coupon,
       provider.postId,
@@ -123,7 +120,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     String payMethod,
     String delivery,
     String deliveryType,
-    String city,
     String street,
     String? coupon,
     List<String?> postId,
@@ -141,7 +137,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
             payMethod,
             delivery,
             deliveryType,
-            city,
             street,
             coupon,
             postId,
@@ -166,7 +161,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
           payMethod: payMethod,
           delivery: delivery,
           deliveryType: deliveryType,
-          city: city,
           street: street,
           coupon: coupon,
           postId: postId,
@@ -190,7 +184,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     required this.payMethod,
     required this.delivery,
     required this.deliveryType,
-    required this.city,
     required this.street,
     required this.coupon,
     required this.postId,
@@ -207,7 +200,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   final String payMethod;
   final String delivery;
   final String deliveryType;
-  final String city;
   final String street;
   final String? coupon;
   final List<String?> postId;
@@ -236,7 +228,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         payMethod: payMethod,
         delivery: delivery,
         deliveryType: deliveryType,
-        city: city,
         street: street,
         coupon: coupon,
         postId: postId,
@@ -263,7 +254,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         other.payMethod == payMethod &&
         other.delivery == delivery &&
         other.deliveryType == deliveryType &&
-        other.city == city &&
         other.street == street &&
         other.coupon == coupon &&
         other.postId == postId &&
@@ -283,7 +273,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, payMethod.hashCode);
     hash = _SystemHash.combine(hash, delivery.hashCode);
     hash = _SystemHash.combine(hash, deliveryType.hashCode);
-    hash = _SystemHash.combine(hash, city.hashCode);
     hash = _SystemHash.combine(hash, street.hashCode);
     hash = _SystemHash.combine(hash, coupon.hashCode);
     hash = _SystemHash.combine(hash, postId.hashCode);
@@ -297,8 +286,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `userName` of this provider.
   String get userName;
@@ -317,9 +304,6 @@ mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `deliveryType` of this provider.
   String get deliveryType;
-
-  /// The parameter `city` of this provider.
-  String get city;
 
   /// The parameter `street` of this provider.
   String get street;
@@ -363,8 +347,6 @@ class _PostCheckoutFormProviderElement
   @override
   String get deliveryType => (origin as PostCheckoutFormProvider).deliveryType;
   @override
-  String get city => (origin as PostCheckoutFormProvider).city;
-  @override
   String get street => (origin as PostCheckoutFormProvider).street;
   @override
   String? get coupon => (origin as PostCheckoutFormProvider).coupon;
@@ -382,4 +364,4 @@ class _PostCheckoutFormProviderElement
   String get total => (origin as PostCheckoutFormProvider).total;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

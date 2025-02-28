@@ -23,12 +23,8 @@ VendorProductSearchResponse _$VendorProductSearchResponseFromJson(
 mixin _$VendorProductSearchResponse {
   Vdata? get data => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorProductSearchResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorProductSearchResponseCopyWith<VendorProductSearchResponse>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -57,8 +53,6 @@ class _$VendorProductSearchResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,8 +66,6 @@ class _$VendorProductSearchResponseCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VdataCopyWith<$Res>? get data {
@@ -112,8 +104,6 @@ class __$$VendorProductSearchResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorProductSearchResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -154,13 +144,11 @@ class _$VendorProductSearchResponseImpl
             (identical(other.data, data) || other.data == data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, data);
 
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorProductSearchResponseImplCopyWith<_$VendorProductSearchResponseImpl>
@@ -185,11 +173,8 @@ abstract class _VendorProductSearchResponse
 
   @override
   Vdata? get data;
-
-  /// Create a copy of VendorProductSearchResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorProductSearchResponseImplCopyWith<_$VendorProductSearchResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -203,12 +188,8 @@ mixin _$Vdata {
 // required VVSearchpost? VSearchpost,
   VSearchpost? get posts => throw _privateConstructorUsedError;
 
-  /// Serializes this Vdata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VdataCopyWith<Vdata> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -232,8 +213,6 @@ class _$VdataCopyWithImpl<$Res, $Val extends Vdata>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -247,8 +226,6 @@ class _$VdataCopyWithImpl<$Res, $Val extends Vdata>
     ) as $Val);
   }
 
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VSearchpostCopyWith<$Res>? get posts {
@@ -283,8 +260,6 @@ class __$$VdataImplCopyWithImpl<$Res>
       _$VdataImpl _value, $Res Function(_$VdataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -324,13 +299,11 @@ class _$VdataImpl implements _Vdata {
             (identical(other.posts, posts) || other.posts == posts));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, posts);
 
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VdataImplCopyWith<_$VdataImpl> get copyWith =>
@@ -349,14 +322,10 @@ abstract class _Vdata implements Vdata {
 
   factory _Vdata.fromJson(Map<String, dynamic> json) = _$VdataImpl.fromJson;
 
-// required VVSearchpost? VSearchpost,
-  @override
+  @override // required VVSearchpost? VSearchpost,
   VSearchpost? get posts;
-
-  /// Create a copy of Vdata
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VdataImplCopyWith<_$VdataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -370,12 +339,8 @@ mixin _$VSearchpost {
   int? get current_page => throw _privateConstructorUsedError;
   List<VendorSearchModel>? get data => throw _privateConstructorUsedError;
 
-  /// Serializes this VSearchpost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VSearchpost
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VSearchpostCopyWith<VSearchpost> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -399,8 +364,6 @@ class _$VSearchpostCopyWithImpl<$Res, $Val extends VSearchpost>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VSearchpost
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -439,8 +402,6 @@ class __$$VSearchpostImplCopyWithImpl<$Res>
       _$VSearchpostImpl _value, $Res Function(_$VSearchpostImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VSearchpost
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -497,14 +458,12 @@ class _$VSearchpostImpl implements _VSearchpost {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of VSearchpost
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VSearchpostImplCopyWith<_$VSearchpostImpl> get copyWith =>
@@ -530,11 +489,8 @@ abstract class _VSearchpost implements VSearchpost {
   int? get current_page;
   @override
   List<VendorSearchModel>? get data;
-
-  /// Create a copy of VSearchpost
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VSearchpostImplCopyWith<_$VSearchpostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -655,12 +611,8 @@ mixin _$VendorSearchModel {
   @JsonKey(name: 'userdetails')
   UserDetails? get userdetails => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorSearchModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorSearchModelCopyWith<VendorSearchModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -757,8 +709,6 @@ class _$VendorSearchModelCopyWithImpl<$Res, $Val extends VendorSearchModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1122,8 +1072,6 @@ class _$VendorSearchModelCopyWithImpl<$Res, $Val extends VendorSearchModel>
     ) as $Val);
   }
 
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserDetailsCopyWith<$Res>? get userdetails {
@@ -1230,8 +1178,6 @@ class __$$VendorSearchModelImplCopyWithImpl<$Res>
       $Res Function(_$VendorSearchModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1981,7 +1927,7 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
                 other.userdetails == userdetails));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -2058,9 +2004,7 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
         userdetails
       ]);
 
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorSearchModelImplCopyWith<_$VendorSearchModelImpl> get copyWith =>
@@ -2334,11 +2278,8 @@ abstract class _VendorSearchModel implements VendorSearchModel {
   @override
   @JsonKey(name: 'userdetails')
   UserDetails? get userdetails;
-
-  /// Create a copy of VendorSearchModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorSearchModelImplCopyWith<_$VendorSearchModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2375,12 +2316,8 @@ mixin _$UserDetails {
   String? get longitude => throw _privateConstructorUsedError;
   String? get latitude => throw _privateConstructorUsedError;
 
-  /// Serializes this UserDetails to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UserDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UserDetailsCopyWith<UserDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2419,8 +2356,6 @@ class _$UserDetailsCopyWithImpl<$Res, $Val extends UserDetails>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UserDetails
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2539,8 +2474,6 @@ class __$$UserDetailsImplCopyWithImpl<$Res>
       _$UserDetailsImpl _value, $Res Function(_$UserDetailsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UserDetails
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2728,7 +2661,7 @@ class _$UserDetailsImpl implements _UserDetails {
                 other.latitude == latitude));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -2748,9 +2681,7 @@ class _$UserDetailsImpl implements _UserDetails {
       longitude,
       latitude);
 
-  /// Create a copy of UserDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDetailsImplCopyWith<_$UserDetailsImpl> get copyWith =>
@@ -2825,11 +2756,8 @@ abstract class _UserDetails implements UserDetails {
   String? get longitude;
   @override
   String? get latitude;
-
-  /// Create a copy of UserDetails
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UserDetailsImplCopyWith<_$UserDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

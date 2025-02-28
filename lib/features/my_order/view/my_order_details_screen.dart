@@ -160,144 +160,117 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Status',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff36383C)),
-                          ),
-                          GeneralTextButton(
-                            marginH: 0,
-                            height: 25.h,
-                            width: 95.w,
-                            fgColor: Colors.white,
-                            bgColor: const Color(0xff362677),
-                            title: 'Track',
-                            isSmallText: true,
-                            onPressed: () {
-                              CustomDialougeBox().orderDetailDialouge(
-                                context,
-                                title: 'Status',
-                                heading: 'Track Order',
-                                buttonTitle: 'Understood',
-                                callback: () {
-                                  Navigator.pop(context);
-                                },
-                                widget: TrackOrderDetails(order: order),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 5.h),
-                      if (isReturnEligible)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Action',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff36383C)),
-                            ),
-                            GeneralTextButton(
-                              marginH: 0,
-                              isSmallText: true,
-                              height: 25.h,
-                              width: 95.w,
-                              fgColor: Colors.white,
-                              bgColor: const Color(0xff362677),
-                              title: 'Return',
-                              onPressed: () {
-                                BuildContext rootContext =
-                                    context; // ✅ Store valid context
-
-                                CustomDialougeBox().orderDetailDialouge(
-                                  rootContext,
-                                  buttonTitle: 'Submit',
-                                  callback: () async {
-                                    print("lala $order");
-
-                                    try {
-                                      final result =
-                                          await ref.read(postmyreturnProvider(
-                                        order.id,
-                                        order.vendorId,
-                                        order.postId,
-                                        issue!,
-                                        message!,
-                                        place!.description!,
-                                        '123',
-                                        address!,
-                                        place!.latitude!.toString(),
-                                        place!.longitude!.toString(),
-                                        image!,
-                                      ).future); // ✅ Await API call completion
-
-                                      if (!context.mounted) {
-                                        return; // ✅ Ensure widget is still valid
-                                      }
-
-                                      // ✅ Show confirmation dialog
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text("Success"),
-                                            content: const Text(
-                                                "Data has been inserted successfully!"),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(
-                                                      context); // ✅ Close dialog
-                                                  Navigator.pop(
-                                                      context); // ✅ Close form after confirmation
-                                                },
-                                                child: const Text("OK"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } catch (e) {
-                                      if (context.mounted) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(content: Text("Error: $e")),
-                                        );
-                                      }
-                                    }
-                                  },
-                                  widget: ReturnProductDetails(
-                                    issue: (p1) {
-                                      issue = p1;
-                                    },
-                                    message: (p0) {
-                                      message = p0;
-                                    },
-                                    address: (p3) {
-                                      address = p3;
-                                    },
-                                    place: (p4) {
-                                      place = p4;
-                                    },
-                                    file: (p5) {
-                                      image = p5;
-                                    },
-                                  ),
-                                  title: 'Fill the form',
-                                  heading: 'Return Products',
-                                );
-                              },
-                            )
-                          ],
-                        ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       'Status',
+                      //       style: TextStyle(
+                      //           fontSize: 14.sp,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: const Color(0xff36383C)),
+                      //     ),
+                      //     GeneralTextButton(
+                      //       marginH: 0,
+                      //       height: 25.h,
+                      //       width: 95.w,
+                      //       fgColor: Colors.white,
+                      //       bgColor: const Color(0xff362677),
+                      //       title: 'Track',
+                      //       isSmallText: true,
+                      //       onPressed: () {
+                      //         CustomDialougeBox().orderDetailDialouge(
+                      //           context,
+                      //           title: 'Status',
+                      //           heading: 'Track Order',
+                      //           buttonTitle: 'Understood',
+                      //           callback: () {
+                      //             Navigator.pop(context);
+                      //           },
+                      //           widget: TrackOrderDetails(order: order),
+                      //         );
+                      //       },
+                      //     )
+                      //   ],
+                      // ),
+                      // SizedBox(height: 5.h),
+                      // if (isReturnEligible)
+                      //   Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         'Action',
+                      //         style: TextStyle(
+                      //             fontSize: 14.sp,
+                      //             fontWeight: FontWeight.w500,
+                      //             color: const Color(0xff36383C)),
+                      //       ),
+                      //       GeneralTextButton(
+                      //         marginH: 0,
+                      //         isSmallText: true,
+                      //         height: 25.h,
+                      //         width: 95.w,
+                      //         fgColor: Colors.white,
+                      //         bgColor: const Color(0xff362677),
+                      //         title: 'Return',
+                      //         onPressed: () {
+                      //           CustomDialougeBox().orderDetailDialouge(
+                      //             context,
+                      //             buttonTitle: 'Submit',
+                      //             callback: () {
+                      //               print("lala $order");
+                      //               ref
+                      //                   .watch(postmyreturnProvider(
+                      //                 order.id, // Random order ID
+                      //                 order.vendorId, // Random vendor ID
+                      //                 order.postId, // Random post ID
+                      //                 issue!, // Random issue description
+                      //                 message!, // Random message
+                      //                 place!
+                      //                     .description!, // Random place description
+                      //                 '123', // Random city name
+                      //                 address!, // Random address
+                      //                 place!.latitude!
+                      //                     .toString(), // Random latitude
+                      //                 place!.longitude!
+                      //                     .toString(), // Random longitude
+                      //                 image!,
+                      //               ))
+                      //                   .whenData(
+                      //                 (value) {
+                      //                   ScaffoldMessenger.of(context)
+                      //                       .showSnackBar(const SnackBar(
+                      //                           content:
+                      //                               Text("Data inserted")));
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //               );
+                      //             },
+                      //             widget: ReturnProductDetails(
+                      //               issue: (p1) {
+                      //                 issue = p1;
+                      //               },
+                      //               message: (p0) {
+                      //                 message = p0;
+                      //               },
+                      //               address: (p3) {
+                      //                 address = p3;
+                      //               },
+                      //               place: (p4) {
+                      //                 place = p4;
+                      //               },
+                      //               file: (p5) {
+                      //                 image = p5;
+                      //               },
+                      //             ),
+                      //             title: 'Fill the form',
+                      //             heading: 'Return Products',
+                      //           );
+                      //           Navigator.pop(context);
+                      //         },
+                      //       )
+                      //     ],
+                      //   ),
                     ],
                   ),
                 ),

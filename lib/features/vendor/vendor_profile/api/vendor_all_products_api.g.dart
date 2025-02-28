@@ -7,7 +7,7 @@ part of 'vendor_all_products_api.dart';
 // **************************************************************************
 
 String _$getVendorAllProductsHash() =>
-    r'83a2d88347bfc4ea0bf2c0f135358ca87aad68d6';
+    r'1390bc8e85f00a7cede83d0750c944707c078a0a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,10 +42,12 @@ class GetVendorAllProductsFamily
 
   /// See also [getVendorAllProducts].
   GetVendorAllProductsProvider call(
-    int vendorid,
-  ) {
+    int vendorid, {
+    int page = 1,
+  }) {
     return GetVendorAllProductsProvider(
       vendorid,
+      page: page,
     );
   }
 
@@ -55,6 +57,7 @@ class GetVendorAllProductsFamily
   ) {
     return call(
       provider.vendorid,
+      page: provider.page,
     );
   }
 
@@ -78,11 +81,13 @@ class GetVendorAllProductsProvider
     extends AutoDisposeFutureProvider<VendorAllProductsResponse> {
   /// See also [getVendorAllProducts].
   GetVendorAllProductsProvider(
-    int vendorid,
-  ) : this._internal(
+    int vendorid, {
+    int page = 1,
+  }) : this._internal(
           (ref) => getVendorAllProducts(
             ref as GetVendorAllProductsRef,
             vendorid,
+            page: page,
           ),
           from: getVendorAllProductsProvider,
           name: r'getVendorAllProductsProvider',
@@ -94,6 +99,7 @@ class GetVendorAllProductsProvider
           allTransitiveDependencies:
               GetVendorAllProductsFamily._allTransitiveDependencies,
           vendorid: vendorid,
+          page: page,
         );
 
   GetVendorAllProductsProvider._internal(
@@ -104,9 +110,11 @@ class GetVendorAllProductsProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.vendorid,
+    required this.page,
   }) : super.internal();
 
   final int vendorid;
+  final int page;
 
   @override
   Override overrideWith(
@@ -124,6 +132,7 @@ class GetVendorAllProductsProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         vendorid: vendorid,
+        page: page,
       ),
     );
   }
@@ -135,24 +144,28 @@ class GetVendorAllProductsProvider
 
   @override
   bool operator ==(Object other) {
-    return other is GetVendorAllProductsProvider && other.vendorid == vendorid;
+    return other is GetVendorAllProductsProvider &&
+        other.vendorid == vendorid &&
+        other.page == page;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, vendorid.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin GetVendorAllProductsRef
     on AutoDisposeFutureProviderRef<VendorAllProductsResponse> {
   /// The parameter `vendorid` of this provider.
   int get vendorid;
+
+  /// The parameter `page` of this provider.
+  int get page;
 }
 
 class _GetVendorAllProductsProviderElement
@@ -162,6 +175,8 @@ class _GetVendorAllProductsProviderElement
 
   @override
   int get vendorid => (origin as GetVendorAllProductsProvider).vendorid;
+  @override
+  int get page => (origin as GetVendorAllProductsProvider).page;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

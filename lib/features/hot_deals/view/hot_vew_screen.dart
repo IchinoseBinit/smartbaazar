@@ -477,6 +477,7 @@ class _HotViewScreenState extends ConsumerState<HotViewScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
+                                       ref: ref,
                                         onenquiredclicked: () {
                                            
 

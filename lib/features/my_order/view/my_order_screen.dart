@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/model/places_model.dart';
+import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/my_order/api/my_order_api.dart';
 
 class MyOrderScreen extends ConsumerWidget {
@@ -176,7 +180,7 @@ class MyOrderScreen extends ConsumerWidget {
   }
 }
 
-class OrderContainer extends StatelessWidget {
+class OrderContainer extends ConsumerStatefulWidget {
   final dynamic order;
   final bool isOrderReceived;
 
@@ -187,9 +191,30 @@ class OrderContainer extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  ConsumerState<OrderContainer> createState() => _OrderContainerState();
+}
+
+class _OrderContainerState extends ConsumerState<OrderContainer> {
+  String? issue, message, address;
+  Place? place;
+  File? image;
+  bool _isReturnEligible(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt).inDays;
+    return difference <= 15;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final vendorName = order.vendorName;
-    final productTitle = order.postTitle;
+    final order = widget.order;
+    // Ensure createdAt is parsed as DateTime
+    final createdAt =
+        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+
+    // Check eligibility if createdAt is successfully parsed
+    final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
+    final vendorName = widget.order.vendorName;
+    final productTitle = widget.order.postTitle;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
@@ -235,9 +260,9 @@ class OrderContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.r),
                   color: const Color(0xffF6F1F1),
                 ),
-                child: order.postPhotoUrl != null
+                child: widget.order.postPhotoUrl != null
                     ? Image.network(
-                        order.postPhotoUrl!,
+                        widget.order.postPhotoUrl!,
                         height: 70.h,
                         fit: BoxFit.cover,
                       )
@@ -260,7 +285,7 @@ class OrderContainer extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Order ID: ${order.orderId}',
+                      'Order ID: ${widget.order.orderId}',
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
@@ -271,7 +296,7 @@ class OrderContainer extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Rs ${order.price}',
+                          'Rs ${widget.order.price}',
                           style: TextStyle(
                             color: const Color(0xff36383C),
                             fontSize: 16.sp,
@@ -286,7 +311,7 @@ class OrderContainer extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (_) =>
-                                    MyOrderDetailsScreen(order: order),
+                                    MyOrderDetailsScreen(order: widget.order),
                               ),
                             );
                           },
@@ -302,6 +327,117 @@ class OrderContainer extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 15.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Status',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff36383C)),
+                        ),
+                        GeneralTextButton(
+                          marginH: 0,
+                          height: 25.h,
+                          width: 95.w,
+                          fgColor: Colors.white,
+                          bgColor: const Color(0xff362677),
+                          title: 'Track',
+                          isSmallText: true,
+                          onPressed: () {
+                            CustomDialougeBox().orderDetailDialouge(
+                              context,
+                              title: 'Status',
+                              heading: 'Track Order',
+                              buttonTitle: 'Understood',
+                              callback: () {
+                                Navigator.pop(context);
+                              },
+                              widget: TrackOrderDetails(order: widget.order),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 5.h),
+                    if (isReturnEligible)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Action',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff36383C)),
+                          ),
+                          GeneralTextButton(
+                            marginH: 0,
+                            isSmallText: true,
+                            height: 25.h,
+                            width: 95.w,
+                            fgColor: Colors.white,
+                            bgColor: const Color(0xff362677),
+                            title: 'Return',
+                            onPressed: () {
+                              CustomDialougeBox().orderDetailDialouge(
+                                context,
+                                buttonTitle: 'Submit',
+                                callback: () {
+                                  print("lala ${widget.order}");
+                                  ref
+                                      .watch(postmyreturnProvider(
+                                    widget.order.id, // Random order ID
+                                    widget.order.vendorId, // Random vendor ID
+                                    widget.order.postId, // Random post ID
+                                    issue!, // Random issue description
+                                    message!, // Random message
+                                    place!
+                                        .description!, // Random place description
+                                    '123', // Random city name
+                                    address!, // Random address
+                                    place!.latitude!
+                                        .toString(), // Random latitude
+                                    place!.longitude!
+                                        .toString(), // Random longitude
+                                    image!,
+                                  ))
+                                      .whenData(
+                                    (value) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text("Data inserted")));
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                                widget: ReturnProductDetails(
+                                  issue: (p1) {
+                                    issue = p1;
+                                  },
+                                  message: (p0) {
+                                    message = p0;
+                                  },
+                                  address: (p3) {
+                                    address = p3;
+                                  },
+                                  place: (p4) {
+                                    place = p4;
+                                  },
+                                  file: (p5) {
+                                    image = p5;
+                                  },
+                                ),
+                                title: 'Fill the form',
+                                heading: 'Return Products',
+                              );
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
                   ],
                 ),
               ),

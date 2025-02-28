@@ -19,9 +19,7 @@ mixin _$TypeList {
   int get typeId => throw _privateConstructorUsedError;
   String get typeName => throw _privateConstructorUsedError;
 
-  /// Create a copy of TypeList
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TypeListCopyWith<TypeList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,8 +42,6 @@ class _$TypeListCopyWithImpl<$Res, $Val extends TypeList>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TypeList
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -84,8 +80,6 @@ class __$$TypeListImplCopyWithImpl<$Res>
       _$TypeListImpl _value, $Res Function(_$TypeListImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TypeList
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,9 +127,7 @@ class _$TypeListImpl implements _TypeList {
   @override
   int get hashCode => Object.hash(runtimeType, typeId, typeName);
 
-  /// Create a copy of TypeList
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TypeListImplCopyWith<_$TypeListImpl> get copyWith =>
@@ -151,11 +143,8 @@ abstract class _TypeList implements TypeList {
   int get typeId;
   @override
   String get typeName;
-
-  /// Create a copy of TypeList
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TypeListImplCopyWith<_$TypeListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -174,12 +163,8 @@ mixin _$MyCategory {
   String? get iconClass => throw _privateConstructorUsedError;
   String get picture => throw _privateConstructorUsedError;
 
-  /// Serializes this MyCategory to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of MyCategory
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MyCategoryCopyWith<MyCategory> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -210,8 +195,6 @@ class _$MyCategoryCopyWithImpl<$Res, $Val extends MyCategory>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MyCategory
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -282,8 +265,6 @@ class __$$MyCategoryImplCopyWithImpl<$Res>
       _$MyCategoryImpl _value, $Res Function(_$MyCategoryImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of MyCategory
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -380,14 +361,12 @@ class _$MyCategoryImpl implements _MyCategory {
             (identical(other.picture, picture) || other.picture == picture));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, parentId, name, slug, description, iconClass, picture);
 
-  /// Create a copy of MyCategory
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MyCategoryImplCopyWith<_$MyCategoryImpl> get copyWith =>
@@ -428,11 +407,8 @@ abstract class _MyCategory implements MyCategory {
   String? get iconClass;
   @override
   String get picture;
-
-  /// Create a copy of MyCategory
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MyCategoryImplCopyWith<_$MyCategoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -446,12 +422,8 @@ mixin _$ProductType {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
-  /// Serializes this ProductType to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ProductType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ProductTypeCopyWith<ProductType> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -475,8 +447,6 @@ class _$ProductTypeCopyWithImpl<$Res, $Val extends ProductType>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ProductType
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -515,8 +485,6 @@ class __$$ProductTypeImplCopyWithImpl<$Res>
       _$ProductTypeImpl _value, $Res Function(_$ProductTypeImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ProductType
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -563,13 +531,11 @@ class _$ProductTypeImpl implements _ProductType {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name);
 
-  /// Create a copy of ProductType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductTypeImplCopyWith<_$ProductTypeImpl> get copyWith =>
@@ -594,11 +560,8 @@ abstract class _ProductType implements ProductType {
   int get id;
   @override
   String get name;
-
-  /// Create a copy of ProductType
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ProductTypeImplCopyWith<_$ProductTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -614,12 +577,8 @@ mixin _$CityList {
   String? get countryCode => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
-  /// Serializes this CityList to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CityList
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CityListCopyWith<CityList> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -645,8 +604,6 @@ class _$CityListCopyWithImpl<$Res, $Val extends CityList>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CityList
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -693,8 +650,6 @@ class __$$CityListImplCopyWithImpl<$Res>
       _$CityListImpl _value, $Res Function(_$CityListImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CityList
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -754,13 +709,11 @@ class _$CityListImpl implements _CityList {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, countryCode, name);
 
-  /// Create a copy of CityList
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CityListImplCopyWith<_$CityListImpl> get copyWith =>
@@ -790,11 +743,8 @@ abstract class _CityList implements CityList {
   String? get countryCode;
   @override
   String get name;
-
-  /// Create a copy of CityList
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CityListImplCopyWith<_$CityListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -808,12 +758,8 @@ mixin _$OffersResponse {
   List<Offer> get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
-  /// Serializes this OffersResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of OffersResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OffersResponseCopyWith<OffersResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -837,8 +783,6 @@ class _$OffersResponseCopyWithImpl<$Res, $Val extends OffersResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of OffersResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -877,8 +821,6 @@ class __$$OffersResponseImplCopyWithImpl<$Res>
       _$OffersResponseImpl _value, $Res Function(_$OffersResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of OffersResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -933,14 +875,12 @@ class _$OffersResponseImpl implements _OffersResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data), msg);
 
-  /// Create a copy of OffersResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OffersResponseImplCopyWith<_$OffersResponseImpl> get copyWith =>
@@ -967,11 +907,8 @@ abstract class _OffersResponse implements OffersResponse {
   List<Offer> get data;
   @override
   String get msg;
-
-  /// Create a copy of OffersResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OffersResponseImplCopyWith<_$OffersResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -989,12 +926,8 @@ mixin _$Offer {
   @JsonKey(name: 'updated_at')
   String get updatedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Offer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Offer
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OfferCopyWith<Offer> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1020,8 +953,6 @@ class _$OfferCopyWithImpl<$Res, $Val extends Offer>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Offer
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1073,8 +1004,6 @@ class __$$OfferImplCopyWithImpl<$Res>
       _$OfferImpl _value, $Res Function(_$OfferImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Offer
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1145,14 +1074,12 @@ class _$OfferImpl implements _Offer {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, offers, createdAt, updatedAt);
 
-  /// Create a copy of Offer
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OfferImplCopyWith<_$OfferImpl> get copyWith =>
@@ -1186,11 +1113,8 @@ abstract class _Offer implements Offer {
   @override
   @JsonKey(name: 'updated_at')
   String get updatedAt;
-
-  /// Create a copy of Offer
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OfferImplCopyWith<_$OfferImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -23,12 +23,8 @@ mixin _$HomeStoryModel {
   @JsonKey(name: 'home_story')
   HomeStoryData? get homeStory => throw _privateConstructorUsedError;
 
-  /// Serializes this HomeStoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HomeStoryModelCopyWith<HomeStoryModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$HomeStoryModelCopyWithImpl<$Res, $Val extends HomeStoryModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -69,8 +63,6 @@ class _$HomeStoryModelCopyWithImpl<$Res, $Val extends HomeStoryModel>
     ) as $Val);
   }
 
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $HomeStoryDataCopyWith<$Res>? get homeStory {
@@ -106,8 +98,6 @@ class __$$HomeStoryModelImplCopyWithImpl<$Res>
       _$HomeStoryModelImpl _value, $Res Function(_$HomeStoryModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,13 +138,11 @@ class _$HomeStoryModelImpl implements _HomeStoryModel {
                 other.homeStory == homeStory));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, homeStory);
 
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeStoryModelImplCopyWith<_$HomeStoryModelImpl> get copyWith =>
@@ -180,11 +168,8 @@ abstract class _HomeStoryModel implements HomeStoryModel {
   @override
   @JsonKey(name: 'home_story')
   HomeStoryData? get homeStory;
-
-  /// Create a copy of HomeStoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HomeStoryModelImplCopyWith<_$HomeStoryModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -198,12 +183,8 @@ mixin _$HomeStoryData {
   @JsonKey(name: 'story')
   Story? get story => throw _privateConstructorUsedError;
 
-  /// Serializes this HomeStoryData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HomeStoryDataCopyWith<HomeStoryData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -229,8 +210,6 @@ class _$HomeStoryDataCopyWithImpl<$Res, $Val extends HomeStoryData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -244,8 +223,6 @@ class _$HomeStoryDataCopyWithImpl<$Res, $Val extends HomeStoryData>
     ) as $Val);
   }
 
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $StoryCopyWith<$Res>? get story {
@@ -281,8 +258,6 @@ class __$$HomeStoryDataImplCopyWithImpl<$Res>
       _$HomeStoryDataImpl _value, $Res Function(_$HomeStoryDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -322,13 +297,11 @@ class _$HomeStoryDataImpl implements _HomeStoryData {
             (identical(other.story, story) || other.story == story));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, story);
 
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeStoryDataImplCopyWith<_$HomeStoryDataImpl> get copyWith =>
@@ -352,11 +325,8 @@ abstract class _HomeStoryData implements HomeStoryData {
   @override
   @JsonKey(name: 'story')
   Story? get story;
-
-  /// Create a copy of HomeStoryData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HomeStoryDataImplCopyWith<_$HomeStoryDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -371,12 +341,8 @@ mixin _$Story {
   List<HomeStoryAllPost>? get HomeStoryAllPosts =>
       throw _privateConstructorUsedError;
 
-  /// Serializes this Story to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Story
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $StoryCopyWith<Story> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -400,8 +366,6 @@ class _$StoryCopyWithImpl<$Res, $Val extends Story>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Story
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -436,8 +400,6 @@ class __$$StoryImplCopyWithImpl<$Res>
       _$StoryImpl _value, $Res Function(_$StoryImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Story
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -489,14 +451,12 @@ class _$StoryImpl implements _Story {
                 .equals(other._HomeStoryAllPosts, _HomeStoryAllPosts));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_HomeStoryAllPosts));
 
-  /// Create a copy of Story
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>
@@ -520,11 +480,8 @@ abstract class _Story implements Story {
   @override
   @JsonKey(name: 'HomeStoryAllPosts')
   List<HomeStoryAllPost>? get HomeStoryAllPosts;
-
-  /// Create a copy of Story
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$StoryImplCopyWith<_$StoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -552,12 +509,8 @@ mixin _$HomeStoryAllPost {
   @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
 
-  /// Serializes this HomeStoryAllPost to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of HomeStoryAllPost
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HomeStoryAllPostCopyWith<HomeStoryAllPost> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -589,8 +542,6 @@ class _$HomeStoryAllPostCopyWithImpl<$Res, $Val extends HomeStoryAllPost>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeStoryAllPost
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -667,8 +618,6 @@ class __$$HomeStoryAllPostImplCopyWithImpl<$Res>
       $Res Function(_$HomeStoryAllPostImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStoryAllPost
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -784,14 +733,12 @@ class _$HomeStoryAllPostImpl implements _HomeStoryAllPost {
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, vendorId, vendorName,
       vendorImage, storyCount, hasSponsoredGifts, id, title, image);
 
-  /// Create a copy of HomeStoryAllPost
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeStoryAllPostImplCopyWith<_$HomeStoryAllPostImpl> get copyWith =>
@@ -844,11 +791,8 @@ abstract class _HomeStoryAllPost implements HomeStoryAllPost {
   @override
   @JsonKey(name: 'image')
   String? get image;
-
-  /// Create a copy of HomeStoryAllPost
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HomeStoryAllPostImplCopyWith<_$HomeStoryAllPostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

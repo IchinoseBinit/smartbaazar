@@ -44,6 +44,7 @@ Future<String> createlisting(
   int? seller,
   int? trending,
 }) async {
+  print('raju $cf');
   final SmartClient client = SmartClient();
 
   try {
@@ -66,15 +67,15 @@ Future<String> createlisting(
       'negotiable': "0",
       'phone_hidden': "1",
       'captcha': "embed",
-      'trending': trending?? '0',
+      'trending': trending ?? '0',
       'ip_addr': "127.0.0.1",
       'accept_marketing_offers': accept,
       'is_permanent': "0",
-      'package_id': package?? 0,
+      'package_id': package ?? 0,
       'payment_method_id': "1",
       'stock': stock ?? 0,
-      'address': address?? 'world',
-      'length': length ,
+      'address': address ?? 'world',
+      'length': length,
       'width': width,
       'height': height,
       'weight': weight,
@@ -94,6 +95,21 @@ Future<String> createlisting(
     // Handle dynamic tags
     if (tags != null && tags.isNotEmpty) {
       formDataMap['tags[]'] = tags;
+    }
+
+    // Handle dynamic cf values
+    if (cf != null && cf.isNotEmpty) {
+      for (var item in cf) {
+        String key = item[0]; // cf.<number> (e.g., cf.35)
+        var value = item[1];  // Value can be a list or a single value
+
+        // If the value is a list, join it into a string
+        if (value is List) {
+          formDataMap[key] = value.join(',');
+        } else {
+          formDataMap[key] = value.toString();
+        }
+      }
     }
 
     // Create FormData

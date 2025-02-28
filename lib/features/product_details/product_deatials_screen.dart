@@ -100,7 +100,7 @@ class ProductDetailScreen extends ConsumerWidget {
     // print("binod is $adslist");
     final selectedIndex = ref.watch(selectedIndexProvider);
     final rating = ref.watch(ratingProvider);
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -120,7 +120,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-         print("bibash ${data.widgetSimilarPosts?.posts?.data.length}");
+          print("bibash ${data.widgetSimilarPosts?.posts?.data.length}");
           return Scaffold(
             bottomNavigationBar: const SizedBox.shrink(),
 
@@ -175,17 +175,25 @@ class ProductDetailScreen extends ConsumerWidget {
                     width: 10.w,
                   ),
                   InkWell(
-                      onTap: () {
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pop('dialog');
+                    onTap: () {
+                      print(
+                          'we got ${data.result!.id!.toString()} and ${data.result?.user?.id.toString()}');
+                      //     Navigator.of(context, rootNavigator: true).pop('dialog');
 
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const AddToCartScreen()));
-                                      },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => OrderDetailsScreen(
+                            selectedProductIds: [
+                              data.result!.id!.toString()
+                            ], // Wrap in a list
+                            selectedVendorIds: [
+                              data.result?.user?.id.toString()
+                            ], // Wrap in a list
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
                       padding:
@@ -216,8 +224,8 @@ class ProductDetailScreen extends ConsumerWidget {
                     width: 10.w,
                   ),
                   InkWell(
-          onTap: () {
-              ref.watch(addtocartProvider(data.result!.id!.toString()));
+                    onTap: () {
+                      ref.watch(addtocartProvider(data.result!.id!.toString()));
 
                       showDialog(
                           context: context,
@@ -253,7 +261,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                       height: 5.h,
                                     ),
                                     InkWell(
-                                         onTap: () {
+                                      onTap: () {
                                         Navigator.of(context,
                                                 rootNavigator: true)
                                             .pop('dialog');
@@ -264,7 +272,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                                 builder: (_) =>
                                                     const AddToCartScreen()));
                                       },
-                                   
                                       child: Text(
                                         'View Cart',
                                         textAlign: TextAlign.center,
@@ -304,7 +311,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                             );
                           });
-          },
+                    },
                     child: const CircleAvatar(
                         backgroundColor: Colors.grey,
                         child: Icon(Icons.shopping_bag_outlined)),
@@ -617,9 +624,9 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                           if (data.result != null) const FeaturesBannerWidget(),
                           if (data.result?.postTypeId == "7")
-                             DiscountBoxWidget(
-                              b2bPricingString:data.result?.b2bPricing?? '' ,
-                             ),
+                            DiscountBoxWidget(
+                              b2bPricingString: data.result?.b2bPricing ?? '',
+                            ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -821,16 +828,14 @@ class ProductDetailScreen extends ConsumerWidget {
                                     [])
                                 .where((e) =>
                                     e != null) // Remove null values safely
-                                .map(
-                                  (e) => AdditionalDetailsWidget(
-                                    defaultValue: e.defaultValue,
-                                    options: (e.options?.isNotEmpty ?? false)
-                                        ? e.options
-                                        : [],
-                                    title: e.name ?? 'Unknown Title',
-                                    desp: e.defaultValue ?? 'No default value',
-                                  ),
-                                )
+                                .map((e) => AdditionalDetailsWidget(
+                                      defaultValue: e.defaultValue ?? "",
+                                      options: e.options ??
+                                          [], // Ensure options are passed properly
+                                      title: e.name ?? 'Unknown Title',
+                                      desp:
+                                          e.defaultValue ?? 'No default value',
+                                    ))
                                 .toList(),
                           ),
 
@@ -1252,70 +1257,68 @@ class ProductDetailScreen extends ConsumerWidget {
 
                                           return ProductDetailWidget(
                                               onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                print('lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id.toString())
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                getEnquire(
+                                                        ref, prod.id.toString())
+                                                    .then(
+                                                  (value) {
+                                                    value.data?.enquire == 0
+                                                        ? showModalBottomSheet(
+                                                            useSafeArea: true,
+                                                            isScrollControlled:
+                                                                true,
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return SizedBox(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id.toString(),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                child:
+                                                                    SendMessageBottomWidget(
+                                                                  ref: ref,
+                                                                  productidid: prod
+                                                                      .id
+                                                                      .toString(),
+                                                                ),
+                                                              );
+                                                            },
+                                                          )
+                                                        : navigateToPage(
+                                                            context: context,
+                                                            page: ChatScreen(
+                                                                threadId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .id!,
+                                                                username: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .subject!,
+                                                                postId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .post_id!),
+                                                            ref: ref,
+                                                            showNavBar:
+                                                                false, // Hide bottom navbar
+                                                          );
+                                                    // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                    // SendMessageBottomWidget(
+                                                    //     ref: ref,
+                                                    //     productidid:
+                                                    //         prod.id);
+                                                  },
+                                                ).catchError((error) {
+                                                  print('Error: $error');
+                                                });
+                                              },
                                               //  savedid: prod.savedByLoggedUser ==
                                               //                         null ||
                                               //                     prod.savedByLoggedUser!

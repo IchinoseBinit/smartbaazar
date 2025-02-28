@@ -6,7 +6,7 @@ part of 'create_new_listing_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createlistingHash() => r'8b0cf332026d8a1381cd465140ed08ebece4e048';
+String _$createlistingHash() => r'a965751a185da03c7050f38d4879d5e86a5a9ca4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -495,8 +495,6 @@ class CreatelistingProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin CreatelistingRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `cf` of this provider.
   List<List<dynamic>>? get cf;
@@ -671,4 +669,4 @@ class _CreatelistingProviderElement
   int? get trending => (origin as CreatelistingProvider).trending;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

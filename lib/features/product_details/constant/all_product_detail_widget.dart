@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_list_api.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
@@ -20,6 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 class AllProductDetailWidget extends StatefulWidget {
   AllProductDetailWidget({
     super.key,
+     required this.ref,
     // this.membership_title,
     this.id,
     this.offer = '',
@@ -78,6 +81,7 @@ class AllProductDetailWidget extends StatefulWidget {
   List<SavedPost>? savedid;
   final VoidCallback? onRefresh;
     final Function()? onenquiredclicked;
+    WidgetRef ref;
 
 
   @override
@@ -105,10 +109,12 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
 
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(
-                  productId: widget.productid,
-                )));
+          navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: widget.productid),
+          ref: widget.ref,
+          showNavBar: false, // Hide bottom navbar
+        );
       },
       child: Column(
         // mainAxisSize: MainAxisSize.min,
@@ -164,8 +170,8 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                   ],
                 ),
                 PopupMenuButton(
-                  menuPadding:
-                      EdgeInsets.only(left: 10.w), // Responsive menu padding
+                 // menuPadding:
+                  //    EdgeInsets.only(left: 10.w), // Responsive menu padding
                   onSelected: (value) {},
                   padding: EdgeInsets.symmetric(
                       horizontal: 5.h), // Responsive padding
@@ -232,13 +238,12 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                           height: 30.h, // Responsive height
                           padding: EdgeInsets.only(left: 5.w),
                           onTap: () {
-                            Navigator.push(
+                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => VendorHomeScreen(
-                                    vendorName: widget.vendorname!,
-                                    vid: widget.id!,
-                                  ),
+                                  builder: (context) =>VendorHomeScreen(
+                                  vendorName: widget.vendorname!,
+                                  vid: int.tryParse(widget.id!.toString())!),
                                 ));
                           },
                           child: Text(
@@ -299,10 +304,13 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
           ),
           InkWell(
             onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ProductDetailScreen(
-                        productId: widget.productid,
-                      )));
+
+  navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: widget.productid),
+          ref: widget.ref,
+          showNavBar: false, // Hide bottom navbar
+        );               
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.w),

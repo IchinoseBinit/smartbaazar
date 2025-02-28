@@ -16,6 +16,7 @@ import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/model/message_thread_model.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class FeedContainer extends ConsumerStatefulWidget {
   const FeedContainer(
@@ -39,8 +40,7 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.feedId,
       required this.isLiked,
       required this.refreshprovider,
-      required this.productinfo
-      });
+      required this.productinfo});
 
   final String? vendorImage;
   final String? vendorName;
@@ -61,7 +61,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String? isLiked;
   final String? productinfo;
   final VoidCallback? refreshprovider;
-  
+
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -137,12 +137,9 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
         });
   }
 
-  void _shareImage(String imageUrl,String bio) {
+  void _shareImage(String imageUrl, String bio) {
     if (imageUrl.isNotEmpty) {
-      Share.share("It's about $bio\n : $imageUrl",
-      subject: bio
-
-      );
+      Share.share("It's about $bio\n : $imageUrl", subject: bio);
     } else {
       print("No image URL provided.");
     }
@@ -275,31 +272,42 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             ),
                           )
                         : Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, top: 3, bottom: 3, right: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(),
-                        ),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor:
-                              const Color(0x7F7F7F73).withOpacity(0.45),
-                          child: ClipOval(
-                              child: widget.vendorImage != null &&
-                                      widget.vendorImage!.isNotEmpty
-                                  ? Image.network(
-                                      widget.vendorImage!,
-                                      fit: BoxFit.cover,
-                                      width: 52,
-                                      height: 52,
-                                    )
-                                  : Icon(
-                                      Icons.person,
-                                      size: 24.sp,
-                                    )),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VendorHomeScreen(
+                                  vid: int.tryParse(widget.userId)!,
+                                  vendorName: widget.vendorName!),
+                            ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 3, bottom: 3, right: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(),
+                          ),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor:
+                                const Color(0x7F7F7F73).withOpacity(0.45),
+                            child: ClipOval(
+                                child: widget.vendorImage != null &&
+                                        widget.vendorImage!.isNotEmpty
+                                    ? Image.network(
+                                        widget.vendorImage!,
+                                        fit: BoxFit.cover,
+                                        width: 52,
+                                        height: 52,
+                                      )
+                                    : Icon(
+                                        Icons.person,
+                                        size: 24.sp,
+                                      )),
+                          ),
                         ),
                       ),
                     ),
@@ -689,6 +697,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     ),
 
                     SizedBox(width: 15.w),
+
                     // Comment Icon
 
                     messageThreadProvider.when(
@@ -724,8 +733,36 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                         );
                       },
                       error: (error, stackTrace) => InkWell(
-                          onTap: () => const LoginScreen(),
-                          child: const Center(child: Text("login"))),
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle, // Circular container
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue,
+                                Colors.green
+                              ], // Define gradient colors
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(
+                              8), // Optional: add padding around the image
+                          child: Image.asset(
+                            'assets/icon/tabler_location-share.png',
+                            width: 24, // Adjust width as needed
+                            height: 24, // Adjust height as needed
+                          ),
+                        ),
+                      ),
                       loading: () => Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
@@ -744,7 +781,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     // Share Icon
                     GestureDetector(
                         onTap: () {
-                          _shareImage(widget.feedDetailImage!,widget.productinfo?? 'info');
+                          _shareImage(widget.feedDetailImage!,
+                              widget.productinfo ?? 'info');
                           // Share.share('Share this ${widget.feedDetailImage}');
                         },
                         child: Container(

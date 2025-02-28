@@ -15,7 +15,10 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
@@ -101,10 +104,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   Future<void> shared() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    // print("kaju ${pref.getKeys()}");
-    Map<String, dynamic> data = jsonDecode(pref.getString('session') ?? '');
 
-    String? imageUrl = data["result"]["photo_url"];
+    String? sessionData = pref.getString('session');
+
+    if (sessionData == null || sessionData.isEmpty) {
+      debugPrint("No session data found");
+      return;
+    }
+
+    try {
+      Map<String, dynamic> data = jsonDecode(sessionData);
+      String? imageUrl = data["result"]["photo_url"];
+      debugPrint("Image URL: $imageUrl");
+    } catch (e) {
+      debugPrint("Error decoding session data: $e");
+    }
   }
 
   final List<Map<String, dynamic>> _items = [
@@ -276,17 +290,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   Future<void> _searchStories(String query) async {
     if (query.isNotEmpty) {
-      final stories = await ref.read(searchstoryapiProvider(query).future);
-      setState(() {
-        _storysearchresponse = stories;
-        _storysearchresult =
-            stories.data.home_story.story.posts!; // ✅ Update local list
-      });
+      try {
+        final stories = await ref.watch(searchstoryapiProvider(query).future);
+
+        if (stories == null ||
+            stories.data == null ||
+            stories.data.home_story == null) {
+          throw Exception("No data available");
+        }
+
+        setState(() {
+          _storysearchresponse = stories;
+          _storysearchresult = stories.data.home_story.story.posts ?? [];
+        });
+      } catch (e) {
+        debugPrint("Error loading stories: $e");
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // final dilevery = ref.watch(getDeliveryChargeProvider('eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YTg3OGI0MS1mYzllLTQ3ODktYTgzNS0wYjNlYmUwNjA3NzgiLCJqdGkiOiJiNDA3ZGJiYzhiYjQ4ZTA2YjIyZmRjYTI0OTIyM2Q4NGM5NGIxNTNiNzEyM2Q1YzdlNzk2YWFlMTc2ODMzNmYxMTkyYTcyYTk5OTAxMmUxYyIsImlhdCI6MTc0MDY0OTY5MC44MDI5MDgsIm5iZiI6MTc0MDY0OTY5MC44MDI5MTEsImV4cCI6MTc3MjE4NTY5MC44MDExMSwic3ViIjoiMDI2ODgxZWMtN2I0ZC00ZDZiLTk2NGEtNTk2MjUyNjZiMDkzIiwic2NvcGVzIjpbXX0.I2aUMUWRE_FyuPeqE7CB-xV7BNE2xyx6Ny6-fo_vWf9uzDfWUpd80BUeN5wLHRBPBMIFIx9qf4yw1szVs-6lC4L4xMXlgbtPSG9rfI9JorOFJasgL6NvFx5ouZowxsFneTPFllw-G81dEOoQTwNZF60t7L2jVECsgy-suiAskWPBTXm9f7sbw9hURV1wDvEoJrEC7_9_kRrjG-0t6ukP2i-aP2AZW4CEL4Su0_Eqg6XzxbkDv_fcO25DYIQ5JzWwRawLIChf2iRjOQo0Wab0cCByD3lsvC2QnqcF4GMibx0QygP_vKSbcIkUSa1UOGIPhGg9RR4cMB7-6t6HtICRO9LrIa6q2Je90mrNesC8G4Nd5IUiayy_zMOmh6il6b7zlfqbL4NwhYi0zAwu81-GL9OVynHLcR2oSMluJq9KGC0sQWHcUpJbdGcAs-ySUNq8JBPZ6OSCDMTGfymyKi-l6oqXgVVWp7N3jE0GvsLs47i72Nl_yv74Z5g-D4y3y_Vnm2DwGDNhoAIqyLKAxh8i405T1Pk-M7NETvq0kZBZJhNQE9B8ab15iqGSqDgt0UH-jb1N3JjrQgfjLCgDD5iv0nb9io32g-2FgOfqmj5osYjuUxpeHNQzaT2qAp0HHGWwoJKE4JtnpNEB9h2B_t89hlUynz63CcIZXd4uocKmjAo'));
+
     final selectedIndex = ref.watch(_selectedIndexProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
@@ -836,7 +862,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                             error: (error, stackTrace) {
-                              return Text("error $error");
+                              return Text("Please check your internet");
                             },
                             loading: () {
                               // Shimmer loading effect
@@ -964,8 +990,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     //yeaiho
 
                                                     return ProductDetailWidget(
-                                                      
-                                                       onenquiredclicked: () {
+                                                      onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
 
@@ -1394,71 +1419,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             "laukatp ${prod.post_type_id} and ${prod.title}");
 
                                                         return ProductDetailWidget(
-                                                            onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                          onenquiredclicked:
+                                                              () {
+                                                            print(
+                                                                'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                            getEnquire(ref,
+                                                                    prod.id)
+                                                                .then(
+                                                              (value) {
+                                                                value.data?.enquire ==
+                                                                        0
+                                                                    ? showModalBottomSheet(
+                                                                        useSafeArea:
+                                                                            true,
+                                                                        isScrollControlled:
+                                                                            true,
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return SizedBox(
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
+                                                                            child:
+                                                                                SendMessageBottomWidget(
+                                                                              ref: ref,
+                                                                              productidid: prod.id,
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                      )
+                                                                    : navigateToPage(
+                                                                        context:
+                                                                            context,
+                                                                        page: ChatScreen(
+                                                                            threadId:
+                                                                                value.data!.thread!.id!,
+                                                                            username: value.data!.thread!.subject!,
+                                                                            postId: value.data!.thread!.post_id!),
+                                                                        ref:
+                                                                            ref,
+                                                                        showNavBar:
+                                                                            false, // Hide bottom navbar
                                                                       );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
+                                                                // SendMessageBottomWidget(
+                                                                //     ref: ref,
+                                                                //     productidid:
+                                                                //         prod.id);
+                                                              },
+                                                            ).catchError(
+                                                                    (error) {
+                                                              print(
+                                                                  'Error: $error');
+                                                            });
                                                           },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
                                                           savedid: prod.savedByLoggedUser ==
                                                                       null ||
                                                                   prod.savedByLoggedUser!
@@ -1572,71 +1591,71 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       data.spot[0][index];
 
                                                   return ProductDetailWidget(
-                                                      onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                    onenquiredclicked: () {
+                                                      print('lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                      getEnquire(ref, prod.id)
+                                                          .then(
+                                                        (value) {
+                                                          value.data?.enquire ==
+                                                                  0
+                                                              ? showModalBottomSheet(
+                                                                  useSafeArea:
+                                                                      true,
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                      child:
+                                                                          SendMessageBottomWidget(
+                                                                        ref:
+                                                                            ref,
+                                                                        productidid:
+                                                                            prod.id,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                )
+                                                              : navigateToPage(
+                                                                  context:
+                                                                      context,
+                                                                  page: ChatScreen(
+                                                                      threadId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .id!,
+                                                                      username: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .subject!,
+                                                                      postId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .post_id!),
+                                                                  ref: ref,
+                                                                  showNavBar:
+                                                                      false, // Hide bottom navbar
+                                                                );
+                                                          // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                          // SendMessageBottomWidget(
+                                                          //     ref: ref,
+                                                          //     productidid:
+                                                          //         prod.id);
+                                                        },
+                                                      ).catchError((error) {
+                                                        print('Error: $error');
+                                                      });
+                                                    },
                                                     savedid: prod.savedByLoggedUser ==
                                                                 null ||
                                                             prod.savedByLoggedUser!
@@ -1701,7 +1720,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                             error: (error, stackTrace) {
-                              return Text("Error: $error");
+                              return Text("Please check your internet");
                             },
                             loading: () => SizedBox(
                               height: 350.h, // Adjust the height dynamically
@@ -1970,71 +1989,64 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
-                                            
-                                              onenquiredclicked: () {
-                                                        
+                                            ref: ref,
+                                            onenquiredclicked: () {
+                                              getEnquire(ref, res.id).then(
+                                                (value) {
+                                                  value.data?.enquire == 0
+                                                      ? showModalBottomSheet(
+                                                          useSafeArea: true,
+                                                          isScrollControlled:
+                                                              true,
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return SizedBox(
+                                                              height: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height *
+                                                                  0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, res.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              res.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
+                                                              child:
+                                                                  SendMessageBottomWidget(
+                                                                ref: ref,
+                                                                productidid:
+                                                                    res.id,
+                                                              ),
+                                                            );
                                                           },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                        )
+                                                      : navigateToPage(
+                                                          context: context,
+                                                          page: ChatScreen(
+                                                              threadId: value
+                                                                  .data!
+                                                                  .thread!
+                                                                  .id!,
+                                                              username: value
+                                                                  .data!
+                                                                  .thread!
+                                                                  .subject!,
+                                                              postId: value
+                                                                  .data!
+                                                                  .thread!
+                                                                  .post_id!),
+                                                          ref: ref,
+                                                          showNavBar:
+                                                              false, // Hide bottom navbar
+                                                        );
+                                                  // if ()
+
+                                                  // SendMessageBottomWidget(
+                                                  //     ref: ref,
+                                                  //     productidid:
+                                                  //         prod.id);
+                                                },
+                                              ).catchError((error) {
+                                                print('Error: $error');
+                                              });
+                                            },
                                             savedid:
                                                 res.savedByLoggedUser == null ||
                                                         res.savedByLoggedUser!
@@ -2250,7 +2262,6 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   int? postypeid = 0;
   bool? showbackbutton;
 
-  // final Function(String)? onsearchTapped;
   final Function(String)? onchanged;
 
   StickyHeaderDelegate(
@@ -2271,12 +2282,15 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: !visible!
-            ? const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40))
+            ? BorderRadius.only(
+                bottomLeft: Radius.circular(screenWidth * 0.1),
+                bottomRight: Radius.circular(screenWidth * 0.1))
             : null,
         gradient: const LinearGradient(
           colors: [
@@ -2287,46 +2301,46 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
           end: Alignment.bottomRight,
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
       alignment: Alignment.center,
       child: ValueListenableBuilder<Map<String, String>?>(
         valueListenable: dropdownValueNotifier,
         builder: (context, dropdownValue, child) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               showbackbutton!
                   ? InkWell(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Icon(Icons.arrow_back_ios_rounded))
+                      child: Icon(Icons.arrow_back_ios_rounded,
+                          size: screenWidth * 0.05))
                   : Image.asset(
-                      height: 40.h,
-                      width: 40.w,
+                      height: screenHeight * 0.05,
+                      width: screenWidth * 0.1,
                       'assets/images/Smartbazaar-Icon-for-QR.png'),
               SizedBox(
-                height: 45,
+                height: screenHeight * 0.06,
                 child: Row(
                   children: [
                     Container(
-                      height: 45.h,
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      height: screenHeight * 0.06,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(19.r),
-                          bottomLeft: Radius.circular(19.r),
+                          topLeft: Radius.circular(screenWidth * 0.05),
+                          bottomLeft: Radius.circular(screenWidth * 0.05),
                         ),
                       ),
                       child: DropdownButton<Map<String, String>>(
                         alignment: Alignment.center,
                         value: dropdownValueNotifier.value ??
-                            headeritems[
-                                postypeid!], // Use ValueNotifier's current value
+                            headeritems[postypeid!],
                         onChanged: (value) {
-                          // Update the dropdown value notifier to trigger a UI refresh
                           dropdownValueNotifier.value = value;
                         },
                         items: headeritems.map((item) {
@@ -2340,14 +2354,14 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                                 SvgPicture.asset(
                                   alignment: Alignment.center,
                                   item['icon']!,
-                                  height: 10.h,
+                                  height: screenHeight * 0.02,
                                   color: Colors.white,
                                 ),
-                                SizedBox(width: 8.w),
+                                SizedBox(width: screenWidth * 0.02),
                                 Text(
                                   item['label']!,
                                   style: TextStyle(
-                                    fontSize: 10.sp,
+                                    fontSize: screenWidth * 0.03,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -2362,34 +2376,29 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                     Container(
-                      width: 180.w,
-                      height: 45.h,
-                      padding: const EdgeInsets.all(5),
+                      width: screenWidth * 0.4,
+                      height: screenHeight * 0.06,
+                      padding: EdgeInsets.all(screenWidth * 0.01),
                       decoration: const BoxDecoration(color: Colors.white),
                       child: TextField(
                         controller: searchController,
                         onChanged: onchanged,
-                        onTap: () {},
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.search,
-                            size: 19,
+                            size: screenWidth * 0.05,
                             color: Color(0xffD9D9D9),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.2, color: Colors.white),
                           ),
                           hintText: "Search Everything",
                           hintStyle: TextStyle(
-                              fontSize: 6.sp, color: const Color(0xffD9D9D9)),
-                          isCollapsed: true,
+                              fontSize: screenWidth * 0.02,
+                              color: const Color(0xffD9D9D9),
+                              ),
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 5.h, horizontal: 10.w),
-                          disabledBorder: InputBorder.none,
-                          isDense: true,
+                              vertical: screenHeight * 0.02,
+                              horizontal: screenWidth * 0.02),
                         ),
                       ),
                     ),
@@ -2406,21 +2415,22 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                         }
                       },
                       child: Container(
-                        height: 45.h,
+                        height: screenHeight * 0.06,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 5.h),
+                            horizontal: screenWidth * 0.05,
+                            vertical: screenHeight * 0.01),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.white),
                           color: Colors.transparent,
                           borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(19.r),
-                            bottomRight: Radius.circular(19.r),
+                            topRight: Radius.circular(screenWidth * 0.05),
+                            bottomRight: Radius.circular(screenWidth * 0.05),
                           ),
                         ),
                         child: Icon(
                           Icons.search,
                           color: Colors.white,
-                          size: 20.sp,
+                          size: screenWidth * 0.05,
                         ),
                       ),
                     ),
@@ -2436,7 +2446,6 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant StickyHeaderDelegate oldDelegate) {
-    // Rebuild only if filteredSuggestions changed
     return oldDelegate.filteredSuggestions != filteredSuggestions;
   }
 }
@@ -2459,7 +2468,7 @@ class valuenotifilersidebutton extends StatelessWidget {
       valueListenable: showSideBar,
       builder: (context, value, child) {
         return Positioned(
-          top: isSectionsVisible ? 320 : 320,
+          top: isSectionsVisible ? 300 : 300,
           right: 0,
           child: InkWell(
             onTap: () {
@@ -2468,7 +2477,7 @@ class valuenotifilersidebutton extends StatelessWidget {
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'homehero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -2476,25 +2485,30 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                colors: [Colors.white, Colors.white],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter),
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -2516,150 +2530,256 @@ class valuenotifilersidebutton extends StatelessWidget {
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'homehero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

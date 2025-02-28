@@ -8,6 +8,11 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
@@ -59,7 +64,6 @@ import '../../product_details/constant/all_product_detail_widget.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
-
 
 class UsedScreen extends ConsumerStatefulWidget {
   const UsedScreen({super.key});
@@ -252,9 +256,11 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
   @override
   Widget build(BuildContext context) {
+    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
+
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
     var homecategory = ref.watch(homeCategoryProvider);
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -538,87 +544,92 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: homecategory.when(
-                        data: (feedStoryData) {
-                          List<HomeStoryPost>? homeStory =
-                              feedStoryData.home_story?.story.posts;
+                      child: SizedBox(
+                        height: 100.h,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              asyncForYouStoryContent.when(
+                                data: (feedStoryData) {
+                                  final feedStoryContent =
+                                      feedStoryData.data?.feedstory;
+                                  final posts = feedStoryContent?.posts ?? [];
 
-                          if (homeStory != null) {
-                            final posts = homeStory;
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
-
-                                    return HomePageStoryContainer(
-                                      feedStoryContent: Story(
-                                        HomeStoryAllPosts: feedStoryData
-                                            .home_story?.story.posts
-                                            ?.map((e) => HomeStoryAllPost(
-                                                  hasSponsoredGifts:
-                                                      e.hasSponsoredGifts,
-                                                  id: e.id,
-                                                  image: e.image,
-                                                  storyCount: e.storyCount,
-                                                  title: e.title,
-                                                  vendorId: e.vendorId,
-                                                  vendorImage: e.vendorImage,
-                                                  vendorName: e.vendorName,
-                                                ))
-                                            .toList(),
+                                  return posts.isNotEmpty
+                                      ? ListView.builder(
+                                          padding: EdgeInsets.only(left: 3.w),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: posts.length,
+                                          itemBuilder: (context, index) {
+                                            final story = posts[index];
+                                            return FeedStoryAddWidget(
+                                              index: index,
+                                              vendorName: story.vendorName ??
+                                                  "Unknown Vendor",
+                                              vendorImage: story.vendorImage ??
+                                                  "https://example.com/default-image.png",
+                                              storyCount: story.storyCount ?? 0,
+                                              showGift:
+                                                  story.hasSponsoredGifts ??
+                                                      false,
+                                              feedStoryContent:
+                                                  feedStoryContent!,
+                                              userId: story.vendorId ?? '',
+                                            );
+                                          },
+                                        )
+                                      : Padding(
+                                        padding:  EdgeInsets.symmetric(horizontal:  50.w),
+                                        child: const Center(
+                                            child: Text("No stories available")),
+                                      );
+                                },
+                                loading: () => SizedBox(
+                                  height: 40.h,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemBuilder: (_, __) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 80,
+                                          height: 50,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                      userId: story.id,
-                                      index: index,
-                                      vendorName:
-                                          story.vendorName ?? "Unknown Vendor",
-                                      vendorImage: story.vendorImage ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story.storyCount ?? 0,
-                                      showGift:
-                                          story.hasSponsoredGifts ?? false,
-                                    );
-                                  },
+                                    ),
+                                  ),
+                                ),
+                                error: (error, _) => SizedBox(
+                                  height: 60.h,
+                                  child: Center(
+                                    child: Text(
+                                      error
+                                              .toString()
+                                              .contains('Session has expired')
+                                          ? 'Please log in again.'
+                                          : 'Error: $error',
+                                    ),
+                                  ),
                                 ),
                               ),
-                            );
-                          }
-
-                          return const Center(
-                            child: Text('No stories available.'),
-                          );
-                        },
-                        loading: () => SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5, // Number of shimmer placeholders
-                            itemBuilder: (context, index) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                width: 70.w,
-                                height: 100.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                              SizedBox(
+                                height: 5.h,
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -733,183 +744,195 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         data: (data) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: Column(
-                              children: [
-                                // Row for "ALL" and other services
+                            child: Column(children: [
+                              // Row for "ALL" and other services
 
-                                 Padding(
-                                  padding:  EdgeInsets.only(left: 5.w),
-                                  child: SizedBox(
-                                    height: 100.h, // Adjust height as necessary
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          // "ALL" Services (Standalone)
-                                          DottedBorder(
-                                            strokeWidth: 2,
-                                            color: Colors.grey,
-                                            borderType: BorderType.RRect,
-                                            radius: const Radius.circular(10),
-                                            dashPattern: const [15, 15],
-                                            child: SizedBox(
-                                              width: 100,
-                                              height: 100,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "ALL",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: SizedBox(
+                                  height: 100.h, // Adjust height as necessary
+                                  width: double.infinity,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        // "ALL" Services (Standalone)
+                                        DottedBorder(
+                                          strokeWidth: 2,
+                                          color: Colors.grey,
+                                          borderType: BorderType.RRect,
+                                          radius: const Radius.circular(10),
+                                          dashPattern: const [15, 15],
+                                          child: SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "ALL",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                  Text(
-                                                    "Used",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
+                                                ),
+                                                Text(
+                                                  "Used",
+                                                  style: headerstyle.copyWith(
+                                                    color: ColorConstant
+                                                        .blackColor,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
-                                  
-                                          // Other Services List
-                                          ListView(
-                                            physics:
-                                                const BouncingScrollPhysics(),
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            children: data.map((e) {
-                                              return Container(
-                                    width: 150.w,
-                                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: const Color(0xff651c50)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
-                                      child: Text(
-                                        e.name,
-                                        textAlign: TextAlign.center, // Centers text
-                                        maxLines: 2, // Allows text to wrap into two lines
-                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
-                                        style: const TextStyle(fontSize: 14), // Adjust font size if needed
-                                      ),
-                                    ),
-                                  );
-                                  
-                                              // return Padding(
-                                              //   padding: EdgeInsets.zero,
-                                              //   child: GestureDetector(
-                                              //     onTap: () {
-                                              //       showMenu(
-                                              //         context: context,
-                                              //         position: const RelativeRect
-                                              //             .fromLTRB(0, 0, 0,
-                                              //             0), // Base position; offset is handled by PopupMenuButton
-                                              //         items: [
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: ListTile(
-                                              //               title: const Text(
-                                              //                   "View Story"),
-                                              //               leading: const Icon(
-                                              //                   Icons.book),
-                                              //               onTap: () {
-                                              //                 // Implement onTap logic
-                                              //               },
-                                              //             ),
-                                              //           ),
-                                              //         ],
-                                              //       );
-                                              //     },
-                                              //     child: PopupMenuButton<int>(
-                                              //       offset: const Offset(0,
-                                              //           60), // The offset to position the menu above the widget
-                                              //       itemBuilder: (context) => [
-                                              //         const PopupMenuItem(
-                                              //           value: 1,
-                                              //           child: Text("View Story",
-                                              //               style: TextStyle(
-                                              //                   fontSize: 16.0)),
-                                              //         ),
-                                              //         if (e.parentClosure != null)
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: Text(
-                                              //               e.slug,
-                                              //               style: const TextStyle(
-                                              //                   fontSize: 16.0),
-                                              //             ),
-                                              //           ),
-                                              //       ],
-                                              //       child: Padding(
-                                              //         padding: EdgeInsets.symmetric(
-                                              //             horizontal: 10.w),
-                                              //         child: DashedBorder(
-                                              //           padding: 0,
-                                              //           dashCount: 2,
-                                              //           child: SizedBox(
-                                              //             // width: 100.w,
-                                              //             // height: 100.h,
-                                              //             child: Column(
-                                              //               mainAxisAlignment:
-                                              //                   MainAxisAlignment
-                                              //                       .center,
-                                              //               crossAxisAlignment:
-                                              //                   CrossAxisAlignment
-                                              //                       .center,
-                                              //               children: [
-                                              //                 Image.asset(
-                                              //                     'assets/images/cloth.png'),
-                                              //                 Center(
-                                              //                   child: Text(
-                                              //                     e.name ?? 'No Name',
-                                              //                     style:
-                                              //                         const TextStyle(
-                                              //                       color:
-                                              //                           Colors.black,
-                                              //                       fontWeight:
-                                              //                           FontWeight
-                                              //                               .w500,
-                                              //                       fontSize: 13,
-                                              //                     ),
-                                              //                     textAlign: TextAlign
-                                              //                         .center,
-                                              //                   ),
-                                              //                 )
-                                              //               ],
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // );
-                                            }).toList(),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                          width: 5.w,
+                                        ),
+
+                                        // Other Services List
+                                        ListView(
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          children: data.map((e) {
+                                            return Container(
+                                              width: 150.w,
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xff651c50)),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 5,
+                                                        vertical:
+                                                            5), // Adds spacing
+                                                child: Text(
+                                                  e.name,
+                                                  textAlign: TextAlign
+                                                      .center, // Centers text
+                                                  maxLines:
+                                                      2, // Allows text to wrap into two lines
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Shows "..." if too long
+                                                  style: const TextStyle(
+                                                      fontSize:
+                                                          14), // Adjust font size if needed
+                                                ),
+                                              ),
+                                            );
+
+                                            // return Padding(
+                                            //   padding: EdgeInsets.zero,
+                                            //   child: GestureDetector(
+                                            //     onTap: () {
+                                            //       showMenu(
+                                            //         context: context,
+                                            //         position: const RelativeRect
+                                            //             .fromLTRB(0, 0, 0,
+                                            //             0), // Base position; offset is handled by PopupMenuButton
+                                            //         items: [
+                                            //           PopupMenuItem(
+                                            //             value: 1,
+                                            //             child: ListTile(
+                                            //               title: const Text(
+                                            //                   "View Story"),
+                                            //               leading: const Icon(
+                                            //                   Icons.book),
+                                            //               onTap: () {
+                                            //                 // Implement onTap logic
+                                            //               },
+                                            //             ),
+                                            //           ),
+                                            //         ],
+                                            //       );
+                                            //     },
+                                            //     child: PopupMenuButton<int>(
+                                            //       offset: const Offset(0,
+                                            //           60), // The offset to position the menu above the widget
+                                            //       itemBuilder: (context) => [
+                                            //         const PopupMenuItem(
+                                            //           value: 1,
+                                            //           child: Text("View Story",
+                                            //               style: TextStyle(
+                                            //                   fontSize: 16.0)),
+                                            //         ),
+                                            //         if (e.parentClosure != null)
+                                            //           PopupMenuItem(
+                                            //             value: 1,
+                                            //             child: Text(
+                                            //               e.slug,
+                                            //               style: const TextStyle(
+                                            //                   fontSize: 16.0),
+                                            //             ),
+                                            //           ),
+                                            //       ],
+                                            //       child: Padding(
+                                            //         padding: EdgeInsets.symmetric(
+                                            //             horizontal: 10.w),
+                                            //         child: DashedBorder(
+                                            //           padding: 0,
+                                            //           dashCount: 2,
+                                            //           child: SizedBox(
+                                            //             // width: 100.w,
+                                            //             // height: 100.h,
+                                            //             child: Column(
+                                            //               mainAxisAlignment:
+                                            //                   MainAxisAlignment
+                                            //                       .center,
+                                            //               crossAxisAlignment:
+                                            //                   CrossAxisAlignment
+                                            //                       .center,
+                                            //               children: [
+                                            //                 Image.asset(
+                                            //                     'assets/images/cloth.png'),
+                                            //                 Center(
+                                            //                   child: Text(
+                                            //                     e.name ?? 'No Name',
+                                            //                     style:
+                                            //                         const TextStyle(
+                                            //                       color:
+                                            //                           Colors.black,
+                                            //                       fontWeight:
+                                            //                           FontWeight
+                                            //                               .w500,
+                                            //                       fontSize: 13,
+                                            //                     ),
+                                            //                     textAlign: TextAlign
+                                            //                         .center,
+                                            //                   ),
+                                            //                 )
+                                            //               ],
+                                            //             ),
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // );
+                                          }).toList(),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ]
-                            ),
+                              ),
+                            ]),
                           );
                         },
                         error: (error, stackTrace) {
@@ -983,70 +1006,57 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         data.hotProducts.length, (index) {
                                       VProduct hot = data.hotProducts[index];
                                       return ProductDetailWidget(
-                                          onenquiredclicked: () {
-                                                        
+                                        onenquiredclicked: () {
+                                          getEnquire(ref, hot.id).then(
+                                            (value) {
+                                              value.data?.enquire == 0
+                                                  ? showModalBottomSheet(
+                                                      useSafeArea: true,
+                                                      isScrollControlled: true,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return SizedBox(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, hot.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              hot.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
+                                                          child:
+                                                              SendMessageBottomWidget(
+                                                            ref: ref,
+                                                            productidid: hot.id,
+                                                          ),
+                                                        );
                                                       },
+                                                    )
+                                                  : navigateToPage(
+                                                      context: context,
+                                                      page: ChatScreen(
+                                                          threadId: value.data!
+                                                              .thread!.id!,
+                                                          username: value.data!
+                                                              .thread!.subject!,
+                                                          postId: value
+                                                              .data!
+                                                              .thread!
+                                                              .post_id!),
+                                                      ref: ref,
+                                                      showNavBar:
+                                                          false, // Hide bottom navbar
+                                                    );
+                                              // if ()
+
+                                              // SendMessageBottomWidget(
+                                              //     ref: ref,
+                                              //     productidid:
+                                              //         prod.id);
+                                            },
+                                          ).catchError((error) {
+                                            print('Error: $error');
+                                          });
+                                        },
                                         savedid: hot.savedByLoggedUser ==
                                                     null ||
                                                 hot.savedByLoggedUser!.isEmpty
@@ -1165,70 +1175,69 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                   VProduct pro =
                                                       data.insidearr[0][index];
                                                   return ProductDetailWidget(
-                                                      onenquiredclicked: () {
-                                                      
+                                                    onenquiredclicked: () {
+                                                      getEnquire(ref, pro.id)
+                                                          .then(
+                                                        (value) {
+                                                          value.data?.enquire ==
+                                                                  0
+                                                              ? showModalBottomSheet(
+                                                                  useSafeArea:
+                                                                      true,
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, pro.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                                      child:
+                                                                          SendMessageBottomWidget(
+                                                                        ref:
+                                                                            ref,
+                                                                        productidid:
+                                                                            pro.id,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                )
+                                                              : navigateToPage(
+                                                                  context:
+                                                                      context,
+                                                                  page: ChatScreen(
+                                                                      threadId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .id!,
+                                                                      username: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .subject!,
+                                                                      postId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .post_id!),
+                                                                  ref: ref,
+                                                                  showNavBar:
+                                                                      false, // Hide bottom navbar
+                                                                );
+                                                          // if ()
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              pro.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                          // SendMessageBottomWidget(
+                                                          //     ref: ref,
+                                                          //     productidid:
+                                                          //         prod.id);
+                                                        },
+                                                      ).catchError((error) {
+                                                        print('Error: $error');
+                                                      });
+                                                    },
                                                     savedid: pro.savedByLoggedUser ==
                                                                 null ||
                                                             pro.savedByLoggedUser!
@@ -1351,70 +1360,64 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             VProduct pro =
                                                 data.insidearr[1][index];
                                             return ProductDetailWidget(
-                                                onenquiredclicked: () {
-                                                       
+                                              onenquiredclicked: () {
+                                                getEnquire(ref, pro.id).then(
+                                                  (value) {
+                                                    value.data?.enquire == 0
+                                                        ? showModalBottomSheet(
+                                                            useSafeArea: true,
+                                                            isScrollControlled:
+                                                                true,
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return SizedBox(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, pro.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                                child:
+                                                                    SendMessageBottomWidget(
+                                                                  ref: ref,
+                                                                  productidid:
+                                                                      pro.id,
+                                                                ),
+                                                              );
+                                                            },
+                                                          )
+                                                        : navigateToPage(
+                                                            context: context,
+                                                            page: ChatScreen(
+                                                                threadId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .id!,
+                                                                username: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .subject!,
+                                                                postId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .post_id!),
+                                                            ref: ref,
+                                                            showNavBar:
+                                                                false, // Hide bottom navbar
+                                                          );
+                                                    // if ()
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              pro.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                    // SendMessageBottomWidget(
+                                                    //     ref: ref,
+                                                    //     productidid:
+                                                    //         prod.id);
+                                                  },
+                                                ).catchError((error) {
+                                                  print('Error: $error');
+                                                });
+                                              },
                                               savedid: pro.savedByLoggedUser ==
                                                           null ||
                                                       pro.savedByLoggedUser!
@@ -1530,70 +1533,67 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 VProduct pro =
                                                     data.insidearr[2][index];
                                                 return ProductDetailWidget(
-                                                    onenquiredclicked: () {
-                                                      
+                                                  onenquiredclicked: () {
+                                                    getEnquire(ref, pro.id)
+                                                        .then(
+                                                      (value) {
+                                                        value.data?.enquire == 0
+                                                            ? showModalBottomSheet(
+                                                                useSafeArea:
+                                                                    true,
+                                                                isScrollControlled:
+                                                                    true,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return SizedBox(
+                                                                    height: MediaQuery.of(context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, pro.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              pro.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
+                                                                    child:
+                                                                        SendMessageBottomWidget(
+                                                                      ref: ref,
+                                                                      productidid:
+                                                                          pro.id,
+                                                                    ),
                                                                   );
-                                                            // if ()
+                                                                },
+                                                              )
+                                                            : navigateToPage(
+                                                                context:
+                                                                    context,
+                                                                page: ChatScreen(
+                                                                    threadId: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .id!,
+                                                                    username: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .subject!,
+                                                                    postId: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .post_id!),
+                                                                ref: ref,
+                                                                showNavBar:
+                                                                    false, // Hide bottom navbar
+                                                              );
+                                                        // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
+                                                        // SendMessageBottomWidget(
+                                                        //     ref: ref,
+                                                        //     productidid:
+                                                        //         prod.id);
                                                       },
+                                                    ).catchError((error) {
+                                                      print('Error: $error');
+                                                    });
+                                                  },
                                                   savedid: pro.savedByLoggedUser ==
                                                               null ||
                                                           pro.savedByLoggedUser!
@@ -1708,70 +1708,67 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                 VProduct pro =
                                                     data.insidearr[4][index];
                                                 return ProductDetailWidget(
-                                                    onenquiredclicked: () {
-                                                      
+                                                  onenquiredclicked: () {
+                                                    getEnquire(ref, pro.id)
+                                                        .then(
+                                                      (value) {
+                                                        value.data?.enquire == 0
+                                                            ? showModalBottomSheet(
+                                                                useSafeArea:
+                                                                    true,
+                                                                isScrollControlled:
+                                                                    true,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return SizedBox(
+                                                                    height: MediaQuery.of(context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, pro.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              pro.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
+                                                                    child:
+                                                                        SendMessageBottomWidget(
+                                                                      ref: ref,
+                                                                      productidid:
+                                                                          pro.id,
+                                                                    ),
                                                                   );
-                                                            // if ()
+                                                                },
+                                                              )
+                                                            : navigateToPage(
+                                                                context:
+                                                                    context,
+                                                                page: ChatScreen(
+                                                                    threadId: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .id!,
+                                                                    username: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .subject!,
+                                                                    postId: value
+                                                                        .data!
+                                                                        .thread!
+                                                                        .post_id!),
+                                                                ref: ref,
+                                                                showNavBar:
+                                                                    false, // Hide bottom navbar
+                                                              );
+                                                        // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
+                                                        // SendMessageBottomWidget(
+                                                        //     ref: ref,
+                                                        //     productidid:
+                                                        //         prod.id);
                                                       },
+                                                    ).catchError((error) {
+                                                      print('Error: $error');
+                                                    });
+                                                  },
                                                   savedid: pro.savedByLoggedUser ==
                                                               null ||
                                                           pro.savedByLoggedUser!
@@ -1956,71 +1953,61 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                                         5.w),
                                                             child:
                                                                 ProductDetailWidget(
-                                                                    onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                              onenquiredclicked:
+                                                                  () {
+                                                                print(
+                                                                    'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                                getEnquire(ref,
+                                                                        prod.id)
+                                                                    .then(
+                                                                  (value) {
+                                                                    value.data?.enquire ==
+                                                                            0
+                                                                        ? showModalBottomSheet(
+                                                                            useSafeArea:
+                                                                                true,
+                                                                            isScrollControlled:
+                                                                                true,
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (BuildContext context) {
+                                                                              return SizedBox(
+                                                                                height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                                child: SendMessageBottomWidget(
+                                                                                  ref: ref,
+                                                                                  productidid: prod.id,
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          )
+                                                                        : navigateToPage(
+                                                                            context:
+                                                                                context,
+                                                                            page: ChatScreen(
+                                                                                threadId: value.data!.thread!.id!,
+                                                                                username: value.data!.thread!.subject!,
+                                                                                postId: value.data!.thread!.post_id!),
+                                                                            ref:
+                                                                                ref,
+                                                                            showNavBar:
+                                                                                false, // Hide bottom navbar
+                                                                          );
+                                                                    // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                                    // SendMessageBottomWidget(
+                                                                    //     ref: ref,
+                                                                    //     productidid:
+                                                                    //         prod.id);
+                                                                  },
+                                                                ).catchError(
+                                                                        (error) {
+                                                                  print(
+                                                                      'Error: $error');
+                                                                });
+                                                              },
                                                               savedid: prod.savedByLoggedUser ==
                                                                           null ||
                                                                       prod.savedByLoggedUser!
@@ -2162,71 +2149,61 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                                         5.w),
                                                             child:
                                                                 ProductDetailWidget(
-                                                                    onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                              onenquiredclicked:
+                                                                  () {
+                                                                print(
+                                                                    'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                                getEnquire(ref,
+                                                                        prod.id)
+                                                                    .then(
+                                                                  (value) {
+                                                                    value.data?.enquire ==
+                                                                            0
+                                                                        ? showModalBottomSheet(
+                                                                            useSafeArea:
+                                                                                true,
+                                                                            isScrollControlled:
+                                                                                true,
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (BuildContext context) {
+                                                                              return SizedBox(
+                                                                                height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                                child: SendMessageBottomWidget(
+                                                                                  ref: ref,
+                                                                                  productidid: prod.id,
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                          )
+                                                                        : navigateToPage(
+                                                                            context:
+                                                                                context,
+                                                                            page: ChatScreen(
+                                                                                threadId: value.data!.thread!.id!,
+                                                                                username: value.data!.thread!.subject!,
+                                                                                postId: value.data!.thread!.post_id!),
+                                                                            ref:
+                                                                                ref,
+                                                                            showNavBar:
+                                                                                false, // Hide bottom navbar
+                                                                          );
+                                                                    // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                                    // SendMessageBottomWidget(
+                                                                    //     ref: ref,
+                                                                    //     productidid:
+                                                                    //         prod.id);
+                                                                  },
+                                                                ).catchError(
+                                                                        (error) {
+                                                                  print(
+                                                                      'Error: $error');
+                                                                });
+                                                              },
                                                               savedid: prod.savedByLoggedUser ==
                                                                           null ||
                                                                       prod.savedByLoggedUser!
@@ -2352,71 +2329,72 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                       VProduct prod = data
                                                           .insidearr[2][index];
                                                       return ProductDetailWidget(
-                                                          onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
+                                                        onenquiredclicked: () {
                                                           print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                              'lanka ${prod.id}');
+
+                                                          getEnquire(
+                                                                  ref, prod.id)
+                                                              .then(
+                                                            (value) {
+                                                              value.data?.enquire ==
+                                                                      0
+                                                                  ? showModalBottomSheet(
+                                                                      useSafeArea:
+                                                                          true,
+                                                                      isScrollControlled:
+                                                                          true,
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return SizedBox(
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
+
+                                                                          child:
+                                                                              SendMessageBottomWidget(
+                                                                            ref:
+                                                                                ref,
+                                                                            productidid:
+                                                                                prod.id,
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    )
+                                                                  : navigateToPage(
+                                                                      context:
+                                                                          context,
+                                                                      page: ChatScreen(
+                                                                          threadId: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .id!,
+                                                                          username: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .subject!,
+                                                                          postId: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .post_id!),
+                                                                      ref: ref,
+                                                                      showNavBar:
+                                                                          false, // Hide bottom navbar
+                                                                    );
+                                                              // if ()
+
+                                                              // SendMessageBottomWidget(
+                                                              //     ref: ref,
+                                                              //     productidid:
+                                                              //         prod.id);
+                                                            },
+                                                          ).catchError((error) {
+                                                            print(
+                                                                'Error: $error');
+                                                          });
+                                                        },
                                                         savedid: prod.savedByLoggedUser ==
                                                                     null ||
                                                                 prod.savedByLoggedUser!
@@ -2776,72 +2754,65 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                                     2.w),
                                                         child:
                                                             ProductDetailWidget(
-                                                                onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                          onenquiredclicked:
+                                                              () {
+                                                            print(
+                                                                'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                            getEnquire(ref,
+                                                                    prod.id)
+                                                                .then(
+                                                              (value) {
+                                                                value.data?.enquire ==
+                                                                        0
+                                                                    ? showModalBottomSheet(
+                                                                        useSafeArea:
+                                                                            true,
+                                                                        isScrollControlled:
+                                                                            true,
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return SizedBox(
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
+                                                                            child:
+                                                                                SendMessageBottomWidget(
+                                                                              ref: ref,
+                                                                              productidid: prod.id,
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                      )
+                                                                    : navigateToPage(
+                                                                        context:
+                                                                            context,
+                                                                        page: ChatScreen(
+                                                                            threadId:
+                                                                                value.data!.thread!.id!,
+                                                                            username: value.data!.thread!.subject!,
+                                                                            postId: value.data!.thread!.post_id!),
+                                                                        ref:
+                                                                            ref,
+                                                                        showNavBar:
+                                                                            false, // Hide bottom navbar
                                                                       );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
+                                                                // SendMessageBottomWidget(
+                                                                //     ref: ref,
+                                                                //     productidid:
+                                                                //         prod.id);
+                                                              },
+                                                            ).catchError(
+                                                                    (error) {
+                                                              print(
+                                                                  'Error: $error');
+                                                            });
                                                           },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-
                                                           savedid: prod.savedByLoggedUser ==
                                                                       null ||
                                                                   prod.savedByLoggedUser!
@@ -2988,70 +2959,64 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               BorderRadius.circular(15.0),
                                         ),
                                         child: AllProductDetailWidget(
-                                            onenquiredclicked: () {
-                                           
+                                          ref: ref,
+                                          onenquiredclicked: () {
+                                            getEnquire(ref, res.id).then(
+                                              (value) {
+                                                value.data?.enquire == 0
+                                                    ? showModalBottomSheet(
+                                                        useSafeArea: true,
+                                                        isScrollControlled:
+                                                            true,
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, res.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                            child:
+                                                                SendMessageBottomWidget(
+                                                              ref: ref,
+                                                              productidid:
+                                                                  res.id,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : navigateToPage(
+                                                        context: context,
+                                                        page: ChatScreen(
+                                                            threadId: value
+                                                                .data!
+                                                                .thread!
+                                                                .id!,
+                                                            username: value
+                                                                .data!
+                                                                .thread!
+                                                                .subject!,
+                                                            postId: value
+                                                                .data!
+                                                                .thread!
+                                                                .post_id!),
+                                                        ref: ref,
+                                                        showNavBar:
+                                                            false, // Hide bottom navbar
+                                                      );
+                                                // if ()
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              res.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                // SendMessageBottomWidget(
+                                                //     ref: ref,
+                                                //     productidid:
+                                                //         prod.id);
+                                              },
+                                            ).catchError((error) {
+                                              print('Error: $error');
+                                            });
+                                          },
                                           savedid: res.savedByLoggedUser ==
                                                       null ||
                                                   res.savedByLoggedUser!.isEmpty
@@ -3260,7 +3225,7 @@ class valuenotifilersidebutton extends StatelessWidget {
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'usedhero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -3268,21 +3233,30 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -3304,150 +3278,256 @@ class valuenotifilersidebutton extends StatelessWidget {
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'usedhero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                     onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

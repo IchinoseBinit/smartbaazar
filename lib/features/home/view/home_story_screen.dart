@@ -593,6 +593,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   void initState() {
+    
     super.initState();
     remainingTime = widget.targetDate.difference(DateTime.now());
     timer = Timer.periodic(const Duration(seconds: 1), (_) {

@@ -35,12 +35,8 @@ mixin _$CategoryModel {
   @JsonKey(name: 'parentClosure')
   ParentClosure? get parentClosure => throw _privateConstructorUsedError;
 
-  /// Serializes this CategoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CategoryModelCopyWith<CategoryModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,8 +72,6 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -136,8 +130,6 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
     ) as $Val);
   }
 
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ParentClosureCopyWith<$Res>? get parentClosure {
@@ -183,8 +175,6 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
       _$CategoryModelImpl _value, $Res Function(_$CategoryModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -314,14 +304,12 @@ class _$CategoryModelImpl implements _CategoryModel {
                 other.parentClosure == parentClosure));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, parentId, name, slug,
       description, picture, iconClass, type, hideDescription, parentClosure);
 
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoryModelImplCopyWith<_$CategoryModelImpl> get copyWith =>
@@ -376,11 +364,8 @@ abstract class _CategoryModel implements CategoryModel {
   @override
   @JsonKey(name: 'parentClosure')
   ParentClosure? get parentClosure;
-
-  /// Create a copy of CategoryModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CategoryModelImplCopyWith<_$CategoryModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -402,12 +387,8 @@ mixin _$ParentClosure {
   String? get iconClass => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
 
-  /// Serializes this ParentClosure to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ParentClosure
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ParentClosureCopyWith<ParentClosure> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -439,8 +420,6 @@ class _$ParentClosureCopyWithImpl<$Res, $Val extends ParentClosure>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ParentClosure
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -517,8 +496,6 @@ class __$$ParentClosureImplCopyWithImpl<$Res>
       _$ParentClosureImpl _value, $Res Function(_$ParentClosureImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ParentClosure
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -626,14 +603,12 @@ class _$ParentClosureImpl implements _ParentClosure {
             (identical(other.type, type) || other.type == type));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, parentId, name, slug,
       description, picture, iconClass, type);
 
-  /// Create a copy of ParentClosure
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ParentClosureImplCopyWith<_$ParentClosureImpl> get copyWith =>
@@ -679,11 +654,8 @@ abstract class _ParentClosure implements ParentClosure {
   String? get iconClass;
   @override
   String? get type;
-
-  /// Create a copy of ParentClosure
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ParentClosureImplCopyWith<_$ParentClosureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

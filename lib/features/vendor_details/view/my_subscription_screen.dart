@@ -68,7 +68,7 @@ class MySubscriptionScreen extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => const Center(
                 child: Text(
-                  'Error fetching subscriptions',
+                  'Please login',
                   style: TextStyle(color: Colors.red),
                 ),
               ),

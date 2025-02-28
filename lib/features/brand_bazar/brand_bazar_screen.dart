@@ -14,6 +14,11 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
@@ -173,11 +178,10 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
       } else {
         _currentPage = 0;
       }
- 
     });
-  dynamictabController.addListener(() {
-        setState(() {});
-      });
+    dynamictabController.addListener(() {
+      setState(() {});
+    });
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _pageController.jumpToPage(headerIndex);
@@ -248,7 +252,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
   @override
   Widget build(BuildContext context) {
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -256,6 +260,9 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
         throw Exception("Failed to fetch enquiry data");
       }
     }
+
+    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
+
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
@@ -326,8 +333,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
           },
           child: Stack(
             children: [
-              CustomScrollView(
-                slivers: [
+              CustomScrollView(slivers: [
                 SliverPersistentHeader(
                     pinned: true,
                     floating: true,
@@ -523,86 +529,86 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 SliverToBoxAdapter(
                   child: Column(
                     children: [
-                      homecategory.when(
-                        data: (feedStoryData) {
-                          List<HomeStoryPost>? homeStory =
-                              feedStoryData.home_story?.story.posts;
-                          // print("rada ${feedStoryData.home_story!.story.posts?.length}");
+                      SizedBox(
+                        height: 100.h,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              asyncForYouStoryContent.when(
+                                data: (feedStoryData) {
+                                  final feedStoryContent =
+                                      feedStoryData.data?.feedstory;
+                                  final posts = feedStoryContent?.posts ?? [];
 
-                          if (homeStory != null) {
-                            final posts = homeStory;
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: SizedBox(
-                                height: 100.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: posts.length,
-                                  itemBuilder: (context, index) {
-                                    final story = posts[index];
-
-                                    return HomePageStoryContainer(
-                                      feedStoryContent: Story(
-                                          HomeStoryAllPosts: feedStoryData
-                                              .home_story?.story.posts
-                                              ?.map((e) => HomeStoryAllPost(
-                                                  hasSponsoredGifts:
-                                                      e.hasSponsoredGifts,
-                                                  id: e.id,
-                                                  image: e.image,
-                                                  storyCount: e.storyCount,
-                                                  title: e.title,
-                                                  vendorId: e.vendorId,
-                                                  vendorImage: e.vendorImage,
-                                                  vendorName: e.vendorName))
-                                              .toList()),
-                                      userId: story.id,
-                                      index: index,
-                                      vendorName:
-                                          story.vendorName ?? "Unknown Vendor",
-                                      vendorImage: story.vendorImage ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: story.storyCount ?? 0,
-                                      showGift:
-                                          story.hasSponsoredGifts ?? false,
-                                    );
-                                  },
+                                  return posts.isNotEmpty
+                                      ? ListView.builder(
+                                          padding: EdgeInsets.only(left: 3.w),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: posts.length,
+                                          itemBuilder: (context, index) {
+                                            final story = posts[index];
+                                            return FeedStoryAddWidget(
+                                              index: index,
+                                              vendorName: story.vendorName ??
+                                                  "Unknown Vendor",
+                                              vendorImage: story.vendorImage ??
+                                                  "https://example.com/default-image.png",
+                                              storyCount: story.storyCount ?? 0,
+                                              showGift:
+                                                  story.hasSponsoredGifts ??
+                                                      false,
+                                              feedStoryContent:
+                                                  feedStoryContent!,
+                                              userId: story.vendorId ?? '',
+                                            );
+                                          },
+                                        )
+                                      : const Center(
+                                          child: Text("No stories available"));
+                                },
+                                loading: () => SizedBox(
+                                  height: 40.h,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemBuilder: (_, __) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 80,
+                                          height: 50,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                error: (error, _) => SizedBox(
+                                  height: 60.h,
+                                  child: Center(
+                                    child: Text(
+                                      error
+                                              .toString()
+                                              .contains('Session has expired')
+                                          ? 'Please log in again.'
+                                          : 'Error: $error',
+                                    ),
+                                  ),
                                 ),
                               ),
-                            );
-                          }
-
-                          return const Center(
-                            child: Text('No stories available.'),
-                          );
-                        },
-                        loading: () => SizedBox(
-                          height: 100.h,
-                          child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5, // Number of shimmer placeholders
-                            itemBuilder: (context, index) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                width: 70.w,
-                                height: 100.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
                         ),
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
                       ),
                       SizedBox(
                         height: 6.h,
@@ -728,7 +734,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               children: [
                                 // Row for "ALL" and other services
                                 Padding(
-                                  padding:  EdgeInsets.only(left: 5.w),
+                                  padding: EdgeInsets.only(left: 5.w),
                                   child: SizedBox(
                                     height: 100.h, // Adjust height as necessary
                                     width: double.infinity,
@@ -756,7 +762,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
@@ -765,7 +772,8 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -775,7 +783,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                           SizedBox(
                                             width: 5.w,
                                           ),
-                                  
+
                                           // Other Services List
                                           ListView(
                                             physics:
@@ -784,25 +792,39 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                             shrinkWrap: true,
                                             children: data.map((e) {
                                               return Container(
-                                    width: 150.w,
-                                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: const Color(0xff651c50)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
-                                      child: Text(
-                                        e.name,
-                                        textAlign: TextAlign.center, // Centers text
-                                        maxLines: 2, // Allows text to wrap into two lines
-                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
-                                        style: const TextStyle(fontSize: 14), // Adjust font size if needed
-                                      ),
-                                    ),
-                                  );
-                                  
+                                                width: 150.w,
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xff651c50)),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 5,
+                                                      vertical:
+                                                          5), // Adds spacing
+                                                  child: Text(
+                                                    e.name,
+                                                    textAlign: TextAlign
+                                                        .center, // Centers text
+                                                    maxLines:
+                                                        2, // Allows text to wrap into two lines
+                                                    overflow: TextOverflow
+                                                        .ellipsis, // Shows "..." if too long
+                                                    style: const TextStyle(
+                                                        fontSize:
+                                                            14), // Adjust font size if needed
+                                                  ),
+                                                ),
+                                              );
+
                                               // return Padding(
                                               //   padding: EdgeInsets.zero,
                                               //   child: GestureDetector(
@@ -974,70 +996,57 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 5.w),
                                       child: ProductDetailWidget(
-                                          onenquiredclicked: () {
-                                                        
+                                        onenquiredclicked: () {
+                                          getEnquire(ref, hot.id).then(
+                                            (value) {
+                                              value.data?.enquire == 0
+                                                  ? showModalBottomSheet(
+                                                      useSafeArea: true,
+                                                      isScrollControlled: true,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return SizedBox(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, hot.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              hot.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
+                                                          child:
+                                                              SendMessageBottomWidget(
+                                                            ref: ref,
+                                                            productidid: hot.id,
+                                                          ),
+                                                        );
                                                       },
+                                                    )
+                                                  : navigateToPage(
+                                                      context: context,
+                                                      page: ChatScreen(
+                                                          threadId: value.data!
+                                                              .thread!.id!,
+                                                          username: value.data!
+                                                              .thread!.subject!,
+                                                          postId: value
+                                                              .data!
+                                                              .thread!
+                                                              .post_id!),
+                                                      ref: ref,
+                                                      showNavBar:
+                                                          false, // Hide bottom navbar
+                                                    );
+                                              // if ()
+
+                                              // SendMessageBottomWidget(
+                                              //     ref: ref,
+                                              //     productidid:
+                                              //         prod.id);
+                                            },
+                                          ).catchError((error) {
+                                            print('Error: $error');
+                                          });
+                                        },
                                         savedid: hot.savedByLoggedUser ==
                                                     null ||
                                                 hot.savedByLoggedUser!.isEmpty
@@ -1307,96 +1316,224 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                             ],
                                           ),
 
-                                          // Display Products for the selected category
-                                          // asyncbajarValue.when(
-                                          //   data: (data) {
-                                          //     // Define the products list corresponding to each category
+                                          //  Display Products for the selected category
+                                          asyncbajarValue.when(
+                                            data: (data) {
+                                              print(
+                                                  'bibash ${data.data?.new_products}');
+                                              // Define the products list corresponding to each categor
+                                              return data.data!.new_products
+                                                      .isEmpty
+                                                  ? nolistingfound()
+                                                  : SingleChildScrollView(
+                                                      physics:
+                                                          const BouncingScrollPhysics(),
+                                                      scrollDirection: Axis
+                                                          .vertical, // Scroll vertically if needed
+                                                      child: Wrap(
+                                                        spacing: 5
+                                                            .w, // Horizontal space between items
+                                                        runSpacing: 15
+                                                            .h, // Vertical space between rows
+                                                        children: List.generate(
+                                                          data
+                                                              .data!
+                                                              .new_products
+                                                              .length,
+                                                          (index) {
+                                                            BrandNewModel res = data
+                                                                    .data!
+                                                                    .new_products[
+                                                                index];
 
-                                          //     // Ensure the index is valid
-                                          //     if (selectedIndex < 0 ||
-                                          //         selectedIndex >= productsList.length) {
-                                          //       selectedIndex =
-                                          //           0; // Default to the first category if index is out of bounds
-                                          //     }
+                                                            return SizedBox(
+                                                              width: (MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width -
+                                                                      30.w) /
+                                                                  2, // Dynamically adjust to fit two items per row
+                                                              child: Card(
+                                                                clipBehavior: Clip
+                                                                    .antiAlias,
+                                                                shadowColor: const Color(
+                                                                        0xff3D215F)
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                elevation: 9,
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            5.w),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              15.0),
+                                                                ),
+                                                                child:
+                                                                    AllProductDetailWidget(
+                                                                  ref: ref,
+                                                                  onenquiredclicked:
+                                                                      () {
+                                                                    getEnquire(
+                                                                            ref,
+                                                                            res
+                                                                                .id)
+                                                                        .then(
+                                                                      (value) {
+                                                                        value.data?.enquire ==
+                                                                                0
+                                                                            ? showModalBottomSheet(
+                                                                                useSafeArea: true,
+                                                                                isScrollControlled: true,
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return SizedBox(
+                                                                                    height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                          //     List<VProduct> products =
-                                          //         [];
+                                                                                    child: SendMessageBottomWidget(
+                                                                                      ref: ref,
+                                                                                      productidid: res.id,
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              )
+                                                                            : navigateToPage(
+                                                                                context: context,
+                                                                                page: ChatScreen(threadId: value.data!.thread!.id!, username: value.data!.thread!.subject!, postId: value.data!.thread!.post_id!),
+                                                                                ref: ref,
+                                                                                showNavBar: false, // Hide bottom navbar
+                                                                              );
+                                                                        // if ()
 
-                                          //     return data.data?.newProducts==0
-                                          //         ? nolistingfound()
-                                          //         : SizedBox(
-                                          //             height: 340.h,
-                                          //             child: ListView.builder(
-                                          //               clipBehavior: Clip.antiAlias,
-                                          //               padding: const EdgeInsets.all(3),
-                                          //               scrollDirection: Axis.horizontal,
-                                          //               itemCount: products.length,
-                                          //               itemBuilder: (context, index) {
-                                          //                 VProduct prod = products[index];
-
-                                          //                 return InkWell(
-                                          //                   onTap: () {
-                                          //                     Navigator.push(
-                                          //                         context,
-                                          //                         MaterialPageRoute(
-                                          //                           builder: (context) =>
-                                          //                               ProductDetailScreen(
-                                          //                                   productId:
-                                          //                                       prod.id),
-                                          //                         ));
-                                          //                   },
-                                          //                   child: ProductDetailWidget(
-                                          //                     comment: prod.commentcount
-                                          //                         .toString(),
-                                          //                     wow: prod.wow,
-                                          //                     lefttile: "B2b-Shop",
-                                          //                     vendorname: prod.user.name,
-                                          //                     issponsored:
-                                          //                         prod.user.sponsored,
-                                          //                     discounttedPrice:
-                                          //                         prod.discounted_price,
-                                          //                     Vimage: prod.user.photo,
-                                          //                     price: prod.price,
-                                          //                     title: prod.title,
-                                          //                     productImage: prod.image,
-                                          //                     similarproductCount:
-                                          //                         prod.similarProductCount,
-                                          //                     membershipColor:
-                                          //                         prod.user.membershipColor,
-                                          //                     membershipTitle:
-                                          //                         prod.user.membershipTitle,
-                                          //                   ),
-                                          //                 );
-                                          //               },
-                                          //             ),
-                                          //           );
-
-                                          //     // SizedBox(
-                                          //     //    height: 340.h,
-                                          //     //   child: ListView.builder(
-                                          //     //     scrollDirection: Axis.horizontal,
-                                          //     //     itemCount: products.length,
-                                          //     //     itemBuilder: (context, index) {
-                                          //     //       return InkWell(
-                                          //     //         onTap: () {}, // Handle onTap if needed
-                                          //     //         child: ProductDetailWidget(
-                                          //     //           vendorname: prod.user.name,
-                                          //     //           discounttedPrice: "0",
-                                          //     //           Vimage: prod.user.photo,
-                                          //     //           price: prod.price,
-                                          //     //           title: prod.title,
-                                          //     //           productImage: prod.image,
-                                          //     //         ), // Replace with your actual product widget
-                                          //     //       );
-                                          //     //     },
-                                          //     //   ),
-                                          //     // );
-                                          //   },
-                                          //   error: (error, stackTrace) =>
-                                          //       Text("Error: $error"),
-                                          //   loading: () =>
-                                          //       const CircularProgressIndicator(),
-                                          // ),
+                                                                        // SendMessageBottomWidget(
+                                                                        //     ref: ref,
+                                                                        //     productidid:
+                                                                        //         prod.id);
+                                                                      },
+                                                                    ).catchError(
+                                                                            (error) {
+                                                                      print(
+                                                                          'Error: $error');
+                                                                    });
+                                                                  },
+                                                                  savedid: res.savedByLoggedUser ==
+                                                                              null ||
+                                                                          res.savedByLoggedUser!
+                                                                              .isEmpty
+                                                                      ? []
+                                                                      : res
+                                                                          .savedByLoggedUser
+                                                                          ?.map(
+                                                                            (e) => SavedPost(
+                                                                                id: e.id!,
+                                                                                userId: e.user_id!,
+                                                                                postId: e.post_id!,
+                                                                                createdAt: e.createdAt!,
+                                                                                updatedAt: e.updatedAt!),
+                                                                          )
+                                                                          .toList(),
+                                                                  onRefresh:
+                                                                      () {
+                                                                    refreshAllProviders();
+                                                                  },
+                                                                  productid:
+                                                                      res.id,
+                                                                  lat: res
+                                                                      .userdetails!
+                                                                      .latitude,
+                                                                  long: res
+                                                                      .userdetails!
+                                                                      .longitude,
+                                                                  membershipid: res
+                                                                      .userdetails!
+                                                                      .membership_id,
+                                                                  posttype: res
+                                                                      .post_type_id,
+                                                                  didcountpercentage:
+                                                                      res.discount_percentage,
+                                                                  id: int.tryParse(res
+                                                                      .userdetails!
+                                                                      .user_id),
+                                                                  shortestDistance: res
+                                                                      .userdetails!
+                                                                      .shortestDistance,
+                                                                  issponsored: res
+                                                                          .userdetails!
+                                                                          .sponsored ??
+                                                                      false,
+                                                                  distance: res
+                                                                      .userdetails!
+                                                                      .shortestDistance,
+                                                                  wow: res.wow
+                                                                      .toString(),
+                                                                  discounttedPrice: res
+                                                                      .discount_percentage!
+                                                                      .toString(),
+                                                                  comment: res
+                                                                      .commentcount
+                                                                      .toString(),
+                                                                  avg_rating: res
+                                                                          .avg_rating
+                                                                          ?.toDouble() ??
+                                                                      0.0,
+                                                                  offer: res
+                                                                      .offers,
+                                                                  productImage:
+                                                                      res.image,
+                                                                  Vimage: res
+                                                                      .userdetails!
+                                                                      .photo,
+                                                                  vendorname: res
+                                                                      .userdetails!
+                                                                      .name,
+                                                                  title:
+                                                                      res.title,
+                                                                  price:
+                                                                      res.price,
+                                                                  similarproductCount:
+                                                                      res.similarVendorProfileProductCount,
+                                                                  membershipColor: res
+                                                                      .userdetails!
+                                                                      .membership_color,
+                                                                  membershipTitle: res
+                                                                      .userdetails!
+                                                                      .membership_title,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    );
+                                              // SizedBox(
+                                              //    height: 340.h,
+                                              //   child: ListView.builder(
+                                              //     scrollDirection: Axis.horizontal,
+                                              //     itemCount: products.length,
+                                              //     itemBuilder: (context, index) {
+                                              //       return InkWell(
+                                              //         onTap: () {}, // Handle onTap if needed
+                                              //         child: ProductDetailWidget(
+                                              //           vendorname: prod.user.name,
+                                              //           discounttedPrice: "0",
+                                              //           Vimage: prod.user.photo,
+                                              //           price: prod.price,
+                                              //           title: prod.title,
+                                              //           productImage: prod.image,
+                                              //         ), // Replace with your actual product widget
+                                              //       );
+                                              //     },
+                                              //   ),
+                                              // );
+                                            },
+                                            error: (error, stackTrace) =>
+                                                Text("Error: $error"),
+                                            loading: () =>
+                                                const CircularProgressIndicator(),
+                                          ),
                                         ],
                                       );
                                     },
@@ -1427,118 +1564,118 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     ],
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      asyncbajarValue.when(
-                        data: (data) {
-                          return SizedBox(
-                            width: double.infinity,
-                            child: AnimatedContainer(
-                              padding: EdgeInsets.zero,
-                              margin: EdgeInsets.zero,
-                              duration: const Duration(milliseconds: 400),
-                              height: 350.h,
-                              child: SingleChildScrollView(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.horizontal,
-                                child: Wrap(
-                                  spacing:
-                                      0.w, // Horizontal spacing between items
-                                  runSpacing:
-                                      0.h, // Vertical spacing between rows
-                                  children: List.generate(
-                                      data.data!.new_products.length, (index) {
-                                    BrandNewModel hot =
-                                        data.data!.new_products[index];
-                                    return ProductDetailWidget(
-                                      savedid: hot.savedByLoggedUser == null ||
-                                              hot.savedByLoggedUser!.isEmpty
-                                          ? []
-                                          : hot.savedByLoggedUser
-                                              ?.map(
-                                                (e) => SavedPost(
-                                                    id: e.id!,
-                                                    userId: e.user_id!,
-                                                    postId: e.post_id!,
-                                                    createdAt: e.createdAt!,
-                                                    updatedAt: e.updatedAt!),
-                                              )
-                                              .toList(),
-                                      onRefresh: () {
-                                        refreshAllProviders();
-                                      },
-                                      lat: hot.userdetails?.latitude,
-                                      long: hot.userdetails?.longitude,
-                                      productid: hot.id,
-                                      vendorid: hot.userdetails?.user_id,
-                                      posttype: hot.post_type_id,
-                                      shortestDistance:
-                                          hot.userdetails?.shortestDistance,
-                                      membershipid:
-                                          hot.userdetails?.membership_id,
-                                      avg_rating: hot.avg_rating?.toDouble(),
-                                      didcountpercentage:
-                                          hot.discount_percentage,
-                                      offer: hot.offers,
-                                      wow: hot.wow,
-                                      comment: hot.commentcount.toString(),
-                                      discounttedPrice: hot.discounted_price,
-                                      issponsored: hot.userdetails!.sponsored!,
-                                      lefttile: "Socio-Shop",
-                                      productImage: hot.image,
-                                      Vimage: hot.userdetails?.photo,
-                                      price: hot.price,
-                                      title: hot.title,
-                                      vendorname: hot.userdetails?.name,
-                                      similarproductCount:
-                                          hot.similarVendorProfileProductCount,
-                                      membershipColor:
-                                          hot.userdetails?.membership_color,
-                                      membershipTitle:
-                                          hot.userdetails?.membership_title,
-                                    );
-                                  }),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        error: (error, stackTrace) => Text(error.toString()),
-                        loading: () => SizedBox(
-                          height: 340.h,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.all(3),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5, // Number of shimmer placeholders
-                            itemBuilder: (context, index) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                width: 200.w,
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // SliverToBoxAdapter(
+                //   child: Column(
+                //     children: [
+                //       asyncbajarValue.when(
+                //         data: (data) {
+                //           return SizedBox(
+                //             width: double.infinity,
+                //             child: AnimatedContainer(
+                //               padding: EdgeInsets.zero,
+                //               margin: EdgeInsets.zero,
+                //               duration: const Duration(milliseconds: 400),
+                //               height: 350.h,
+                //               child: SingleChildScrollView(
+                //                 padding: EdgeInsets.zero,
+                //                 scrollDirection: Axis.horizontal,
+                //                 child: Wrap(
+                //                   spacing:
+                //                       0.w, // Horizontal spacing between items
+                //                   runSpacing:
+                //                       0.h, // Vertical spacing between rows
+                //                   children: List.generate(
+                //                       data.data!.new_products.length, (index) {
+                //                     BrandNewModel hot =
+                //                         data.data!.new_products[index];
+                //                     return ProductDetailWidget(
+                //                       savedid: hot.savedByLoggedUser == null ||
+                //                               hot.savedByLoggedUser!.isEmpty
+                //                           ? []
+                //                           : hot.savedByLoggedUser
+                //                               ?.map(
+                //                                 (e) => SavedPost(
+                //                                     id: e.id!,
+                //                                     userId: e.user_id!,
+                //                                     postId: e.post_id!,
+                //                                     createdAt: e.createdAt!,
+                //                                     updatedAt: e.updatedAt!),
+                //                               )
+                //                               .toList(),
+                //                       onRefresh: () {
+                //                         refreshAllProviders();
+                //                       },
+                //                       lat: hot.userdetails?.latitude,
+                //                       long: hot.userdetails?.longitude,
+                //                       productid: hot.id,
+                //                       vendorid: hot.userdetails?.user_id,
+                //                       posttype: hot.post_type_id,
+                //                       shortestDistance:
+                //                           hot.userdetails?.shortestDistance,
+                //                       membershipid:
+                //                           hot.userdetails?.membership_id,
+                //                       avg_rating: hot.avg_rating?.toDouble(),
+                //                       didcountpercentage:
+                //                           hot.discount_percentage,
+                //                       offer: hot.offers,
+                //                       wow: hot.wow,
+                //                       comment: hot.commentcount.toString(),
+                //                       discounttedPrice: hot.discounted_price,
+                //                       issponsored: hot.userdetails!.sponsored!,
+                //                       lefttile: "Socio-Shop",
+                //                       productImage: hot.image,
+                //                       Vimage: hot.userdetails?.photo,
+                //                       price: hot.price,
+                //                       title: hot.title,
+                //                       vendorname: hot.userdetails?.name,
+                //                       similarproductCount:
+                //                           hot.similarVendorProfileProductCount,
+                //                       membershipColor:
+                //                           hot.userdetails?.membership_color,
+                //                       membershipTitle:
+                //                           hot.userdetails?.membership_title,
+                //                     );
+                //                   }),
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         },
+                //         error: (error, stackTrace) => Text(error.toString()),
+                //         loading: () => SizedBox(
+                //           height: 340.h,
+                //           child: ListView.builder(
+                //             padding: const EdgeInsets.all(3),
+                //             scrollDirection: Axis.horizontal,
+                //             itemCount: 5, // Number of shimmer placeholders
+                //             itemBuilder: (context, index) => Shimmer.fromColors(
+                //               baseColor: Colors.grey[300]!,
+                //               highlightColor: Colors.grey[100]!,
+                //               child: Container(
+                //                 margin:
+                //                     const EdgeInsets.symmetric(horizontal: 5),
+                //                 width: 200.w,
+                //                 height: double.infinity,
+                //                 decoration: BoxDecoration(
+                //                   color: Colors.grey[300],
+                //                   borderRadius: BorderRadius.circular(10),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: 50.h,
+                    height: 30.h,
                   ),
                 )
               ]),
               valuenotifilersidebutton(
-                  showSideBar: showSideBar, isSectionsVisible: true),
+                  showSideBar: _showSideBar, isSectionsVisible: true),
               Positioned(
                 top: 65,
                 left: 48,
@@ -1650,7 +1787,7 @@ class valuenotifilersidebutton extends StatelessWidget {
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'brandhero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -1658,21 +1795,30 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -1694,150 +1840,256 @@ class valuenotifilersidebutton extends StatelessWidget {
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'brandhero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                  onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

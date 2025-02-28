@@ -2161,7 +2161,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   )),
                 CreateListingCardWidget(
                   child: Row(
-                    children: [
+                    children: [ 
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

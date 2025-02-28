@@ -28,12 +28,8 @@ mixin _$B2bModel {
       throw _privateConstructorUsedError;
   List<B2bSlider>? get sliders => throw _privateConstructorUsedError;
 
-  /// Serializes this B2bModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $B2bModelCopyWith<B2bModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,8 +60,6 @@ class _$B2bModelCopyWithImpl<$Res, $Val extends B2bModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -104,8 +98,6 @@ class _$B2bModelCopyWithImpl<$Res, $Val extends B2bModel>
     ) as $Val);
   }
 
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $B2bProductsCopyWith<$Res>? get products {
@@ -147,8 +139,6 @@ class __$$B2bModelImplCopyWithImpl<$Res>
       _$B2bModelImpl _value, $Res Function(_$B2bModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -264,7 +254,7 @@ class _$B2bModelImpl implements _B2bModel {
             const DeepCollectionEquality().equals(other._sliders, _sliders));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -275,9 +265,7 @@ class _$B2bModelImpl implements _B2bModel {
       const DeepCollectionEquality().hash(_advertisements),
       const DeepCollectionEquality().hash(_sliders));
 
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$B2bModelImplCopyWith<_$B2bModelImpl> get copyWith =>
@@ -315,11 +303,8 @@ abstract class _B2bModel implements B2bModel {
   List<B2bAdvertisement>? get advertisements;
   @override
   List<B2bSlider>? get sliders;
-
-  /// Create a copy of B2bModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$B2bModelImplCopyWith<_$B2bModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -333,12 +318,8 @@ mixin _$B2bProducts {
   int? get current_page => throw _privateConstructorUsedError;
   List<Product>? get data => throw _privateConstructorUsedError;
 
-  /// Serializes this B2bProducts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of B2bProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $B2bProductsCopyWith<B2bProducts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -362,8 +343,6 @@ class _$B2bProductsCopyWithImpl<$Res, $Val extends B2bProducts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of B2bProducts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -402,8 +381,6 @@ class __$$B2bProductsImplCopyWithImpl<$Res>
       _$B2bProductsImpl _value, $Res Function(_$B2bProductsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of B2bProducts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -459,14 +436,12 @@ class _$B2bProductsImpl implements _B2bProducts {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of B2bProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$B2bProductsImplCopyWith<_$B2bProductsImpl> get copyWith =>
@@ -491,11 +466,8 @@ abstract class _B2bProducts implements B2bProducts {
   int? get current_page;
   @override
   List<Product>? get data;
-
-  /// Create a copy of B2bProducts
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$B2bProductsImplCopyWith<_$B2bProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -512,12 +484,8 @@ mixin _$B2bAdvertisement {
   String? get image => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
 
-  /// Serializes this B2bAdvertisement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of B2bAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $B2bAdvertisementCopyWith<B2bAdvertisement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -542,8 +510,6 @@ class _$B2bAdvertisementCopyWithImpl<$Res, $Val extends B2bAdvertisement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of B2bAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -598,8 +564,6 @@ class __$$B2bAdvertisementImplCopyWithImpl<$Res>
       $Res Function(_$B2bAdvertisementImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of B2bAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -671,13 +635,11 @@ class _$B2bAdvertisementImpl implements _B2bAdvertisement {
             (identical(other.link, link) || other.link == link));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, order, status, image, link);
 
-  /// Create a copy of B2bAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$B2bAdvertisementImplCopyWith<_$B2bAdvertisementImpl> get copyWith =>
@@ -713,11 +675,8 @@ abstract class _B2bAdvertisement implements B2bAdvertisement {
   String? get image;
   @override
   String? get link;
-
-  /// Create a copy of B2bAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$B2bAdvertisementImplCopyWith<_$B2bAdvertisementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -734,12 +693,8 @@ mixin _$B2bSlider {
   String? get link => throw _privateConstructorUsedError;
   String? get page => throw _privateConstructorUsedError;
 
-  /// Serializes this B2bSlider to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of B2bSlider
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $B2bSliderCopyWith<B2bSlider> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -767,8 +722,6 @@ class _$B2bSliderCopyWithImpl<$Res, $Val extends B2bSlider>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of B2bSlider
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -827,8 +780,6 @@ class __$$B2bSliderImplCopyWithImpl<$Res>
       _$B2bSliderImpl _value, $Res Function(_$B2bSliderImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of B2bSlider
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -901,14 +852,12 @@ class _$B2bSliderImpl implements _B2bSlider {
             (identical(other.page, page) || other.page == page));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, image, description, link, page);
 
-  /// Create a copy of B2bSlider
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$B2bSliderImplCopyWith<_$B2bSliderImpl> get copyWith =>
@@ -943,11 +892,8 @@ abstract class _B2bSlider implements B2bSlider {
   String? get link;
   @override
   String? get page;
-
-  /// Create a copy of B2bSlider
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$B2bSliderImplCopyWith<_$B2bSliderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

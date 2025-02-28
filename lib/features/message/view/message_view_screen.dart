@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,20 +7,24 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
+import 'package:smartbazar/features/message/api/message_photo_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
+import 'package:smartbazar/features/message/model/message_photo_model.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 
 class MessageViewScreen extends ConsumerWidget {
-
-  const MessageViewScreen({super.key,});
+  const MessageViewScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // bool refresh
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
-        
+        initialIndex: 1,
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
@@ -91,44 +97,54 @@ class MessageViewScreen extends ConsumerWidget {
                               itemCount: messages!.length,
                               itemBuilder: (context, index) {
                                 final message = messages[index];
+
                                 return Consumer(
                                   builder: (context, ref, _) {
                                     final lastMessageAsync = ref.watch(
                                         getLastMessageProvider(
                                             message.id.toString()));
                                     return lastMessageAsync.when(
-                                      data: (lastMessage) {
-                                        return ListOfMessages(
-                                          threadId: message.id.toString(),
-                                          postId: message.postId.toString(),
-                                          subject: message.subject!,
-                                          isImportant: message.isImportant!,
-                                          body: lastMessage?.body ??
-                                              'No messages yet',
-                                        );
-                                      },
-                                      loading: () => Center(
-                                        child: Shimmer.fromColors(
-                                          baseColor: Colors.grey[300]!,
-                                          highlightColor: Colors.grey[100]!,
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            width: 40.w,
-                                            height: 100.h,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+                                        data: (lastMessage) {
+                                          return ListOfMessages(
+                                            threadId: message.id.toString(),
+                                            postId: message.postId.toString(),
+                                            subject: message.subject!,
+                                            isImportant: message.isImportant!,
+                                            body: lastMessage?.body ??
+                                                'No messages yet',
+                                          );
+                                        },
+                                        loading: () => Center(
+                                              child: Shimmer.fromColors(
+                                                baseColor: Colors.grey[300]!,
+                                                highlightColor:
+                                                    Colors.grey[100]!,
+                                                child: Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  width: 40.w,
+                                                  height: 100.h,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      error: (error, stack) => InkWell(
-                                          onTap: () => const LoginScreen(),
-                                          child: const Text(
-                                              'Please login and try again')),
-                                    );
+                                        error: (error, stack) {
+                                          ref
+                                              .read(messageFilterStateProvider
+                                                  .notifier)
+                                              .updateFilter(
+                                                  'unread'); // Update the filter
+
+                                          return InkWell(
+                                              onTap: () => const LoginScreen(),
+                                              child: const Text(
+                                                  'Please login and try again'));
+                                        });
                                   },
                                 );
                               },
@@ -278,7 +294,7 @@ class MessageViewScreen extends ConsumerWidget {
                             ),
                           ),
                           error: (error, stack) =>
-                              Center(child: Text('Error: $error')),
+                              Center(child: Text('Please login and try again')),
                         );
                       },
                     ),
@@ -397,7 +413,6 @@ class ListOfMessages extends StatelessWidget {
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(
             builder: (context) => ChatScreen(
-              
               threadId: threadId,
               username: subject,
               postId: postId,
@@ -411,12 +426,42 @@ class ListOfMessages extends StatelessWidget {
         child: Row(
           children: [
             // Profile Icon
-            Container(
-              padding: EdgeInsets.all(12.h),
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Color(0xffD9D9D9)),
-              child: const Icon(Icons.person_3_outlined),
+
+            Consumer(
+              builder: (context, ref, child) {
+                return ref.watch(getmessagePhotoProvider(postId)).when(
+                      data: (data) {
+                        print("bibashk ${data.vendor?.vendorImage}");
+                        return CircleAvatar(
+                          radius: 25, // Adjust size as needed
+                          backgroundColor: const Color(0xffD9D9D9),
+                          backgroundImage: NetworkImage(
+                            data.vendor?.vendorImage ??
+                                "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
+                          ),
+                          onBackgroundImageError: (_, __) {
+                            return print('kala ${_}');
+                          },
+                        );
+                      },
+                      loading: () => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: const CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.grey,
+                        ),
+                      ),
+                      error: (error, stack) => const CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                          "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
+                        ),
+                      ),
+                    );
+              },
             ),
+
             SizedBox(width: 11.w),
 
             // Text Column
@@ -425,17 +470,20 @@ class ListOfMessages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    subject,
+                    subject.length > 15
+                        ? subject.substring(0, 15) + '...'
+                        : subject,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow
+                          .ellipsis, // Make sure overflow happens after applying the condition
                     ),
                     maxLines: 1,
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    body,
+                    body.length > 15 ? body.substring(0, 15) + '...' : body,
                     style: TextStyle(
                       fontSize: 12.sp,
                       overflow: TextOverflow.ellipsis,

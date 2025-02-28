@@ -6,7 +6,7 @@ part of 'get_subscription_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSubscriptionHash() => r'4780ac93546aae46c7a3ad82cc37d9699b70e9db';
+String _$getSubscriptionHash() => r'75e385a8d436dcc39b491b8759c463c9fa6c0ca5';
 
 /// See also [getSubscription].
 @ProviderFor(getSubscription)
@@ -21,8 +21,6 @@ final getSubscriptionProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef GetSubscriptionRef = AutoDisposeFutureProviderRef<GetSubscriptionModel>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -3,10 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
+import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
+import 'package:smartbazar/features/add_to_cart/model/smart_biz_login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
 import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
@@ -33,7 +37,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   String selectedPaymentMethod = "Pre-Payement"; // Default payment method
   String selectedDeliveryOption = "Self Pickup"; // Default delivery option
   String? selectedCoupon = '';
-  String selectedCity = '';
+  // String selectedCity = '';
   String selectedStreet = '';
   List<double> itemRates = [];
   List<double> itemTotalPayments = [];
@@ -43,11 +47,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     });
   }
 
-  void updateCity(String city) {
-    setState(() {
-      selectedCity = city;
-    });
-  }
+  // void updateCity(String city) {
+  //   setState(() {
+  //     selectedCity = city;
+  //   });
+  // }
 
   void updateStreet(String street) {
     setState(() {
@@ -67,10 +71,19 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     });
   }
 
+  BizLoginResponse? _bizLoginResponse;
+  // String? token;
+
   @override
   Widget build(BuildContext context) {
+    final loginBoiData = ref.watch(loginSmartBizProvider);
     final asyncCheckoutDetails = ref.watch(postSelectedItemOfCartProvider(
         widget.selectedVendorIds, widget.selectedProductIds));
+    loginBoiData.whenData(
+      (value) {
+        _bizLoginResponse = value;
+      },
+    );
 
     return GenericSafeArea(
         child: Scaffold(
@@ -247,9 +260,9 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     title2: 'Home Delivery',
                     onChanged: updateDeliveryOption,
                   ),
-                  ShippingCitiesField(
-                    onSelected: updateCity,
-                  ),
+                  // ShippingCitiesField(
+                  //   onSelected: updateCity,
+                  // ),
 
                   SizedBox(
                     height: 8.h,
@@ -354,7 +367,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                             [],
                     selectedPaymentMethod: selectedPaymentMethod,
                     selectedDeliveryOption: selectedDeliveryOption,
-                    selectedCity: selectedCity,
+                    // selectedCity: selectedCity,
                     selectedStreet: selectedStreet,
                     selectedCoupon: selectedCoupon,
                     selectedProductIds: widget.selectedProductIds,
@@ -380,7 +393,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
   final String selectedPaymentMethod;
   final String selectedDeliveryOption;
   final String? selectedCoupon;
-  final String selectedCity;
+  // final String selectedCity;
   final String selectedStreet;
 
   final List<String> selectedProductIds;
@@ -396,7 +409,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
     required this.selectedPaymentMethod,
     required this.selectedDeliveryOption,
     required this.selectedCoupon,
-    required this.selectedCity,
+    // required this.selectedCity,
     required this.selectedStreet,
     required this.selectedProductIds,
     required this.checkoutDetails,
@@ -486,7 +499,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
         widget.selectedPaymentMethod,
         widget.selectedDeliveryOption,
         "Standard",
-        widget.selectedCity,
+        // widget.selectedCity,
         widget.selectedStreet,
         widget.selectedCoupon,
         postIds,
@@ -523,6 +536,10 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                     onPressed: () {
                       // Navigate to the BottomNavigationScreen when the user clicks "OK"
                       Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainScreen()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

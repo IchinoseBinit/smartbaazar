@@ -11,6 +11,9 @@ import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.d
 final currentScreenProvider = StateProvider<int>((ref) => 3);
 final showBottomNavBarProvider = StateProvider<bool>((ref) => true);
 
+final isLogin = StateProvider<bool>((ref) => false);
+
+
 /// Function to navigate to another page while managing the BottomNavBar state
 Future<void> navigateToPage({
   required BuildContext context,
@@ -67,18 +70,20 @@ class MainScreen extends ConsumerWidget {
       bottomNavigationBar: showBottomNavBar
           ? Customernavbar(
               selectedIndex: selectedIndex,
-          onTabChanged: (index) {
-  if (index == 3) {
-    ref.read(scrollToTopProvider.notifier).state = true; // Trigger scroll
-  }
+              onTabChanged: (index) {
+                if (index == 3) {
+                  ref.read(scrollToTopProvider.notifier).state =
+                      true; // Trigger scroll
+                }
 
-  if (index == selectedIndex) {
-    _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
-  } else {
-    ref.read(currentScreenProvider.notifier).state = index;
-  }
-}
-              )
+                if (index == selectedIndex) {
+                  _navigatorKeys[index]
+                      .currentState
+                      ?.popUntil((route) => route.isFirst);
+                } else {
+                  ref.read(currentScreenProvider.notifier).state = index;
+                }
+              })
           : null,
     );
   }
@@ -122,6 +127,16 @@ class Customernavbar extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   height: 40.h,
                   decoration: BoxDecoration(
+                   gradient: isSelected
+          ? const LinearGradient(
+              colors: [
+                Color(0xff651c50),
+                Color(0xff54225f),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
+          : null, // No gradient if not selected
                     color: isSelected
                         ? const Color(0xff362677)
                         : const Color(0xfff5f2f6),

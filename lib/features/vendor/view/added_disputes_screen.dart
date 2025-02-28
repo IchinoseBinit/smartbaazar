@@ -13,7 +13,7 @@ import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AddNewDisputes extends ConsumerStatefulWidget {
-  AddNewDisputes({super.key, this.vendorname});
+   AddNewDisputes({super.key, this.vendorname});
   String? vendorname;
 
   @override
