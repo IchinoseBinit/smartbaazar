@@ -24,12 +24,8 @@ mixin _$FieldsResponse {
   String? get message => throw _privateConstructorUsedError;
   List<FieldData> get result => throw _privateConstructorUsedError;
 
-  /// Serializes this FieldsResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of FieldsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FieldsResponseCopyWith<FieldsResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,8 +49,6 @@ class _$FieldsResponseCopyWithImpl<$Res, $Val extends FieldsResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FieldsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,8 +92,6 @@ class __$$FieldsResponseImplCopyWithImpl<$Res>
       _$FieldsResponseImpl _value, $Res Function(_$FieldsResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FieldsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -163,14 +155,12 @@ class _$FieldsResponseImpl implements _FieldsResponse {
             const DeepCollectionEquality().equals(other._result, _result));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message,
       const DeepCollectionEquality().hash(_result));
 
-  /// Create a copy of FieldsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldsResponseImplCopyWith<_$FieldsResponseImpl> get copyWith =>
@@ -200,11 +190,8 @@ abstract class _FieldsResponse implements FieldsResponse {
   String? get message;
   @override
   List<FieldData> get result;
-
-  /// Create a copy of FieldsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FieldsResponseImplCopyWith<_$FieldsResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -227,12 +214,8 @@ mixin _$FieldData {
   String get useAsFilter => throw _privateConstructorUsedError;
   List<Option> get options => throw _privateConstructorUsedError;
 
-  /// Serializes this FieldData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of FieldData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FieldDataCopyWith<FieldData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -263,8 +246,6 @@ class _$FieldDataCopyWithImpl<$Res, $Val extends FieldData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FieldData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -341,8 +322,6 @@ class __$$FieldDataImplCopyWithImpl<$Res>
       _$FieldDataImpl _value, $Res Function(_$FieldDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FieldData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -458,7 +437,7 @@ class _$FieldDataImpl implements _FieldData {
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -471,9 +450,7 @@ class _$FieldDataImpl implements _FieldData {
       useAsFilter,
       const DeepCollectionEquality().hash(_options));
 
-  /// Create a copy of FieldData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FieldDataImplCopyWith<_$FieldDataImpl> get copyWith =>
@@ -520,11 +497,8 @@ abstract class _FieldData implements FieldData {
   String get useAsFilter;
   @override
   List<Option> get options;
-
-  /// Create a copy of FieldData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FieldDataImplCopyWith<_$FieldDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -542,12 +516,8 @@ mixin _$Option {
   @JsonKey(name: 'parent_id')
   int? get parentId => throw _privateConstructorUsedError;
 
-  /// Serializes this Option to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Option
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OptionCopyWith<Option> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -573,8 +543,6 @@ class _$OptionCopyWithImpl<$Res, $Val extends Option>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Option
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -626,8 +594,6 @@ class __$$OptionImplCopyWithImpl<$Res>
       _$OptionImpl _value, $Res Function(_$OptionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Option
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -697,13 +663,11 @@ class _$OptionImpl implements _Option {
                 other.parentId == parentId));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, fieldId, value, parentId);
 
-  /// Create a copy of Option
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
@@ -736,11 +700,8 @@ abstract class _Option implements Option {
   @override
   @JsonKey(name: 'parent_id')
   int? get parentId;
-
-  /// Create a copy of Option
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OptionImplCopyWith<_$OptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

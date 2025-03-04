@@ -23,12 +23,8 @@ mixin _$Business {
   String get vendorId => throw _privateConstructorUsedError;
   String get vendorName => throw _privateConstructorUsedError;
 
-  /// Serializes this Business to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Business
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $BusinessCopyWith<Business> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,8 +47,6 @@ class _$BusinessCopyWithImpl<$Res, $Val extends Business>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Business
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,8 +85,6 @@ class __$$BusinessImplCopyWithImpl<$Res>
       _$BusinessImpl _value, $Res Function(_$BusinessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Business
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,13 +133,11 @@ class _$BusinessImpl implements _Business {
                 other.vendorName == vendorName));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, vendorId, vendorName);
 
-  /// Create a copy of Business
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BusinessImplCopyWith<_$BusinessImpl> get copyWith =>
@@ -173,11 +163,8 @@ abstract class _Business implements Business {
   String get vendorId;
   @override
   String get vendorName;
-
-  /// Create a copy of Business
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BusinessImplCopyWith<_$BusinessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

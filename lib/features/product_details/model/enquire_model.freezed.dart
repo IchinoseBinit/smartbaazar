@@ -23,12 +23,8 @@ mixin _$EnquireResponse {
   EnquireData? get data => throw _privateConstructorUsedError;
   String? get msg => throw _privateConstructorUsedError;
 
-  /// Serializes this EnquireResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $EnquireResponseCopyWith<EnquireResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,8 +50,6 @@ class _$EnquireResponseCopyWithImpl<$Res, $Val extends EnquireResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -74,8 +68,6 @@ class _$EnquireResponseCopyWithImpl<$Res, $Val extends EnquireResponse>
     ) as $Val);
   }
 
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $EnquireDataCopyWith<$Res>? get data {
@@ -111,8 +103,6 @@ class __$$EnquireResponseImplCopyWithImpl<$Res>
       _$EnquireResponseImpl _value, $Res Function(_$EnquireResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -159,13 +149,11 @@ class _$EnquireResponseImpl implements _EnquireResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$EnquireResponseImplCopyWith<_$EnquireResponseImpl> get copyWith =>
@@ -192,11 +180,8 @@ abstract class _EnquireResponse implements EnquireResponse {
   EnquireData? get data;
   @override
   String? get msg;
-
-  /// Create a copy of EnquireResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$EnquireResponseImplCopyWith<_$EnquireResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -211,12 +196,8 @@ mixin _$EnquireData {
   String? get vendor_id => throw _privateConstructorUsedError;
   Thread? get thread => throw _privateConstructorUsedError;
 
-  /// Serializes this EnquireData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $EnquireDataCopyWith<EnquireData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -242,8 +223,6 @@ class _$EnquireDataCopyWithImpl<$Res, $Val extends EnquireData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -267,8 +246,6 @@ class _$EnquireDataCopyWithImpl<$Res, $Val extends EnquireData>
     ) as $Val);
   }
 
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ThreadCopyWith<$Res>? get thread {
@@ -304,8 +281,6 @@ class __$$EnquireDataImplCopyWithImpl<$Res>
       _$EnquireDataImpl _value, $Res Function(_$EnquireDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -362,13 +337,11 @@ class _$EnquireDataImpl implements _EnquireData {
             (identical(other.thread, thread) || other.thread == thread));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, enquire, vendor_id, thread);
 
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$EnquireDataImplCopyWith<_$EnquireDataImpl> get copyWith =>
@@ -397,11 +370,8 @@ abstract class _EnquireData implements EnquireData {
   String? get vendor_id;
   @override
   Thread? get thread;
-
-  /// Create a copy of EnquireData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$EnquireDataImplCopyWith<_$EnquireDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -416,12 +386,8 @@ mixin _$Thread {
   String? get post_id => throw _privateConstructorUsedError;
   String? get subject => throw _privateConstructorUsedError;
 
-  /// Serializes this Thread to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Thread
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ThreadCopyWith<Thread> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -443,8 +409,6 @@ class _$ThreadCopyWithImpl<$Res, $Val extends Thread>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Thread
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -487,8 +451,6 @@ class __$$ThreadImplCopyWithImpl<$Res>
       _$ThreadImpl _value, $Res Function(_$ThreadImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Thread
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -544,13 +506,11 @@ class _$ThreadImpl implements _Thread {
             (identical(other.subject, subject) || other.subject == subject));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, post_id, subject);
 
-  /// Create a copy of Thread
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ThreadImplCopyWith<_$ThreadImpl> get copyWith =>
@@ -578,11 +538,8 @@ abstract class _Thread implements Thread {
   String? get post_id;
   @override
   String? get subject;
-
-  /// Create a copy of Thread
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ThreadImplCopyWith<_$ThreadImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

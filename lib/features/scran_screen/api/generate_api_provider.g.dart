@@ -142,8 +142,6 @@ class GenerateMyQRProvider extends AutoDisposeFutureProvider<String> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin GenerateMyQRRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `imagePath` of this provider.
   String get imagePath;
@@ -157,4 +155,4 @@ class _GenerateMyQRProviderElement
   String get imagePath => (origin as GenerateMyQRProvider).imagePath;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -26,12 +26,8 @@ mixin _$VendorModelByID {
   String get email => throw _privateConstructorUsedError;
   String get photo => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorModelByID to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorModelByID
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorModelByIDCopyWith<VendorModelByID> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,8 +52,6 @@ class _$VendorModelByIDCopyWithImpl<$Res, $Val extends VendorModelByID>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorModelByID
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -112,8 +106,6 @@ class __$$VendorModelByIDImplCopyWithImpl<$Res>
       _$VendorModelByIDImpl _value, $Res Function(_$VendorModelByIDImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorModelByID
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -191,14 +183,12 @@ class _$VendorModelByIDImpl implements _VendorModelByID {
             (identical(other.photo, photo) || other.photo == photo));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, name, username, email, photo);
 
-  /// Create a copy of VendorModelByID
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorModelByIDImplCopyWith<_$VendorModelByIDImpl> get copyWith =>
@@ -234,11 +224,8 @@ abstract class _VendorModelByID implements VendorModelByID {
   String get email;
   @override
   String get photo;
-
-  /// Create a copy of VendorModelByID
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorModelByIDImplCopyWith<_$VendorModelByIDImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

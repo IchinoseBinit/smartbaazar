@@ -25,12 +25,8 @@ mixin _$HomePosts {
   List<Product> get trending => throw _privateConstructorUsedError;
   List<SliderModel> get sliders => throw _privateConstructorUsedError;
 
-  /// Serializes this HomePosts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of HomePosts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HomePostsCopyWith<HomePosts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,8 +52,6 @@ class _$HomePostsCopyWithImpl<$Res, $Val extends HomePosts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomePosts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -104,8 +98,6 @@ class __$$HomePostsImplCopyWithImpl<$Res>
       _$HomePostsImpl _value, $Res Function(_$HomePostsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomePosts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -186,7 +178,7 @@ class _$HomePostsImpl implements _HomePosts {
             const DeepCollectionEquality().equals(other._sliders, _sliders));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -194,9 +186,7 @@ class _$HomePostsImpl implements _HomePosts {
       const DeepCollectionEquality().hash(_trending),
       const DeepCollectionEquality().hash(_sliders));
 
-  /// Create a copy of HomePosts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
@@ -219,18 +209,14 @@ abstract class _HomePosts implements HomePosts {
   factory _HomePosts.fromJson(Map<String, dynamic> json) =
       _$HomePostsImpl.fromJson;
 
-// required List<HomeAdvertisement> advertisements,
-  @override
+  @override // required List<HomeAdvertisement> advertisements,
   List<Product> get sponsored_posts;
   @override
   List<Product> get trending;
   @override
   List<SliderModel> get sliders;
-
-  /// Create a copy of HomePosts
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HomePostsImplCopyWith<_$HomePostsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -252,12 +238,8 @@ mixin _$SliderModel {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this SliderModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SliderModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SliderModelCopyWith<SliderModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -289,8 +271,6 @@ class _$SliderModelCopyWithImpl<$Res, $Val extends SliderModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SliderModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -367,8 +347,6 @@ class __$$SliderModelImplCopyWithImpl<$Res>
       _$SliderModelImpl _value, $Res Function(_$SliderModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SliderModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -476,14 +454,12 @@ class _$SliderModelImpl implements _SliderModel {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, image, description, link,
       page, status, createdAt, updatedAt);
 
-  /// Create a copy of SliderModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SliderModelImplCopyWith<_$SliderModelImpl> get copyWith =>
@@ -530,11 +506,8 @@ abstract class _SliderModel implements SliderModel {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
-
-  /// Create a copy of SliderModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SliderModelImplCopyWith<_$SliderModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

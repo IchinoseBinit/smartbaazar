@@ -188,8 +188,6 @@ class PostUserBankDetailsProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PostUserBankDetailsRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `bankName` of this provider.
   String get bankName;
@@ -223,4 +221,4 @@ class _PostUserBankDetailsProviderElement
   File get imageFile => (origin as PostUserBankDetailsProvider).imageFile;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

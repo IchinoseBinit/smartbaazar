@@ -29,12 +29,8 @@ mixin _$ShippingCitiesModel {
   @JsonKey(name: "actual_place_name")
   String? get actualPlaceName => throw _privateConstructorUsedError;
 
-  /// Serializes this ShippingCitiesModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of ShippingCitiesModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ShippingCitiesModelCopyWith<ShippingCitiesModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,8 +58,6 @@ class _$ShippingCitiesModelCopyWithImpl<$Res, $Val extends ShippingCitiesModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ShippingCitiesModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -116,8 +110,6 @@ class __$$ShippingCitiesModelImplCopyWithImpl<$Res>
       $Res Function(_$ShippingCitiesModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShippingCitiesModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -190,14 +182,12 @@ class _$ShippingCitiesModelImpl implements _ShippingCitiesModel {
                 other.actualPlaceName == actualPlaceName));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, name, description, actualPlaceName);
 
-  /// Create a copy of ShippingCitiesModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ShippingCitiesModelImplCopyWith<_$ShippingCitiesModelImpl> get copyWith =>
@@ -235,11 +225,8 @@ abstract class _ShippingCitiesModel implements ShippingCitiesModel {
   @override
   @JsonKey(name: "actual_place_name")
   String? get actualPlaceName;
-
-  /// Create a copy of ShippingCitiesModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ShippingCitiesModelImplCopyWith<_$ShippingCitiesModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -297,8 +297,6 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `userName` of this provider.
   String get userName;
@@ -382,4 +380,4 @@ class _PostCheckoutFormProviderElement
   String get total => (origin as PostCheckoutFormProvider).total;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

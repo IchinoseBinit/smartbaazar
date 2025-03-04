@@ -24,12 +24,8 @@ mixin _$TermsConditionsModel {
   String? get message => throw _privateConstructorUsedError;
   Result get result => throw _privateConstructorUsedError;
 
-  /// Serializes this TermsConditionsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TermsConditionsModelCopyWith<TermsConditionsModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,8 +52,6 @@ class _$TermsConditionsModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,8 +75,6 @@ class _$TermsConditionsModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ResultCopyWith<$Res> get result {
@@ -114,8 +106,6 @@ class __$$TermsConditionsModelImplCopyWithImpl<$Res>
       $Res Function(_$TermsConditionsModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -171,13 +161,11 @@ class _$TermsConditionsModelImpl implements _TermsConditionsModel {
             (identical(other.result, result) || other.result == result));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, success, message, result);
 
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TermsConditionsModelImplCopyWith<_$TermsConditionsModelImpl>
@@ -208,11 +196,8 @@ abstract class _TermsConditionsModel implements TermsConditionsModel {
   String? get message;
   @override
   Result get result;
-
-  /// Create a copy of TermsConditionsModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TermsConditionsModelImplCopyWith<_$TermsConditionsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -232,12 +217,8 @@ mixin _$Result {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
 
-  /// Serializes this Result to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ResultCopyWith<Result> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -265,8 +246,6 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -330,8 +309,6 @@ class __$$ResultImplCopyWithImpl<$Res>
       _$ResultImpl _value, $Res Function(_$ResultImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -419,14 +396,12 @@ class _$ResultImpl implements _Result {
             (identical(other.content, content) || other.content == content));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, parentId, type, name, title, content);
 
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
@@ -458,17 +433,14 @@ abstract class _Result implements Result {
   @override
   String get type;
   @override
-  String get name; // required String slug,
+  String get name;
+  @override // required String slug,
 // required String? picture,
-  @override
   String get title;
   @override
   String get content;
-
-  /// Create a copy of Result
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ResultImplCopyWith<_$ResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

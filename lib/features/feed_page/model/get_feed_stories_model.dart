@@ -53,6 +53,7 @@ class Post with _$Post {
     @JsonKey(name: 'average_rating') int? averageRating,
     @JsonKey(name: 'discount_percentage') double? discountPercentage,
     String? wow,
+    @JsonKey(name: 'wow_status') int? wowStatus,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
