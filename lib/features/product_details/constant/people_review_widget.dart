@@ -47,7 +47,10 @@ class PeopleReviewsWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            value.name,
+                            value.name.length > 7
+                                ? '${value.name.substring(0, 7)}...' // Show first 6 characters + "..."
+                                : value
+                                    .name, // Show full name if <= 6 characters
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14.sp,
@@ -55,15 +58,17 @@ class PeopleReviewsWidget extends StatelessWidget {
                           ),
                           SizedBox(height: 5.h),
                           RatingBar.builder(
-                            initialRating: double.tryParse(value.ratingStar) ?? 0,
+                            initialRating:
+                                double.tryParse(value.ratingStar) ?? 0,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
                             itemCount: 5,
                             itemSize: 15.w,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                            itemBuilder: (context, _) =>
-                                const Icon(Icons.star, color: Color(0xFFffa500)),
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, _) => const Icon(Icons.star,
+                                color: Color(0xFFffa500)),
                             onRatingUpdate: (rating) {},
                           ),
                         ],
@@ -78,7 +83,8 @@ class PeopleReviewsWidget extends StatelessWidget {
                       value.comment,
                       style: TextStyle(fontSize: 12.sp, color: Colors.black),
                       maxLines: 2, // Limit text to 2 lines
-                      overflow: TextOverflow.ellipsis, // Show "..." for overflow
+                      overflow:
+                          TextOverflow.ellipsis, // Show "..." for overflow
                     ),
                   ),
                 ],

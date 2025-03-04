@@ -48,37 +48,37 @@ class ProductDetailWidget extends ConsumerStatefulWidget {
   final Function()? onenquiredclicked;
 
   // Constructor
-  const ProductDetailWidget({
-    Key? key,
-    required this.productid,
-    this.title,
-    this.price,
-    this.discounttedPrice = '0',
-    this.similarproductCount,
-    this.vendorname = 'John',
-    this.didcountpercentage,
-    this.posttype = '1',
-    this.comment = '0',
-    this.distance = 2.0,
-    this.Vimage = '',
-    this.productImage,
-    this.lefttile = 'TradeHub',
-    this.membershipColor,
-    this.membershipTitle,
-    this.issponsored = false,
-    this.offer,
-    this.wow,
-    this.avg_rating = 1.0,
-    this.shortestDistance,
-    this.vendorid,
-    this.tradeImage,
-    this.membershipid = '1',
-    this.lat,
-    this.long,
-    this.savedid,
-    this.onRefresh,
-    this.onenquiredclicked
-  }) : super(key: key);
+  const ProductDetailWidget(
+      {Key? key,
+      required this.productid,
+      this.title,
+      this.price,
+      this.discounttedPrice = '0',
+      this.similarproductCount,
+      this.vendorname = 'John',
+      this.didcountpercentage,
+      this.posttype = '1',
+      this.comment = '0',
+      this.distance = 2.0,
+      this.Vimage = '',
+      this.productImage,
+      this.lefttile = 'TradeHub',
+      this.membershipColor,
+      this.membershipTitle,
+      this.issponsored = false,
+      this.offer,
+      this.wow,
+      this.avg_rating = 1.0,
+      this.shortestDistance,
+      this.vendorid,
+      this.tradeImage,
+      this.membershipid = '1',
+      this.lat,
+      this.long,
+      this.savedid,
+      this.onRefresh,
+      this.onenquiredclicked})
+      : super(key: key);
 
   @override
   _ProductDetailWidgetState createState() => _ProductDetailWidgetState();
@@ -184,18 +184,15 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                       ],
                     ),
                     PopupMenuButton(
-                     // menuPadding: EdgeInsets.only(left: 10.w),
+                      menuPadding: EdgeInsets.only(left: 10.w),
                       onSelected: (value) {},
-
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
                           const BoxConstraints.expand(width: 150, height: 150),
-                      // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
-
                       color: Colors.grey,
                       itemBuilder: (context) {
                         return [
@@ -735,9 +732,9 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>VendorHomeScreen(
-                                  vendorName: widget.vendorname!,
-                                  vid: int.tryParse(widget.vendorid!)!),
+                                  builder: (context) => VendorHomeScreen(
+                                      vendorName: widget.vendorname!,
+                                      vid: int.tryParse(widget.vendorid!)!),
                                 ));
                           },
                           child: Padding(

@@ -22,10 +22,11 @@ class HeaderBannerWidget extends StatelessWidget {
       required this.membershipid,
       required this.posttypeid,
       required this.membershiptitle,
-    required  this.ref});
+      required this.ref});
 
   @override
   Widget build(BuildContext context) {
+    print('haka ${membershiptitle}');
     return Container(
       padding: EdgeInsets.only(left: 6.w, top: 10, bottom: 10),
       decoration: const BoxDecoration(

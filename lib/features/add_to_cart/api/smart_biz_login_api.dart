@@ -21,7 +21,7 @@ Future<BizLoginResponse> loginSmartBiz( ref) async {
       //   'password':12341234
       // },
       parameter: {
-        'phone_or_email': '+9779808926192',
+        'phone_or_email': '+9779810331719',
         'password':12341234
       }
     );

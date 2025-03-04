@@ -60,7 +60,10 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     }
   }
 
-  void proceedToCheckout(List<CartItem> cartItems, List<bool> selectedItems) {
+  void proceedToCheckout(
+    List<CartItem> cartItems,
+    List<bool> selectedItems,
+  ) {
     List<String> selectedProductIds = [];
     List<String?> selectedVendorIds = [];
 
@@ -76,6 +79,13 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => OrderDetailsScreen(
+            vendorid: int.tryParse(cartItems.first.vendorId!)!,
+            vendorname: cartItems.first.name,
+
+            wiright: 0,
+            latitude: double.tryParse(cartItems.first.latitude)!,
+            longitude: double.tryParse(cartItems.first.longitude)!,
+            pickup: cartItems.first.pickup,
             selectedProductIds: selectedProductIds,
             selectedVendorIds: selectedVendorIds,
           ),

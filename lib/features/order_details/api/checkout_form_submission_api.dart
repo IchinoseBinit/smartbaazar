@@ -8,18 +8,7 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'checkout_form_submission_api.g.dart';
 
-// Define the convertUrlToFile function
-// Future<File> convertUrlToFile(String imageUrl) async {
-//   final directory = await getApplicationDocumentsDirectory();
-//   final filePath =
-//       '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-//   final file = File(filePath);
 
-//   final response = await http.get(Uri.parse(imageUrl));
-//   await file.writeAsBytes(response.bodyBytes);
-
-//   return file;
-// }
 
 @riverpod
 Future<bool> postCheckoutForm(

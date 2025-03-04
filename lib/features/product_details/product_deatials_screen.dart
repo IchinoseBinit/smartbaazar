@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
@@ -50,6 +53,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -120,7 +124,11 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          print("bibash ${data.widgetSimilarPosts?.posts?.data.length}");
+          // List<dynamic> locations = jsonDecode(data.widgetSimilarPosts!.posts!
+          //     .data.first.userdetailsget!.branch_location!)!;
+          // print(
+          //     "nirla ${data.widgetSimilarPosts!.posts!.data.first.userdetailsget!}");
+        //  print('tinku ${SmartClient.laravelSession}');
           return Scaffold(
             bottomNavigationBar: const SizedBox.shrink(),
 
@@ -176,22 +184,32 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      print(
-                          'we got ${data.result!.id!.toString()} and ${data.result?.user?.id.toString()}');
+                      //   Navigator.pi
+                      // print(
+                      //     'we got ${data.result!.id!.toString()} and ${data.result?.user?.id.toString()}');
                       //     Navigator.of(context, rootNavigator: true).pop('dialog');
 
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => OrderDetailsScreen(
-                            selectedProductIds: [
-                              data.result!.id!.toString()
-                            ], // Wrap in a list
-                            selectedVendorIds: [
-                              data.result?.user?.id.toString()
-                            ], // Wrap in a list
-                          ),
-                        ),
+                            builder: (_) => BuyNowFormScreen(
+                                  phonenumber:
+                                      int.tryParse(data.result!.phone!)!,
+                                  weight: int.tryParse(
+                                          data.result!.weight ?? '0') ??
+                                      0,
+                                  pickupaddress:
+                                      data.result?.pickup ?? 'kathmandu',
+                                  pickuplatitute: double.tryParse(
+                                          data.result?.latitude ?? '0.0') ??
+                                      0.0,
+                                  pickupicklongitute: double.tryParse(
+                                          data.result?.longitude ?? '0.0') ??
+                                      0.0,
+                                  selectedProductIds: data.result!.id!,
+                                  selectedVendorIds:
+                                      int.tryParse(data.result!.postTypeId!)!,
+                                )),
                       );
                     },
                     child: Container(
@@ -431,10 +449,8 @@ class ProductDetailScreen extends ConsumerWidget {
                       //     data.result?.user_details != null)
                       HeaderBannerWidget(
                         ref: ref,
-                        membershiptitle: data
-                                .result?.user_details?.membershipTitle
-                                .toString() ??
-                            '',
+                        membershiptitle: data.widgetSimilarPosts!.posts!.data
+                            .first.detailuser!.membershipPlanTitle!,
                         posttypeid: data.result!.postTypeId!,
                         membershipid: data.result!.user!.id.toString(),
                         brandname: data.result!.postType!.name,
@@ -1333,19 +1349,20 @@ class ProductDetailScreen extends ConsumerWidget {
                                               long: prod.longitude,
                                               posttype: prod.postTypeId,
                                               productid: prod.id.toString(),
-                                              membershipid: prod
-                                                  .user_details?.membershipId,
+                                              membershipid: prod.user_details
+                                                  ?.membershipId,
                                               tradeImage:
                                                   'assets/icon/loading.svg',
                                               didcountpercentage:
                                                   prod.discount_percentage,
-                                              distance: prod.userDetails
+                                              distance: prod.detailuser
                                                   ?.shortestDistance,
-                                              issponsored:
-                                                  prod.userDetails?.sponsored ??
-                                                      false,
+                                              issponsored: prod.detailuser
+                                                      ?.sponsored ??
+                                                  false,
                                               shortestDistance: prod
-                                                  .userDetails?.shortestDistance
+                                                  .detailuser
+                                                  ?.shortestDistance
                                                   ?.roundToDouble(),
                                               wow: prod.wow,
                                               comment:
@@ -1354,21 +1371,25 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   .ratings?.avg_rating
                                                   ?.toDouble(),
                                               offer: prod.offers,
-                                              vendorid: prod.userDetails!.id,
+                                              vendorid: prod.detailuser!.id,
                                               vendorname:
-                                                  prod.userDetails?.name ?? '',
+                                                  prod.detailuser?.name ??
+                                                      '',
                                               discounttedPrice:
                                                   prod.discountedPrice,
-                                              Vimage: prod.userDetails?.photo,
+                                              Vimage:
+                                                  prod.detailuser?.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
-                                              membershipColor: prod.userDetails
+                                              membershipColor: prod
+                                                      .detailuser
                                                       ?.membershipPlanColor ??
                                                   '',
                                               similarproductCount:
                                                   prod.similarProductCount,
-                                              membershipTitle: prod.userDetails
+                                              membershipTitle: prod
+                                                  .detailuser
                                                   ?.membershipPlanTitle);
                                         }),
                                       ),

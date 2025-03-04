@@ -98,7 +98,7 @@ class ProductDetailWidgetListSearch extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
                           const BoxConstraints.expand(width: 150, height: 150),
-                      // menuPadding: const EdgeInsets.only(left: 10),
+                      menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
                       color: const Color(0xff766c7a).withOpacity(0.9),
                       itemBuilder: (context) {

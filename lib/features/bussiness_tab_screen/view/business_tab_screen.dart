@@ -1011,6 +1011,13 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             child: Container(
                                               color: Colors.white,
                                               child: BigContainer(
+                                                onconnectclicked: () {
+                                                  ref.invalidate(
+                                                      getSearchResponseProvider(
+                                                          _query,
+                                                          selectedValue ??
+                                                              'price-low-to-high'));
+                                                },
                                                 ondoenload: () =>
                                                     _captureAndSave(
                                                         _captureKeys[

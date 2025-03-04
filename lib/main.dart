@@ -16,6 +16,7 @@ import 'package:smartbazar/features/create_listing/view/create_new_listing_scree
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -82,19 +83,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home:SplashScreen()
-            ),
-            );
-           // home: SplashScreen()));
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home:SplashScreen()
+          ),
+    );
+    // home: SplashScreen()));
   }
 }
 
@@ -261,28 +262,6 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // RepaintBoundary(
-          //   key: globalKey,
-          //   child: BigContainer(
-          //     storycount: ,
-          //     lat: 37.7749,
-          //     long: -122.4194,
-          //     id: "12345",
-          //     title: "Amazing Place",
-          //     logo:
-          //         'https://smartbazaar.jianjun-rnd.com.np/storage/avatars/np/9/3de13c8aabaf35b8335233510fd9f4c0.png',
-          //     contact: "+1 (123) 456-7890",
-          //     storyCount: "5",
-          //     membershipTitle: "Premium Member",
-          //     deals_circle: "Exclusive Deals",
-          //     total_connections: "50",
-          //     total_prize_worth: "\$1000",
-          //     location: "San Francisco, CA",
-          //     Cnumber: "987654321",
-          //     issubbed: true,
-          //     memebertitle: "Gold Member",
-          //   ),
-          // ),
           const SizedBox(height: 20),
           if (_savedImagePath != null)
             Column(

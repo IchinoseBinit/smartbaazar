@@ -838,11 +838,18 @@ mixin _$Item {
   @JsonKey(name: 'vendor_id')
   String? get vendorId => throw _privateConstructorUsedError;
   @JsonKey(name: 'post_id')
-  String? get postId => throw _privateConstructorUsedError;
+  String? get postId =>
+      throw _privateConstructorUsedError; //   String? post_type_id,
+//  @JsonKey(name: 'post_type_id') String? buynow_post_id, // for BuyNow model
   String? get name => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String get qty => throw _privateConstructorUsedError;
   String get price => throw _privateConstructorUsedError;
+  String? get lon => throw _privateConstructorUsedError;
+  String? get lat => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
+  String? get pickup => throw _privateConstructorUsedError;
+  String? get stock => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
@@ -871,9 +878,14 @@ abstract class $ItemCopyWith<$Res> {
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
       String? name,
+      String? title,
       String qty,
       String price,
+      String? lon,
+      String? lat,
       String? image,
+      String? pickup,
+      String? stock,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
@@ -899,9 +911,14 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
     Object? vendorId = freezed,
     Object? postId = freezed,
     Object? name = freezed,
+    Object? title = freezed,
     Object? qty = null,
     Object? price = null,
+    Object? lon = freezed,
+    Object? lat = freezed,
     Object? image = freezed,
+    Object? pickup = freezed,
+    Object? stock = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? discountOnBulks = freezed,
@@ -929,6 +946,10 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       qty: null == qty
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
@@ -937,9 +958,25 @@ class _$ItemCopyWithImpl<$Res, $Val extends Item>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
+      lon: freezed == lon
+          ? _value.lon
+          : lon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lat: freezed == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stock: freezed == stock
+          ? _value.stock
+          : stock // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -978,9 +1015,14 @@ abstract class _$$ItemImplCopyWith<$Res> implements $ItemCopyWith<$Res> {
       @JsonKey(name: 'vendor_id') String? vendorId,
       @JsonKey(name: 'post_id') String? postId,
       String? name,
+      String? title,
       String qty,
       String price,
+      String? lon,
+      String? lat,
       String? image,
+      String? pickup,
+      String? stock,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'updated_at') String? updatedAt,
       @JsonKey(name: 'discount_on_bulks') List<DiscountOnBulk>? discountOnBulks,
@@ -1003,9 +1045,14 @@ class __$$ItemImplCopyWithImpl<$Res>
     Object? vendorId = freezed,
     Object? postId = freezed,
     Object? name = freezed,
+    Object? title = freezed,
     Object? qty = null,
     Object? price = null,
+    Object? lon = freezed,
+    Object? lat = freezed,
     Object? image = freezed,
+    Object? pickup = freezed,
+    Object? stock = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? discountOnBulks = freezed,
@@ -1033,6 +1080,10 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String?,
       qty: null == qty
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
@@ -1041,9 +1092,25 @@ class __$$ItemImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
+      lon: freezed == lon
+          ? _value.lon
+          : lon // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lat: freezed == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pickup: freezed == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stock: freezed == stock
+          ? _value.stock
+          : stock // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -1078,9 +1145,14 @@ class _$ItemImpl implements _Item {
       @JsonKey(name: 'vendor_id') this.vendorId,
       @JsonKey(name: 'post_id') this.postId,
       this.name,
-      required this.qty,
+      this.title,
+      this.qty = '1',
       required this.price,
+      this.lon,
+      this.lat,
       this.image,
+      this.pickup,
+      this.stock,
       @JsonKey(name: 'created_at') this.createdAt,
       @JsonKey(name: 'updated_at') this.updatedAt,
       @JsonKey(name: 'discount_on_bulks')
@@ -1103,14 +1175,27 @@ class _$ItemImpl implements _Item {
   @override
   @JsonKey(name: 'post_id')
   final String? postId;
+//   String? post_type_id,
+//  @JsonKey(name: 'post_type_id') String? buynow_post_id, // for BuyNow model
   @override
   final String? name;
   @override
+  final String? title;
+  @override
+  @JsonKey()
   final String qty;
   @override
   final String price;
   @override
+  final String? lon;
+  @override
+  final String? lat;
+  @override
   final String? image;
+  @override
+  final String? pickup;
+  @override
+  final String? stock;
   @override
   @JsonKey(name: 'created_at')
   final String? createdAt;
@@ -1137,7 +1222,7 @@ class _$ItemImpl implements _Item {
 
   @override
   String toString() {
-    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, qty: $qty, price: $price, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, discountOnBulks: $discountOnBulks, itemTotal: $itemTotal, postTypeId: $postTypeId)';
+    return 'Item(id: $id, userId: $userId, vendorId: $vendorId, postId: $postId, name: $name, title: $title, qty: $qty, price: $price, lon: $lon, lat: $lat, image: $image, pickup: $pickup, stock: $stock, createdAt: $createdAt, updatedAt: $updatedAt, discountOnBulks: $discountOnBulks, itemTotal: $itemTotal, postTypeId: $postTypeId)';
   }
 
   @override
@@ -1151,9 +1236,14 @@ class _$ItemImpl implements _Item {
                 other.vendorId == vendorId) &&
             (identical(other.postId, postId) || other.postId == postId) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.qty, qty) || other.qty == qty) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.lon, lon) || other.lon == lon) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
+            (identical(other.stock, stock) || other.stock == stock) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1175,9 +1265,14 @@ class _$ItemImpl implements _Item {
       vendorId,
       postId,
       name,
+      title,
       qty,
       price,
+      lon,
+      lat,
       image,
+      pickup,
+      stock,
       createdAt,
       updatedAt,
       const DeepCollectionEquality().hash(_discountOnBulks),
@@ -1205,9 +1300,14 @@ abstract class _Item implements Item {
       @JsonKey(name: 'vendor_id') final String? vendorId,
       @JsonKey(name: 'post_id') final String? postId,
       final String? name,
-      required final String qty,
+      final String? title,
+      final String qty,
       required final String price,
+      final String? lon,
+      final String? lat,
       final String? image,
+      final String? pickup,
+      final String? stock,
       @JsonKey(name: 'created_at') final String? createdAt,
       @JsonKey(name: 'updated_at') final String? updatedAt,
       @JsonKey(name: 'discount_on_bulks')
@@ -1228,14 +1328,25 @@ abstract class _Item implements Item {
   @override
   @JsonKey(name: 'post_id')
   String? get postId;
-  @override
+  @override //   String? post_type_id,
+//  @JsonKey(name: 'post_type_id') String? buynow_post_id, // for BuyNow model
   String? get name;
+  @override
+  String? get title;
   @override
   String get qty;
   @override
   String get price;
   @override
+  String? get lon;
+  @override
+  String? get lat;
+  @override
   String? get image;
+  @override
+  String? get pickup;
+  @override
+  String? get stock;
   @override
   @JsonKey(name: 'created_at')
   String? get createdAt;

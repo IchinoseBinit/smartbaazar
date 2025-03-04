@@ -33,6 +33,9 @@ mixin _$CartItem {
   String get qty => throw _privateConstructorUsedError;
   String get price => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
+  String get pickup => throw _privateConstructorUsedError;
+  String get longitude => throw _privateConstructorUsedError;
+  String get latitude => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,7 +56,10 @@ abstract class $CartItemCopyWith<$Res> {
       String name,
       String qty,
       String price,
-      String image});
+      String image,
+      String pickup,
+      String longitude,
+      String latitude});
 }
 
 /// @nodoc
@@ -77,6 +83,9 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? qty = null,
     Object? price = null,
     Object? image = null,
+    Object? pickup = null,
+    Object? longitude = null,
+    Object? latitude = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -111,6 +120,18 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      pickup: null == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -131,7 +152,10 @@ abstract class _$$CartItemImplCopyWith<$Res>
       String name,
       String qty,
       String price,
-      String image});
+      String image,
+      String pickup,
+      String longitude,
+      String latitude});
 }
 
 /// @nodoc
@@ -153,6 +177,9 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? qty = null,
     Object? price = null,
     Object? image = null,
+    Object? pickup = null,
+    Object? longitude = null,
+    Object? latitude = null,
   }) {
     return _then(_$CartItemImpl(
       id: null == id
@@ -187,6 +214,18 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      pickup: null == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -202,7 +241,10 @@ class _$CartItemImpl implements _CartItem {
       required this.name,
       required this.qty,
       required this.price,
-      required this.image});
+      required this.image,
+      required this.pickup,
+      required this.longitude,
+      required this.latitude});
 
   factory _$CartItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartItemImplFromJson(json);
@@ -228,10 +270,16 @@ class _$CartItemImpl implements _CartItem {
   final String price;
   @override
   final String image;
+  @override
+  final String pickup;
+  @override
+  final String longitude;
+  @override
+  final String latitude;
 
   @override
   String toString() {
-    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image)';
+    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image, pickup: $pickup, longitude: $longitude, latitude: $latitude)';
   }
 
   @override
@@ -248,13 +296,18 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.qty, qty) || other.qty == qty) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, vendorId, postId, postTypeId, name, qty, price, image);
+  int get hashCode => Object.hash(runtimeType, id, vendorId, postId, postTypeId,
+      name, qty, price, image, pickup, longitude, latitude);
 
   @JsonKey(ignore: true)
   @override
@@ -279,7 +332,10 @@ abstract class _CartItem implements CartItem {
       required final String name,
       required final String qty,
       required final String price,
-      required final String image}) = _$CartItemImpl;
+      required final String image,
+      required final String pickup,
+      required final String longitude,
+      required final String latitude}) = _$CartItemImpl;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) =
       _$CartItemImpl.fromJson;
@@ -303,6 +359,12 @@ abstract class _CartItem implements CartItem {
   String get price;
   @override
   String get image;
+  @override
+  String get pickup;
+  @override
+  String get longitude;
+  @override
+  String get latitude;
   @override
   @JsonKey(ignore: true)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>

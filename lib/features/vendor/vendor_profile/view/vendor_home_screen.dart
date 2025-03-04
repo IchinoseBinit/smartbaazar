@@ -825,12 +825,15 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     child: Container(
                                       color: Colors.white,
                                       child: BigContainer(
+                                        onconnectclicked: () {
+                                          ref.invalidate((getVendorCardProvider(
+                                              widget.vid)));
+                                          setState(() {});
+                                        },
                                         ondoenload: _captureAndSave,
                                         onsubscribed: () {
                                           ref.invalidate(getVendorCardProvider(
-                                              widget
-                                                  .vid)); // Invalidate provider to refresh the data
-//                               !ref.read(subscribedProvider.state).state; //
+                                              widget.vid));
                                         },
                                         lat: double.tryParse(vendorcard
                                                 .data!.vendor_card?.latitude ??
@@ -2598,6 +2601,7 @@ class BigContainer extends StatefulWidget {
   bool issubbed = false;
   final VoidCallback? onsubscribed; // Changed this to VoidCallback?
   final VoidCallback? ondoenload; // Changed this to VoidCallback?
+  final VoidCallback? onconnectclicked;
 
   // Constructor
   BigContainer(
@@ -2619,7 +2623,8 @@ class BigContainer extends StatefulWidget {
       required this.issubbed,
       required this.memebertitle,
       required this.onsubscribed,
-      required this.ondoenload});
+      required this.ondoenload,
+      required this.onconnectclicked});
 
   @override
   State<BigContainer> createState() => _BigContainerState();
@@ -2707,6 +2712,7 @@ class _BigContainerState extends State<BigContainer> {
                                         height: 600.h,
                                         width: 450.w,
                                         child: BigContainer(
+                                          onconnectclicked: () {},
                                           storycount: widget.storyCount,
                                           lat: widget.lat,
                                           long: widget.long,
@@ -3091,27 +3097,43 @@ class _BigContainerState extends State<BigContainer> {
                 setState(() {
                   _loading = true;
                 });
+
                 await Future.delayed(
-                    const Duration(seconds: 2)); // Simulate some delay
+                    const Duration(seconds: 2)); // Simulate delay
 
                 followUnfollowVendor(widget.id).then(
                   (value) {
                     showCustomToast(context, value.msg!);
+
                     if (value.scratchAva == '1') {
                       showDialog(
                         context: context,
                         builder: (context) {
                           return const Dialog(
-                              backgroundColor: Colors.transparent,
-                              insetPadding: EdgeInsets.all(10),
-                              child: ScratchCard());
+                            backgroundColor: Colors.transparent,
+                            insetPadding: EdgeInsets.all(10),
+                            child: ScratchCard(),
+                          );
                         },
                       );
                     }
+
+                    // Update state to reflect subscription status
+                    setState(() {
+                      _loading = false;
+                      widget.issubbed =
+                          !widget.issubbed; // Toggle subscription status
+                    });
+
+                    widget.onsubscribed?.call();
+                    widget.onconnectclicked?.call();
                   },
-                );
-                widget.onsubscribed?.call();
-                _loading = false;
+                ).catchError((error) {
+                  setState(() {
+                    _loading = false;
+                  });
+                  showCustomToast(context, "Something went wrong");
+                });
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 8.w, bottom: 5.w),
@@ -3121,13 +3143,15 @@ class _BigContainerState extends State<BigContainer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(widget.issubbed ? "Connected" : "Connect",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.sp,
-                            color: const Color(0xff370C6B),
-                          ),
-                          textAlign: TextAlign.center),
+                      Text(
+                        widget.issubbed ? "Connected" : "Connect",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: const Color(0xff370C6B),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
                 ),

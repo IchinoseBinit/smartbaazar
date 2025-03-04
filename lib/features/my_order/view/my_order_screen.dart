@@ -206,13 +206,15 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
 
   @override
   Widget build(BuildContext context) {
+    bool _showdialog = false;
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
-    final createdAt =
-        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+    final createdAt = order.createdAt is String
+        ? DateTime.tryParse(order.createdAt) ?? DateTime.now()
+        : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
-    final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
+    final isReturnEligible = _isReturnEligible(createdAt);
     final vendorName = widget.order.vendorName;
     final productTitle = widget.order.postTitle;
 
@@ -285,7 +287,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                       ),
                     ),
                     Text(
-                      'Order ID: ${widget.order.orderId}',
+                      'Order ID: ${widget.order.id}',
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
@@ -386,30 +388,50 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                                 context,
                                 buttonTitle: 'Submit',
                                 callback: () {
-                                  print("lala ${widget.order}");
+                                  if (!mounted)
+                                    return; // Prevent execution if the widget is unmounted
+
                                   ref
-                                      .watch(postmyreturnProvider(
-                                    widget.order.id, // Random order ID
-                                    widget.order.vendorId, // Random vendor ID
-                                    widget.order.postId, // Random post ID
-                                    issue!, // Random issue description
-                                    message!, // Random message
-                                    place!
-                                        .description!, // Random place description
-                                    '123', // Random city name
-                                    address!, // Random address
-                                    place!.latitude!
-                                        .toString(), // Random latitude
-                                    place!.longitude!
-                                        .toString(), // Random longitude
+                                      .read(postmyreturnProvider(
+                                    widget.order.id, // Order ID
+                                    widget.order.vendorId, // Vendor ID
+                                    widget.order.postId, // Post ID
+                                    issue!, // Issue description
+                                    message!, // Message
+                                    place!.description!, // Place description
+                                    '123', // City name
+                                    address!, // Address
+                                    place!.latitude!.toString(), // Latitude
+                                    place!.longitude!.toString(), // Longitude
                                     image!,
                                   ))
                                       .whenData(
                                     (value) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text("Data inserted")));
-                                      Navigator.pop(context);
+                                      if (!mounted)
+                                        return; // Check again before calling UI updates
+
+                                      // Show success dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text("Success"),
+                                          content: const Text(
+                                              "Data inserted successfully"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(); // Close success dialog
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(); // Close main dialog
+                                              },
+                                              child: const Text("OK"),
+                                            ),
+                                          ],
+                                        ),
+                                      );
                                     },
                                   );
                                 },
@@ -433,7 +455,8 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                                 title: 'Fill the form',
                                 heading: 'Return Products',
                               );
-                              Navigator.pop(context);
+
+                              //  Navigator.pop(context);
                             },
                           )
                         ],

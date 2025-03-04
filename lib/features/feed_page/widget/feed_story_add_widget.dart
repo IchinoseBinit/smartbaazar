@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_page_pop_up.dart';
@@ -44,12 +45,12 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
     super.initState();
 
     // Initialize stories
-    if (widget.feedStoryContent?.posts == null || widget.feedStoryContent!.posts!.isEmpty) {
-  stories = [];
-} else {
-  stories = widget.feedStoryContent!.posts!;
-}
-
+    if (widget.feedStoryContent?.posts == null ||
+        widget.feedStoryContent!.posts!.isEmpty) {
+      stories = [];
+    } else {
+      stories = widget.feedStoryContent!.posts!;
+    }
 
     // Group stories by vendor ID
     groupedStories = {};
@@ -77,26 +78,34 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
         ref.watch(getFeedGiftCardProvider(widget.userId));
     print(widget.showGift);
     return Padding(
-
-
-      padding:  EdgeInsets.symmetric(horizontal: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: GestureDetector(
         onTap: () {
           // print("raju ${widget.feedStoryContent}");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => FeedStoryScreen(
-                
-                
-                selectedVendorIndex: widget.index,
-                initialIndex: widget.index,
-                author: widget.vendorName ?? '',
-                storyCount: widget.storyCount ?? 0,
-                feedStory: widget.feedStoryContent!,
-              ),
+          navigateToPage(
+            context: context,
+            page: FeedStoryScreen(
+              selectedVendorIndex: widget.index,
+              initialIndex: widget.index,
+              author: widget.vendorName ?? '',
+              storyCount: widget.storyCount ?? 0,
+              feedStory: widget.feedStoryContent!,
             ),
+            ref: ref,
+            showNavBar: false, // Hide bottom navbar
           );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => FeedStoryScreen(
+          //       selectedVendorIndex: widget.index,
+          //       initialIndex: widget.index,
+          //       author: widget.vendorName ?? '',
+          //       storyCount: widget.storyCount ?? 0,
+          //       feedStory: widget.feedStoryContent!,
+          //     ),
+          //   ),
+          // );
         },
         child: Column(
           children: [
@@ -111,14 +120,14 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                     width: 95.r,
                     height: 95.r,
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 3.w, color: const Color(0xffEACACB)),
+                      border: Border.all(
+                          width: 3.w, color: const Color(0xffEACACB)),
                       shape: BoxShape.circle,
                     ),
                   ),
-      
+
                   // Vendor Image
-      
+
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
@@ -126,11 +135,12 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                     ),
                     child: CircleAvatar(
                       radius: 38.r,
-                      backgroundColor: const Color(0x7F7F7F73).withOpacity(0.45),
+                      backgroundColor:
+                          const Color(0x7F7F7F73).withOpacity(0.45),
                       backgroundImage: NetworkImage(vendorImage[widget.index]),
                     ),
                   ),
-      
+
                   // Vendor Name
                   Positioned(
                     bottom: -23.h,

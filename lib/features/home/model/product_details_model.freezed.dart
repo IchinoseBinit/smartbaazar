@@ -701,16 +701,16 @@ mixin _$PostResult {
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
+  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
   LocationModel? get location => throw _privateConstructorUsedError;
   usermodel? get user => throw _privateConstructorUsedError;
   @JsonKey(name: 'detail_user')
-  SimilarProducts? get userDetails => throw _privateConstructorUsedError;
+  SimilarProducts? get detailuser => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
   List<SavedByUser>? get savedByLoggedUser =>
       throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
-  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
   int? get similarProductCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
@@ -792,14 +792,14 @@ abstract class $PostResultCopyWith<$Res> {
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      MyProductDeailModel? user_details,
       LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? detailuser,
       List<Picture>? pictures,
       List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
-      MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> live_prizes,
@@ -809,12 +809,12 @@ abstract class $PostResultCopyWith<$Res> {
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
   $LocationModelCopyWith<$Res>? get location;
   $usermodelCopyWith<$Res>? get user;
-  $SimilarProductsCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get detailuser;
   $PostTypeCopyWith<$Res>? get postType;
   $CityCopyWith<$Res>? get city;
-  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -890,14 +890,14 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user_details = freezed,
     Object? location = freezed,
     Object? user = freezed,
-    Object? userDetails = freezed,
+    Object? detailuser = freezed,
     Object? pictures = freezed,
     Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? live_prizes = null,
@@ -1146,6 +1146,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -1154,9 +1158,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      userDetails: freezed == userDetails
-          ? _value.userDetails
-          : userDetails // ignore: cast_nullable_to_non_nullable
+      detailuser: freezed == detailuser
+          ? _value.detailuser
+          : detailuser // ignore: cast_nullable_to_non_nullable
               as SimilarProducts?,
       pictures: freezed == pictures
           ? _value.pictures
@@ -1174,10 +1178,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as MyProductDeailModel?,
       similarProductCount: freezed == similarProductCount
           ? _value.similarProductCount
           : similarProductCount // ignore: cast_nullable_to_non_nullable
@@ -1231,6 +1231,18 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
   @override
   @pragma('vm:prefer-inline')
+  $MyProductDeailModelCopyWith<$Res>? get user_details {
+    if (_value.user_details == null) {
+      return null;
+    }
+
+    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
+      return _then(_value.copyWith(user_details: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $LocationModelCopyWith<$Res>? get location {
     if (_value.location == null) {
       return null;
@@ -1255,13 +1267,13 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
   @override
   @pragma('vm:prefer-inline')
-  $SimilarProductsCopyWith<$Res>? get userDetails {
-    if (_value.userDetails == null) {
+  $SimilarProductsCopyWith<$Res>? get detailuser {
+    if (_value.detailuser == null) {
       return null;
     }
 
-    return $SimilarProductsCopyWith<$Res>(_value.userDetails!, (value) {
-      return _then(_value.copyWith(userDetails: value) as $Val);
+    return $SimilarProductsCopyWith<$Res>(_value.detailuser!, (value) {
+      return _then(_value.copyWith(detailuser: value) as $Val);
     });
   }
 
@@ -1286,18 +1298,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
     return $CityCopyWith<$Res>(_value.city!, (value) {
       return _then(_value.copyWith(city: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MyProductDeailModelCopyWith<$Res>? get user_details {
-    if (_value.user_details == null) {
-      return null;
-    }
-
-    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
-      return _then(_value.copyWith(user_details: value) as $Val);
     });
   }
 }
@@ -1371,14 +1371,14 @@ abstract class _$$PostResultImplCopyWith<$Res>
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      MyProductDeailModel? user_details,
       LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? detailuser,
       List<Picture>? pictures,
       List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
-      MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> live_prizes,
@@ -1391,17 +1391,17 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @override
   $RatingsCopyWith<$Res>? get ratings;
   @override
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
+  @override
   $LocationModelCopyWith<$Res>? get location;
   @override
   $usermodelCopyWith<$Res>? get user;
   @override
-  $SimilarProductsCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get detailuser;
   @override
   $PostTypeCopyWith<$Res>? get postType;
   @override
   $CityCopyWith<$Res>? get city;
-  @override
-  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -1475,14 +1475,14 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user_details = freezed,
     Object? location = freezed,
     Object? user = freezed,
-    Object? userDetails = freezed,
+    Object? detailuser = freezed,
     Object? pictures = freezed,
     Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? live_prizes = null,
@@ -1731,6 +1731,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -1739,9 +1743,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      userDetails: freezed == userDetails
-          ? _value.userDetails
-          : userDetails // ignore: cast_nullable_to_non_nullable
+      detailuser: freezed == detailuser
+          ? _value.detailuser
+          : detailuser // ignore: cast_nullable_to_non_nullable
               as SimilarProducts?,
       pictures: freezed == pictures
           ? _value._pictures
@@ -1759,10 +1763,6 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as MyProductDeailModel?,
       similarProductCount: freezed == similarProductCount
           ? _value.similarProductCount
           : similarProductCount // ignore: cast_nullable_to_non_nullable
@@ -1856,14 +1856,14 @@ class _$PostResultImpl implements _PostResult {
       required this.commentCount,
       required this.extra,
       this.ratings,
+      required this.user_details,
       this.location,
       this.user,
-      @JsonKey(name: 'detail_user') required this.userDetails,
+      @JsonKey(name: 'detail_user') required this.detailuser,
       required final List<Picture>? pictures,
       final List<SavedByUser>? savedByLoggedUser,
       this.postType,
       this.city,
-      required this.user_details,
       this.similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
@@ -2039,12 +2039,14 @@ class _$PostResultImpl implements _PostResult {
   @override
   final Ratings? ratings;
   @override
+  final MyProductDeailModel? user_details;
+  @override
   final LocationModel? location;
   @override
   final usermodel? user;
   @override
   @JsonKey(name: 'detail_user')
-  final SimilarProducts? userDetails;
+  final SimilarProducts? detailuser;
   final List<Picture>? _pictures;
   @override
   List<Picture>? get pictures {
@@ -2070,8 +2072,6 @@ class _$PostResultImpl implements _PostResult {
   final PostType? postType;
   @override
   final City? city;
-  @override
-  final MyProductDeailModel? user_details;
   @override
   final int? similarProductCount;
   final List<RatingComment> _ratingComment;
@@ -2127,7 +2127,7 @@ class _$PostResultImpl implements _PostResult {
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, user_details: $user_details, location: $location, user: $user, detailuser: $detailuser, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, similarProductCount: $similarProductCount, ratingComment: $ratingComment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
   }
 
   @override
@@ -2226,19 +2226,19 @@ class _$PostResultImpl implements _PostResult {
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
+            (identical(other.user_details, user_details) ||
+                other.user_details == user_details) &&
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.userDetails, userDetails) ||
-                other.userDetails == userDetails) &&
+            (identical(other.detailuser, detailuser) ||
+                other.detailuser == detailuser) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
             const DeepCollectionEquality()
                 .equals(other._savedByLoggedUser, _savedByLoggedUser) &&
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.user_details, user_details) ||
-                other.user_details == user_details) &&
             (identical(other.similarProductCount, similarProductCount) ||
                 other.similarProductCount == similarProductCount) &&
             const DeepCollectionEquality()
@@ -2315,14 +2315,14 @@ class _$PostResultImpl implements _PostResult {
         commentCount,
         extra,
         ratings,
+        user_details,
         location,
         user,
-        userDetails,
+        detailuser,
         const DeepCollectionEquality().hash(_pictures),
         const DeepCollectionEquality().hash(_savedByLoggedUser),
         postType,
         city,
-        user_details,
         similarProductCount,
         const DeepCollectionEquality().hash(_ratingComment),
         const DeepCollectionEquality().hash(_live_prizes),
@@ -2409,14 +2409,14 @@ abstract class _PostResult implements PostResult {
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
+      required final MyProductDeailModel? user_details,
       final LocationModel? location,
       final usermodel? user,
-      @JsonKey(name: 'detail_user') required final SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') required final SimilarProducts? detailuser,
       required final List<Picture>? pictures,
       final List<SavedByUser>? savedByLoggedUser,
       final PostType? postType,
       final City? city,
-      required final MyProductDeailModel? user_details,
       final int? similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
@@ -2576,12 +2576,14 @@ abstract class _PostResult implements PostResult {
   @override
   Ratings? get ratings;
   @override
+  MyProductDeailModel? get user_details;
+  @override
   LocationModel? get location;
   @override
   usermodel? get user;
   @override
   @JsonKey(name: 'detail_user')
-  SimilarProducts? get userDetails;
+  SimilarProducts? get detailuser;
   @override
   List<Picture>? get pictures;
   @override
@@ -2590,8 +2592,6 @@ abstract class _PostResult implements PostResult {
   PostType? get postType;
   @override
   City? get city;
-  @override
-  MyProductDeailModel? get user_details;
   @override
   int? get similarProductCount;
   @override

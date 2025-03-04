@@ -16,6 +16,9 @@ class CartItem with _$CartItem {
     required String qty,
     required String price,
     required String image,
+    required String pickup,
+    required String longitude,
+    required String latitude,
     // required String createdAt,
     // required String updatedAt,
   }) = _CartItem;

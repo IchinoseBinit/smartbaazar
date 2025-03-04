@@ -2161,7 +2161,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                   )),
                 CreateListingCardWidget(
                   child: Row(
-                    children: [ 
+                    children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -4538,7 +4538,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        print('kalu $typeid');
+                        print('kalu ${selectedcategory}');
                         setState(() {
                           _acceptterms = newValue;
                         });

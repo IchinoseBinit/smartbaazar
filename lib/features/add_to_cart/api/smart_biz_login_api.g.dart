@@ -6,7 +6,7 @@ part of 'smart_biz_login_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginSmartBizHash() => r'3bef8e2010abc56ebbae497de93c443d93685ce4';
+String _$loginSmartBizHash() => r'0996bd5d60e6fb552f3f7016a1af1ed675739ac2';
 
 /// See also [loginSmartBiz].
 @ProviderFor(loginSmartBiz)

@@ -5,18 +5,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
 import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
+import 'package:smartbazar/features/add_to_cart/model/delivery_charge_model.dart';
 import 'package:smartbazar/features/add_to_cart/model/smart_biz_login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/api/get_estimated_fair_api.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
 import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
+import 'package:smartbazar/features/order_details/model/street_address_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 
@@ -25,9 +29,21 @@ class OrderDetailsScreen extends ConsumerStatefulWidget {
     super.key,
     required this.selectedProductIds,
     required this.selectedVendorIds,
+    required this.pickup,
+    required this.longitude,
+    required this.latitude,
+    required this.wiright,
+    required this.vendorname,
+    required this.vendorid
   });
   final List<String> selectedProductIds;
   final List<String?> selectedVendorIds;
+  final String pickup;
+  final double longitude;
+  final double latitude;
+  final int wiright;
+  final String vendorname;
+  final int vendorid;
 
   @override
   ConsumerState<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
@@ -38,9 +54,15 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   String selectedDeliveryOption = "Self Pickup"; // Default delivery option
   String? selectedCoupon = '';
   // String selectedCity = '';
-  String selectedStreet = '';
+  StreetAddressModel? selectedStreet;
   List<double> itemRates = [];
   List<double> itemTotalPayments = [];
+  ParcelFareResponse? _fairresponse;
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController pricecontroller = TextEditingController();
+
   void clearSelectedCoupon() {
     setState(() {
       selectedCoupon = null;
@@ -53,10 +75,39 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   //   });
   // }
 
-  void updateStreet(String street) {
+  void updateStreet(StreetAddressModel street) {
     setState(() {
       selectedStreet = street;
+      print('Selected Street: $selectedStreet');
     });
+
+    if (_bizLoginResponse?.data?.token != null && selectedStreet != null) {
+      getDeliveryChargeSmartbiz(
+        _bizLoginResponse!.data!.token!, // Replace with actual token
+        [
+          widget.latitude,
+          widget.longitude,
+        ], // Pickup coordinates
+        [
+          selectedStreet?.latitude ?? 0.0,
+          selectedStreet?.longitude ?? 0.0,
+        ], // Destination coordinates
+        "parcel", // Type
+        widget.pickup ?? 'ktm', // Pickup address
+        selectedStreet?.description ?? 'ktm', // Destination address
+        [], // No intermediate coordinates
+        widget.wiright?.toDouble() ?? 0.0, // Parcel weight
+        "44cb222c-b93c-44e2-a5aa-a3a5932e0d63", // Parcel category ID
+        widget.selectedVendorIds.toString(), // Vendor ID
+      ).then(
+        (value) {
+          setState(() {
+            _fairresponse = value;
+            print('kingko ${_fairresponse?.data?.estimatedFare}');
+          });
+        },
+      );
+    }
   }
 
   void updatePaymentMethod(String value) {
@@ -93,6 +144,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
           padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
           child: asyncCheckoutDetails.when(
             data: (checkoutDetails) {
+              namecontroller.text = checkoutDetails.data!.user!.first.name!;
+              phonecontroller.text = checkoutDetails.data!.user!.first.phone!;
+              emailcontroller.text = checkoutDetails.data!.user!.first.email!;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -135,7 +190,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 15.h,
                   ),
                   CustomTextFieldWidget(
-                    readOnly: true,
+                    controller: namecontroller,
+                    readOnly: false,
                     icon: Icons.person,
                     hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
                         ? checkoutDetails.data!.user!.first.name ?? 'Name'
@@ -150,12 +206,29 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 8.h,
                   ),
                   CustomTextFieldWidget(
-                    readOnly: true,
+                    readOnly: false,
+                    controller: phonecontroller,
                     icon: Icons.call,
                     hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
                         ? checkoutDetails.data!.user!.first.phone ??
                             'Contact Number'
                         : 'Contact Number',
+                    fill: true,
+                    fillColor: const Color.fromARGB(255, 241, 234, 234),
+                    validator: (number) {
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  CustomTextFieldWidget(
+                    readOnly: false,
+                    controller: emailcontroller,
+                    icon: Icons.email,
+                    hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
+                        ? checkoutDetails.data!.user!.first.email ?? 'Email'
+                        : 'Email',
                     fill: true,
                     fillColor: const Color.fromARGB(255, 241, 234, 234),
                     validator: (number) {
@@ -361,6 +434,20 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   //   color: Color(0xffD9D9D9),
                   // ),
                   OrderSummaryWidget(
+                    weight: 0,
+                    address: selectedStreet?.description?? 'kathmandu',
+                    deliverychareg: _fairresponse ?? ParcelFareResponse(),
+                    email: emailcontroller.text,
+                    name: namecontroller.text,
+                    phone: phonecontroller.text,
+                    pickuplatitutevednor: widget.latitude,
+                    pickuplongitutevendor: widget.longitude,
+                    receiverphone: phonecontroller.text,
+                    senderPhone: '000',
+                    senderaddress: widget.pickup,
+                    sendername: widget.vendorname,
+                    vendorid: widget.vendorid,
+
                     items: checkoutDetails.data!.items ?? [],
                     discounts:
                         checkoutDetails.data!.items!.first.discountOnBulks ??
@@ -368,7 +455,12 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     selectedPaymentMethod: selectedPaymentMethod,
                     selectedDeliveryOption: selectedDeliveryOption,
                     // selectedCity: selectedCity,
-                    selectedStreet: selectedStreet,
+                    selectedStreet: selectedStreet ??
+                        StreetAddressModel(
+                            description: 'kathmandu',
+                            placeId: '12',
+                            latitude: 0.1,
+                            longitude: 1.1),
                     selectedCoupon: selectedCoupon,
                     selectedProductIds: widget.selectedProductIds,
                     checkoutDetails: checkoutDetails,
@@ -389,33 +481,52 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
 
 class OrderSummaryWidget extends ConsumerStatefulWidget {
   final List<Item> items;
+  final ParcelFareResponse deliverychareg;
+  final String name;
+  final String email;
+  final String phone;
+  final String address;
+  final double pickuplatitutevednor;
+  final double pickuplongitutevendor;
+  final String sendername;
+  final String senderPhone;
+  final BizLoginResponse? bizLoginResponseparams;
+  final int vendorid;
+  final String senderaddress;
+  final String receiverphone;
+  final double weight;
   final List<DiscountOnBulk>? discounts;
   final String selectedPaymentMethod;
   final String selectedDeliveryOption;
   final String? selectedCoupon;
-  // final String selectedCity;
-  final String selectedStreet;
-
+  final StreetAddressModel selectedStreet;
   final List<String> selectedProductIds;
   final CheckoutDetailsModel checkoutDetails;
-  // final String? pieceFrom;
-  // final String? pieceTo;
-  // final String? rateFromBulkDiscount;
 
   const OrderSummaryWidget({
     Key? key,
     required this.items,
+    required this.deliverychareg,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.address,
+    required this.pickuplatitutevednor,
+    required this.pickuplongitutevendor,
+    required this.sendername,
+    required this.senderPhone,
+    this.bizLoginResponseparams,
+    required this.vendorid,
+    required this.senderaddress,
+    required this.receiverphone,
+    required this.weight,
     this.discounts,
     required this.selectedPaymentMethod,
     required this.selectedDeliveryOption,
-    required this.selectedCoupon,
-    // required this.selectedCity,
+    this.selectedCoupon,
     required this.selectedStreet,
     required this.selectedProductIds,
     required this.checkoutDetails,
-    //  this.pieceFrom,
-    //  this.pieceTo,
-    //   this.rateFromBulkDiscount,
   }) : super(key: key);
 
   @override
@@ -500,7 +611,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
         widget.selectedDeliveryOption,
         "Standard",
         // widget.selectedCity,
-        widget.selectedStreet,
+        widget.selectedStreet.description,
         widget.selectedCoupon,
         postIds,
         widget.selectedProductIds,
@@ -941,113 +1052,113 @@ class _ShippingCitiesFieldState extends ConsumerState<ShippingCitiesField> {
   }
 }
 
-class StreetAddressFieldWidget extends ConsumerStatefulWidget {
-  const StreetAddressFieldWidget({super.key, this.onSelected});
-  final Function(String)? onSelected;
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _StreetAddressFieldWidgetState();
-}
+// class StreetAddressFieldWidget extends ConsumerStatefulWidget {
+//   const StreetAddressFieldWidget({super.key, this.onSelected});
+//   final Function(String)? onSelected;
+//   @override
+//   ConsumerState<ConsumerStatefulWidget> createState() =>
+//       _StreetAddressFieldWidgetState();
+// }
 
-class _StreetAddressFieldWidgetState
-    extends ConsumerState<StreetAddressFieldWidget> {
-  final TextEditingController _streetController = TextEditingController();
-  String query = '';
+// class _StreetAddressFieldWidgetState
+//     extends ConsumerState<StreetAddressFieldWidget> {
+//   final TextEditingController _streetController = TextEditingController();
+//   String query = '';
 
-  @override
-  Widget build(BuildContext context) {
-    // Use the new provider to get street address suggestions
-    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+//   @override
+//   Widget build(BuildContext context) {
+//     // Use the new provider to get street address suggestions
+//     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
-          textInputAction: TextInputAction.next,
-          controller: _streetController,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-            hintText: "Street Address",
-            hintStyle: TextStyle(
-              color: const Color(0xffADADAD),
-              fontSize: 14.sp,
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            filled: true,
-            fillColor: const Color.fromARGB(255, 241, 234, 234),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
-              child: Container(
-                height: 50,
-                width: 52,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: const Color(0xffAEC5FF),
-                ),
-                child: const Icon(
-                  Icons.location_disabled_outlined,
-                  color: Color(0xff362677),
-                ),
-              ),
-            ),
-          ),
-          onChanged: (value) {
-            setState(() {
-              query = value; // Update query when text changes
-            });
-          },
-        ),
-        const SizedBox(height: 10),
-        if (query.isNotEmpty) // Only show suggestions if the query is not empty
-          streetSuggestionsAsync.when(
-            data: (addresses) {
-              if (addresses.isEmpty) {
-                return const Text('No street address found.');
-              }
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         TextFormField(
+//           textInputAction: TextInputAction.next,
+//           controller: _streetController,
+//           decoration: InputDecoration(
+//             contentPadding: const EdgeInsets.symmetric(vertical: 10),
+//             hintText: "Street Address",
+//             hintStyle: TextStyle(
+//               color: const Color(0xffADADAD),
+//               fontSize: 14.sp,
+//             ),
+//             border: OutlineInputBorder(
+//               borderSide: BorderSide.none,
+//               borderRadius: BorderRadius.circular(10.r),
+//             ),
+//             filled: true,
+//             fillColor: const Color.fromARGB(255, 241, 234, 234),
+//             prefixIcon: Padding(
+//               padding: EdgeInsets.only(
+//                   right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+//               child: Container(
+//                 height: 50,
+//                 width: 52,
+//                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(10.r),
+//                   color: const Color(0xffAEC5FF),
+//                 ),
+//                 child: const Icon(
+//                   Icons.location_disabled_outlined,
+//                   color: Color(0xff362677),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           onChanged: (value) {
+//             setState(() {
+//               query = value; // Update query when text changes
+//             });
+//           },
+//         ),
+//         const SizedBox(height: 10),
+//         if (query.isNotEmpty) // Only show suggestions if the query is not empty
+//           streetSuggestionsAsync.when(
+//             data: (addresses) {
+//               if (addresses.isEmpty) {
+//                 return const Text('No street address found.');
+//               }
 
-              return Flexible(
-                fit: FlexFit.loose,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) {
-                    final address = addresses[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2.0), // Adjust spacing as needed
-                      child: ListTile(
-                        title: Text(
-                          address.description,
-                          style: TextStyle(
-                              fontSize: 12.sp), // Set the desired font size
-                        ),
-                        onTap: () {
-                          _streetController.text = address.description;
-                          setState(() {
-                            query = ''; // Clear the query to hide suggestions
-                            widget.onSelected!(address.description);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => const Text('Please login again'),
-          ),
-      ],
-    );
-  }
-}
+//               return Flexible(
+//                 fit: FlexFit.loose,
+//                 child: ListView.builder(
+//                   shrinkWrap: true,
+//                   physics: const NeverScrollableScrollPhysics(),
+//                   itemCount: addresses.length,
+//                   itemBuilder: (context, index) {
+//                     final address = addresses[index];
+//                     return Padding(
+//                       padding: const EdgeInsets.symmetric(
+//                           vertical: 2.0), // Adjust spacing as needed
+//                       child: ListTile(
+//                         title: Text(
+//                           address.description,
+//                           style: TextStyle(
+//                               fontSize: 12.sp), // Set the desired font size
+//                         ),
+//                         onTap: () {
+//                           _streetController.text = address.description;
+//                           setState(() {
+//                             query = ''; // Clear the query to hide suggestions
+//                             widget.onSelected!(address.description);
+//                           });
+//                         },
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               );
+//             },
+//             loading: () => const CircularProgressIndicator(),
+//             error: (error, stackTrace) => const Text('Please login again'),
+//           ),
+//       ],
+//     );
+//   }
+// }
 
 class DiscountOnBulkContainer extends StatelessWidget {
   const DiscountOnBulkContainer({

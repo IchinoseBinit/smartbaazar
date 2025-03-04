@@ -126,13 +126,17 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      user_details: json['user_details'] == null
+          ? null
+          : MyProductDeailModel.fromJson(
+              json['user_details'] as Map<String, dynamic>),
       location: json['location'] == null
           ? null
           : LocationModel.fromJson(json['location'] as Map<String, dynamic>),
       user: json['user'] == null
           ? null
           : usermodel.fromJson(json['user'] as Map<String, dynamic>),
-      userDetails: json['detail_user'] == null
+      detailuser: json['detail_user'] == null
           ? null
           : SimilarProducts.fromJson(
               json['detail_user'] as Map<String, dynamic>),
@@ -148,10 +152,6 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] == null
           ? null
           : City.fromJson(json['city'] as Map<String, dynamic>),
-      user_details: json['user_details'] == null
-          ? null
-          : MyProductDeailModel.fromJson(
-              json['user_details'] as Map<String, dynamic>),
       similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
       ratingComment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
@@ -236,14 +236,14 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'commentCount': instance.commentCount,
       'extra': instance.extra,
       'ratings': instance.ratings,
+      'user_details': instance.user_details,
       'location': instance.location,
       'user': instance.user,
-      'detail_user': instance.userDetails,
+      'detail_user': instance.detailuser,
       'pictures': instance.pictures,
       'savedByLoggedUser': instance.savedByLoggedUser,
       'postType': instance.postType,
       'city': instance.city,
-      'user_details': instance.user_details,
       'similarProductCount': instance.similarProductCount,
       'rating_comment': instance.ratingComment,
       'live_prizes': instance.live_prizes,

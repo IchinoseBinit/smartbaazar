@@ -268,6 +268,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
         /// 2. Update `_card` inside `setState`
         setState(() {
           _card = BigContainer(
+            onconnectclicked: () {
+              
+            },
             ondoenload: () {},
             onsubscribed: () {},
             key: GlobalKey(),

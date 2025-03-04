@@ -107,15 +107,16 @@ class PostResult with _$PostResult {
     required int? commentCount,
     required ExtraModel? extra,
     Ratings? ratings,
+    required MyProductDeailModel? user_details,
     LocationModel? location,
     usermodel? user,
-    @JsonKey(name: 'detail_user') required SimilarProducts? userDetails,
+    @JsonKey(name: 'detail_user') required SimilarProducts? detailuser,
     required List<Picture>? pictures,
     final List<SavedByUser>? savedByLoggedUser,
 
     PostType? postType,
     City? city,
-    required MyProductDeailModel? user_details,
+    
     int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
     @Default([]) List<LivePrize> live_prizes,
