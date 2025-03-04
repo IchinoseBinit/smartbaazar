@@ -353,9 +353,9 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                               title: 'Status',
                               heading: 'Track Order',
                               buttonTitle: 'Understood',
-                              
                               callback: () {
-                                Navigator.pop(context);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                               },
                               widget: TrackOrderDetails(order: widget.order),
                             );
@@ -385,58 +385,10 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                             textPadding: EdgeInsets.symmetric(horizontal: 2.w),
                             title: 'Return',
                             onPressed: () {
-                              CustomDialougeBox().orderDetailDialouge(
-                                context,
-                                buttonTitle: 'Submit',
-                                callback: () {
-                                  print("lala ${widget.order}");
-                                  ref
-                                      .watch(postmyreturnProvider(
-                                    widget.order.id, // Random order ID
-                                    widget.order.vendorId, // Random vendor ID
-                                    widget.order.postId, // Random post ID
-                                    issue!, // Random issue description
-                                    message!, // Random message
-                                    place!
-                                        .description!, // Random place description
-                                    '123', // Random city name
-                                    address!, // Random address
-                                    place!.latitude!
-                                        .toString(), // Random latitude
-                                    place!.longitude!
-                                        .toString(), // Random longitude
-                                    image!,
-                                  ))
-                                      .whenData(
-                                    (value) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text("Data inserted")));
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                },
-                                widget: ReturnProductDetails(
-                                  issue: (p1) {
-                                    issue = p1;
-                                  },
-                                  message: (p0) {
-                                    message = p0;
-                                  },
-                                  address: (p3) {
-                                    address = p3;
-                                  },
-                                  place: (p4) {
-                                    place = p4;
-                                  },
-                                  file: (p5) {
-                                    image = p5;
-                                  },
-                                ),
-                                title: 'Fill the form',
-                                heading: 'Return Products',
-                              );
-                              Navigator.pop(context);
+                              ReturnProductDialog().returnProductDialog(context,
+                                  widget:  ReturnProductDetails(order: widget.order,));
+
+                              // Navigator.pop(context);
                             },
                           )
                         ],
@@ -449,5 +401,28 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
         ],
       ),
     );
+  }
+}
+
+class ReturnProductDialog {
+  Future returnProductDialog(
+    BuildContext context, {
+    required Widget widget,
+  }) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          final screenWidth = MediaQuery.of(context).size.width;
+          final screenHeight = MediaQuery.of(context).size.height;
+          return AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            clipBehavior: Clip.hardEdge,
+            backgroundColor: Colors.white,
+            content: SizedBox(
+              width: screenWidth,
+              child: widget,
+            ),
+          );
+        });
   }
 }

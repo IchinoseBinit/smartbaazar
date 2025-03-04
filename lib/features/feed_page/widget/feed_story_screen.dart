@@ -435,7 +435,27 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                           },
                         ),
                       ),
-
+                      Positioned(
+                        top: 38,
+                        right: 16,
+                        child: Container(
+                          width: 36.w,
+                          height: 32.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                          // decoration: BoxDecoration(
+                          //   color: Colors.grey.withOpacity(0.5),
+                          //   borderRadius: BorderRadius.circular(200),
+                          // ),
+                          child: IconButton(
+                            icon: const Icon(Icons.close,
+                                color: Colors.white, size: 20),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ),
                       // Author's name
                       Positioned(
                         top: 38,
