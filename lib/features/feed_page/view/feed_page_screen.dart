@@ -49,11 +49,10 @@ final _selectedIndexProvider = StateProvider<int>((ref) => 3);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class FeedScreen extends ConsumerStatefulWidget {
-   FeedScreen({
+  FeedScreen({
     super.key,
   });
-    final ScrollController _totopscrollController = ScrollController();
-
+  final ScrollController _totopscrollController = ScrollController();
 
   @override
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
@@ -64,7 +63,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchProductModels = false;
-  final bool _isPopupVisible = false;
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 1;
@@ -234,14 +232,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
   @override
   Widget build(BuildContext context) {
     void scrollToTop() {
-  if (_scrollController.hasClients) {
-    _scrollController.animateTo(
-      0.0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-}
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0.0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -249,16 +248,17 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     Future<void> refreshprovider() async {
       ref.watch(bottomNavIndexProvider);
     }
-     void didChangeDependencies() {
-    super.didChangeDependencies();
 
-    ref.listen<bool>(scrollToTopProvider, (previous, next) {
-      if (next) {
-        scrollToTop();
-        ref.read(scrollToTopProvider.notifier).state = false; // Reset trigger
-      }
-    });
-  }
+    void didChangeDependencies() {
+      super.didChangeDependencies();
+
+      ref.listen<bool>(scrollToTopProvider, (previous, next) {
+        if (next) {
+          scrollToTop();
+          ref.read(scrollToTopProvider.notifier).state = false; // Reset trigger
+        }
+      });
+    }
 
     Future<void> refreshProvider() async {
       // You can perform any necessary refresh actions here.
@@ -267,17 +267,17 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       ref.refresh(searchProvider(_searchController.text));
       setState(() {});
     }
-        // final scrollToTop = ref.watch(scrollToTopProvider);
+    // final scrollToTop = ref.watch(scrollToTopProvider);
 
-  //  void _scrollToTop() {
-  //   if (_scrollController.hasClients) {
-  //     _scrollController.animateTo(
-  //       0.0,
-  //       duration: const Duration(milliseconds: 300),
-  //       curve: Curves.easeInOut,
-  //     );
-  //   }
-  // }
+    //  void _scrollToTop() {
+    //   if (_scrollController.hasClients) {
+    //     _scrollController.animateTo(
+    //       0.0,
+    //       duration: const Duration(milliseconds: 300),
+    //       curve: Curves.easeInOut,
+    //     );
+    //   }
+    // }
 
     return RefreshIndicator(
       onRefresh: refreshProvider,
@@ -777,7 +777,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           final userDetails = feedItem.userDetail;
                           final interested = feedItem.interested;
                           final feedDetail = feedItem.feedDetail;
-                        //  print('kala ${feedItem?.captionTitle}');
+                          //  print('kala ${feedItem?.captionTitle}');
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 3.0),

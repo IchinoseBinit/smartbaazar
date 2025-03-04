@@ -523,7 +523,8 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                   child: TextButton(
                     onPressed: () {
                       // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                      Navigator.pop(context);
+                      Navigator.of(context, rootNavigator: true)
+                                    .pop();
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
