@@ -51,8 +51,9 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
-    final createdAt =
-        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+    final DateTime? createdAt = order.createdAt is String
+        ? DateTime.tryParse(order.createdAt)
+        : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
     final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);

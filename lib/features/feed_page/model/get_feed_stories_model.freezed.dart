@@ -536,6 +536,8 @@ mixin _$Post {
   @JsonKey(name: 'discount_percentage')
   double? get discountPercentage => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
+  @JsonKey(name: 'wow_status')
+  int? get wowStatus => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -563,7 +565,8 @@ abstract class $PostCopyWith<$Res> {
       @JsonKey(name: 'comment_count') int? commentCount,
       @JsonKey(name: 'average_rating') int? averageRating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage,
-      String? wow});
+      String? wow,
+      @JsonKey(name: 'wow_status') int? wowStatus});
 }
 
 /// @nodoc
@@ -595,6 +598,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? averageRating = freezed,
     Object? discountPercentage = freezed,
     Object? wow = freezed,
+    Object? wowStatus = freezed,
   }) {
     return _then(_value.copyWith(
       vendorId: freezed == vendorId
@@ -661,6 +665,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.wow
           : wow // ignore: cast_nullable_to_non_nullable
               as String?,
+      wowStatus: freezed == wowStatus
+          ? _value.wowStatus
+          : wowStatus // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -688,7 +696,8 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       @JsonKey(name: 'comment_count') int? commentCount,
       @JsonKey(name: 'average_rating') int? averageRating,
       @JsonKey(name: 'discount_percentage') double? discountPercentage,
-      String? wow});
+      String? wow,
+      @JsonKey(name: 'wow_status') int? wowStatus});
 }
 
 /// @nodoc
@@ -717,6 +726,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? averageRating = freezed,
     Object? discountPercentage = freezed,
     Object? wow = freezed,
+    Object? wowStatus = freezed,
   }) {
     return _then(_$PostImpl(
       vendorId: freezed == vendorId
@@ -783,6 +793,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.wow
           : wow // ignore: cast_nullable_to_non_nullable
               as String?,
+      wowStatus: freezed == wowStatus
+          ? _value.wowStatus
+          : wowStatus // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -806,7 +820,8 @@ class _$PostImpl implements _Post {
       @JsonKey(name: 'comment_count') this.commentCount,
       @JsonKey(name: 'average_rating') this.averageRating,
       @JsonKey(name: 'discount_percentage') this.discountPercentage,
-      this.wow});
+      this.wow,
+      @JsonKey(name: 'wow_status') this.wowStatus});
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -853,10 +868,13 @@ class _$PostImpl implements _Post {
   final double? discountPercentage;
   @override
   final String? wow;
+  @override
+  @JsonKey(name: 'wow_status')
+  final int? wowStatus;
 
   @override
   String toString() {
-    return 'Post(vendorId: $vendorId, vendorName: $vendorName, vendorImage: $vendorImage, storyCount: $storyCount, hasSponsoredGifts: $hasSponsoredGifts, id: $id, title: $title, image: $image, price: $price, discountedPrice: $discountedPrice, description: $description, similarProductCount: $similarProductCount, commentCount: $commentCount, averageRating: $averageRating, discountPercentage: $discountPercentage, wow: $wow)';
+    return 'Post(vendorId: $vendorId, vendorName: $vendorName, vendorImage: $vendorImage, storyCount: $storyCount, hasSponsoredGifts: $hasSponsoredGifts, id: $id, title: $title, image: $image, price: $price, discountedPrice: $discountedPrice, description: $description, similarProductCount: $similarProductCount, commentCount: $commentCount, averageRating: $averageRating, discountPercentage: $discountPercentage, wow: $wow, wowStatus: $wowStatus)';
   }
 
   @override
@@ -890,7 +908,9 @@ class _$PostImpl implements _Post {
                 other.averageRating == averageRating) &&
             (identical(other.discountPercentage, discountPercentage) ||
                 other.discountPercentage == discountPercentage) &&
-            (identical(other.wow, wow) || other.wow == wow));
+            (identical(other.wow, wow) || other.wow == wow) &&
+            (identical(other.wowStatus, wowStatus) ||
+                other.wowStatus == wowStatus));
   }
 
   @JsonKey(ignore: true)
@@ -912,7 +932,8 @@ class _$PostImpl implements _Post {
       commentCount,
       averageRating,
       discountPercentage,
-      wow);
+      wow,
+      wowStatus);
 
   @JsonKey(ignore: true)
   @override
@@ -945,7 +966,8 @@ abstract class _Post implements Post {
       @JsonKey(name: 'comment_count') final int? commentCount,
       @JsonKey(name: 'average_rating') final int? averageRating,
       @JsonKey(name: 'discount_percentage') final double? discountPercentage,
-      final String? wow}) = _$PostImpl;
+      final String? wow,
+      @JsonKey(name: 'wow_status') final int? wowStatus}) = _$PostImpl;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -991,6 +1013,9 @@ abstract class _Post implements Post {
   double? get discountPercentage;
   @override
   String? get wow;
+  @override
+  @JsonKey(name: 'wow_status')
+  int? get wowStatus;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>
