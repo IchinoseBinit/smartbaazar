@@ -9,8 +9,10 @@ part of 'online_transaction_model.dart';
 _$OnlineTransactionModelImpl _$$OnlineTransactionModelImplFromJson(
         Map<String, dynamic> json) =>
     _$OnlineTransactionModelImpl(
-      data: Data.fromJson(json['data'] as Map<String, dynamic>),
-      msg: json['msg'] as String,
+      data: json['data'] == null
+          ? null
+          : Data.fromJson(json['data'] as Map<String, dynamic>),
+      msg: json['msg'] as String?,
     );
 
 Map<String, dynamic> _$$OnlineTransactionModelImplToJson(
@@ -21,13 +23,13 @@ Map<String, dynamic> _$$OnlineTransactionModelImplToJson(
     };
 
 _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
-      allPayments: (json['all_payments'] as List<dynamic>)
-          .map((e) => Payment.fromJson(e as Map<String, dynamic>))
+      allPayments: (json['all_payments'] as List<dynamic>?)
+          ?.map((e) => Payment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      holdPayments: (json['hold_payments'] as List<dynamic>)
-          .map((e) => Payment.fromJson(e as Map<String, dynamic>))
+      holdPayments: (json['hold_payments'] as List<dynamic>?)
+          ?.map((e) => Payment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      releasePayments: json['release_payments'] as List<dynamic>,
+      releasePayments: json['release_payments'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
@@ -39,19 +41,21 @@ Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
 
 _$PaymentImpl _$$PaymentImplFromJson(Map<String, dynamic> json) =>
     _$PaymentImpl(
-      id: json['id'] as String,
-      orderId: json['order_id'] as String,
-      postId: json['post_id'] as String,
+      id: json['id'] as String?,
+      orderId: json['order_id'] as String?,
+      postId: json['post_id'] as String?,
       transactionId: json['transaction_id'] as String?,
-      userId: json['user_id'] as String,
-      vendorId: json['vendor_id'] as String,
-      amount: json['amount'] as String,
-      delCost: json['del_cost'] as String,
-      total: json['total'] as String,
-      coupon: json['coupon'] as String,
-      status: json['status'] as String,
+      userId: json['user_id'] as String?,
+      vendorId: json['vendor_id'] as String?,
+      amount: json['amount'] as String?,
+      delCost: json['del_cost'] as String?,
+      total: json['total'] as String?,
+      coupon: json['coupon'] as String?,
+      status: json['status'] as String?,
       method: json['method'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
       updatedAt: json['updated_at'],
       releaseDate: json['release_date'],
     );
@@ -70,7 +74,7 @@ Map<String, dynamic> _$$PaymentImplToJson(_$PaymentImpl instance) =>
       'coupon': instance.coupon,
       'status': instance.status,
       'method': instance.method,
-      'created_at': instance.createdAt.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt,
       'release_date': instance.releaseDate,
     };

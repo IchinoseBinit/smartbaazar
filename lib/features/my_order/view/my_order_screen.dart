@@ -208,8 +208,9 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
   Widget build(BuildContext context) {
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
-    final createdAt =
-        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+    final createdAt = order.createdAt is String
+        ? DateTime.tryParse(order.createdAt)
+        : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
     final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
@@ -341,7 +342,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                         GeneralTextButton(
                           marginH: 0,
                           height: 25.h,
-                          width: 95.w,
+                          width: 97.w,
                           fgColor: Colors.white,
                           bgColor: const Color(0xff362677),
                           title: 'Track',
@@ -352,6 +353,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                               title: 'Status',
                               heading: 'Track Order',
                               buttonTitle: 'Understood',
+                              
                               callback: () {
                                 Navigator.pop(context);
                               },
@@ -377,9 +379,10 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                             marginH: 0,
                             isSmallText: true,
                             height: 25.h,
-                            width: 95.w,
+                            width: 97.w,
                             fgColor: Colors.white,
                             bgColor: const Color(0xff362677),
+                            textPadding: EdgeInsets.symmetric(horizontal: 2.w),
                             title: 'Return',
                             onPressed: () {
                               CustomDialougeBox().orderDetailDialouge(

@@ -52,10 +52,10 @@ class _OnlineTransactionRecordScreenState
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: asyncTransactionData.when(
             data: (transactionData) {
-              final allTransactions = transactionData.data.allPayments;
-              final holdTransactions = transactionData.data.holdPayments;
+              final allTransactions = transactionData.data!.allPayments;
+              final holdTransactions = transactionData.data!.holdPayments;
               final releaseTransactions =
-                  transactionData.data.releasePayments.cast<Payment>();
+                  transactionData.data!.releasePayments!.cast<Payment>();
 
               return Column(
                 children: [
@@ -83,13 +83,13 @@ class _OnlineTransactionRecordScreenState
                               children: [
                                 // All Transactions Tab
                                 _buildPaginatedTab(
-                                    allTransactions, allTransactionsPage,
+                                    allTransactions!, allTransactionsPage,
                                     (newPage) {
                                   setState(() => allTransactionsPage = newPage);
                                 }),
                                 // Hold Transactions Tab
                                 _buildPaginatedTab(
-                                    holdTransactions, holdTransactionsPage,
+                                    holdTransactions!, holdTransactionsPage,
                                     (newPage) {
                                   setState(
                                       () => holdTransactionsPage = newPage);
