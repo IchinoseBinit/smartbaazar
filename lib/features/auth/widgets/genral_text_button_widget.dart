@@ -48,7 +48,7 @@ class GeneralTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: marginH ?? 16.h),
+      margin: EdgeInsets.symmetric(horizontal: marginH ?? 14.h),
       height: height ?? 45.h,
       // width: width ?? MediaQuery.of(context).size.width,
       width: width ?? 160.w,

@@ -124,11 +124,12 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
+          // print('bibash ${data.result?.user_details?.membershipTitle}');
           // List<dynamic> locations = jsonDecode(data.widgetSimilarPosts!.posts!
           //     .data.first.userdetailsget!.branch_location!)!;
           // print(
           //     "nirla ${data.widgetSimilarPosts!.posts!.data.first.userdetailsget!}");
-        //  print('tinku ${SmartClient.laravelSession}');
+          //  print('tinku ${SmartClient.laravelSession}');
           return Scaffold(
             bottomNavigationBar: const SizedBox.shrink(),
 
@@ -445,20 +446,23 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      // if (data.result != null && data.result?.user!=null &&
-                      //     data.result?.user_details != null)
-                      HeaderBannerWidget(
-                        ref: ref,
-                        membershiptitle: data.widgetSimilarPosts!.posts!.data
-                            .first.detailuser!.membershipPlanTitle!,
-                        posttypeid: data.result!.postTypeId!,
-                        membershipid: data.result!.user!.id.toString(),
-                        brandname: data.result!.postType!.name,
-                        id: data.result!.user!.id,
-                        vname: data.result!.user!.name,
-                        img: data.result!.userPhotoUrl,
-                        title: data.result!.user!.name,
-                      ),
+                      if (data.result != null &&
+                          data.result?.user != null &&
+                          data.result?.user_details != null)
+                        HeaderBannerWidget(
+                          ref: ref,
+                          membershiptitle: data.widgetSimilarPosts?.posts?.data
+                                  .first.detailuser?.membershipPlanTitle ??
+                              data.result!.user_details!.membershipTitle
+                                  .toString(),
+                          posttypeid: data.result!.postTypeId!,
+                          membershipid: data.result!.user!.id.toString(),
+                          brandname: data.result!.postType!.name,
+                          id: data.result!.user!.id,
+                          vname: data.result!.user!.name,
+                          img: data.result!.userPhotoUrl,
+                          title: data.result!.user!.name,
+                        ),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -1349,20 +1353,19 @@ class ProductDetailScreen extends ConsumerWidget {
                                               long: prod.longitude,
                                               posttype: prod.postTypeId,
                                               productid: prod.id.toString(),
-                                              membershipid: prod.user_details
-                                                  ?.membershipId,
+                                              membershipid: prod
+                                                  .user_details?.membershipId,
                                               tradeImage:
                                                   'assets/icon/loading.svg',
                                               didcountpercentage:
                                                   prod.discount_percentage,
-                                              distance: prod.detailuser
-                                                  ?.shortestDistance,
-                                              issponsored: prod.detailuser
-                                                      ?.sponsored ??
-                                                  false,
+                                              distance: prod
+                                                  .detailuser?.shortestDistance,
+                                              issponsored:
+                                                  prod.detailuser?.sponsored ??
+                                                      false,
                                               shortestDistance: prod
-                                                  .detailuser
-                                                  ?.shortestDistance
+                                                  .detailuser?.shortestDistance
                                                   ?.roundToDouble(),
                                               wow: prod.wow,
                                               comment:
@@ -1373,23 +1376,19 @@ class ProductDetailScreen extends ConsumerWidget {
                                               offer: prod.offers,
                                               vendorid: prod.detailuser!.id,
                                               vendorname:
-                                                  prod.detailuser?.name ??
-                                                      '',
+                                                  prod.detailuser?.name ?? '',
                                               discounttedPrice:
                                                   prod.discountedPrice,
-                                              Vimage:
-                                                  prod.detailuser?.photo,
+                                              Vimage: prod.detailuser?.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
-                                              membershipColor: prod
-                                                      .detailuser
+                                              membershipColor: prod.detailuser
                                                       ?.membershipPlanColor ??
                                                   '',
                                               similarproductCount:
                                                   prod.similarProductCount,
-                                              membershipTitle: prod
-                                                  .detailuser
+                                              membershipTitle: prod.detailuser
                                                   ?.membershipPlanTitle);
                                         }),
                                       ),

@@ -200,8 +200,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       //   };
       // }).toList();
 
-      List<String> branchLocations =
-          branchControllers.map((controller) => controller.text).toList();
+      List<String> branchLocations = branchControllers
+          .map((controller) => controller.text)
+          .toList()
+          .where((location) => location.isNotEmpty)
+          .toList();
 
       List<String> dayNames = openingHours.keys.toList();
       List<String> from = [];
@@ -222,9 +225,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         data.email ?? '',
         userId ?? '',
         data.genderId ?? '',
-        branchControllers.isEmpty || branchControllers == null
-            ? branchLocations
-            : branchControllers.map((controller) => controller.text).toList(),
+        branchLocations,
+        // branchControllers.isEmpty || branchControllers == null
+        //     ? branchLocations
+        //     : branchControllers.map((controller) => controller.text).toList(),
 
         data.bio ?? '',
 
@@ -482,105 +486,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             addBranchField: _addBranchField,
                             removeBranchField: _removeBranchField,
                           ),
-                          // ...List.generate(
-                          //   branchControllers.length,
-                          //   (index) => Column(
-                          //     children: [
-                          //       Row(
-                          //         children: [
-                          //           Expanded(
-                          //             child: CustomTextFieldWidget(
-                          //               fill: true,
-                          //               fillColor: const Color(0xFFF6F2F2),
-                          //               icon: Icons.location_on,
-                          //               iconColor: Colors.red,
-                          //               textInputType: TextInputAction.next,
-                          //               hintText: 'Your Location',
-                          //               // hintText: branchLocationsText.isNotEmpty
-                          //               //     ? branchLocationsText[index]
-                          //               //     : 'Your Location',
-                          //               hintTextColor: Colors.black,
-                          //               controller: branchControllers[index],
-                          //               validator: (value) {
-                          //                 if (value == null || value.isEmpty) {
-                          //                   return 'Enter branch location';
-                          //                 }
-                          //                 print(branchLocationsText[index]);
-
-                          //                 return null;
-                          //               },
-                          //             ),
-                          //           ),
-                          //           SizedBox(width: 10.w),
-                          //           if (index == 0)
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(
-                          //                       4.0), // Adjust padding to control the gap
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             )
-                          //           else if (index == branchControllers.length)
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             )
-                          //           else if (index > 0) ...[
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             SizedBox(width: 10.w),
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: () =>
-                          //                     _removeBranchField(index),
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.delete,
-                          //                       color: Colors.black),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ],
-                          //       ),
-                          //       SizedBox(height: 10.2.h),
-                          //     ],
-                          //   ),
-                          // ),
 
                           SizedBox(height: 10.2.h),
                           SizedBox(

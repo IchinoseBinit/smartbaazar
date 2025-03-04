@@ -11,6 +11,7 @@ class CarsoselWidget extends StatefulWidget {
   const CarsoselWidget(
       {Key? key,
       required this.items,
+      
       int? dots,
       required this.avg_rating,
       required this.comment,

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class FeedStoryScreen extends ConsumerStatefulWidget {
@@ -42,6 +43,7 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
   late List<List<String>>? wowcount;
   late List<List<int>>? commentcount;
   late List<List<int>>? similarProductCount;
+  late List<List<String>>? storyId;
 
   late List<List<int>>? avgratingcount;
 
@@ -121,6 +123,11 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     title = groupedStories.entries
         .map(
           (e) => e.value.map((post) => post.title ?? '').toList(),
+        )
+        .toList();
+    storyId = groupedStories.entries
+        .map(
+          (e) => e.value.map((post) => post.id ?? '').toList(),
         )
         .toList();
     commentcount = groupedStories.entries
@@ -343,9 +350,33 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     super.dispose();
   }
 
+  void _showCommentSection(BuildContext context, String feedproductid) {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true, // Allows full-screen modal
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) {
+          return LayoutBuilder(
+            builder: (context, _) {
+              return AnimatedContainer(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                duration: const Duration(milliseconds: 150),
+                height:
+                    MediaQuery.of(context).size.height, // Full screen height
+                child: CommentSection(id: feedproductid),
+              );
+            },
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("biabsh $price");
     return GenericSafeArea(
       child: Scaffold(
         //   extendBody: true,
@@ -631,7 +662,8 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
-                      onTap: () async {},
+                      onTap: () => _showCommentSection(context,
+                          storyId![_currentVendorIndex][_currentStoryIndex]),
                       child: Image.asset("assets/icon/Rectangle.png",
                           color: Colors.grey),
                     ),

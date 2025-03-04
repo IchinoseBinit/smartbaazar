@@ -19,7 +19,7 @@ Future<PostModel> productDetails(ref, String id) async {
       url: "${ApiConstants.getProductDetails}/$id?detailed=1",
     );
 
-print("bibashk Details: ${response.data['widgetSimilarPosts']['posts']['data'][0]['detail_user']}");
+//print("bibashk Details: ${response.data['widgetSimilarPosts']['posts']['data'][0]['detail_user']}");
     // // print("bibash ${PostModel.fromJson(response.data['result']['pictures'])}");
     // print("sola ${PostModel.fromJson(response.data)}");
   //  print('bibash ${PostModel.fromJson(response.data).result!.user!.name}');

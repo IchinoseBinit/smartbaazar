@@ -561,11 +561,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
               ),
             ),
             SizedBox(height: 5.h),
-            CityField(
-              onCitySelected: (data) {
-                widget.place(data);
-              },
-            ),
+            CityField(onCitySelected: widget.place),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
               child: Column(
