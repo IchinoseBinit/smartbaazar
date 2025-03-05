@@ -510,87 +510,77 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 100.h,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            asyncForYouStoryContent.when(
-                              data: (feedStoryData) {
-                                final feedStoryContent =
-                                    feedStoryData.data?.feedstory;
-                                final posts = feedStoryContent?.posts ?? [];
+                    child: asyncForYouStoryContent.when(
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.data?.feedstory;
+                        final posts = feedStoryContent?.posts ?? [];
 
-                                return posts.isNotEmpty
-                                    ? ListView.builder(
-                                        padding: EdgeInsets.only(left: 3.w),
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: posts.length,
-                                        itemBuilder: (context, index) {
-                                          final story = posts[index];
-                                          return FeedStoryAddWidget(
-                                            index: index,
-                                            vendorName: story.vendorName ??
-                                                "Unknown Vendor",
-                                            vendorImage: story.vendorImage ??
-                                                "https://example.com/default-image.png",
-                                            storyCount: story.storyCount ?? 0,
-                                            showGift: story.hasSponsoredGifts ??
-                                                false,
-                                            feedStoryContent: feedStoryContent!,
-                                            userId: story.vendorId ?? '',
-                                          );
-                                        },
-                                      )
-                                    : Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 50.w),
-                                        child: const Center(
-                                            child:
-                                                Text("No stories available")),
-                                      );
-                              },
-                              loading: () => SizedBox(
-                                height: 40.h,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.zero,
+                        if (posts.isEmpty) {
+                          return const Center(
+                              child: Text("No stories available"));
+                        }
+
+                        return SizedBox(
+                          height: 100.h,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemBuilder: (_, __) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Container(
-                                        width: 80,
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent: feedStoryContent!,
+                                      userId: story.vendorId ?? '',
+                                    );
+                                  },
                                 ),
-                              ),
-                              error: (error, _) => SizedBox(
-                                height: 60.h,
-                                child: Center(
-                                  child: Text(
-                                    error
-                                            .toString()
-                                            .contains('Session has expired')
-                                        ? 'Please log in again.'
-                                        : 'Error: $error',
-                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      loading: () => SizedBox(
+                        height: 40.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 80,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
+                        ),
+                      ),
+                      error: (error, _) => Center(
+                        child: Text(
+                          error.toString().contains('Session has expired')
+                              ? 'Please log in again.'
+                              : 'Error: $error',
                         ),
                       ),
                     ),
@@ -2202,9 +2192,9 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                 wow: resp.wow ?? '0',
                                 gift_qty: resp.gift_qty!,
                                 worth: resp.worth!,
-                                productname: resp.name,
+                                productname: resp.name!,
                                 vendorImage: resp.vendorImage,
-                                vendorname: resp.name,
+                                vendorname: resp.vendor_name,
                                 winners: resp.winners.toString(),
                                 proctimage: resp.image ?? '',
                               );

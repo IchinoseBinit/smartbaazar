@@ -269,7 +269,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final _messagephotoes = ref.watch(getmessagePhotoProvider(widget.postId));
-    late MessagePhotoModel _messagesphotoes;
+    MessagePhotoModel? _messagesphotoes;
 
     _messagephotoes.whenData(
       (value) {
@@ -327,15 +327,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // ),
       body: Column(
         children: [
-          SizedBox(height: 5.h,),
-          ChatUserDetailWidget(
-            vendorname: _messagesphotoes.vendor?.vendorName ?? '',
-            vendorimage: _messagesphotoes.vendor!.vendorImage!,
-            username: widget.username,
-            threadId: widget.threadId,
-            postId: widget.postId,
-            //   isImportant: widget.isImportant,
+          SizedBox(
+            height: 5.h,
           ),
+          if (_messagesphotoes != null)
+            ChatUserDetailWidget(
+              vendorname: _messagesphotoes?.vendor?.vendorName ?? '',
+              vendorimage: _messagesphotoes!.vendor!.vendorImage!,
+              username: widget.username,
+              threadId: widget.threadId,
+              postId: widget.postId,
+              //   isImportant: widget.isImportant,
+            ),
           SizedBox(height: 20.h),
 
           // Expanded widget to display messages
@@ -370,7 +373,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                 final message = messages[index];
 
                                 return ChatMessageWidget(
-                                  UserPhoto: _messagesphotoes.userAuth?.photo ??
+                                  UserPhoto: _messagesphotoes
+                                          ?.userAuth?.photo ??
                                       'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
                                   isUserMessage:
                                       message.userId == _currentUserId,

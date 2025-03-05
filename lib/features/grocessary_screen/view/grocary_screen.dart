@@ -519,92 +519,84 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        SizedBox(
+                    child: asyncForYouStoryContent.when(
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.data?.feedstory;
+                        final posts = feedStoryContent?.posts ?? [];
+
+                        if (posts.isEmpty) {
+                          return const Center(
+                              child: Text("No stories available"));
+                        }
+
+                        return SizedBox(
                           height: 100.h,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                asyncForYouStoryContent.when(
-                                  data: (feedStoryData) {
-                                    final feedStoryContent =
-                                        feedStoryData.data?.feedstory;
-                                    final posts = feedStoryContent?.posts ?? [];
-
-                                    return posts.isNotEmpty
-                                        ? ListView.builder(
-                                            padding: EdgeInsets.only(left: 3.w),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: posts.length,
-                                            itemBuilder: (context, index) {
-                                              final story = posts[index];
-                                              return FeedStoryAddWidget(
-                                                index: index,
-                                                vendorName: story.vendorName ??
-                                                    "Unknown Vendor",
-                                                vendorImage: story
-                                                        .vendorImage ??
-                                                    "https://example.com/default-image.png",
-                                                storyCount:
-                                                    story.storyCount ?? 0,
-                                                showGift:
-                                                    story.hasSponsoredGifts ??
-                                                        false,
-                                                feedStoryContent:
-                                                    feedStoryContent!,
-                                                userId: story.vendorId ?? '',
-                                              );
-                                            },
-                                          )
-                                        : const Center(
-                                            child:
-                                                Text("No stories available"));
+                                ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent: feedStoryContent!,
+                                      userId: story.vendorId ?? '',
+                                    );
                                   },
-                                  loading: () => SizedBox(
-                                    height: 40.h,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: 5,
-                                      itemBuilder: (_, __) => Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Shimmer.fromColors(
-                                          baseColor: Colors.grey[300]!,
-                                          highlightColor: Colors.grey[100]!,
-                                          child: Container(
-                                            width: 80,
-                                            height: 50,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  error: (error, _) => SizedBox(
-                                    height: 60.h,
-                                    child: Center(
-                                      child: Text(
-                                        error
-                                                .toString()
-                                                .contains('Session has expired')
-                                            ? 'Please log in again.'
-                                            : 'Error: $error',
-                                      ),
-                                    ),
-                                  ),
                                 ),
                               ],
                             ),
                           ),
+                        );
+                      },
+                      loading: () => SizedBox(
+                        height: 40.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 80,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
+                      ),
+                      error: (error, _) => Center(
+                        child: Text(
+                          error.toString().contains('Session has expired')
+                              ? 'Please log in again.'
+                              : 'Error: $error',
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
                         SizedBox(
                           height: 6.h,
                         ),
@@ -2949,7 +2941,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                             .push(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                 LeftArrowScreen(),
+                                                LeftArrowScreen(),
                                           ),
                                         );
                                       },

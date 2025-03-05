@@ -83,7 +83,7 @@ class ProductDetailScreen extends ConsumerWidget {
   ProductDetailScreen({super.key, required this.productId});
   final ScrollController _scrollController = ScrollController();
 
-  void _scrolltoo(double position) {
+  void scrolltoo(double position) {
     _scrollController.animateTo(position,
         duration: const Duration(seconds: 1), curve: Curves.easeInOut);
   }
@@ -131,6 +131,7 @@ class ProductDetailScreen extends ConsumerWidget {
           //     "nirla ${data.widgetSimilarPosts!.posts!.data.first.userdetailsget!}");
           //  print('tinku ${SmartClient.laravelSession}');
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             bottomNavigationBar: const SizedBox.shrink(),
 
             extendBody: true,
@@ -185,6 +186,7 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
+                      //  print('bibash ${data.result?.postTypeId}');
                       //   Navigator.pi
                       // print(
                       //     'we got ${data.result!.id!.toString()} and ${data.result?.user?.id.toString()}');
@@ -194,13 +196,14 @@ class ProductDetailScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                             builder: (_) => BuyNowFormScreen(
+                                  postypeid: data.result!.postTypeId!,
+                                  vendorname: data.result?.contactName ?? '',
                                   phonenumber:
                                       int.tryParse(data.result!.phone!)!,
                                   weight: int.tryParse(
                                           data.result!.weight ?? '0') ??
                                       0,
-                                  pickupaddress:
-                                      data.result?.pickup ?? 'kathmandu',
+                                  pickupaddress: data.result!.pickup!,
                                   pickuplatitute: double.tryParse(
                                           data.result?.latitude ?? '0.0') ??
                                       0.0,
@@ -216,25 +219,32 @@ class ProductDetailScreen extends ConsumerWidget {
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
+                          EdgeInsets.symmetric(horizontal: 24.w, vertical: 5.h),
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           gradient: const LinearGradient(
                               colors: [Color(0xff808080), Color(0xFF40246f)]),
                           border: Border.all(
                               color: ColorConstant.toastBackgroundColor)),
                       child: Column(
+                        spacing: 6,
                         children: [
-                          const Icon(
-                            Icons.check_box_rounded,
+                          Icon(
+                            size: 20,
+                            data.result?.postTypeId == '5'
+                                ? Icons.calendar_today_outlined
+                                : Icons.check_box_rounded,
                             color: ColorConstant.toastBackgroundColor,
                           ),
-                          SizedBox(
-                            width: 3.h,
-                          ),
+                          // SizedBox(
+                          //   width: 10.h,
+                          // ),
                           Text(
-                            "Buy",
-                            style: headerstyle.copyWith(),
-                          )
+                              data.result?.postTypeId == '5'
+                                  ? 'Book Now'
+                                  : "Buy",
+                              style: headerstyle.copyWith(
+                                  fontSize: 10, fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
@@ -376,7 +386,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(0);
+                                  scrolltoo(0);
                                 },
                                 child: Text("Pictures",
                                     style: headerstyle.copyWith(
@@ -389,7 +399,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(0);
+                                  scrolltoo(0);
                                 },
                                 child: Text("Price & Variations",
                                     style: headerstyle.copyWith(
@@ -402,7 +412,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch);
+                                  scrolltoo(sch);
                                 },
                                 child: Text(
                                   "Delivery",
@@ -417,7 +427,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch * 2);
+                                  scrolltoo(sch * 2);
                                 },
                                 child: Text(
                                   "Aftersales",
@@ -432,7 +442,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch * 0.8);
+                                  scrolltoo(sch * 0.8);
                                 },
                                 child: Text(
                                   "Description",
@@ -492,6 +502,10 @@ class ProductDetailScreen extends ConsumerWidget {
                       data.result?.pictures == null
                           ? const SizedBox()
                           : CarsoselWidget(
+                              pid: data.result!.id!,
+                              onCommenttapped: () {
+                                scrolltoo(sch * 2.9);
+                              },
                               VImage: data.result!.userPhotoUrl,
                               avg_rating: data.result!.ratings!.averageRating
                                   .toString(),
@@ -1328,16 +1342,12 @@ class ProductDetailScreen extends ConsumerWidget {
                                                             showNavBar:
                                                                 false, // Hide bottom navbar
                                                           );
-                                                    // if ()
-
-                                                    // SendMessageBottomWidget(
-                                                    //     ref: ref,
-                                                    //     productidid:
-                                                    //         prod.id);
                                                   },
-                                                ).catchError((error) {
-                                                  print('Error: $error');
-                                                });
+                                                ).catchError(
+                                                  (error) {
+                                                    print('Error: $error');
+                                                  },
+                                                );
                                               },
                                               //  savedid: prod.savedByLoggedUser ==
                                               //                         null ||

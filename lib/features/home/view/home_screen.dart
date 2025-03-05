@@ -851,9 +851,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,
                                       worth: resp.worth!,
-                                      productname: "Discount Coupon",
+                                      productname: resp.name!,
                                       vendorImage: resp.vendorImage,
-                                      vendorname: resp.name,
+                                      vendorname: resp.vendor_name,
                                       winners: resp.winners.toString(),
                                       proctimage: resp.image,
                                     );

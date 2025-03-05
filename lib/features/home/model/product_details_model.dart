@@ -113,7 +113,6 @@ class PostResult with _$PostResult {
     @JsonKey(name: 'detail_user') required SimilarProducts? detailuser,
     required List<Picture>? pictures,
     final List<SavedByUser>? savedByLoggedUser,
-
     PostType? postType,
     City? city,
     
@@ -131,7 +130,7 @@ class PostResult with _$PostResult {
 @freezed
 class SavedByUser with _$SavedByUser {
   const factory SavedByUser({
-    @JsonKey(name: 'id') int? id,
+ //   @JsonKey(name: 'id') String? id,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'username') String? username,
     @JsonKey(name: 'user_id') String? userId,

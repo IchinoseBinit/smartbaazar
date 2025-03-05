@@ -45,13 +45,13 @@ Future<bool> buynowsubmit(
         'delivery': delivery,
         'delivery_type': deliveryType,
         'city': city,
-        'street': street,
-        'latitude': latitude,
-        'longitude': longitude,
+        'street': street == '0' ? null : street,
+        'latitude': latitude == 0 ? null : latitude, 
+        'longitude': longitude == 0 ? null : longitude,
         'coupon': coupon,
         'qty': qty,
         'del_cost': delCost,
-        'couponDiscount': couponDiscount,
+        'couponDiscount': couponDiscount, 
         'total': total,
         'product_id': productId,
         'product_title': productTitle,
@@ -59,7 +59,7 @@ Future<bool> buynowsubmit(
       },
     );
 
-    if (response.statusCode == 200 && response.data['msg'] == "success") {
+    if (response.statusCode == 200) {
       return true; // Return true if the request is successful
     } else {
       print('Error: ${response.data}');

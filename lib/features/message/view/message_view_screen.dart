@@ -24,7 +24,7 @@ class MessageViewScreen extends ConsumerWidget {
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
-        initialIndex: 1,
+        //  initialIndex: 1,
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
@@ -139,6 +139,9 @@ class MessageViewScreen extends ConsumerWidget {
                                                   .notifier)
                                               .updateFilter(
                                                   'unread'); // Update the filter
+
+                                          ref.refresh(messageFilterStateProvider
+                                              .notifier);
 
                                           return InkWell(
                                               onTap: () => const LoginScreen(),
@@ -424,80 +427,91 @@ class ListOfMessages extends StatelessWidget {
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 8.h),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Profile Icon
 
-            Consumer(
-              builder: (context, ref, child) {
-                return ref.watch(getmessagePhotoProvider(postId)).when(
-                      data: (data) {
-                        print("bibashk ${data.vendor?.vendorImage}");
-                        return CircleAvatar(
-                          radius: 25, // Adjust size as needed
-                          backgroundColor: const Color(0xffD9D9D9),
-                          backgroundImage: NetworkImage(
-                            data.vendor?.vendorImage ??
-                                "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
-                          ),
-                          onBackgroundImageError: (_, __) {
-                            return print('kala ${_}');
-                          },
-                        );
-                      },
-                      loading: () => Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: const CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.grey,
-                        ),
-                      ),
-                      error: (error, stack) => const CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                          "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
-                        ),
-                      ),
-                    );
-              },
-            ),
-
-            SizedBox(width: 11.w),
-
-            // Text Column
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(
+              height: 50.h,
+              width: 280.w,
+              child: Row(
                 children: [
-                  Text(
-                    subject.length > 15
-                        ? subject.substring(0, 15) + '...'
-                        : subject,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      overflow: TextOverflow
-                          .ellipsis, // Make sure overflow happens after applying the condition
-                    ),
-                    maxLines: 1,
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return ref.watch(getmessagePhotoProvider(postId)).when(
+                            data: (data) {
+                              return CircleAvatar(
+                                radius: 25, // Adjust size as needed
+                                backgroundColor: const Color(0xffD9D9D9),
+                                backgroundImage: NetworkImage(
+                                  data.vendor?.vendorImage ??
+                                      "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
+                                ),
+                                onBackgroundImageError: (_, __) {
+                                  return print('kala ${_}');
+                                },
+                              );
+                            },
+                            loading: () => Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: const CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.grey,
+                              ),
+                            ),
+                            error: (error, stack) => const CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
+                              ),
+                            ),
+                          );
+                    },
                   ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    body.length > 15 ? body.substring(0, 15) + '...' : body,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      overflow: TextOverflow.ellipsis,
-                      color: const Color(0xff000000).withOpacity(0.45),
-                      fontWeight: FontWeight.w600,
+
+                  SizedBox(width: 11.w),
+
+                  // Text Column
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          subject.length > 20
+                              ? subject.substring(0, 20) + '...'
+                              : subject,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            overflow: TextOverflow
+                                .ellipsis, // Make sure overflow happens after applying the condition
+                          ),
+                          maxLines: 1,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          body.length > 20
+                              ? body.substring(0, 20) + '...'
+                              : body,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            overflow: TextOverflow.ellipsis,
+                            color: const Color(0xff000000).withOpacity(0.45),
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ],
                     ),
-                    maxLines: 2,
                   ),
                 ],
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
             // Status Indicator
             Container(
+              margin: EdgeInsets.only(right: 5.w),
               height: 12.h,
               width: 12.w,
               decoration: const BoxDecoration(

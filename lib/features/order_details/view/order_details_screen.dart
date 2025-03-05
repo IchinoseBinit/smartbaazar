@@ -25,17 +25,16 @@ import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
-  const OrderDetailsScreen({
-    super.key,
-    required this.selectedProductIds,
-    required this.selectedVendorIds,
-    required this.pickup,
-    required this.longitude,
-    required this.latitude,
-    required this.wiright,
-    required this.vendorname,
-    required this.vendorid
-  });
+  const OrderDetailsScreen(
+      {super.key,
+      required this.selectedProductIds,
+      required this.selectedVendorIds,
+      required this.pickup,
+      required this.longitude,
+      required this.latitude,
+      required this.wiright,
+      required this.vendorname,
+      required this.vendorid});
   final List<String> selectedProductIds;
   final List<String?> selectedVendorIds;
   final String pickup;
@@ -120,6 +119,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     setState(() {
       selectedDeliveryOption = value;
     });
+    print('ranka ${selectedDeliveryOption}');
   }
 
   BizLoginResponse? _bizLoginResponse;
@@ -340,6 +340,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   SizedBox(
                     height: 8.h,
                   ),
+               if (selectedDeliveryOption == 'Home Delivery')
+
                   StreetAddressFieldWidget(
                     onSelected: updateStreet,
                   ),
@@ -435,7 +437,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   // ),
                   OrderSummaryWidget(
                     weight: 0,
-                    address: selectedStreet?.description?? 'kathmandu',
+                    address: selectedStreet?.description ?? 'kathmandu',
                     deliverychareg: _fairresponse ?? ParcelFareResponse(),
                     email: emailcontroller.text,
                     name: namecontroller.text,
@@ -700,7 +702,12 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: widget.items.map((item) => buildItemRow(item)).toList(),
+            children: widget.items
+                .map((item) => buildItemRow(item, (value) {
+                      //price changed
+                      print('rama $value');
+                    }, widget.deliverychareg.data?.extraEstimatedFare ?? 0))
+                .toList(),
           ),
         ),
         // const Divider(thickness: 2, color: Color(0xffD9D9D9)),
@@ -793,11 +800,27 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   }
 
   // Widget buildItemRow(Item item) {
-  Widget buildItemRow(Item item) {
-    DiscountOnBulk? matchingDiscount =
-        findMatchingDiscount(int.tryParse(item.qty) ?? 0, widget.discounts);
+  Widget buildItemRow(
+    Item item,
+    Function(String) _pricechanged, // _pricechanged is required (non-nullable)
+    int deliveryfair, // deliveryfair is required (non-nullable)
+  ) {
+    // Ensure item.qty is non-nullable and valid
+    int qty = int.tryParse(item.qty) ?? 0;
+    if (qty == 0) {
+      throw ArgumentError("Invalid quantity: ${item.qty}");
+    }
 
+    // Ensure item.price is non-nullable and valid
     double originalPrice = double.tryParse(item.price) ?? 0.0;
+    if (originalPrice == 0.0) {
+      throw ArgumentError("Invalid price: ${item.price}");
+    }
+
+    // Finding matching discount
+    DiscountOnBulk? matchingDiscount =
+        findMatchingDiscount(qty, widget.discounts);
+
     double discountedPrice = originalPrice;
 
     // Determine the final rate (discounted or original)
@@ -807,11 +830,22 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
       double discountPercentage =
           double.tryParse(matchingDiscount.rate!) ?? 0.0;
       if (discountPercentage > 0) {
-        discountedPrice = discountPercentage;
+        discountedPrice =
+            originalPrice - (originalPrice * discountPercentage / 100);
       }
     }
 
     double finalRate = discountedPrice;
+
+    double getfinalprice() {
+      double total =
+          finalRate * (int.tryParse(item.qty) ?? 0).toDouble() + deliveryfair;
+
+      // Assuming you want to notify about price change
+      _pricechanged?.call(total.toStringAsFixed(2));
+
+      return total;
+    }
 
     return Column(
       children: [
@@ -850,8 +884,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
           children: [
             Text('Total Payment',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
-            Text(
-                'Rs ${(finalRate * int.tryParse(item.qty)!).toStringAsFixed(2)}')
+            Text('Rs ${getfinalprice()}')
           ],
         ),
         SizedBox(height: 5.h),

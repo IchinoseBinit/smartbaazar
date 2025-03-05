@@ -8,7 +8,7 @@ Future<ParcelFareResponse> requestdelivery(
     List<double> customerCoordinates,
     List<double> customerRequestCoordinates,
     List<double> destinationCoordinates,
-    int estId,
+    int getestimateid,
     double estimatedFare,
     double estimatedDistance,
     double estimatedTime,
@@ -36,7 +36,7 @@ Future<ParcelFareResponse> requestdelivery(
       "customer_coordinates": customerCoordinates.toString(),
       "customer_request_coordinates": customerRequestCoordinates.toString(),
       "destination_coordinates": destinationCoordinates.toString(),
-      "est_id": estId.toString(),
+      "est_id": getestimateid,
       "estimated_fare": estimatedFare.toString(),
       "estimated_distance": estimatedDistance.toString(),
       "estimated_time": estimatedTime.toString(),
@@ -86,3 +86,5 @@ Future<ParcelFareResponse> requestdelivery(
     throw Exception("Error fetching delivery charge: $e");
   }
 }
+
+//sir , client le saturday ko date extend garera holi ko din ma fix vako cha , client le venue ni book garisakkya cha . aba hami sanga 4 days cha payment integration,ani  

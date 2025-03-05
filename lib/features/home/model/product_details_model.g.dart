@@ -254,7 +254,6 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
 
 _$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
     _$SavedByUserImpl(
-      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       username: json['username'] as String?,
       userId: json['user_id'] as String?,
@@ -263,7 +262,6 @@ _$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$SavedByUserImplToJson(_$SavedByUserImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
       'username': instance.username,
       'user_id': instance.userId,

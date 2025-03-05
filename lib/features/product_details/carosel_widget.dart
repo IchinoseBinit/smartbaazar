@@ -3,32 +3,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 
-class CarsoselWidget extends StatefulWidget {
-  const CarsoselWidget(
-      {Key? key,
-      required this.items,
-      
-      int? dots,
-      required this.avg_rating,
-      required this.comment,
-      required this.VImage,
-      required this.wow})
-      : dots = dots ?? items.length, // Sets dots to a stable value
+Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+  try {
+    return await ref.read(checkEnquireProvider(id).future);
+  } catch (e) {
+    print("Error fetching enquiry: $e");
+    throw Exception("Failed to fetch enquiry data");
+  }
+}
+
+class CarsoselWidget extends ConsumerStatefulWidget {
+  // Change to ConsumerStatefulWidget
+  const CarsoselWidget({
+    Key? key,
+    required this.items,
+    required this.onCommenttapped,
+    int? dots,
+    required this.avg_rating,
+    required this.comment,
+    required this.VImage,
+    required this.wow,
+    required this.pid,
+  })  : dots = dots ?? items.length,
         super(key: key);
 
   final List<Picture> items;
   final int dots;
   final String wow, comment, avg_rating, VImage;
+  final Function()? onCommenttapped;
+  final int pid;
 
   @override
-  State<CarsoselWidget> createState() => _CarsoselWidgetState();
+  _CarsoselWidgetState createState() => _CarsoselWidgetState();
 }
 
-class _CarsoselWidgetState extends State<CarsoselWidget> {
+class _CarsoselWidgetState extends ConsumerState<CarsoselWidget> {
+  // Use ConsumerState
   int currentIndex = 0;
 
   @override
@@ -85,6 +105,29 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                   child: Image.network(
                     item.image_url!,
                     fit: BoxFit.fill,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(
+                              () {}); // Force widget rebuild to retry loading
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.refresh,
+                                size: 50, color: Colors.grey),
+                            const Text(
+                              "swipe right to retry",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
               );
@@ -155,11 +198,14 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                     SizedBox(
                       width: 20.w,
                     ),
-                    Image.asset(
-                      "assets/images/Frame.png",
-                      color: ColorConstant.blackColor,
-                      height: 30,
-                      width: 30,
+                    InkWell(
+                      onTap: widget.onCommenttapped,
+                      child: Image.asset(
+                        "assets/images/Frame.png",
+                        color: ColorConstant.blackColor,
+                        height: 30,
+                        width: 30,
+                      ),
                     ),
                     SizedBox(
                       width: 7.w,
@@ -204,11 +250,42 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MessageViewScreen(),
-                            ));
+                        getEnquire(ref, widget.pid.toString()).then(
+                          (value) {
+                            value.data?.enquire == 0
+                                ? showModalBottomSheet(
+                                    useSafeArea: true,
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.8, // Use 80% of the screen height
+
+                                        child: SendMessageBottomWidget(
+                                          ref: ref,
+                                          productidid: widget.pid.toString(),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : navigateToPage(
+                                    context: context,
+                                    page: ChatScreen(
+                                        threadId: value.data!.thread!.id!,
+                                        username: value.data!.thread!.subject!,
+                                        postId: value.data!.thread!.post_id!),
+                                    ref: ref,
+                                    showNavBar: false, // Hide bottom navbar
+                                  );
+                          },
+                        ).catchError(
+                          (error) {
+                            print('Error: $error');
+                          },
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -240,29 +317,26 @@ class _CarsoselWidgetState extends State<CarsoselWidget> {
             ],
           ),
         ),
-       Positioned(
-  top: 10,
-  right: 15,
-  child: Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    decoration: BoxDecoration(
-      color: Colors.black.withOpacity(0.6),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Text(
-      "${currentIndex + 1}/${widget.items.length}", // Display current index + 1 / total images
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  ),
-),
-
+        Positioned(
+          top: 10,
+          right: 15,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              "${currentIndex + 1}/${widget.items.length}", // Display current index + 1 / total images
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ],
-    )
-
-        );
+    ));
   }
 }

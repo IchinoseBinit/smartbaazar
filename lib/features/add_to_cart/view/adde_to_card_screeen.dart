@@ -81,10 +81,9 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
           builder: (_) => OrderDetailsScreen(
             vendorid: int.tryParse(cartItems.first.vendorId!)!,
             vendorname: cartItems.first.name,
-
             wiright: 0,
-            latitude: double.tryParse(cartItems.first.latitude)!,
-            longitude: double.tryParse(cartItems.first.longitude)!,
+            latitude: double.tryParse(cartItems.first.latitude) ?? 0.0,
+            longitude: double.tryParse(cartItems.first.longitude) ?? 0.0,
             pickup: cartItems.first.pickup,
             selectedProductIds: selectedProductIds,
             selectedVendorIds: selectedVendorIds,

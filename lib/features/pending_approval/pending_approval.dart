@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/pending_approval/api/pending_approval_api.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
@@ -119,13 +120,19 @@ class PedingApprovalContainer extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to the product details page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ProductDetailScreen(productId: productData.id!),
-          ),
+         navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: productData.id!),
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
         );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         ProductDetailScreen(productId: productData.id!),
+        //   ),
+        // );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),

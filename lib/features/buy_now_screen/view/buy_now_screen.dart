@@ -38,6 +38,8 @@ class BuyNowFormScreen extends ConsumerStatefulWidget {
       {required this.pickuplatitute,
       required this.pickupicklongitute,
       super.key,
+      required this.postypeid,
+      required this.vendorname,
       required this.selectedProductIds,
       required this.selectedVendorIds,
       required this.pickupaddress,
@@ -48,7 +50,9 @@ class BuyNowFormScreen extends ConsumerStatefulWidget {
   final double pickuplatitute;
   final double pickupicklongitute;
   final String pickupaddress;
-  
+  final String vendorname;
+  final String postypeid;
+
   int phonenumber;
   int? weight;
 
@@ -120,12 +124,14 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
     setState(() {
       selectedPaymentMethod = value;
     });
+    print('saka ${selectedPaymentMethod}');
   }
 
   void updateDeliveryOption(String value) {
     setState(() {
       selectedDeliveryOption = value;
     });
+    print('ranka ${selectedDeliveryOption}');
   }
 
   BizLoginResponse? _bizLoginResponse;
@@ -360,9 +366,10 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                 SizedBox(
                                   height: 8.h,
                                 ),
-                                StreetAddressFieldWidget(
-                                  onSelected: updateStreet,
-                                ),
+                                if (selectedDeliveryOption == 'Home Delivery')
+                                  StreetAddressFieldWidget(
+                                    onSelected: updateStreet,
+                                  ),
                                 SizedBox(
                                   height: 12.h,
                                 ),
@@ -444,21 +451,20 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                   color: Color(0xffD9D9D9),
                                 ),
                                 OrderSummaryWidget(
+                                  paymentpethod: selectedPaymentMethod,
                                   senderaddress: widget.pickupaddress,
-                                  sendername: widget.pickupaddress,
+                                  sendername: widget.vendorname,
                                   vendorid: widget.selectedVendorIds,
-                                  weight: widget.weight!.toDouble()?? 0,
-                                  
+                                  weight: widget.weight!.toDouble() ?? 0,
                                   receiverphone: phonecontroller.text,
-                                  senderPhone: widget.pickupaddress,
+                                  senderPhone: widget.phonenumber.toString(),
                                   bizLoginResponseparams: _bizLoginResponse,
                                   pickuplatitutevednor: widget.pickuplatitute,
                                   pickuplongitutevendor:
                                       widget.pickupicklongitute,
                                   deliverychareg:
                                       _fairresponse ?? ParcelFareResponse(),
-                                  address: selectedStreet?.description ??
-                                      'kathmandu',
+                                  venoraddress: widget.pickupaddress,
                                   email: emailcontroller.text,
                                   name: namecontroller.text,
                                   phone: phonecontroller.text,
@@ -471,10 +477,10 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                   // selectedCity: selectedCity,
                                   selectedStreet: selectedStreet ??
                                       StreetAddressModel(
-                                          description: 'kathmandu',
-                                          placeId: '1',
-                                          latitude: 1.1,
-                                          longitude: 1.1),
+                                          description: '0',
+                                          placeId: '0',
+                                          latitude: 0,
+                                          longitude: 0),
                                   selectedCoupon: selectedCoupon,
                                   selectedProductIds: widget.selectedProductIds,
                                 ),
@@ -484,7 +490,21 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                           error: (error, stackTrace) {
                             return Text("Please login");
                           },
-                          loading: () => CircularProgressIndicator()),
+                          loading: () => Center(
+                                child: SizedBox(
+                                  width: 100.w,
+                                  height: 100.h,
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/images/preloader.gif',
+                                      width: 100.w,
+                                      height: 100.h,
+                                      fit: BoxFit
+                                          .contain, // Ensures the image fits within its bounds
+                                    ),
+                                  ),
+                                ),
+                              )),
                 ],
               ),
             ))));
@@ -494,7 +514,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
 class OrderSummaryWidget extends ConsumerStatefulWidget {
   final ParcelFareResponse deliverychareg;
   final BuyNowPostModel items;
-  final String name, email, phone, address;
+  final String name, email, phone, venoraddress;
   final List<DiscountOnBulk>? discounts;
   final String selectedPaymentMethod;
   final String selectedDeliveryOption;
@@ -503,6 +523,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
   final double pickuplongitutevendor;
   final String sendername;
   final String senderPhone;
+  final String paymentpethod;
 
   // final String selectedCity;
   final StreetAddressModel selectedStreet;
@@ -532,7 +553,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
       required this.email,
       required this.name,
       required this.phone,
-      required this.address,
+      required this.venoraddress,
       required this.deliverychareg,
       required this.bizLoginResponseparams,
       required this.pickuplatitutevednor,
@@ -542,7 +563,8 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
       required this.vendorid,
       required this.senderaddress,
       required this.receiverphone,
-      required this.weight
+      required this.weight,
+      required this.paymentpethod
 
       // required this.checkoutDetails,
       //  this.pieceFrom,
@@ -559,9 +581,17 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   late double totalAmount;
   late double finalTotal;
   late double finallyRate;
+  String? paymentmethod;
 
   @override
   void initState() {
+    if (widget.paymentpethod.length == "Pre-Payement") {
+      //  print('binod ${widget.paymentpethod.length}');
+      paymentmethod = 'qr';
+    } else {
+      //   print('binodl ${widget.paymentpethod.length}');
+      paymentmethod = 'cod';
+    }
     //   print('pinky ${widget.deliverychareg.data?.estimatedFare}');
     // ref.read(quantityProvider.notifier).state = int.tryParse(widget.items.qty)!;
 
@@ -720,10 +750,10 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                 ref,
                 '715216549', // cityCode
                 widget.name, // username
-                widget.address, // address
+                widget.venoraddress, // address
                 widget.email, // email
                 double.tryParse(widget.items.price!)!, // price
-                'cod', // payMethod
+                paymentmethod ?? 'qr', // payMethod
                 'Home Delivery', // delivery
                 'standard', // deliveryType
                 widget.selectedStreet.description, // city
@@ -742,29 +772,35 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
               if (success) {
                 // if (widget.deliverychareg != null)
                 //request delivery
+                //  if()
                 requestdelivery(
                   widget.bizLoginResponseparams!.data!.token!,
                   widget.deliverychareg.data!.zoneId!,
-                  [widget.pickuplatitutevednor, widget.pickuplongitutevendor],
+                  [
+                    widget.pickuplatitutevednor,
+                    widget.pickuplongitutevendor
+                  ], //pickup
+                  [
+                    widget.pickuplatitutevednor,
+                    widget.pickuplongitutevendor
+                  ], //cusomer
+                  [
+                    widget.pickuplatitutevednor,
+                    widget.pickuplongitutevendor
+                  ], //customer
                   [
                     widget.selectedStreet.latitude,
                     widget.selectedStreet.longitude
-                  ],
-                  [
-                    widget.selectedStreet.latitude,
-                    widget.selectedStreet.longitude
-                  ],
-                  [
-                    widget.selectedStreet.latitude,
-                    widget.selectedStreet.longitude
-                  ],
+                  ], //destination
                   widget.deliverychareg.data!.estId!,
                   widget.deliverychareg.data!.estimatedFare!.toDouble(),
                   widget.deliverychareg.data!.estimatedDistance!,
                   double.parse(widget.deliverychareg.data!.estimatedDuration!
                       .replaceAll(RegExp(r'[^0-9.]'), '')),
-                  widget.address,
-                  widget.selectedStreet.description,
+
+                  widget.venoraddress,
+                  widget.selectedStreet.description, //m
+
                   widget.vendorid,
                   "parcel",
                   widget.deliverychareg.data!.returnFee!
@@ -846,7 +882,11 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
               width: 15.w,
             ),
             Spacer(),
-            Text(item.name ?? item.title ?? 'N/A')
+            Text(
+              (item.name ?? item.title ?? 'N/A').length > 30
+                  ? '${(item.name ?? item.title ?? 'N/A').substring(0, 30)}...'
+                  : item.name ?? item.title ?? 'N/A',
+            )
           ],
         ),
         SizedBox(height: 5.h),

@@ -26,7 +26,6 @@ class HeaderBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('haka ${membershiptitle}');
     return Container(
       padding: EdgeInsets.only(left: 6.w, top: 10, bottom: 10),
       decoration: const BoxDecoration(

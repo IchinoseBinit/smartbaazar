@@ -124,8 +124,9 @@ class LogoData {
 class Buynowmodel {
   final String image;
   final String vendorImage;
+  final String vendor_name;
   final String? worth;
-  final String name;
+  final String? name;
   final String? gift_qty;
   String? wow;
 
@@ -138,16 +139,18 @@ class Buynowmodel {
       required this.name,
       required this.winners,
       required this.gift_qty,
+      required this.vendor_name,
       required this.wow});
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      vendor_name: json['vendor_name'] as String,
       wow: json['wow']?.toString() ?? '0', // Safely handle null values
       gift_qty: json['gift_qty'] as String,
       worth: json['worth'] as String,
       image: json['image'] as String,
       vendorImage: json['vendor_image'] as String,
-      name: json['vendor_name'] as String,
+      name: json['name'] as String,
       winners: json['winners'] as int,
     );
   }
@@ -345,8 +348,7 @@ class GlobalModel {
   final double? avg_rating;
   final double? shortestDistance;
   final String? posttypename;
-    final List<SavedPost>? savedByLoggedUser;
-
+  final List<SavedPost>? savedByLoggedUser;
 
   final int? similarproductCount;
 
@@ -373,14 +375,14 @@ class GlobalModel {
 
   // Factory constructor to create a GlobalModel instance from JSON
   factory GlobalModel.fromJson(Map<String, dynamic> json) {
-       List<SavedPost> savedByLoggedUserList = [];
+    List<SavedPost> savedByLoggedUserList = [];
     if (json['savedByLoggedUser'] != null &&
         json['savedByLoggedUser'] is List) {
       savedByLoggedUserList = (json['savedByLoggedUser'] as List)
           .map((item) => SavedPost.fromJson(item))
           .toList();
     }
-    
+
     return GlobalModel(
       savedByLoggedUser: savedByLoggedUserList,
       post_type_id: json['post_type_id'],

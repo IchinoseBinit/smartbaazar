@@ -2617,8 +2617,7 @@ SavedByUser _$SavedByUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SavedByUser {
-  @JsonKey(name: 'id')
-  int? get id => throw _privateConstructorUsedError;
+//   @JsonKey(name: 'id') String? id,
   @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'username')
@@ -2641,8 +2640,7 @@ abstract class $SavedByUserCopyWith<$Res> {
       _$SavedByUserCopyWithImpl<$Res, SavedByUser>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
+      {@JsonKey(name: 'name') String? name,
       @JsonKey(name: 'username') String? username,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'post_id') String? postId});
@@ -2661,17 +2659,12 @@ class _$SavedByUserCopyWithImpl<$Res, $Val extends SavedByUser>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? name = freezed,
     Object? username = freezed,
     Object? userId = freezed,
     Object? postId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -2701,8 +2694,7 @@ abstract class _$$SavedByUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
+      {@JsonKey(name: 'name') String? name,
       @JsonKey(name: 'username') String? username,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'post_id') String? postId});
@@ -2719,17 +2711,12 @@ class __$$SavedByUserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? name = freezed,
     Object? username = freezed,
     Object? userId = freezed,
     Object? postId = freezed,
   }) {
     return _then(_$SavedByUserImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -2754,8 +2741,7 @@ class __$$SavedByUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SavedByUserImpl implements _SavedByUser {
   const _$SavedByUserImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'name') this.name,
+      {@JsonKey(name: 'name') this.name,
       @JsonKey(name: 'username') this.username,
       @JsonKey(name: 'user_id') this.userId,
       @JsonKey(name: 'post_id') this.postId});
@@ -2763,9 +2749,7 @@ class _$SavedByUserImpl implements _SavedByUser {
   factory _$SavedByUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$SavedByUserImplFromJson(json);
 
-  @override
-  @JsonKey(name: 'id')
-  final int? id;
+//   @JsonKey(name: 'id') String? id,
   @override
   @JsonKey(name: 'name')
   final String? name;
@@ -2781,7 +2765,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
   @override
   String toString() {
-    return 'SavedByUser(id: $id, name: $name, username: $username, userId: $userId, postId: $postId)';
+    return 'SavedByUser(name: $name, username: $username, userId: $userId, postId: $postId)';
   }
 
   @override
@@ -2789,7 +2773,6 @@ class _$SavedByUserImpl implements _SavedByUser {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SavedByUserImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.username, username) ||
                 other.username == username) &&
@@ -2799,8 +2782,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, username, userId, postId);
+  int get hashCode => Object.hash(runtimeType, name, username, userId, postId);
 
   @JsonKey(ignore: true)
   @override
@@ -2818,8 +2800,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
 abstract class _SavedByUser implements SavedByUser {
   const factory _SavedByUser(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'name') final String? name,
+      {@JsonKey(name: 'name') final String? name,
       @JsonKey(name: 'username') final String? username,
       @JsonKey(name: 'user_id') final String? userId,
       @JsonKey(name: 'post_id') final String? postId}) = _$SavedByUserImpl;
@@ -2827,10 +2808,7 @@ abstract class _SavedByUser implements SavedByUser {
   factory _SavedByUser.fromJson(Map<String, dynamic> json) =
       _$SavedByUserImpl.fromJson;
 
-  @override
-  @JsonKey(name: 'id')
-  int? get id;
-  @override
+  @override //   @JsonKey(name: 'id') String? id,
   @JsonKey(name: 'name')
   String? get name;
   @override
