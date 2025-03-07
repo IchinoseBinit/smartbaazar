@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "768205801651",
+    "project_id": "smartbazaar-7ff54",
+    "storage_bucket": "smartbazaar-7ff54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768205801651:android:8694efc96e0d10dd01c8c6",
+        "android_client_info": {
+          "package_name": "com.example.smartbazar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgiPd6FWD83YgtwszanAR5COxXc_aNT4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768205801651:android:3f4cdd243c0080c201c8c6",
+        "android_client_info": {
+          "package_name": "smartbazaar.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgiPd6FWD83YgtwszanAR5COxXc_aNT4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

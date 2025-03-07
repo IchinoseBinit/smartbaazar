@@ -61,12 +61,12 @@ void showCustomBottomSheet(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
-                                    radius: 30,
+                                    radius: 24,
                                     backgroundColor: const Color(0x7F7F7F73)
                                         .withOpacity(0.45),
                                     child: ClipOval(
@@ -74,17 +74,19 @@ void showCustomBottomSheet(
                                         feedGiftCard.userDetail!.vendorName ??
                                             '',
                                         fit: BoxFit.cover,
-                                        width: 60,
-                                        height: 60,
+                                        width: 50,
+                                        height: 50,
                                       ),
                                     ),
                                   ),
                                 ),
                                 // const SizedBox(width: 10),
                                 Column(
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           feedGiftCard
@@ -94,7 +96,7 @@ void showCustomBottomSheet(
                                               fontSize: 10.sp,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white),
-                                          maxLines: 1,
+                                          maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(width: 15.w),
@@ -137,11 +139,16 @@ void showCustomBottomSheet(
                                             icon: const Icon(
                                               Icons.close_sharp,
                                               color: Colors.white,
-                                            ))
+                                            )),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
                                       ],
                                     ),
-                                    SizedBox(height: 20.h),
+                                    SizedBox(height: 15.h),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           children: [
@@ -160,7 +167,7 @@ void showCustomBottomSheet(
                                             ),
                                           ],
                                         ),
-                                        SizedBox(width: 15.w),
+                                        SizedBox(width: 20.w),
                                         Column(
                                           children: [
                                             Text(
@@ -180,7 +187,7 @@ void showCustomBottomSheet(
                                             ),
                                           ],
                                         ),
-                                        SizedBox(width: 15.w),
+                                        SizedBox(width: 20.w),
                                         Column(
                                           children: [
                                             Text(

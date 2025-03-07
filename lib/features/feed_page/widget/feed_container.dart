@@ -305,7 +305,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     ),
                     widget.showGift!
                         ? Positioned(
-                            bottom: -6.h,
+                            bottom: -10.h,
                             right: 0,
                             left: 0,
                             child: GestureDetector(
@@ -338,16 +338,19 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                 );
                                 widget.refreshprovider?.call();
                               },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                padding: EdgeInsets.all(2.r),
-                                child: Icon(
-                                  Icons.card_giftcard,
-                                  color: Colors.amber,
-                                  size: 20.r,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  padding: EdgeInsets.all(2.r),
+                                  child: Icon(
+                                    Icons.card_giftcard,
+                                    color: Colors.amber,
+                                    size: 20.r,
+                                  ),
                                 ),
                               ),
                             ),
