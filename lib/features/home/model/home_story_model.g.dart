@@ -32,17 +32,19 @@ Map<String, dynamic> _$$HomeStoryDataImplToJson(_$HomeStoryDataImpl instance) =>
     };
 
 _$StoryImpl _$$StoryImplFromJson(Map<String, dynamic> json) => _$StoryImpl(
-      posts: (json['posts'] as List<dynamic>?)
-          ?.map((e) => Post.fromJson(e as Map<String, dynamic>))
+      HomeStoryAllPosts: (json['HomeStoryAllPosts'] as List<dynamic>?)
+          ?.map((e) => HomeStoryAllPost.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$StoryImplToJson(_$StoryImpl instance) =>
     <String, dynamic>{
-      'posts': instance.posts,
+      'HomeStoryAllPosts': instance.HomeStoryAllPosts,
     };
 
-_$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
+_$HomeStoryAllPostImpl _$$HomeStoryAllPostImplFromJson(
+        Map<String, dynamic> json) =>
+    _$HomeStoryAllPostImpl(
       vendorId: json['vendor_id'] as String?,
       vendorName: json['vendor_name'] as String?,
       vendorImage: json['vendor_image'] as String?,
@@ -53,7 +55,8 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       image: json['image'] as String?,
     );
 
-Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
+Map<String, dynamic> _$$HomeStoryAllPostImplToJson(
+        _$HomeStoryAllPostImpl instance) =>
     <String, dynamic>{
       'vendor_id': instance.vendorId,
       'vendor_name': instance.vendorName,

@@ -8,7 +8,7 @@ part of 'vendor_profile_name.dart';
 
 _$VendorProfileImpl _$$VendorProfileImplFromJson(Map<String, dynamic> json) =>
     _$VendorProfileImpl(
-      subscribed: json['subscribed'] as String?,
+      subscribed: (json['subscribed'] as num?)?.toInt(),
       vendor: json['vendor'] == null
           ? null
           : Vendor.fromJson(json['vendor'] as Map<String, dynamic>),
@@ -142,18 +142,18 @@ Map<String, dynamic> _$$BrandNewModelImplToJson(_$BrandNewModelImpl instance) =>
 
 _$FezzedSavedImpl _$$FezzedSavedImplFromJson(Map<String, dynamic> json) =>
     _$FezzedSavedImpl(
-      id: json['id'] as String,
-      userId: json['userId'] as String,
-      postId: json['postId'] as String,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
+      id: json['id'] as String?,
+      user_id: json['user_id'] as String?,
+      post_id: json['post_id'] as String?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
     );
 
 Map<String, dynamic> _$$FezzedSavedImplToJson(_$FezzedSavedImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'postId': instance.postId,
+      'user_id': instance.user_id,
+      'post_id': instance.post_id,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };
@@ -233,17 +233,17 @@ _$VendorCardImpl _$$VendorCardImplFromJson(Map<String, dynamic> json) =>
       photo: json['photo'] as String?,
       longitude: json['longitude'] as String?,
       latitude: json['latitude'] as String?,
+      subscribers: (json['subscribers'] as num?)?.toInt(),
       phone: json['phone'] as String?,
       profile_url: json['profile_url'] as String?,
       storycount: (json['storycount'] as num?)?.toInt(),
-      subscribers: (json['subscribers'] as num?)?.toInt(),
       prize_worth: (json['prize_worth'] as num?)?.toInt(),
       has_sponsored_gifts: json['has_sponsored_gifts'] as bool?,
       nearestbranch: json['nearestbranch'] as String?,
       membership_id: json['membership_id'] as String?,
       membership_title: json['membership_title'] as String?,
       membership_color: json['membership_color'] as String?,
-      subscribed: json['subscribed'] as String?,
+      subscribed: (json['subscribed'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$VendorCardImplToJson(_$VendorCardImpl instance) =>
@@ -252,10 +252,10 @@ Map<String, dynamic> _$$VendorCardImplToJson(_$VendorCardImpl instance) =>
       'photo': instance.photo,
       'longitude': instance.longitude,
       'latitude': instance.latitude,
+      'subscribers': instance.subscribers,
       'phone': instance.phone,
       'profile_url': instance.profile_url,
       'storycount': instance.storycount,
-      'subscribers': instance.subscribers,
       'prize_worth': instance.prize_worth,
       'has_sponsored_gifts': instance.has_sponsored_gifts,
       'nearestbranch': instance.nearestbranch,

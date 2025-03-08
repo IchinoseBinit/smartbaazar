@@ -23,6 +23,7 @@ import 'package:smartbazar/features/create_listing/widget/create_listing_card_wi
 import 'package:smartbazar/features/create_listing/widget/pick_image_from_gallery.dart';
 import 'package:smartbazar/features/order_details/model/shipping_cities_model.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class SellerInformationWidget extends ConsumerStatefulWidget {
   SellerInformationWidget(
@@ -712,18 +713,26 @@ class _SellerInformationWidgetState
               : GeneralEelevatedButton(
                   text: isloading ? 'Submitting...' : 'Submit',
                   onPresssed: () async {
+                  
                     if (widget.category != null &&
                         widget.title != null &&
                         widget.city != null &&
                         widget.description != null &&
                         widget.phonecoontroller?.text.isNotEmpty == true &&
                         widget.terms != null) {
+
+  if (widget.description!.length < 10) {
+                      showCustomToast(context,
+                          'Description should be more than 10 characters');
+                    }
+
                       setState(() {
                         isloading = true; // Start loading
                       });
                       try {
                         // Call your API
                         String responseMessage = await createlisting(
+                          
                             trending: widget.trending,
                             package: _selectedpackage,
                             pieces: widget.pieces,

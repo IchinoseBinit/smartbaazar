@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class FeedStoryScreen extends StatefulWidget {
+class FeedStoryScreen extends ConsumerStatefulWidget {
   final String author;
   final int storyCount;
   final FeedStory? feedStory;
@@ -22,10 +25,10 @@ class FeedStoryScreen extends StatefulWidget {
       this.feedStory});
 
   @override
-  State<FeedStoryScreen> createState() => _FeedStoryScreenState();
+  ConsumerState<FeedStoryScreen> createState() => _FeedStoryScreenState();
 }
 
-class _FeedStoryScreenState extends State<FeedStoryScreen>
+class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     with TickerProviderStateMixin {
   late List<Post> stories;
   late List<String> vendors;
@@ -33,22 +36,29 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   late List<List<String?>> vendorStories;
   late PageController _pageController;
   late AnimationController _animationController;
-  late List<String?> description;
-  late List<String?> title;
-  late List<String?> price;
-  late List<String?>? discountprice;
-  late List<String>? wowcount;
-  late List<int>? commentcount;
+  late List<List<String>>? description;
+  late List<List<String>>? title;
+  late List<List<String>> price;
+  late List<List<String>>? discountprice;
+  late List<List<String>>? wowcount;
+  late List<List<int>>? commentcount;
+  late List<List<int>>? similarProductCount;
+  late List<List<String>>? storyId;
 
-  late List<int>? avgratingcount;
+  late List<List<int>>? avgratingcount;
 
   late List<double>? discountpercentagelist;
+  late List<List<bool?>> _isLiked;
 
   final duration = const Duration(seconds: 4);
   bool _isPaused = false;
   int _currentVendorIndex = 0;
   late int _currentStoryIndex;
   late Map<String, List<Post>> groupedStories;
+  // bool? _isLiked;
+  bool _isLoading = false;
+
+  int _likeCount = 0;
 
   Map<String, List<Post>> groupBy(
       List<Post> posts, Function(Post) keyExtractor) {
@@ -86,12 +96,12 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
     }).toList();
     price = groupedStories.entries
         .map(
-          (e) => e.value.first.price,
+          (e) => e.value.map((post) => post.price ?? '').toList(),
         )
         .toList();
     discountprice = groupedStories.entries
         .map(
-          (e) => e.value.first.discountedPrice,
+          (e) => e.value.map((post) => post.discountedPrice ?? '').toList(),
         )
         .toList();
     discountpercentagelist = groupedStories.entries
@@ -101,31 +111,46 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
         .toList();
     wowcount = groupedStories.entries
         .map(
-          (e) => e.value.first.wow ?? '0',
+          (e) => e.value.map((post) => post.wow ?? '0').toList(),
         )
         .toList();
 
     description = groupedStories.entries
         .map(
-          (e) => e.value.first.description,
+          (e) => e.value.map((post) => post.description ?? '').toList(),
         )
         .toList();
     title = groupedStories.entries
         .map(
-          (e) => e.value.first.title,
+          (e) => e.value.map((post) => post.title ?? '').toList(),
+        )
+        .toList();
+    storyId = groupedStories.entries
+        .map(
+          (e) => e.value.map((post) => post.id ?? '').toList(),
         )
         .toList();
     commentcount = groupedStories.entries
         .map(
-          (e) => e.value.first.commentCount!,
+          (e) => e.value.map((post) => post.commentCount ?? 0).toList(),
         )
         .toList();
     avgratingcount = groupedStories.entries
         .map(
-          (e) => e.value.first.averageRating!,
+          (e) => e.value.map((post) => post.averageRating ?? 0).toList(),
         )
         .toList();
-
+    similarProductCount = groupedStories.entries
+        .map(
+          (e) => e.value.map((post) => post.similarProductCount ?? 0).toList(),
+        )
+        .toList();
+    _isLiked = groupedStories.entries
+        .map((e) =>
+            e.value.map((post) => post.wowStatus == 0 ? true : false).toList())
+        .toList()
+        .map((innerList) => innerList.map((value) => value as bool?).toList())
+        .toList();
     _currentVendorIndex = widget.selectedVendorIndex;
     _currentStoryIndex = 0;
 
@@ -208,10 +233,35 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
   void _moveToNextVendor() {
     setState(() {
       if (_showdialog) _showdialog = !_showdialog;
+
+      // Ensure _currentVendorIndex is within bounds
+      if (_currentVendorIndex >= vendorStories.length) {
+        print("Error: _currentVendorIndex out of range");
+        _currentVendorIndex = vendorStories.length - 1;
+        return;
+      }
+
+      // Ensure _currentStoryIndex is within bounds
+      if (_currentStoryIndex >= vendorStories[_currentVendorIndex].length) {
+        print("Error: _currentStoryIndex out of range");
+        _currentStoryIndex = 0;
+        return;
+      }
+
+      // Check if there are more stories in the current vendor
       if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
         _currentStoryIndex++;
-      } else if (_currentVendorIndex < vendorStories.length - 1) {
+      }
+      // Move to the next vendor if there are no more stories
+      else if (_currentVendorIndex < vendorStories.length - 1) {
         _currentVendorIndex++;
+
+        // If the new vendor has no stories, find the next valid one
+        while (_currentVendorIndex < vendorStories.length &&
+            vendorStories[_currentVendorIndex].isEmpty) {
+          _currentVendorIndex++;
+        }
+
         _currentStoryIndex = 0;
       } else {
         Navigator.pop(context); // Exit if it's the last story
@@ -219,17 +269,22 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
       }
     });
 
+    // Recalculate the new page index
     int totalStoriesBeforeCurrent = 0;
     for (int i = 0; i < _currentVendorIndex; i++) {
       totalStoriesBeforeCurrent += vendorStories[i].length;
     }
 
     final newPage = totalStoriesBeforeCurrent + _currentStoryIndex;
-    _pageController.animateToPage(
-      newPage,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
+
+    if (_pageController.hasClients) {
+      _pageController.animateToPage(
+        newPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
+    }
+
     _animationController.reset();
     _startAutoScroll();
   }
@@ -290,18 +345,41 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
 
   @override
   void dispose() {
-    
     _pageController.dispose();
     _animationController.dispose();
     super.dispose();
   }
 
+  void _showCommentSection(BuildContext context, String feedproductid) {
+    showModalBottomSheet(
+        useRootNavigator: true,
+        useSafeArea: true,
+        context: context,
+        isScrollControlled: true, // Allows full-screen modal
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) {
+          return LayoutBuilder(
+            builder: (context, _) {
+              return AnimatedContainer(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                duration: const Duration(milliseconds: 150),
+                height:
+                    MediaQuery.of(context).size.height, // Full screen height
+                child: CommentSection(id: feedproductid),
+              );
+            },
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("biabsh $price");
     return GenericSafeArea(
       child: Scaffold(
-        extendBody: true,
+        //   extendBody: true,
         backgroundColor: Colors.transparent,
         body: GestureDetector(
           onTapUp: (details) {
@@ -321,14 +399,20 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: vendorStories[_currentVendorIndex].length,
+                itemCount: (vendorStories.isNotEmpty &&
+                        _currentVendorIndex < vendorStories.length)
+                    ? vendorStories[_currentVendorIndex].length
+                    : 0,
                 itemBuilder: (context, index) {
                   int vendorIndex = 0;
                   int storyIndex = index;
-                  while (storyIndex >= vendorStories[vendorIndex].length) {
+
+                  while (vendorIndex < vendorStories.length &&
+                      storyIndex >= vendorStories[vendorIndex].length) {
                     storyIndex -= vendorStories[vendorIndex].length;
                     vendorIndex++;
                   }
+
                   return Stack(
                     children: [
                       // Image
@@ -336,10 +420,13 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                         width: double.infinity,
                         height: double.infinity,
                         child: Image.network(
-                          vendorStories[_currentVendorIndex]
-                                  [_currentStoryIndex] ??
-                              '',
-                          // vendorStories[vendorIndex][storyIndex] ?? '',
+                          (_currentVendorIndex < vendorStories.length &&
+                                  _currentStoryIndex <
+                                      vendorStories[_currentVendorIndex].length)
+                              ? vendorStories[_currentVendorIndex]
+                                      [_currentStoryIndex] ??
+                                  ''
+                              : '',
                           fit: BoxFit.contain,
                           alignment: Alignment.center,
                           errorBuilder: (context, object, stackTrace) {
@@ -363,48 +450,54 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                               child: CircleAvatar(
                                 radius: 28.r,
                                 backgroundColor: Colors.black,
-                                backgroundImage: NetworkImage(
-                                    vendorImage[_currentVendorIndex]),
+                                backgroundImage:
+                                    (_currentVendorIndex < vendorImage.length)
+                                        ? NetworkImage(
+                                            vendorImage[_currentVendorIndex])
+                                        : null,
                               ),
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              vendors[_currentVendorIndex],
+                              (_currentVendorIndex < vendors.length)
+                                  ? vendors[_currentVendorIndex]
+                                  : '',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(
+                              width: 170.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: 40.w,
+                                height: 40.h,
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey, // Background color of the close button
+                                  shape: BoxShape.circle, // Makes it a circle
+                                ),
+                                child: Icon(
+                                  Icons.close, // Close icon
+                                  color: Colors.white, // Icon color
+                                  size: 25, // Icon size
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
-                      // Story text
-                      // Positioned(
-                      //   bottom: 60,
-                      //   left: 16,
-                      //   right: 16,
-                      //   child: Text(
-                      //     post.title ?? '',
-                      //     style: const TextStyle(
-                      //       color: Colors.white,
-                      //       fontSize: 24,
-                      //       fontWeight: FontWeight.bold,
-                      //       shadows: [
-                      //         Shadow(
-                      //           blurRadius: 10.0,
-                      //           color: Colors.black54,
-                      //           offset: Offset(2.0, 2.0),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //     textAlign: TextAlign.center,
-                      //   ),
-                      // ),
                     ],
                   );
                 },
               ),
+
               // Flowing Progress Indicator
               Positioned(
                 top: 30,
@@ -412,31 +505,25 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                 right: 10,
                 child: Row(
                   children: List.generate(
-                    vendorStories[_currentVendorIndex].length,
+                    (vendorStories.isNotEmpty &&
+                            _currentVendorIndex < vendorStories.length)
+                        ? vendorStories[_currentVendorIndex].length
+                        : 0, // Safe Fallback
                     (index) => Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2.0),
                         child: AnimatedBuilder(
                           animation: _animationController,
                           builder: (context, child) {
-                            // print("bibash ${vendorStories}");
-
                             double progressValue = 0.0;
-                            // Fully progress bars for completed stories
                             if (index < _currentStoryIndex) {
                               progressValue = 1.0;
-                            }
-                            // Animate the current story's progress
-                            else if (index == _currentStoryIndex) {
+                            } else if (index == _currentStoryIndex) {
                               progressValue = _animationController.value;
-                            }
-                            // No progress for future stories
-                            else {
-                              progressValue = 0.0;
                             }
                             return Stack(
                               children: [
-                                // Background bar
+                                // Background Bar
                                 Container(
                                   height: 4.0,
                                   decoration: BoxDecoration(
@@ -444,7 +531,7 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                                // Progress bar
+                                // Progress Bar
                                 FractionallySizedBox(
                                   widthFactor: progressValue,
                                   child: Container(
@@ -489,29 +576,107 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                       ),
                     ),
                     Text(
-                      wowcount?[_currentStoryIndex] ?? '0',
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              similarProductCount != null &&
+                              similarProductCount!.isNotEmpty)
+                          ? similarProductCount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
+                          : '0',
+                      // (similarProductCount != null &&
+                      //         similarProductCount!.isNotEmpty &&
+                      //         _currentStoryIndex < similarProductCount!.length)
+                      //     ? similarProductCount![_currentStoryIndex].toString()
+                      //     : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 30.h),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        print("Liked!");
+                        if (!mounted) return;
+
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        try {
+                          final currentPostId = stories[
+                                  _currentVendorIndex * vendorStories.length +
+                                      _currentStoryIndex]
+                              .id;
+
+                          // Get current vendor's index in _isLiked list
+                          final vendorIndex = _currentVendorIndex;
+                          final storyIndex = _currentStoryIndex;
+
+                          // Await the API response
+                          final asyncResult = await ref
+                              .read(postFeedWowProvider(currentPostId!).future);
+
+                          // Force the provider to refresh
+                          ref.invalidate(postFeedWowProvider);
+
+                          // Update the specific story's like status
+                          setState(() {
+                            if (_isLiked[vendorIndex][storyIndex] != null) {
+                              _isLiked[vendorIndex][storyIndex] =
+                                  !_isLiked[vendorIndex][storyIndex]!;
+                              _likeCount +=
+                                  _isLiked[vendorIndex][storyIndex]! ? 1 : -1;
+                            } else {
+                              print("Error: _isLiked value is null");
+                            }
+                          });
+                        } catch (e) {
+                          print('Error: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error liking post: $e')),
+                          );
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
+                      },
                       child: Image.asset(
                         "assets/icon/Vector.png",
-                        color: Colors.grey,
+                        color: _isLiked[_currentVendorIndex]
+                                    [_currentStoryIndex] ==
+                                true
+                            ? Colors.grey
+                            : Colors.pink,
                       ),
                     ),
                     Text(
-                      commentcount?[_currentStoryIndex].toString() ?? '0',
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              wowcount != null &&
+                              wowcount!.isNotEmpty)
+                          ? wowcount![_currentVendorIndex][_currentStoryIndex]
+                          : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => _showCommentSection(context,
+                          storyId![_currentVendorIndex][_currentStoryIndex]),
                       child: Image.asset("assets/icon/Rectangle.png",
                           color: Colors.grey),
                     ),
                     Text(
-                      avgratingcount?[_currentStoryIndex].toString() ?? '0',
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              commentcount != null &&
+                              commentcount!.isNotEmpty)
+                          ? commentcount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
+                          : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
@@ -521,7 +686,15 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
                           color: Colors.grey),
                     ),
                     Text(
-                      "1.4k",
+                      (_currentVendorIndex < vendorStories.length &&
+                              _currentStoryIndex <
+                                  vendorStories[_currentVendorIndex].length &&
+                              avgratingcount != null &&
+                              avgratingcount!.isNotEmpty)
+                          ? avgratingcount![_currentVendorIndex]
+                                  [_currentStoryIndex]
+                              .toString()
+                          : '0',
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
@@ -571,89 +744,99 @@ class _FeedStoryScreenState extends State<FeedStoryScreen>
               ),
               if (_showdialog)
                 Positioned(
-                    right: 30,
-                    bottom: 120,
-                    child: AnimatedContainer(
-                      duration: const Duration(seconds: 2),
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        elevation: 2,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 10.h),
-                          width: 300.w,
-                          height: 110.h,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        title[_currentStoryIndex]!.length > 15
-                                            ? '${title[_currentStoryIndex]!.substring(0, 15)}...'
-                                            : title[_currentStoryIndex]!,
-                                        style: headerstyle.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            color: Colors.black),
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      const Icon(Icons.arrow_outward)
-                                    ],
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Text(
-                                (description[_currentStoryIndex] ?? '  ')
-                                    .replaceAll(RegExp(r'<[^>]*>'), ''),
-                                style: headerstyle.copyWith(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Row(
-                                children: [
-                                  Text(price[_currentStoryIndex].toString(),
-                                      style: headerstyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: Colors.black)),
-                                  SizedBox(
-                                    width: 10.w,
+                  right: 30,
+                  bottom: 120,
+                  child: AnimatedContainer(
+                    duration: const Duration(seconds: 2),
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 2,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 10.h,
+                        ),
+                        width: 300.w,
+                        height: 110.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  (_currentVendorIndex < vendorStories.length &&
+                                          _currentStoryIndex <
+                                              vendorStories[_currentVendorIndex]
+                                                  .length &&
+                                          title != null &&
+                                          title!.isNotEmpty)
+                                      ? (title![_currentVendorIndex]
+                                                      [_currentStoryIndex]
+                                                  .length >
+                                              15
+                                          ? '${title![_currentVendorIndex][_currentStoryIndex].substring(0, 15)}...'
+                                          : title![_currentVendorIndex]
+                                              [_currentStoryIndex])
+                                      : '',
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    color: Colors.black,
                                   ),
-                                  Text(
-                                      discountprice?[_currentStoryIndex] ?? '0',
-                                      style: headerstyle.copyWith(
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11,
-                                          color: Colors.black))
-                                ],
-                              )
-                            ],
-                          ),
+                                ),
+                                SizedBox(width: 10.w),
+                                const Icon(Icons.arrow_outward),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Text(
+                              (description![_currentVendorIndex]
+                                      [_currentStoryIndex])
+                                  .replaceAll(RegExp(r'<[^>]*>'), ''),
+                              style: headerstyle.copyWith(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              children: [
+                                Text(
+                                  price[_currentVendorIndex][_currentStoryIndex]
+                                      .toString(),
+                                  style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(width: 10.w),
+                                Text(
+                                  discountprice?[_currentVendorIndex]
+                                          [_currentStoryIndex] ??
+                                      '0',
+                                  style: headerstyle.copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 11,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               Positioned(
                   bottom: 10,
                   child: Container(
@@ -738,6 +921,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
   @override
   void initState() {
     super.initState();
+
     remainingTime = widget.targetDate.difference(DateTime.now());
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {

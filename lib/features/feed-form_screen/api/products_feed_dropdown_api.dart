@@ -8,7 +8,7 @@ part 'products_feed_dropdown_api.g.dart';
 
 @riverpod
 Future<ProductsFeedDropdown> getProductsFeedDropdown(
-    GetProductsFeedDropdownRef ref) async {
+     ref) async {
   final SmartClient client = SmartClient();
 
   try {

@@ -7,7 +7,6 @@ import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/api/cart_item_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -61,7 +60,10 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     }
   }
 
-  void proceedToCheckout(List<CartItem> cartItems, List<bool> selectedItems) {
+  void proceedToCheckout(
+    List<CartItem> cartItems,
+    List<bool> selectedItems,
+  ) {
     List<String> selectedProductIds = [];
     List<String?> selectedVendorIds = [];
 
@@ -77,6 +79,12 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => OrderDetailsScreen(
+            vendorid: int.tryParse(cartItems.first.vendorId!)!,
+            vendorname: cartItems.first.name,
+            wiright: 0,
+            latitude: double.tryParse(cartItems.first.latitude) ?? 0.0,
+            longitude: double.tryParse(cartItems.first.longitude) ?? 0.0,
+            pickup: cartItems.first.pickup,
             selectedProductIds: selectedProductIds,
             selectedVendorIds: selectedVendorIds,
           ),
@@ -217,12 +225,7 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const FeedScreen(),
-                                  ));
+                              Navigator.pop(context);
                             },
                             child: Row(
                               children: [
@@ -623,35 +626,35 @@ class _AddToCartPRoductDetailsState extends State<AddToCartPRoductDetails> {
                   width: 7.w,
                 ),
                 Container(
-                    padding: EdgeInsets.only(
-                        top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      color: const Color(0xffF6F1F1),
-                    ),
-                    child: Image.network(
-                      widget.cartItem.image,
-                      width: 150.w,
-                      height: 70.h,
-                      fit: BoxFit.fill,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // If no loading, show the image
-                        } else {
-                          return const Center(
-                              child:
-                                  CircularProgressIndicator()); // Show loading indicator
-                        }
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return SizedBox(
-                          width: 130.w,
-                          height: 70.h,
-                          child: const Icon(Icons.error),
-                        ); // Show error icon if image fails to load
-                      },
-                    ),
-                    ),
+                  padding: EdgeInsets.only(
+                      top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    color: const Color(0xffF6F1F1),
+                  ),
+                  child: Image.network(
+                    widget.cartItem.image,
+                    width: 150.w,
+                    height: 70.h,
+                    fit: BoxFit.fill,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; // If no loading, show the image
+                      } else {
+                        return const Center(
+                            child:
+                                CircularProgressIndicator()); // Show loading indicator
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return SizedBox(
+                        width: 130.w,
+                        height: 70.h,
+                        child: const Icon(Icons.error),
+                      ); // Show error icon if image fails to load
+                    },
+                  ),
+                ),
                 SizedBox(
                   width: 20.w,
                 ),

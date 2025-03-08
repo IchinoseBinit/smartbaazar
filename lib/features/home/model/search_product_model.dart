@@ -7,6 +7,8 @@ part 'search_product_model.g.dart';
 class SearchProductModel with _$SearchProductModel {
   factory SearchProductModel({
     required String name,
+    String? id,
+    String? username
   }) = _SearchProductModel;
 
   factory SearchProductModel.fromJson(Map<String, dynamic> json) =>

@@ -107,23 +107,38 @@ class PostResult with _$PostResult {
     required int? commentCount,
     required ExtraModel? extra,
     Ratings? ratings,
+    required MyProductDeailModel? user_details,
     LocationModel? location,
     usermodel? user,
-    @JsonKey(name: 'detail_user') required SimilarProducts? userDetails,
+    @JsonKey(name: 'detail_user') required SimilarProducts? detailuser,
     required List<Picture>? pictures,
+    final List<SavedByUser>? savedByLoggedUser,
     PostType? postType,
     City? city,
-    required MyProductDeailModel? user_details,
+    
     int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
-    @Default([]) List<LivePrize> livePrizes,
+    @Default([]) List<LivePrize> live_prizes,
     @Default([]) List<Shop>? deals,
     @Default([]) List<Shop>? shop,
-    @Default([]) List<FeedPost>? feedPost,
+    @Default([]) List<FeedPost>? feed_post,
   }) = _PostResult;
 
   factory PostResult.fromJson(Map<String, dynamic> json) =>
       _$PostResultFromJson(json);
+}
+@freezed
+class SavedByUser with _$SavedByUser {
+  const factory SavedByUser({
+ //   @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'username') String? username,
+    @JsonKey(name: 'user_id') String? userId,
+    @JsonKey(name: 'post_id') String? postId,
+  }) = _SavedByUser;
+
+  factory SavedByUser.fromJson(Map<String, dynamic> json) =>
+      _$SavedByUserFromJson(json);
 }
 
 @freezed

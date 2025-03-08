@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class HeaderBannerWidget extends StatelessWidget {
-  final String title, img, vname, brandname, membershipid;
+  final WidgetRef ref;
+  final String title, img, vname, brandname, membershipid, membershiptitle;
   final int id;
+  final String posttypeid;
 
   const HeaderBannerWidget(
       {super.key,
@@ -15,7 +19,10 @@ class HeaderBannerWidget extends StatelessWidget {
       required this.id,
       required this.vname,
       required this.brandname,
-      required this.membershipid});
+      required this.membershipid,
+      required this.posttypeid,
+      required this.membershiptitle,
+      required this.ref});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +39,25 @@ class HeaderBannerWidget extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            VendorHomeScreen(
-                              vendorName: vname,
-                               vid: id),
-                      ));
+                  navigateToPage(
+                    context: context,
+                    page: VendorHomeScreen(vendorName: vname, vid: id),
+                    ref: ref,
+                    showNavBar:
+                        true, // Hide the navbar when moving to this screen
+                  );
+
+                  //        Navigator.of(context, rootNavigator: false).push(MaterialPageRoute(
+                  // builder: (context) => VendorHomeScreen(
+                  //      vendorName: vname,
+                  //      vid: id,
+                  //     )));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           VendorHomeScreen(vendorName: vname, vid: id),
+                  //     ));
                 },
                 child: CircleAvatar(
                   backgroundColor: ColorConstant.blackColor,
@@ -64,10 +82,7 @@ class HeaderBannerWidget extends StatelessWidget {
                   SizedBox(
                     width: 5.w,
                   ),
-
                   Image.asset('assets/images/back.png')
-
-          
                 ],
               ),
             ],
@@ -102,10 +117,15 @@ class HeaderBannerWidget extends StatelessWidget {
                   width: 4.w,
                 ),
                 Text(
-                  brandname,
+                  membershiptitle,
                   style: headerstyle.copyWith(
                       color: Colors.black, fontWeight: FontWeight.w600),
                 ),
+                // Text(
+                //   brandname,
+                //   style: headerstyle.copyWith(
+                //       color: Colors.black, fontWeight: FontWeight.w600),
+                // ),
               ],
             ),
           )

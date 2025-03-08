@@ -33,13 +33,12 @@ mixin _$CartItem {
   String get qty => throw _privateConstructorUsedError;
   String get price => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
+  String get pickup => throw _privateConstructorUsedError;
+  String get longitude => throw _privateConstructorUsedError;
+  String get latitude => throw _privateConstructorUsedError;
 
-  /// Serializes this CartItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -57,7 +56,10 @@ abstract class $CartItemCopyWith<$Res> {
       String name,
       String qty,
       String price,
-      String image});
+      String image,
+      String pickup,
+      String longitude,
+      String latitude});
 }
 
 /// @nodoc
@@ -70,8 +72,6 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -83,6 +83,9 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? qty = null,
     Object? price = null,
     Object? image = null,
+    Object? pickup = null,
+    Object? longitude = null,
+    Object? latitude = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -117,6 +120,18 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      pickup: null == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -137,7 +152,10 @@ abstract class _$$CartItemImplCopyWith<$Res>
       String name,
       String qty,
       String price,
-      String image});
+      String image,
+      String pickup,
+      String longitude,
+      String latitude});
 }
 
 /// @nodoc
@@ -148,8 +166,6 @@ class __$$CartItemImplCopyWithImpl<$Res>
       _$CartItemImpl _value, $Res Function(_$CartItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -161,6 +177,9 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? qty = null,
     Object? price = null,
     Object? image = null,
+    Object? pickup = null,
+    Object? longitude = null,
+    Object? latitude = null,
   }) {
     return _then(_$CartItemImpl(
       id: null == id
@@ -195,6 +214,18 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String,
+      pickup: null == pickup
+          ? _value.pickup
+          : pickup // ignore: cast_nullable_to_non_nullable
+              as String,
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -210,7 +241,10 @@ class _$CartItemImpl implements _CartItem {
       required this.name,
       required this.qty,
       required this.price,
-      required this.image});
+      required this.image,
+      required this.pickup,
+      required this.longitude,
+      required this.latitude});
 
   factory _$CartItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartItemImplFromJson(json);
@@ -236,10 +270,16 @@ class _$CartItemImpl implements _CartItem {
   final String price;
   @override
   final String image;
+  @override
+  final String pickup;
+  @override
+  final String longitude;
+  @override
+  final String latitude;
 
   @override
   String toString() {
-    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image)';
+    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image, pickup: $pickup, longitude: $longitude, latitude: $latitude)';
   }
 
   @override
@@ -256,17 +296,20 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.qty, qty) || other.qty == qty) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.pickup, pickup) || other.pickup == pickup) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, vendorId, postId, postTypeId, name, qty, price, image);
+  int get hashCode => Object.hash(runtimeType, id, vendorId, postId, postTypeId,
+      name, qty, price, image, pickup, longitude, latitude);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
@@ -289,17 +332,20 @@ abstract class _CartItem implements CartItem {
       required final String name,
       required final String qty,
       required final String price,
-      required final String image}) = _$CartItemImpl;
+      required final String image,
+      required final String pickup,
+      required final String longitude,
+      required final String latitude}) = _$CartItemImpl;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) =
       _$CartItemImpl.fromJson;
 
   @override
-  String get id; // required String userId,
-  @override
+  String get id;
+  @override // required String userId,
   @JsonKey(name: 'vendor_id')
-  String? get vendorId; //  required String? vendorId,
-  @override
+  String? get vendorId;
+  @override //  required String? vendorId,
   @JsonKey(name: 'post_id')
   String? get postId;
   @override
@@ -313,11 +359,14 @@ abstract class _CartItem implements CartItem {
   String get price;
   @override
   String get image;
-
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get pickup;
+  @override
+  String get longitude;
+  @override
+  String get latitude;
+  @override
+  @JsonKey(ignore: true)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -332,12 +381,8 @@ mixin _$Vendor {
   String get name => throw _privateConstructorUsedError;
   String? get username => throw _privateConstructorUsedError;
 
-  /// Serializes this Vendor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorCopyWith<Vendor> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -359,8 +404,6 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -403,8 +446,6 @@ class __$$VendorImplCopyWithImpl<$Res>
       _$VendorImpl _value, $Res Function(_$VendorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -460,13 +501,11 @@ class _$VendorImpl implements _Vendor {
                 other.username == username));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, username);
 
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
@@ -494,11 +533,8 @@ abstract class _Vendor implements Vendor {
   String get name;
   @override
   String? get username;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

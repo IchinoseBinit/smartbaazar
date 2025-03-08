@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +10,27 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scratcher/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/ads_screen/api/ad_api.dart';
 import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
+import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/ad_banner.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_screen.dart';
+import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/model/product_details_model.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
+import 'package:smartbazar/features/order_details/api/add_to_cart_api.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
+import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/api/make_a_review_provider.dart';
 import 'package:smartbazar/features/product_details/api/scratch_and_win_provider.dart';
 import 'package:smartbazar/features/product_details/carosel_widget.dart';
@@ -34,6 +45,7 @@ import 'package:smartbazar/features/product_details/constant/people_review_widge
 import 'package:smartbazar/features/product_details/constant/price_banner.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/ratingbar_widget.dart';
+import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/search_product_details/view/search_product_details.dart';
 import 'package:smartbazar/features/product_details/api/product_details_provider.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
@@ -41,6 +53,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -70,7 +83,7 @@ class ProductDetailScreen extends ConsumerWidget {
   ProductDetailScreen({super.key, required this.productId});
   final ScrollController _scrollController = ScrollController();
 
-  void _scrolltoo(double position) {
+  void scrolltoo(double position) {
     _scrollController.animateTo(position,
         duration: const Duration(seconds: 1), curve: Curves.easeInOut);
   }
@@ -91,16 +104,36 @@ class ProductDetailScreen extends ConsumerWidget {
     // print("binod is $adslist");
     final selectedIndex = ref.watch(selectedIndexProvider);
     final rating = ref.watch(ratingProvider);
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+      try {
+        return await ref.read(checkEnquireProvider(id).future);
+      } catch (e) {
+        print("Error fetching enquiry: $e");
+        throw Exception("Failed to fetch enquiry data");
+      }
+    }
 
     final productDetailsAsyncValue =
         ref.watch(productDetailsProvider(productId));
+    Future<void> refreshprovider() async {
+      ref.refresh((productDetailsProvider(productId)));
+      ref.refresh(selectedIndexProvider);
+    }
 
     // final AsyncValue<PostResponse> getdetails=ref
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          // print("bibash ${data.result?.user_details}");
+          // print('bibash ${data.result?.user_details?.membershipTitle}');
+          // List<dynamic> locations = jsonDecode(data.widgetSimilarPosts!.posts!
+          //     .data.first.userdetailsget!.branch_location!)!;
+          // print(
+          //     "nirla ${data.widgetSimilarPosts!.posts!.data.first.userdetailsget!}");
+          //  print('tinku ${SmartClient.laravelSession}');
           return Scaffold(
+            resizeToAvoidBottomInset: false,
+            bottomNavigationBar: const SizedBox.shrink(),
+
             extendBody: true,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
@@ -115,14 +148,16 @@ class ProductDetailScreen extends ConsumerWidget {
                   if (data.result != null)
                     InkWell(
                       onTap: () {
-                        // print("bibash ${data.result!.user!.id}");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VendorHomeScreen(
-                                  vendorName: data.result!.user!.name,
-                                  vid: data.result!.user!.id),
-                            ));
+                        navigateToPage(
+                          context: context,
+                          page: VendorHomeScreen(
+                            vendorName: data.result!.user!.name,
+                            vid: data.result!.user!.id,
+                          ),
+                          ref: ref,
+                          showNavBar:
+                              true, // Hide the navbar when moving to this screen
+                        );
                       },
                       child: CircleAvatar(
                         radius: 25,
@@ -151,39 +186,65 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      // print("biabsh ");
+                      //  print('bibash ${data.result?.postTypeId}');
+                      //   Navigator.pi
+                      // print(
+                      //     'we got ${data.result!.id!.toString()} and ${data.result?.user?.id.toString()}');
+                      //     Navigator.of(context, rootNavigator: true).pop('dialog');
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const OrderDetailsScreen(
-                            selectedProductIds: [],
-                            selectedVendorIds: [],
-                          ),
-                        ),
+                            builder: (_) => BuyNowFormScreen(
+                                  postypeid: data.result!.postTypeId!,
+                                  vendorname: data.result?.contactName ?? '',
+                                  phonenumber:
+                                      int.tryParse(data.result!.phone!)!,
+                                  weight: int.tryParse(
+                                          data.result!.weight ?? '0') ??
+                                      0,
+                                  pickupaddress: data.result!.pickup!,
+                                  pickuplatitute: double.tryParse(
+                                          data.result?.latitude ?? '0.0') ??
+                                      0.0,
+                                  pickupicklongitute: double.tryParse(
+                                          data.result?.longitude ?? '0.0') ??
+                                      0.0,
+                                  selectedProductIds: data.result!.id!,
+                                  selectedVendorIds:
+                                      int.tryParse(data.result!.postTypeId!)!,
+                                )),
                       );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(left: 5),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 25.w, vertical: 4),
+                          EdgeInsets.symmetric(horizontal: 24.w, vertical: 5.h),
                       decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                           gradient: const LinearGradient(
                               colors: [Color(0xff808080), Color(0xFF40246f)]),
                           border: Border.all(
                               color: ColorConstant.toastBackgroundColor)),
                       child: Column(
+                        spacing: 6,
                         children: [
-                          const Icon(
-                            Icons.check_box_rounded,
+                          Icon(
+                            size: 20,
+                            data.result?.postTypeId == '5'
+                                ? Icons.calendar_today_outlined
+                                : Icons.check_box_rounded,
                             color: ColorConstant.toastBackgroundColor,
                           ),
-                          SizedBox(
-                            width: 3.h,
-                          ),
+                          // SizedBox(
+                          //   width: 10.h,
+                          // ),
                           Text(
-                            "Buy",
-                            style: headerstyle.copyWith(),
-                          )
+                              data.result?.postTypeId == '5'
+                                  ? 'Book Now'
+                                  : "Buy",
+                              style: headerstyle.copyWith(
+                                  fontSize: 10, fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
@@ -193,11 +254,92 @@ class ProductDetailScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddToCartScreen(),
-                          ));
+                      ref.watch(addtocartProvider(data.result!.id!.toString()));
+
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 14.w, vertical: 12.h),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Sucessful!',
+                                      style: TextStyle(
+                                          fontSize: 24.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xff362677)),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Text(
+                                      'Product added to the cart sucessfully!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop('dialog');
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddToCartScreen()));
+                                      },
+                                      child: Text(
+                                        'View Cart',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop('dialog');
+                                      },
+                                      child: Container(
+                                        height: 40.h,
+                                        width: 40.w,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff362677),
+                                            shape: BoxShape.circle),
+                                        child: const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 24,
+                                          weight: 50,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
                     },
                     child: const CircleAvatar(
                         backgroundColor: Colors.grey,
@@ -244,7 +386,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(0);
+                                  scrolltoo(0);
                                 },
                                 child: Text("Pictures",
                                     style: headerstyle.copyWith(
@@ -257,7 +399,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(0);
+                                  scrolltoo(0);
                                 },
                                 child: Text("Price & Variations",
                                     style: headerstyle.copyWith(
@@ -270,7 +412,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch);
+                                  scrolltoo(sch);
                                 },
                                 child: Text(
                                   "Delivery",
@@ -285,7 +427,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch * 2);
+                                  scrolltoo(sch * 2);
                                 },
                                 child: Text(
                                   "Aftersales",
@@ -300,7 +442,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  _scrolltoo(sch * 0.8);
+                                  scrolltoo(sch * 0.8);
                                 },
                                 child: Text(
                                   "Description",
@@ -314,16 +456,23 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      // if (data.result != null &&
-                      //     data.result?.user_details != null)
-                      HeaderBannerWidget(
-                        membershipid: data.result!.user_details!.membershipId!,
-                        brandname: data.result!.user_details!.membershipTitle!,
-                        id: data.result!.user!.id,
-                        vname: data.result!.user!.name,
-                        img: data.result!.userPhotoUrl,
-                        title: data.result!.user!.name,
-                      ),
+                      if (data.result != null &&
+                          data.result?.user != null &&
+                          data.result?.user_details != null)
+                        HeaderBannerWidget(
+                          ref: ref,
+                          membershiptitle: data.widgetSimilarPosts?.posts?.data
+                                  .first.detailuser?.membershipPlanTitle ??
+                              data.result!.user_details!.membershipTitle
+                                  .toString(),
+                          posttypeid: data.result!.postTypeId!,
+                          membershipid: data.result!.user!.id.toString(),
+                          brandname: data.result!.postType!.name,
+                          id: data.result!.user!.id,
+                          vname: data.result!.user!.name,
+                          img: data.result!.userPhotoUrl,
+                          title: data.result!.user!.name,
+                        ),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -353,6 +502,10 @@ class ProductDetailScreen extends ConsumerWidget {
                       data.result?.pictures == null
                           ? const SizedBox()
                           : CarsoselWidget(
+                              pid: data.result!.id!,
+                              onCommenttapped: () {
+                                scrolltoo(sch * 2.9);
+                              },
                               VImage: data.result!.userPhotoUrl,
                               avg_rating: data.result!.ratings!.averageRating
                                   .toString(),
@@ -505,19 +658,21 @@ class ProductDetailScreen extends ConsumerWidget {
                           ),
                           if (data.result != null) const FeaturesBannerWidget(),
                           if (data.result?.postTypeId == "7")
-                            const DiscountBoxWidget(),
+                            DiscountBoxWidget(
+                              b2bPricingString: data.result?.b2bPricing ?? '',
+                            ),
                           SizedBox(
                             height: 10.h,
                           ),
-                          const PerksWidget(
-                            first: "COLORS",
-                            fourth: "MODELS",
-                            second: "Sizes",
-                            third: "VARIATIONS",
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
+                          // const PerksWidget(
+                          //   first: "COLORS",
+                          //   fourth: "MODELS",
+                          //   second: "Sizes",
+                          //   third: "VARIATIONS",
+                          // ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
                           if (data.result != null &&
                               data.result?.location?.nearestBranch != null &&
                               data.result?.location != null)
@@ -537,34 +692,50 @@ class ProductDetailScreen extends ConsumerWidget {
                                 horizontal: 24.w, vertical: 5.h),
                             width: double.infinity,
                             decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [Colors.white, Color(0xFFf3f3f3)])),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/shield.png'),
-                                    const Text("WARRANTY\n DETAILS"),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset('assets/images/undo.png'),
-                                    const Text("RETURN\n POLICY"),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset('assets/images/undo.png'),
-                                    const Text("EXCHANGE\n POLICY"),
-                                  ],
-                                ),
-                              ],
+                              gradient: LinearGradient(
+                                colors: [Colors.white, Color(0xFFf3f3f3)],
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              // This will allow horizontal scrolling if content overflows.
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Warranty Details Section
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset('assets/images/shield.png'),
+                                      const Text("WARRANTY\n DETAILS"),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: 16.w), // Add space between columns
+                                  // Return Policy Section
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/undo.png'),
+                                      const Text("RETURN\n POLICY"),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                      width: 16.w), // Add space between columns
+                                  // Exchange Policy Section
+                                  Row(
+                                    children: [
+                                      Image.asset('assets/images/undo.png'),
+                                      const Text("EXCHANGE\n POLICY"),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+
                           SizedBox(
                             height: 10.h,
                           ),
@@ -687,23 +858,19 @@ class ProductDetailScreen extends ConsumerWidget {
                             ),
                           ),
                           Column(
-                            children: data.extra?.fields?.original?.result
-                                    ?.map(
-                                      (e) => e == null
-                                          ? const SizedBox() // Handle null entries gracefully
-                                          : AdditionalDetailsWidget(
-                                              defaultValue: e.defaultValue,
-                                              options: e.options?.length == 0
-                                                  ? []
-                                                  : e.options,
-                                              title: e.name ??
-                                                  'Unknown Title', // Fallback for null name
-                                              desp: e.defaultValue ??
-                                                  'No default value', // Fallback for null default value
-                                            ),
-                                    )
-                                    .toList() ??
-                                [], // Handle null result gracefully
+                            children: (data.extra?.fields?.original?.result ??
+                                    [])
+                                .where((e) =>
+                                    e != null) // Remove null values safely
+                                .map((e) => AdditionalDetailsWidget(
+                                      defaultValue: e.defaultValue ?? "",
+                                      options: e.options ??
+                                          [], // Ensure options are passed properly
+                                      title: e.name ?? 'Unknown Title',
+                                      desp:
+                                          e.defaultValue ?? 'No default value',
+                                    ))
+                                .toList(),
                           ),
 
                           SizedBox(
@@ -1015,7 +1182,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     },
                                                     child: buildDealItemWidget(
                                                         data: Deal(
-                                                            discount_percentage:e.discountPercentage?? 0,
+                                                            discount_percentage:
+                                                                e.discountPercentage ??
+                                                                    0,
                                                             id: e.id,
                                                             image: e.image)),
                                                   );
@@ -1034,10 +1203,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                                         .map((e) {
                                                       return buildDealItemWidget(
                                                         data: Deal(
-                                                          discount_percentage: e
-                                                                  .discountPercentage??
-                                                                 
-                                                              0,
+                                                          discount_percentage:
+                                                              e.discountPercentage ??
+                                                                  0,
                                                           id: e.id,
                                                           image: e.image,
                                                         ),
@@ -1045,13 +1213,32 @@ class ProductDetailScreen extends ConsumerWidget {
                                                     }).toList(),
                                                   ))
                                             : selectedIndex == 3
-                                                ? SwapablePostCard(
-                                                    post:
-                                                        data.result!.feedPost!)
-                                                : selectedIndex == 4
-                                                    ? LiveSwapble(
+                                                ? data.result?.feed_post ==
+                                                            null ||
+                                                        data.result!.feed_post!
+                                                            .isEmpty
+                                                    ? Center(
+                                                        child: nolistingfound(
+                                                            message: 'feed'),
+                                                      )
+                                                    : SwapablePostCard(
                                                         post: data
-                                                            .result!.livePrizes)
+                                                            .result!.feed_post!)
+                                                : selectedIndex == 4
+                                                    ? data.result?.live_prizes ==
+                                                                null ||
+                                                            data
+                                                                .result!
+                                                                .live_prizes
+                                                                .isEmpty
+                                                        ? Center(
+                                                            child: nolistingfound(
+                                                                message:
+                                                                    'prizes'),
+                                                          )
+                                                        : LiveSwapble(
+                                                            post: data.result!
+                                                                .live_prizes)
                                                     : const SizedBox(), // Fallback for other index values
                                   ),
                                 )
@@ -1099,8 +1286,79 @@ class ProductDetailScreen extends ConsumerWidget {
                                               .widgetSimilarPosts!
                                               .posts!
                                               .data[index];
+                                          print(
+                                              "kala ${prod.savedByLoggedUser}");
 
                                           return ProductDetailWidget(
+                                              onenquiredclicked: () {
+                                                print('lanka ${prod.id}');
+
+                                                getEnquire(
+                                                        ref, prod.id.toString())
+                                                    .then(
+                                                  (value) {
+                                                    value.data?.enquire == 0
+                                                        ? showModalBottomSheet(
+                                                            useSafeArea: true,
+                                                            isScrollControlled:
+                                                                true,
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return SizedBox(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.8, // Use 80% of the screen height
+
+                                                                child:
+                                                                    SendMessageBottomWidget(
+                                                                  ref: ref,
+                                                                  productidid: prod
+                                                                      .id
+                                                                      .toString(),
+                                                                ),
+                                                              );
+                                                            },
+                                                          )
+                                                        : navigateToPage(
+                                                            context: context,
+                                                            page: ChatScreen(
+                                                                threadId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .id!,
+                                                                username: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .subject!,
+                                                                postId: value
+                                                                    .data!
+                                                                    .thread!
+                                                                    .post_id!),
+                                                            ref: ref,
+                                                            showNavBar:
+                                                                false, // Hide bottom navbar
+                                                          );
+                                                  },
+                                                ).catchError(
+                                                  (error) {
+                                                    print('Error: $error');
+                                                  },
+                                                );
+                                              },
+                                              //  savedid: prod.savedByLoggedUser ==
+                                              //                         null ||
+                                              //                     prod.savedByLoggedUser!
+                                              //                         .isEmpty
+                                              //                 ? []
+                                              //                 : prod
+                                              //                     .savedByLoggedUser,
+                                              onRefresh: () {
+                                                refreshprovider();
+                                              },
                                               lat: prod.latitude,
                                               long: prod.longitude,
                                               posttype: prod.postTypeId,
@@ -1111,13 +1369,13 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   'assets/icon/loading.svg',
                                               didcountpercentage:
                                                   prod.discount_percentage,
-                                              distance: prod.userDetails
-                                                  ?.shortestDistance,
+                                              distance: prod
+                                                  .detailuser?.shortestDistance,
                                               issponsored:
-                                                  prod.userDetails?.sponsored ??
+                                                  prod.detailuser?.sponsored ??
                                                       false,
                                               shortestDistance: prod
-                                                  .userDetails?.shortestDistance
+                                                  .detailuser?.shortestDistance
                                                   ?.roundToDouble(),
                                               wow: prod.wow,
                                               comment:
@@ -1126,21 +1384,21 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   .ratings?.avg_rating
                                                   ?.toDouble(),
                                               offer: prod.offers,
-                                             vendorid: prod.userDetails!.id,
+                                              vendorid: prod.detailuser!.id,
                                               vendorname:
-                                                  prod.userDetails?.name ?? '',
+                                                  prod.detailuser?.name ?? '',
                                               discounttedPrice:
                                                   prod.discountedPrice,
-                                              Vimage: prod.userDetails?.photo,
+                                              Vimage: prod.detailuser?.photo,
                                               price: prod.price,
                                               title: prod.title,
                                               productImage: prod.image,
-                                              membershipColor: prod.userDetails
+                                              membershipColor: prod.detailuser
                                                       ?.membershipPlanColor ??
                                                   '',
                                               similarproductCount:
                                                   prod.similarProductCount,
-                                              membershipTitle: prod.userDetails
+                                              membershipTitle: prod.detailuser
                                                   ?.membershipPlanTitle);
                                         }),
                                       ),
@@ -1150,7 +1408,7 @@ class ProductDetailScreen extends ConsumerWidget {
                               : Center(
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 50.h),
-                                    child: nolistingfound(),
+                                    child: nolistingfound(message: 'Post'),
                                   ),
                                 ),
                           SizedBox(
@@ -1243,7 +1501,7 @@ class SwapablePostCard extends StatelessWidget {
                   isLive: show,
                   image: data.image!,
                   name: data.name!,
-                  caption: data.caption?? '',
+                  caption: data.caption ?? '',
                   photo: data.photo!,
                   subscribers: data.subscribers!.toString(),
                 );

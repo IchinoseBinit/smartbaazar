@@ -6,7 +6,7 @@ part of 'submit_feed_form.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postFeedFormHash() => r'ad37eee440d8def64251d1aace694999217b1600';
+String _$postFeedFormHash() => r'e6533f89c82771655dd06a407d49f03dce969ace';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -187,8 +187,6 @@ class PostFeedFormProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PostFeedFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `captionTitle` of this provider.
   String get captionTitle;
@@ -222,4 +220,4 @@ class _PostFeedFormProviderElement
   File get imageFile => (origin as PostFeedFormProvider).imageFile;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

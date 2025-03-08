@@ -26,14 +26,14 @@ class HomeStoryData with _$HomeStoryData {
 @freezed
 class Story with _$Story {
   const factory Story({
-    @JsonKey(name: 'posts') List<Post>? posts,
+    @JsonKey(name: 'HomeStoryAllPosts') List<HomeStoryAllPost>? HomeStoryAllPosts,
   }) = _Story;
 
   factory Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 }
 @freezed
-class Post with _$Post {
-  const factory Post({
+class HomeStoryAllPost with _$HomeStoryAllPost {
+  const factory HomeStoryAllPost({
     @JsonKey(name: 'vendor_id') String? vendorId,
     @JsonKey(name: 'vendor_name') String? vendorName,
     @JsonKey(name: 'vendor_image') String? vendorImage,
@@ -47,7 +47,7 @@ class Post with _$Post {
     // @JsonKey(name: 'average_rating') dynamic averageRating,
     // @JsonKey(name: 'discount_percentage') double? discountPercentage,
     // @JsonKey(name: 'wow') String? wow,
-  }) = _Post;
+  }) = _HomeStoryAllPost;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  factory HomeStoryAllPost.fromJson(Map<String, dynamic> json) => _$HomeStoryAllPostFromJson(json);
 }

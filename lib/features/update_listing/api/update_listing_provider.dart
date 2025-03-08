@@ -10,73 +10,77 @@ part 'update_listing_provider.g.dart';
 Future<String> updatelisting(
   ref,
   String num, {
-  List<List<dynamic>>? cf,
-  List<String>? tags,
   String? category,
-  String? stock,
-  String? mileage,
-  String? warrenty,
+  String? posttype,
   String? title,
-  String? city,
-  String? price,
   String? description,
+  String? username,
+  String? phone,
+  String? city_id,
+  String? email,
+  String? price,
+  String? disprice,
+  String? stock,
+  String? address,
   String? length,
   String? width,
   String? height,
   String? weight,
-  String? disprice,
-  String? posttype,
-  String? email,
-  String? phone,
-  String? username,
   String? pickup,
-  List<File?>? images,
-  String? accept,
-  String? address,
   String? offer,
   String? story,
   String? youtube,
-  int? package,
-  List<Map<String, String>>? pieces,
   double? lat,
   double? long,
   int? hyperd,
   int? seller,
+  int? package,
+  String? accept,
+  List<String>? tags,
+  List<Map<String, String>>? pieces,
+  List<File?>? images,
 }) async {
   final SmartClient client = SmartClient();
 
   try {
-    Map<String, dynamic> formDataMap = {};
-
-    // Add only non-null fields to the map
-    if (category != null) formDataMap['category_id'] = category;
-    if (posttype != null) formDataMap['post_type_id'] = posttype;
-    if (title != null) formDataMap['title'] = title;
-    if (description != null) formDataMap['description'] = description;
-    if (username != null) formDataMap['contact_name'] = username;
-    if (phone != null) formDataMap['phone'] = phone;
-    if (city != null) formDataMap['city_id'] = city;
-    if (email != null) formDataMap['email'] = email;
-    if (price != null) formDataMap['price'] = price;
-    if (disprice != null) formDataMap['discounted_price'] = disprice;
-    if (stock != null) formDataMap['stock'] = stock;
-    if (address != null) formDataMap['address'] = address;
-    if (length != null) formDataMap['length'] = length;
-    if (width != null) formDataMap['width'] = width;
-    if (height != null) formDataMap['height'] = height;
-    if (weight != null) formDataMap['weight'] = weight;
-    if (pickup != null) formDataMap['pickup'] = pickup;
-    if (offer != null) formDataMap['offers'] = offer;
-    if (story != null) formDataMap['story_display_days'] = story;
-    if (youtube != null) formDataMap['youtube'] = youtube;
-    if (lat != null) formDataMap['latitude'] = lat.toString();
-    if (long != null) formDataMap['longitude'] = long.toString();
-    if (hyperd != null) formDataMap['hyper_del'] = hyperd;
-    if (seller != null) formDataMap['seller_del'] = seller;
-    if (package != null) formDataMap['package_id'] = package;
-
-    // Accept terms should be '1' if true, '0' if false, and excluded if null
-    if (accept != null) formDataMap['accept_terms'] = accept;
+    Map<String, dynamic> formDataMap = {
+      'category_id': category,
+      'post_type_id': posttype ?? '1',
+      'title': title,
+      'description': description,
+      'contact_name': username,
+      'auth_field': 'phone',
+      'phone': phone,
+      'phone_country': 'NP',
+      'city_id': city_id,
+      'accept_terms': accept ?? '1',
+      'email': email,
+      'country_code': 'NP',
+      'price': price,
+      'discounted_price': disprice,
+      'negotiable': '0',
+      'phone_hidden': '1',
+      'captcha': 'embed',
+      'ip_addr': '127.0.0.1',
+      'accept_marketing_offers': '1',
+      'is_permanent': '0',
+      'tags': '',
+      'package_id': package?.toString(),
+      'payment_method_id': '1',
+      'trending': '1',
+      'stock': stock,
+      'address': address,
+      'length': length,
+      'width': width,
+      'height': height,
+      'weight': weight,
+      'pickup': pickup,
+      'longitude': long?.toString(),
+      'latitude': lat?.toString(),
+      'hyper_del': hyperd?.toString(),
+      'seller_del': seller?.toString(),
+      'offer': offer,
+    };
 
     // Handle tags array
     if (tags != null && tags.isNotEmpty) {
@@ -110,10 +114,10 @@ Future<String> updatelisting(
     final response = await client.request(
       requestType: RequestType.putWithTokenEncoded,
       url: "https://smartbazaar.jianjun-rnd.com.np/api/posts/$num",
-      parameter: formData,
+      parameter: formDataMap, // Using formDataMap with proper values
     );
 
-    if (response.statusCode == 200 && response.data['success'] == true) {
+    if (response.statusCode == 200) {
       return response.data['message'];
     } else {
       throw Exception("Failed to update listing: ${response.data['message']}");
@@ -124,3 +128,5 @@ Future<String> updatelisting(
     return "API request failed: ${e.toString()}";
   }
 }
+
+

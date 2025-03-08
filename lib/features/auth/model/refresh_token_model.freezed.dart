@@ -25,12 +25,8 @@ mixin _$RefreshTokenResponse {
   String get refreshToken => throw _privateConstructorUsedError;
   String get tokenType => throw _privateConstructorUsedError;
 
-  /// Serializes this RefreshTokenResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of RefreshTokenResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $RefreshTokenResponseCopyWith<RefreshTokenResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,8 +52,6 @@ class _$RefreshTokenResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of RefreshTokenResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -107,8 +101,6 @@ class __$$RefreshTokenResponseImplCopyWithImpl<$Res>
       $Res Function(_$RefreshTokenResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of RefreshTokenResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,14 +170,12 @@ class _$RefreshTokenResponseImpl implements _RefreshTokenResponse {
                 other.tokenType == tokenType));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, success, authToken, refreshToken, tokenType);
 
-  /// Create a copy of RefreshTokenResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$RefreshTokenResponseImplCopyWith<_$RefreshTokenResponseImpl>
@@ -219,11 +209,8 @@ abstract class _RefreshTokenResponse implements RefreshTokenResponse {
   String get refreshToken;
   @override
   String get tokenType;
-
-  /// Create a copy of RefreshTokenResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$RefreshTokenResponseImplCopyWith<_$RefreshTokenResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

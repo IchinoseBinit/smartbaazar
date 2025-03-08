@@ -9,6 +9,7 @@ import 'package:smartbazar/features/anti_scam/view/anit_scam_screen.dart';
 import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
+import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
@@ -214,7 +215,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.branding_watermark,
       "title": 'Brand',
       "subtitle": 'Bazar',
-      "screen": const HomeScreen(),
+      "screen": const BrandBazarScreen(),
     },
     {
       "icon": Icons.feed,
@@ -584,48 +585,73 @@ class VendorProfileGridWidget extends StatelessWidget {
       spacing: 8.0, // Space between items horizontally
       runSpacing: 20.0, // Space between rows vertically
       children: profileData.map((data) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0.w),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min, // Minimize the Row width
-            children: [
-              CircleAvatar(
-                radius: 14, // Adjusted radius
-                backgroundColor: const Color(0xff362677),
-                child: Icon(
-                  data['icon'],
-                  color: Colors.white,
-                  size: 14, // Adjusted icon size
+        return InkWell(
+          onTap: () {
+            if (data['subtitle'] == 'listing') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyListingScreen(),
+                  ));
+            }
+                   if (data['subtitle'] == 'followers') {
+                     Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MySubscriptionScreen(),
+                  ));
+                   }
+                   if (data['subtitle'] == 'favourite') {
+                     Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FavouriteListingScreen(),
+                  ));
+                   }
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min, // Minimize the Row width
+              children: [
+                CircleAvatar(
+                  radius: 14, // Adjusted radius
+                  backgroundColor: const Color(0xff362677),
+                  child: Icon(
+                    data['icon'],
+                    color: Colors.white,
+                    size: 14, // Adjusted icon size
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 8.0, // Space between avatar and text
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    data['title'],
-                    style: const TextStyle(
-                      fontSize: 12, // Adjusted font size
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                const SizedBox(
+                  width: 8.0, // Space between avatar and text
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data['title'],
+                      style: const TextStyle(
+                        fontSize: 12, // Adjusted font size
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle overflow
                     ),
-                    overflow: TextOverflow.ellipsis, // Handle overflow
-                  ),
-                  Text(
-                    data['subtitle'],
-                    style: const TextStyle(
-                      fontSize: 10, // Adjusted font size
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                    Text(
+                      data['subtitle'],
+                      style: const TextStyle(
+                        fontSize: 10, // Adjusted font size
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle overflow
                     ),
-                    overflow: TextOverflow.ellipsis, // Handle overflow
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       }).toList(),
@@ -711,8 +737,8 @@ class MyAccountWidget extends StatelessWidget {
         MaterialPageRoute(builder: (context) => const MessageViewScreen()),
       );
     } else if (title == 'Transaction') {
-    Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => const OnlineTransactionRecordScreen()));
+      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+          builder: (context) => const OnlineTransactionRecordScreen()));
     }
   }
 

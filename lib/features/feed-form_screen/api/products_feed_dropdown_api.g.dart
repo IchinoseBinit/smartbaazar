@@ -7,7 +7,7 @@ part of 'products_feed_dropdown_api.dart';
 // **************************************************************************
 
 String _$getProductsFeedDropdownHash() =>
-    r'2b3be190913f7ce9de5822281935f53e09725a39';
+    r'72392c1b77a6e7b74fe50d0da84a6373236b6b6b';
 
 /// See also [getProductsFeedDropdown].
 @ProviderFor(getProductsFeedDropdown)
@@ -22,9 +22,7 @@ final getProductsFeedDropdownProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef GetProductsFeedDropdownRef
     = AutoDisposeFutureProviderRef<ProductsFeedDropdown>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

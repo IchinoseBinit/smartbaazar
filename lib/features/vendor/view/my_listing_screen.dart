@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/pending_approval/model/pending_approval_model.dart';
 import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
 import 'package:smartbazar/features/vendor/view/api/my_listing_api.dart';
@@ -126,6 +127,7 @@ class MyListinDetails extends ConsumerWidget {
                   Navigator.of(context, rootNavigator: true)
                       .push(MaterialPageRoute(
                           builder: (context) => UpdateListing(
+                            ref: ref,
                                 prod: product,
                               )));
 

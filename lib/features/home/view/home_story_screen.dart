@@ -26,7 +26,7 @@ class HomeStoryScreen extends StatefulWidget {
 
 class _HomeStoryScreenState extends State<HomeStoryScreen>
     with TickerProviderStateMixin {
-  late List<Post> stories;
+  // late List<Post> stories;
   late List<String> vendors;
   late List<String> vendorImage;
   late List<List<String?>> vendorStories;
@@ -37,20 +37,20 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
   bool _isPaused = false;
   int _currentVendorIndex = 0;
   late int _currentStoryIndex;
-  late Map<String, List<Post>> groupedStories;
+  // late Map<String, List<Post>> groupedStories;
 
-  Map<String, List<Post>> groupBy(
-      List<Post> posts, Function(Post) keyExtractor) {
-    return posts.fold(
-      <String, List<Post>>{},
-      (Map<String, List<Post>> map, Post post) {
-        String key = keyExtractor(post);
-        map.update(key, (value) => [...(value ?? []), post],
-            ifAbsent: () => [post]);
-        return map;
-      },
-    );
-  }
+  // Map<String, List<Post>> groupBy(
+  //     List<Post> posts, Function(Post) keyExtractor) {
+  //   return posts.fold(
+  //     <String, List<Post>>{},
+  //     (Map<String, List<Post>> map, Post post) {
+  //       String key = keyExtractor(post);
+  //       map.update(key, (value) => [...(value ?? []), post],
+  //           ifAbsent: () => [post]);
+  //       return map;
+  //     },
+  //   );
+  // }
 
   bool _initialized = false;
 
@@ -59,45 +59,49 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
     super.didChangeDependencies();
     if (!_initialized) {
       _initialized = true;
-      _initializeData();
+      // _initializeData();
     }
   }
 
-  void _initializeData() {
-    groupedStories =
-        groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
-    stories = widget.feedStory?.posts! ?? [];
-    vendors = stories.map((story) => story.vendorName!).toSet().toList();
-    vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
-    vendorStories = groupedStories.entries.map((entry) {
-      return entry.value.map((post) => post.image!).toList();
-    }).toList();
+  // void _initializeData() {
+  //   // groupedStories =
+  //   //     groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
+  //   stories = widget.feedStory?.posts! ?? [];
+  //   // vendors = stories.map((story) => story.!).toSet().toList();
+  //   // vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
+  //   vendorStories = groupedStories.entries.map((entry) {
+  //     return entry.value.map((post) => post.image!).toList();
+  //   }).toList();
 
-    _currentVendorIndex = widget.selectedVendorIndex;
-    _currentStoryIndex = 0;
+  //   _currentVendorIndex = widget.selectedVendorIndex;
+  //   _currentStoryIndex = 0;
 
-    int initialPage =
-        _calculatePageForVendor(_currentVendorIndex, _currentStoryIndex);
+  //   int initialPage =
+  //       _calculatePageForVendor(_currentVendorIndex, _currentStoryIndex);
 
-    _pageController = PageController(initialPage: initialPage);
-    _animationController = AnimationController(vsync: this, duration: duration);
+  //   _pageController = PageController(initialPage: initialPage);
+  //   _animationController = AnimationController(vsync: this, duration: duration);
 
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed && !_isPaused) {
-        _moveToNextVendor();
-      }
-    });
+  //   _animationController.addStatusListener((status) {
+  //     if (status == AnimationStatus.completed && !_isPaused) {
+  //       _moveToNextVendor();
+  //     }
+  //   });
 
-    _startAutoScroll();
+  //   _startAutoScroll();
+  // }
+
+int _calculatePageForVendor(int vendorIndex, int storyIndex) {
+  if (vendorIndex < 0 || vendorIndex >= vendorStories.length) {
+    return 0; // Return a valid page index or handle the case appropriately
   }
-
-  int _calculatePageForVendor(int vendorIndex, int storyIndex) {
-    int storyOffset = 0;
-    for (int i = 0; i < vendorIndex; i++) {
-      storyOffset += vendorStories[i].length;
-    }
-    return storyOffset + storyIndex;
+  int storyOffset = 0;
+  for (int i = 0; i < vendorIndex; i++) {
+    storyOffset += vendorStories[i].length;
   }
+  return storyOffset + storyIndex;
+}
+
 
   void _setupPageController() {
     _pageController.addListener(_handlePageChange);
@@ -265,7 +269,10 @@ class _HomeStoryScreenState extends State<HomeStoryScreen>
               PageView.builder(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: vendorStories[_currentVendorIndex].length,
+                itemCount: vendorStories.isNotEmpty &&
+                        _currentVendorIndex < vendorStories.length
+                    ? vendorStories[_currentVendorIndex].length
+                    : 0,
                 itemBuilder: (context, index) {
                   int vendorIndex = 0;
                   int storyIndex = index;
@@ -586,6 +593,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
 
   @override
   void initState() {
+    
     super.initState();
     remainingTime = widget.targetDate.difference(DateTime.now());
     timer = Timer.periodic(const Duration(seconds: 1), (_) {

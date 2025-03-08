@@ -23,25 +23,36 @@ class BusinessResponse {
 
   factory BusinessResponse.fromJson(Map<String, dynamic> json) {
     return BusinessResponse(
-      business: (json['business'] as List?)
-          ?.map((e) => Business.fromJson(e))
-          .toList(),
-      brandNew: (json['brand_new'] != null && json['brand_new']['data'] != null)
-          ? (json['brand_new']['data'] as List?)
-              ?.map((e) => GlobalModel.fromJson(e))
-              .toList()
-          : null, // Extract the 'data' from 'brand_new'
-      used: json['used'] != null && json['used']['data'] != null
-          ? (json['used']['data'] as List)
-              .map((e) => GlobalModel.fromJson(e))
-              .toList()
-          : [], // Handle 'used' as an object with 'data' field
-      services: _deserializeGlobalModelList(json['services']),
-      jobs: _deserializeGlobalModelList(json['jobs']),
-      events: _deserializeGlobalModelList(json['events']),
-      b2b: _deserializeGlobalModelList(json['b2b']),
-      grocery: _deserializeGlobalModelList(json['grocery']),
-    );
+        business: (json['business'] as List?)
+            ?.map((e) => Business.fromJson(e))
+            .toList(),
+        brandNew:
+            (json['brand_new'] != null && json['brand_new']['data'] != null)
+                ? (json['brand_new']['data'] as List?)
+                    ?.map((e) => GlobalModel.fromJson(e))
+                    .toList()
+                : null, // Extract the 'data' from 'brand_new'
+        used: json['used'] != null && json['used']['data'] != null
+            ? (json['used']['data'] as List)
+                .map((e) => GlobalModel.fromJson(e))
+                .toList()
+            : [], // Handle 'used' as an object with 'data' field
+        services: _deserializeGlobalModelList(json['services']),
+        jobs: _deserializeGlobalModelList(json['jobs']),
+        events: _deserializeGlobalModelList(json['events']),
+        b2b: (json['b2b'] != null && json['b2b']['data'] != null)
+            ? (json['b2b']['data'] as List?)
+                ?.map((e) => GlobalModel.fromJson(e))
+                .toList()
+            : [],
+        grocery: (json['grocery'] != null && json['grocery']['data'] != null)
+            ? (json['grocery']['data'] as List?)
+                ?.map((e) => GlobalModel.fromJson(e))
+                .toList()
+            : []
+        // grocery: _deserializeGlobalModelList(json['grocery'],
+
+        );
   }
 
   // Helper function to handle the deserialization of a List<GlobalModel> from a JSON list
@@ -53,9 +64,7 @@ class BusinessResponse {
   }
 }
 
-
 class Business {
-  
   final String? vendorId;
   final String? vendorName;
   final String? vendorUsername;
@@ -69,32 +78,34 @@ class Business {
   final bool? hasSponsoredGifts;
   final String? membershipId;
   final String? membershipTitle;
-    final String? longitude;
+  final String? longitude;
   final String? latitude;
+  final int? subscribed;
 
-
-  Business({
-    this.vendorId,
-    this.vendorName,
-    this.vendorUsername,
-    this.logo,
-    this.location,
-    this.contact,
-    this.totalConnections,
-    this.dealsCircle,
-    this.storyCount,
-    this.totalPrizeWorth,
-    this.hasSponsoredGifts,
-    this.membershipId,
-    this.membershipTitle,
-    this.latitude,
-    this.longitude
-  });
+  Business(
+      {this.vendorId,
+      this.vendorName,
+      this.vendorUsername,
+      this.logo,
+      this.location,
+      this.contact,
+      this.totalConnections,
+      this.dealsCircle,
+      this.storyCount,
+      this.totalPrizeWorth,
+      this.hasSponsoredGifts,
+      this.membershipId,
+      this.membershipTitle,
+      this.latitude,
+      this.longitude,
+      this.subscribed
+      });
 
   factory Business.fromJson(Map<String, dynamic> json) {
     return Business(
-       latitude: json['latitude'],
-       longitude: json['longitude'],
+      subscribed: json['subscribed'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       vendorId: json['vendor_id'],
       vendorName: json['vendor_name'],
       vendorUsername: json['vendor_username'],

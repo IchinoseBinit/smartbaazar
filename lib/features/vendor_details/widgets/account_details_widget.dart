@@ -28,6 +28,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   late TextEditingController _emailController;
   late TextEditingController _userNameController;
   late TextEditingController _genderController;
+  late TextEditingController _bioController;
   String? description;
   String? userId;
   bool isLoading = false;
@@ -56,15 +57,14 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _userNameController = TextEditingController(text: '');
     _genderController = TextEditingController(text: '');
     branchControllers = [TextEditingController()];
+    _bioController = TextEditingController(text: '');
     // _branchController = TextEditingController(text: '');
   }
 
   // Load userId from SharedPreferences
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userId = prefs.getString('userId');
-    });
+    userId = prefs.getString('userId');
   }
 
   void _setInitialValues(UserData? userData) {
@@ -75,6 +75,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _emailController.text = userData.email ?? '';
         _userNameController.text = userData.username ?? '';
         _genderController.text = userData.genderId ?? '';
+        _bioController.text = userData.bio ?? '';
         description = userData.about ?? '';
         _isInitialized = true;
         // Parse branch locations
@@ -99,26 +100,27 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           branchControllers.clear();
 
           // Add new controllers
-          for (var i = 0; i < branchLocations!.length; i++) {
-            TextEditingController controller =
-                TextEditingController(text: branchLocations[i]['location']);
-            branchControllers.add(controller);
-          }
+          if (branchLocations != null)
+            for (var i = 0; i < branchLocations!.length; i++) {
+              TextEditingController controller =
+                  TextEditingController(text: branchLocations[i]['location']);
+              branchControllers.add(controller);
+            }
         });
-        List<String> branchLocationsText = branchLocations!.map((location) {
-          return location['location'] as String;
-        }).toList();
+        if (branchLocations != null)
+          List<String> branchLocationsText = branchLocations!.map((location) {
+            return location['location'] as String;
+          }).toList();
 
         // Parse opening hours
         if (userData.openingHours != null) {
-          List<dynamic> openingHoursData =
-              jsonDecode(userData.openingHours ?? '');
-          for (var hour in openingHoursData) {
-            String day = hour['day'];
-            openingHours[day]!['from'] = hour['from'];
-            openingHours[day]!['to'] = hour['to'];
-            openingHours[day]!['closed'] = hour['closed'];
-          }
+          String openingHoursData = userData.openingHours ?? '';
+          // for (var hour in openingHoursData) {
+          //   String day = hour['day'];
+          //   openingHours[day]!['from'] = hour['from'];
+          //   openingHours[day]!['to'] = hour['to'];
+          //   openingHours[day]!['closed'] = hour['closed'];
+          // }
         }
       });
     }
@@ -164,7 +166,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
-        // usersLocation: jsonEncode({'location': _branchController.text}),
+        bio: _bioController.text,
+
+        //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
         _updateUserDetails(updatedData);
@@ -182,8 +186,25 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       isLoading = true;
     });
     try {
-      List<String> branchLocations =
-          branchControllers.map((controller) => controller.text).toList();
+      //  List<Map<String, String>> branchLocations = branchControllers
+      //   .where((controller) => controller.text.isNotEmpty)
+      //   .map((controller) => {'location': controller.text})
+      //   .toList();
+      // Extract opening hours data
+      // List<Map<String, dynamic>> openingHoursData = openingHours.entries.map((entry) {
+      //   return {
+      //     'day': entry.key,
+      //     'from': entry.value['from'] ?? '',
+      //     'to': entry.value['to'] ?? '',
+      //     'closed': entry.value['closed'] ?? false,
+      //   };
+      // }).toList();
+
+      List<String> branchLocations = branchControllers
+          .map((controller) => controller.text)
+          .toList()
+          .where((location) => location.isNotEmpty)
+          .toList();
 
       List<String> dayNames = openingHours.keys.toList();
       List<String> from = [];
@@ -195,6 +216,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         to.add(openingHours[dayNames[i]]!['to'] ?? '');
         closed.add(openingHours[dayNames[i]]!['closed']);
       }
+      print("kelaz $branchControllers");
 
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         data.name ?? '',
@@ -204,7 +226,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         userId ?? '',
         data.genderId ?? '',
         branchLocations,
-        description!,
+        // branchControllers.isEmpty || branchControllers == null
+        //     ? branchLocations
+        //     : branchControllers.map((controller) => controller.text).toList(),
+
+        data.bio ?? '',
 
         openingHours.keys.toList(),
         openingHours.values.map((v) => v['from']).toList().cast<String>(),
@@ -226,6 +252,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _userNameController.clear();
         _genderController.clear();
         branchControllers.clear();
+        _bioController.clear();
         description = '';
         // dayNames = [];
         // from = [];
@@ -262,12 +289,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             final userData = data.data!.first;
             _setInitialValues(userData);
 
-            List<dynamic> branchLocations =
-                jsonDecode(data.data!.first.branchLocation!);
-            List<String> branchLocationsText = branchLocations.map((location) {
-              return location['location']
-                  as String; // Assuming each location is a Map with a 'location' key
-            }).toList();
+            String branchLocations = data.data!.first.branchLocation!;
+            // List<String> branchLocationsText = branchLocations.map((location) {
+            //   return location['location']
+            //       as String; // Assuming each location is a Map with a 'location' key
+            // }).toList();
             return Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(bottom: 18.w),
@@ -460,105 +486,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             addBranchField: _addBranchField,
                             removeBranchField: _removeBranchField,
                           ),
-                          // ...List.generate(
-                          //   branchControllers.length,
-                          //   (index) => Column(
-                          //     children: [
-                          //       Row(
-                          //         children: [
-                          //           Expanded(
-                          //             child: CustomTextFieldWidget(
-                          //               fill: true,
-                          //               fillColor: const Color(0xFFF6F2F2),
-                          //               icon: Icons.location_on,
-                          //               iconColor: Colors.red,
-                          //               textInputType: TextInputAction.next,
-                          //               hintText: 'Your Location',
-                          //               // hintText: branchLocationsText.isNotEmpty
-                          //               //     ? branchLocationsText[index]
-                          //               //     : 'Your Location',
-                          //               hintTextColor: Colors.black,
-                          //               controller: branchControllers[index],
-                          //               validator: (value) {
-                          //                 if (value == null || value.isEmpty) {
-                          //                   return 'Enter branch location';
-                          //                 }
-                          //                 print(branchLocationsText[index]);
-
-                          //                 return null;
-                          //               },
-                          //             ),
-                          //           ),
-                          //           SizedBox(width: 10.w),
-                          //           if (index == 0)
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(
-                          //                       4.0), // Adjust padding to control the gap
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             )
-                          //           else if (index == branchControllers.length)
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             )
-                          //           else if (index > 0) ...[
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: _addBranchField,
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.add_circle,
-                          //                       color: Color(0xFF362677)),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             SizedBox(width: 10.w),
-                          //             Container(
-                          //               decoration: BoxDecoration(
-                          //                 border: Border.all(
-                          //                     color: const Color(0xFFADADAD)),
-                          //               ),
-                          //               child: GestureDetector(
-                          //                 onTap: () =>
-                          //                     _removeBranchField(index),
-                          //                 child: const Padding(
-                          //                   padding: EdgeInsets.all(4.0),
-                          //                   child: Icon(Icons.delete,
-                          //                       color: Colors.black),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ],
-                          //       ),
-                          //       SizedBox(height: 10.2.h),
-                          //     ],
-                          //   ),
-                          // ),
 
                           SizedBox(height: 10.2.h),
                           SizedBox(
@@ -569,6 +496,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
                           SizedBox(height: 10.2.h),
                           TextFormField(
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
+                            controller: _bioController,
                             decoration: InputDecoration(
                               hintText: 'Write in your bio...',
                               hintStyle: TextStyle(
@@ -583,12 +514,12 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             keyboardType: TextInputType.multiline,
                             textInputAction: TextInputAction.done,
                             onChanged: (value) {
-                              description = value;
+                              _bioController.text = value;
                             },
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a description';
-                              }
+                              // if (value == null || value.isEmpty) {
+                              //   return 'Please enter a description';
+                              // }
                               return null;
                             },
                           ),
@@ -602,6 +533,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             fgColor: Colors.white,
                             bgColor: const Color(0xff362677),
                             isSmallText: true,
+                            // onPressed: () {
+                            //   // print('pinky ${branchControllers}');
+                            // },
                             onPressed: isLoading ? null : _submitUpdate,
                           ),
                         ],

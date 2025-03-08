@@ -85,12 +85,8 @@ mixin _$Product {
   double? get avg_rating => throw _privateConstructorUsedError;
   List<dynamic>? get savedByLoggedUser => throw _privateConstructorUsedError;
 
-  /// Serializes this Product to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -128,8 +124,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -253,8 +247,6 @@ class __$$ProductImplCopyWithImpl<$Res>
       _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -495,7 +487,7 @@ class _$ProductImpl implements _Product {
                 .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -516,9 +508,7 @@ class _$ProductImpl implements _Product {
       avg_rating,
       const DeepCollectionEquality().hash(_savedByLoggedUser));
 
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
@@ -554,8 +544,8 @@ abstract class _Product implements Product {
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
   @override
-  String? get id; // String? country_code,
-  @override
+  String? get id;
+  @override // String? country_code,
   String? get user_id;
   @override
   String? get category_id;
@@ -572,7 +562,8 @@ abstract class _Product implements Product {
   @override
   String? get negotiable;
   @override
-  String? get contact_name; // String? email,
+  String? get contact_name;
+  @override // String? email,
 // String? phone,
 // String? phone_hidden,
 // String? address,
@@ -584,15 +575,15 @@ abstract class _Product implements Product {
 // String? width,
 // String? weight,
 // String? height,
-  @override
-  String? get pickup; // String? longitude,
+  String? get pickup;
+  @override // String? longitude,
 // String? latitude,
 // String? hyper_del,
 // String? seller_del,
-  @override
   String? get visits;
   @override
-  String? get email_token; // String? phone_token,
+  String? get email_token;
+  @override // String? phone_token,
 // String? tmp_token,
 // String? verified_email,
 // String? verified_phone,
@@ -624,17 +615,13 @@ abstract class _Product implements Product {
 // String? deleted_at,
 // String? created_at,
 // String? updated_at,
-  @override
   String? get image;
   @override
   double? get avg_rating;
   @override
   List<dynamic>? get savedByLoggedUser;
-
-  /// Create a copy of Product
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

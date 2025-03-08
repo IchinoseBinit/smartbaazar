@@ -27,7 +27,7 @@ class Data with _$Data {
 class SavedProducts with _$SavedProducts {
   const factory SavedProducts({
     @JsonKey(name: "current_page") required int? currentPage,
-    @JsonKey(name: "data") required List<Product>? data,
+    @JsonKey(name: "data") required List<FavouriteProduct>? data,
     // @JsonKey(name: "first_page_url") required String? firstPageUrl,
     // @JsonKey(name: "from") required int? from,
     // @JsonKey(name: "last_page") required int? lastPage,
@@ -46,8 +46,8 @@ class SavedProducts with _$SavedProducts {
 }
 
 @freezed
-class Product with _$Product {
-  const factory Product({
+class FavouriteProduct with _$FavouriteProduct {
+  const factory FavouriteProduct({
     required String? id,
     @JsonKey(name: "country_code") required String? countryCode,
     @JsonKey(name: "user_id") required String? userId,
@@ -109,10 +109,10 @@ class Product with _$Product {
     required String? image,
     // @JsonKey(name: "avg_rating") required String? avgRating,
     required List<SavedByLoggedUser>? savedByLoggedUser,
-  }) = _Product;
+  }) = _FavouriteProduct;
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory FavouriteProduct.fromJson(Map<String, dynamic> json) =>
+      _$FavouriteProductFromJson(json);
 }
 
 @freezed

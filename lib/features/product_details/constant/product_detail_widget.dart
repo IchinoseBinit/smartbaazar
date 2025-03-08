@@ -1,13 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:sprintf/sprintf.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
@@ -15,102 +18,104 @@ import 'package:smartbazar/features/favourite_list/api/add_product_to_favourite_
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/main.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProductDetailWidget extends StatefulWidget {
-  ProductDetailWidget(
-      {super.key,
-      // this.membership_title,
-      this.vendorid,
-      this.offer = '',
-      this.title = "Trade",
+// This is your ConsumerStatefulWidget to handle all the parameters
+class ProductDetailWidget extends ConsumerStatefulWidget {
+  final String productid;
+  final String? title;
+  final String? price;
+  final String? discounttedPrice;
+  final int? similarproductCount;
+  final String? vendorname;
+  final int? didcountpercentage;
+  final String? posttype;
+  final String? comment;
+  final double? distance;
+  final String? Vimage, productImage, lefttile;
+  final String? membershipColor;
+  final String? membershipTitle;
+  final bool issponsored;
+  final String? offer, wow;
+  final double? avg_rating;
+  final double? shortestDistance;
+  final String? vendorid;
+  final String? tradeImage;
+  final String? membershipid;
+  final String? lat, long;
+  final List<dynamic>? savedid;
+  final VoidCallback? onRefresh;
+  final Function()? onenquiredclicked;
+
+  // Constructor
+  const ProductDetailWidget(
+      {Key? key,
+      required this.productid,
+      this.title,
+      this.price,
       this.discounttedPrice = '0',
-      this.comment = '0',
-      this.price = '1',
+      this.similarproductCount,
       this.vendorname = 'John',
-      this.distance = 2,
+      this.didcountpercentage,
+      this.posttype = '1',
+      this.comment = '0',
+      this.distance = 2.0,
       this.Vimage = '',
       this.productImage,
       this.lefttile = 'TradeHub',
-      this.similarproductCount,
       this.membershipColor,
-      this.wow,
-      this.issponsored = false,
-      this.shortestDistance,
       this.membershipTitle,
-      this.didcountpercentage,
-      this.avg_rating = 1,
+      this.issponsored = false,
+      this.offer,
+      this.wow,
+      this.avg_rating = 1.0,
+      this.shortestDistance,
+      this.vendorid,
       this.tradeImage,
-      this.posttype = '1',
       this.membershipid = '1',
-      required this.productid,
-      required this.lat,
-      required this.long,
+      this.lat,
+      this.long,
       this.savedid,
-      this.onRefresh});
-
-  String? title;
-  String? price;
-  String? discounttedPrice;
-  int? similarproductCount;
-  String? vendorname;
-  int? didcountpercentage;
-  String? posttype;
-  String productid;
-  String comment;
-
-  // String? membership_title;
-  double? distance;
-  String? Vimage, productImage, lefttile;
-  String? membershipColor;
-  String? membershipTitle;
-  bool issponsored;
-  String? offer, wow;
-  double? avg_rating;
-  double? shortestDistance;
-  String? vendorid;
-  String? tradeImage;
-  String? membershipid;
-  String? lat, long;
-  List<SavedPost>? savedid;
-  final VoidCallback? onRefresh;
+      this.onRefresh,
+      this.onenquiredclicked})
+      : super(key: key);
 
   @override
-  State<ProductDetailWidget> createState() => _ProductDetailWidgetState();
+  _ProductDetailWidgetState createState() => _ProductDetailWidgetState();
 }
 
-class _ProductDetailWidgetState extends State<ProductDetailWidget> {
+class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
   String formatToTwoDecimals(double value) {
-    return sprintf("%.2f", [value]); // Formats to 2 decimal places
+    return sprintf("%.2f", [value]); // Format the price to 2 decimal places
   }
 
   String? views, comment, share;
-
   int? userId;
 
+  // Method to get the userId from shared preferences
   void getUserId() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? session = pref.getString('session');
-    if (session != null) userId = jsonDecode(session)['result']['id'];
+    if (session != null) {
+      userId = jsonDecode(session)['result']['id'];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // String showRs = "Rs";
-    getUserId();
+    getUserId(); // Fetch user ID
 
-    // showRs = discounttedPrice == '0' ? 'Rs.' : '';
-    // String showRs = discounttedPrice != '0' ? 'Rs.' : '';
-    String showRs = widget.discounttedPrice == '0' ? '' : '';
+    // Format price and discount
+    String showRs = widget.discounttedPrice == '0' ? '' : 'Rs.';
 
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(
-                  productId: widget.productid,
-                )));
+        navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: widget.productid),
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
+        );
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -181,16 +186,13 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                     PopupMenuButton(
                       menuPadding: EdgeInsets.only(left: 10.w),
                       onSelected: (value) {},
-
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6))),
                       constraints:
                           const BoxConstraints.expand(width: 150, height: 150),
-                      // menuPadding: const EdgeInsets.only(left: 10),
                       iconColor: const Color(0xffB6B4B4),
-
                       color: Colors.grey,
                       itemBuilder: (context) {
                         return [
@@ -251,14 +253,21 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => VendorHomeScreen(
-                                        vendorName:widget.vendorname!,
-                                        vid: int.parse(widget.vendorid!),
-                                      ),
-                                    ));
+                                navigateToPage(
+                                  context: context,
+                                  page: ProductDetailScreen(
+                                      productId: widget.productid),
+                                  ref: ref,
+                                  showNavBar: false, // Hide bottom navbar
+                                );
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => VendorHomeScreen(
+                                //         vendorName: widget.vendorname!,
+                                //         vid: int.parse(widget.vendorid!),
+                                //       ),
+                                //     ));
                               },
                               child: Text(
                                 "Conatct Seller",
@@ -291,13 +300,21 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             padding: const EdgeInsets.only(left: 5),
                             onTap: () {
                               // print('value ${userId}');
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReportComplainScreen(
-                                        productId: userId.toString(),
-                                        productName: widget.vendorname!),
-                                  ));
+                              navigateToPage(
+                                context: context,
+                                page: ReportComplainScreen(
+                                    productId: userId.toString(),
+                                    productName: widget.vendorname!),
+                                ref: ref,
+                                showNavBar: false, // Hide bottom navbar
+                              );
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => ReportComplainScreen(
+                              //           productId: userId.toString(),
+                              //           productName: widget.vendorname!),
+                              //     ));
                             },
                             child: Text(
                               "Report",
@@ -319,6 +336,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              //image
               CachedNetworkImage(
                 imageUrl: widget.productImage ?? '',
                 height: 130.h,
@@ -355,22 +373,30 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                 },
               ),
               SizedBox(
-                height: 5.h,
+                height: 7.h,
               ),
+              //title
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 22.w),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.title!,
+                      widget.title!.isNotEmpty
+                          ? widget.title![0].toUpperCase() +
+                              widget.title!.substring(1)
+                          : widget.title!,
                       style: headerstyle.copyWith(
-                          color: ColorConstant.blackColor,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800),
+                        color: ColorConstant.blackColor,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                       softWrap: true,
                       maxLines: 1,
+                    ),
+                    SizedBox(
+                      height: 2.h,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -383,7 +409,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             style: headerstyle.copyWith(
                                 color: ColorConstant.blackColor,
                                 fontSize: 12.sp,
-                                fontWeight: FontWeight.w800),
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w900),
                           ),
                         ),
                         widget.offer == ''
@@ -409,7 +436,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             widget.discounttedPrice != '0' &&
                             widget.discounttedPrice!.isNotEmpty)
                           Text(
-                            "Rs$showRs${widget.discounttedPrice}",
+                            "$showRs${widget.discounttedPrice}",
                             style: headerstyle.copyWith(
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w600,
@@ -423,8 +450,11 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 5.h,
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 1.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -444,9 +474,10 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                           ),
                         ),
                         const SizedBox(
-                          width: 5,
+                          width: 0.1,
                         ),
                         Container(
+                          margin: EdgeInsets.only(left: 1.w),
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(5),
@@ -536,8 +567,11 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -606,18 +640,38 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 8.h,
+              ),
               Column(
                 // mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 15.w, vertical: 9.h),
                     decoration: const BoxDecoration(color: Color(0xffD5D5D5)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        InkWell(
+                          onTap: widget.onenquiredclicked,
+                          child: Text(
+                            "ENQUIRE",
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                                color: ColorConstant.blackColor),
+                          ),
+                        ),
                         Text(
-                          "ENQUIRE",
+                          '|',
+                          style: headerstyle.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: ColorConstant.blackColor),
+                        ),
+                        Text(
+                          "BUY",
                           style: headerstyle.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 13,
@@ -637,27 +691,16 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               fontSize: 13,
                               color: ColorConstant.blackColor),
                         ),
-                        Text(
-                          '|',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
-                        Text(
-                          "BUY",
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 13,
-                              color: ColorConstant.blackColor),
-                        ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: 0.6.h,
                   ),
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.zero,
-                    padding: EdgeInsets.symmetric(vertical: 10.9.h),
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
                     decoration: BoxDecoration(
                       color: widget.membershipColor != null
                           ? Color(
@@ -678,11 +721,19 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                         // Left Avatar
                         InkWell(
                           onTap: () {
+                            // navigateToPage(
+                            //   context: context,
+                            //   page: VendorHomeScreen(
+                            //       vendorName: widget.vendorname!,
+                            //       vid: int.tryParse(widget.vendorid!)!),
+                            //   ref: ref,
+                            //   showNavBar: false, // Hide bottom navbar
+                            // );
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VendorHomeScreen(
-                                    vendorName: widget.vendorname!,
+                                      vendorName: widget.vendorname!,
                                       vid: int.tryParse(widget.vendorid!)!),
                                 ));
                           },
@@ -726,8 +777,8 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                                       widget.shortestDistance == null
                                           ? widget.vendorname.toString()
                                           : widget.vendorname != null &&
-                                                  widget.vendorname!.length > 11
-                                              ? '${widget.vendorname!.substring(0, 11)}..' // Truncate after 11 characters
+                                                  widget.vendorname!.length > 17
+                                              ? '${widget.vendorname!.substring(0, 17)}..' // Truncate after 11 characters
                                               : widget.vendorname ??
                                                   '', // If vendorname is null or short enough, show it fully
                                       style: headerstyle.copyWith(

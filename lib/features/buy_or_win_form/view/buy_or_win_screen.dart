@@ -170,7 +170,7 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                       );
                     },
                     error: (error, stackTrace) =>
-                       const Center(child: Text("please login")),
+                        const Center(child: Text("please login")),
                     loading: () => const CircularProgressIndicator(),
                   ),
                   Row(
@@ -193,11 +193,11 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                               blurRadius: 10,
                               offset: const Offset(0, 3),
                             ),
-                            const BoxShadow(
-                              color: Colors.white,
+                             BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
                               spreadRadius: 0,
                               blurRadius: 10,
-                              offset: Offset(0, 0),
+                              offset: const Offset(0, 0),
                             ),
                           ],
                         ),
@@ -241,7 +241,10 @@ class _BuyOrWinFormScreenState extends ConsumerState<BuyOrWinFormScreen> {
                                   showCustomToast(context, value);
                                 },
                               );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Form added")));
                               qtycontroller.text = '';
+                              Navigator.pop(context);
                             },
                       marginH: 0,
                       height: 28.h,

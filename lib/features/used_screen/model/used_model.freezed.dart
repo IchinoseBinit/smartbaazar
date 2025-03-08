@@ -28,12 +28,8 @@ mixin _$UsedModel {
       throw _privateConstructorUsedError;
   List<UsedSlider>? get sliders => throw _privateConstructorUsedError;
 
-  /// Serializes this UsedModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsedModelCopyWith<UsedModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,8 +60,6 @@ class _$UsedModelCopyWithImpl<$Res, $Val extends UsedModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -104,8 +98,6 @@ class _$UsedModelCopyWithImpl<$Res, $Val extends UsedModel>
     ) as $Val);
   }
 
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UsedProductsCopyWith<$Res>? get products {
@@ -147,8 +139,6 @@ class __$$UsedModelImplCopyWithImpl<$Res>
       _$UsedModelImpl _value, $Res Function(_$UsedModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -264,7 +254,7 @@ class _$UsedModelImpl implements _UsedModel {
             const DeepCollectionEquality().equals(other._sliders, _sliders));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -275,9 +265,7 @@ class _$UsedModelImpl implements _UsedModel {
       const DeepCollectionEquality().hash(_advertisements),
       const DeepCollectionEquality().hash(_sliders));
 
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsedModelImplCopyWith<_$UsedModelImpl> get copyWith =>
@@ -315,11 +303,8 @@ abstract class _UsedModel implements UsedModel {
   List<UsedAdvertisement>? get advertisements;
   @override
   List<UsedSlider>? get sliders;
-
-  /// Create a copy of UsedModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsedModelImplCopyWith<_$UsedModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -333,12 +318,8 @@ mixin _$UsedProducts {
   int? get current_page => throw _privateConstructorUsedError;
   List<UsedProduct>? get data => throw _privateConstructorUsedError;
 
-  /// Serializes this UsedProducts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsedProductsCopyWith<UsedProducts> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -362,8 +343,6 @@ class _$UsedProductsCopyWithImpl<$Res, $Val extends UsedProducts>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsedProducts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -402,8 +381,6 @@ class __$$UsedProductsImplCopyWithImpl<$Res>
       _$UsedProductsImpl _value, $Res Function(_$UsedProductsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UsedProducts
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -459,14 +436,12 @@ class _$UsedProductsImpl implements _UsedProducts {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of UsedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsedProductsImplCopyWith<_$UsedProductsImpl> get copyWith =>
@@ -492,11 +467,8 @@ abstract class _UsedProducts implements UsedProducts {
   int? get current_page;
   @override
   List<UsedProduct>? get data;
-
-  /// Create a copy of UsedProducts
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsedProductsImplCopyWith<_$UsedProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -516,12 +488,8 @@ mixin _$UsedProduct {
   String? get contact_name => throw _privateConstructorUsedError;
   String? get pickup => throw _privateConstructorUsedError;
 
-  /// Serializes this UsedProduct to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsedProduct
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsedProductCopyWith<UsedProduct> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -553,8 +521,6 @@ class _$UsedProductCopyWithImpl<$Res, $Val extends UsedProduct>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsedProduct
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -631,8 +597,6 @@ class __$$UsedProductImplCopyWithImpl<$Res>
       _$UsedProductImpl _value, $Res Function(_$UsedProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UsedProduct
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -737,14 +701,12 @@ class _$UsedProductImpl implements _UsedProduct {
             (identical(other.pickup, pickup) || other.pickup == pickup));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, price, image, visits,
       avg_rating, contact_name, pickup);
 
-  /// Create a copy of UsedProduct
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsedProductImplCopyWith<_$UsedProductImpl> get copyWith =>
@@ -788,11 +750,8 @@ abstract class _UsedProduct implements UsedProduct {
   String? get contact_name;
   @override
   String? get pickup;
-
-  /// Create a copy of UsedProduct
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsedProductImplCopyWith<_$UsedProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -809,12 +768,8 @@ mixin _$UsedAdvertisement {
   String? get image => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
 
-  /// Serializes this UsedAdvertisement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsedAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsedAdvertisementCopyWith<UsedAdvertisement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -839,8 +794,6 @@ class _$UsedAdvertisementCopyWithImpl<$Res, $Val extends UsedAdvertisement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsedAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -895,8 +848,6 @@ class __$$UsedAdvertisementImplCopyWithImpl<$Res>
       $Res Function(_$UsedAdvertisementImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UsedAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -968,13 +919,11 @@ class _$UsedAdvertisementImpl implements _UsedAdvertisement {
             (identical(other.link, link) || other.link == link));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, order, status, image, link);
 
-  /// Create a copy of UsedAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsedAdvertisementImplCopyWith<_$UsedAdvertisementImpl> get copyWith =>
@@ -1010,11 +959,8 @@ abstract class _UsedAdvertisement implements UsedAdvertisement {
   String? get image;
   @override
   String? get link;
-
-  /// Create a copy of UsedAdvertisement
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsedAdvertisementImplCopyWith<_$UsedAdvertisementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1031,12 +977,8 @@ mixin _$UsedSlider {
   String? get link => throw _privateConstructorUsedError;
   String? get page => throw _privateConstructorUsedError;
 
-  /// Serializes this UsedSlider to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsedSlider
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsedSliderCopyWith<UsedSlider> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1065,8 +1007,6 @@ class _$UsedSliderCopyWithImpl<$Res, $Val extends UsedSlider>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsedSlider
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1125,8 +1065,6 @@ class __$$UsedSliderImplCopyWithImpl<$Res>
       _$UsedSliderImpl _value, $Res Function(_$UsedSliderImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UsedSlider
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1199,14 +1137,12 @@ class _$UsedSliderImpl implements _UsedSlider {
             (identical(other.page, page) || other.page == page));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, image, description, link, page);
 
-  /// Create a copy of UsedSlider
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsedSliderImplCopyWith<_$UsedSliderImpl> get copyWith =>
@@ -1241,11 +1177,8 @@ abstract class _UsedSlider implements UsedSlider {
   String? get link;
   @override
   String? get page;
-
-  /// Create a copy of UsedSlider
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsedSliderImplCopyWith<_$UsedSliderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

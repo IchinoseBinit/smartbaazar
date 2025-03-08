@@ -54,7 +54,7 @@ class _ForgetPasswordScreenState extends ConsumerState<ForgetPasswordScreen> {
                       height: 40.h,
                     ),
                     Text(
-                      'Forget Password?',
+                      'Forgot Password?',
                       style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w700,

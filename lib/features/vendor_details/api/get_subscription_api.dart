@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
@@ -24,6 +25,7 @@ Future<GetSubscriptionModel> getSubscription(GetSubscriptionRef ref) async {
   } catch (e) {
     // Handle or log the error here
     print('Error loading your subscription $e');
+    ref.read(isLogin.notifier).state = false;
 
     throw Exception('Failed to load your subscription: $e');
   }

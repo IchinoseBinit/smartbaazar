@@ -63,6 +63,7 @@ _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
       averageRating: (json['average_rating'] as num?)?.toInt(),
       discountPercentage: (json['discount_percentage'] as num?)?.toDouble(),
       wow: json['wow'] as String?,
+      wowStatus: (json['wow_status'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
@@ -83,4 +84,5 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'average_rating': instance.averageRating,
       'discount_percentage': instance.discountPercentage,
       'wow': instance.wow,
+      'wow_status': instance.wowStatus,
     };

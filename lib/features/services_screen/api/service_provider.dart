@@ -580,7 +580,7 @@ class VProduct {
   final String? discounted_price;
   final int? similarProductCount;
   final String offers;
-  final int? avg_rating;
+  final  int? avg_rating;
   final int? discount_percentage;
   final String? post_type_id;
     final List<SavedPost>? savedByLoggedUser;

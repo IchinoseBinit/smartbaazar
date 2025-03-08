@@ -7,18 +7,19 @@ part 'get_vendor_by_brand_api.g.dart';
 
 @riverpod
 Future<VendorBrandResponse> getvendorbybrandname(
-   ref,
-  int  vendorid,
+  ref,
+  int vendorid,
 ) async {
   final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
-      requestType: RequestType.get,
+      requestType: RequestType.getWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/vendor/$vendorid',
     );
 
     // Parse the entire response into the VendorBrandResponse model
+    print("bibash ${VendorBrandResponse.fromJson(response.data).data?.services}");
     return VendorBrandResponse.fromJson(response.data);
   } catch (e) {
     print("error $e");

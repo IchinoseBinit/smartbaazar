@@ -6,7 +6,7 @@ part of 'product_details_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productDetailsHash() => r'0a8f2c752bbfc09e1065b14e5654b921ba73261c';
+String _$productDetailsHash() => r'96d712eaeb2df49785bfb75d5c7df4216529e4e6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,8 +142,6 @@ class ProductDetailsProvider extends AutoDisposeFutureProvider<PostModel> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductDetailsRef on AutoDisposeFutureProviderRef<PostModel> {
   /// The parameter `id` of this provider.
   String get id;
@@ -157,4 +155,4 @@ class _ProductDetailsProviderElement
   String get id => (origin as ProductDetailsProvider).id;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

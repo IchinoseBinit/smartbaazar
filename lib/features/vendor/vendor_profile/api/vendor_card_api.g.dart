@@ -6,7 +6,7 @@ part of 'vendor_card_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getVendorCardHash() => r'eba886ba3f3303073dff477df8b64bbfd9862166';
+String _$getVendorCardHash() => r'763d40319eb522199df2078dd299ab61535d42ce';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,8 +143,6 @@ class GetVendorCardProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin GetVendorCardRef on AutoDisposeFutureProviderRef<VendorCardResponse> {
   /// The parameter `id` of this provider.
   int get id;
@@ -159,4 +157,4 @@ class _GetVendorCardProviderElement
   int get id => (origin as GetVendorCardProvider).id;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

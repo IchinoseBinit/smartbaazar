@@ -44,6 +44,7 @@ Future<String> createlisting(
   int? seller,
   int? trending,
 }) async {
+  print('raju $cf');
   final SmartClient client = SmartClient();
 
   try {
@@ -66,27 +67,26 @@ Future<String> createlisting(
       'negotiable': "0",
       'phone_hidden': "1",
       'captcha': "embed",
-      'trending': trending,
+      'trending': trending ?? '0',
       'ip_addr': "127.0.0.1",
-      'accept_marketing_offers': "1",
+      'accept_marketing_offers': accept,
       'is_permanent': "0",
-      'package_id': "1",
+      'package_id': package ?? 0,
       'payment_method_id': "1",
-      'trending': "1",
       'stock': stock ?? 0,
-      'address': address ?? "null",
-      'length': length ?? "1",
-      'width': width ?? "1",
-      'height': height ?? "1",
-      'weight': weight ?? "1",
+      'address': address ?? 'world',
+      'length': length,
+      'width': width,
+      'height': height,
+      'weight': weight,
       'pickup': pickup,
       'longitude': long?.toString() ?? "75",
       'latitude': lat?.toString() ?? "85",
       'hyper_del': hyperd,
       'seller_del': seller,
-      'story_display_days': "1",
-      'offers': offer ?? "Seasonal Offers",
-      'youtube': youtube ?? "jbhjbh",
+      'story_display_days': story,
+      'offers': offer ?? "Seasonal Offer",
+      'youtube': youtube ?? "www.google.com",
       'piece_from[]': pieces?.map((e) => e['from']).toList() ?? [],
       'piece_to[]': pieces?.map((e) => e['to']).toList() ?? [],
       'rate[]': pieces?.map((e) => e['rate']).toList() ?? [],
@@ -95,6 +95,21 @@ Future<String> createlisting(
     // Handle dynamic tags
     if (tags != null && tags.isNotEmpty) {
       formDataMap['tags[]'] = tags;
+    }
+
+    // Handle dynamic cf values
+    if (cf != null && cf.isNotEmpty) {
+      for (var item in cf) {
+        String key = item[0]; // cf.<number> (e.g., cf.35)
+        var value = item[1];  // Value can be a list or a single value
+
+        // If the value is a list, join it into a string
+        if (value is List) {
+          formDataMap[key] = value.join(',');
+        } else {
+          formDataMap[key] = value.toString();
+        }
+      }
     }
 
     // Create FormData

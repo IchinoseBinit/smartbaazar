@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,18 +53,18 @@ class _BecomeBrandbazaarMemberScreenState
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('GMembership Request posted successfully!'),
+          content: Text('Membership Request posted successfully!'),
           backgroundColor: Colors.grey,
         ),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) =>  const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to post gift'),
+          content: Text('Failed to post membership request'),
           backgroundColor: Colors.grey,
         ),
       );
@@ -136,7 +135,6 @@ class _BecomeBrandbazaarMemberScreenState
                               controller: brandNameController,
                               textAlign: TextAlign.end,
                               textInputAction: TextInputAction.next,
-                              // focusNode: linkFocusNode,
                               decoration: InputDecoration.collapsed(
                                 hintText: 'Brand Name',
                                 hintStyle: TextStyle(
@@ -208,7 +206,6 @@ class _BecomeBrandbazaarMemberScreenState
                               controller: panVatNoController,
                               textAlign: TextAlign.end,
                               textInputAction: TextInputAction.next,
-                              // focusNode: linkFocusNode,
                               decoration: InputDecoration.collapsed(
                                 hintText: 'XXX-XXXX-XXXX',
                                 hintStyle: TextStyle(

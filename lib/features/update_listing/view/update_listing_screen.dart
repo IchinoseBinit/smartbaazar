@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,18 +16,24 @@ import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/custom_drop_down_widget.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/api/get_categories_provider.dart';
 import 'package:smartbazar/features/create_listing/api/get_dropdown_value_api.dart';
 import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/dropdown_value_model.dart';
+import 'package:smartbazar/features/create_listing/model/fields_model.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
+import 'package:smartbazar/features/pending_approval/model/pending_approval_model.dart';
 import 'package:smartbazar/features/update_listing/api/fetch_category_by_id_provider.dart';
 import 'package:smartbazar/features/update_listing/api/update_listing_provider.dart';
 import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 
 class UpdateListing extends StatefulWidget {
+  final WidgetRef? ref;
   final MyListingProduct? prod;
-  const UpdateListing({super.key, required this.prod});
+  const UpdateListing({super.key, required this.prod, required this.ref});
 
   @override
   State<UpdateListing> createState() => _UpdateListingState();
@@ -51,6 +58,7 @@ class _UpdateListingState extends State<UpdateListing> {
   TextEditingController modelcontroller = TextEditingController();
   String accept = '0';
   bool _hide = false;
+  // List<String>? tags = [];
 
   TextEditingController streetsizecontroller = TextEditingController();
   TextEditingController storagecontroller = TextEditingController();
@@ -96,6 +104,22 @@ class _UpdateListingState extends State<UpdateListing> {
   bool _hyperDeliveryAvailable = false;
   List<CityList>? citylistsitems = [];
   final List<String> _tags = [];
+  bool? _isselected;
+  FieldsResponse? furnitureresresp;
+  FieldsResponse? laptoprep;
+  FieldsResponse? clothresp;
+  FieldsResponse? getcar;
+
+  FieldsResponse? getRoad;
+  TextEditingController? eventaddress;
+  FieldsResponse? eventresp;
+  List<Option>? listentadddress;
+  Option? eventaddressselected;
+
+  FieldsResponse? getcloth;
+  MyCategory? childcategory;
+  FieldsResponse? getsize;
+  Option? selectedtrnsmission;
   void _addTag(String tag) {
     if (tag.isNotEmpty && !_tags.contains(tag)) {
       setState(() {
@@ -115,8 +139,22 @@ class _UpdateListingState extends State<UpdateListing> {
   final bool _showSearchProductModels = false;
   int? _selectedpackage = 0;
 
+  FieldsResponse? phoneresp;
+  FieldsResponse? jobsresp;
+  List<Option>? joblocationlist;
+  Option? selectedjoblocation;
+  List<Option>? educationrequired;
+  Option? selctededucation;
+  Option? fuelType;
+  List<Option>? numberofvacencylist;
+  Option? vacencyselected;
+
   @override
   void initState() {
+    _getStreet(widget.prod!.address ?? widget.prod!.pickup!);
+    addresscontroller.text = widget.prod?.address ?? '';
+
+    _addTag(widget.prod!.tags ?? '');
     _acceptterms = widget.prod!.acceptTerms == '1' ? false : true;
     emailcontroller.text = widget.prod!.email!;
     if (widget.prod?.length != null) {
@@ -140,6 +178,10 @@ class _UpdateListingState extends State<UpdateListing> {
       (value) {
         parentid = value.id.toString();
         _fetchCategoryList(parentid!);
+        if (categoryListItems.isEmpty)
+          setState(() {
+            _fetchCategoryList(parentid!);
+          });
       },
     );
 
@@ -176,16 +218,23 @@ class _UpdateListingState extends State<UpdateListing> {
       final categories = await repository.fetchCategoryList(parentId: typeId);
 
       print("Categories fetched: $categories");
+      print(
+          "kaluy ${categories.first.id == int.tryParse(widget.prod!.categoryId!)!}");
 
       // Update the state with the fetched category list
       setState(() {
         categoryListItems = categories;
 
         // Set the selected category if a matching ID is found
-        selectedcategopry = categoryListItems.firstWhere(
-          (element) => element.id == int.tryParse(parentid!),
+        selectedcategopry = categories.firstWhere(
+          (element) => element.id == int.tryParse(widget.prod!.categoryId!)!,
         );
+
+        // selectedcategopry = categoryListItems.firstWhere(
+        //   (element) => element.id == int.tryParse(parentid!),
+        // );
       });
+
       // print("raju ${selectedcategopry?.name}");
     } catch (e) {
       print('Failed to load categories: $e');
@@ -330,6 +379,7 @@ class _UpdateListingState extends State<UpdateListing> {
       final value = await getpickaddress(name);
       setState(() {
         _places = value.places!;
+        _pickupcontroller.text = value.places![0].description!;
       });
     } catch (e) {
       // Handle errors if needed
@@ -339,10 +389,84 @@ class _UpdateListingState extends State<UpdateListing> {
 
   @override
   Widget build(BuildContext context) {
+    widget.ref!.watch(GetCategoryResponseProvider(122)).whenData(
+      (value) async {
+        eventresp = value;
+        listentadddress = value.result[2].options;
+      },
+    );
+    final clotheasync = widget.ref!.watch(getShippingCitiesProvider);
+    widget.ref!.watch(GetCategoryResponseProvider(54)).whenData(
+      (value) async {
+        clothresp = value;
+        print('mala $clotheasync');
+      },
+    );
+    final getCategories =
+        widget.ref!.watch(GetCategoryResponseProvider(1)).whenData(
+      (value) async {
+        // print("kala ${value}");
+        getcar = value; //car
+      },
+    );
+    final citySuggestionsAsync = widget.ref?.watch(getShippingCitiesProvider);
+
+    widget.ref!.watch(GetCategoryResponseProvider(73)).whenData(
+      (value) async {
+        jobsresp = value;
+        educationrequired = jobsresp?.result[6].options;
+        numberofvacencylist = jobsresp?.result[7].options;
+        joblocationlist = jobsresp?.result[8].options;
+
+        print('haka $educationrequired');
+      },
+    );
+    widget.ref!.watch(GetCategoryResponseProvider(9)).whenData(
+      (value) async {
+        phoneresp = value;
+        print("lauka ${phoneresp?.result[4]}");
+      },
+    ); //phone
+
+    final laptop = widget.ref!.watch(GetCategoryResponseProvider(14)).whenData(
+      (value) async {
+        laptoprep = value;
+        // print('maula ${laptoprep}');
+      },
+    ); //car
+    final furniture =
+        widget.ref!.watch(GetCategoryResponseProvider(30)).whenData(
+      (value) async {
+        furnitureresresp = value;
+      },
+    ); //furniture
+
+    final road = widget.ref?.watch(GetCategoryResponseProvider(37)).whenData(
+      (value) async {
+        getRoad = value;
+        print('bibash ${getRoad?.result[3]}');
+      },
+    ); //road
+
+    final clothfirst =
+        widget.ref!.watch(GetCategoryResponseProvider(54)).whenData(
+      (value) async {
+        getcloth = value;
+      },
+    );
+    final selltofields = widget.ref?.watch(GetCategoryResponseProvider(217));
+    selltofields?.when(
+      data: (data) {},
+      error: (error, stackTrace) => null,
+      loading: () => null,
+    );
+
     print('taka ${widget.prod}');
     if (kDebugMode) {
       print("kalu ${widget.prod}");
     }
+    final showWarning =
+        widget.ref?.watch(showWarningProvider); // Directly watch state
 
     return Scaffold(
       backgroundColor: const Color(0xffF6F1F1),
@@ -842,6 +966,42 @@ class _UpdateListingState extends State<UpdateListing> {
                       ],
                     ),
                   ),
+                  CreateListingCardWidget(
+                    child: Row(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Enter address',
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            Text(
+                              ' *',
+                              style: TextStyle(
+                                  color: const Color(0xffD33636),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.sp),
+                            )
+                          ],
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: addresscontroller,
+                            decoration: InputDecoration.collapsed(
+                                hintText: 'Enter address',
+                                hintStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.sp,
+                                    color: const Color(0xffADADAD))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
                   CreateListingCardWidget(
                     child: Column(
@@ -870,8 +1030,11 @@ class _UpdateListingState extends State<UpdateListing> {
                         ),
                         DropdownButton<int>(
                           isExpanded: true, // Ensures dropdown spans full width
-                          value:
-                              selectedStoryDisplayDays, // The currently selected value
+                          value: selectedStoryDisplayDays == null ||
+                                  selectedStoryDisplayDays! < 1 ||
+                                  selectedStoryDisplayDays! > 10
+                              ? null // Set null if the selected value is invalid
+                              : selectedStoryDisplayDays, // The currently selected value
                           hint: Text(
                             'Select Story Display Days',
                             style: TextStyle(
@@ -2078,70 +2241,158 @@ class _UpdateListingState extends State<UpdateListing> {
                     height: 30.h,
                   ),
                   Center(
-  child: isloading
-      ? const Center(child: CircularProgressIndicator())
-      : GeneralEelevatedButton(
-          text: isloading ? 'Submitting...' : 'Submit',
-          onPresssed: () async {
-            print('Category: ${selectedcategopry?.id ?? widget.prod?.categoryId}');
-            print('Title: ${titlecontroller.text.isEmpty ? widget.prod?.title : titlecontroller.text}');
-            print('Description: ${descriptionController.text.isEmpty ? widget.prod?.description : descriptionController.text}');
-            print('Stock: ${stockcontroller.text.isEmpty ? widget.prod?.stock : stockcontroller.text}');
-            print('Price: ${pricecontroller.text.isEmpty ? widget.prod?.price : pricecontroller.text}');
-            print('Discounted Price: ${discountcontroller.text.isEmpty ? widget.prod?.discountedPrice : discountcontroller.text}');
-            print('Offer: $selectedoffer');
-            print('Story Days: ${selectedStoryDisplayDays ?? widget.prod?.storyDisplayDays}');
-            print('Width: ${widthcontroller.text.isEmpty ? widget.prod?.width : widthcontroller.text}');
-            print('Height: ${heightcontroller.text.isEmpty ? widget.prod?.height : heightcontroller.text}');
-            print('Weight: ${weightcontroller.text.isEmpty ? widget.prod?.weight : weightcontroller.text}');
-            print('Email: ${emailcontroller.text.isEmpty ? widget.prod?.email : emailcontroller.text}');
-            print('Pickup: ${selectedpickup ?? "Default"}');
+                    child: isloading
+                        ? const Center(child: CircularProgressIndicator())
+                        : GeneralEelevatedButton(
+                            text: isloading ? 'Submitting...' : 'Submit',
+                            onPresssed: () async {
+                              // print(
+                              //     'Category: ${selectedcategopry?.id ?? widget.prod?.categoryId}');
+                              // print(
+                              //     'Title: ${titlecontroller.text.isEmpty ? widget.prod?.title : titlecontroller.text}');
+                              // print(
+                              //     'Description: ${descriptionController.text.isEmpty ? widget.prod?.description : descriptionController.text}');
+                              // print(
+                              //     'Stock: ${stockcontroller.text.isEmpty ? widget.prod?.stock : stockcontroller.text}');
+                              // print(
+                              //     'Price: ${pricecontroller.text.isEmpty ? widget.prod?.price : pricecontroller.text}');
+                              // print(
+                              //     'Discounted Price: ${discountcontroller.text.isEmpty ? widget.prod?.discountedPrice : discountcontroller.text}');
+                              // print('Offer: $selectedoffer');
+                              // print(
+                              //     'Story Days: ${selectedStoryDisplayDays ?? widget.prod?.storyDisplayDays}');
+                              // print(
+                              //     'Width: ${widthcontroller.text.isEmpty ? widget.prod?.width : widthcontroller.text}');
+                              // print(
+                              //     'Height: ${heightcontroller.text.isEmpty ? widget.prod?.height : heightcontroller.text}');
+                              // print(
+                              //     'Weight: ${weightcontroller.text.isEmpty ? widget.prod?.weight : weightcontroller.text}');
+                              // print(
+                              //     'Email: ${emailcontroller.text.isEmpty ? widget.prod?.email : emailcontroller.text}');
+                              // print('Pickup: ${selectedpickup ?? "Default"}');
 
-            setState(() {
-              isloading = true;
-            });
+                              // setState(() {
+                              //   isloading = true;
+                              // });
 
-            try {
-              String responseMessage = await updatelisting(
-                null,
-                widget.prod!.id!,
-                category: selectedcategopry?.id.toString() ?? widget.prod!.categoryId.toString(),
-                package: _selectedpackage,
-                tags: _tags,
-                stock: stockcontroller.text.isEmpty ? widget.prod!.stock! : stockcontroller.text,
-                title: titlecontroller.text.isEmpty ? widget.prod!.title! : titlecontroller.text,
-                city: selectedCity?.name ?? widget.prod!.address!,
-                price: pricecontroller.text.isEmpty ? widget.prod!.price! : pricecontroller.text,
-                description: descriptionController.text.isEmpty ? widget.prod!.description! : descriptionController.text,
-                length: lengthcontroller.text.isEmpty ? widget.prod!.length! : lengthcontroller.text,
-                width: widthcontroller.text.isEmpty ? widget.prod!.width! : widthcontroller.text,
-                height: heightcontroller.text.isEmpty ? widget.prod!.height! : heightcontroller.text,
-                weight: weightcontroller.text.isEmpty ? widget.prod!.weight! : weightcontroller.text,
-                disprice: discountcontroller.text.isEmpty ? widget.prod!.discountedPrice! : discountcontroller.text,
-                posttype: _selectedtypedropdownvalue   ?.typeId.toString() ?? widget.prod!.postTypeId!,
-                email: emailcontroller.text.isEmpty ? widget.prod!.email! : emailcontroller.text,
-                phone: phonecontroller.text.isEmpty ? widget.prod!.phone! : phonecontroller.text,
-                username: namecontroller.text.isEmpty ? widget.prod!.contactName! : namecontroller.text,
-                pickup: _pickupcontroller.text,
-                images: selectedImages,
-                accept: _acceptterms == true ? '1' : '0',
-                address: addresscontroller.text.isEmpty ? widget.prod!.address! : addresscontroller.text,
-                offer: selectedoffer?.offers ?? widget.prod?.offers!,
-                story: storagecontroller.text.isEmpty ? widget.prod?.storyDisplayDays! : storagecontroller.text,
-                lat: selectedpickup?.latitude ?? 1.11111,
-                long: selectedpickup?.longitude ?? 1.11111,
-              );
-              print("Update successful: $responseMessage");
-            } catch (e) {
-              print("Error updating listing: $e");
-            } finally {
-              setState(() {
-                isloading = false;
-              });
-            }
-          },
-        ),
-),
+                              try {
+                                String responseMessage = await updatelisting(
+                                  null,
+                                  widget.prod!.id!,
+                                  category: selectedcategopry?.id.toString() ??
+                                      widget.prod!.categoryId.toString(),
+                                  package: _selectedpackage,
+                                  tags: _tags,
+                                  stock: stockcontroller.text.isEmpty
+                                      ? widget.prod!.stock!
+                                      : stockcontroller.text,
+                                  title: titlecontroller.text.isEmpty
+                                      ? widget.prod!.title!
+                                      : titlecontroller.text,
+                                  city_id: selectedCity?.id.toString() ??
+                                      widget.prod!.address!,
+                                  price: pricecontroller.text.isEmpty
+                                      ? widget.prod!.price!
+                                      : pricecontroller.text,
+                                  description:
+                                      descriptionController.text.isEmpty
+                                          ? widget.prod!.description!
+                                          : descriptionController.text,
+                                  length: lengthcontroller.text.isEmpty
+                                      ? widget.prod!.length
+                                      : lengthcontroller.text,
+                                  width: widthcontroller.text.isEmpty
+                                      ? widget.prod!.width
+                                      : widthcontroller.text,
+                                  height: heightcontroller.text.isEmpty
+                                      ? widget.prod!.height
+                                      : heightcontroller.text,
+                                  weight: weightcontroller.text.isEmpty
+                                      ? widget.prod!.weight
+                                      : weightcontroller.text,
+                                  disprice: discountcontroller.text.isEmpty
+                                      ? widget.prod!.discountedPrice!
+                                      : discountcontroller.text,
+                                  posttype: _selectedtypedropdownvalue?.typeId
+                                          .toString() ??
+                                      widget.prod!.postTypeId!,
+                                  email: emailcontroller.text.isEmpty
+                                      ? widget.prod!.email!
+                                      : emailcontroller.text,
+                                  phone: phonecontroller.text.isEmpty
+                                      ? widget.prod!.phone!
+                                      : phonecontroller.text,
+                                  username: namecontroller.text.isEmpty
+                                      ? widget.prod!.contactName!
+                                      : namecontroller.text,
+                                  pickup: _pickupcontroller.text,
+                                  images: selectedImages,
+                                  accept: _acceptterms == true ? '1' : '0',
+                                  address: addresscontroller.text.isEmpty
+                                      ? widget.prod!.address ?? ''
+                                      : addresscontroller.text,
+                                  offer: selectedoffer?.offers ??
+                                      widget.prod?.offers,
+                                  story: storagecontroller.text.isEmpty
+                                      ? widget.prod?.storyDisplayDays ?? '1'
+                                      : storagecontroller.text ?? '1',
+                                  lat: selectedpickup?.latitude ?? 1.11111,
+                                  long: selectedpickup?.longitude ?? 1.11111,
+                                );
+
+                                print("Update successful: $responseMessage");
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      title: const Text("Response"),
+                                      content: Text(responseMessage),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("OK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } catch (e) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      title: const Text("Response"),
+                                      content:
+                                          Text('PLease fill all the details'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("OK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                print("Error updating listing: $e");
+                              } finally {
+                                setState(() {
+                                  isloading = false;
+                                });
+                                Navigator.pop(context);
+                              }
+                            },
+                          ),
+                  ),
 
                   SizedBox(
                     height: 30.h,
@@ -2175,7 +2426,7 @@ class _updatephotoescontainerState extends State<updatephotoescontainer> {
       // Pick images using the ImagePicker
       final List<XFile> selectedImages = await _picker.pickMultiImage();
 
-      if (selectedImages != null && selectedImages.isNotEmpty) {
+      if (selectedImages.isNotEmpty) {
         setState(() {
           images.addAll(selectedImages.map((e) => File(e.path)).toList());
         });

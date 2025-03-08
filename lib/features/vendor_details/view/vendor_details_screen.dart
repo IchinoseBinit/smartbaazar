@@ -248,40 +248,37 @@ class _VerifyAccountWidgetState extends ConsumerState<VerifyAccountWidget> {
             height: 10.h,
           ),
           const Divider(color: Color(0xffADADAD)),
-          if(_isverified=='1')
-          Padding(
-            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    VerifyAccountPhotoContainer(
-                      title: 'PAN',
-                      onTap: () => _pickFile('PAN'),
-                      selectedFile: panVatFile,
-                    ),
-                    VerifyAccountPhotoContainer(
-                      title: 'VAT',
-                      onTap: () => _pickFile('Tax'),
-                      selectedFile: taxCertificateFile,
-                    ),
-                    VerifyAccountPhotoContainer(
-                      title: 'Certificate',
-                      onTap: () => _pickFile('Register'),
-                      selectedFile: registerCertificateFile,
-                    ),
-                  ],
-                ),
-              ],
+          if (_isverified == '1')
+            Padding(
+              padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      VerifyAccountPhotoContainer(
+                        title: 'PAN',
+                        onTap: () => _pickFile('PAN'),
+                        selectedFile: panVatFile,
+                      ),
+                      VerifyAccountPhotoContainer(
+                        title: 'VAT',
+                        onTap: () => _pickFile('Tax'),
+                        selectedFile: taxCertificateFile,
+                      ),
+                      VerifyAccountPhotoContainer(
+                        title: 'Certificate',
+                        onTap: () => _pickFile('Register'),
+                        selectedFile: registerCertificateFile,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          if(_isverified=='1')
-          Text("Request pending"),
-          if(_isLoading=='2')
-          Text('Please contact adminstrator'),
-
+          if (_isverified == '1') const Text("Request pending"),
+          if (_isLoading == '2') const Text('Please contact adminstrator'),
           const SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.only(left: 12.w),
@@ -367,6 +364,8 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
   bool termsAccepted = false;
   bool marketingAccepted = false;
   String? userId, email, userName;
+  bool _showpass = false;
+  bool _showpass2 = false;
 
   @override
   void initState() {
@@ -454,12 +453,18 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
                 children: [
                   CustomTextFieldWidget(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: _showpass,
                     fill: true,
                     fillColor: const Color(0xffF3F3F3),
                     icon: Icons.person,
-                    suffixIcon:
-                        const Icon(Icons.visibility, color: Color(0xffADADAD)),
+                    suffixIcon: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _showpass = !_showpass;
+                          });
+                        },
+                        child: const Icon(Icons.visibility,
+                            color: Color(0xffADADAD))),
                     hintText: 'New Password',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -473,15 +478,21 @@ class _ChangePasswordWidgetState extends ConsumerState<ChangePasswordWidget> {
                   ),
                   CustomTextFieldWidget(
                     controller: _confirmPasswordController,
-                    obscureText: true,
+                    obscureText: _showpass2,
                     icon: Icons.person,
                     // decoration: const InputDecoration(
                     hintText: 'Confirm Password',
                     fillColor: const Color(0xffF3F3F3),
                     fill: true,
 
-                    suffixIcon:
-                        const Icon(Icons.visibility, color: Color(0xffADADAD)),
+                    suffixIcon: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _showpass2 = !_showpass2;
+                          });
+                        },
+                        child: const Icon(Icons.visibility,
+                            color: Color(0xffADADAD))),
                     // ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {

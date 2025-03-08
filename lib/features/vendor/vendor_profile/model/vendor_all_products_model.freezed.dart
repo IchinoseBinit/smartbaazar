@@ -21,15 +21,11 @@ VendorAllProductsResponse _$VendorAllProductsResponseFromJson(
 
 /// @nodoc
 mixin _$VendorAllProductsResponse {
-  VendorProfileAllProductsData get data => throw _privateConstructorUsedError;
-  String get msg => throw _privateConstructorUsedError;
+  VendorProfileAllProductsData? get data => throw _privateConstructorUsedError;
+  String? get msg => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorAllProductsResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorAllProductsResponseCopyWith<VendorAllProductsResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -40,9 +36,9 @@ abstract class $VendorAllProductsResponseCopyWith<$Res> {
           $Res Function(VendorAllProductsResponse) then) =
       _$VendorAllProductsResponseCopyWithImpl<$Res, VendorAllProductsResponse>;
   @useResult
-  $Res call({VendorProfileAllProductsData data, String msg});
+  $Res call({VendorProfileAllProductsData? data, String? msg});
 
-  $VendorProfileAllProductsDataCopyWith<$Res> get data;
+  $VendorProfileAllProductsDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -56,32 +52,32 @@ class _$VendorAllProductsResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? msg = null,
+    Object? data = freezed,
+    Object? msg = freezed,
   }) {
     return _then(_value.copyWith(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as VendorProfileAllProductsData,
-      msg: null == msg
+              as VendorProfileAllProductsData?,
+      msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $VendorProfileAllProductsDataCopyWith<$Res> get data {
-    return $VendorProfileAllProductsDataCopyWith<$Res>(_value.data, (value) {
+  $VendorProfileAllProductsDataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $VendorProfileAllProductsDataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -96,10 +92,10 @@ abstract class _$$VendorAllProductsResponseImplCopyWith<$Res>
       __$$VendorAllProductsResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({VendorProfileAllProductsData data, String msg});
+  $Res call({VendorProfileAllProductsData? data, String? msg});
 
   @override
-  $VendorProfileAllProductsDataCopyWith<$Res> get data;
+  $VendorProfileAllProductsDataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -112,23 +108,21 @@ class __$$VendorAllProductsResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorAllProductsResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? msg = null,
+    Object? data = freezed,
+    Object? msg = freezed,
   }) {
     return _then(_$VendorAllProductsResponseImpl(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as VendorProfileAllProductsData,
-      msg: null == msg
+              as VendorProfileAllProductsData?,
+      msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -143,9 +137,9 @@ class _$VendorAllProductsResponseImpl implements _VendorAllProductsResponse {
       _$$VendorAllProductsResponseImplFromJson(json);
 
   @override
-  final VendorProfileAllProductsData data;
+  final VendorProfileAllProductsData? data;
   @override
-  final String msg;
+  final String? msg;
 
   @override
   String toString() {
@@ -161,13 +155,11 @@ class _$VendorAllProductsResponseImpl implements _VendorAllProductsResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorAllProductsResponseImplCopyWith<_$VendorAllProductsResponseImpl>
@@ -184,21 +176,18 @@ class _$VendorAllProductsResponseImpl implements _VendorAllProductsResponse {
 
 abstract class _VendorAllProductsResponse implements VendorAllProductsResponse {
   const factory _VendorAllProductsResponse(
-      {required final VendorProfileAllProductsData data,
-      required final String msg}) = _$VendorAllProductsResponseImpl;
+      {required final VendorProfileAllProductsData? data,
+      required final String? msg}) = _$VendorAllProductsResponseImpl;
 
   factory _VendorAllProductsResponse.fromJson(Map<String, dynamic> json) =
       _$VendorAllProductsResponseImpl.fromJson;
 
   @override
-  VendorProfileAllProductsData get data;
+  VendorProfileAllProductsData? get data;
   @override
-  String get msg;
-
-  /// Create a copy of VendorAllProductsResponse
-  /// with the given fields replaced by the non-null parameter values.
+  String? get msg;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorAllProductsResponseImplCopyWith<_$VendorAllProductsResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -210,14 +199,10 @@ VendorProfileAllProductsData _$VendorProfileAllProductsDataFromJson(
 
 /// @nodoc
 mixin _$VendorProfileAllProductsData {
-  List<BrandNewModel>? get all_products => throw _privateConstructorUsedError;
+  AllProductsWrapper? get all_products => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorProfileAllProductsData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorProfileAllProductsData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorProfileAllProductsDataCopyWith<VendorProfileAllProductsData>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -230,7 +215,9 @@ abstract class $VendorProfileAllProductsDataCopyWith<$Res> {
       _$VendorProfileAllProductsDataCopyWithImpl<$Res,
           VendorProfileAllProductsData>;
   @useResult
-  $Res call({List<BrandNewModel>? all_products});
+  $Res call({AllProductsWrapper? all_products});
+
+  $AllProductsWrapperCopyWith<$Res>? get all_products;
 }
 
 /// @nodoc
@@ -244,8 +231,6 @@ class _$VendorProfileAllProductsDataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorProfileAllProductsData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -255,8 +240,20 @@ class _$VendorProfileAllProductsDataCopyWithImpl<$Res,
       all_products: freezed == all_products
           ? _value.all_products
           : all_products // ignore: cast_nullable_to_non_nullable
-              as List<BrandNewModel>?,
+              as AllProductsWrapper?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AllProductsWrapperCopyWith<$Res>? get all_products {
+    if (_value.all_products == null) {
+      return null;
+    }
+
+    return $AllProductsWrapperCopyWith<$Res>(_value.all_products!, (value) {
+      return _then(_value.copyWith(all_products: value) as $Val);
+    });
   }
 }
 
@@ -269,7 +266,10 @@ abstract class _$$VendorProfileAllProductsDataImplCopyWith<$Res>
       __$$VendorProfileAllProductsDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<BrandNewModel>? all_products});
+  $Res call({AllProductsWrapper? all_products});
+
+  @override
+  $AllProductsWrapperCopyWith<$Res>? get all_products;
 }
 
 /// @nodoc
@@ -282,8 +282,6 @@ class __$$VendorProfileAllProductsDataImplCopyWithImpl<$Res>
       $Res Function(_$VendorProfileAllProductsDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorProfileAllProductsData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -291,9 +289,9 @@ class __$$VendorProfileAllProductsDataImplCopyWithImpl<$Res>
   }) {
     return _then(_$VendorProfileAllProductsDataImpl(
       all_products: freezed == all_products
-          ? _value._all_products
+          ? _value.all_products
           : all_products // ignore: cast_nullable_to_non_nullable
-              as List<BrandNewModel>?,
+              as AllProductsWrapper?,
     ));
   }
 }
@@ -302,23 +300,14 @@ class __$$VendorProfileAllProductsDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VendorProfileAllProductsDataImpl
     implements _VendorProfileAllProductsData {
-  const _$VendorProfileAllProductsDataImpl(
-      {final List<BrandNewModel>? all_products})
-      : _all_products = all_products;
+  const _$VendorProfileAllProductsDataImpl({required this.all_products});
 
   factory _$VendorProfileAllProductsDataImpl.fromJson(
           Map<String, dynamic> json) =>
       _$$VendorProfileAllProductsDataImplFromJson(json);
 
-  final List<BrandNewModel>? _all_products;
   @override
-  List<BrandNewModel>? get all_products {
-    final value = _all_products;
-    if (value == null) return null;
-    if (_all_products is EqualUnmodifiableListView) return _all_products;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  final AllProductsWrapper? all_products;
 
   @override
   String toString() {
@@ -330,18 +319,15 @@ class _$VendorProfileAllProductsDataImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VendorProfileAllProductsDataImpl &&
-            const DeepCollectionEquality()
-                .equals(other._all_products, _all_products));
+            (identical(other.all_products, all_products) ||
+                other.all_products == all_products));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_all_products));
+  int get hashCode => Object.hash(runtimeType, all_products);
 
-  /// Create a copy of VendorProfileAllProductsData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorProfileAllProductsDataImplCopyWith<
@@ -360,20 +346,825 @@ class _$VendorProfileAllProductsDataImpl
 abstract class _VendorProfileAllProductsData
     implements VendorProfileAllProductsData {
   const factory _VendorProfileAllProductsData(
-          {final List<BrandNewModel>? all_products}) =
+          {required final AllProductsWrapper? all_products}) =
       _$VendorProfileAllProductsDataImpl;
 
   factory _VendorProfileAllProductsData.fromJson(Map<String, dynamic> json) =
       _$VendorProfileAllProductsDataImpl.fromJson;
 
   @override
-  List<BrandNewModel>? get all_products;
-
-  /// Create a copy of VendorProfileAllProductsData
-  /// with the given fields replaced by the non-null parameter values.
+  AllProductsWrapper? get all_products;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorProfileAllProductsDataImplCopyWith<
           _$VendorProfileAllProductsDataImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+AllProductsWrapper _$AllProductsWrapperFromJson(Map<String, dynamic> json) {
+  return _AllProductsWrapper.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AllProductsWrapper {
+  List<VendorAllproductsModel>? get data => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AllProductsWrapperCopyWith<AllProductsWrapper> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AllProductsWrapperCopyWith<$Res> {
+  factory $AllProductsWrapperCopyWith(
+          AllProductsWrapper value, $Res Function(AllProductsWrapper) then) =
+      _$AllProductsWrapperCopyWithImpl<$Res, AllProductsWrapper>;
+  @useResult
+  $Res call({List<VendorAllproductsModel>? data});
+}
+
+/// @nodoc
+class _$AllProductsWrapperCopyWithImpl<$Res, $Val extends AllProductsWrapper>
+    implements $AllProductsWrapperCopyWith<$Res> {
+  _$AllProductsWrapperCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_value.copyWith(
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<VendorAllproductsModel>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$AllProductsWrapperImplCopyWith<$Res>
+    implements $AllProductsWrapperCopyWith<$Res> {
+  factory _$$AllProductsWrapperImplCopyWith(_$AllProductsWrapperImpl value,
+          $Res Function(_$AllProductsWrapperImpl) then) =
+      __$$AllProductsWrapperImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<VendorAllproductsModel>? data});
+}
+
+/// @nodoc
+class __$$AllProductsWrapperImplCopyWithImpl<$Res>
+    extends _$AllProductsWrapperCopyWithImpl<$Res, _$AllProductsWrapperImpl>
+    implements _$$AllProductsWrapperImplCopyWith<$Res> {
+  __$$AllProductsWrapperImplCopyWithImpl(_$AllProductsWrapperImpl _value,
+      $Res Function(_$AllProductsWrapperImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = freezed,
+  }) {
+    return _then(_$AllProductsWrapperImpl(
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<VendorAllproductsModel>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$AllProductsWrapperImpl implements _AllProductsWrapper {
+  const _$AllProductsWrapperImpl(
+      {required final List<VendorAllproductsModel>? data})
+      : _data = data;
+
+  factory _$AllProductsWrapperImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AllProductsWrapperImplFromJson(json);
+
+  final List<VendorAllproductsModel>? _data;
+  @override
+  List<VendorAllproductsModel>? get data {
+    final value = _data;
+    if (value == null) return null;
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'AllProductsWrapper(data: $data)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AllProductsWrapperImpl &&
+            const DeepCollectionEquality().equals(other._data, _data));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AllProductsWrapperImplCopyWith<_$AllProductsWrapperImpl> get copyWith =>
+      __$$AllProductsWrapperImplCopyWithImpl<_$AllProductsWrapperImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$AllProductsWrapperImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AllProductsWrapper implements AllProductsWrapper {
+  const factory _AllProductsWrapper(
+          {required final List<VendorAllproductsModel>? data}) =
+      _$AllProductsWrapperImpl;
+
+  factory _AllProductsWrapper.fromJson(Map<String, dynamic> json) =
+      _$AllProductsWrapperImpl.fromJson;
+
+  @override
+  List<VendorAllproductsModel>? get data;
+  @override
+  @JsonKey(ignore: true)
+  _$$AllProductsWrapperImplCopyWith<_$AllProductsWrapperImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+VendorAllproductsModel _$VendorAllproductsModelFromJson(
+    Map<String, dynamic> json) {
+  return _VendorAllproductsModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$VendorAllproductsModel {
+  String get id => throw _privateConstructorUsedError;
+  String get country_code => throw _privateConstructorUsedError;
+  String get user_id => throw _privateConstructorUsedError;
+  String get category_id => throw _privateConstructorUsedError;
+  String get post_type_id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String? get story_display_days => throw _privateConstructorUsedError;
+  String? get b2b_pricing => throw _privateConstructorUsedError;
+  String get image => throw _privateConstructorUsedError;
+  String get post_type => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String? get offers => throw _privateConstructorUsedError;
+  String? get price => throw _privateConstructorUsedError;
+  String? get wow => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  int? get similarVendorProfileProductCount =>
+      throw _privateConstructorUsedError;
+  String? get discounted_price => throw _privateConstructorUsedError;
+  double? get shortestDistance => throw _privateConstructorUsedError;
+  int? get commentcount => throw _privateConstructorUsedError;
+  int? get discount_percentage => throw _privateConstructorUsedError;
+  int? get avg_rating => throw _privateConstructorUsedError;
+  UserDetailsModel? get userdetails => throw _privateConstructorUsedError;
+  List<FezzedSaved>? get savedByLoggedUser =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $VendorAllproductsModelCopyWith<VendorAllproductsModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VendorAllproductsModelCopyWith<$Res> {
+  factory $VendorAllproductsModelCopyWith(VendorAllproductsModel value,
+          $Res Function(VendorAllproductsModel) then) =
+      _$VendorAllproductsModelCopyWithImpl<$Res, VendorAllproductsModel>;
+  @useResult
+  $Res call(
+      {String id,
+      String country_code,
+      String user_id,
+      String category_id,
+      String post_type_id,
+      String title,
+      String? story_display_days,
+      String? b2b_pricing,
+      String image,
+      String post_type,
+      String username,
+      String? offers,
+      String? price,
+      String? wow,
+      String? city,
+      int? similarVendorProfileProductCount,
+      String? discounted_price,
+      double? shortestDistance,
+      int? commentcount,
+      int? discount_percentage,
+      int? avg_rating,
+      UserDetailsModel? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
+
+  $UserDetailsModelCopyWith<$Res>? get userdetails;
+}
+
+/// @nodoc
+class _$VendorAllproductsModelCopyWithImpl<$Res,
+        $Val extends VendorAllproductsModel>
+    implements $VendorAllproductsModelCopyWith<$Res> {
+  _$VendorAllproductsModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? country_code = null,
+    Object? user_id = null,
+    Object? category_id = null,
+    Object? post_type_id = null,
+    Object? title = null,
+    Object? story_display_days = freezed,
+    Object? b2b_pricing = freezed,
+    Object? image = null,
+    Object? post_type = null,
+    Object? username = null,
+    Object? offers = freezed,
+    Object? price = freezed,
+    Object? wow = freezed,
+    Object? city = freezed,
+    Object? similarVendorProfileProductCount = freezed,
+    Object? discounted_price = freezed,
+    Object? shortestDistance = freezed,
+    Object? commentcount = freezed,
+    Object? discount_percentage = freezed,
+    Object? avg_rating = freezed,
+    Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      country_code: null == country_code
+          ? _value.country_code
+          : country_code // ignore: cast_nullable_to_non_nullable
+              as String,
+      user_id: null == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      category_id: null == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      post_type_id: null == post_type_id
+          ? _value.post_type_id
+          : post_type_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      story_display_days: freezed == story_display_days
+          ? _value.story_display_days
+          : story_display_days // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b2b_pricing: freezed == b2b_pricing
+          ? _value.b2b_pricing
+          : b2b_pricing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      post_type: null == post_type
+          ? _value.post_type
+          : post_type // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      discounted_price: freezed == discounted_price
+          ? _value.discounted_price
+          : discounted_price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      commentcount: freezed == commentcount
+          ? _value.commentcount
+          : commentcount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userdetails: freezed == userdetails
+          ? _value.userdetails
+          : userdetails // ignore: cast_nullable_to_non_nullable
+              as UserDetailsModel?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserDetailsModelCopyWith<$Res>? get userdetails {
+    if (_value.userdetails == null) {
+      return null;
+    }
+
+    return $UserDetailsModelCopyWith<$Res>(_value.userdetails!, (value) {
+      return _then(_value.copyWith(userdetails: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$VendorAllproductsModelImplCopyWith<$Res>
+    implements $VendorAllproductsModelCopyWith<$Res> {
+  factory _$$VendorAllproductsModelImplCopyWith(
+          _$VendorAllproductsModelImpl value,
+          $Res Function(_$VendorAllproductsModelImpl) then) =
+      __$$VendorAllproductsModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String country_code,
+      String user_id,
+      String category_id,
+      String post_type_id,
+      String title,
+      String? story_display_days,
+      String? b2b_pricing,
+      String image,
+      String post_type,
+      String username,
+      String? offers,
+      String? price,
+      String? wow,
+      String? city,
+      int? similarVendorProfileProductCount,
+      String? discounted_price,
+      double? shortestDistance,
+      int? commentcount,
+      int? discount_percentage,
+      int? avg_rating,
+      UserDetailsModel? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
+
+  @override
+  $UserDetailsModelCopyWith<$Res>? get userdetails;
+}
+
+/// @nodoc
+class __$$VendorAllproductsModelImplCopyWithImpl<$Res>
+    extends _$VendorAllproductsModelCopyWithImpl<$Res,
+        _$VendorAllproductsModelImpl>
+    implements _$$VendorAllproductsModelImplCopyWith<$Res> {
+  __$$VendorAllproductsModelImplCopyWithImpl(
+      _$VendorAllproductsModelImpl _value,
+      $Res Function(_$VendorAllproductsModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? country_code = null,
+    Object? user_id = null,
+    Object? category_id = null,
+    Object? post_type_id = null,
+    Object? title = null,
+    Object? story_display_days = freezed,
+    Object? b2b_pricing = freezed,
+    Object? image = null,
+    Object? post_type = null,
+    Object? username = null,
+    Object? offers = freezed,
+    Object? price = freezed,
+    Object? wow = freezed,
+    Object? city = freezed,
+    Object? similarVendorProfileProductCount = freezed,
+    Object? discounted_price = freezed,
+    Object? shortestDistance = freezed,
+    Object? commentcount = freezed,
+    Object? discount_percentage = freezed,
+    Object? avg_rating = freezed,
+    Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
+  }) {
+    return _then(_$VendorAllproductsModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      country_code: null == country_code
+          ? _value.country_code
+          : country_code // ignore: cast_nullable_to_non_nullable
+              as String,
+      user_id: null == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      category_id: null == category_id
+          ? _value.category_id
+          : category_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      post_type_id: null == post_type_id
+          ? _value.post_type_id
+          : post_type_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      story_display_days: freezed == story_display_days
+          ? _value.story_display_days
+          : story_display_days // ignore: cast_nullable_to_non_nullable
+              as String?,
+      b2b_pricing: freezed == b2b_pricing
+          ? _value.b2b_pricing
+          : b2b_pricing // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String,
+      post_type: null == post_type
+          ? _value.post_type
+          : post_type // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      offers: freezed == offers
+          ? _value.offers
+          : offers // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wow: freezed == wow
+          ? _value.wow
+          : wow // ignore: cast_nullable_to_non_nullable
+              as String?,
+      city: freezed == city
+          ? _value.city
+          : city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      similarVendorProfileProductCount: freezed ==
+              similarVendorProfileProductCount
+          ? _value.similarVendorProfileProductCount
+          : similarVendorProfileProductCount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      discounted_price: freezed == discounted_price
+          ? _value.discounted_price
+          : discounted_price // ignore: cast_nullable_to_non_nullable
+              as String?,
+      shortestDistance: freezed == shortestDistance
+          ? _value.shortestDistance
+          : shortestDistance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      commentcount: freezed == commentcount
+          ? _value.commentcount
+          : commentcount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      discount_percentage: freezed == discount_percentage
+          ? _value.discount_percentage
+          : discount_percentage // ignore: cast_nullable_to_non_nullable
+              as int?,
+      avg_rating: freezed == avg_rating
+          ? _value.avg_rating
+          : avg_rating // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userdetails: freezed == userdetails
+          ? _value.userdetails
+          : userdetails // ignore: cast_nullable_to_non_nullable
+              as UserDetailsModel?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$VendorAllproductsModelImpl implements _VendorAllproductsModel {
+  const _$VendorAllproductsModelImpl(
+      {required this.id,
+      required this.country_code,
+      required this.user_id,
+      required this.category_id,
+      required this.post_type_id,
+      required this.title,
+      this.story_display_days,
+      this.b2b_pricing,
+      required this.image,
+      required this.post_type,
+      required this.username,
+      this.offers,
+      this.price,
+      this.wow,
+      required this.city,
+      required this.similarVendorProfileProductCount,
+      required this.discounted_price,
+      required this.shortestDistance,
+      required this.commentcount,
+      required this.discount_percentage,
+      required this.avg_rating,
+      required this.userdetails,
+      final List<FezzedSaved>? savedByLoggedUser})
+      : _savedByLoggedUser = savedByLoggedUser;
+
+  factory _$VendorAllproductsModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$VendorAllproductsModelImplFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String country_code;
+  @override
+  final String user_id;
+  @override
+  final String category_id;
+  @override
+  final String post_type_id;
+  @override
+  final String title;
+  @override
+  final String? story_display_days;
+  @override
+  final String? b2b_pricing;
+  @override
+  final String image;
+  @override
+  final String post_type;
+  @override
+  final String username;
+  @override
+  final String? offers;
+  @override
+  final String? price;
+  @override
+  final String? wow;
+  @override
+  final String? city;
+  @override
+  final int? similarVendorProfileProductCount;
+  @override
+  final String? discounted_price;
+  @override
+  final double? shortestDistance;
+  @override
+  final int? commentcount;
+  @override
+  final int? discount_percentage;
+  @override
+  final int? avg_rating;
+  @override
+  final UserDetailsModel? userdetails;
+  final List<FezzedSaved>? _savedByLoggedUser;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'VendorAllproductsModel(id: $id, country_code: $country_code, user_id: $user_id, category_id: $category_id, post_type_id: $post_type_id, title: $title, story_display_days: $story_display_days, b2b_pricing: $b2b_pricing, image: $image, post_type: $post_type, username: $username, offers: $offers, price: $price, wow: $wow, city: $city, similarVendorProfileProductCount: $similarVendorProfileProductCount, discounted_price: $discounted_price, shortestDistance: $shortestDistance, commentcount: $commentcount, discount_percentage: $discount_percentage, avg_rating: $avg_rating, userdetails: $userdetails, savedByLoggedUser: $savedByLoggedUser)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VendorAllproductsModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.country_code, country_code) ||
+                other.country_code == country_code) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.category_id, category_id) ||
+                other.category_id == category_id) &&
+            (identical(other.post_type_id, post_type_id) ||
+                other.post_type_id == post_type_id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.story_display_days, story_display_days) ||
+                other.story_display_days == story_display_days) &&
+            (identical(other.b2b_pricing, b2b_pricing) ||
+                other.b2b_pricing == b2b_pricing) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.post_type, post_type) ||
+                other.post_type == post_type) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.offers, offers) || other.offers == offers) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.wow, wow) || other.wow == wow) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.similarVendorProfileProductCount,
+                    similarVendorProfileProductCount) ||
+                other.similarVendorProfileProductCount ==
+                    similarVendorProfileProductCount) &&
+            (identical(other.discounted_price, discounted_price) ||
+                other.discounted_price == discounted_price) &&
+            (identical(other.shortestDistance, shortestDistance) ||
+                other.shortestDistance == shortestDistance) &&
+            (identical(other.commentcount, commentcount) ||
+                other.commentcount == commentcount) &&
+            (identical(other.discount_percentage, discount_percentage) ||
+                other.discount_percentage == discount_percentage) &&
+            (identical(other.avg_rating, avg_rating) ||
+                other.avg_rating == avg_rating) &&
+            (identical(other.userdetails, userdetails) ||
+                other.userdetails == userdetails) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        country_code,
+        user_id,
+        category_id,
+        post_type_id,
+        title,
+        story_display_days,
+        b2b_pricing,
+        image,
+        post_type,
+        username,
+        offers,
+        price,
+        wow,
+        city,
+        similarVendorProfileProductCount,
+        discounted_price,
+        shortestDistance,
+        commentcount,
+        discount_percentage,
+        avg_rating,
+        userdetails,
+        const DeepCollectionEquality().hash(_savedByLoggedUser)
+      ]);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VendorAllproductsModelImplCopyWith<_$VendorAllproductsModelImpl>
+      get copyWith => __$$VendorAllproductsModelImplCopyWithImpl<
+          _$VendorAllproductsModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$VendorAllproductsModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _VendorAllproductsModel implements VendorAllproductsModel {
+  const factory _VendorAllproductsModel(
+          {required final String id,
+          required final String country_code,
+          required final String user_id,
+          required final String category_id,
+          required final String post_type_id,
+          required final String title,
+          final String? story_display_days,
+          final String? b2b_pricing,
+          required final String image,
+          required final String post_type,
+          required final String username,
+          final String? offers,
+          final String? price,
+          final String? wow,
+          required final String? city,
+          required final int? similarVendorProfileProductCount,
+          required final String? discounted_price,
+          required final double? shortestDistance,
+          required final int? commentcount,
+          required final int? discount_percentage,
+          required final int? avg_rating,
+          required final UserDetailsModel? userdetails,
+          final List<FezzedSaved>? savedByLoggedUser}) =
+      _$VendorAllproductsModelImpl;
+
+  factory _VendorAllproductsModel.fromJson(Map<String, dynamic> json) =
+      _$VendorAllproductsModelImpl.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get country_code;
+  @override
+  String get user_id;
+  @override
+  String get category_id;
+  @override
+  String get post_type_id;
+  @override
+  String get title;
+  @override
+  String? get story_display_days;
+  @override
+  String? get b2b_pricing;
+  @override
+  String get image;
+  @override
+  String get post_type;
+  @override
+  String get username;
+  @override
+  String? get offers;
+  @override
+  String? get price;
+  @override
+  String? get wow;
+  @override
+  String? get city;
+  @override
+  int? get similarVendorProfileProductCount;
+  @override
+  String? get discounted_price;
+  @override
+  double? get shortestDistance;
+  @override
+  int? get commentcount;
+  @override
+  int? get discount_percentage;
+  @override
+  int? get avg_rating;
+  @override
+  UserDetailsModel? get userdetails;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser;
+  @override
+  @JsonKey(ignore: true)
+  _$$VendorAllproductsModelImplCopyWith<_$VendorAllproductsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

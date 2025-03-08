@@ -24,12 +24,8 @@ mixin _$VendorBrandResponse {
       throw _privateConstructorUsedError; // Made nullable
   String? get msg => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorBrandResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorBrandResponseCopyWith<VendorBrandResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,8 +51,6 @@ class _$VendorBrandResponseCopyWithImpl<$Res, $Val extends VendorBrandResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,8 +69,6 @@ class _$VendorBrandResponseCopyWithImpl<$Res, $Val extends VendorBrandResponse>
     ) as $Val);
   }
 
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorBrandDataCopyWith<$Res>? get data {
@@ -112,8 +104,6 @@ class __$$VendorBrandResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorBrandResponseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -161,13 +151,11 @@ class _$VendorBrandResponseImpl implements _VendorBrandResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorBrandResponseImplCopyWith<_$VendorBrandResponseImpl> get copyWith =>
@@ -191,14 +179,11 @@ abstract class _VendorBrandResponse implements VendorBrandResponse {
       _$VendorBrandResponseImpl.fromJson;
 
   @override
-  VendorBrandData? get data; // Made nullable
-  @override
+  VendorBrandData? get data;
+  @override // Made nullable
   String? get msg;
-
-  /// Create a copy of VendorBrandResponse
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorBrandResponseImplCopyWith<_$VendorBrandResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -226,12 +211,8 @@ mixin _$VendorBrandData {
       throw _privateConstructorUsedError; // Made nullable
   List<Deal>? get deals => throw _privateConstructorUsedError;
 
-  /// Serializes this VendorBrandData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $VendorBrandDataCopyWith<VendorBrandData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -266,8 +247,6 @@ class _$VendorBrandDataCopyWithImpl<$Res, $Val extends VendorBrandData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -321,8 +300,6 @@ class _$VendorBrandDataCopyWithImpl<$Res, $Val extends VendorBrandData>
     ) as $Val);
   }
 
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorAboutCopyWith<$Res>? get vendor_about {
@@ -367,8 +344,6 @@ class __$$VendorBrandDataImplCopyWithImpl<$Res>
       _$VendorBrandDataImpl _value, $Res Function(_$VendorBrandDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -566,7 +541,7 @@ class _$VendorBrandDataImpl implements _VendorBrandData {
             const DeepCollectionEquality().equals(other._deals, _deals));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -580,9 +555,7 @@ class _$VendorBrandDataImpl implements _VendorBrandData {
       const DeepCollectionEquality().hash(_grocery),
       const DeepCollectionEquality().hash(_deals));
 
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorBrandDataImplCopyWith<_$VendorBrandDataImpl> get copyWith =>
@@ -615,26 +588,23 @@ abstract class _VendorBrandData implements VendorBrandData {
   @override
   VendorAbout? get vendor_about;
   @override
-  List<BrandNewModel>? get brandnew; // Made nullable
-  @override
-  List<BrandNewModel>? get used; // Made nullable
-  @override
-  List<BrandNewModel>? get services; // Made nullable
-  @override
-  List<BrandNewModel>? get jobs; // Made nullable
-  @override
-  List<BrandNewModel>? get events; // Made nullable
-  @override
-  List<BrandNewModel>? get b2b; // Made nullable
-  @override
-  List<BrandNewModel>? get grocery; // Made nullable
-  @override
+  List<BrandNewModel>? get brandnew;
+  @override // Made nullable
+  List<BrandNewModel>? get used;
+  @override // Made nullable
+  List<BrandNewModel>? get services;
+  @override // Made nullable
+  List<BrandNewModel>? get jobs;
+  @override // Made nullable
+  List<BrandNewModel>? get events;
+  @override // Made nullable
+  List<BrandNewModel>? get b2b;
+  @override // Made nullable
+  List<BrandNewModel>? get grocery;
+  @override // Made nullable
   List<Deal>? get deals;
-
-  /// Create a copy of VendorBrandData
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VendorBrandDataImplCopyWith<_$VendorBrandDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

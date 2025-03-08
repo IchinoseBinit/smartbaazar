@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -48,7 +48,6 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GenericSafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -64,10 +63,8 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
             child: Column(
               children: [
                 Image.asset(
-                  alignment: Alignment.center,
-                  'assets/images/smartlogo.png',
-                  // height: 90,
-                  // width: 50,
+                  'assets/images/smartlogo.png',  // Replace with your logo asset path
+                  width: 150.w,  // Responsive width
                 ),
                 Row(
                   children: [
@@ -89,21 +86,16 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
             ),
           ),
         ),
-        // drawer: CustomDrawer(),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   IconButton(
-                    icon: SvgPicture.asset(drawerIcon),
-                    onPressed: () {
-                      // scaffoldKey.currentState?.openDrawer();
-                    },
+                    icon: SvgPicture.asset(drawerIcon),  // Replace with your drawer icon path
+                    onPressed: () {},
                   ),
                   Expanded(
                     child: Padding(
@@ -112,7 +104,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         height: 33.h,
                         child: TextFormField(
                           onFieldSubmitted: (value) {},
-                          controller: null,
+                          controller: _searchController,
                           decoration: InputDecoration(
                             hintText: 'Search...',
                             prefixIconConstraints:
@@ -152,9 +144,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                               borderRadius: BorderRadius.circular(30.r),
                             ),
                           ),
-                          onTap: () {
-                            // onSearchFocusChanged(searchController.text.isNotEmpty);
-                          },
+                          onTap: () {},
                         ),
                       ),
                     ),
@@ -165,9 +155,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10.h),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizedBox(height: 15.h),
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -185,14 +173,14 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                                     GoogleFonts.kantumruyPro().fontFamily,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w300,
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 color: ColorConstant.blackColor),
                           ),
                           Container(
                             margin: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xff362664),
+                              color: const Color(0xffe2a90c),
                             ),
                             child: Column(
                               children: [
@@ -211,7 +199,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                                         "0%",
                                         style: headerstyle.copyWith(
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 26,
+                                            fontSize: 26.sp,
                                             color: ColorConstant.blackColor),
                                       ),
                                       Column(
@@ -220,7 +208,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                                             "Commission",
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 color:
                                                     ColorConstant.blackColor),
                                           ),
@@ -228,10 +216,10 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                                             "Forever",
                                             style: headerstyle.copyWith(
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
                                                 color:
                                                     ColorConstant.blackColor),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -243,15 +231,13 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
+                    SizedBox(height: 15.h),
                     Text(
                       "Choose Your membership Plan &",
                       style: headerstyle.copyWith(
                           fontFamily: GoogleFonts.kantumruyPro().fontFamily,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           color: ColorConstant.blackColor),
                     ),
                     Text(
@@ -259,18 +245,16 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                       style: headerstyle.copyWith(
                           fontFamily: GoogleFonts.kantumruyPro().fontFamily,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           color: ColorConstant.blackColor),
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizedBox(height: 10.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: items.asMap().entries.map((entry) {
                         return Container(
-                          width: 12.0,
-                          height: 12.0,
+                          width: 12.0.w,
+                          height: 12.0.h,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -281,16 +265,14 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
+                    SizedBox(height: 10.h),
                     Row(
                       children: [
                         IconButton(
                           onPressed: () {
                             if (_currentIndex > 0) {
                               _carouselController.animateToPage(
-                                _currentIndex - 1, // Move to previous slide
+                                _currentIndex - 1,
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                               );
@@ -298,18 +280,13 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                           },
                           icon: const Icon(Icons.arrow_back_ios_new_rounded),
                         ),
-                        Expanded(
-                          // Wrap the Container with Expanded
+                        Flexible(
                           child: CarouselSlider(
                             carouselController: _carouselController,
-                            items: items.map(
-                              (item) {
-                                return item;
-                              },
-                            ).toList(),
+                            items: items.map((item) => item).toList(),
                             options: CarouselOptions(
                               viewportFraction: 1,
-                              height: 420,
+                              height: 420.h,
                               enlargeCenterPage: true,
                               reverse: true,
                               enlargeFactor: 5,
@@ -322,24 +299,23 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                           ),
                         ),
                         IconButton(
-                            onPressed: () {
-                              if (_currentIndex < items.length - 1) {
-                                _carouselController.animateToPage(
-                                  _currentIndex + 1, // Move to next slide
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios_rounded))
+                          onPressed: () {
+                            if (_currentIndex < items.length - 1) {
+                              _carouselController.animateToPage(
+                                _currentIndex + 1,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.arrow_forward_ios_rounded),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
+              SizedBox(height: 10.h),
             ],
           ),
         ),

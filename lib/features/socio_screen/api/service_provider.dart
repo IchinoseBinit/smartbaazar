@@ -8,7 +8,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'service_provider.g.dart';
 
 @riverpod
-Future<PostTypeFetch> getSocioData(GetSocioDataRef ref) async {
+Future<PostTypeFetch> getSocioData( ref) async {
   final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(

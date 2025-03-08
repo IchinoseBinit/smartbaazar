@@ -22,16 +22,12 @@ OnlineTransactionModel _$OnlineTransactionModelFromJson(
 /// @nodoc
 mixin _$OnlineTransactionModel {
   @JsonKey(name: "data")
-  Data get data => throw _privateConstructorUsedError;
+  Data? get data => throw _privateConstructorUsedError;
   @JsonKey(name: "msg")
-  String get msg => throw _privateConstructorUsedError;
+  String? get msg => throw _privateConstructorUsedError;
 
-  /// Serializes this OnlineTransactionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OnlineTransactionModelCopyWith<OnlineTransactionModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -43,9 +39,9 @@ abstract class $OnlineTransactionModelCopyWith<$Res> {
       _$OnlineTransactionModelCopyWithImpl<$Res, OnlineTransactionModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: "data") Data data, @JsonKey(name: "msg") String msg});
+      {@JsonKey(name: "data") Data? data, @JsonKey(name: "msg") String? msg});
 
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -59,32 +55,32 @@ class _$OnlineTransactionModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? msg = null,
+    Object? data = freezed,
+    Object? msg = freezed,
   }) {
     return _then(_value.copyWith(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
-      msg: null == msg
+              as Data?,
+      msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $DataCopyWith<$Res> get data {
-    return $DataCopyWith<$Res>(_value.data, (value) {
+  $DataCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $DataCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -100,10 +96,10 @@ abstract class _$$OnlineTransactionModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "data") Data data, @JsonKey(name: "msg") String msg});
+      {@JsonKey(name: "data") Data? data, @JsonKey(name: "msg") String? msg});
 
   @override
-  $DataCopyWith<$Res> get data;
+  $DataCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -116,23 +112,21 @@ class __$$OnlineTransactionModelImplCopyWithImpl<$Res>
       $Res Function(_$OnlineTransactionModelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = null,
-    Object? msg = null,
+    Object? data = freezed,
+    Object? msg = freezed,
   }) {
     return _then(_$OnlineTransactionModelImpl(
-      data: null == data
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as Data,
-      msg: null == msg
+              as Data?,
+      msg: freezed == msg
           ? _value.msg
           : msg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -149,10 +143,10 @@ class _$OnlineTransactionModelImpl implements _OnlineTransactionModel {
 
   @override
   @JsonKey(name: "data")
-  final Data data;
+  final Data? data;
   @override
   @JsonKey(name: "msg")
-  final String msg;
+  final String? msg;
 
   @override
   String toString() {
@@ -168,13 +162,11 @@ class _$OnlineTransactionModelImpl implements _OnlineTransactionModel {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OnlineTransactionModelImplCopyWith<_$OnlineTransactionModelImpl>
@@ -191,8 +183,8 @@ class _$OnlineTransactionModelImpl implements _OnlineTransactionModel {
 
 abstract class _OnlineTransactionModel implements OnlineTransactionModel {
   const factory _OnlineTransactionModel(
-          {@JsonKey(name: "data") required final Data data,
-          @JsonKey(name: "msg") required final String msg}) =
+          {@JsonKey(name: "data") required final Data? data,
+          @JsonKey(name: "msg") required final String? msg}) =
       _$OnlineTransactionModelImpl;
 
   factory _OnlineTransactionModel.fromJson(Map<String, dynamic> json) =
@@ -200,15 +192,12 @@ abstract class _OnlineTransactionModel implements OnlineTransactionModel {
 
   @override
   @JsonKey(name: "data")
-  Data get data;
+  Data? get data;
   @override
   @JsonKey(name: "msg")
-  String get msg;
-
-  /// Create a copy of OnlineTransactionModel
-  /// with the given fields replaced by the non-null parameter values.
+  String? get msg;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OnlineTransactionModelImplCopyWith<_$OnlineTransactionModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -220,18 +209,14 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Data {
   @JsonKey(name: "all_payments")
-  List<Payment> get allPayments => throw _privateConstructorUsedError;
+  List<Payment>? get allPayments => throw _privateConstructorUsedError;
   @JsonKey(name: "hold_payments")
-  List<Payment> get holdPayments => throw _privateConstructorUsedError;
+  List<Payment>? get holdPayments => throw _privateConstructorUsedError;
   @JsonKey(name: "release_payments")
-  List<dynamic> get releasePayments => throw _privateConstructorUsedError;
+  List<dynamic>? get releasePayments => throw _privateConstructorUsedError;
 
-  /// Serializes this Data to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -241,9 +226,9 @@ abstract class $DataCopyWith<$Res> {
       _$DataCopyWithImpl<$Res, Data>;
   @useResult
   $Res call(
-      {@JsonKey(name: "all_payments") List<Payment> allPayments,
-      @JsonKey(name: "hold_payments") List<Payment> holdPayments,
-      @JsonKey(name: "release_payments") List<dynamic> releasePayments});
+      {@JsonKey(name: "all_payments") List<Payment>? allPayments,
+      @JsonKey(name: "hold_payments") List<Payment>? holdPayments,
+      @JsonKey(name: "release_payments") List<dynamic>? releasePayments});
 }
 
 /// @nodoc
@@ -256,28 +241,26 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? allPayments = null,
-    Object? holdPayments = null,
-    Object? releasePayments = null,
+    Object? allPayments = freezed,
+    Object? holdPayments = freezed,
+    Object? releasePayments = freezed,
   }) {
     return _then(_value.copyWith(
-      allPayments: null == allPayments
+      allPayments: freezed == allPayments
           ? _value.allPayments
           : allPayments // ignore: cast_nullable_to_non_nullable
-              as List<Payment>,
-      holdPayments: null == holdPayments
+              as List<Payment>?,
+      holdPayments: freezed == holdPayments
           ? _value.holdPayments
           : holdPayments // ignore: cast_nullable_to_non_nullable
-              as List<Payment>,
-      releasePayments: null == releasePayments
+              as List<Payment>?,
+      releasePayments: freezed == releasePayments
           ? _value.releasePayments
           : releasePayments // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<dynamic>?,
     ) as $Val);
   }
 }
@@ -290,9 +273,9 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "all_payments") List<Payment> allPayments,
-      @JsonKey(name: "hold_payments") List<Payment> holdPayments,
-      @JsonKey(name: "release_payments") List<dynamic> releasePayments});
+      {@JsonKey(name: "all_payments") List<Payment>? allPayments,
+      @JsonKey(name: "hold_payments") List<Payment>? holdPayments,
+      @JsonKey(name: "release_payments") List<dynamic>? releasePayments});
 }
 
 /// @nodoc
@@ -302,28 +285,26 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? allPayments = null,
-    Object? holdPayments = null,
-    Object? releasePayments = null,
+    Object? allPayments = freezed,
+    Object? holdPayments = freezed,
+    Object? releasePayments = freezed,
   }) {
     return _then(_$DataImpl(
-      allPayments: null == allPayments
+      allPayments: freezed == allPayments
           ? _value._allPayments
           : allPayments // ignore: cast_nullable_to_non_nullable
-              as List<Payment>,
-      holdPayments: null == holdPayments
+              as List<Payment>?,
+      holdPayments: freezed == holdPayments
           ? _value._holdPayments
           : holdPayments // ignore: cast_nullable_to_non_nullable
-              as List<Payment>,
-      releasePayments: null == releasePayments
+              as List<Payment>?,
+      releasePayments: freezed == releasePayments
           ? _value._releasePayments
           : releasePayments // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<dynamic>?,
     ));
   }
 }
@@ -332,10 +313,11 @@ class __$$DataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {@JsonKey(name: "all_payments") required final List<Payment> allPayments,
-      @JsonKey(name: "hold_payments") required final List<Payment> holdPayments,
+      {@JsonKey(name: "all_payments") required final List<Payment>? allPayments,
+      @JsonKey(name: "hold_payments")
+      required final List<Payment>? holdPayments,
       @JsonKey(name: "release_payments")
-      required final List<dynamic> releasePayments})
+      required final List<dynamic>? releasePayments})
       : _allPayments = allPayments,
         _holdPayments = holdPayments,
         _releasePayments = releasePayments;
@@ -343,31 +325,37 @@ class _$DataImpl implements _Data {
   factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
       _$$DataImplFromJson(json);
 
-  final List<Payment> _allPayments;
+  final List<Payment>? _allPayments;
   @override
   @JsonKey(name: "all_payments")
-  List<Payment> get allPayments {
+  List<Payment>? get allPayments {
+    final value = _allPayments;
+    if (value == null) return null;
     if (_allPayments is EqualUnmodifiableListView) return _allPayments;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_allPayments);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<Payment> _holdPayments;
+  final List<Payment>? _holdPayments;
   @override
   @JsonKey(name: "hold_payments")
-  List<Payment> get holdPayments {
+  List<Payment>? get holdPayments {
+    final value = _holdPayments;
+    if (value == null) return null;
     if (_holdPayments is EqualUnmodifiableListView) return _holdPayments;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_holdPayments);
+    return EqualUnmodifiableListView(value);
   }
 
-  final List<dynamic> _releasePayments;
+  final List<dynamic>? _releasePayments;
   @override
   @JsonKey(name: "release_payments")
-  List<dynamic> get releasePayments {
+  List<dynamic>? get releasePayments {
+    final value = _releasePayments;
+    if (value == null) return null;
     if (_releasePayments is EqualUnmodifiableListView) return _releasePayments;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_releasePayments);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -388,7 +376,7 @@ class _$DataImpl implements _Data {
                 .equals(other._releasePayments, _releasePayments));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -396,9 +384,7 @@ class _$DataImpl implements _Data {
       const DeepCollectionEquality().hash(_holdPayments),
       const DeepCollectionEquality().hash(_releasePayments));
 
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -414,27 +400,25 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements Data {
   const factory _Data(
-      {@JsonKey(name: "all_payments") required final List<Payment> allPayments,
-      @JsonKey(name: "hold_payments") required final List<Payment> holdPayments,
+      {@JsonKey(name: "all_payments") required final List<Payment>? allPayments,
+      @JsonKey(name: "hold_payments")
+      required final List<Payment>? holdPayments,
       @JsonKey(name: "release_payments")
-      required final List<dynamic> releasePayments}) = _$DataImpl;
+      required final List<dynamic>? releasePayments}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
   @override
   @JsonKey(name: "all_payments")
-  List<Payment> get allPayments;
+  List<Payment>? get allPayments;
   @override
   @JsonKey(name: "hold_payments")
-  List<Payment> get holdPayments;
+  List<Payment>? get holdPayments;
   @override
   @JsonKey(name: "release_payments")
-  List<dynamic> get releasePayments;
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
+  List<dynamic>? get releasePayments;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -446,42 +430,38 @@ Payment _$PaymentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Payment {
   @JsonKey(name: "id")
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: "order_id")
-  String get orderId => throw _privateConstructorUsedError;
+  String? get orderId => throw _privateConstructorUsedError;
   @JsonKey(name: "post_id")
-  String get postId => throw _privateConstructorUsedError;
+  String? get postId => throw _privateConstructorUsedError;
   @JsonKey(name: "transaction_id")
   String? get transactionId => throw _privateConstructorUsedError;
   @JsonKey(name: "user_id")
-  String get userId => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
   @JsonKey(name: "vendor_id")
-  String get vendorId => throw _privateConstructorUsedError;
+  String? get vendorId => throw _privateConstructorUsedError;
   @JsonKey(name: "amount")
-  String get amount => throw _privateConstructorUsedError;
+  String? get amount => throw _privateConstructorUsedError;
   @JsonKey(name: "del_cost")
-  String get delCost => throw _privateConstructorUsedError;
+  String? get delCost => throw _privateConstructorUsedError;
   @JsonKey(name: "total")
-  String get total => throw _privateConstructorUsedError;
+  String? get total => throw _privateConstructorUsedError;
   @JsonKey(name: "coupon")
-  String get coupon => throw _privateConstructorUsedError;
+  String? get coupon => throw _privateConstructorUsedError;
   @JsonKey(name: "status")
-  String get status => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: "method")
   String? get method => throw _privateConstructorUsedError;
   @JsonKey(name: "created_at")
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: "updated_at")
   dynamic get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: "release_date")
   dynamic get releaseDate => throw _privateConstructorUsedError;
 
-  /// Serializes this Payment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Payment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PaymentCopyWith<Payment> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -491,19 +471,19 @@ abstract class $PaymentCopyWith<$Res> {
       _$PaymentCopyWithImpl<$Res, Payment>;
   @useResult
   $Res call(
-      {@JsonKey(name: "id") String id,
-      @JsonKey(name: "order_id") String orderId,
-      @JsonKey(name: "post_id") String postId,
+      {@JsonKey(name: "id") String? id,
+      @JsonKey(name: "order_id") String? orderId,
+      @JsonKey(name: "post_id") String? postId,
       @JsonKey(name: "transaction_id") String? transactionId,
-      @JsonKey(name: "user_id") String userId,
-      @JsonKey(name: "vendor_id") String vendorId,
-      @JsonKey(name: "amount") String amount,
-      @JsonKey(name: "del_cost") String delCost,
-      @JsonKey(name: "total") String total,
-      @JsonKey(name: "coupon") String coupon,
-      @JsonKey(name: "status") String status,
+      @JsonKey(name: "user_id") String? userId,
+      @JsonKey(name: "vendor_id") String? vendorId,
+      @JsonKey(name: "amount") String? amount,
+      @JsonKey(name: "del_cost") String? delCost,
+      @JsonKey(name: "total") String? total,
+      @JsonKey(name: "coupon") String? coupon,
+      @JsonKey(name: "status") String? status,
       @JsonKey(name: "method") String? method,
-      @JsonKey(name: "created_at") DateTime createdAt,
+      @JsonKey(name: "created_at") DateTime? createdAt,
       @JsonKey(name: "updated_at") dynamic updatedAt,
       @JsonKey(name: "release_date") dynamic releaseDate});
 }
@@ -518,80 +498,78 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Payment
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? orderId = null,
-    Object? postId = null,
+    Object? id = freezed,
+    Object? orderId = freezed,
+    Object? postId = freezed,
     Object? transactionId = freezed,
-    Object? userId = null,
-    Object? vendorId = null,
-    Object? amount = null,
-    Object? delCost = null,
-    Object? total = null,
-    Object? coupon = null,
-    Object? status = null,
+    Object? userId = freezed,
+    Object? vendorId = freezed,
+    Object? amount = freezed,
+    Object? delCost = freezed,
+    Object? total = freezed,
+    Object? coupon = freezed,
+    Object? status = freezed,
     Object? method = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? releaseDate = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderId: null == orderId
+              as String?,
+      orderId: freezed == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
-              as String,
-      postId: null == postId
+              as String?,
+      postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       transactionId: freezed == transactionId
           ? _value.transactionId
           : transactionId // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      vendorId: null == vendorId
+              as String?,
+      vendorId: freezed == vendorId
           ? _value.vendorId
           : vendorId // ignore: cast_nullable_to_non_nullable
-              as String,
-      amount: null == amount
+              as String?,
+      amount: freezed == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as String,
-      delCost: null == delCost
+              as String?,
+      delCost: freezed == delCost
           ? _value.delCost
           : delCost // ignore: cast_nullable_to_non_nullable
-              as String,
-      total: null == total
+              as String?,
+      total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as String,
-      coupon: null == coupon
+              as String?,
+      coupon: freezed == coupon
           ? _value.coupon
           : coupon // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       method: freezed == method
           ? _value.method
           : method // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -612,19 +590,19 @@ abstract class _$$PaymentImplCopyWith<$Res> implements $PaymentCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: "id") String id,
-      @JsonKey(name: "order_id") String orderId,
-      @JsonKey(name: "post_id") String postId,
+      {@JsonKey(name: "id") String? id,
+      @JsonKey(name: "order_id") String? orderId,
+      @JsonKey(name: "post_id") String? postId,
       @JsonKey(name: "transaction_id") String? transactionId,
-      @JsonKey(name: "user_id") String userId,
-      @JsonKey(name: "vendor_id") String vendorId,
-      @JsonKey(name: "amount") String amount,
-      @JsonKey(name: "del_cost") String delCost,
-      @JsonKey(name: "total") String total,
-      @JsonKey(name: "coupon") String coupon,
-      @JsonKey(name: "status") String status,
+      @JsonKey(name: "user_id") String? userId,
+      @JsonKey(name: "vendor_id") String? vendorId,
+      @JsonKey(name: "amount") String? amount,
+      @JsonKey(name: "del_cost") String? delCost,
+      @JsonKey(name: "total") String? total,
+      @JsonKey(name: "coupon") String? coupon,
+      @JsonKey(name: "status") String? status,
       @JsonKey(name: "method") String? method,
-      @JsonKey(name: "created_at") DateTime createdAt,
+      @JsonKey(name: "created_at") DateTime? createdAt,
       @JsonKey(name: "updated_at") dynamic updatedAt,
       @JsonKey(name: "release_date") dynamic releaseDate});
 }
@@ -637,80 +615,78 @@ class __$$PaymentImplCopyWithImpl<$Res>
       _$PaymentImpl _value, $Res Function(_$PaymentImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Payment
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? orderId = null,
-    Object? postId = null,
+    Object? id = freezed,
+    Object? orderId = freezed,
+    Object? postId = freezed,
     Object? transactionId = freezed,
-    Object? userId = null,
-    Object? vendorId = null,
-    Object? amount = null,
-    Object? delCost = null,
-    Object? total = null,
-    Object? coupon = null,
-    Object? status = null,
+    Object? userId = freezed,
+    Object? vendorId = freezed,
+    Object? amount = freezed,
+    Object? delCost = freezed,
+    Object? total = freezed,
+    Object? coupon = freezed,
+    Object? status = freezed,
     Object? method = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? releaseDate = freezed,
   }) {
     return _then(_$PaymentImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderId: null == orderId
+              as String?,
+      orderId: freezed == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
-              as String,
-      postId: null == postId
+              as String?,
+      postId: freezed == postId
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       transactionId: freezed == transactionId
           ? _value.transactionId
           : transactionId // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      vendorId: null == vendorId
+              as String?,
+      vendorId: freezed == vendorId
           ? _value.vendorId
           : vendorId // ignore: cast_nullable_to_non_nullable
-              as String,
-      amount: null == amount
+              as String?,
+      amount: freezed == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as String,
-      delCost: null == delCost
+              as String?,
+      delCost: freezed == delCost
           ? _value.delCost
           : delCost // ignore: cast_nullable_to_non_nullable
-              as String,
-      total: null == total
+              as String?,
+      total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
-              as String,
-      coupon: null == coupon
+              as String?,
+      coupon: freezed == coupon
           ? _value.coupon
           : coupon // ignore: cast_nullable_to_non_nullable
-              as String,
-      status: null == status
+              as String?,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       method: freezed == method
           ? _value.method
           : method // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -748,43 +724,43 @@ class _$PaymentImpl implements _Payment {
 
   @override
   @JsonKey(name: "id")
-  final String id;
+  final String? id;
   @override
   @JsonKey(name: "order_id")
-  final String orderId;
+  final String? orderId;
   @override
   @JsonKey(name: "post_id")
-  final String postId;
+  final String? postId;
   @override
   @JsonKey(name: "transaction_id")
   final String? transactionId;
   @override
   @JsonKey(name: "user_id")
-  final String userId;
+  final String? userId;
   @override
   @JsonKey(name: "vendor_id")
-  final String vendorId;
+  final String? vendorId;
   @override
   @JsonKey(name: "amount")
-  final String amount;
+  final String? amount;
   @override
   @JsonKey(name: "del_cost")
-  final String delCost;
+  final String? delCost;
   @override
   @JsonKey(name: "total")
-  final String total;
+  final String? total;
   @override
   @JsonKey(name: "coupon")
-  final String coupon;
+  final String? coupon;
   @override
   @JsonKey(name: "status")
-  final String status;
+  final String? status;
   @override
   @JsonKey(name: "method")
   final String? method;
   @override
   @JsonKey(name: "created_at")
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
   @JsonKey(name: "updated_at")
   final dynamic updatedAt;
@@ -823,7 +799,7 @@ class _$PaymentImpl implements _Payment {
                 .equals(other.releaseDate, releaseDate));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -843,9 +819,7 @@ class _$PaymentImpl implements _Payment {
       const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(releaseDate));
 
-  /// Create a copy of Payment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PaymentImplCopyWith<_$PaymentImpl> get copyWith =>
@@ -861,19 +835,19 @@ class _$PaymentImpl implements _Payment {
 
 abstract class _Payment implements Payment {
   const factory _Payment(
-          {@JsonKey(name: "id") required final String id,
-          @JsonKey(name: "order_id") required final String orderId,
-          @JsonKey(name: "post_id") required final String postId,
+          {@JsonKey(name: "id") required final String? id,
+          @JsonKey(name: "order_id") required final String? orderId,
+          @JsonKey(name: "post_id") required final String? postId,
           @JsonKey(name: "transaction_id") required final String? transactionId,
-          @JsonKey(name: "user_id") required final String userId,
-          @JsonKey(name: "vendor_id") required final String vendorId,
-          @JsonKey(name: "amount") required final String amount,
-          @JsonKey(name: "del_cost") required final String delCost,
-          @JsonKey(name: "total") required final String total,
-          @JsonKey(name: "coupon") required final String coupon,
-          @JsonKey(name: "status") required final String status,
+          @JsonKey(name: "user_id") required final String? userId,
+          @JsonKey(name: "vendor_id") required final String? vendorId,
+          @JsonKey(name: "amount") required final String? amount,
+          @JsonKey(name: "del_cost") required final String? delCost,
+          @JsonKey(name: "total") required final String? total,
+          @JsonKey(name: "coupon") required final String? coupon,
+          @JsonKey(name: "status") required final String? status,
           @JsonKey(name: "method") required final String? method,
-          @JsonKey(name: "created_at") required final DateTime createdAt,
+          @JsonKey(name: "created_at") required final DateTime? createdAt,
           @JsonKey(name: "updated_at") required final dynamic updatedAt,
           @JsonKey(name: "release_date") required final dynamic releaseDate}) =
       _$PaymentImpl;
@@ -882,54 +856,51 @@ abstract class _Payment implements Payment {
 
   @override
   @JsonKey(name: "id")
-  String get id;
+  String? get id;
   @override
   @JsonKey(name: "order_id")
-  String get orderId;
+  String? get orderId;
   @override
   @JsonKey(name: "post_id")
-  String get postId;
+  String? get postId;
   @override
   @JsonKey(name: "transaction_id")
   String? get transactionId;
   @override
   @JsonKey(name: "user_id")
-  String get userId;
+  String? get userId;
   @override
   @JsonKey(name: "vendor_id")
-  String get vendorId;
+  String? get vendorId;
   @override
   @JsonKey(name: "amount")
-  String get amount;
+  String? get amount;
   @override
   @JsonKey(name: "del_cost")
-  String get delCost;
+  String? get delCost;
   @override
   @JsonKey(name: "total")
-  String get total;
+  String? get total;
   @override
   @JsonKey(name: "coupon")
-  String get coupon;
+  String? get coupon;
   @override
   @JsonKey(name: "status")
-  String get status;
+  String? get status;
   @override
   @JsonKey(name: "method")
   String? get method;
   @override
   @JsonKey(name: "created_at")
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
   @JsonKey(name: "updated_at")
   dynamic get updatedAt;
   @override
   @JsonKey(name: "release_date")
   dynamic get releaseDate;
-
-  /// Create a copy of Payment
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PaymentImplCopyWith<_$PaymentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

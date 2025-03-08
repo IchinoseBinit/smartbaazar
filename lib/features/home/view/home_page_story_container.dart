@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ class HomePageStoryContainer extends ConsumerStatefulWidget {
   final int? storyCount;
   final Story? feedStoryContent;
   final String userId;
+    final VoidCallback? onsearchtapped;
 
   const HomePageStoryContainer({
     super.key,
@@ -24,6 +26,7 @@ class HomePageStoryContainer extends ConsumerStatefulWidget {
     this.storyCount,
     this.feedStoryContent,
     required this.userId,
+    this.onsearchtapped
   });
 
   @override
@@ -73,18 +76,22 @@ class _HomePageStoryContainerState
     // print(widget.showGift);
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HomeStoryScreen(
-              selectedVendorIndex: widget.index,
-              initialIndex: widget.index,
-              author: widget.vendorName ?? '',
-              storyCount: widget.storyCount ?? 0,
-              feedStory: widget.feedStoryContent!,
+        if (widget.addSearch!) {
+          widget.onsearchtapped?.call();
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => HomeStoryScreen(
+                selectedVendorIndex: widget.index,
+                initialIndex: widget.index,
+                author: widget.vendorName ?? '',
+                storyCount: widget.storyCount ?? 0,
+                feedStory: widget.feedStoryContent!,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: Column(
         children: [

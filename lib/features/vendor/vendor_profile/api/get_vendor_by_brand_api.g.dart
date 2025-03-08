@@ -7,7 +7,7 @@ part of 'get_vendor_by_brand_api.dart';
 // **************************************************************************
 
 String _$getvendorbybrandnameHash() =>
-    r'2c3ad2c8404741e86b925b55e6d8b325c4c668d2';
+    r'a92ccab8ecb85c0819df33673c22540913db48ad';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -146,8 +146,6 @@ class GetvendorbybrandnameProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin GetvendorbybrandnameRef
     on AutoDisposeFutureProviderRef<VendorBrandResponse> {
   /// The parameter `vendorid` of this provider.
@@ -163,4 +161,4 @@ class _GetvendorbybrandnameProviderElement
   int get vendorid => (origin as GetvendorbybrandnameProvider).vendorid;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

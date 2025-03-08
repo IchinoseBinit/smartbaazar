@@ -10,6 +10,9 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
+final scrollToTopProvider = StateProvider<bool>((ref) => false);
+
+
 final List<Map<String, dynamic>> services = [
   {'label': 'Low Price Guarantee', 'id': 1},
   {'label': 'Launch Offer', 'id': 2},
@@ -18,12 +21,15 @@ final List<Map<String, dynamic>> services = [
   {'label': 'Clearance sale', 'id': 5},
   {'label': 'Festival sale', 'id': 5},
 ];
-Padding nolistingfound() {
-  return const Padding(
-    padding: EdgeInsets.only(top: 10, left: 10),
-    child: SizedBox(child: Text("No listing found")),
+Padding nolistingfound({String message = 'listing'}) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 10, left: 10),
+    child: SizedBox(
+      child: Text("No $message found"),
+    ),
   );
 }
+
 
 final List<Map<String, dynamic>> items = [
   {

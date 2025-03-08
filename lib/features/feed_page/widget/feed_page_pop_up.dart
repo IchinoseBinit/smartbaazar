@@ -23,6 +23,7 @@ void showCustomBottomSheet(
   }
 
   showModalBottomSheet(
+    useRootNavigator: true,
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
@@ -56,8 +57,11 @@ void showCustomBottomSheet(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -123,6 +127,17 @@ void showCustomBottomSheet(
                                               fontSize: 7.sp,
                                               color: Colors.white),
                                         ),
+                                        SizedBox(
+                                          width: 20.w,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: const Icon(
+                                              Icons.close_sharp,
+                                              color: Colors.white,
+                                            ))
                                       ],
                                     ),
                                     SizedBox(height: 20.h),

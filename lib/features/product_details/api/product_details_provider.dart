@@ -14,13 +14,15 @@ Future<PostModel> productDetails(ref, String id) async {
   final SmartClient client = SmartClient();
   try {
     final response = await client.request(
+
       requestType: RequestType.getWithToken,
       url: "${ApiConstants.getProductDetails}/$id?detailed=1",
     );
 
-// print("bibash Details: ${response.data['result']['user_details']}");
+//print("bibashk Details: ${response.data['widgetSimilarPosts']['posts']['data'][0]['detail_user']}");
     // // print("bibash ${PostModel.fromJson(response.data['result']['pictures'])}");
-    print("sola ${PostModel.fromJson(response.data)}");
+    // print("sola ${PostModel.fromJson(response.data)}");
+  //  print('bibash ${PostModel.fromJson(response.data).result!.user!.name}');
     return PostModel.fromJson(response.data);
   } catch (e) {
     print("errork is $e");

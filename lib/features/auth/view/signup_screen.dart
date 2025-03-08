@@ -12,6 +12,7 @@ import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart'
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/utils/custom_loading_indicatior.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -228,25 +229,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           text: 'Sign Up',
                           onPresssed: () async {
                             if (_formKey.currentState!.validate()) {
-                              final val = await signUpProvider.signUp(
-                                  ugender: genderController.text,
-                                  context,
-                                  name: nameController.text,
-                                  dateofb: dateTimeController.text,
-                                  phone: phoneController.text,
-                                  email: emailController.text,
-                                  passsword: passwordController.text,
-                                  password_confirmation:
-                                      confirmPasswordController.text,
-                                  country_code: 'NP',
-                                  username: usernameController.text,
-                                  accept_terms: int.tryParse(accept)!,
-                                  accept_marketing_offers: 1);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    duration: Duration(seconds: 5),
-                                      content: Text(
-                                          "Your account has been created.")));
+                              final val = await signUpProvider
+                                  .signUp(
+                                      ugender: genderController.text,
+                                      context,
+                                      name: nameController.text,
+                                      dateofb: dateTimeController.text,
+                                      phone: phoneController.text,
+                                      email: emailController.text,
+                                      passsword: passwordController.text,
+                                      password_confirmation:
+                                          confirmPasswordController.text,
+                                      country_code: 'NP',
+                                      username: usernameController.text,
+                                      accept_terms: int.tryParse(accept)!,
+                                      accept_marketing_offers: 1)
+                                  .whenComplete(() async {
+                                showAlertDialog(context);
+                              }).onError(
+                                (error, stackTrace) {
+                                  return const Text('Fill up the ');
+                                },
+                              );
                             }
                           },
                         ),
@@ -271,4 +275,35 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: const Text("OK"),
+    onPressed: () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ));
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Congeatulation"),
+    content: const Text("Your account has been created"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

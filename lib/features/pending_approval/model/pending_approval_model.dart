@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 
 part 'pending_approval_model.freezed.dart';
 part 'pending_approval_model.g.dart';
@@ -17,7 +18,7 @@ class PendingApprovalModel with _$PendingApprovalModel {
 class Products with _$Products {
   const factory Products({
     @JsonKey(name: 'current_page') required int? currentPage,
-    required List<ProductData> data,
+    required List<MyListingProduct> data,
     @JsonKey(name: 'first_page_url') required String? firstPageUrl,
     required int? from,
     @JsonKey(name: 'last_page') required int? lastPage,
@@ -34,59 +35,7 @@ class Products with _$Products {
   factory Products.fromJson(Map<String, dynamic> json) => _$ProductsFromJson(json);
 }
 
-@freezed
-class ProductData with _$ProductData {
-  const factory ProductData({
-    required String? id,
-    @JsonKey(name: 'country_code') required String? countryCode,
-    @JsonKey(name: 'user_id') required String? userId,
-    @JsonKey(name: 'category_id') required String? categoryId,
-    @JsonKey(name: 'post_type_id') required String? postTypeId,
-    required String? title,
-    required String? description,
-    String? tags,
-    required String? price,
-    @JsonKey(name: 'contact_name') required String? contactName,
-    required String? email,
-    required String? phone,
-    String? address,
-    @JsonKey(name: 'city_id') required String? cityId,
 
-
-    required String? pickup,
-
-    @JsonKey(name: 'hyper_del') String? hyperDel,
-    @JsonKey(name: 'seller_del') String? sellerDel,
-    required String? visits,
-
-    required String? reviewed,
-    required String? featured,
-    required String? archived,
-    @JsonKey(name: 'archived_at') String? archivedAt,
-    @JsonKey(name: 'archived_manually') required String? archivedManually,
-    @JsonKey(name: 'deletion_mail_sent_at') String? deletionMailSentAt,
-    @JsonKey(name: 'fb_profile') String? fbProfile,
-    String? partner,
-    @JsonKey(name: 'discounted_price') String? discountedPrice,
-    String? trending,
-    String? stock,
-    @JsonKey(name: 'min_order') String? minOrder,
-    @JsonKey(name: 'samp_price') String? sampPrice,
-    @JsonKey(name: 'text_one') String? textOne,
-    @JsonKey(name: 'text_two') String? textTwo,
-    @JsonKey(name: 'ava_to') String? avaTo,
-    @JsonKey(name: 'branded') required String? branded,
-    @JsonKey(name: 'deleted_at') String? deletedAt,
-    @JsonKey(name: 'created_at') String? createdAt,
-    @JsonKey(name: 'updated_at') String? updatedAt,
-    required String? image,
-    @JsonKey(name: 'avg_rating') int? avgRating,
-    @JsonKey(name: 'savedByLoggedUser') List<dynamic>? savedByLoggedUser,
-  }) = _ProductData;
-
-  factory ProductData.fromJson(Map<String, dynamic> json) =>
-      _$ProductDataFromJson(json);
-}
 
 @freezed
 class PageLink with _$PageLink {

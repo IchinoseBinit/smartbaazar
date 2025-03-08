@@ -8,7 +8,7 @@ class SignUpAPi {
 
   Future<SignupModel> signUp({
     required String name,
-    required String phone,
+    required int phone,
     required String email,
     required String passsword,
     required String password_confirmation,

@@ -16,6 +16,9 @@ _$CartItemImpl _$$CartItemImplFromJson(Map<String, dynamic> json) =>
       qty: json['qty'] as String,
       price: json['price'] as String,
       image: json['image'] as String,
+      pickup: json['pickup'] as String,
+      longitude: json['longitude'] as String,
+      latitude: json['latitude'] as String,
     );
 
 Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>
@@ -28,6 +31,9 @@ Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>
       'qty': instance.qty,
       'price': instance.price,
       'image': instance.image,
+      'pickup': instance.pickup,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
     };
 
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(

@@ -9,6 +9,7 @@ import 'package:smartbazar/features/auth/model/login_model.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/splash_ad_screen/splash_screen_ad.dart';
+import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 final authRepositoryProvider = Provider<LoginApi>((ref) {
@@ -39,7 +40,7 @@ class LoginController extends StateNotifier<GenericState> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MainScreen(),
+          builder: (context) => SplashScreen(),
         ),
       );
     } catch (e) {
@@ -140,7 +141,7 @@ class LoginController extends StateNotifier<GenericState> {
     _showErrorDialog(context, message);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      MaterialPageRoute(builder: (_) =>  MainScreen()),
     );
   }
 

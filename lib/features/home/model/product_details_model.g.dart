@@ -126,18 +126,25 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      user_details: json['user_details'] == null
+          ? null
+          : MyProductDeailModel.fromJson(
+              json['user_details'] as Map<String, dynamic>),
       location: json['location'] == null
           ? null
           : LocationModel.fromJson(json['location'] as Map<String, dynamic>),
       user: json['user'] == null
           ? null
           : usermodel.fromJson(json['user'] as Map<String, dynamic>),
-      userDetails: json['detail_user'] == null
+      detailuser: json['detail_user'] == null
           ? null
           : SimilarProducts.fromJson(
               json['detail_user'] as Map<String, dynamic>),
       pictures: (json['pictures'] as List<dynamic>?)
           ?.map((e) => Picture.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      savedByLoggedUser: (json['savedByLoggedUser'] as List<dynamic>?)
+          ?.map((e) => SavedByUser.fromJson(e as Map<String, dynamic>))
           .toList(),
       postType: json['postType'] == null
           ? null
@@ -145,15 +152,11 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] == null
           ? null
           : City.fromJson(json['city'] as Map<String, dynamic>),
-      user_details: json['user_details'] == null
-          ? null
-          : MyProductDeailModel.fromJson(
-              json['user_details'] as Map<String, dynamic>),
       similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
       ratingComment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      livePrizes: (json['livePrizes'] as List<dynamic>?)
+      live_prizes: (json['live_prizes'] as List<dynamic>?)
               ?.map((e) => LivePrize.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -165,7 +168,7 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => Shop.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      feedPost: (json['feedPost'] as List<dynamic>?)
+      feed_post: (json['feed_post'] as List<dynamic>?)
               ?.map((e) => FeedPost.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -233,19 +236,36 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'commentCount': instance.commentCount,
       'extra': instance.extra,
       'ratings': instance.ratings,
+      'user_details': instance.user_details,
       'location': instance.location,
       'user': instance.user,
-      'detail_user': instance.userDetails,
+      'detail_user': instance.detailuser,
       'pictures': instance.pictures,
+      'savedByLoggedUser': instance.savedByLoggedUser,
       'postType': instance.postType,
       'city': instance.city,
-      'user_details': instance.user_details,
       'similarProductCount': instance.similarProductCount,
       'rating_comment': instance.ratingComment,
-      'livePrizes': instance.livePrizes,
+      'live_prizes': instance.live_prizes,
       'deals': instance.deals,
       'shop': instance.shop,
-      'feedPost': instance.feedPost,
+      'feed_post': instance.feed_post,
+    };
+
+_$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
+    _$SavedByUserImpl(
+      name: json['name'] as String?,
+      username: json['username'] as String?,
+      userId: json['user_id'] as String?,
+      postId: json['post_id'] as String?,
+    );
+
+Map<String, dynamic> _$$SavedByUserImplToJson(_$SavedByUserImpl instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'username': instance.username,
+      'user_id': instance.userId,
+      'post_id': instance.postId,
     };
 
 _$LocationModelImpl _$$LocationModelImplFromJson(Map<String, dynamic> json) =>

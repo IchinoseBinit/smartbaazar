@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 
-// Global state provider for managing the current selected index of the bottom nav bar
+// Providers for navigation state management
 final currentScreenProvider = StateProvider<int>((ref) => 3);
+final showBottomNavBarProvider = StateProvider<bool>((ref) => true);
 
-// List of screens for navigation
+final isLogin = StateProvider<bool>((ref) => false);
+
+
+/// Function to navigate to another page while managing the BottomNavBar state
+Future<void> navigateToPage({
+  required BuildContext context,
+  required Widget page,
+  required WidgetRef ref,
+  required bool showNavBar,
+}) async {
+  ref.read(showBottomNavBarProvider.notifier).state = showNavBar;
+
+  await Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+
+  // Restore BottomNavBar visibility after returning
+  ref.read(showBottomNavBarProvider.notifier).state = true;
+}
+
+/// List of Screens for Bottom Navigation
 final List<Widget> _screens = [
   const HomeScreen(),
- const MySubscribeAndWinPage(), 
-
+  const MySubscriptionScreen(),
   const MessageViewScreen(),
-    const FeedScreen(),
+  FeedScreen(),
 ];
 
+/// Main Screen with Bottom Navigation Bar
 class MainScreen extends ConsumerWidget {
   MainScreen({super.key});
 
@@ -30,11 +50,8 @@ class MainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the current selected index
     final selectedIndex = ref.watch(currentScreenProvider);
-
-    // Decide whether to show the bottom navigation bar
-    bool showBottomNavBar = selectedIndex < _screens.length;
+    final showBottomNavBar = ref.watch(showBottomNavBarProvider);
 
     return Scaffold(
       extendBody: true,
@@ -54,23 +71,25 @@ class MainScreen extends ConsumerWidget {
           ? Customernavbar(
               selectedIndex: selectedIndex,
               onTabChanged: (index) {
-                print('ramk $index');
+                if (index == 3) {
+                  ref.read(scrollToTopProvider.notifier).state =
+                      true; // Trigger scroll
+                }
+
                 if (index == selectedIndex) {
-                  // Reset the navigation stack of the current tab if tapped again
                   _navigatorKeys[index]
                       .currentState
                       ?.popUntil((route) => route.isFirst);
                 } else {
-                  // Update the selected tab index
                   ref.read(currentScreenProvider.notifier).state = index;
                 }
-              },
-            )
+              })
           : null,
     );
   }
 }
 
+/// Custom Bottom Navigation Bar
 class Customernavbar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
@@ -83,6 +102,13 @@ class Customernavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconPaths = [
+      'assets/icon/home.png',
+      'assets/icon/news.png',
+      'assets/icon/message.png',
+      'assets/icon/wifi.png',
+    ];
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 70.w, vertical: 8.h),
       child: Card(
@@ -93,35 +119,36 @@ class Customernavbar extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(4, (index) {
+            children: List.generate(iconPaths.length, (index) {
               final isSelected = index == selectedIndex;
-              final iconPaths = [
-                'assets/icon/home.png',
-                'assets/icon/news.png',
-                'assets/icon/message.png',
-                'assets/icon/wifi.png',
-              ];
               return GestureDetector(
-                onTap: () {
-                  onTabChanged(index);
-                }, // Trigger the callback
-                child: Container(
+                onTap: () => onTabChanged(index),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
                   height: 40.h,
                   decoration: BoxDecoration(
+                   gradient: isSelected
+          ? const LinearGradient(
+              colors: [
+                Color(0xff651c50),
+                Color(0xff54225f),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
+          : null, // No gradient if not selected
                     color: isSelected
                         ? const Color(0xff362677)
                         : const Color(0xfff5f2f6),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color:
-                          isSelected ? const Color(0xff362677) : Colors.black,
-                    ),
+                        color: isSelected
+                            ? const Color(0xff362677)
+                            : Colors.black),
                   ),
                   padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    iconPaths[index],
-                    color: isSelected ? Colors.white : Colors.black,
-                  ),
+                  child: Image.asset(iconPaths[index],
+                      color: isSelected ? Colors.white : Colors.black),
                 ),
               );
             }),

@@ -19,6 +19,8 @@ class VendorCardResponse with _$VendorCardResponse {
 @freezed
 class VendorCardData with _$VendorCardData {
   const factory VendorCardData({
+        int? subscribed,
+
     required VendorCard? vendor_card,
     required List<Deal>? deals,
   }) = _VendorCardData;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/online_transaction_record/api/online_transaction_api.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -51,10 +52,10 @@ class _OnlineTransactionRecordScreenState
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: asyncTransactionData.when(
             data: (transactionData) {
-              final allTransactions = transactionData.data.allPayments;
-              final holdTransactions = transactionData.data.holdPayments;
+              final allTransactions = transactionData.data!.allPayments;
+              final holdTransactions = transactionData.data!.holdPayments;
               final releaseTransactions =
-                  transactionData.data.releasePayments.cast<Payment>();
+                  transactionData.data!.releasePayments!.cast<Payment>();
 
               return Column(
                 children: [
@@ -82,13 +83,13 @@ class _OnlineTransactionRecordScreenState
                               children: [
                                 // All Transactions Tab
                                 _buildPaginatedTab(
-                                    allTransactions, allTransactionsPage,
+                                    allTransactions!, allTransactionsPage,
                                     (newPage) {
                                   setState(() => allTransactionsPage = newPage);
                                 }),
                                 // Hold Transactions Tab
                                 _buildPaginatedTab(
-                                    holdTransactions, holdTransactionsPage,
+                                    holdTransactions!, holdTransactionsPage,
                                     (newPage) {
                                   setState(
                                       () => holdTransactionsPage = newPage);
@@ -159,7 +160,7 @@ class _OnlineTransactionRecordScreenState
     return Column(
       children: [
         Expanded(
-          child: _buildTransactionList(paginatedTransactions),
+          child:  paginatedTransactions.isEmpty? nolistingfound(message: 'transaction'):   _buildTransactionList(paginatedTransactions),
         ),
         _buildPaginationControls(currentPage, totalPages, updatePage),
       ],

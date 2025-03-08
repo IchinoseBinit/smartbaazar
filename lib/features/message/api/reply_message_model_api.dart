@@ -10,7 +10,8 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'reply_message_model_api.g.dart';
 
 @riverpod
-Future<ReplyMessageModel> sendReplyMessage(SendReplyMessageRef ref,
+Future<ReplyMessageModel> sendReplyMessage(
+   ref,
     String threadId, String? body, File? imageFile) async {
   final SmartClient client = SmartClient();
 

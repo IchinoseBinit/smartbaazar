@@ -3,14 +3,16 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        // Add JitPack repository here
         maven { url 'https://jitpack.io' }
     }
 
     dependencies {
+        // Downgrade the Gradle version to 7.2.2
+        classpath 'com.android.tools.build:gradle:8.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
+
 
 allprojects {
     repositories {

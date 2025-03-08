@@ -51,8 +51,9 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
-    final createdAt =
-        order.createdAt != null ? DateTime.tryParse(order.createdAt) : null;
+    final DateTime? createdAt = order.createdAt is String
+        ? DateTime.tryParse(order.createdAt)
+        : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
     final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
@@ -85,7 +86,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       const Spacer(),
                       InkWell(
                         onTap: () => Navigator.pop(context),
-                        child: Text('Go backz',
+                        child: Text('Go back',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w700,
@@ -160,114 +161,117 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                         ],
                       ),
                       SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Status',
-                            style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff36383C)),
-                          ),
-                          GeneralTextButton(
-                            marginH: 0,
-                            height: 25.h,
-                            width: 95.w,
-                            fgColor: Colors.white,
-                            bgColor: const Color(0xff362677),
-                            title: 'Track',
-                            isSmallText: true,
-                            onPressed: () {
-                              CustomDialougeBox().orderDetailDialouge(
-                                context,
-                                title: 'Status',
-                                heading: 'Track Order',
-                                buttonTitle: 'Understood',
-                                callback: () {},
-                                widget: TrackOrderDetails(order: order),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 5.h),
-                      if (isReturnEligible)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Action',
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xff36383C)),
-                            ),
-                            GeneralTextButton(
-                              marginH: 0,
-                              isSmallText: true,
-                              height: 25.h,
-                              width: 95.w,
-                              fgColor: Colors.white,
-                              bgColor: const Color(0xff362677),
-                              title: 'Return',
-                              onPressed: () {
-                                CustomDialougeBox().orderDetailDialouge(
-                                  context,
-                                  buttonTitle: 'Submit',
-                                  callback: () {
-                                    print("lala $order");
-                                    ref
-                                        .watch(postmyreturnProvider(
-                                      order.id, // Random order ID
-                                      order.vendorId, // Random vendor ID
-                                      order.postId, // Random post ID
-                                      issue!, // Random issue description
-                                      message!, // Random message
-                                      place!
-                                          .description!, // Random place description
-                                      '123', // Random city name
-                                      address!, // Random address
-                                      place!.latitude!
-                                          .toString(), // Random latitude
-                                      place!.longitude!
-                                          .toString(), // Random longitude
-                                      image!,
-                                    ))
-                                        .whenData(
-                                      (value) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Data inserted")));
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  },
-                                  widget: ReturnProductDetails(
-                                    issue: (p1) {
-                                      issue = p1;
-                                    },
-                                    message: (p0) {
-                                      message = p0;
-                                    },
-                                    address: (p3) {
-                                      address = p3;
-                                    },
-                                    place: (p4) {
-                                      place = p4;
-                                    },
-                                    file: (p5) {
-                                      image = p5;
-                                    },
-                                  ),
-                                  title: 'Action',
-                                  heading: 'Return Products',
-                                );
-                              },
-                            )
-                          ],
-                        ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       'Status',
+                      //       style: TextStyle(
+                      //           fontSize: 14.sp,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: const Color(0xff36383C)),
+                      //     ),
+                      //     GeneralTextButton(
+                      //       marginH: 0,
+                      //       height: 25.h,
+                      //       width: 95.w,
+                      //       fgColor: Colors.white,
+                      //       bgColor: const Color(0xff362677),
+                      //       title: 'Track',
+                      //       isSmallText: true,
+                      //       onPressed: () {
+                      //         CustomDialougeBox().orderDetailDialouge(
+                      //           context,
+                      //           title: 'Status',
+                      //           heading: 'Track Order',
+                      //           buttonTitle: 'Understood',
+                      //           callback: () {
+                      //             Navigator.pop(context);
+                      //           },
+                      //           widget: TrackOrderDetails(order: order),
+                      //         );
+                      //       },
+                      //     )
+                      //   ],
+                      // ),
+                      // SizedBox(height: 5.h),
+                      // if (isReturnEligible)
+                      //   Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         'Action',
+                      //         style: TextStyle(
+                      //             fontSize: 14.sp,
+                      //             fontWeight: FontWeight.w500,
+                      //             color: const Color(0xff36383C)),
+                      //       ),
+                      //       GeneralTextButton(
+                      //         marginH: 0,
+                      //         isSmallText: true,
+                      //         height: 25.h,
+                      //         width: 95.w,
+                      //         fgColor: Colors.white,
+                      //         bgColor: const Color(0xff362677),
+                      //         title: 'Return',
+                      //         onPressed: () {
+                      //           CustomDialougeBox().orderDetailDialouge(
+                      //             context,
+                      //             buttonTitle: 'Submit',
+                      //             callback: () {
+                      //               print("lala $order");
+                      //               ref
+                      //                   .watch(postmyreturnProvider(
+                      //                 order.id, // Random order ID
+                      //                 order.vendorId, // Random vendor ID
+                      //                 order.postId, // Random post ID
+                      //                 issue!, // Random issue description
+                      //                 message!, // Random message
+                      //                 place!
+                      //                     .description!, // Random place description
+                      //                 '123', // Random city name
+                      //                 address!, // Random address
+                      //                 place!.latitude!
+                      //                     .toString(), // Random latitude
+                      //                 place!.longitude!
+                      //                     .toString(), // Random longitude
+                      //                 image!,
+                      //               ))
+                      //                   .whenData(
+                      //                 (value) {
+                      //                   ScaffoldMessenger.of(context)
+                      //                       .showSnackBar(const SnackBar(
+                      //                           content:
+                      //                               Text("Data inserted")));
+                      //                   Navigator.pop(context);
+                      //                 },
+                      //               );
+                      //             },
+                      //             widget: ReturnProductDetails(
+                      //               issue: (p1) {
+                      //                 issue = p1;
+                      //               },
+                      //               message: (p0) {
+                      //                 message = p0;
+                      //               },
+                      //               address: (p3) {
+                      //                 address = p3;
+                      //               },
+                      //               place: (p4) {
+                      //                 place = p4;
+                      //               },
+                      //               file: (p5) {
+                      //                 image = p5;
+                      //               },
+                      //             ),
+                      //             title: 'Fill the form',
+                      //             heading: 'Return Products',
+                      //           );
+                      //           Navigator.pop(context);
+                      //         },
+                      //       )
+                      //     ],
+                      //   ),
                     ],
                   ),
                 ),
@@ -544,7 +548,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                     controller: messagecontroller,
                     onChanged: (value) {
                       widget.message(selectedissue!);
-                                        },
+                    },
                     maxLines: null,
                     decoration: InputDecoration.collapsed(
                         hintText: 'Describe your issue',
@@ -557,11 +561,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
               ),
             ),
             SizedBox(height: 5.h),
-            CityField(
-              onCitySelected: (data) {
-                widget.place(data!);
-                            },
-            ),
+            CityField(onCitySelected: widget.place),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
               child: Column(
@@ -578,8 +578,8 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   SizedBox(height: 10.h),
                   TextField(
                     onChanged: (value) {
-                      widget.address(value!);
-                                        },
+                      widget.address(value);
+                    },
                     decoration: InputDecoration.collapsed(
                         hintText: 'Enter Street Address',
                         hintStyle: TextStyle(

@@ -8,7 +8,7 @@ part 'update_user_details_api.g.dart';
 
 @riverpod
 Future<UpdateUserDetail> updateUserDetails(
-  UpdateUserDetailsRef ref,
+   ref,
   String fullName,
   String phoneNumber,
   String userName,
