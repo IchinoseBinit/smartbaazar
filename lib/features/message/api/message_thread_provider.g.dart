@@ -7,7 +7,7 @@ part of 'message_thread_provider.dart';
 // **************************************************************************
 
 String _$messageFilterStateHash() =>
-    r'8ab8460bce5fcabc6ae1a5bbb54642b0e188a621';
+    r'dba7ba04704f3b4e6dc783622ea22a0633d3eac2';
 
 /// See also [MessageFilterState].
 @ProviderFor(MessageFilterState)

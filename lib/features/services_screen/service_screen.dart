@@ -2633,6 +2633,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   Buynowmodel resp = data.buynow![index];
 
                                   return buyorwin_widget(
+                                    vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,
                                       worth: resp.worth!,

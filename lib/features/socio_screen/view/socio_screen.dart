@@ -534,78 +534,83 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                 ),
                 SliverToBoxAdapter(
                   child: asyncForYouStoryContent.when(
-                    data: (feedStoryData) {
-                      final feedStoryContent = feedStoryData.data?.feedstory;
-                      final posts = feedStoryContent?.posts ?? [];
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.data?.feedstory;
+                        final posts = feedStoryContent?.posts ?? [];
 
-                      if (posts.isEmpty) {
-                        return const Center(
-                            child: Text("No stories available"));
-                      }
+                        if (posts.isEmpty) {
+                          return const Center(
+                              child: Text("No stories available"));
+                        }
 
-                      return SizedBox(
-                        height: 100.h,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              ListView.builder(
-                                padding: EdgeInsets.only(left: 3.w),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: posts.length,
-                                itemBuilder: (context, index) {
-                                  final story = posts[index];
-                                  return FeedStoryAddWidget(
-                                    index: index,
-                                    vendorName:
-                                        story.vendorName ?? "Unknown Vendor",
-                                    vendorImage: story.vendorImage ??
-                                        "https://example.com/default-image.png",
-                                    storyCount: story.storyCount ?? 0,
-                                    showGift: story.hasSponsoredGifts ?? false,
-                                    feedStoryContent: feedStoryContent!,
-                                    userId: story.vendorId ?? '',
-                                  );
-                                },
-                              ),
-                            ],
+                        return SizedBox(
+                          height: 100.h,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent: feedStoryContent!,
+                                      userId: story.vendorId ?? '',
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    loading: () => SizedBox(
-                      height: 40.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (_, __) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: 80,
-                              height: 50,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
+                        );
+                      },
+                      loading: () => SizedBox(
+                            height: 40.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (_, __) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 80,
+                                    height: 50,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    error: (error, _) => Center(
-                      child: Text(
-                        error.toString().contains('Session has expired')
-                            ? 'Please log in again.'
-                            : 'Error: $error',
-                      ),
-                    ),
-                  ),
+                      error: (error, _) {
+                        setState(() {});
+                        refreshAllProviders();
+                        return Center(
+                          child: Text(
+                            error.toString().contains('Session has expired')
+                                ? 'Please log in again.'
+                                : 'Error: $error',
+                          ),
+                        );
+                      }),
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -2668,6 +2673,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 Buynowmodel resp = data.buynow![index];
 
                                 return buyorwin_widget(
+                                  vendorid: resp.vendor_id!,
                                     wow: resp.wow ?? '0',
                                     gift_qty: resp.gift_qty!,
                                     worth: resp.worth!,

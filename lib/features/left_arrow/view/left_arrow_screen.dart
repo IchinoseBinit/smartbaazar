@@ -7,7 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/payment/create_listing_payement.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/payment/payment_screen.dart';
 
 class LeftArrowScreen extends ConsumerStatefulWidget {
   const LeftArrowScreen({
@@ -38,9 +40,13 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   void initState() {
     super.initState();
     items = [
-      left_arrow(const Color(0xff362664)),
-      left_arrow(const Color(0xff901B41)),
-      left_arrow(const Color(0xff362664)),
+      left_arrow(
+          const Color(
+            0xff362664,
+          ),
+          '34999'),
+      left_arrow(const Color(0xff901B41), '9999'),
+      left_arrow(const Color(0xff362664), '19999'),
     ];
   }
 
@@ -63,8 +69,8 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/smartlogo.png',  // Replace with your logo asset path
-                  width: 150.w,  // Responsive width
+                  'assets/images/smartlogo.png', // Replace with your logo asset path
+                  width: 150.w, // Responsive width
                 ),
                 Row(
                   children: [
@@ -94,7 +100,8 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   IconButton(
-                    icon: SvgPicture.asset(drawerIcon),  // Replace with your drawer icon path
+                    icon: SvgPicture.asset(
+                        drawerIcon), // Replace with your drawer icon path
                     onPressed: () {},
                   ),
                   Expanded(
@@ -323,7 +330,10 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
     );
   }
 
-  Container left_arrow(Color color) {
+  Container left_arrow(
+    Color color,
+    String price,
+  ) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -369,7 +379,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                       fontSize: 20),
                 ),
                 Text(
-                  "Rs 4,999/monthly",
+                  "Rs $price/monthly",
                   style: headerstyle.copyWith(
                       fontStyle: FontStyle.italic,
                       fontFamily: GoogleFonts.kantumruyPro().fontFamily,
@@ -408,7 +418,9 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                     shape: WidgetStatePropertyAll(BeveledRectangleBorder(
                         borderRadius: BorderRadius.circular(5))),
                     backgroundColor: WidgetStatePropertyAll(color)),
-                onPressed: () {},
+                onPressed: () async {
+                  await CrateListingIniatepayment(context, price, false);
+                },
                 child: Text(
                   "Choose Plan",
                   style: headerstyle.copyWith(

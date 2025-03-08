@@ -23,7 +23,7 @@ class AdditionalDetailsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Parse defaultValue as a list of integers or strings
     List<dynamic> parseDefaultValues() {
-      if (defaultValue is String) {
+      if (defaultValue is String && defaultValue.isNotEmpty) {
         return defaultValue
             .split(',') // Split by comma
             .map((e) => e.trim()) // Trim spaces
@@ -38,19 +38,27 @@ class AdditionalDetailsWidget extends StatelessWidget {
       final parsedDefaultValues = parseDefaultValues();
 
       if (options != null && options!.isNotEmpty) {
-        final matchingOptions = options!.where((option) {
-          if (searchByOption) {
-            return parsedDefaultValues.contains(option.value);
-          } else {
-            return parsedDefaultValues.contains(option.id.toString());
-          }
-        }).map((option) => option.value).where((value) => value != null).cast<String>().toList();
+        final matchingOptions = options!
+            .where((option) {
+              if (searchByOption) {
+                return parsedDefaultValues.contains(option.value);
+              } else {
+                return parsedDefaultValues.contains(option.id.toString());
+              }
+            })
+            .map((option) => option.value)
+            .where((value) => value != null)
+            .cast<String>()
+            .toList();
 
-        return matchingOptions.isNotEmpty
-            ? matchingOptions.join(', ') // Join values with comma
-            : "No details available";
+        // If there are matching options, return them; otherwise, return defaultValue
+        if (matchingOptions.isNotEmpty) {
+          return matchingOptions.join(', '); // Join values with comma
+        }
       }
-      return "No details available";
+
+      // If no matching option is found, return defaultValue
+      return defaultValue?.toString() ?? "No details available";
     }
 
     final displayValue = getDisplayValue();

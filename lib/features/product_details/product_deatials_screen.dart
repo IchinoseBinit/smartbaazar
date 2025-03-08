@@ -124,7 +124,7 @@ class ProductDetailScreen extends ConsumerWidget {
     return GenericSafeArea(
       child: productDetailsAsyncValue.when(
         data: (data) {
-          // print('bibash ${data.result?.user_details?.membershipTitle}');
+          print('bibash ${data.result?.user_details?.membership_title}');
           // List<dynamic> locations = jsonDecode(data.widgetSimilarPosts!.posts!
           //     .data.first.userdetailsget!.branch_location!)!;
           // print(
@@ -463,7 +463,7 @@ class ProductDetailScreen extends ConsumerWidget {
                           ref: ref,
                           membershiptitle: data.widgetSimilarPosts?.posts?.data
                                   .first.detailuser?.membershipPlanTitle ??
-                              data.result!.user_details!.membershipTitle
+                              data.result!.user_details!.membership_title
                                   .toString(),
                           posttypeid: data.result!.postTypeId!,
                           membershipid: data.result!.user!.id.toString(),
@@ -1286,8 +1286,8 @@ class ProductDetailScreen extends ConsumerWidget {
                                               .widgetSimilarPosts!
                                               .posts!
                                               .data[index];
-                                          print(
-                                              "kala ${prod.savedByLoggedUser}");
+                                          // print(
+                                          //     "kala ${prod.savedByLoggedUser}");
 
                                           return ProductDetailWidget(
                                               onenquiredclicked: () {
@@ -1364,7 +1364,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                               posttype: prod.postTypeId,
                                               productid: prod.id.toString(),
                                               membershipid: prod
-                                                  .user_details?.membershipId,
+                                                  .user_details?.membership_id,
                                               tradeImage:
                                                   'assets/icon/loading.svg',
                                               didcountpercentage:

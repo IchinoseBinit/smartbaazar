@@ -412,7 +412,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 if (isSliverAppBarVisible)
                   SliverAppBar(
                       automaticallyImplyLeading: false,
-                      expandedHeight: 90.h,
+                      expandedHeight: 150.h,
                       floating: false,
                       pinned: false,
                       flexibleSpace: AnimatedContainer(
@@ -436,37 +436,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 end: Alignment.bottomRight),
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(4, (index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = index;
-                                      _pageController.animateToPage(
-                                        index,
-                                        duration:
-                                            const Duration(milliseconds: 50),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 5.h,
-                                      width: 5.w,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
-                                      decoration: BoxDecoration(
-                                        color: selectedIndex == index
-                                            ? Colors.amber
-                                            : Colors.grey,
-                                        shape: BoxShape.circle,
+                              Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  }),
+                                ),
                               ),
                               SizedBox(
                                 height: 15.h,
@@ -495,6 +501,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             .state = index;
                                       },
                                       child: AnimatedContainer(
+                                        margin: EdgeInsets.only(left: 16.w),
                                         padding: EdgeInsets.zero,
                                         duration:
                                             const Duration(milliseconds: 300),
@@ -563,10 +570,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               SizedBox(
                                 height: 10.h,
                               ),
+                              Image.asset(
+                                  height: 60.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  'assets/images/circle.png')
                             ],
                           ),
                         ),
                       )),
+                // SliverToBoxAdapter(
+                //   child: Container(),
+                // ),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 11, top: 11),
@@ -848,6 +863,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     Buynowmodel resp = data.buynow[index];
 
                                     return buyorwin_widget(
+                                      vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,
                                       worth: resp.worth!,
@@ -991,8 +1007,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                                     return ProductDetailWidget(
                                                       onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                        // print(
+                                                        //     'lanka ${prod.id}');
 
                                                         getEnquire(ref, prod.id)
                                                             .then(
@@ -2393,9 +2409,9 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                           ),
                           hintText: "Search Everything",
                           hintStyle: TextStyle(
-                              fontSize: screenWidth * 0.02,
-                              color: const Color(0xffD9D9D9),
-                              ),
+                            fontSize: screenWidth * 0.02,
+                            color: const Color(0xffD9D9D9),
+                          ),
                           contentPadding: EdgeInsets.symmetric(
                               vertical: screenHeight * 0.02,
                               horizontal: screenWidth * 0.02),

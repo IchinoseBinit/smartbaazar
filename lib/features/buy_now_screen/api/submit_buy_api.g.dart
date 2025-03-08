@@ -6,7 +6,7 @@ part of 'submit_buy_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$buynowsubmitHash() => r'9d05b6b22d7245c83401bee459589bf48584ed50';
+String _$buynowsubmitHash() => r'f23471b89c6ad2a888e3b783897f337e4289a6d8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -59,6 +59,31 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
     double total,
     int productId,
     String productTitle,
+    String token,
+    String zoneId,
+    List<double> pickupCoordinates,
+    List<double> customerCoordinates,
+    List<double> customerRequestCoordinates,
+    List<double> destinationCoordinates,
+    int getestimateid,
+    double estimatedFare,
+    double estimatedDistance,
+    double estimatedTime,
+    String pickupAddress,
+    String destinationAddress,
+    int vendorId,
+    String type,
+    double returnFee,
+    double cancellationFee,
+    String senderName,
+    String senderPhone,
+    String senderAddress,
+    String receiverName,
+    String receiverPhone,
+    String receiverAddress,
+    String parcelCategoryId,
+    double weight,
+    String payer,
   ) {
     return BuynowsubmitProvider(
       cityCode,
@@ -80,6 +105,31 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
       total,
       productId,
       productTitle,
+      token,
+      zoneId,
+      pickupCoordinates,
+      customerCoordinates,
+      customerRequestCoordinates,
+      destinationCoordinates,
+      getestimateid,
+      estimatedFare,
+      estimatedDistance,
+      estimatedTime,
+      pickupAddress,
+      destinationAddress,
+      vendorId,
+      type,
+      returnFee,
+      cancellationFee,
+      senderName,
+      senderPhone,
+      senderAddress,
+      receiverName,
+      receiverPhone,
+      receiverAddress,
+      parcelCategoryId,
+      weight,
+      payer,
     );
   }
 
@@ -107,6 +157,31 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
       provider.total,
       provider.productId,
       provider.productTitle,
+      provider.token,
+      provider.zoneId,
+      provider.pickupCoordinates,
+      provider.customerCoordinates,
+      provider.customerRequestCoordinates,
+      provider.destinationCoordinates,
+      provider.getestimateid,
+      provider.estimatedFare,
+      provider.estimatedDistance,
+      provider.estimatedTime,
+      provider.pickupAddress,
+      provider.destinationAddress,
+      provider.vendorId,
+      provider.type,
+      provider.returnFee,
+      provider.cancellationFee,
+      provider.senderName,
+      provider.senderPhone,
+      provider.senderAddress,
+      provider.receiverName,
+      provider.receiverPhone,
+      provider.receiverAddress,
+      provider.parcelCategoryId,
+      provider.weight,
+      provider.payer,
     );
   }
 
@@ -148,6 +223,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     double total,
     int productId,
     String productTitle,
+    String token,
+    String zoneId,
+    List<double> pickupCoordinates,
+    List<double> customerCoordinates,
+    List<double> customerRequestCoordinates,
+    List<double> destinationCoordinates,
+    int getestimateid,
+    double estimatedFare,
+    double estimatedDistance,
+    double estimatedTime,
+    String pickupAddress,
+    String destinationAddress,
+    int vendorId,
+    String type,
+    double returnFee,
+    double cancellationFee,
+    String senderName,
+    String senderPhone,
+    String senderAddress,
+    String receiverName,
+    String receiverPhone,
+    String receiverAddress,
+    String parcelCategoryId,
+    double weight,
+    String payer,
   ) : this._internal(
           (ref) => buynowsubmit(
             ref as BuynowsubmitRef,
@@ -170,6 +270,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
             total,
             productId,
             productTitle,
+            token,
+            zoneId,
+            pickupCoordinates,
+            customerCoordinates,
+            customerRequestCoordinates,
+            destinationCoordinates,
+            getestimateid,
+            estimatedFare,
+            estimatedDistance,
+            estimatedTime,
+            pickupAddress,
+            destinationAddress,
+            vendorId,
+            type,
+            returnFee,
+            cancellationFee,
+            senderName,
+            senderPhone,
+            senderAddress,
+            receiverName,
+            receiverPhone,
+            receiverAddress,
+            parcelCategoryId,
+            weight,
+            payer,
           ),
           from: buynowsubmitProvider,
           name: r'buynowsubmitProvider',
@@ -199,6 +324,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
           total: total,
           productId: productId,
           productTitle: productTitle,
+          token: token,
+          zoneId: zoneId,
+          pickupCoordinates: pickupCoordinates,
+          customerCoordinates: customerCoordinates,
+          customerRequestCoordinates: customerRequestCoordinates,
+          destinationCoordinates: destinationCoordinates,
+          getestimateid: getestimateid,
+          estimatedFare: estimatedFare,
+          estimatedDistance: estimatedDistance,
+          estimatedTime: estimatedTime,
+          pickupAddress: pickupAddress,
+          destinationAddress: destinationAddress,
+          vendorId: vendorId,
+          type: type,
+          returnFee: returnFee,
+          cancellationFee: cancellationFee,
+          senderName: senderName,
+          senderPhone: senderPhone,
+          senderAddress: senderAddress,
+          receiverName: receiverName,
+          receiverPhone: receiverPhone,
+          receiverAddress: receiverAddress,
+          parcelCategoryId: parcelCategoryId,
+          weight: weight,
+          payer: payer,
         );
 
   BuynowsubmitProvider._internal(
@@ -227,6 +377,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     required this.total,
     required this.productId,
     required this.productTitle,
+    required this.token,
+    required this.zoneId,
+    required this.pickupCoordinates,
+    required this.customerCoordinates,
+    required this.customerRequestCoordinates,
+    required this.destinationCoordinates,
+    required this.getestimateid,
+    required this.estimatedFare,
+    required this.estimatedDistance,
+    required this.estimatedTime,
+    required this.pickupAddress,
+    required this.destinationAddress,
+    required this.vendorId,
+    required this.type,
+    required this.returnFee,
+    required this.cancellationFee,
+    required this.senderName,
+    required this.senderPhone,
+    required this.senderAddress,
+    required this.receiverName,
+    required this.receiverPhone,
+    required this.receiverAddress,
+    required this.parcelCategoryId,
+    required this.weight,
+    required this.payer,
   }) : super.internal();
 
   final String cityCode;
@@ -248,6 +423,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
   final double total;
   final int productId;
   final String productTitle;
+  final String token;
+  final String zoneId;
+  final List<double> pickupCoordinates;
+  final List<double> customerCoordinates;
+  final List<double> customerRequestCoordinates;
+  final List<double> destinationCoordinates;
+  final int getestimateid;
+  final double estimatedFare;
+  final double estimatedDistance;
+  final double estimatedTime;
+  final String pickupAddress;
+  final String destinationAddress;
+  final int vendorId;
+  final String type;
+  final double returnFee;
+  final double cancellationFee;
+  final String senderName;
+  final String senderPhone;
+  final String senderAddress;
+  final String receiverName;
+  final String receiverPhone;
+  final String receiverAddress;
+  final String parcelCategoryId;
+  final double weight;
+  final String payer;
 
   @override
   Override overrideWith(
@@ -281,6 +481,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
         total: total,
         productId: productId,
         productTitle: productTitle,
+        token: token,
+        zoneId: zoneId,
+        pickupCoordinates: pickupCoordinates,
+        customerCoordinates: customerCoordinates,
+        customerRequestCoordinates: customerRequestCoordinates,
+        destinationCoordinates: destinationCoordinates,
+        getestimateid: getestimateid,
+        estimatedFare: estimatedFare,
+        estimatedDistance: estimatedDistance,
+        estimatedTime: estimatedTime,
+        pickupAddress: pickupAddress,
+        destinationAddress: destinationAddress,
+        vendorId: vendorId,
+        type: type,
+        returnFee: returnFee,
+        cancellationFee: cancellationFee,
+        senderName: senderName,
+        senderPhone: senderPhone,
+        senderAddress: senderAddress,
+        receiverName: receiverName,
+        receiverPhone: receiverPhone,
+        receiverAddress: receiverAddress,
+        parcelCategoryId: parcelCategoryId,
+        weight: weight,
+        payer: payer,
       ),
     );
   }
@@ -311,7 +536,32 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
         other.couponDiscount == couponDiscount &&
         other.total == total &&
         other.productId == productId &&
-        other.productTitle == productTitle;
+        other.productTitle == productTitle &&
+        other.token == token &&
+        other.zoneId == zoneId &&
+        other.pickupCoordinates == pickupCoordinates &&
+        other.customerCoordinates == customerCoordinates &&
+        other.customerRequestCoordinates == customerRequestCoordinates &&
+        other.destinationCoordinates == destinationCoordinates &&
+        other.getestimateid == getestimateid &&
+        other.estimatedFare == estimatedFare &&
+        other.estimatedDistance == estimatedDistance &&
+        other.estimatedTime == estimatedTime &&
+        other.pickupAddress == pickupAddress &&
+        other.destinationAddress == destinationAddress &&
+        other.vendorId == vendorId &&
+        other.type == type &&
+        other.returnFee == returnFee &&
+        other.cancellationFee == cancellationFee &&
+        other.senderName == senderName &&
+        other.senderPhone == senderPhone &&
+        other.senderAddress == senderAddress &&
+        other.receiverName == receiverName &&
+        other.receiverPhone == receiverPhone &&
+        other.receiverAddress == receiverAddress &&
+        other.parcelCategoryId == parcelCategoryId &&
+        other.weight == weight &&
+        other.payer == payer;
   }
 
   @override
@@ -336,6 +586,31 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, total.hashCode);
     hash = _SystemHash.combine(hash, productId.hashCode);
     hash = _SystemHash.combine(hash, productTitle.hashCode);
+    hash = _SystemHash.combine(hash, token.hashCode);
+    hash = _SystemHash.combine(hash, zoneId.hashCode);
+    hash = _SystemHash.combine(hash, pickupCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, customerCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, customerRequestCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, destinationCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, getestimateid.hashCode);
+    hash = _SystemHash.combine(hash, estimatedFare.hashCode);
+    hash = _SystemHash.combine(hash, estimatedDistance.hashCode);
+    hash = _SystemHash.combine(hash, estimatedTime.hashCode);
+    hash = _SystemHash.combine(hash, pickupAddress.hashCode);
+    hash = _SystemHash.combine(hash, destinationAddress.hashCode);
+    hash = _SystemHash.combine(hash, vendorId.hashCode);
+    hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, returnFee.hashCode);
+    hash = _SystemHash.combine(hash, cancellationFee.hashCode);
+    hash = _SystemHash.combine(hash, senderName.hashCode);
+    hash = _SystemHash.combine(hash, senderPhone.hashCode);
+    hash = _SystemHash.combine(hash, senderAddress.hashCode);
+    hash = _SystemHash.combine(hash, receiverName.hashCode);
+    hash = _SystemHash.combine(hash, receiverPhone.hashCode);
+    hash = _SystemHash.combine(hash, receiverAddress.hashCode);
+    hash = _SystemHash.combine(hash, parcelCategoryId.hashCode);
+    hash = _SystemHash.combine(hash, weight.hashCode);
+    hash = _SystemHash.combine(hash, payer.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -398,6 +673,81 @@ mixin BuynowsubmitRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `productTitle` of this provider.
   String get productTitle;
+
+  /// The parameter `token` of this provider.
+  String get token;
+
+  /// The parameter `zoneId` of this provider.
+  String get zoneId;
+
+  /// The parameter `pickupCoordinates` of this provider.
+  List<double> get pickupCoordinates;
+
+  /// The parameter `customerCoordinates` of this provider.
+  List<double> get customerCoordinates;
+
+  /// The parameter `customerRequestCoordinates` of this provider.
+  List<double> get customerRequestCoordinates;
+
+  /// The parameter `destinationCoordinates` of this provider.
+  List<double> get destinationCoordinates;
+
+  /// The parameter `getestimateid` of this provider.
+  int get getestimateid;
+
+  /// The parameter `estimatedFare` of this provider.
+  double get estimatedFare;
+
+  /// The parameter `estimatedDistance` of this provider.
+  double get estimatedDistance;
+
+  /// The parameter `estimatedTime` of this provider.
+  double get estimatedTime;
+
+  /// The parameter `pickupAddress` of this provider.
+  String get pickupAddress;
+
+  /// The parameter `destinationAddress` of this provider.
+  String get destinationAddress;
+
+  /// The parameter `vendorId` of this provider.
+  int get vendorId;
+
+  /// The parameter `type` of this provider.
+  String get type;
+
+  /// The parameter `returnFee` of this provider.
+  double get returnFee;
+
+  /// The parameter `cancellationFee` of this provider.
+  double get cancellationFee;
+
+  /// The parameter `senderName` of this provider.
+  String get senderName;
+
+  /// The parameter `senderPhone` of this provider.
+  String get senderPhone;
+
+  /// The parameter `senderAddress` of this provider.
+  String get senderAddress;
+
+  /// The parameter `receiverName` of this provider.
+  String get receiverName;
+
+  /// The parameter `receiverPhone` of this provider.
+  String get receiverPhone;
+
+  /// The parameter `receiverAddress` of this provider.
+  String get receiverAddress;
+
+  /// The parameter `parcelCategoryId` of this provider.
+  String get parcelCategoryId;
+
+  /// The parameter `weight` of this provider.
+  double get weight;
+
+  /// The parameter `payer` of this provider.
+  String get payer;
 }
 
 class _BuynowsubmitProviderElement
@@ -442,6 +792,65 @@ class _BuynowsubmitProviderElement
   int get productId => (origin as BuynowsubmitProvider).productId;
   @override
   String get productTitle => (origin as BuynowsubmitProvider).productTitle;
+  @override
+  String get token => (origin as BuynowsubmitProvider).token;
+  @override
+  String get zoneId => (origin as BuynowsubmitProvider).zoneId;
+  @override
+  List<double> get pickupCoordinates =>
+      (origin as BuynowsubmitProvider).pickupCoordinates;
+  @override
+  List<double> get customerCoordinates =>
+      (origin as BuynowsubmitProvider).customerCoordinates;
+  @override
+  List<double> get customerRequestCoordinates =>
+      (origin as BuynowsubmitProvider).customerRequestCoordinates;
+  @override
+  List<double> get destinationCoordinates =>
+      (origin as BuynowsubmitProvider).destinationCoordinates;
+  @override
+  int get getestimateid => (origin as BuynowsubmitProvider).getestimateid;
+  @override
+  double get estimatedFare => (origin as BuynowsubmitProvider).estimatedFare;
+  @override
+  double get estimatedDistance =>
+      (origin as BuynowsubmitProvider).estimatedDistance;
+  @override
+  double get estimatedTime => (origin as BuynowsubmitProvider).estimatedTime;
+  @override
+  String get pickupAddress => (origin as BuynowsubmitProvider).pickupAddress;
+  @override
+  String get destinationAddress =>
+      (origin as BuynowsubmitProvider).destinationAddress;
+  @override
+  int get vendorId => (origin as BuynowsubmitProvider).vendorId;
+  @override
+  String get type => (origin as BuynowsubmitProvider).type;
+  @override
+  double get returnFee => (origin as BuynowsubmitProvider).returnFee;
+  @override
+  double get cancellationFee =>
+      (origin as BuynowsubmitProvider).cancellationFee;
+  @override
+  String get senderName => (origin as BuynowsubmitProvider).senderName;
+  @override
+  String get senderPhone => (origin as BuynowsubmitProvider).senderPhone;
+  @override
+  String get senderAddress => (origin as BuynowsubmitProvider).senderAddress;
+  @override
+  String get receiverName => (origin as BuynowsubmitProvider).receiverName;
+  @override
+  String get receiverPhone => (origin as BuynowsubmitProvider).receiverPhone;
+  @override
+  String get receiverAddress =>
+      (origin as BuynowsubmitProvider).receiverAddress;
+  @override
+  String get parcelCategoryId =>
+      (origin as BuynowsubmitProvider).parcelCategoryId;
+  @override
+  double get weight => (origin as BuynowsubmitProvider).weight;
+  @override
+  String get payer => (origin as BuynowsubmitProvider).payer;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

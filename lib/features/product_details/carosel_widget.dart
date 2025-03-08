@@ -59,7 +59,7 @@ class _CarsoselWidgetState extends ConsumerState<CarsoselWidget> {
         Positioned(
           child: CarouselSlider(
             options: CarouselOptions(
-              height: 300.0, // Set height of carousel
+              height: 300.h, // Set height of carousel
               viewportFraction: 1.0,
               initialPage: 0,
               onPageChanged: (index, reason) {

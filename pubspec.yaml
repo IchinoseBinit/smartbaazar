@@ -87,11 +87,14 @@ dependencies:
   screenshot: ^3.0.0
   gallery_saver_plus: ^3.2.1
   multiselect: ^0.1.1
+  lottie: ^3.3.1
+  
   # flutter_barcode_scanner: ^2.0.0
 
 
 dependency_overrides:
    custom_lint: 0.6.0
+   webview_flutter: ^4.7.0
 
 
 dev_dependencies:

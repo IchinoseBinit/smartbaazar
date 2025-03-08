@@ -79,11 +79,30 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => OrderDetailsScreen(
+            vendorphone: cartItems
+                    .where(
+                      (element) => element.id == selectedProductIds[0],
+                    )
+                    .first
+                    .phone ??
+                '+977',
             vendorid: int.tryParse(cartItems.first.vendorId!)!,
             vendorname: cartItems.first.name,
-            wiright: 0,
-            latitude: double.tryParse(cartItems.first.latitude) ?? 0.0,
-            longitude: double.tryParse(cartItems.first.longitude) ?? 0.0,
+            wiright: int.tryParse(cartItems
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .weight ??
+                '1')!,
+            latitude: double.tryParse(cartItems
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .latitude) ??
+                0.0,
+            longitude: double.tryParse(cartItems
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .longitude) ??
+                0.0,
             pickup: cartItems.first.pickup,
             selectedProductIds: selectedProductIds,
             selectedVendorIds: selectedVendorIds,

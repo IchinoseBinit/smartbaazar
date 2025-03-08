@@ -12,12 +12,16 @@ import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -34,6 +38,7 @@ import 'package:smartbazar/features/product_details/product_deatials_screen.dart
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/apply_sponsorship_price_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
@@ -44,7 +49,10 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:smartbazar/payment/git.dart';
+import 'package:smartbazar/payment/payment_screen.dart';
 import 'package:smartbazar/practice.dart';
+import 'package:smartbazar/payment/create_listing_payement.dart';
 
 void main() {
   // Set custom HttpOverrides globally
@@ -93,10 +101,17 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
               useMaterial3: true,
             ),
-            home: EventsScreen()));
+            home: SplashScreen()
+            ),
+            );
     // home: SplashScreen()));
   }
-}
+} //123
+//9810443212
+
+//9844543322
+// 120
+// 12
 
 class ImageConvert extends StatefulWidget {
   const ImageConvert({super.key});

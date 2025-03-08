@@ -9,24 +9,24 @@ Future<ParcelFareResponse> getDeliveryChargeSmartbiz(
   String pickupAddress,
   String destinationAddress,
   List<List<double>> intermediateCoordinates,
-  double parcelWeight,
+  int parcelWeight,
   String parcelCategoryId,
   String vendorId,
 ) async {
   final Dio dio = Dio();
 
   try {
-
-
     FormData formData = FormData.fromMap({
-      "pickup_coordinates[]": pickupCoordinates.map((c) => c.toString()).toList(),
-      "destination_coordinates[]": destinationCoordinates.map((c) => c.toString()).toList(),
-      "intermediate_coordinates": null, 
+      "pickup_coordinates[]":
+          pickupCoordinates.map((c) => c.toString()).toList(),
+      "destination_coordinates[]":
+          destinationCoordinates.map((c) => c.toString()).toList(),
+      "intermediate_coordinates": null,
       "type": type,
       "pickup_address": pickupAddress,
       "destination_address": destinationAddress,
       "parcel_category_id": parcelCategoryId,
-      "parcel_weight": parcelWeight.toString(),
+      "parcel_weight": parcelWeight,
       "vendor_id": vendorId,
     });
 

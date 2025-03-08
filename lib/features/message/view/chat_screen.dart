@@ -390,8 +390,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) =>
-                  const Center(child: Text('Please login again')),
+              error: (error, stack) => const Center(
+                  child:
+                      Text('Please login again or try switching message type')),
             ),
           ),
 

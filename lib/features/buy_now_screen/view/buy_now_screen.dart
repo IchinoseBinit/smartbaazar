@@ -3,36 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
+import 'package:smartbazar/payment/create_listing_payement.dart';
 import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/delivery_charge_model.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbazar/features/add_to_cart/model/smart_biz_login_model.dart';
-import 'package:smartbazar/features/advertisement/model/advertisement_model.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_now_screen/api/buy_now_api.dart';
 import 'package:smartbazar/features/buy_now_screen/api/get_estimated_fair_api.dart';
-import 'package:smartbazar/features/buy_now_screen/api/request_delivery_api.dart';
 import 'package:smartbazar/features/buy_now_screen/api/submit_buy_api.dart';
 import 'package:smartbazar/features/buy_now_screen/model/post_buy_now_model.dart';
-import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
-import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
 import 'package:smartbazar/features/order_details/model/street_address_model.dart';
-import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
-import 'package:smartbazar/features/proceed_pay/view/proceed_to_pay_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
+import 'package:smartbazar/payment/payment_screen.dart';
 
 final quantityProvider = StateProvider<int>((ref) => 1);
 
+// ignore: must_be_immutable
 class BuyNowFormScreen extends ConsumerStatefulWidget {
   BuyNowFormScreen(
       {required this.pickuplatitute,
@@ -67,6 +61,8 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
   TextEditingController pricecontroller = TextEditingController();
   String selectedPaymentMethod = "Pre-Payement"; // Default payment method
   String selectedDeliveryOption = "Self Pickup"; // Default delivery option
+  String hyperOption = 'Standard';
+  // String standard = 'Standard';
   String? selectedCoupon = '';
   ParcelFareResponse? _fairresponse;
   // String selectedCity = '';
@@ -88,7 +84,6 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
   void updateStreet(StreetAddressModel street) {
     setState(() {
       selectedStreet = street;
-      print('Selected Street: $selectedStreet');
     });
 
     if (_bizLoginResponse?.data?.token != null && selectedStreet != null) {
@@ -103,17 +98,16 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
           selectedStreet?.longitude ?? 0.0,
         ], // Destination coordinates
         "parcel", // Type
-        widget.pickupaddress ?? 'ktm', // Pickup address
-        selectedStreet?.description ?? 'ktm', // Destination address
+        widget.pickupaddress ?? 'kathmandu', // Pickup address
+        selectedStreet?.description ?? 'kathmandu', // Destination address
         [], // No intermediate coordinates
-        widget.weight?.toDouble() ?? 0.0, // Parcel weight
+        widget.weight ?? 1, // Parcel weight
         "44cb222c-b93c-44e2-a5aa-a3a5932e0d63", // Parcel category ID
         widget.selectedVendorIds.toString(), // Vendor ID
       ).then(
         (value) {
           setState(() {
             _fairresponse = value;
-            print('kingko ${_fairresponse?.data?.estimatedFare}');
           });
         },
       );
@@ -124,15 +118,21 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
     setState(() {
       selectedPaymentMethod = value;
     });
-    print('saka ${selectedPaymentMethod}');
   }
 
   void updateDeliveryOption(String value) {
     setState(() {
       selectedDeliveryOption = value;
     });
-    print('ranka ${selectedDeliveryOption}');
+    // print('ranka ${selectedDeliveryOption}');
   }
+
+  // void updatehomedeloption(String value) {
+  //   setState(() {
+  //     hyperOption = value;
+  //   });
+  //   print('ranka ${selectedDeliveryOption}');
+  // }
 
   BizLoginResponse? _bizLoginResponse;
   // String? token;
@@ -145,7 +145,6 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
     loginBoiData.whenData(
       (value) {
         _bizLoginResponse = value;
-        print('haka ${_bizLoginResponse!.data!.token!}');
       },
     );
 
@@ -367,6 +366,14 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                   height: 8.h,
                                 ),
                                 if (selectedDeliveryOption == 'Home Delivery')
+                                  CustomRadioButton(
+                                    title1: 'Standard',
+                                    title2: 'Hyper',
+                                    onChanged: (p0) {
+                                      hyperOption = p0;
+                                    },
+                                  ),
+                                if (selectedDeliveryOption == 'Home Delivery')
                                   StreetAddressFieldWidget(
                                     onSelected: updateStreet,
                                   ),
@@ -384,7 +391,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                       fontWeight: FontWeight.w500,
                                       color: const Color(0xff000000)),
                                 ),
-                                Text(
+                                const Text(
                                   'No coupons available',
                                   style: TextStyle(color: Colors.red),
                                 ),
@@ -418,9 +425,9 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                                       .state--;
                                                 }
                                               },
-                                              icon: Icon(Icons.remove)),
+                                              icon: const Icon(Icons.remove)),
                                           Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 1),
                                             child: Text(quantity.toString()),
                                             decoration: BoxDecoration(
@@ -437,7 +444,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                                         .notifier)
                                                     .state++;
                                               },
-                                              icon: Icon(Icons.add)),
+                                              icon: const Icon(Icons.add)),
                                         ],
                                       ),
                                     ),
@@ -451,7 +458,10 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                   color: Color(0xffD9D9D9),
                                 ),
                                 OrderSummaryWidget(
-                                  paymentpethod: selectedPaymentMethod,
+                                  hyper: hyperOption,
+
+                                  // deliveryoption: hyperOption,
+                                  // paymentpethod: selectedPaymentMethod,
                                   senderaddress: widget.pickupaddress,
                                   sendername: widget.vendorname,
                                   vendorid: widget.selectedVendorIds,
@@ -462,8 +472,8 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                   pickuplatitutevednor: widget.pickuplatitute,
                                   pickuplongitutevendor:
                                       widget.pickupicklongitute,
-                                  deliverychareg:
-                                      _fairresponse ?? ParcelFareResponse(),
+                                  deliverychareg: _fairresponse ??
+                                      const ParcelFareResponse(),
                                   venoraddress: widget.pickupaddress,
                                   email: emailcontroller.text,
                                   name: namecontroller.text,
@@ -476,7 +486,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                       selectedDeliveryOption,
                                   // selectedCity: selectedCity,
                                   selectedStreet: selectedStreet ??
-                                      StreetAddressModel(
+                                      const StreetAddressModel(
                                           description: '0',
                                           placeId: '0',
                                           latitude: 0,
@@ -488,7 +498,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                             );
                           },
                           error: (error, stackTrace) {
-                            return Text("Please login");
+                            return const Text("Please login");
                           },
                           loading: () => Center(
                                 child: SizedBox(
@@ -523,7 +533,6 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
   final double pickuplongitutevendor;
   final String sendername;
   final String senderPhone;
-  final String paymentpethod;
 
   // final String selectedCity;
   final StreetAddressModel selectedStreet;
@@ -534,6 +543,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
   final String senderaddress;
   final String receiverphone;
   final double weight;
+  final String hyper;
 
   // final CheckoutDetailsModel checkoutDetails;
   // final String? pieceFrom;
@@ -564,7 +574,7 @@ class OrderSummaryWidget extends ConsumerStatefulWidget {
       required this.senderaddress,
       required this.receiverphone,
       required this.weight,
-      required this.paymentpethod
+      required this.hyper
 
       // required this.checkoutDetails,
       //  this.pieceFrom,
@@ -585,7 +595,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
 
   @override
   void initState() {
-    if (widget.paymentpethod.length == "Pre-Payement") {
+    if (widget.selectedPaymentMethod == "Pre-Payement") {
       //  print('binod ${widget.paymentpethod.length}');
       paymentmethod = 'qr';
     } else {
@@ -616,7 +626,6 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
       }
     }
 
-    double finalRate = discountedPrice;
     finallyRate = discountedPrice;
     totalAmount = finallyRate * int.parse(item.qty ?? '0');
 
@@ -642,7 +651,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("bibash ${widget.items.title}");
+    // print("bibash ${widget.d}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -665,7 +674,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                     // itemTotal: widget.items.price
                   ), (newPrice) {
                 _finalPrice = newPrice;
-                print('Updated Price: Rs $newPrice');
+                //   print('Updated Price: Rs $newPrice');
                 // You can update a state variable here if needed
               }, widget.deliverychareg.data?.estimatedFare ?? 0),
             ],
@@ -740,12 +749,138 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
           height: 30.h,
         ),
         GeneralTextButton(
-            width: MediaQuery.of(context).size.width,
-            bgColor: const Color(0xff362677),
-            fgColor: Colors.white,
-            title: 'Place Order',
-            onPressed: () async {
-              // Test data for checking
+          width: MediaQuery.of(context).size.width,
+          bgColor: const Color(0xff362677),
+          fgColor: Colors.white,
+          title: 'Place Order',
+          onPressed: () async {
+            await Future.delayed(const Duration(seconds: 2), () {});
+            // Test data for checking
+            if (widget.selectedPaymentMethod == "Pre-Payement") {
+              showBottomSheet(
+                enableDrag: true,
+                elevation: 10,
+                sheetAnimationStyle:
+                    AnimationStyle(curve: FlippedCurve(Curves.bounceIn)),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(10.0)),
+                ),
+                backgroundColor: Colors.white,
+                showDragHandle: true,
+                context: context,
+                builder: (context) {
+                  return Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
+                    child: SizedBox(
+                      width: 200.w,
+                      height: 50.h,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey.shade300,
+                            elevation: 0,
+                            side: const BorderSide(
+                              width: 2,
+                              color: Colors.black87,
+                            )),
+                        onPressed: () async {
+                          bool success = await initiatePayment(
+                              context, _finalPrice!, true);
+                          if (success)
+                            await buynowsubmit(
+                              ref,
+                              '715216549', // cityCode
+                              widget.name, // username
+                              widget.venoraddress, // address
+                              widget.email, // email
+                              double.tryParse(widget.items.price!)!, // price
+                              paymentmethod ?? 'qr', // payMethod
+                              widget.selectedDeliveryOption ??
+                                  'self', // delivery
+                              widget.hyper ?? 'Standard', // deliveryType
+                              widget.selectedStreet.description, // city
+                              widget.selectedStreet.description, // street
+                              widget.selectedStreet.latitude, // latitude
+                              widget.selectedStreet.longitude, // longitude
+                              null, // coupon
+                              ref.read(quantityProvider.notifier).state, // qty
+                              widget.deliverychareg.data?.estimatedFare!
+                                      .toDouble() ??
+                                  0, // delCost
+                              0.0, // couponDiscount
+                              double.tryParse(_finalPrice!)!, // total
+                              int.tryParse(widget.items.id!)!, // productId
+                              widget.items.title!, // productTitle
+                              //from delivery
+
+                              widget.bizLoginResponseparams!.data!.token!,
+                              widget.deliverychareg.data?.zoneId ?? '0.0',
+                              [
+                                widget.pickuplatitutevednor,
+                                widget.pickuplongitutevendor
+                              ], //pickup
+                              [
+                                widget.pickuplatitutevednor,
+                                widget.pickuplongitutevendor
+                              ], //cusomer
+                              [
+                                widget.pickuplatitutevednor,
+                                widget.pickuplongitutevendor
+                              ], //customer
+                              [
+                                widget.selectedStreet.latitude,
+                                widget.selectedStreet.longitude
+                              ], //destination
+                              widget.deliverychareg.data?.estId ?? 0,
+                              widget.deliverychareg.data?.estimatedFare!
+                                      .toDouble() ??
+                                  0,
+                              widget.deliverychareg.data?.estimatedDistance ??
+                                  0,
+                              double.parse(widget.deliverychareg.data
+                                          ?.estimatedDuration
+                                          ?.replaceAll(
+                                              RegExp(r'[^0-9.]'), '') ??
+                                      '0.0') ??
+                                  0.0,
+
+                              widget.venoraddress,
+                              widget.selectedStreet.description, //m
+
+                              widget.vendorid,
+                              "parcel",
+                              widget.deliverychareg.data?.returnFee!
+                                      .toDouble() ??
+                                  0.0, //return fee
+                              widget.deliverychareg.data?.cancellationFee!
+                                      .toDouble() ??
+                                  0.0,
+                              widget.sendername,
+                              widget.senderPhone,
+                              widget.senderaddress,
+                              widget.name,
+                              widget.receiverphone,
+                              widget.selectedStreet.description,
+                              widget.deliverychareg.data?.fare?.first
+                                      .parcelCategoryId ??
+                                  '0',
+                              widget.weight,
+                              "sender",
+                            );
+                        },
+                        child: const Text(
+                          'Pay with Fonepay',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            } else {
               final bool success = await buynowsubmit(
                 ref,
                 '715216549', // cityCode
@@ -754,76 +889,162 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                 widget.email, // email
                 double.tryParse(widget.items.price!)!, // price
                 paymentmethod ?? 'qr', // payMethod
-                'Home Delivery', // delivery
-                'standard', // deliveryType
+                widget.selectedDeliveryOption ?? 'self', // delivery
+                widget.hyper ?? 'Standard', // deliveryType
                 widget.selectedStreet.description, // city
                 widget.selectedStreet.description, // street
                 widget.selectedStreet.latitude, // latitude
                 widget.selectedStreet.longitude, // longitude
                 null, // coupon
                 ref.read(quantityProvider.notifier).state, // qty
-                350.0, // delCost
+                widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                    0, // delCost
                 0.0, // couponDiscount
                 double.tryParse(_finalPrice!)!, // total
                 int.tryParse(widget.items.id!)!, // productId
                 widget.items.title!, // productTitle
+                //from delivery
+
+                widget.bizLoginResponseparams!.data!.token!,
+                widget.deliverychareg.data?.zoneId ?? '0.0',
+                [
+                  widget.pickuplatitutevednor,
+                  widget.pickuplongitutevendor
+                ], //pickup
+                [
+                  widget.pickuplatitutevednor,
+                  widget.pickuplongitutevendor
+                ], //cusomer
+                [
+                  widget.pickuplatitutevednor,
+                  widget.pickuplongitutevendor
+                ], //customer
+                [
+                  widget.selectedStreet.latitude,
+                  widget.selectedStreet.longitude
+                ], //destination
+                widget.deliverychareg.data?.estId ?? 0,
+                widget.deliverychareg.data?.estimatedFare!.toDouble() ?? 0,
+                widget.deliverychareg.data?.estimatedDistance ?? 0,
+                double.parse(widget.deliverychareg.data?.estimatedDuration
+                            ?.replaceAll(RegExp(r'[^0-9.]'), '') ??
+                        '0.0') ??
+                    0.0,
+
+                widget.venoraddress,
+                widget.selectedStreet.description, //m
+
+                widget.vendorid,
+                "parcel",
+                widget.deliverychareg.data?.returnFee!.toDouble() ??
+                    0.0, //return fee
+                widget.deliverychareg.data?.cancellationFee!.toDouble() ?? 0.0,
+                widget.sendername,
+                widget.senderPhone,
+                widget.senderaddress,
+                widget.name,
+                widget.receiverphone,
+                widget.selectedStreet.description,
+                widget.deliverychareg.data?.fare?.first.parcelCategoryId ?? '0',
+                widget.weight,
+                "sender",
               );
-
               if (success) {
-                // if (widget.deliverychareg != null)
-                //request delivery
-                //  if()
-                requestdelivery(
-                  widget.bizLoginResponseparams!.data!.token!,
-                  widget.deliverychareg.data!.zoneId!,
-                  [
-                    widget.pickuplatitutevednor,
-                    widget.pickuplongitutevendor
-                  ], //pickup
-                  [
-                    widget.pickuplatitutevednor,
-                    widget.pickuplongitutevendor
-                  ], //cusomer
-                  [
-                    widget.pickuplatitutevednor,
-                    widget.pickuplongitutevendor
-                  ], //customer
-                  [
-                    widget.selectedStreet.latitude,
-                    widget.selectedStreet.longitude
-                  ], //destination
-                  widget.deliverychareg.data!.estId!,
-                  widget.deliverychareg.data!.estimatedFare!.toDouble(),
-                  widget.deliverychareg.data!.estimatedDistance!,
-                  double.parse(widget.deliverychareg.data!.estimatedDuration!
-                      .replaceAll(RegExp(r'[^0-9.]'), '')),
-
-                  widget.venoraddress,
-                  widget.selectedStreet.description, //m
-
-                  widget.vendorid,
-                  "parcel",
-                  widget.deliverychareg.data!.returnFee!
-                      .toDouble(), //return fee
-                  widget.deliverychareg.data!.cancellationFee!.toDouble(),
-                  widget.sendername,
-                  widget.senderPhone,
-                  widget.senderaddress,
-                  widget.selectedStreet.description,
-                  widget.receiverphone,
-                  widget.selectedStreet.description,
-                  widget.deliverychareg.data!.fare!.first.parcelCategoryId!,
-                  widget.weight,
-                  "sender",
+                showDialog(
+                  barrierDismissible: true,
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: const Text("Order Placed Successfully!"),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Lottie.asset('assets/images/delivery.json',
+                              height: 150),
+                          const SizedBox(height: 30),
+                          const Text(
+                            "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details. Click here to Track Your Order.",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const OnlineTransactionRecordScreen(),
+                                ));
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
                 );
-
-                // Do something after successful submission
-                print('Successfully submitted the buy now request!');
-              } else {
-                // Handle failure
-                print('Failed to submit the buy now request');
               }
-            }),
+            }
+
+            //  if (false)
+          },
+
+          // if (success) {
+          //   await Future.delayed(const Duration(seconds: 5), () {});
+          //   await requestdelivery(
+          //     widget.bizLoginResponseparams!.data!.token!,
+          //     widget.deliverychareg.data!.zoneId!,
+          //     [
+          //       widget.pickuplatitutevednor,
+          //       widget.pickuplongitutevendor
+          //     ], //pickup
+          //     [
+          //       widget.pickuplatitutevednor,
+          //       widget.pickuplongitutevendor
+          //     ], //cusomer
+          //     [
+          //       widget.pickuplatitutevednor,
+          //       widget.pickuplongitutevendor
+          //     ], //customer
+          //     [
+          //       widget.selectedStreet.latitude,
+          //       widget.selectedStreet.longitude
+          //     ], //destination
+          //     widget.deliverychareg.data!.estId!,
+          //     widget.deliverychareg.data!.estimatedFare!.toDouble(),
+          //     widget.deliverychareg.data!.estimatedDistance!,
+          //     double.parse(widget.deliverychareg.data!.estimatedDuration!
+          //         .replaceAll(RegExp(r'[^0-9.]'), '')),
+
+          //     widget.venoraddress,
+          //     widget.selectedStreet.description, //m
+
+          //     widget.vendorid,
+          //     "parcel",
+          //     widget.deliverychareg.data!.returnFee!
+          //         .toDouble(), //return fee
+          //     widget.deliverychareg.data!.cancellationFee!.toDouble(),
+          //     widget.sendername,
+          //     widget.senderPhone,
+          //     widget.senderaddress,
+          //     widget.selectedStreet.description,
+          //     widget.receiverphone,
+          //     widget.selectedStreet.description,
+          //     widget.deliverychareg.data!.fare!.first.parcelCategoryId!,
+          //     widget.weight,
+          //     "sender",
+          //   );
+
+          // Do something after successful submission
+          //   print('Successfully submitted the buy now request!');
+          // } else {
+          //   // Handle failure
+          //   print('Failed to submit the buy now request');
+          // }
+          // }),
+        ),
         SizedBox(
           height: 20.h,
         )
@@ -860,15 +1081,13 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
     //       .toStringAsFixed(2));
     // }
     double getfinalprice() {
-      double _total = finalRate *
+      double total = finalRate *
               int.tryParse(
-                  ref.read(quantityProvider.notifier).state.toString() ??
-                      '0')! +
+                  ref.read(quantityProvider.notifier).state.toString())! +
           deliveryfair;
-      _pricechanged!(_total.toString());
+      _pricechanged!(total.toString());
 
-      return _total;
-      ;
+      return total;
     }
 
     return Column(
@@ -881,7 +1100,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
             SizedBox(
               width: 15.w,
             ),
-            Spacer(),
+            const Spacer(),
             Text(
               (item.name ?? item.title ?? 'N/A').length > 30
                   ? '${(item.name ?? item.title ?? 'N/A').substring(0, 30)}...'

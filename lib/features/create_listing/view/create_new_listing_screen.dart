@@ -4538,7 +4538,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        print('kalu ${selectedcategory}');
+                       // print('kalu ${selectedcategory}');
                         setState(() {
                           _acceptterms = newValue;
                         });

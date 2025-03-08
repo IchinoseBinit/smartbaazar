@@ -3,19 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class buyorwin_widget extends StatelessWidget {
-  const buyorwin_widget({
-    super.key,
-    required this.vendorname,
-    required this.winners,
-    required this.proctimage,
-    required this.vendorImage,
-    required this.productname,
-    required this.worth,
-    required this.gift_qty,
-    required this.wow,
-  });
+  const buyorwin_widget(
+      {super.key,
+      required this.vendorname,
+      required this.winners,
+      required this.proctimage,
+      required this.vendorImage,
+      required this.productname,
+      required this.worth,
+      required this.gift_qty,
+      required this.wow,
+      required this.vendorid});
 
   final String vendorname,
       winners,
@@ -24,7 +25,8 @@ class buyorwin_widget extends StatelessWidget {
       productname,
       worth,
       gift_qty,
-      wow;
+      wow,
+      vendorid;
 
   @override
   Widget build(BuildContext context) {
@@ -130,71 +132,83 @@ class buyorwin_widget extends StatelessWidget {
                 bottom: 0,
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Row(
-                          children: [
-                            // CircleAvatar(
-                            //   backgroundImage: NetworkImage(vendorImage),
-                            //   radius: 20.0,
-                            // ),
-                            Container(
-                              padding: const EdgeInsets.all(2),
-                              // Thickness of the border
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.grey, // Border color
-                                  width: 2.0, // Border width
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VendorHomeScreen(
+                                  vid: int.tryParse(vendorid)!,
+                                  vendorName: vendorname),
+                            ));
+                      },
+                      child: Row(
+                        children: [
+                          Row(
+                            children: [
+                              // CircleAvatar(
+                              //   backgroundImage: NetworkImage(vendorImage),
+                              //   radius: 20.0,
+                              // ),
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                // Thickness of the border
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.grey, // Border color
+                                    width: 2.0, // Border width
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(vendorImage),
+                                  radius:
+                                      18.0, // Adjust radius based on padding
                                 ),
                               ),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(vendorImage),
-                                radius: 18.0, // Adjust radius based on padding
+                              SizedBox(
+                                width: 10.w,
                               ),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            // Text("by $vendorname"),
+                              // Text("by $vendorname"),
 
-                            // Text(
-                            //   "by $vendorname",
-                            //   style: headerstyle.copyWith(
-                            //     fontSize: 12.sp, // Adjust font size if needed
-                            //   ),
-                            //   textAlign: TextAlign.center, // Centers the text
-                            //   overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
-                            //   maxLines: 1, // Ensures a single line with ellipsis if overflowed
-                            //   softWrap: false, // Prevents wrapping to a new line
-                            // ),
+                              // Text(
+                              //   "by $vendorname",
+                              //   style: headerstyle.copyWith(
+                              //     fontSize: 12.sp, // Adjust font size if needed
+                              //   ),
+                              //   textAlign: TextAlign.center, // Centers the text
+                              //   overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
+                              //   maxLines: 1, // Ensures a single line with ellipsis if overflowed
+                              //   softWrap: false, // Prevents wrapping to a new line
+                              // ),
 
-                            // SizedBox(
-                            //   width: 200.w, // Fixed width for the text box
-                            //   child: Text(
-                            //     "by ${vendorname.length > 12 ? vendorname.substring(0, 12) + '...' : vendorname}",
-                            //     style: headerstyle.copyWith(
-                            //       fontSize: 12.sp, // Adjust font size if needed
-                            //     ),
-                            //     textAlign: TextAlign.center, // Centers the text
-                            //     overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
-                            //     maxLines: 1, // Keeps the text on a single line
-                            //   ),
-                            // ),
+                              // SizedBox(
+                              //   width: 200.w, // Fixed width for the text box
+                              //   child: Text(
+                              //     "by ${vendorname.length > 12 ? vendorname.substring(0, 12) + '...' : vendorname}",
+                              //     style: headerstyle.copyWith(
+                              //       fontSize: 12.sp, // Adjust font size if needed
+                              //     ),
+                              //     textAlign: TextAlign.center, // Centers the text
+                              //     overflow: TextOverflow.ellipsis, // Truncates text with ellipsis
+                              //     maxLines: 1, // Keeps the text on a single line
+                              //   ),
+                              // ),
 
-                            Text(
-                              "by ${vendorname.length > 15 ? '${vendorname.substring(0, 12)}...' : vendorname}",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                // Use a fixed font size for debugging
-                                color: Colors.black, // Ensure visible text
+                              Text(
+                                "by ${vendorname.length > 15 ? '${vendorname.substring(0, 12)}...' : vendorname}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  // Use a fixed font size for debugging
+                                  color: Colors.black, // Ensure visible text
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 10.w,

@@ -309,9 +309,9 @@ _$MyProductDeailModelImpl _$$MyProductDeailModelImplFromJson(
       storyCount: (json['storyCount'] as num?)?.toInt(),
       subscribers: (json['subscribers'] as num?)?.toInt(),
       distance: (json['distance'] as num?)?.toDouble(),
-      membershipId: json['membership_id'] as String?,
-      membershipTitle: json['membership_title'] as String?,
-      membershipColor: json['membership_color'] as String?,
+      membership_id: json['membership_id'] as String?,
+      membership_title: json['membership_title'] as String? ?? 'Domestic Brand',
+      membership_color: json['membership_color'] as String?,
     );
 
 Map<String, dynamic> _$$MyProductDeailModelImplToJson(
@@ -326,9 +326,9 @@ Map<String, dynamic> _$$MyProductDeailModelImplToJson(
       'storyCount': instance.storyCount,
       'subscribers': instance.subscribers,
       'distance': instance.distance,
-      'membership_id': instance.membershipId,
-      'membership_title': instance.membershipTitle,
-      'membership_color': instance.membershipColor,
+      'membership_id': instance.membership_id,
+      'membership_title': instance.membership_title,
+      'membership_color': instance.membership_color,
     };
 
 _$SimilarProductsImpl _$$SimilarProductsImplFromJson(

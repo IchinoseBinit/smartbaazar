@@ -85,6 +85,7 @@ class MessageViewScreen extends ConsumerWidget {
               Expanded(
                 child: TabBarView(
                   children: [
+                    //   Container(),
                     // Chat Tab
                     Consumer(
                       builder: (context, ref, _) {
@@ -301,86 +302,6 @@ class MessageViewScreen extends ConsumerWidget {
                         );
                       },
                     ),
-
-                    // Alerts Tab
-                    // Consumer(
-                    //   builder: (context, ref, _) {
-                    //     final alertProvider =
-                    //         ref.watch(getAlertMessageProvider);
-
-                    //     return alertProvider.when(
-                    //       data: (alertList) {
-                    //         // Now `alertList.data` contains the list of alerts
-                    //         final alerts = alertList.alerts;
-
-                    //         return ListView.separated(
-                    //           itemCount: alerts!.length,
-                    //           itemBuilder: (context, index) {
-                    //             final alert = alerts[index];
-                    //             return InkWell(
-                    //               onTap: () {
-                    //                 Navigator.push(
-                    //                   context,
-                    //                   MaterialPageRoute(
-                    //                     builder: (_) => AlertScreen(
-                    //                       alertTitle:
-                    //                           alert.title ?? 'No title',
-                    //                       alertBody: alert.body ?? 'No body',
-                    //                       alertImage: alert.image,
-                    //                       alertDateTime: alert.createdAt!,
-                    //                     ),
-                    //                   ),
-                    //                 );
-                    //               },
-                    //               child: ListTile(
-                    //                 leading: CircleAvatar(
-                    //                   backgroundImage: alert.image != null
-                    //                       ? NetworkImage(alert.image!)
-                    //                       : const AssetImage(
-                    //                               'assets/images/default_avatar.png')
-                    //                           as ImageProvider,
-                    //                 ),
-                    //                 title: Text(
-                    //                   alert.title ?? 'No title',
-                    //                   style: TextStyle(
-                    //                     fontSize: 14.sp,
-                    //                     fontWeight: FontWeight.w700,
-                    //                     overflow: TextOverflow.ellipsis,
-                    //                   ),
-                    //                   maxLines: 1,
-                    //                 ),
-                    //                 subtitle: Text(
-                    //                   alert.body ?? 'No body',
-                    //                   style: TextStyle(
-                    //                     fontSize: 12.sp,
-                    //                     overflow: TextOverflow.ellipsis,
-                    //                     color: const Color(0xff000000)
-                    //                         .withOpacity(0.45),
-                    //                     fontWeight: FontWeight.w600,
-                    //                   ),
-                    //                   maxLines: 2,
-                    //                 ),
-                    //                 trailing: IconButton(
-                    //                   icon:
-                    //                       const Icon(Icons.arrow_forward_ios),
-                    //                   onPressed: () {
-                    //                     // Handle navigation or action
-                    //                   },
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           },
-                    //           separatorBuilder: (context, index) =>
-                    //               SizedBox(height: 20.h),
-                    //         );
-                    //       },
-                    //       loading: () => const Center(
-                    //           child: CircularProgressIndicator()),
-                    //       error: (error, stack) =>
-                    //           Center(child: Text('Error: $error')),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               ),
@@ -448,7 +369,7 @@ class ListOfMessages extends StatelessWidget {
                                       "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
                                 ),
                                 onBackgroundImageError: (_, __) {
-                                  return print('kala ${_}');
+                                  //  return print('kala ${_}');
                                 },
                               );
                             },

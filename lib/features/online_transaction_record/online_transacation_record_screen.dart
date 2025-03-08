@@ -52,10 +52,12 @@ class _OnlineTransactionRecordScreenState
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: asyncTransactionData.when(
             data: (transactionData) {
-              final allTransactions = transactionData.data!.allPayments;
-              final holdTransactions = transactionData.data!.holdPayments;
+              final allTransactions = transactionData.data?.allPayments ?? [];
+              final holdTransactions = transactionData.data?.holdPayments ?? [];
               final releaseTransactions =
-                  transactionData.data!.releasePayments!.cast<Payment>();
+                  (transactionData.data?.releasePayments ?? [])
+                      .map((e) => Payment.fromJson(e as Map<String, dynamic>))
+                      .toList();
 
               return Column(
                 children: [
@@ -111,7 +113,8 @@ class _OnlineTransactionRecordScreenState
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => const Center(child: Text('Please login again')),
+            error: (error, stackTrace) =>
+                const Center(child: Text('Please login again')),
           ),
         ),
       ),
@@ -160,7 +163,9 @@ class _OnlineTransactionRecordScreenState
     return Column(
       children: [
         Expanded(
-          child:  paginatedTransactions.isEmpty? nolistingfound(message: 'transaction'):   _buildTransactionList(paginatedTransactions),
+          child: paginatedTransactions.isEmpty
+              ? nolistingfound(message: 'transaction')
+              : _buildTransactionList(paginatedTransactions),
         ),
         _buildPaginationControls(currentPage, totalPages, updatePage),
       ],

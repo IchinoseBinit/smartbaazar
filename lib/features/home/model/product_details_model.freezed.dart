@@ -3194,12 +3194,9 @@ mixin _$MyProductDeailModel {
   int? get storyCount => throw _privateConstructorUsedError;
   int? get subscribers => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_id')
-  String? get membershipId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor => throw _privateConstructorUsedError;
+  String? get membership_id => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3223,9 +3220,9 @@ abstract class $MyProductDeailModelCopyWith<$Res> {
       int? storyCount,
       int? subscribers,
       double? distance,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
@@ -3250,9 +3247,9 @@ class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
     Object? storyCount = freezed,
     Object? subscribers = freezed,
     Object? distance = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -3291,17 +3288,17 @@ class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -3325,9 +3322,9 @@ abstract class _$$MyProductDeailModelImplCopyWith<$Res>
       int? storyCount,
       int? subscribers,
       double? distance,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
@@ -3350,9 +3347,9 @@ class __$$MyProductDeailModelImplCopyWithImpl<$Res>
     Object? storyCount = freezed,
     Object? subscribers = freezed,
     Object? distance = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
     return _then(_$MyProductDeailModelImpl(
       name: freezed == name
@@ -3391,17 +3388,17 @@ class __$$MyProductDeailModelImplCopyWithImpl<$Res>
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -3420,9 +3417,9 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
       this.storyCount,
       this.subscribers,
       this.distance,
-      @JsonKey(name: 'membership_id') this.membershipId,
-      @JsonKey(name: 'membership_title') this.membershipTitle,
-      @JsonKey(name: 'membership_color') this.membershipColor});
+      this.membership_id,
+      this.membership_title = 'Domestic Brand',
+      this.membership_color});
 
   factory _$MyProductDeailModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyProductDeailModelImplFromJson(json);
@@ -3448,18 +3445,16 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
   @override
   final double? distance;
   @override
-  @JsonKey(name: 'membership_id')
-  final String? membershipId;
+  final String? membership_id;
   @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
+  @JsonKey()
+  final String? membership_title;
   @override
-  @JsonKey(name: 'membership_color')
-  final String? membershipColor;
+  final String? membership_color;
 
   @override
   String toString() {
-    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membershipId: $membershipId, membershipTitle: $membershipTitle, membershipColor: $membershipColor)';
+    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
   }
 
   @override
@@ -3483,12 +3478,12 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
                 other.subscribers == subscribers) &&
             (identical(other.distance, distance) ||
                 other.distance == distance) &&
-            (identical(other.membershipId, membershipId) ||
-                other.membershipId == membershipId) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle) &&
-            (identical(other.membershipColor, membershipColor) ||
-                other.membershipColor == membershipColor));
+            (identical(other.membership_id, membership_id) ||
+                other.membership_id == membership_id) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title) &&
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color));
   }
 
   @JsonKey(ignore: true)
@@ -3504,9 +3499,9 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
       storyCount,
       subscribers,
       distance,
-      membershipId,
-      membershipTitle,
-      membershipColor);
+      membership_id,
+      membership_title,
+      membership_color);
 
   @JsonKey(ignore: true)
   @override
@@ -3525,19 +3520,18 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
 
 abstract class _MyProductDeailModel implements MyProductDeailModel {
   const factory _MyProductDeailModel(
-          {final String? name,
-          final String? photo,
-          @JsonKey(name: 'user_photo_url') final String? userPhotoUrl,
-          @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
-          final int? livePrizes,
-          final int? productCount,
-          final int? storyCount,
-          final int? subscribers,
-          final double? distance,
-          @JsonKey(name: 'membership_id') final String? membershipId,
-          @JsonKey(name: 'membership_title') final String? membershipTitle,
-          @JsonKey(name: 'membership_color') final String? membershipColor}) =
-      _$MyProductDeailModelImpl;
+      {final String? name,
+      final String? photo,
+      @JsonKey(name: 'user_photo_url') final String? userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
+      final int? livePrizes,
+      final int? productCount,
+      final int? storyCount,
+      final int? subscribers,
+      final double? distance,
+      final String? membership_id,
+      final String? membership_title,
+      final String? membership_color}) = _$MyProductDeailModelImpl;
 
   factory _MyProductDeailModel.fromJson(Map<String, dynamic> json) =
       _$MyProductDeailModelImpl.fromJson;
@@ -3563,14 +3557,11 @@ abstract class _MyProductDeailModel implements MyProductDeailModel {
   @override
   double? get distance;
   @override
-  @JsonKey(name: 'membership_id')
-  String? get membershipId;
+  String? get membership_id;
   @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
+  String? get membership_title;
   @override
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor;
+  String? get membership_color;
   @override
   @JsonKey(ignore: true)
   _$$MyProductDeailModelImplCopyWith<_$MyProductDeailModelImpl> get copyWith =>

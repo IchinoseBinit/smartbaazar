@@ -4,8 +4,26 @@
 // import 'package:carousel_slider/carousel_options.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:gallery_saver_plus/gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
+import 'package:smartbazar/features/product_details/constant/product_detail_widget_list_search.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
+import 'package:smartbazar/main.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,6 +72,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/features/vendor_details/api/get_subscription_api.dart';
+import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/features/home/model/home_story_model.dart'
@@ -102,6 +121,9 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
 // Default height for first tab
   Map<String, String>? dropdownValue;
   int? postypeid = 0;
+  List<SubscriptionData> _subscriptions = []; // Store subscriptions
+  final ScrollController _vendorScrollController = ScrollController();
+  final Map<String, GlobalKey> _captureKeys = {};
 
   //innsersearch
 
@@ -171,11 +193,62 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
       'screen': const EventsScreen()
     },
   ];
+  Future<bool> _requestPermission() async {
+    if (Platform.isAndroid) {
+      if (await Permission.storage.request().isGranted) {
+        return true;
+      } else {
+        return await Permission.manageExternalStorage.request().isGranted;
+      }
+    }
+    return false;
+  }
+
+  Future<void> _captureAndSave(GlobalKey repaintKey) async {
+    if (await _requestPermission()) {
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      try {
+        RenderRepaintBoundary boundary = repaintKey.currentContext!
+            .findRenderObject() as RenderRepaintBoundary;
+
+        ui.Image image = await boundary.toImage();
+        ByteData? byteData =
+            await image.toByteData(format: ui.ImageByteFormat.png);
+        Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+        final directory =
+            Directory('/storage/emulated/0/Pictures/MyAppScreenshots');
+        if (!directory.existsSync()) {
+          directory.createSync(recursive: true);
+        }
+
+        final filePath =
+            '${directory.path}/screenshot_${DateTime.now().millisecondsSinceEpoch}.png';
+        File file = File(filePath);
+        await file.writeAsBytes(pngBytes);
+
+        await GallerySaver.saveImage(filePath);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image Saved to Gallery')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to Save Image: $e')),
+        );
+      }
+    }
+  }
+
+  bool _isLoading = false; // To track if new data is being loaded
 
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
     print("reku ${prefs.getString('userId')}");
   }
+
+  int _pageVal = 1;
 
   final TextEditingController _storysearchcontroller = TextEditingController();
 
@@ -183,6 +256,9 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
 
   @override
   void initState() {
+    _vendorScrollController.addListener(_scrollListener);
+    _loadSubscriptions();
+    _loadSubscriptions();
     _loadUserId(); // print('binod ${SmartClient.laravelsession}');
     shared();
     super.initState();
@@ -249,10 +325,19 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
       setState(() {
         _isSectionsVisible = true;
       });
+      print('saka ');
     } else if (dragDistance < -50 && _isSectionsVisible) {
       setState(() {
         _isSectionsVisible = false;
       });
+    }
+  }
+
+  void _scrollListener() {
+    if (_vendorScrollController.position.pixels ==
+            _vendorScrollController.position.maxScrollExtent &&
+        !_isLoading) {
+      _loadSubscriptions();
     }
   }
 
@@ -264,6 +349,34 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
     setState(() {
       _showSearchProductModels = hasFocus;
     });
+  }
+
+  Future<void> _loadSubscriptions() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final result =
+          await ref.read(getSubscriptionProvider(pageval: _pageVal).future);
+      if (result.subscriptions?.data != null) {
+        setState(() {
+          _subscriptions.addAll(result.subscriptions!.data!);
+          _pageVal++; // Increment page number **only after successful fetch**
+        });
+      }
+    } catch (e) {
+      print("Error fetching subscriptions: $e");
+    } finally {
+   if (mounted) {
+  setState(() {
+    _isLoading = false;
+  });
+}
+
+    }
   }
 
   final List<String> _images = ['assets/images/home.png'];
@@ -314,7 +427,8 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final subscriptionAsyncValue = ref.watch(getSubscriptionProvider);
+    final subscriptionAsyncValue =
+        ref.watch(getSubscriptionProvider(pageval: 1));
 
     // final dilevery = ref.watch(getDeliveryChargeProvider('eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YTg3OGI0MS1mYzllLTQ3ODktYTgzNS0wYjNlYmUwNjA3NzgiLCJqdGkiOiJiNDA3ZGJiYzhiYjQ4ZTA2YjIyZmRjYTI0OTIyM2Q4NGM5NGIxNTNiNzEyM2Q1YzdlNzk2YWFlMTc2ODMzNmYxMTkyYTcyYTk5OTAxMmUxYyIsImlhdCI6MTc0MDY0OTY5MC44MDI5MDgsIm5iZiI6MTc0MDY0OTY5MC44MDI5MTEsImV4cCI6MTc3MjE4NTY5MC44MDExMSwic3ViIjoiMDI2ODgxZWMtN2I0ZC00ZDZiLTk2NGEtNTk2MjUyNjZiMDkzIiwic2NvcGVzIjpbXX0.I2aUMUWRE_FyuPeqE7CB-xV7BNE2xyx6Ny6-fo_vWf9uzDfWUpd80BUeN5wLHRBPBMIFIx9qf4yw1szVs-6lC4L4xMXlgbtPSG9rfI9JorOFJasgL6NvFx5ouZowxsFneTPFllw-G81dEOoQTwNZF60t7L2jVECsgy-suiAskWPBTXm9f7sbw9hURV1wDvEoJrEC7_9_kRrjG-0t6ukP2i-aP2AZW4CEL4Su0_Eqg6XzxbkDv_fcO25DYIQ5JzWwRawLIChf2iRjOQo0Wab0cCByD3lsvC2QnqcF4GMibx0QygP_vKSbcIkUSa1UOGIPhGg9RR4cMB7-6t6HtICRO9LrIa6q2Je90mrNesC8G4Nd5IUiayy_zMOmh6il6b7zlfqbL4NwhYi0zAwu81-GL9OVynHLcR2oSMluJq9KGC0sQWHcUpJbdGcAs-ySUNq8JBPZ6OSCDMTGfymyKi-l6oqXgVVWp7N3jE0GvsLs47i72Nl_yv74Z5g-D4y3y_Vnm2DwGDNhoAIqyLKAxh8i405T1Pk-M7NETvq0kZBZJhNQE9B8ab15iqGSqDgt0UH-jb1N3JjrQgfjLCgDD5iv0nb9io32g-2FgOfqmj5osYjuUxpeHNQzaT2qAp0HHGWwoJKE4JtnpNEB9h2B_t89hlUynz63CcIZXd4uocKmjAo'));
 
@@ -599,32 +713,149 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
+                    child: SingleChildScrollView(
+                      controller: _vendorScrollController,
+                      child: Column(
+                        children: [
+                          ..._subscriptions.map((e) => Column(
+                                children: [
+                                  RepaintBoundary(
+                                    key: _captureKeys.putIfAbsent(
+                                        e.vendor_id!, () => GlobalKey()),
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: BigContainer(
+                                        storycount: e.vendor_card?.storycount
+                                                .toString() ??
+                                            '0',
+
+                                        lat: double.tryParse(
+                                                e.vendor_card?.latitude ??
+                                                    '0') ??
+                                            0.0,
+                                        long: double.tryParse(
+                                                e.vendor_card?.longitude ??
+                                                    '0.0') ??
+                                            0.0,
+                                        id: e.id ?? '9',
+                                        title: e.vendor_card?.name ?? '',
+                                        logo: e.vendor_card?.photo ??
+                                            'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                                        contact: e.vendor_card?.phone ?? '977+',
+                                        storyCount: e.vendor_card?.storycount
+                                                .toString() ??
+                                            '0',
+                                        membershipTitle:
+                                            e.vendor_card?.membership_title ??
+                                                'N/A',
+                                        // storycount: 'storycount',
+                                        total_connections: e
+                                                .vendor_card?.connection
+                                                .toString() ??
+                                            '0',
+                                        total_prize_worth: e
+                                                .vendor_card?.prize_worth
+                                                .toString() ??
+                                            '0',
+                                        location:
+                                            e.vendor_card?.nearestbranch ??
+                                                'kathmandu',
+                                        Cnumber:
+                                            e.vendor_card?.phone ?? '9744+',
+                                        issubbed: e.vendor_card?.subscribed == 1
+                                            ? true
+                                            : false,
+                                        memebertitle:
+                                            e.vendor_card?.membership_title ??
+                                                'Title',
+                                        onsubscribed: () {
+                                          ref.invalidate(
+                                              getSubscriptionProvider(
+                                                  pageval: _pageVal));
+                                        },
+                                        ondoenload: () => _captureAndSave(
+                                            _captureKeys[e.vendor_id]!),
+                                        onconnectclicked: () {
+                                          ref.invalidate(
+                                              getSubscriptionProvider(
+                                                  pageval: _pageVal));
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 3.h,
+                                    color: ColorConstant.grayColor,
+                                  )
+                                ],
+                              )),
+                          if (_isLoading)
+                            const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
                     child: subscriptionAsyncValue.when(
                       data: (data) {
-                        return Column(
-                          children: data.subscriptions!
-                              .map((e) => BigContainer(
-                                    lat: 0,
-                                    long: 0,
-                                    id: e.id ?? '9',
-                                    title: '',
-                                    logo: '',
-                                    contact: 'contact',
-                                    storyCount: '1',
-                                    membershipTitle: 'membershipTitle',
-                                    storycount: 'storycount',
-                                    total_connections: 'total_connections',
-                                    total_prize_worth: 'total_prize_worth',
-                                    location: 'location',
-                                    Cnumber: 'Cnumber',
-                                    issubbed: true,
-                                    memebertitle: '',
-                                    onsubscribed: () {},
-                                    ondoenload: () {},
-                                    onconnectclicked: () {},
-                                  )) // Replace with actual data
-                              .toList(),
-                        );
+                        // return Column(
+                        //   //   children: [],
+                        //   children: data.subscriptions!
+                        //       .map((e) => Column(
+                        //         spacing: 2,
+                        //             mainAxisAlignment: MainAxisAlignment.start,
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.center,
+                        //             children: [
+                        //               BigContainer(
+                        //                 storycount:
+                        //                     e.vendor?.storyCount.toString() ??
+                        //                         '0',
+
+                        //                 lat: double.tryParse(
+                        //                         e.vendor?.latitude ?? '0') ??
+                        //                     0.0,
+                        //                 long: double.tryParse(
+                        //                         e.vendor?.longitude ?? '0.0') ??
+                        //                     0.0,
+                        //                 id: e.id ?? '9',
+                        //                 title: e.vendor?.name ?? '',
+                        //                 logo: e.vendor?.photo ??
+                        //                     'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                        //                 contact: e.vendor?.phone ?? '977+',
+                        //                 storyCount:
+                        //                     e.vendor?.storyCount.toString() ??
+                        //                         '0',
+                        //                 membershipTitle:
+                        //                     e.vendor?.membershipTitle ?? 'N/A',
+                        //                 // storycount: 'storycount',
+                        //                 total_connections:
+                        //                     e.vendor?.connection.toString() ??
+                        //                         '0',
+                        //                 total_prize_worth:
+                        //                     e.vendor?.prizeWorth.toString() ??
+                        //                         '0',
+                        //                 location: e.vendor?.nearestbranch ??
+                        //                     'kathmandu',
+                        //                 Cnumber: e.vendor?.phone ?? '9744+',
+                        //                 issubbed: true,
+                        //                 memebertitle: '',
+                        //                 onsubscribed: () {},
+                        //                 ondoenload: () {},
+                        //                 onconnectclicked: () {},
+                        //               ),
+                        //               Divider(
+
+                        //                 height: 3.h,
+                        //                 color: ColorConstant.grayColor,
+                        //               )
+                        //             ],
+                        //           )) // Replace with actual data
+                        //       .toList(),
+                        // );
                       },
                       error: (err, stackTrace) =>
                           Center(child: Text("Error: $err")),

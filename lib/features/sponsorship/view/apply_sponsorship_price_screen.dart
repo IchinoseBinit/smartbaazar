@@ -9,6 +9,7 @@ import 'package:smartbazar/features/create_listing/widget/create_listing_card_wi
 import 'package:smartbazar/features/sponsorship/api/post_coupon_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_gift_api.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/submit_sponsorship_payment_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -1037,7 +1038,28 @@ class _CouponWidgetState extends ConsumerState<CouponWidget> {
           fgColor: Colors.white,
           bgColor: const Color(0xff362677),
           onPressed: () async {
-            await submitCoupon(context);
+            final String couponPercentage = couponController.text.trim();
+            final String discountUptoText = discountuptoController.text.trim();
+            final String couponQuantityText = couponQtyController.text.trim();
+            final double discountUpto = double.parse(discountUptoText);
+            final int couponQty = int.parse(couponQuantityText);
+
+            final double total = discountUpto * couponQty;
+            final double fee = total * 0.02;
+            final double totalWithFee = total + fee;
+            final String couponTotalWorth = totalWithFee.toString();
+            final String couponImpression = total.toString();
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PaymentSponsoredScreen(
+                  discounted: discountUptoText,
+                  coupunqty: couponQty,
+                  quantity: couponQuantityText ?? '0',
+                  toal: totalWithFee.toString(),
+                  title: 'Sponsored',
+                  rate: couponPercentage),
+            ));
+
+            // await submitCoupon(context);
           },
         ),
       ],

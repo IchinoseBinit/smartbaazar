@@ -36,6 +36,8 @@ mixin _$CartItem {
   String get pickup => throw _privateConstructorUsedError;
   String get longitude => throw _privateConstructorUsedError;
   String get latitude => throw _privateConstructorUsedError;
+  String? get weight => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +61,9 @@ abstract class $CartItemCopyWith<$Res> {
       String image,
       String pickup,
       String longitude,
-      String latitude});
+      String latitude,
+      String? weight,
+      String? phone});
 }
 
 /// @nodoc
@@ -86,6 +90,8 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? pickup = null,
     Object? longitude = null,
     Object? latitude = null,
+    Object? weight = freezed,
+    Object? phone = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -132,6 +138,14 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as String,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phone: freezed == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -155,7 +169,9 @@ abstract class _$$CartItemImplCopyWith<$Res>
       String image,
       String pickup,
       String longitude,
-      String latitude});
+      String latitude,
+      String? weight,
+      String? phone});
 }
 
 /// @nodoc
@@ -180,6 +196,8 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? pickup = null,
     Object? longitude = null,
     Object? latitude = null,
+    Object? weight = freezed,
+    Object? phone = freezed,
   }) {
     return _then(_$CartItemImpl(
       id: null == id
@@ -226,6 +244,14 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as String,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phone: freezed == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -244,7 +270,9 @@ class _$CartItemImpl implements _CartItem {
       required this.image,
       required this.pickup,
       required this.longitude,
-      required this.latitude});
+      required this.latitude,
+      required this.weight,
+      required this.phone});
 
   factory _$CartItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$CartItemImplFromJson(json);
@@ -276,10 +304,14 @@ class _$CartItemImpl implements _CartItem {
   final String longitude;
   @override
   final String latitude;
+  @override
+  final String? weight;
+  @override
+  final String? phone;
 
   @override
   String toString() {
-    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image, pickup: $pickup, longitude: $longitude, latitude: $latitude)';
+    return 'CartItem(id: $id, vendorId: $vendorId, postId: $postId, postTypeId: $postTypeId, name: $name, qty: $qty, price: $price, image: $image, pickup: $pickup, longitude: $longitude, latitude: $latitude, weight: $weight, phone: $phone)';
   }
 
   @override
@@ -301,13 +333,15 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
             (identical(other.latitude, latitude) ||
-                other.latitude == latitude));
+                other.latitude == latitude) &&
+            (identical(other.weight, weight) || other.weight == weight) &&
+            (identical(other.phone, phone) || other.phone == phone));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, vendorId, postId, postTypeId,
-      name, qty, price, image, pickup, longitude, latitude);
+      name, qty, price, image, pickup, longitude, latitude, weight, phone);
 
   @JsonKey(ignore: true)
   @override
@@ -335,7 +369,9 @@ abstract class _CartItem implements CartItem {
       required final String image,
       required final String pickup,
       required final String longitude,
-      required final String latitude}) = _$CartItemImpl;
+      required final String latitude,
+      required final String? weight,
+      required final String? phone}) = _$CartItemImpl;
 
   factory _CartItem.fromJson(Map<String, dynamic> json) =
       _$CartItemImpl.fromJson;
@@ -365,6 +401,10 @@ abstract class _CartItem implements CartItem {
   String get longitude;
   @override
   String get latitude;
+  @override
+  String? get weight;
+  @override
+  String? get phone;
   @override
   @JsonKey(ignore: true)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>

@@ -180,7 +180,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       //       title: 'Track',
                       //       isSmallText: true,
                       //       onPressed: () {
-                      //         CustomDialougeBox().orderDetailDialouge(
+                      //         OrderDetialsOderDialogBox().orderDetailDialouge(
                       //           context,
                       //           title: 'Status',
                       //           heading: 'Track Order',
@@ -215,7 +215,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       //         bgColor: const Color(0xff362677),
                       //         title: 'Return',
                       //         onPressed: () {
-                      //           CustomDialougeBox().orderDetailDialouge(
+                      //           OrderDetialsOderDialogBox().orderDetailDialouge(
                       //             context,
                       //             buttonTitle: 'Submit',
                       //             callback: () {
@@ -286,7 +286,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   }
 }
 
-class CustomDialougeBox {
+class OrderDetialsOderDialogBox {
   Future orderDetailDialouge(BuildContext context,
       {required Widget widget,
       required String title,

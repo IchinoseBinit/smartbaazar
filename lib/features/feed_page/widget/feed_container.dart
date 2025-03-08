@@ -295,18 +295,42 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             backgroundColor:
                                 const Color(0x7F7F7F73).withOpacity(0.45),
                             child: ClipOval(
-                                child: widget.vendorImage != null &&
-                                        widget.vendorImage!.isNotEmpty
-                                    ? Image.network(
-                                        widget.vendorImage!,
-                                        fit: BoxFit.cover,
-                                        width: 52,
-                                        height: 52,
-                                      )
-                                    : Icon(
-                                        Icons.person,
-                                        size: 24.sp,
-                                      )),
+                              child: widget.vendorImage != null &&
+                                      widget.vendorImage!.isNotEmpty
+                                  ? Image.network(
+                                      widget.vendorImage!,
+                                      fit: BoxFit.cover,
+                                      width: 52,
+                                      height: 52,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: 52,
+                                            height: 52,
+                                            color: Colors.white,
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(
+                                                () {}); // Retry fetching the image on tap
+                                          },
+                                          child:
+                                              Icon(Icons.refresh, size: 24.sp),
+                                        );
+                                      },
+                                    )
+                                  : Icon(Icons.person, size: 24.sp),
+                            ),
                           ),
                         ),
                       ),
@@ -527,11 +551,11 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                   child: Image.network(
                     widget.feedDetailImage ?? '',
                     width: double.infinity,
-                    height: double.infinity, // Make the image take full height
+                    height: double.infinity,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
-                        return child; // If no loading, show the image
+                        return child;
                       } else {
                         return Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
@@ -539,18 +563,18 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           child: Container(
                             width: double.infinity,
                             height: double.infinity,
-                            color:
-                                Colors.white, // Placeholder color for shimmer
+                            color: Colors.white,
                           ),
-                        ); // Show shimmer while loading
+                        );
                       }
                     },
                     errorBuilder: (context, error, stackTrace) {
-                      return const SizedBox(
-                        width: 130,
-                        height: 70,
+                      setState(() {});
+                      return SizedBox(
+                        width: 130.w,
+                        height: 70.h,
                         child: Icon(Icons.error),
-                      ); // Show error icon if image fails to load
+                      );
                     },
                   ),
                 ),

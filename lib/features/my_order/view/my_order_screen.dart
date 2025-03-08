@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/api/my_order_api.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class MyOrderScreen extends ConsumerWidget {
   const MyOrderScreen({super.key});
@@ -235,14 +237,24 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              SizedBox(width: 7.w),
-              Text(vendorName),
-              const Icon(Icons.arrow_forward_ios, color: Color(0xffADADAD)),
-              const Spacer(),
-              const SizedBox()
-            ],
+          InkWell(
+            onTap: () {
+              navigateToPage(
+                context: context,
+                page: ProductDetailScreen(productId: widget.order.id),
+                ref: ref,
+                showNavBar: false, // Hide bottom navbar
+              );
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 7.w),
+                Text(vendorName),
+                const Icon(Icons.arrow_forward_ios, color: Color(0xffADADAD)),
+                const Spacer(),
+                const SizedBox()
+              ],
+            ),
           ),
           SizedBox(height: 10.h),
           Row(
@@ -349,7 +361,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                           title: 'Track',
                           isSmallText: true,
                           onPressed: () {
-                            CustomDialougeBox().orderDetailDialouge(
+                            OrderDetialsOderDialogBox().orderDetailDialouge(
                               context,
                               title: 'Status',
                               heading: 'Track Order',
@@ -385,7 +397,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                             textPadding: EdgeInsets.symmetric(horizontal: 2.w),
                             title: 'Return',
                             onPressed: () {
-                              CustomDialougeBox().orderDetailDialouge(
+                              OrderDetialsOderDialogBox().orderDetailDialouge(
                                 context,
                                 buttonTitle: 'Submit',
                                 callback: () {

@@ -44,23 +44,23 @@ Future<ParcelFareResponse> requestdelivery(
       "destination_address": destinationAddress,
       "vendor_id": vendorId.toString(),
       "type": type,
-      "return_fee": returnFee.toString(),
-      "cancellation_fee": cancellationFee.toString(),
+      "return_fee": 0,
+      "cancellation_fee": 0,
       "sender_name": senderName,
-      "sender_phone": senderPhone,
+      "sender_phone": '+9779855487766',
       "sender_address": senderAddress,
       "receiver_name": receiverName,
       "receiver_phone": receiverPhone,
       "receiver_address": receiverAddress,
       "parcel_category_id": parcelCategoryId,
-      "weight": weight.toString(),
+      "weight": weight.toString(), 
       "payer": payer,
       "intermediate_coordinates": "", // Empty if no intermediate coordinates
     });
 
     // Debugging: Print the final request payload
     print("Form Data: ${formData.fields}");
-
+    Duration(seconds: 4);
     Response response = await dio.post(
       "https://smartbazaar.biz/api/customer/smartbazaar/delivery",
       data: formData,
@@ -87,4 +87,4 @@ Future<ParcelFareResponse> requestdelivery(
   }
 }
 
-//sir , client le saturday ko date extend garera holi ko din ma fix vako cha , client le venue ni book garisakkya cha . aba hami sanga 4 days cha payment integration,ani  
+//sir , client le saturday ko date extend garera holi ko din ma fix vako cha , client le venue ni book garisakkya cha . aba hami sanga 4 days cha payment integration,ani

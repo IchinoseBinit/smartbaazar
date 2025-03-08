@@ -12,6 +12,7 @@ import 'package:smartbazar/constant/color_constant.dart';
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/payment/create_listing_payement.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
 import 'package:smartbazar/features/create_listing/api/create_new_listing_providers.dart';
@@ -713,30 +714,75 @@ class _SellerInformationWidgetState
               : GeneralEelevatedButton(
                   text: isloading ? 'Submitting...' : 'Submit',
                   onPresssed: () async {
-                  
                     if (widget.category != null &&
                         widget.title != null &&
                         widget.city != null &&
                         widget.description != null &&
                         widget.phonecoontroller?.text.isNotEmpty == true &&
                         widget.terms != null) {
-
-  if (widget.description!.length < 10) {
-                      showCustomToast(context,
-                          'Description should be more than 10 characters');
-                    }
+                      if (widget.description!.length < 10) {
+                        showCustomToast(context,
+                            'Description should be more than 10 characters');
+                      }
 
                       setState(() {
                         isloading = true; // Start loading
                       });
                       try {
-                        // Call your API
-                        String responseMessage = await createlisting(
-                          
+                        String responseMessage = "";
+
+                        if (_selectedpackage == 1) {
+                          bool success = await CrateListingIniatepayment(
+                              context, '50', true);
+                          if (success) {
+                            responseMessage = await createlisting(
+                              trending: widget.trending,
+                              package: _selectedpackage,
+                              pieces: widget.pieces,
+                              null, // ref
+                              cf: widget.cfvalue,
+                              tags: widget.tags,
+                              category: widget.category!.trim(),
+                              stock: widget.stock!.trim(),
+                              mileage: widget.mileage?.trim(),
+                              warrenty: widget.warrenty?.value,
+                              title: widget.title!.trim(),
+                              city: widget.city!.trim(),
+                              price: widget.price!.trim(),
+                              description: widget.description!.trim(),
+                              length: widget.length?.trim() ?? '0',
+                              width: widget.width?.trim() ?? '0',
+                              height: widget.height?.trim() ?? '0',
+                              weight: widget.weight?.trim() ?? '0',
+                              disprice: widget.discount?.trim(),
+                              posttype: widget.posttype.toString(),
+                              email: widget.emailcontroller!.text.trim(),
+                              phone: widget.phonecoontroller!.text.trim(),
+                              username: widget.nameconroller!.text.trim(),
+                              pickup: selectedpickup!.description!,
+                              images: selectedImages,
+                              accept: widget.terms?.trim() ?? '0',
+                              address: widget.address!,
+                              offer: widget.offer?.offers.trim(),
+                              story: widget.story?.toString().trim(),
+                              youtube: widget.youtube?.trim(),
+                              lat: selectedpickup!.latitude,
+                              long: selectedpickup!.longitude,
+                            );
+                          } else {
+                            // If payment fails, stop here
+                            setState(() {
+                              isloading = false;
+                            });
+                            return;
+                          }
+                        } else {
+                          // Directly create listing if package is not 1
+                          responseMessage = await createlisting(
                             trending: widget.trending,
                             package: _selectedpackage,
                             pieces: widget.pieces,
-                            null, // ref
+                            null, // ref  1500
                             cf: widget.cfvalue,
                             tags: widget.tags,
                             category: widget.category!.trim(),
@@ -752,7 +798,7 @@ class _SellerInformationWidgetState
                             height: widget.height?.trim() ?? '0',
                             weight: widget.weight?.trim() ?? '0',
                             disprice: widget.discount?.trim(),
-                            posttype: widget.posttype.toString() ?? '0',
+                            posttype: widget.posttype.toString(),
                             email: widget.emailcontroller!.text.trim(),
                             phone: widget.phonecoontroller!.text.trim(),
                             username: widget.nameconroller!.text.trim(),
@@ -760,16 +806,17 @@ class _SellerInformationWidgetState
                             images: selectedImages,
                             accept: widget.terms?.trim() ?? '0',
                             address: widget.address!,
-                            // mapcontrolleer?.text.trim() ?? '',
                             offer: widget.offer?.offers.trim(),
                             story: widget.story?.toString().trim(),
                             youtube: widget.youtube?.trim(),
                             lat: selectedpickup!.latitude,
-                            long: selectedpickup!.longitude);
+                            long: selectedpickup!.longitude,
+                          );
+                        }
 
-                        // Stop loading and show dialog
+                        // Stop loading and show response dialog
                         setState(() {
-                          isloading = false; // End loading
+                          isloading = false;
                         });
 
                         await showDialog(
@@ -786,39 +833,25 @@ class _SellerInformationWidgetState
                                   onPressed: () {
                                     Navigator.pop(context);
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const PendingApprovalScreen(),
-                                        ));
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PendingApprovalScreen(),
+                                      ),
+                                    );
                                   },
                                   child: const Text("OK"),
                                 ),
                               ],
                             );
                           },
-                        ).whenComplete(
-                          () {
-                            Future.delayed(
-                              const Duration(milliseconds: 500),
-                              () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PendingApprovalScreen(),
-                                    ));
-                              },
-                            );
-                          },
                         );
                       } catch (e) {
                         setState(() {
-                          isloading = false; // End loading
+                          isloading = false;
                         });
 
-                        // Show error message
+                        // Show error dialog
                         await showDialog(
                           context: context,
                           builder: (context) {
@@ -835,26 +868,8 @@ class _SellerInformationWidgetState
                           },
                         );
                       }
-                    } else {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Missing Fields"),
-                            content: const Text(
-                                "Please fill in all required fields to create a listing."),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("OK"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
                     }
-                  },
-                ),
+                  }),
         ),
 
         SizedBox(

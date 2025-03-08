@@ -122,6 +122,7 @@ class LogoData {
 }
 
 class Buynowmodel {
+  final String? vendor_id;
   final String image;
   final String vendorImage;
   final String vendor_name;
@@ -135,6 +136,7 @@ class Buynowmodel {
   Buynowmodel(
       {required this.worth,
       required this.image,
+      required this.vendor_id,
       required this.vendorImage,
       required this.name,
       required this.winners,
@@ -144,6 +146,7 @@ class Buynowmodel {
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      vendor_id: json['vendor_id'] ?? '9',
       vendor_name: json['vendor_name'] as String,
       wow: json['wow']?.toString() ?? '0', // Safely handle null values
       gift_qty: json['gift_qty'] as String,

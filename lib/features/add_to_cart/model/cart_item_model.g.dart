@@ -19,6 +19,8 @@ _$CartItemImpl _$$CartItemImplFromJson(Map<String, dynamic> json) =>
       pickup: json['pickup'] as String,
       longitude: json['longitude'] as String,
       latitude: json['latitude'] as String,
+      weight: json['weight'] as String?,
+      phone: json['phone'] as String?,
     );
 
 Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>
@@ -34,6 +36,8 @@ Map<String, dynamic> _$$CartItemImplToJson(_$CartItemImpl instance) =>
       'pickup': instance.pickup,
       'longitude': instance.longitude,
       'latitude': instance.latitude,
+      'weight': instance.weight,
+      'phone': instance.phone,
     };
 
 _$VendorImpl _$$VendorImplFromJson(Map<String, dynamic> json) => _$VendorImpl(
