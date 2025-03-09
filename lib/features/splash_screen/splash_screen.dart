@@ -16,6 +16,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     // Start the timer to continue the session after 3 seconds
     Future.delayed(
       const Duration(seconds: 3),
@@ -34,6 +35,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       },
     );
   }
+  //  @override
+  // void didChangeDependencies() {
+  //   FCMService().initializeFCM();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {

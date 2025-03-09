@@ -53,8 +53,8 @@ class OrderDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
-  String selectedPaymentMethod = "Pre-Payement"; // Default payment method
-  String selectedDeliveryOption = "Self Pickup"; // Default delivery option
+  String selectedPaymentMethod = "pre-payement"; // Default payment method
+  String selectedDeliveryOption = "Self pickup"; // Default delivery option
   String? selectedCoupon = '';
   // String selectedCity = '';
   StreetAddressModel? selectedStreet;
@@ -65,7 +65,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
-  String hyperOption = 'Standard';
+  String hyperOption = 'standard';
 
   void clearSelectedCoupon() {
     setState(() {
@@ -97,8 +97,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
           selectedStreet?.longitude ?? 0.0,
         ], // Destination coordinates
         "parcel", // Type
-        widget.pickup ?? 'ktm', // Pickup address
-        selectedStreet?.description ?? 'ktm', // Destination address
+        widget.pickup ?? 'kathmandu', // Pickup address
+        selectedStreet?.description ?? 'kathmandu', // Destination address
         [], // No intermediate coordinates
         widget.wiright ?? 1, // Parcel weight
         "44cb222c-b93c-44e2-a5aa-a3a5932e0d63", // Parcel category ID
@@ -118,6 +118,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
     setState(() {
       selectedPaymentMethod = value;
     });
+    print('kama ${selectedPaymentMethod}');
   }
 
   void updateDeliveryOption(String value) {
@@ -319,7 +320,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   CustomRadioButton(
                     title1: 'Pre-Payment',
                     title2: 'Cash on Delivery',
-                    onChanged: updatePaymentMethod,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPaymentMethod = value;
+                      });
+                    },
                   ),
                   const Divider(
                     thickness: 2,
@@ -351,10 +356,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     Padding(
                       padding: EdgeInsets.only(right: 58.w),
                       child: CustomRadioButton(
-                        title1: 'Standard',
+                        title1: 'standard',
                         title2: 'Hyper',
-                        onChanged: (p0) {
-                          hyperOption = p0;
+                        onChanged: (p0) { 
+                          hyperOption = p0.toLowerCase();
                           //  print('bibah ${hyperOption}');
                         },
                       ),
@@ -416,44 +421,10 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     thickness: 2,
                     color: Color(0xffD9D9D9),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     Text(
-                  //       'Quantity',
-                  //       style: TextStyle(
-                  //           fontSize: 16.sp,
-                  //           fontWeight: FontWeight.w500,
-                  //           color: const Color(0xfff000000)),
-                  //     ),
-                  //     const Spacer(),
-                  //     const Icon(Icons.remove),
-                  //     SizedBox(
-                  //       width: 5.w,
-                  //     ),
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: 8.w, vertical: 3.h),
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(4.r),
-                  //         border: Border.all(
-                  //           color: const Color(0xffD9D9D9),
-                  //           width: 1,
-                  //         ),
-                  //       ),
-                  //       child: const Text('1'),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 5.w,
-                  //     ),
-                  //     const Icon(Icons.add)
-                  //   ],
-                  // ),
-                  // const Divider(
-                  //   thickness: 2,
-                  //   color: Color(0xffD9D9D9),
-                  // ),
+
                   OrderSummaryWidget(
+                    key: ValueKey(selectedPaymentMethod),
+
                     totalfromtop: int.tryParse(pricecontroller.text)!,
                     bizLoginResponseparams: _bizLoginResponse,
                     hyper: hyperOption,
@@ -504,6 +475,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
 
 class OrderSummaryWidget extends ConsumerStatefulWidget {
   final int totalfromtop;
+
   final List<Item> items;
   final ParcelFareResponse deliverychareg;
   final String name;
@@ -565,19 +537,18 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   late double finalTotal;
   late double finallyRate;
   String? paymentmethod;
+  int? toalprice;
 
   int gettoal(int total, int deliverycharge) {
     int _a = total + deliverycharge;
+    toalprice = _a.toInt();
     return _a;
   }
 
   @override
   void initState() {
-    if (widget.selectedPaymentMethod == "Pre-Payement") {
-      paymentmethod = 'qr';
-    } else {
-      paymentmethod = 'cod';
-    }
+    print('bibash ${widget.selectedPaymentMethod}');
+
     super.initState();
     widget.items.map((item) => calculateTotals(item)).toList();
   }
@@ -638,10 +609,16 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
       final postName =
           checkoutDetails.data!.items?.map((e) => e.name!).toList() ?? [];
       print(
-          '--------------------------------$prices,$totalAmount, $finallyRate');
+          'Bibash -${prices}-------------------------------$prices,$totalAmount, $finallyRate');
       print('--------------------------------');
 
-      if (widget.selectedPaymentMethod == "Pre-Payement") {
+      if (widget.selectedPaymentMethod == "pre-payement") {
+        paymentmethod = 'qr';
+      } else {
+        paymentmethod = 'cod';
+      }
+
+      if (widget.selectedPaymentMethod == "pre-payement") {
         showBottomSheet(
           enableDrag: true,
           elevation: 10,
@@ -670,20 +647,22 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                         color: Colors.black87,
                       )),
                   onPressed: () async {
-                    bool success = await initiatePayment(
-                        context,
-                        gettoal(widget.totalfromtop,
-                                widget.deliverychareg.data?.estimatedFare ?? 0)
-                            .toStringAsFixed(2),
-                        true);
-
+                       bool success = await initiatePayment(
+                              context, '100', true);
+                    // bool success = await initiatePayment(  
+                    //     context,
+                    //     gettoal(widget.totalfromtop,
+                    //             widget.deliverychareg.data?.estimatedFare ?? 0)
+                    //         .toStringAsFixed(2),
+                    //     true);
+//9844076655
                     if (success)
-                      ref
+                   await   ref
                           .read(postCheckoutFormProvider(
                         userName,
                         address,
                         email,
-                        widget.selectedPaymentMethod,
+                        paymentmethod ?? 'cod',
                         widget.selectedDeliveryOption,
                         widget.hyper,
                         // widget.selectedCity,
@@ -693,9 +672,11 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                         widget.selectedCoupon,
                         postIds,
                         widget.selectedProductIds,
+
                         postName,
                         quantities,
-                        [finallyRate.toStringAsFixed(2)],
+                        prices,
+
                         gettoal(widget.totalfromtop,
                                 widget.deliverychareg.data?.estimatedFare ?? 0)
                             .toStringAsFixed(2),
@@ -751,54 +732,54 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                           .then(
                         (success) {
                           if (success) {
-                            // const message =
-                            //     "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
-                            // showDialog(
-                            //   context: context,
-                            //   barrierDismissible:
-                            //       false, // Prevents dismissal on outside tap
-                            //   builder: (_) => AlertDialog(
-                            //     title: Center(
-                            //       child: Text(
-                            //         'Successfull!',
-                            //         style: TextStyle(
-                            //             fontSize: 20.sp,
-                            //             fontWeight: FontWeight.bold,
-                            //             color: const Color(0xFF362677)),
-                            //       ),
-                            //     ),
-                            //     content: Text(
-                            //       message,
-                            //       style: TextStyle(fontSize: 12.sp),
-                            //     ),
-                            //     actions: [
-                            //       Center(
-                            //         child: TextButton(
-                            //           onPressed: () {
-                            //             // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                            //             Navigator.pop(context);
-                            //             Navigator.pushReplacement(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                         const OnlineTransactionRecordScreen()));
-                            //           },
-                            //           child: Row(
-                            //             mainAxisAlignment: MainAxisAlignment.center,
-                            //             children: [
-                            //               const Text('OK'),
-                            //               SizedBox(width: 8.w),
-                            //               const Icon(
-                            //                 Icons.check_circle,
-                            //                 color: Color(0xFF362677),
-                            //               )
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // );
+                            const message =
+                                "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
+                            showDialog(
+                              context: context,
+                              barrierDismissible:
+                                  false, // Prevents dismissal on outside tap
+                              builder: (_) => AlertDialog(
+                                title: Center(
+                                  child: Text(
+                                    'Successfull!',
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF362677)),
+                                  ),
+                                ),
+                                content: Text(
+                                  message,
+                                  style: TextStyle(fontSize: 12.sp),
+                                ),
+                                actions: [
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        // Navigate to the BottomNavigationScreen when the user clicks "OK"
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const OnlineTransactionRecordScreen()));
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Text('OK'),
+                                          SizedBox(width: 8.w),
+                                          const Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xFF362677),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -824,10 +805,10 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
           userName,
           address,
           email,
-          widget.selectedPaymentMethod,
+          paymentmethod ?? 'cod',
           widget.selectedDeliveryOption,
           widget.hyper,
-          // widget.selectedCity,
+          // widget.selectedCity,9855487766
           widget.selectedStreet.description,
           widget.deliverychareg.data?.discountAmount.toString() ?? '0',
           widget.selectedCoupon,
@@ -835,7 +816,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
           widget.selectedProductIds,
           postName,
           quantities,
-          [finallyRate.toStringAsFixed(2)],
+          prices,
           gettoal(widget.totalfromtop,
                   widget.deliverychareg.data?.estimatedFare ?? 0)
               .toStringAsFixed(2),
@@ -881,48 +862,68 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                 "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
             showDialog(
               context: context,
-              barrierDismissible: false, // Prevents dismissal on outside tap
-              builder: (_) => AlertDialog(
-                title: Center(
-                  child: Text(
-                    'Successfull!',
-                    style: TextStyle(
+              barrierDismissible: true, // Allows user to dismiss dialog
+              builder: (context) {
+                // Close the dialog after 3 seconds
+                Future.delayed(const Duration(seconds: 2), () {
+                  if (context.mounted) {
+                    Navigator.pop(context); // Close the dialog
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const OnlineTransactionRecordScreen(),
+                      ),
+                    );
+                  }
+                });
+
+                return AlertDialog(
+                  title: Center(
+                    child: Text(
+                      'Successful!',
+                      style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF362677)),
-                  ),
-                ),
-                content: Text(
-                  message,
-                  style: TextStyle(fontSize: 12.sp),
-                ),
-                actions: [
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                        Navigator.pop(context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const OnlineTransactionRecordScreen()));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('OK'),
-                          SizedBox(width: 8.w),
-                          const Icon(
-                            Icons.check_circle,
-                            color: Color(0xFF362677),
-                          )
-                        ],
+                        color: const Color(0xFF362677),
                       ),
                     ),
                   ),
-                ],
-              ),
+                  content: Text(
+                    message,
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          if (context.mounted) {
+                            Navigator.pop(context); // Manually close the dialog
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const OnlineTransactionRecordScreen(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('OK'),
+                            SizedBox(width: 8.w),
+                            const Icon(
+                              Icons.check_circle,
+                              color: Color(0xFF362677),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

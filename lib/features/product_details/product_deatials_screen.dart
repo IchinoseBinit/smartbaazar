@@ -196,6 +196,7 @@ class ProductDetailScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                             builder: (_) => BuyNowFormScreen(
+                              
                                   postypeid: data.result!.postTypeId!,
                                   vendorname: data.result?.contactName ?? '',
                                   phonenumber:

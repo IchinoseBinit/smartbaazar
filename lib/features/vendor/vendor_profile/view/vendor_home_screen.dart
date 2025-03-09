@@ -998,6 +998,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             .watch(getvendorbybrandnameProvider(widget.vid))
                             .when(
                               data: (data) {
+                                print('halla ${data.data!.brandnew!.first.savedByLoggedUser}');
                                 // if (data.data!.b2b?.length == 0) {
                                 //   categories.where(
                                 //     (element) => element == 'b2b',
@@ -3155,7 +3156,7 @@ class _BigContainerState extends State<BigContainer> {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.only(left: 8.w, bottom: 5.w),
+                  padding: EdgeInsets.only(left: 20.w, bottom: 5.w),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(

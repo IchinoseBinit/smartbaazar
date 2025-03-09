@@ -59,9 +59,9 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
   TextEditingController phonecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
-  String selectedPaymentMethod = "Pre-Payement"; // Default payment method
-  String selectedDeliveryOption = "Self Pickup"; // Default delivery option
-  String hyperOption = 'Standard';
+  String selectedPaymentMethod = "pre-payement"; // Default payment method
+  String selectedDeliveryOption = "self pickup"; // Default delivery option
+  String hyperOption = 'standard';
   // String standard = 'Standard';
   String? selectedCoupon = '';
   ParcelFareResponse? _fairresponse;
@@ -357,21 +357,27 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                CustomRadioButton(
-                                  title1: 'Self Pickup',
-                                  title2: 'Home Delivery',
-                                  onChanged: updateDeliveryOption,
+                                Padding(
+                                  padding: EdgeInsets.only(right: 17.w),
+                                  child: CustomRadioButton(
+                                    title1: 'Self Pickup',
+                                    title2: 'Home Delivery',
+                                    onChanged: updateDeliveryOption,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 8.h,
                                 ),
                                 if (selectedDeliveryOption == 'Home Delivery')
-                                  CustomRadioButton(
-                                    title1: 'Standard',
-                                    title2: 'Hyper',
-                                    onChanged: (p0) {
-                                      hyperOption = p0;
-                                    },
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 75.w),
+                                    child: CustomRadioButton(
+                                      title1: 'standard',
+                                      title2: 'hyper',
+                                      onChanged: (p0) {
+                                        hyperOption = p0;
+                                      },
+                                    ),
                                   ),
                                 if (selectedDeliveryOption == 'Home Delivery')
                                   StreetAddressFieldWidget(
@@ -592,15 +598,21 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   late double finalTotal;
   late double finallyRate;
   String? paymentmethod;
+  String? newproducttype;
 
   @override
   void initState() {
-    if (widget.selectedPaymentMethod == "Pre-Payement") {
+    print('bibash ${widget.selectedPaymentMethod}');
+    if (widget.selectedPaymentMethod == "pre-payement") {
       //  print('binod ${widget.paymentpethod.length}');
-      paymentmethod = 'qr';
+      setState(() {
+        paymentmethod = 'qr';
+      });
     } else {
       //   print('binodl ${widget.paymentpethod.length}');
-      paymentmethod = 'cod';
+      setState(() {
+        paymentmethod = 'cod';
+      });
     }
     //   print('pinky ${widget.deliverychareg.data?.estimatedFare}');
     // ref.read(quantityProvider.notifier).state = int.tryParse(widget.items.qty)!;
@@ -754,9 +766,20 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
           fgColor: Colors.white,
           title: 'Place Order',
           onPressed: () async {
+            if (widget.selectedPaymentMethod == "pre-payement") {
+              //  print('binod ${widget.paymentpethod.length}');
+              setState(() {
+                newproducttype = 'qr';
+              });
+            } else {
+              //   print('binodl ${widget.paymentpethod.length}');
+              setState(() {
+                newproducttype = 'cod';
+              });
+            }
             await Future.delayed(const Duration(seconds: 2), () {});
             // Test data for checking
-            if (widget.selectedPaymentMethod == "Pre-Payement") {
+            if (widget.selectedPaymentMethod == "pre-payement") {
               showBottomSheet(
                 enableDrag: true,
                 elevation: 10,
@@ -797,10 +820,12 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                               widget.venoraddress, // address
                               widget.email, // email
                               double.tryParse(widget.items.price!)!, // price
-                              paymentmethod ?? 'qr', // payMethod
+                              newproducttype ??
+                                  paymentmethod ??
+                                  'qr', // payMethod
                               widget.selectedDeliveryOption ??
                                   'self', // delivery
-                              widget.hyper ?? 'Standard', // deliveryType
+                              widget.hyper ?? 'standard', // deliveryType
                               widget.selectedStreet.description, // city
                               widget.selectedStreet.description, // street
                               widget.selectedStreet.latitude, // latitude
@@ -888,9 +913,9 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                 widget.venoraddress, // address
                 widget.email, // email
                 double.tryParse(widget.items.price!)!, // price
-                paymentmethod ?? 'qr', // payMethod
+                newproducttype ?? paymentmethod ?? 'qr', // payMethod
                 widget.selectedDeliveryOption ?? 'self', // delivery
-                widget.hyper ?? 'Standard', // deliveryType
+                widget.hyper ?? 'standard', // deliveryType
                 widget.selectedStreet.description, // city
                 widget.selectedStreet.description, // street
                 widget.selectedStreet.latitude, // latitude

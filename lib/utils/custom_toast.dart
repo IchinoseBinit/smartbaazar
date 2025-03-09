@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +9,7 @@ void showCustomToast(
   BuildContext context,
   String text, {
   bool unFocusKeyboard = true,
+  ToastGravity? mygravity=ToastGravity.CENTER,
 }) async {
   await _waitTillKeyboardDisappear(context);
   if (context.mounted) {
@@ -32,12 +32,10 @@ void showCustomToast(
     fToast.showToast(
       child: toast,
       toastDuration: const Duration(milliseconds: 2500),
-      gravity: ToastGravity.BOTTOM,
+      gravity: mygravity,
     );
   }
 }
-
-
 
 EdgeInsets _getMargin(BuildContext context) {
   if (MediaQuery.of(context).viewInsets.bottom == 0) return EdgeInsets.zero;

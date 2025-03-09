@@ -678,6 +678,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                                     // Vendor Name - Adjusted Position
                                     Positioned(
+                                      left: 10.w,
                                       bottom: -25
                                           .h, // Adjust bottom value to create more space
                                       child: SizedBox(

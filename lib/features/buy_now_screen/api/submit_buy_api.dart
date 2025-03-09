@@ -60,6 +60,7 @@ Future<bool> buynowsubmit(
 
   try {
     final response = await client.request(
+      
       requestType: RequestType.postWithToken,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/buynow',
       parameter: {
@@ -69,13 +70,13 @@ Future<bool> buynowsubmit(
         'price': price,
         'pay_method': payMethod,
         'delivery': delivery,
-        'delivery_type': deliveryType,
+        'delivery_type': deliveryType, 
         'city': city,
         'street': street == '0' ? null : street,
         'latitude': latitude == 0 ? null : latitude,
         'longitude': longitude == 0 ? null : longitude,
         'coupon': coupon,
-        'qty': qty,
+        'qty': qty, 
         'del_cost': delCost,
         'couponDiscount': couponDiscount,
         'total': total,

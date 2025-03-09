@@ -1,0 +1,4 @@
+<resources>
+    <!-- Add this line -->
+    <string name="default_notification_channel_id">default_channel</string>
+</resources>

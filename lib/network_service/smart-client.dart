@@ -189,16 +189,18 @@ class SmartClient {
             .post(url,
                 data: jsonEncode(parameter),
                 options: Options(headers: mergedHeaders))
-            .timeout(_timeoutDuration);
+            .timeout(Duration(seconds: 180));
       case RequestType.postWithTokenFormData:
         return _client
             .post(url,
                 data: parameter,
-                options: Options(headers: {
+                options: Options(
+                  
+                  headers: {
                   ...mergedHeaders,
                   'Content-Type': 'multipart/form-data'
                 }))
-            .timeout(_timeoutDuration);
+            .timeout(Duration(seconds: 180));
       case RequestType.deleteWithToken:
         return _client
             .delete(url,

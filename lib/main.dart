@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +18,10 @@ import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
+import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
+import 'package:smartbazar/features/fcm/firebase_options.dart';
+import 'package:smartbazar/features/fcm/local_notifications_service.dart';
+import 'package:smartbazar/features/fcm/push_notifications_service.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
@@ -54,7 +60,29 @@ import 'package:smartbazar/payment/payment_screen.dart';
 import 'package:smartbazar/practice.dart';
 import 'package:smartbazar/payment/create_listing_payement.dart';
 
-void main() {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  print("Handling a background message: ${message.messageId}");
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Future.wait([
+    PushNotificationsService.init(), //2
+    LocalNotificationService.init(), //3
+  ]);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   // Set custom HttpOverrides globally
   HttpOverrides.global = MyHttpOverrides();
 
@@ -92,18 +120,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: SplashScreen()
-            ),
-            );
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: FavouriteListingScreen()
+          ),
+    );
     // home: SplashScreen()));
   }
 } //123

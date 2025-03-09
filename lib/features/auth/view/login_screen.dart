@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/controller/login_controller.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           context,
           MaterialPageRoute(builder: (_) => MainScreen()),
         );
-        showCustomToast(context, "Welcome To Smart Bajar");
+        showCustomToast(context, "Welcome To Smart Bajar",mygravity: ToastGravity.BOTTOM);
       } else if (state is ErrorState) {
         setState(() {
           errorMessage = state.errorMessage;

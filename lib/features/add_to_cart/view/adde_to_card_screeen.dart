@@ -79,24 +79,25 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => OrderDetailsScreen(
+            
             vendorphone: cartItems
                     .where(
                       (element) => element.id == selectedProductIds[0],
                     )
                     .first
                     .phone ??
-                '+977',
+                '+977', 
             vendorid: int.tryParse(cartItems.first.vendorId!)!,
             vendorname: cartItems.first.name,
             wiright: int.tryParse(cartItems
                     .where((element) => element.id == selectedProductIds[0])
                     .first
-                    .weight ??
-                '1')!,
-            latitude: double.tryParse(cartItems
+                    .weight ?? 
+                '1')!,   
+            latitude: double.tryParse(cartItems 
                     .where((element) => element.id == selectedProductIds[0])
                     .first
-                    .latitude) ??
+                    .latitude) ?? 
                 0.0,
             longitude: double.tryParse(cartItems
                     .where((element) => element.id == selectedProductIds[0])
@@ -109,7 +110,7 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
           ),
         ),
       );
-    } else {
+    } else { //9844076655
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select items to proceed')),
       );

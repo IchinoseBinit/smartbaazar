@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
 import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
 import 'package:smartbazar/features/favourite_list/view/favourite_listing_skeleton.dart';
@@ -99,10 +100,12 @@ class FavouriteListingScreen extends ConsumerWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) =>
                         const FavouriteListSkeleton(),
-                    separatorBuilder: (context, index) => SizedBox(height: 16.h),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 16.h),
                     itemCount: 6, // Number of skeleton items
                   ),
-                  error: (error, stack) => const Text('Please login and try again'),
+                  error: (error, stack) =>
+                      const Text('Please login and try again'),
                 )
               ],
             ),
@@ -118,13 +121,12 @@ class FavouriteListProductDetails extends ConsumerStatefulWidget {
   // final ValueChanged<bool> onSelected;
   final FavouriteProduct item;
 
-  const FavouriteListProductDetails(
-      {
-      // required this.isSelected,
-      // required this.onSelected,
-      super.key,
-      required this.item,
-    });
+  const FavouriteListProductDetails({
+    // required this.isSelected,
+    // required this.onSelected,
+    super.key,
+    required this.item,
+  });
 
   @override
   ConsumerState<FavouriteListProductDetails> createState() =>
@@ -149,11 +151,12 @@ class _FavouriteListProductDetailsState
       child: Card(
         elevation: 6,
         child: GestureDetector(
-           onTap: () {
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductDetailScreen(productId: widget.item.id!),
+                builder: (context) =>
+                    ProductDetailScreen(productId: widget.item.id!),
               ),
             );
           },
@@ -213,16 +216,22 @@ class _FavouriteListProductDetailsState
                       width: 7.w,
                     ),
                     Container(
-                        padding: EdgeInsets.only(
-                            top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: const Color(0xffF6F1F1),
-                        ),
-                        child: Image.network(
-                          widget.item.image!,
-                          height: 70.h,
-                        )),
+                      padding: EdgeInsets.only(
+                          top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: const Color(0xffF6F1F1),
+                      ),
+                      child: widget.item.image != null &&
+                              widget.item.image!.isNotEmpty
+                          ? Image.network(
+                              widget.item.image!,
+                              height: 70.h,
+                            )
+                          : const Icon(Icons.image_not_supported,
+                              size: 70), // Placeholder icon
+                    ),
+
                     SizedBox(
                       width: 20.w,
                     ),
@@ -281,35 +290,173 @@ class _FavouriteListProductDetailsState
                     ),
                     GestureDetector(
                       onTap: () async {
-                        // Show deleting message
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Deleting item...'),
-                              backgroundColor: Colors.grey),
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            final screenWidth =
+                                MediaQuery.of(context).size.width;
+
+                            return StatefulBuilder(
+                              builder: (BuildContext context,
+                                  StateSetter setStateDialog) {
+                                return AlertDialog(
+                                    insetPadding: const EdgeInsets.all(12),
+                                    clipBehavior: Clip.hardEdge,
+                                    backgroundColor: Colors.white,
+                                    title: SizedBox(
+                                      width: screenWidth,
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            // right: 8,
+                                            // top: 8,
+                                            child: GestureDetector(
+                                              onTap: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Icon(
+                                                Icons.close,
+                                                color: Colors.black54,
+                                                size: 24,
+                                              ),
+                                            ),
+                                          ),
+                                          const Icon(
+                                            Icons.report,
+                                            color: Color(0xFF781740),
+                                            size: 100,
+                                          ),
+                                          Text(
+                                            "Are you sure you want to perform this action?",
+                                            style: TextStyle(
+                                              color: const Color(0xff362677),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.sp,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          const Divider(),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: [
+                                      GeneralTextButton(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        marginH: 0,
+                                        fgColor: Colors.white,
+                                        bgColor: const Color(0xff362677),
+                                        title: 'Yes',
+                                        onPressed: () async {
+                                          try {
+                                            // Show a loading dialog while deleting
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (context) {
+                                                return const Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                              },
+                                            );
+
+                                            // Call the delete function
+                                            await ref.read(
+                                                deleteFavouriteProductProvider(
+                                                        widget.item.id!)
+                                                    .future);
+
+                                            // Close the loading dialog
+                                            if (Navigator.of(context)
+                                                .canPop()) {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            }
+
+                                            // Show success message
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      'Item deleted successfully'),
+                                                  backgroundColor: Colors.grey,
+                                                ),
+                                              );
+                                            }
+
+                                            // Invalidate provider to refresh the list
+                                            ref.invalidate(
+                                                getFavouriteListProvider);
+
+                                            // Close the confirmation dialog
+                                            if (Navigator.of(context)
+                                                .canPop()) {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            }
+                                          } catch (e) {
+                                            // Close the loading dialog if an error occurs
+                                            if (Navigator.of(context)
+                                                .canPop()) {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            }
+
+                                            // Show error message
+                                            if (mounted) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      'Failed to delete item: $e'),
+                                                  backgroundColor: Colors.grey,
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(height: 15.h),
+                                      GeneralTextButton(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        marginH: 0,
+                                        fgColor: Colors.white,
+                                        bgColor: const Color(0xffADADAD),
+                                        title: 'No',
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ]
+                                    // :
+                                    //  [
+                                    //     GeneralTextButton(
+                                    //       width: MediaQuery.of(context).size.width,
+                                    //       marginH: 0,
+                                    //       fgColor: Colors.white,
+                                    //       bgColor: const Color(0xff362677),
+                                    //       title: 'OK',
+                                    //       onPressed: () {
+                                    //         Navigator.of(context).pop();
+                                    //       },
+                                    //     ),
+                                    //   ],
+                                    );
+                              },
+                            );
+                          },
                         );
-          
-                        try {
-                          // Call the delete function
-                          await ref.read(
-                              deleteFavouriteProductProvider(widget.item.id!)
-                                  .future);
-          
-                          // Show success message and invalidate the provider to refresh the list
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Item deleted successfully'),
-                                backgroundColor: Colors.grey),
-                          );
-          
-                          ref.invalidate(getFavouriteListProvider);
-                        } catch (e) {
-                          // Show error message
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Failed to delete item: $e'),
-                                backgroundColor: Colors.grey),
-                          );
-                        }
+                        // Show deleting message
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //       content: Text('Deleting item...'),
+                        //       backgroundColor: Colors.grey),
+                        // );
                       },
                       child: SvgPicture.asset(deleteIcon),
                     ),

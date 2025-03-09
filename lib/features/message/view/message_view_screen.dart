@@ -141,13 +141,15 @@ class MessageViewScreen extends ConsumerWidget {
                                               .updateFilter(
                                                   'unread'); // Update the filter
 
-                                          ref.refresh(messageFilterStateProvider
-                                              .notifier);
+                                          // ref.refresh(messageFilterStateProvider
+                                          //     .notifier);
+                                          ref.invalidate(
+                                              messageFilterStateProvider);
 
                                           return InkWell(
                                               onTap: () => const LoginScreen(),
                                               child: const Text(
-                                                  'Please login and try again'));
+                                                  'Login/Try changing message type'));
                                         });
                                   },
                                 );

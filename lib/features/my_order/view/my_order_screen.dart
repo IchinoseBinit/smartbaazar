@@ -367,7 +367,8 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                               heading: 'Track Order',
                               buttonTitle: 'Understood',
                               callback: () {
-                                Navigator.pop(context);
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                               },
                               widget: TrackOrderDetails(order: widget.order),
                             );
@@ -483,5 +484,28 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
         ],
       ),
     );
+  }
+}
+
+class ReturnProductDialog {
+  Future returnProductDialog(
+    BuildContext context, {
+    required Widget widget,
+  }) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          final screenWidth = MediaQuery.of(context).size.width;
+          final screenHeight = MediaQuery.of(context).size.height;
+          return AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            clipBehavior: Clip.hardEdge,
+            backgroundColor: Colors.white,
+            content: SizedBox(
+              width: screenWidth,
+              child: widget,
+            ),
+          );
+        });
   }
 }

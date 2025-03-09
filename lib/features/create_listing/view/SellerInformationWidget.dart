@@ -462,13 +462,13 @@ class _SellerInformationWidgetState
             child: Row(
           children: [
             Text(
-              'Enter name',
+              'Enter name  ',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14.sp,
                   color: Colors.black),
             ),
-            const Spacer(),
+            // const Spacer(),
             Expanded(
               child: TextField(
                 controller: widget.nameconroller,
