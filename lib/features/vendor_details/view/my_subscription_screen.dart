@@ -733,6 +733,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                                     child: Container(
                                       color: Colors.white,
                                       child: BigContainer(
+
                                         storycount: e.vendor_card?.storycount
                                                 .toString() ??
                                             '0',
@@ -745,7 +746,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                                                 e.vendor_card?.longitude ??
                                                     '0.0') ??
                                             0.0,
-                                        id: e.id ?? '9',
+                                        id: e.vendor_id ?? '9',
                                         title: e.vendor_card?.name ?? '',
                                         logo: e.vendor_card?.photo ??
                                             'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
