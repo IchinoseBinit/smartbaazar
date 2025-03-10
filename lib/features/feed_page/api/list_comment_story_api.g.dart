@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'contact_us_api.dart';
+part of 'list_comment_story_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postContactUsHash() => r'17fbd72ba939eb3855bfb620d9dcd13fea09bb7b';
+String _$getStorycommentHash() => r'f76e25f7d51174f014d7d3a920ecb04e74986924';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [postContactUs].
-@ProviderFor(postContactUs)
-const postContactUsProvider = PostContactUsFamily();
+/// See also [getStorycomment].
+@ProviderFor(getStorycomment)
+const getStorycommentProvider = GetStorycommentFamily();
 
-/// See also [postContactUs].
-class PostContactUsFamily extends Family<AsyncValue<void>> {
-  /// See also [postContactUs].
-  const PostContactUsFamily();
+/// See also [getStorycomment].
+class GetStorycommentFamily extends Family<AsyncValue<List<FeedCommentModel>>> {
+  /// See also [getStorycomment].
+  const GetStorycommentFamily();
 
-  /// See also [postContactUs].
-  PostContactUsProvider call(
-    ContactUsModel contactUsModel,
+  /// See also [getStorycomment].
+  GetStorycommentProvider call(
+    String postid,
   ) {
-    return PostContactUsProvider(
-      contactUsModel,
+    return GetStorycommentProvider(
+      postid,
     );
   }
 
   @override
-  PostContactUsProvider getProviderOverride(
-    covariant PostContactUsProvider provider,
+  GetStorycommentProvider getProviderOverride(
+    covariant GetStorycommentProvider provider,
   ) {
     return call(
-      provider.contactUsModel,
+      provider.postid,
     );
   }
 
@@ -68,76 +68,77 @@ class PostContactUsFamily extends Family<AsyncValue<void>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'postContactUsProvider';
+  String? get name => r'getStorycommentProvider';
 }
 
-/// See also [postContactUs].
-class PostContactUsProvider extends AutoDisposeFutureProvider<void> {
-  /// See also [postContactUs].
-  PostContactUsProvider(
-    ContactUsModel contactUsModel,
+/// See also [getStorycomment].
+class GetStorycommentProvider
+    extends AutoDisposeFutureProvider<List<FeedCommentModel>> {
+  /// See also [getStorycomment].
+  GetStorycommentProvider(
+    String postid,
   ) : this._internal(
-          (ref) => postContactUs(
-            ref as PostContactUsRef,
-            contactUsModel,
+          (ref) => getStorycomment(
+            ref as GetStorycommentRef,
+            postid,
           ),
-          from: postContactUsProvider,
-          name: r'postContactUsProvider',
+          from: getStorycommentProvider,
+          name: r'getStorycommentProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$postContactUsHash,
-          dependencies: PostContactUsFamily._dependencies,
+                  : _$getStorycommentHash,
+          dependencies: GetStorycommentFamily._dependencies,
           allTransitiveDependencies:
-              PostContactUsFamily._allTransitiveDependencies,
-          contactUsModel: contactUsModel,
+              GetStorycommentFamily._allTransitiveDependencies,
+          postid: postid,
         );
 
-  PostContactUsProvider._internal(
+  GetStorycommentProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.contactUsModel,
+    required this.postid,
   }) : super.internal();
 
-  final ContactUsModel contactUsModel;
+  final String postid;
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(PostContactUsRef provider) create,
+    FutureOr<List<FeedCommentModel>> Function(GetStorycommentRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: PostContactUsProvider._internal(
-        (ref) => create(ref as PostContactUsRef),
+      override: GetStorycommentProvider._internal(
+        (ref) => create(ref as GetStorycommentRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        contactUsModel: contactUsModel,
+        postid: postid,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
-    return _PostContactUsProviderElement(this);
+  AutoDisposeFutureProviderElement<List<FeedCommentModel>> createElement() {
+    return _GetStorycommentProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PostContactUsProvider &&
-        other.contactUsModel == contactUsModel;
+    return other is GetStorycommentProvider && other.postid == postid;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, contactUsModel.hashCode);
+    hash = _SystemHash.combine(hash, postid.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,18 +146,19 @@ class PostContactUsProvider extends AutoDisposeFutureProvider<void> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PostContactUsRef on AutoDisposeFutureProviderRef<void> {
-  /// The parameter `contactUsModel` of this provider.
-  ContactUsModel get contactUsModel;
+mixin GetStorycommentRef
+    on AutoDisposeFutureProviderRef<List<FeedCommentModel>> {
+  /// The parameter `postid` of this provider.
+  String get postid;
 }
 
-class _PostContactUsProviderElement
-    extends AutoDisposeFutureProviderElement<void> with PostContactUsRef {
-  _PostContactUsProviderElement(super.provider);
+class _GetStorycommentProviderElement
+    extends AutoDisposeFutureProviderElement<List<FeedCommentModel>>
+    with GetStorycommentRef {
+  _GetStorycommentProviderElement(super.provider);
 
   @override
-  ContactUsModel get contactUsModel =>
-      (origin as PostContactUsProvider).contactUsModel;
+  String get postid => (origin as GetStorycommentProvider).postid;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

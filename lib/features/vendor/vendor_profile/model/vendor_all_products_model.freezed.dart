@@ -24,8 +24,12 @@ mixin _$VendorAllProductsResponse {
   VendorProfileAllProductsData get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorAllProductsResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorAllProductsResponseCopyWith<VendorAllProductsResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$VendorAllProductsResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -70,6 +76,8 @@ class _$VendorAllProductsResponseCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorProfileAllProductsDataCopyWith<$Res> get data {
@@ -104,6 +112,8 @@ class __$$VendorAllProductsResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorAllProductsResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,11 +161,13 @@ class _$VendorAllProductsResponseImpl implements _VendorAllProductsResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorAllProductsResponseImplCopyWith<_$VendorAllProductsResponseImpl>
@@ -182,8 +194,11 @@ abstract class _VendorAllProductsResponse implements VendorAllProductsResponse {
   VendorProfileAllProductsData get data;
   @override
   String get msg;
+
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorAllProductsResponseImplCopyWith<_$VendorAllProductsResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -197,8 +212,12 @@ VendorProfileAllProductsData _$VendorProfileAllProductsDataFromJson(
 mixin _$VendorProfileAllProductsData {
   List<BrandNewModel>? get all_products => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorProfileAllProductsData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorProfileAllProductsDataCopyWith<VendorProfileAllProductsData>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -225,6 +244,8 @@ class _$VendorProfileAllProductsDataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -261,6 +282,8 @@ class __$$VendorProfileAllProductsDataImplCopyWithImpl<$Res>
       $Res Function(_$VendorProfileAllProductsDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -311,12 +334,14 @@ class _$VendorProfileAllProductsDataImpl
                 .equals(other._all_products, _all_products));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_all_products));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorProfileAllProductsDataImplCopyWith<
@@ -343,8 +368,11 @@ abstract class _VendorProfileAllProductsData
 
   @override
   List<BrandNewModel>? get all_products;
+
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorProfileAllProductsDataImplCopyWith<
           _$VendorProfileAllProductsDataImpl>
       get copyWith => throw _privateConstructorUsedError;

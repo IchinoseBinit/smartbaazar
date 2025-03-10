@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
+import 'package:smartbazar/features/feed_page/api/post_story_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -592,62 +592,61 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                     ),
                     SizedBox(height: 30.h),
                     GestureDetector(
-                      onTap: () async {
-                        print("Liked!");
-                        if (!mounted) return;
+  onTap: () async {
+    print("Liked!");
+    if (!mounted) return; // Ensure the widget is still mounted
 
-                        setState(() {
-                          _isLoading = true;
-                        });
+    // Save the current state of _isLiked and wowcount
+    final wasLiked = _isLiked[_currentVendorIndex][_currentStoryIndex] ?? false;
+    final currentWowCount = int.parse(wowcount![_currentVendorIndex][_currentStoryIndex]);
 
-                        try {
-                          final currentPostId = stories[
-                                  _currentVendorIndex * vendorStories.length +
-                                      _currentStoryIndex]
-                              .id;
+    // Update the UI immediately
+    setState(() {
+      _isLoading = true;
+      _isLiked[_currentVendorIndex][_currentStoryIndex] = !wasLiked;
+      wowcount![_currentVendorIndex][_currentStoryIndex] =
+          (wasLiked ? currentWowCount - 1 : currentWowCount + 1).clamp(0, double.infinity).toString();
+    });
 
-                          // Get current vendor's index in _isLiked list
-                          final vendorIndex = _currentVendorIndex;
-                          final storyIndex = _currentStoryIndex;
+    try {
+      final currentPostId = storyId?[_currentVendorIndex][_currentStoryIndex] ?? '';
 
-                          // Await the API response
-                          final asyncResult = await ref
-                              .read(postFeedWowProvider(currentPostId!).future);
+      // Await the API response
+      await ref.read(postStoryWowProvider(currentPostId).future);
 
-                          // Force the provider to refresh
-                          ref.invalidate(postFeedWowProvider);
+      // Force the provider to refresh
+      ref.invalidate(postStoryWowProvider);
+    } catch (e) {
+      print('Error: $e');
 
-                          // Update the specific story's like status
-                          setState(() {
-                            if (_isLiked[vendorIndex][storyIndex] != null) {
-                              _isLiked[vendorIndex][storyIndex] =
-                                  !_isLiked[vendorIndex][storyIndex]!;
-                              _likeCount +=
-                                  _isLiked[vendorIndex][storyIndex]! ? 1 : -1;
-                            } else {
-                              print("Error: _isLiked value is null");
-                            }
-                          });
-                        } catch (e) {
-                          print('Error: $e');
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Error liking post: $e')),
-                          );
-                        } finally {
-                          setState(() {
-                            _isLoading = false;
-                          });
-                        }
-                      },
-                      child: Image.asset(
-                        "assets/icon/Vector.png",
-                        color: _isLiked[_currentVendorIndex]
-                                    [_currentStoryIndex] ==
-                                true
-                            ? Colors.grey
-                            : Colors.pink,
-                      ),
-                    ),
+      // Revert the like status and wowcount if the API call fails
+      if (mounted) {
+        setState(() {
+          _isLiked[_currentVendorIndex][_currentStoryIndex] = wasLiked;
+          wowcount![_currentVendorIndex][_currentStoryIndex] = currentWowCount.toString();
+        });
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error liking post: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  },
+  child: Image.asset(
+    "assets/icon/Vector.png",
+    color: _isLiked[_currentVendorIndex][_currentStoryIndex] == true
+        ? Colors.grey
+        : Colors.pink,
+  ),
+),
                     Text(
                       (_currentVendorIndex < vendorStories.length &&
                               _currentStoryIndex <

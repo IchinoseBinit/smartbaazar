@@ -25,8 +25,12 @@ mixin _$OffersModelDropdown {
   @JsonKey(name: 'msg')
   String? get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this OffersModelDropdown to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OffersModelDropdown
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OffersModelDropdownCopyWith<OffersModelDropdown> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$OffersModelDropdownCopyWithImpl<$Res, $Val extends OffersModelDropdown>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of OffersModelDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$OffersModelDropdownImplCopyWithImpl<$Res>
       $Res Function(_$OffersModelDropdownImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OffersModelDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,12 +159,14 @@ class _$OffersModelDropdownImpl implements _OffersModelDropdown {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data), msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OffersModelDropdown
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OffersModelDropdownImplCopyWith<_$OffersModelDropdownImpl> get copyWith =>
@@ -185,8 +195,11 @@ abstract class _OffersModelDropdown implements OffersModelDropdown {
   @override
   @JsonKey(name: 'msg')
   String? get msg;
+
+  /// Create a copy of OffersModelDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OffersModelDropdownImplCopyWith<_$OffersModelDropdownImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -206,8 +219,12 @@ mixin _$OfferData {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this OfferData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of OfferData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $OfferDataCopyWith<OfferData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -234,6 +251,8 @@ class _$OfferDataCopyWithImpl<$Res, $Val extends OfferData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of OfferData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -286,6 +305,8 @@ class __$$OfferDataImplCopyWithImpl<$Res>
       _$OfferDataImpl _value, $Res Function(_$OfferDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of OfferData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -358,12 +379,14 @@ class _$OfferDataImpl implements _OfferData {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, offers, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of OfferData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OfferDataImplCopyWith<_$OfferDataImpl> get copyWith =>
@@ -399,8 +422,11 @@ abstract class _OfferData implements OfferData {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
+
+  /// Create a copy of OfferData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OfferDataImplCopyWith<_$OfferDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

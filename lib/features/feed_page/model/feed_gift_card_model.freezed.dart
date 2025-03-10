@@ -25,8 +25,12 @@ mixin _$FeedGiftCardModel {
   @JsonKey(name: 'userDetail')
   UserDetail? get userDetail => throw _privateConstructorUsedError;
 
+  /// Serializes this FeedGiftCardModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FeedGiftCardModelCopyWith<FeedGiftCardModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,6 +58,8 @@ class _$FeedGiftCardModelCopyWithImpl<$Res, $Val extends FeedGiftCardModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -72,6 +78,8 @@ class _$FeedGiftCardModelCopyWithImpl<$Res, $Val extends FeedGiftCardModel>
     ) as $Val);
   }
 
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserDetailCopyWith<$Res>? get userDetail {
@@ -109,6 +117,8 @@ class __$$FeedGiftCardModelImplCopyWithImpl<$Res>
       $Res Function(_$FeedGiftCardModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -170,12 +180,14 @@ class _$FeedGiftCardModelImpl implements _FeedGiftCardModel {
                 other.userDetail == userDetail));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_buyOrWinCard), userDetail);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FeedGiftCardModelImplCopyWith<_$FeedGiftCardModelImpl> get copyWith =>
@@ -205,8 +217,11 @@ abstract class _FeedGiftCardModel implements FeedGiftCardModel {
   @override
   @JsonKey(name: 'userDetail')
   UserDetail? get userDetail;
+
+  /// Create a copy of FeedGiftCardModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FeedGiftCardModelImplCopyWith<_$FeedGiftCardModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -234,8 +249,12 @@ mixin _$BuyOrWinCard {
   @JsonKey(name: 'winners')
   int? get winners => throw _privateConstructorUsedError;
 
+  /// Serializes this BuyOrWinCard to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BuyOrWinCard
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BuyOrWinCardCopyWith<BuyOrWinCard> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -267,6 +286,8 @@ class _$BuyOrWinCardCopyWithImpl<$Res, $Val extends BuyOrWinCard>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BuyOrWinCard
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -343,6 +364,8 @@ class __$$BuyOrWinCardImplCopyWithImpl<$Res>
       _$BuyOrWinCardImpl _value, $Res Function(_$BuyOrWinCardImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BuyOrWinCard
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -455,12 +478,14 @@ class _$BuyOrWinCardImpl implements _BuyOrWinCard {
             (identical(other.winners, winners) || other.winners == winners));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, vendorImage, vendorName, name,
       image, worth, wow, giftQty, winners);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BuyOrWinCard
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyOrWinCardImplCopyWith<_$BuyOrWinCardImpl> get copyWith =>
@@ -512,8 +537,11 @@ abstract class _BuyOrWinCard implements BuyOrWinCard {
   @override
   @JsonKey(name: 'winners')
   int? get winners;
+
+  /// Create a copy of BuyOrWinCard
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BuyOrWinCardImplCopyWith<_$BuyOrWinCardImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -549,8 +577,12 @@ mixin _$UserDetail {
   @JsonKey(name: 'total_contribution')
   String? get totalContribution => throw _privateConstructorUsedError;
 
+  /// Serializes this UserDetail to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserDetail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDetailCopyWith<UserDetail> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -586,6 +618,8 @@ class _$UserDetailCopyWithImpl<$Res, $Val extends UserDetail>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserDetail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -686,6 +720,8 @@ class __$$UserDetailImplCopyWithImpl<$Res>
       _$UserDetailImpl _value, $Res Function(_$UserDetailImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserDetail
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -847,7 +883,7 @@ class _$UserDetailImpl implements _UserDetail {
                 other.totalContribution == totalContribution));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -864,7 +900,9 @@ class _$UserDetailImpl implements _UserDetail {
       livePrizes,
       totalContribution);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserDetail
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDetailImplCopyWith<_$UserDetailImpl> get copyWith =>
@@ -933,8 +971,11 @@ abstract class _UserDetail implements UserDetail {
   @override
   @JsonKey(name: 'total_contribution')
   String? get totalContribution;
+
+  /// Create a copy of UserDetail
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserDetailImplCopyWith<_$UserDetailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -25,8 +25,12 @@ mixin _$VendorLivePrizePostResponse {
       throw _privateConstructorUsedError; // ✅ Fixed Class Name
   String get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorLivePrizePostResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorLivePrizePostResponseCopyWith<VendorLivePrizePostResponse>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$VendorLivePrizePostResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -73,6 +79,8 @@ class _$VendorLivePrizePostResponseCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorLivePrizePostDataCopyWith<$Res> get data {
@@ -107,6 +115,8 @@ class __$$VendorLivePrizePostResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorLivePrizePostResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,11 +167,13 @@ class _$VendorLivePrizePostResponseImpl
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorLivePrizePostResponseImplCopyWith<_$VendorLivePrizePostResponseImpl>
@@ -186,11 +198,14 @@ abstract class _VendorLivePrizePostResponse
       _$VendorLivePrizePostResponseImpl.fromJson;
 
   @override
-  VendorLivePrizePostData get data;
-  @override // ✅ Fixed Class Name
-  String get msg;
+  VendorLivePrizePostData get data; // ✅ Fixed Class Name
   @override
-  @JsonKey(ignore: true)
+  String get msg;
+
+  /// Create a copy of VendorLivePrizePostResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorLivePrizePostResponseImplCopyWith<_$VendorLivePrizePostResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -205,8 +220,12 @@ mixin _$VendorLivePrizePostData {
   List<FeedPost>? get live_prizes => throw _privateConstructorUsedError;
   List<FeedPost> get feedPosts => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorLivePrizePostData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorLivePrizePostData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorLivePrizePostDataCopyWith<VendorLivePrizePostData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -231,6 +250,8 @@ class _$VendorLivePrizePostDataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorLivePrizePostData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -272,6 +293,8 @@ class __$$VendorLivePrizePostDataImplCopyWithImpl<$Res>
       $Res Function(_$VendorLivePrizePostDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorLivePrizePostData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -337,14 +360,16 @@ class _$VendorLivePrizePostDataImpl implements _VendorLivePrizePostData {
                 .equals(other._feedPosts, _feedPosts));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_live_prizes),
       const DeepCollectionEquality().hash(_feedPosts));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorLivePrizePostData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorLivePrizePostDataImplCopyWith<_$VendorLivePrizePostDataImpl>
@@ -371,8 +396,11 @@ abstract class _VendorLivePrizePostData implements VendorLivePrizePostData {
   List<FeedPost>? get live_prizes;
   @override
   List<FeedPost> get feedPosts;
+
+  /// Create a copy of VendorLivePrizePostData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorLivePrizePostDataImplCopyWith<_$VendorLivePrizePostDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

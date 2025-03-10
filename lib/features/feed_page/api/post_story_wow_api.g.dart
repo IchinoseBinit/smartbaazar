@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'contact_us_api.dart';
+part of 'post_story_wow_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postContactUsHash() => r'17fbd72ba939eb3855bfb620d9dcd13fea09bb7b';
+String _$postStoryWowHash() => r'252d49410280ed22f042b4b166bdcbfdfdbae10c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [postContactUs].
-@ProviderFor(postContactUs)
-const postContactUsProvider = PostContactUsFamily();
+/// See also [postStoryWow].
+@ProviderFor(postStoryWow)
+const postStoryWowProvider = PostStoryWowFamily();
 
-/// See also [postContactUs].
-class PostContactUsFamily extends Family<AsyncValue<void>> {
-  /// See also [postContactUs].
-  const PostContactUsFamily();
+/// See also [postStoryWow].
+class PostStoryWowFamily extends Family<AsyncValue<String>> {
+  /// See also [postStoryWow].
+  const PostStoryWowFamily();
 
-  /// See also [postContactUs].
-  PostContactUsProvider call(
-    ContactUsModel contactUsModel,
+  /// See also [postStoryWow].
+  PostStoryWowProvider call(
+    String storyId,
   ) {
-    return PostContactUsProvider(
-      contactUsModel,
+    return PostStoryWowProvider(
+      storyId,
     );
   }
 
   @override
-  PostContactUsProvider getProviderOverride(
-    covariant PostContactUsProvider provider,
+  PostStoryWowProvider getProviderOverride(
+    covariant PostStoryWowProvider provider,
   ) {
     return call(
-      provider.contactUsModel,
+      provider.storyId,
     );
   }
 
@@ -68,76 +68,75 @@ class PostContactUsFamily extends Family<AsyncValue<void>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'postContactUsProvider';
+  String? get name => r'postStoryWowProvider';
 }
 
-/// See also [postContactUs].
-class PostContactUsProvider extends AutoDisposeFutureProvider<void> {
-  /// See also [postContactUs].
-  PostContactUsProvider(
-    ContactUsModel contactUsModel,
+/// See also [postStoryWow].
+class PostStoryWowProvider extends AutoDisposeFutureProvider<String> {
+  /// See also [postStoryWow].
+  PostStoryWowProvider(
+    String storyId,
   ) : this._internal(
-          (ref) => postContactUs(
-            ref as PostContactUsRef,
-            contactUsModel,
+          (ref) => postStoryWow(
+            ref as PostStoryWowRef,
+            storyId,
           ),
-          from: postContactUsProvider,
-          name: r'postContactUsProvider',
+          from: postStoryWowProvider,
+          name: r'postStoryWowProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$postContactUsHash,
-          dependencies: PostContactUsFamily._dependencies,
+                  : _$postStoryWowHash,
+          dependencies: PostStoryWowFamily._dependencies,
           allTransitiveDependencies:
-              PostContactUsFamily._allTransitiveDependencies,
-          contactUsModel: contactUsModel,
+              PostStoryWowFamily._allTransitiveDependencies,
+          storyId: storyId,
         );
 
-  PostContactUsProvider._internal(
+  PostStoryWowProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.contactUsModel,
+    required this.storyId,
   }) : super.internal();
 
-  final ContactUsModel contactUsModel;
+  final String storyId;
 
   @override
   Override overrideWith(
-    FutureOr<void> Function(PostContactUsRef provider) create,
+    FutureOr<String> Function(PostStoryWowRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: PostContactUsProvider._internal(
-        (ref) => create(ref as PostContactUsRef),
+      override: PostStoryWowProvider._internal(
+        (ref) => create(ref as PostStoryWowRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        contactUsModel: contactUsModel,
+        storyId: storyId,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<void> createElement() {
-    return _PostContactUsProviderElement(this);
+  AutoDisposeFutureProviderElement<String> createElement() {
+    return _PostStoryWowProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PostContactUsProvider &&
-        other.contactUsModel == contactUsModel;
+    return other is PostStoryWowProvider && other.storyId == storyId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, contactUsModel.hashCode);
+    hash = _SystemHash.combine(hash, storyId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -145,18 +144,17 @@ class PostContactUsProvider extends AutoDisposeFutureProvider<void> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin PostContactUsRef on AutoDisposeFutureProviderRef<void> {
-  /// The parameter `contactUsModel` of this provider.
-  ContactUsModel get contactUsModel;
+mixin PostStoryWowRef on AutoDisposeFutureProviderRef<String> {
+  /// The parameter `storyId` of this provider.
+  String get storyId;
 }
 
-class _PostContactUsProviderElement
-    extends AutoDisposeFutureProviderElement<void> with PostContactUsRef {
-  _PostContactUsProviderElement(super.provider);
+class _PostStoryWowProviderElement
+    extends AutoDisposeFutureProviderElement<String> with PostStoryWowRef {
+  _PostStoryWowProviderElement(super.provider);
 
   @override
-  ContactUsModel get contactUsModel =>
-      (origin as PostContactUsProvider).contactUsModel;
+  String get storyId => (origin as PostStoryWowProvider).storyId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

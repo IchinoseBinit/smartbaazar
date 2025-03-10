@@ -23,8 +23,12 @@ mixin _$VendorCardResponse {
   VendorCardData? get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorCardResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorCardResponseCopyWith<VendorCardResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$VendorCardResponseCopyWithImpl<$Res, $Val extends VendorCardResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +74,8 @@ class _$VendorCardResponseCopyWithImpl<$Res, $Val extends VendorCardResponse>
     ) as $Val);
   }
 
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorCardDataCopyWith<$Res>? get data {
@@ -103,6 +111,8 @@ class __$$VendorCardResponseImplCopyWithImpl<$Res>
       $Res Function(_$VendorCardResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -149,11 +159,13 @@ class _$VendorCardResponseImpl implements _VendorCardResponse {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorCardResponseImplCopyWith<_$VendorCardResponseImpl> get copyWith =>
@@ -180,8 +192,11 @@ abstract class _VendorCardResponse implements VendorCardResponse {
   VendorCardData? get data;
   @override
   String get msg;
+
+  /// Create a copy of VendorCardResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorCardResponseImplCopyWith<_$VendorCardResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -196,8 +211,12 @@ mixin _$VendorCardData {
   VendorCard? get vendor_card => throw _privateConstructorUsedError;
   List<Deal>? get deals => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorCardData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorCardDataCopyWith<VendorCardData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -223,6 +242,8 @@ class _$VendorCardDataCopyWithImpl<$Res, $Val extends VendorCardData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -246,6 +267,8 @@ class _$VendorCardDataCopyWithImpl<$Res, $Val extends VendorCardData>
     ) as $Val);
   }
 
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VendorCardCopyWith<$Res>? get vendor_card {
@@ -281,6 +304,8 @@ class __$$VendorCardDataImplCopyWithImpl<$Res>
       _$VendorCardDataImpl _value, $Res Function(_$VendorCardDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -348,12 +373,14 @@ class _$VendorCardDataImpl implements _VendorCardData {
             const DeepCollectionEquality().equals(other._deals, _deals));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, subscribed, vendor_card,
       const DeepCollectionEquality().hash(_deals));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorCardDataImplCopyWith<_$VendorCardDataImpl> get copyWith =>
@@ -383,8 +410,11 @@ abstract class _VendorCardData implements VendorCardData {
   VendorCard? get vendor_card;
   @override
   List<Deal>? get deals;
+
+  /// Create a copy of VendorCardData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorCardDataImplCopyWith<_$VendorCardDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
