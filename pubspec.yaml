@@ -96,7 +96,7 @@ dependencies:
 
 
 dependency_overrides:
-   custom_lint: 0.6.0
+   custom_lint: 0.7.3
    webview_flutter: ^4.7.0
 
 
