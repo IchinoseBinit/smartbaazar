@@ -6,7 +6,7 @@ part of 'checkout_form_submission_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCheckoutFormHash() => r'bb9fa453fadf4a5bfe688622e1c6c3afb8bc0970';
+String _$postCheckoutFormHash() => r'0127d2fc220fd3adfd2809ec1f3d388c121c7331';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,8 +46,8 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
     String payMethod,
     String delivery,
     String deliveryType,
-    String city,
     String street,
+    String? delCost,
     String? coupon,
     List<String?> postId,
     List<String> itemId,
@@ -55,6 +55,31 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
     List<String> qty,
     List<String> price,
     String total,
+    String token,
+    String zoneId,
+    List<double> pickupCoordinates,
+    List<double> customerCoordinates,
+    List<double> customerRequestCoordinates,
+    List<double> destinationCoordinates,
+    int getestimateid,
+    double estimatedFare,
+    double estimatedDistance,
+    double estimatedTime,
+    String pickupAddress,
+    String destinationAddress,
+    int vendorId,
+    String type,
+    double returnFee,
+    double cancellationFee,
+    String senderName,
+    String senderPhone,
+    String senderAddress,
+    String receiverName,
+    String receiverPhone,
+    String receiverAddress,
+    String parcelCategoryId,
+    double weight,
+    String payer,
   ) {
     return PostCheckoutFormProvider(
       userName,
@@ -63,8 +88,8 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       payMethod,
       delivery,
       deliveryType,
-      city,
       street,
+      delCost,
       coupon,
       postId,
       itemId,
@@ -72,6 +97,31 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       qty,
       price,
       total,
+      token,
+      zoneId,
+      pickupCoordinates,
+      customerCoordinates,
+      customerRequestCoordinates,
+      destinationCoordinates,
+      getestimateid,
+      estimatedFare,
+      estimatedDistance,
+      estimatedTime,
+      pickupAddress,
+      destinationAddress,
+      vendorId,
+      type,
+      returnFee,
+      cancellationFee,
+      senderName,
+      senderPhone,
+      senderAddress,
+      receiverName,
+      receiverPhone,
+      receiverAddress,
+      parcelCategoryId,
+      weight,
+      payer,
     );
   }
 
@@ -86,8 +136,8 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       provider.payMethod,
       provider.delivery,
       provider.deliveryType,
-      provider.city,
       provider.street,
+      provider.delCost,
       provider.coupon,
       provider.postId,
       provider.itemId,
@@ -95,6 +145,31 @@ class PostCheckoutFormFamily extends Family<AsyncValue<bool>> {
       provider.qty,
       provider.price,
       provider.total,
+      provider.token,
+      provider.zoneId,
+      provider.pickupCoordinates,
+      provider.customerCoordinates,
+      provider.customerRequestCoordinates,
+      provider.destinationCoordinates,
+      provider.getestimateid,
+      provider.estimatedFare,
+      provider.estimatedDistance,
+      provider.estimatedTime,
+      provider.pickupAddress,
+      provider.destinationAddress,
+      provider.vendorId,
+      provider.type,
+      provider.returnFee,
+      provider.cancellationFee,
+      provider.senderName,
+      provider.senderPhone,
+      provider.senderAddress,
+      provider.receiverName,
+      provider.receiverPhone,
+      provider.receiverAddress,
+      provider.parcelCategoryId,
+      provider.weight,
+      provider.payer,
     );
   }
 
@@ -123,8 +198,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     String payMethod,
     String delivery,
     String deliveryType,
-    String city,
     String street,
+    String? delCost,
     String? coupon,
     List<String?> postId,
     List<String> itemId,
@@ -132,6 +207,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     List<String> qty,
     List<String> price,
     String total,
+    String token,
+    String zoneId,
+    List<double> pickupCoordinates,
+    List<double> customerCoordinates,
+    List<double> customerRequestCoordinates,
+    List<double> destinationCoordinates,
+    int getestimateid,
+    double estimatedFare,
+    double estimatedDistance,
+    double estimatedTime,
+    String pickupAddress,
+    String destinationAddress,
+    int vendorId,
+    String type,
+    double returnFee,
+    double cancellationFee,
+    String senderName,
+    String senderPhone,
+    String senderAddress,
+    String receiverName,
+    String receiverPhone,
+    String receiverAddress,
+    String parcelCategoryId,
+    double weight,
+    String payer,
   ) : this._internal(
           (ref) => postCheckoutForm(
             ref as PostCheckoutFormRef,
@@ -141,8 +241,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
             payMethod,
             delivery,
             deliveryType,
-            city,
             street,
+            delCost,
             coupon,
             postId,
             itemId,
@@ -150,6 +250,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
             qty,
             price,
             total,
+            token,
+            zoneId,
+            pickupCoordinates,
+            customerCoordinates,
+            customerRequestCoordinates,
+            destinationCoordinates,
+            getestimateid,
+            estimatedFare,
+            estimatedDistance,
+            estimatedTime,
+            pickupAddress,
+            destinationAddress,
+            vendorId,
+            type,
+            returnFee,
+            cancellationFee,
+            senderName,
+            senderPhone,
+            senderAddress,
+            receiverName,
+            receiverPhone,
+            receiverAddress,
+            parcelCategoryId,
+            weight,
+            payer,
           ),
           from: postCheckoutFormProvider,
           name: r'postCheckoutFormProvider',
@@ -166,8 +291,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
           payMethod: payMethod,
           delivery: delivery,
           deliveryType: deliveryType,
-          city: city,
           street: street,
+          delCost: delCost,
           coupon: coupon,
           postId: postId,
           itemId: itemId,
@@ -175,6 +300,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
           qty: qty,
           price: price,
           total: total,
+          token: token,
+          zoneId: zoneId,
+          pickupCoordinates: pickupCoordinates,
+          customerCoordinates: customerCoordinates,
+          customerRequestCoordinates: customerRequestCoordinates,
+          destinationCoordinates: destinationCoordinates,
+          getestimateid: getestimateid,
+          estimatedFare: estimatedFare,
+          estimatedDistance: estimatedDistance,
+          estimatedTime: estimatedTime,
+          pickupAddress: pickupAddress,
+          destinationAddress: destinationAddress,
+          vendorId: vendorId,
+          type: type,
+          returnFee: returnFee,
+          cancellationFee: cancellationFee,
+          senderName: senderName,
+          senderPhone: senderPhone,
+          senderAddress: senderAddress,
+          receiverName: receiverName,
+          receiverPhone: receiverPhone,
+          receiverAddress: receiverAddress,
+          parcelCategoryId: parcelCategoryId,
+          weight: weight,
+          payer: payer,
         );
 
   PostCheckoutFormProvider._internal(
@@ -190,8 +340,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     required this.payMethod,
     required this.delivery,
     required this.deliveryType,
-    required this.city,
     required this.street,
+    required this.delCost,
     required this.coupon,
     required this.postId,
     required this.itemId,
@@ -199,6 +349,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     required this.qty,
     required this.price,
     required this.total,
+    required this.token,
+    required this.zoneId,
+    required this.pickupCoordinates,
+    required this.customerCoordinates,
+    required this.customerRequestCoordinates,
+    required this.destinationCoordinates,
+    required this.getestimateid,
+    required this.estimatedFare,
+    required this.estimatedDistance,
+    required this.estimatedTime,
+    required this.pickupAddress,
+    required this.destinationAddress,
+    required this.vendorId,
+    required this.type,
+    required this.returnFee,
+    required this.cancellationFee,
+    required this.senderName,
+    required this.senderPhone,
+    required this.senderAddress,
+    required this.receiverName,
+    required this.receiverPhone,
+    required this.receiverAddress,
+    required this.parcelCategoryId,
+    required this.weight,
+    required this.payer,
   }) : super.internal();
 
   final String userName;
@@ -207,8 +382,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   final String payMethod;
   final String delivery;
   final String deliveryType;
-  final String city;
   final String street;
+  final String? delCost;
   final String? coupon;
   final List<String?> postId;
   final List<String> itemId;
@@ -216,6 +391,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   final List<String> qty;
   final List<String> price;
   final String total;
+  final String token;
+  final String zoneId;
+  final List<double> pickupCoordinates;
+  final List<double> customerCoordinates;
+  final List<double> customerRequestCoordinates;
+  final List<double> destinationCoordinates;
+  final int getestimateid;
+  final double estimatedFare;
+  final double estimatedDistance;
+  final double estimatedTime;
+  final String pickupAddress;
+  final String destinationAddress;
+  final int vendorId;
+  final String type;
+  final double returnFee;
+  final double cancellationFee;
+  final String senderName;
+  final String senderPhone;
+  final String senderAddress;
+  final String receiverName;
+  final String receiverPhone;
+  final String receiverAddress;
+  final String parcelCategoryId;
+  final double weight;
+  final String payer;
 
   @override
   Override overrideWith(
@@ -236,8 +436,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         payMethod: payMethod,
         delivery: delivery,
         deliveryType: deliveryType,
-        city: city,
         street: street,
+        delCost: delCost,
         coupon: coupon,
         postId: postId,
         itemId: itemId,
@@ -245,6 +445,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         qty: qty,
         price: price,
         total: total,
+        token: token,
+        zoneId: zoneId,
+        pickupCoordinates: pickupCoordinates,
+        customerCoordinates: customerCoordinates,
+        customerRequestCoordinates: customerRequestCoordinates,
+        destinationCoordinates: destinationCoordinates,
+        getestimateid: getestimateid,
+        estimatedFare: estimatedFare,
+        estimatedDistance: estimatedDistance,
+        estimatedTime: estimatedTime,
+        pickupAddress: pickupAddress,
+        destinationAddress: destinationAddress,
+        vendorId: vendorId,
+        type: type,
+        returnFee: returnFee,
+        cancellationFee: cancellationFee,
+        senderName: senderName,
+        senderPhone: senderPhone,
+        senderAddress: senderAddress,
+        receiverName: receiverName,
+        receiverPhone: receiverPhone,
+        receiverAddress: receiverAddress,
+        parcelCategoryId: parcelCategoryId,
+        weight: weight,
+        payer: payer,
       ),
     );
   }
@@ -263,15 +488,40 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
         other.payMethod == payMethod &&
         other.delivery == delivery &&
         other.deliveryType == deliveryType &&
-        other.city == city &&
         other.street == street &&
+        other.delCost == delCost &&
         other.coupon == coupon &&
         other.postId == postId &&
         other.itemId == itemId &&
         other.postName == postName &&
         other.qty == qty &&
         other.price == price &&
-        other.total == total;
+        other.total == total &&
+        other.token == token &&
+        other.zoneId == zoneId &&
+        other.pickupCoordinates == pickupCoordinates &&
+        other.customerCoordinates == customerCoordinates &&
+        other.customerRequestCoordinates == customerRequestCoordinates &&
+        other.destinationCoordinates == destinationCoordinates &&
+        other.getestimateid == getestimateid &&
+        other.estimatedFare == estimatedFare &&
+        other.estimatedDistance == estimatedDistance &&
+        other.estimatedTime == estimatedTime &&
+        other.pickupAddress == pickupAddress &&
+        other.destinationAddress == destinationAddress &&
+        other.vendorId == vendorId &&
+        other.type == type &&
+        other.returnFee == returnFee &&
+        other.cancellationFee == cancellationFee &&
+        other.senderName == senderName &&
+        other.senderPhone == senderPhone &&
+        other.senderAddress == senderAddress &&
+        other.receiverName == receiverName &&
+        other.receiverPhone == receiverPhone &&
+        other.receiverAddress == receiverAddress &&
+        other.parcelCategoryId == parcelCategoryId &&
+        other.weight == weight &&
+        other.payer == payer;
   }
 
   @override
@@ -283,8 +533,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, payMethod.hashCode);
     hash = _SystemHash.combine(hash, delivery.hashCode);
     hash = _SystemHash.combine(hash, deliveryType.hashCode);
-    hash = _SystemHash.combine(hash, city.hashCode);
     hash = _SystemHash.combine(hash, street.hashCode);
+    hash = _SystemHash.combine(hash, delCost.hashCode);
     hash = _SystemHash.combine(hash, coupon.hashCode);
     hash = _SystemHash.combine(hash, postId.hashCode);
     hash = _SystemHash.combine(hash, itemId.hashCode);
@@ -292,6 +542,31 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, qty.hashCode);
     hash = _SystemHash.combine(hash, price.hashCode);
     hash = _SystemHash.combine(hash, total.hashCode);
+    hash = _SystemHash.combine(hash, token.hashCode);
+    hash = _SystemHash.combine(hash, zoneId.hashCode);
+    hash = _SystemHash.combine(hash, pickupCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, customerCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, customerRequestCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, destinationCoordinates.hashCode);
+    hash = _SystemHash.combine(hash, getestimateid.hashCode);
+    hash = _SystemHash.combine(hash, estimatedFare.hashCode);
+    hash = _SystemHash.combine(hash, estimatedDistance.hashCode);
+    hash = _SystemHash.combine(hash, estimatedTime.hashCode);
+    hash = _SystemHash.combine(hash, pickupAddress.hashCode);
+    hash = _SystemHash.combine(hash, destinationAddress.hashCode);
+    hash = _SystemHash.combine(hash, vendorId.hashCode);
+    hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, returnFee.hashCode);
+    hash = _SystemHash.combine(hash, cancellationFee.hashCode);
+    hash = _SystemHash.combine(hash, senderName.hashCode);
+    hash = _SystemHash.combine(hash, senderPhone.hashCode);
+    hash = _SystemHash.combine(hash, senderAddress.hashCode);
+    hash = _SystemHash.combine(hash, receiverName.hashCode);
+    hash = _SystemHash.combine(hash, receiverPhone.hashCode);
+    hash = _SystemHash.combine(hash, receiverAddress.hashCode);
+    hash = _SystemHash.combine(hash, parcelCategoryId.hashCode);
+    hash = _SystemHash.combine(hash, weight.hashCode);
+    hash = _SystemHash.combine(hash, payer.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -318,11 +593,11 @@ mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `deliveryType` of this provider.
   String get deliveryType;
 
-  /// The parameter `city` of this provider.
-  String get city;
-
   /// The parameter `street` of this provider.
   String get street;
+
+  /// The parameter `delCost` of this provider.
+  String? get delCost;
 
   /// The parameter `coupon` of this provider.
   String? get coupon;
@@ -344,6 +619,81 @@ mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `total` of this provider.
   String get total;
+
+  /// The parameter `token` of this provider.
+  String get token;
+
+  /// The parameter `zoneId` of this provider.
+  String get zoneId;
+
+  /// The parameter `pickupCoordinates` of this provider.
+  List<double> get pickupCoordinates;
+
+  /// The parameter `customerCoordinates` of this provider.
+  List<double> get customerCoordinates;
+
+  /// The parameter `customerRequestCoordinates` of this provider.
+  List<double> get customerRequestCoordinates;
+
+  /// The parameter `destinationCoordinates` of this provider.
+  List<double> get destinationCoordinates;
+
+  /// The parameter `getestimateid` of this provider.
+  int get getestimateid;
+
+  /// The parameter `estimatedFare` of this provider.
+  double get estimatedFare;
+
+  /// The parameter `estimatedDistance` of this provider.
+  double get estimatedDistance;
+
+  /// The parameter `estimatedTime` of this provider.
+  double get estimatedTime;
+
+  /// The parameter `pickupAddress` of this provider.
+  String get pickupAddress;
+
+  /// The parameter `destinationAddress` of this provider.
+  String get destinationAddress;
+
+  /// The parameter `vendorId` of this provider.
+  int get vendorId;
+
+  /// The parameter `type` of this provider.
+  String get type;
+
+  /// The parameter `returnFee` of this provider.
+  double get returnFee;
+
+  /// The parameter `cancellationFee` of this provider.
+  double get cancellationFee;
+
+  /// The parameter `senderName` of this provider.
+  String get senderName;
+
+  /// The parameter `senderPhone` of this provider.
+  String get senderPhone;
+
+  /// The parameter `senderAddress` of this provider.
+  String get senderAddress;
+
+  /// The parameter `receiverName` of this provider.
+  String get receiverName;
+
+  /// The parameter `receiverPhone` of this provider.
+  String get receiverPhone;
+
+  /// The parameter `receiverAddress` of this provider.
+  String get receiverAddress;
+
+  /// The parameter `parcelCategoryId` of this provider.
+  String get parcelCategoryId;
+
+  /// The parameter `weight` of this provider.
+  double get weight;
+
+  /// The parameter `payer` of this provider.
+  String get payer;
 }
 
 class _PostCheckoutFormProviderElement
@@ -363,9 +713,9 @@ class _PostCheckoutFormProviderElement
   @override
   String get deliveryType => (origin as PostCheckoutFormProvider).deliveryType;
   @override
-  String get city => (origin as PostCheckoutFormProvider).city;
-  @override
   String get street => (origin as PostCheckoutFormProvider).street;
+  @override
+  String? get delCost => (origin as PostCheckoutFormProvider).delCost;
   @override
   String? get coupon => (origin as PostCheckoutFormProvider).coupon;
   @override
@@ -380,6 +730,70 @@ class _PostCheckoutFormProviderElement
   List<String> get price => (origin as PostCheckoutFormProvider).price;
   @override
   String get total => (origin as PostCheckoutFormProvider).total;
+  @override
+  String get token => (origin as PostCheckoutFormProvider).token;
+  @override
+  String get zoneId => (origin as PostCheckoutFormProvider).zoneId;
+  @override
+  List<double> get pickupCoordinates =>
+      (origin as PostCheckoutFormProvider).pickupCoordinates;
+  @override
+  List<double> get customerCoordinates =>
+      (origin as PostCheckoutFormProvider).customerCoordinates;
+  @override
+  List<double> get customerRequestCoordinates =>
+      (origin as PostCheckoutFormProvider).customerRequestCoordinates;
+  @override
+  List<double> get destinationCoordinates =>
+      (origin as PostCheckoutFormProvider).destinationCoordinates;
+  @override
+  int get getestimateid => (origin as PostCheckoutFormProvider).getestimateid;
+  @override
+  double get estimatedFare =>
+      (origin as PostCheckoutFormProvider).estimatedFare;
+  @override
+  double get estimatedDistance =>
+      (origin as PostCheckoutFormProvider).estimatedDistance;
+  @override
+  double get estimatedTime =>
+      (origin as PostCheckoutFormProvider).estimatedTime;
+  @override
+  String get pickupAddress =>
+      (origin as PostCheckoutFormProvider).pickupAddress;
+  @override
+  String get destinationAddress =>
+      (origin as PostCheckoutFormProvider).destinationAddress;
+  @override
+  int get vendorId => (origin as PostCheckoutFormProvider).vendorId;
+  @override
+  String get type => (origin as PostCheckoutFormProvider).type;
+  @override
+  double get returnFee => (origin as PostCheckoutFormProvider).returnFee;
+  @override
+  double get cancellationFee =>
+      (origin as PostCheckoutFormProvider).cancellationFee;
+  @override
+  String get senderName => (origin as PostCheckoutFormProvider).senderName;
+  @override
+  String get senderPhone => (origin as PostCheckoutFormProvider).senderPhone;
+  @override
+  String get senderAddress =>
+      (origin as PostCheckoutFormProvider).senderAddress;
+  @override
+  String get receiverName => (origin as PostCheckoutFormProvider).receiverName;
+  @override
+  String get receiverPhone =>
+      (origin as PostCheckoutFormProvider).receiverPhone;
+  @override
+  String get receiverAddress =>
+      (origin as PostCheckoutFormProvider).receiverAddress;
+  @override
+  String get parcelCategoryId =>
+      (origin as PostCheckoutFormProvider).parcelCategoryId;
+  @override
+  double get weight => (origin as PostCheckoutFormProvider).weight;
+  @override
+  String get payer => (origin as PostCheckoutFormProvider).payer;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

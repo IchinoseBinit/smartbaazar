@@ -100,26 +100,27 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           branchControllers.clear();
 
           // Add new controllers
-          for (var i = 0; i < branchLocations!.length; i++) {
-            TextEditingController controller =
-                TextEditingController(text: branchLocations[i]['location']);
-            branchControllers.add(controller);
-          }
+          if (branchLocations != null)
+            for (var i = 0; i < branchLocations!.length; i++) {
+              TextEditingController controller =
+                  TextEditingController(text: branchLocations[i]['location']);
+              branchControllers.add(controller);
+            }
         });
-        List<String> branchLocationsText = branchLocations!.map((location) {
-          return location['location'] as String;
-        }).toList();
+        if (branchLocations != null)
+          List<String> branchLocationsText = branchLocations!.map((location) {
+            return location['location'] as String;
+          }).toList();
 
         // Parse opening hours
         if (userData.openingHours != null) {
-          List<dynamic> openingHoursData =
-              jsonDecode(userData.openingHours ?? '');
-          for (var hour in openingHoursData) {
-            String day = hour['day'];
-            openingHours[day]!['from'] = hour['from'];
-            openingHours[day]!['to'] = hour['to'];
-            openingHours[day]!['closed'] = hour['closed'];
-          }
+          String openingHoursData = userData.openingHours ?? '';
+          // for (var hour in openingHoursData) {
+          //   String day = hour['day'];
+          //   openingHours[day]!['from'] = hour['from'];
+          //   openingHours[day]!['to'] = hour['to'];
+          //   openingHours[day]!['closed'] = hour['closed'];
+          // }
         }
       });
     }
@@ -288,12 +289,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             final userData = data.data!.first;
             _setInitialValues(userData);
 
-            List<dynamic> branchLocations =
-                jsonDecode(data.data!.first.branchLocation!);
-            List<String> branchLocationsText = branchLocations.map((location) {
-              return location['location']
-                  as String; // Assuming each location is a Map with a 'location' key
-            }).toList();
+            String branchLocations = data.data!.first.branchLocation!;
+            // List<String> branchLocationsText = branchLocations.map((location) {
+            //   return location['location']
+            //       as String; // Assuming each location is a Map with a 'location' key
+            // }).toList();
             return Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(bottom: 18.w),

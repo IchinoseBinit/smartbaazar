@@ -5,20 +5,25 @@ part 'cart_item_model.g.dart';
 
 @freezed
 class CartItem with _$CartItem {
-  factory CartItem({
-    required String id,
-    // required String userId,
-    @JsonKey(name: 'vendor_id') String? vendorId,
-    //  required String? vendorId,
-    @JsonKey(name: 'post_id') String? postId,
-    @JsonKey(name: 'post_type_id') String? postTypeId,
-    required String name,
-    required String qty,
-    required String price,
-    required String image,
-    // required String createdAt,
-    // required String updatedAt,
-  }) = _CartItem;
+  factory CartItem(
+      {required String id,
+      // required String userId,
+      @JsonKey(name: 'vendor_id') String? vendorId,
+      //  required String? vendorId,
+      @JsonKey(name: 'post_id') String? postId,
+      @JsonKey(name: 'post_type_id') String? postTypeId,
+      required String name,
+      required String qty,
+      required String price,
+      required String image,
+      required String pickup,
+      required String longitude,
+      required String latitude,
+      required String? weight,
+      required String? phone
+      // required String createdAt,
+      // required String updatedAt,
+      }) = _CartItem;
 
   factory CartItem.fromJson(Map<String, dynamic> json) =>
       _$CartItemFromJson(json);

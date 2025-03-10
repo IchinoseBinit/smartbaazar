@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/view/city_field.dart';
-import 'package:smartbazar/features/create_listing/view/street_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/dropdown_menu_item.dart';
@@ -52,11 +51,9 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   Widget build(BuildContext context) {
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
-    final createdAt = order.createdAt != null
-        ? (order.createdAt is String
-            ? DateTime.tryParse(order.createdAt)
-            : order.createdAt as DateTime)
-        : null;
+    final DateTime? createdAt = order.createdAt is String
+        ? DateTime.tryParse(order.createdAt)
+        : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
     final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
@@ -183,7 +180,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       //       title: 'Track',
                       //       isSmallText: true,
                       //       onPressed: () {
-                      //         CustomDialougeBox().orderDetailDialouge(
+                      //         OrderDetialsOderDialogBox().orderDetailDialouge(
                       //           context,
                       //           title: 'Status',
                       //           heading: 'Track Order',
@@ -218,7 +215,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
                       //         bgColor: const Color(0xff362677),
                       //         title: 'Return',
                       //         onPressed: () {
-                      //           CustomDialougeBox().orderDetailDialouge(
+                      //           OrderDetialsOderDialogBox().orderDetailDialouge(
                       //             context,
                       //             buttonTitle: 'Submit',
                       //             callback: () {
@@ -289,7 +286,7 @@ class _MyOrderDetailsScreenState extends ConsumerState<MyOrderDetailsScreen> {
   }
 }
 
-class CustomDialougeBox {
+class OrderDetialsOderDialogBox {
   Future orderDetailDialouge(BuildContext context,
       {required Widget widget,
       required String title,
@@ -416,64 +413,36 @@ class TrackOrderDetails extends StatelessWidget {
 }
 
 //sab xa
-class ReturnProductDetails extends ConsumerStatefulWidget {
-  // final Function(String) issue;
-  // final Function(String) message;
-  // final Function(String) address;
-  final dynamic order;
-  // final Function(Place) place;
-  // final Function(File) file;
-  // final String orderId;
-  // final String vendorId;
-  // final String postId;
-  // final String street;
+class ReturnProductDetails extends StatefulWidget {
+  final Function(String) issue;
+  final Function(String) message;
+  final Function(String) address;
+
+  final Function(Place) place;
+  final Function(File) file;
 
   const ReturnProductDetails({
     Key? key,
-    // required this.issue,
-    // required this.message,
-    // required this.address,
-    // required this.place,
-    // required this.file,
-    required this.order,
-    // required this.vendorId,
-    // required this.postId,
-    // required this.street,
+    required this.issue,
+    required this.message,
+    required this.address,
+    required this.place,
+    required this.file,
   }) : super(key: key);
 
   @override
-  ConsumerState<ReturnProductDetails> createState() =>
-      _ReturnProductDetailsState();
+  State<ReturnProductDetails> createState() => _ReturnProductDetailsState();
 }
 
-class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
+class _ReturnProductDetailsState extends State<ReturnProductDetails> {
   List<String?>? issueList = [];
-  // Place? selectedpickup;
+  Place? selectedpickup;
   bool _isImagePickerActive = false; // Track the state of image picker
 
   final TextEditingController _pickupcontroller = TextEditingController();
 
   File? _selectedImage;
   TextEditingController? messagecontroller;
-  String? selectedissue;
-  Place? selectedCity;
-  Place? selectedStreet;
-
-  @override
-  void initState() {
-    super.initState();
-    issueList = getStaticDropdownMenuItems()
-        .map((e) => e.value?.name ?? "Unknown Issue")
-        .toList();
-    messagecontroller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _pickupcontroller.dispose();
-    messagecontroller?.dispose();
-    super.dispose();
-  }
 
   Future<void> _pickImage() async {
     if (_isImagePickerActive) {
@@ -491,41 +460,20 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
       setState(() {
         _selectedImage = File(image.path);
         if (_selectedImage != null) {
-          //file(_selectedImage!);
+          widget.file(_selectedImage!);
         }
       });
     }
   }
 
-  Future<void> _submitForm() async {
-    // if (!_validateForm()) return;
-
-    try {
-      final response = await ref.watch(postmyreturnProvider(
-        widget.order.id,
-        widget.order.vendorId,
-        widget.order.postId,
-        selectedissue!,
-        messagecontroller!.text,
-        selectedCity!.description ?? '',
-        selectedCity!.description ?? '', //city here
-        selectedStreet!.description ?? '',
-        selectedCity!.latitude.toString(),
-        selectedCity!.longitude.toString(),
-        _selectedImage!,
-      ));
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Return request submitted successfully')),
-      );
-
-      // Close the dialog
-      Navigator.of(context, rootNavigator: true).pop();
-    } catch (e) {
-      print('Error submitting return request: $e');
-      throw Exception('Failed to submit return request: $e');
-    }
+  String? selectedissue;
+  @override
+  void initState() {
+    super.initState();
+    // Populate issueList in initState to prevent modifying state inside build()
+    issueList = getStaticDropdownMenuItems()
+        .map((e) => e.value?.name ?? "Unknown Issue")
+        .toList();
   }
 
   @override
@@ -533,34 +481,8 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Fill the form',
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
-            Text(
-              'Return Products',
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xff362677)),
-            ),
-            SizedBox(height: 10.h),
             CreateListingCardWidget(
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -591,7 +513,7 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
                         setState(() {
                           selectedissue = newValue;
                           if (newValue != null) {
-                            // issue(selectedissue!);
+                            widget.issue(selectedissue!);
                           }
                         });
                       },
@@ -625,7 +547,7 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
                   TextField(
                     controller: messagecontroller,
                     onChanged: (value) {
-                      //message(selectedissue!);
+                      widget.message(selectedissue!);
                     },
                     maxLines: null,
                     decoration: InputDecoration.collapsed(
@@ -639,20 +561,34 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
               ),
             ),
             SizedBox(height: 5.h),
-            CityField(
-              onCitySelected: (Place data) {
-                setState(() {
-                  selectedCity = data;
-                });
-              },
-            ),
+            CityField(onCitySelected: widget.place),
             SizedBox(height: 5.h),
-            StreetField(
-              onStreetSelected: (Place data) {
-                setState(() {
-                  selectedStreet = data;
-                });
-              },
+            CreateListingCardWidget(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Street Address',
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 10.h),
+                  TextField(
+                    onChanged: (value) {
+                      widget.address(value);
+                    },
+                    decoration: InputDecoration.collapsed(
+                        hintText: 'Enter Street Address',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: const Color(0xffADADAD))),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 5.h),
             CreateListingCardWidget(
@@ -731,14 +667,6 @@ class _ReturnProductDetailsState extends ConsumerState<ReturnProductDetails> {
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 15.h),
-            GeneralTextButton(
-              bgColor: const Color(0xff362677),
-              fgColor: Colors.white,
-              width: double.infinity,
-              title: 'Submit',
-              onPressed: _submitForm,
             ),
           ],
         ),

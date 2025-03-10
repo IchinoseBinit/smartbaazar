@@ -12,14 +12,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
+import 'package:smartbazar/features/favourite_list/view/favourite_listing_screen.dart';
 import 'package:smartbazar/features/fcm/firebase_options.dart';
 import 'package:smartbazar/features/fcm/local_notifications_service.dart';
 import 'package:smartbazar/features/fcm/push_notifications_service.dart';
 import 'package:smartbazar/features/feed-form_screen/feed-form_screen.dart';
 import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
+import 'package:smartbazar/features/message/view/message_view_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
@@ -36,16 +44,21 @@ import 'package:smartbazar/features/product_details/product_deatials_screen.dart
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/apply_sponsorship_price_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:smartbazar/payment/git.dart';
+import 'package:smartbazar/payment/payment_screen.dart';
 import 'package:smartbazar/practice.dart';
-
+import 'package:smartbazar/payment/create_listing_payement.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -57,14 +70,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   print("Handling a background message: ${message.messageId}");
 }
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Future.wait([
-    PushNotificationsService.init(),//2
-    LocalNotificationService.init(),//3
+    PushNotificationsService.init(), //2
+    LocalNotificationService.init(), //3
   ]);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -106,20 +120,25 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home:const SplashScreen()
-            ),
-            );
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()),
+    );
+    // home: SplashScreen()));
   }
-}
+} //123
+//9810443212
+
+//9844543322
+// 120
+// 12
 
 class ImageConvert extends StatefulWidget {
   const ImageConvert({super.key});
@@ -284,28 +303,6 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // RepaintBoundary(
-          //   key: globalKey,
-          //   child: BigContainer(
-          //     storycount: ,
-          //     lat: 37.7749,
-          //     long: -122.4194,
-          //     id: "12345",
-          //     title: "Amazing Place",
-          //     logo:
-          //         'https://smartbazaar.jianjun-rnd.com.np/storage/avatars/np/9/3de13c8aabaf35b8335233510fd9f4c0.png',
-          //     contact: "+1 (123) 456-7890",
-          //     storyCount: "5",
-          //     membershipTitle: "Premium Member",
-          //     deals_circle: "Exclusive Deals",
-          //     total_connections: "50",
-          //     total_prize_worth: "\$1000",
-          //     location: "San Francisco, CA",
-          //     Cnumber: "987654321",
-          //     issubbed: true,
-          //     memebertitle: "Gold Member",
-          //   ),
-          // ),
           const SizedBox(height: 20),
           if (_savedImagePath != null)
             Column(
@@ -320,8 +317,6 @@ class _WidgetToImageState extends ConsumerState<WidgetToImage> {
     );
   }
 }
-
-
 
 // Future<ui.Image> captureWidget(GlobalKey key) async {
 //   RenderRepaintBoundary boundary =

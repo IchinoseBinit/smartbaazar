@@ -25,6 +25,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           final loginProvider = ref.read(loginController.notifier);
           await loginProvider.continueSession(context);
         } catch (e) {
+          print('rama ${e}');
           // Fallback: Navigate to LoginScreen if any error occurs
           Navigator.pushReplacement(
             context,

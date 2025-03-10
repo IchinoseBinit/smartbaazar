@@ -488,6 +488,28 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(
+                              width: 170.w,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: 40.w,
+                                height: 40.h,
+                                decoration: BoxDecoration(
+                                  color: Colors
+                                      .grey, // Background color of the close button
+                                  shape: BoxShape.circle, // Makes it a circle
+                                ),
+                                child: Icon(
+                                  Icons.close, // Close icon
+                                  color: Colors.white, // Icon color
+                                  size: 25, // Icon size
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

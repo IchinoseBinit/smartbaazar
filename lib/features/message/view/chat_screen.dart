@@ -15,9 +15,11 @@ import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
+import 'package:smartbazar/features/message/api/message_photo_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
+import 'package:smartbazar/features/message/model/message_photo_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/check_user_verified_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -263,20 +265,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
+    final _messagephotoes = ref.watch(getmessagePhotoProvider(widget.postId));
+    MessagePhotoModel? _messagesphotoes;
+
+    _messagephotoes.whenData(
+      (value) {
+        _messagesphotoes = value;
+        print("makka ${_messagesphotoes}");
+      },
+    );
     // if (_currentUserId != null) {
     //   ref.watch(getVendorCardProvider(int.tryParse(_currentUserId!)!)).whenData(
     //     (value) {
     //       print("kalu $value");
     //       _card = BigContainer(
     //          ondoenload: () {
-                                  
+
     //                             },
     //         onsubscribed: () {
-              
+
     //         },
     //           key: GlobalKey(),
     //           lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
@@ -309,210 +319,217 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final selectedImage =
         ref.watch(selectedImageProvider); // Updated to remove .state
 
-    return GenericSafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          toolbarHeight: 30.h,
-          automaticallyImplyLeading: false,
-        ),
-        body: Column(
-          children: [
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      // appBar: AppBar(
+      //   toolbarHeight: 30.h,
+      //   automaticallyImplyLeading: false,
+      // ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 5.h,
+          ),
+          if (_messagesphotoes != null)
             ChatUserDetailWidget(
+              vendorname: _messagesphotoes?.vendor?.vendorName ?? '',
+              vendorimage: _messagesphotoes!.vendor!.vendorImage!,
               username: widget.username,
               threadId: widget.threadId,
               postId: widget.postId,
               //   isImportant: widget.isImportant,
             ),
-            SizedBox(height: 30.h),
+          SizedBox(height: 20.h),
 
-            // Expanded widget to display messages
-            Expanded(
-              child: messagesAsyncValue.when(
-                data: (messageList) {
-                  final messages = messageList.result?.data?.reversed
-                      .toList(); // Reverse the message order
+          // Expanded widget to display messages
+          Expanded(
+            child: messagesAsyncValue.when(
+              data: (messageList) {
+                final messages = messageList.result?.data?.reversed
+                    .toList(); // Reverse the message order
 
-                  if (messages == null || messages.isEmpty) {
-                    return const Center(child: Text('No messages available'));
-                  }
+                if (messages == null || messages.isEmpty) {
+                  return const Center(child: Text('No messages available'));
+                }
 
-                  return LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        reverse: true,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: constraints.maxHeight,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListView.builder(
-                                reverse: true,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: messages.length,
-                                itemBuilder: (context, index) {
-                                  final message = messages[index];
-
-                                  return ChatMessageWidget(
-                                    isUserMessage:
-                                        message.userId == _currentUserId,
-                                    message: message,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      reverse: true,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
                         ),
-                      );
-                    },
-                  );
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) =>
-                    const Center(child: Text('Please login again')),
-              ),
-            ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListView.builder(
+                              reverse: true,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: messages.length,
+                              itemBuilder: (context, index) {
+                                final message = messages[index];
 
-            SafeArea(
-              child: Container(
-                color: const Color(0xff781740),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // White container
-                      borderRadius:
-                          BorderRadius.circular(25.r), // Rounded edges
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 15.w, vertical: 5.h), // Adjust padding
-                    child: Row(
-                      children: [
-                        // Display the selected image with a cross button
-                        if (selectedImage != null)
-                          Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.file(
-                                  File(selectedImage.path),
-                                  width: 100,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    ref
-                                        .read(selectedImageProvider.notifier)
-                                        .state = null;
-                                    // selectedImage =
-                                    //     null; // Remove the selected image
-                                  });
-                                },
-                                child: const Icon(Icons.close,
-                                    color: Colors.red, size: 20),
-                              ),
-                            ],
-                          ),
-                        SizedBox(
-                            width: selectedImage != null
-                                ? 8.0
-                                : 0), // Space between image and text field
-                        Expanded(
-                          child: TextFormField(
-                            controller: _messageController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors
-                                  .transparent, // Transparent background for the text field
-                              hintText: 'Type Here',
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 10.h),
-                              border: InputBorder.none, // No border
+                                return ChatMessageWidget(
+                                  UserPhoto: _messagesphotoes
+                                          ?.userAuth?.photo ??
+                                      'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
+                                  isUserMessage:
+                                      message.userId == _currentUserId,
+                                  message: message,
+                                );
+                              },
                             ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => const Center(
+                  child:
+                      Text('Please login again or try switching message type')),
+            ),
+          ),
+
+          SafeArea(
+            child: Container(
+              color: const Color(0xff781740),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // White container
+                    borderRadius: BorderRadius.circular(25.r), // Rounded edges
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 15.w, vertical: 5.h), // Adjust padding
+                  child: Row(
+                    children: [
+                      // Display the selected image with a cross button
+                      if (selectedImage != null)
+                        Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.file(
+                                File(selectedImage.path),
+                                width: 100,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  ref
+                                      .read(selectedImageProvider.notifier)
+                                      .state = null;
+                                  // selectedImage =
+                                  //     null; // Remove the selected image
+                                });
+                              },
+                              child: const Icon(Icons.close,
+                                  color: Colors.red, size: 20),
+                            ),
+                          ],
+                        ),
+                      SizedBox(
+                          width: selectedImage != null
+                              ? 8.0
+                              : 0), // Space between image and text field
+                      Expanded(
+                        child: TextFormField(
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors
+                                .transparent, // Transparent background for the text field
+                            hintText: 'Type Here',
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 10.h),
+                            border: InputBorder.none, // No border
                           ),
                         ),
-                        SizedBox(width: 10.w),
-                        if (_isverified!)
-                          GlowButton(
-                            onPressed: () {
-                              // Show the dialog
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    backgroundColor: Colors.transparent,
-                                    insetPadding: const EdgeInsets.all(10),
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: <Widget>[
-                                        // Positioned widget for the SizedBox with RepaintBoundary
-                                        Positioned(
-                                          child: SizedBox(
-                                            height: 550.h,
-                                            width: 400.w,
-                                            child: RepaintBoundary(
-                                              key: _widgetKey,
-                                              child: _card ??
-                                                  const SizedBox
-                                                      .shrink(), // Ensure _card is not null
-                                            ),
+                      ),
+                      SizedBox(width: 10.w),
+                      if (_isverified!)
+                        GlowButton(
+                          onPressed: () {
+                            // Show the dialog
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  insetPadding: const EdgeInsets.all(10),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: <Widget>[
+                                      // Positioned widget for the SizedBox with RepaintBoundary
+                                      Positioned(
+                                        child: SizedBox(
+                                          height: 550.h,
+                                          width: 400.w,
+                                          child: RepaintBoundary(
+                                            key: _widgetKey,
+                                            child: _card ??
+                                                const SizedBox
+                                                    .shrink(), // Ensure _card is not null
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
 
-                              // Wait for 1 second before closing the dialog
-                              Future.delayed(const Duration(seconds: 1), () {
-                                Navigator.of(context)
-                                    .pop(); // Close the dialog after 1 second
-                              });
+                            // Wait for 1 second before closing the dialog
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.of(context)
+                                  .pop(); // Close the dialog after 1 second
+                            });
 
-                              // Capture and send the image (optional)
-                              _captureAndSendImage();
-                            },
-                            color: flutterColor,
-                            child: const Text('Card'),
-                          ),
-
-                        SizedBox(width: 10.w),
-                        GestureDetector(
-                          onTap: _pickImage, // Call _pickImage on tap
-                          child: const Icon(Icons.attach_file,
-                              color: Colors.black), // Attachment icon
+                            // Capture and send the image (optional)
+                            _captureAndSendImage();
+                          },
+                          color: flutterColor,
+                          child: const Text('Card'),
                         ),
-                        SizedBox(width: 10.w),
-                        GestureDetector(
-                          onTap: () => _sendMessage(),
-                          child: Container(
-                            height: 32.h,
-                            width: 40.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: const Color(
-                                  0xff362677), // Color for the send button
-                            ),
-                            child: const Icon(Icons.send, color: Colors.white),
+
+                      SizedBox(width: 10.w),
+                      GestureDetector(
+                        onTap: _pickImage, // Call _pickImage on tap
+                        child: const Icon(Icons.attach_file,
+                            color: Colors.black), // Attachment icon
+                      ),
+                      SizedBox(width: 10.w),
+                      GestureDetector(
+                        onTap: () => _sendMessage(),
+                        child: Container(
+                          height: 32.h,
+                          width: 40.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: const Color(
+                                0xff362677), // Color for the send button
                           ),
+                          child: const Icon(Icons.send, color: Colors.white),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -575,13 +592,16 @@ class ChatUserDetailWidget extends ConsumerWidget {
   final String username;
   final String threadId;
   final String postId;
+  final String vendorimage;
+  final String vendorname;
 
-  const ChatUserDetailWidget({
-    super.key,
-    required this.username,
-    required this.threadId,
-    required this.postId,
-  });
+  const ChatUserDetailWidget(
+      {super.key,
+      required this.username,
+      required this.threadId,
+      required this.postId,
+      required this.vendorimage,
+      required this.vendorname});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -603,17 +623,22 @@ class ChatUserDetailWidget extends ConsumerWidget {
               width: 60.w,
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
               decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.white),
-              child: Icon(
-                Icons.person_outline,
-                size: 25.h,
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(vendorimage.isNotEmpty
+                    ? vendorimage
+                    : 'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png'),
               ),
             ),
-            SizedBox(width: 14.w),
+            SizedBox(width: 15.w),
             Expanded(
               flex: 3,
               child: Column(
+                spacing: 3,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(height: 5.h),
                   Text(
@@ -626,76 +651,97 @@ class ChatUserDetailWidget extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
+                  Text(
+                    vendorname,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        onPressed: () async {
+                      GestureDetector(
+                        onTap: () async {
                           final success = await ref.read(
                               markMessageIsImportantProvider(threadId).future);
                           if (success) {
-                            // Invalidate to trigger a refresh
                             ref.invalidate(
                                 getMessageThreadProvider(filter: null));
-
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text(
-                                      'Message set important successfully')),
+                                content:
+                                    Text('Message set important successfully'),
+                              ),
                             );
                           }
                         },
-                        icon: messageThreadAsync.when(
+                        child: messageThreadAsync.when(
                           data: (threadData) {
                             final isImportant = threadData.result!.data
                                     ?.firstWhere(
                                         (item) => item.postId == postId)
                                     .isImportant ==
                                 "1";
+
                             return Icon(
-                              Icons.star,
+                              isImportant ? Icons.star : Icons.star_border,
                               color: isImportant ? Colors.yellow : Colors.white,
+                              size: 24.sp,
                             );
                           },
                           loading: () => const CircularProgressIndicator(),
                           error: (_, __) => const Icon(Icons.error),
                         ),
                       ),
-                      SizedBox(width: 3.w),
+
+                      SizedBox(width: 8.w), // Spacing between icons
                       GestureDetector(
-                          onTap: () async {
+                        onTap: () async {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Deleting item...'),
+                                backgroundColor: Colors.grey),
+                          );
+                          try {
+                            await ref
+                                .read(deleteMessageProvider(threadId).future);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Deleting item...'),
+                                  content: Text('Item deleted successfully'),
                                   backgroundColor: Colors.grey),
                             );
-                            try {
-                              await ref
-                                  .read(deleteMessageProvider(threadId).future);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Item deleted successfully'),
-                                    backgroundColor: Colors.grey),
-                              );
-                              await Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const MessageViewScreen(),
-                                ),
-                              );
-                              // ref.invalidate(
-                              //     );
-                            } catch (e) {
-                              // Show error message
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text('Failed to delete item: $e'),
-                                    backgroundColor: Colors.grey),
-                              );
-                            }
-                          },
-                          child: const Icon(Icons.delete, color: Colors.white)),
-                      SizedBox(width: 3.w),
-                      const Icon(Icons.mail_outline, color: Colors.white),
+                            await Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const MessageViewScreen()),
+                            );
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('Failed to delete item: $e'),
+                                  backgroundColor: Colors.grey),
+                            );
+                          }
+                        },
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 24.sp,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Icon(
+                        Icons.mail_outline,
+                        color: Colors.white,
+                        size: 24.sp,
+                      ),
                     ],
                   ),
                 ],
@@ -717,6 +763,9 @@ class ChatUserDetailWidget extends ConsumerWidget {
                 maxLines: 2,
               ),
             ),
+            SizedBox(
+              width: 5.w,
+            )
           ],
         ),
       ),
@@ -727,12 +776,13 @@ class ChatUserDetailWidget extends ConsumerWidget {
 class ChatMessageWidget extends StatelessWidget {
   final bool isUserMessage;
   final MessageData message;
+  final String UserPhoto;
 
-  const ChatMessageWidget({
-    super.key,
-    required this.isUserMessage,
-    required this.message,
-  });
+  const ChatMessageWidget(
+      {super.key,
+      required this.isUserMessage,
+      required this.message,
+      required this.UserPhoto});
 
   bool _isImageUrl(String? url) {
     print("maka $url");
@@ -765,7 +815,7 @@ class ChatMessageWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14.r),
                 color: message.filename == null && isUserMessage
                     ? const Color(0xff6148FF)
-                    : const Color(0xffD9D9D9),
+                    : const Color.fromARGB(255, 31, 29, 29),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -788,30 +838,29 @@ class ChatMessageWidget extends StatelessWidget {
 
                   // Corrected the image display section
                   if (_isImageUrl(message.filename))
-                   InkWell(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FullscreenImageView(
-          color: Colors.grey,
-          imagePath: '$baseUrl${message.filename}',
-        ),
-      ),
-    );
-  },
-  child: Padding(
-    padding: EdgeInsets.symmetric(vertical: 8.h),
-    child: Image.network(
-      '$baseUrl${message.filename}',
-      height: 200.h,
-      fit: BoxFit.contain,
-      errorBuilder: (context, error, stackTrace) =>
-          const Icon(Icons.broken_image),
-    ),
-  ),
-),
-
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FullscreenImageView(
+                              color: Colors.grey,
+                              imagePath: '$baseUrl${message.filename}',
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.h),
+                        child: Image.network(
+                          '$baseUrl${message.filename}',
+                          height: 200.h,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.broken_image),
+                        ),
+                      ),
+                    ),
 
                   if (message.filename != null &&
                       message.filename!.isNotEmpty &&
@@ -840,14 +889,17 @@ class ChatMessageWidget extends StatelessWidget {
           ),
           if (isUserMessage)
             Container(
-              margin: EdgeInsets.only(left: 2.w),
-              height: 40.h,
-              width: 40.w,
-              padding: EdgeInsets.all(8.w),
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Color(0xffD9D9D9)),
-              child: const Icon(Icons.person_outline),
-            ),
+              margin: EdgeInsets.only(left: 0.6.w),
+              padding: EdgeInsets.all(7.w),
+              child: CircleAvatar(
+                radius: 18
+                    .w, // This makes the CircleAvatar round with equal width and height
+                backgroundImage: NetworkImage(
+                  UserPhoto ??
+                      'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
+                ),
+              ),
+            )
         ],
       ),
     );

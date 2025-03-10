@@ -6,27 +6,27 @@ import 'package:smartbazar/utils/request_type.dart';
 
 part 'favourite_list_api.g.dart';
 
-@riverpod
-Future<FavouriteProductList> getFavouriteList(GetFavouriteListRef ref) async {
+Future<FavouriteProductList> getFavouriteList(dynamic ref,
+    {int pagenum = 1}) async {
   final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: ApiConstants.favouriteListUrl,
+      url:
+          'https://smartbazaar.jianjun-rnd.com.np/api/savedPosts?pages=$pagenum',
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = response.data;
-      final favouriteProductList = FavouriteProductList.fromJson(jsonResponse);
-
-      return favouriteProductList;
+      return FavouriteProductList.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load favourite list: ${response.statusCode}');
     }
   } catch (e) {
     print('Error fetching favourite list: $e');
-    throw Exception('Failed to load favourite list: $e');
+    // Return an empty or default instance instead of null
+    return FavouriteProductList(data: null, msg: null);
   }
 }
 

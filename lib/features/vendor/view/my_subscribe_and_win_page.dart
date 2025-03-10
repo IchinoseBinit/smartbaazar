@@ -9,7 +9,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/auth/widgets/general_elevated_button_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/my_subscribe_and_win_api.dart';
 import 'package:smartbazar/features/vendor/view/model/my_subscribe_and_win_model.dart';
@@ -84,7 +87,8 @@ class MySubscribeAndWinPage extends ConsumerStatefulWidget {
   const MySubscribeAndWinPage({super.key});
 
   @override
-  ConsumerState<MySubscribeAndWinPage> createState() => _MySubscribeAndWinPageState();
+  ConsumerState<MySubscribeAndWinPage> createState() =>
+      _MySubscribeAndWinPageState();
 }
 
 class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
@@ -114,7 +118,7 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
     },
-       {
+    {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
@@ -124,7 +128,6 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
       'label': 'Brandbazaar',
       'screen': const MySubscribeAndWinPage()
     },
- 
     {
       'icon': 'assets/icon/usedIcon.svg',
       'label': 'Used',
@@ -274,383 +277,375 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
     //     final adsList = ref.watch(fetchAdsProvider);
     final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
-
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
-final mySubscribeAndWinAsyncValue =
+    final mySubscribeAndWinAsyncValue =
         ref.watch(getMySubscribeAndWinResponseProvider);
 
- 
     return Scaffold(
-        extendBody: true,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xffF6F1F1),
-        // body: asyncbajarValue.when(
-        //   data: (data) {},
-        //   error: (error, stackTrace) {
-        //     return Text("data")
-        //   },
-        //   loading: () {
-        //     return CircularProgressIndicator();
-        //   },
-        // ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollUpdateNotification &&
-                notification.metrics.axis == Axis.vertical) {
-              // Check if the scroll is vertical
-              // Check if the SliverAppBar is completely off-screen
-              if (notification.metrics.pixels > 100) {
-                if (isSliverAppBarVisible) {
-                  setState(() {
-                    isSliverAppBarVisible = false;
-                  });
-                  print("SliverAppBar disappeared");
-                }
-              } else {
-                if (!isSliverAppBarVisible) {
-                  setState(() {
-                    _isSectionsVisible = true;
-                    isSliverAppBarVisible = true;
-                  });
-                  print("SliverAppBar visible");
-                }
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xffF6F1F1),
+      // body: asyncbajarValue.when(
+      //   data: (data) {},
+      //   error: (error, stackTrace) {
+      //     return Text("data")
+      //   },
+      //   loading: () {
+      //     return CircularProgressIndicator();
+      //   },
+      // ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollUpdateNotification &&
+              notification.metrics.axis == Axis.vertical) {
+            // Check if the scroll is vertical
+            // Check if the SliverAppBar is completely off-screen
+            if (notification.metrics.pixels > 100) {
+              if (isSliverAppBarVisible) {
+                setState(() {
+                  isSliverAppBarVisible = false;
+                });
+                print("SliverAppBar disappeared");
+              }
+            } else {
+              if (!isSliverAppBarVisible) {
+                setState(() {
+                  _isSectionsVisible = true;
+                  isSliverAppBarVisible = true;
+                });
+                print("SliverAppBar visible");
               }
             }
-            return true; // Allow the scroll event to propagate
-          },
-          child: Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: StickyHeaderDelegate(
-                          visible: isSliverAppBarVisible,
-                          searchController: _searchController,
-                          onchanged: (value) {
-                            print('value $value');
-                          },
-                          dropdownValueNotifier: dropdownValueNotifier,
-                          filteredSuggestions: [])),
-                  if (isSliverAppBarVisible)
-                    SliverAppBar(
-                        expandedHeight: 90.h,
-                        floating: false,
-                        pinned: false,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: const Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
+          }
+          return true; // Allow the scroll event to propagate
+        },
+        child: Stack(
+          children: [
+            CustomScrollView(slivers: [
+              SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: StickyHeaderDelegate(
+                      visible: isSliverAppBarVisible,
+                      searchController: _searchController,
+                      onchanged: (value) {
+                        print('value $value');
+                      },
+                      dropdownValueNotifier: dropdownValueNotifier,
+                      filteredSuggestions: [])),
+              if (isSliverAppBarVisible)
+                SliverAppBar(
+                    expandedHeight: 90.h,
+                    floating: false,
+                    pinned: false,
+                    flexibleSpace: AnimatedContainer(
+                      padding: EdgeInsets.zero,
+                      duration: const Duration(milliseconds: 150),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40)),
+                          gradient: LinearGradient(
+                              colors: [
+                                // Color(0xFF681b4e),
+                                // Color(0xFF392574),
+                                // Color(0xFF681b4e),
+                                Color(0xff651c50),
+                                Color(0xff54225f),
+                                // Color(0xFF392574).
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(4, (index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(_selectedIndexProvider.notifier)
+                                        .state = index;
+                                    _pageController.animateToPage(
+                                      index,
+                                      duration:
+                                          const Duration(milliseconds: 50),
+                                      curve: Curves.easeInOut,
                                     );
-                                  }),
-                                ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
+                                  },
+                                  child: Container(
+                                    height: 5.h,
+                                    width: 5.w,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                    decoration: BoxDecoration(
+                                      color: selectedIndex == index
+                                          ? Colors.amber
+                                          : Colors.grey,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            SizedBox(
+                              height: 55.h,
+                              child: PageView.builder(
+                                itemCount: _items.length,
+                                padEnds: false,
+                                controller: _pageController,
+                                onPageChanged: (value) {
+                                  ref
+                                      .read(_selectedIndexProvider.notifier)
+                                      .state = value;
+                                },
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> data = _items[index];
+
+                                  // Highlight only when index == 4
+                                  bool isActive = index == 1;
+                                  return GestureDetector(
+                                    onTap: () {
                                       ref
                                           .read(_selectedIndexProvider.notifier)
-                                          .state = value;
+                                          .state = index;
                                     },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
-
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
-                                      return GestureDetector(
+                                    child: AnimatedContainer(
+                                      padding: EdgeInsets.zero,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      alignment: Alignment.center,
+                                      child: InkWell(
                                         onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    data['screen']),
+                                          );
                                         },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ],
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            if (data['icon']
+                                                .toString()
+                                                .endsWith('.svg'))
+                                              SvgPicture.asset(
+                                                data['icon'],
+                                                alignment: Alignment.center,
+                                                fit: BoxFit.contain,
+                                                theme: const SvgTheme(
+                                                    currentColor:
+                                                        Color(0xffdd9d9d9)),
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                                width: 20,
+                                                height: 20,
+                                              )
+                                            else
+                                              Image.asset(
+                                                data['icon'],
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              data['label'],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        )),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 11, top: 11),
-                      child: GestureDetector(
-                        onVerticalDragUpdate: _onDragUpdate,
-                        onTap: () {
-                          setState(() {
-                            isSliverAppBarVisible = !isSliverAppBarVisible;
-                          });
-                        },
-                        child: Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            height: 7.h,
-                            width: 60.w,
-                            decoration: BoxDecoration(
-                                color: const Color(0xff651c50),
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                          ],
                         ),
+                      ),
+                    )),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 11, top: 11),
+                  child: GestureDetector(
+                    onVerticalDragUpdate: _onDragUpdate,
+                    onTap: () {
+                      setState(() {
+                        isSliverAppBarVisible = !isSliverAppBarVisible;
+                      });
+                    },
+                    child: Center(
+                      child: Container(
+                        alignment: AlignmentDirectional.center,
+                        height: 7.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                            color: const Color(0xff651c50),
+                            borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
                   ),
+                ),
+              ),
               SliverToBoxAdapter(
                 child: SingleChildScrollView(
                   child: mySubscribeAndWinAsyncValue.when(
                     data: (data) {
-                      return  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 15.h,
-                ),
-                _buildHeaderSection(data),
-                SizedBox(
-                  height: 5.h,
-                ),
-                _buildUserDetailsSection(data),
-                SizedBox(
-                  height: 5.h,
-                ),
-                _buildGiftsSection(data),
-                SizedBox(
-                  height: 5.h,
-                ),
-                _buildWinnersSection(data),
-                SizedBox(
-                  height: 5.h,
-                ),
-                _buildPrizeSponsorSection(data),
-                SizedBox(
-                  height: 5.h,
-                ),
-                _buildTermsAndConditionsSection(data),
-              ],
-            );
-                    }, error:(error, stackTrace) {
-                       return const Text(' Please check your Internet ');
-                    }, loading: () {
-                      return const CircularProgressIndicator();
-                    },),
-                ),
-              ),
-                ]
-              )
-           
-           
-             ,valuenotifilersidebutton(
-                  showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
-                top: 65,
-                left: 48,
-                child: Container(
-                  width: MediaQuery.of(context).size.width -
-                      90, // Add width constraint
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // Rounded corners
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: SearchProductModels.when(
-                    data: (results) {
-                      return ListView.separated(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: results.length > 5
-                            ? 4
-                            : results.length, // Limit results if needed
-                        itemBuilder: (context, index) {
-                          final product = results[index];
-                          return ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 7),
-                            dense: true,
-                            title: Text(
-                              product.name,
-                              style: headerstyle.copyWith(
-                                color: ColorConstant.blackColor,
-                                fontSize:
-                                    14, // Increase font size for better readability
-                              ),
-                            ),
-                            onTap: () {
-                              if (product.id != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VendorHomeScreen(
-                                      vendorName: product.name,
-                                      vid: int.tryParse(product.id!)!,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BusinessTabScreen(
-                                      query: _searchController.text,
-                                    ),
-                                  ),
-                                );
-                              }
-                              setState(() {
-                                _showSearchProductModels = false;
-                                FocusScope.of(context).unfocus();
-                              });
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) => const Divider(),
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 15.h,
+                          ),
+                          _buildHeaderSection(data),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          _buildUserDetailsSection(data),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          _buildGiftsSection(data),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          _buildWinnersSection(data),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          _buildPrizeSponsorSection(data),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          _buildTermsAndConditionsSection(data),
+                        ],
                       );
                     },
-                    loading: () {
-                      return const Center(child: CircularProgressIndicator());
+                    error: (error, stackTrace) {
+                      return const Text(' Please check your Internet ');
                     },
-                    error: (error, stack) {
-                      return Center(child: Text(error.toString()));
+                    loading: () {
+                      return const CircularProgressIndicator();
                     },
                   ),
                 ),
-              )
-           
-            ],
-          ),
+              ),
+            ]),
+            valuenotifilersidebutton(
+                showSideBar: showSideBar, isSectionsVisible: true),
+            Positioned(
+              top: 65,
+              left: 48,
+              child: Container(
+                width: MediaQuery.of(context).size.width -
+                    90, // Add width constraint
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8.0,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: SearchProductModels.when(
+                  data: (results) {
+                    return ListView.separated(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: results.length > 5
+                          ? 4
+                          : results.length, // Limit results if needed
+                      itemBuilder: (context, index) {
+                        final product = results[index];
+                        return ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 7),
+                          dense: true,
+                          title: Text(
+                            product.name,
+                            style: headerstyle.copyWith(
+                              color: ColorConstant.blackColor,
+                              fontSize:
+                                  14, // Increase font size for better readability
+                            ),
+                          ),
+                          onTap: () {
+                            if (product.id != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                    vendorName: product.name,
+                                    vid: int.tryParse(product.id!)!,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BusinessTabScreen(
+                                    query: _searchController.text,
+                                  ),
+                                ),
+                              );
+                            }
+                            setState(() {
+                              _showSearchProductModels = false;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                    );
+                  },
+                  loading: () {
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                  error: (error, stack) {
+                    return Center(child: Text(error.toString()));
+                  },
+                ),
+              ),
+            )
+          ],
         ),
-        );
+      ),
+    );
   }
-    Widget _buildTermsAndConditionsSection(MySubscribeAndWinModel data) {
+
+  Widget _buildTermsAndConditionsSection(MySubscribeAndWinModel data) {
     return Container(
       color: const Color.fromARGB(255, 235, 234, 234),
       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -699,7 +694,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-   String _formatHtmlContent(String? content) {
+
+  String _formatHtmlContent(String? content) {
     if (content == null || content.isEmpty) {
       return 'No terms and conditions available.';
     }
@@ -744,7 +740,8 @@ final mySubscribeAndWinAsyncValue =
 
     return formattedContent;
   }
-    Widget _buildPrizeSponsorSection(MySubscribeAndWinModel data) {
+
+  Widget _buildPrizeSponsorSection(MySubscribeAndWinModel data) {
     // Extract the mileage content from content3
     final mileageBlock = data.content3?.firstWhere(
       (contentBlock) => contentBlock.title?.contains('Mileage') ?? false,
@@ -852,7 +849,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-    Widget _buildHeaderSection(MySubscribeAndWinModel data) {
+
+  Widget _buildHeaderSection(MySubscribeAndWinModel data) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Column(
@@ -876,7 +874,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-   Widget _buildUserDetailsSection(MySubscribeAndWinModel data) {
+
+  Widget _buildUserDetailsSection(MySubscribeAndWinModel data) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Row(
@@ -943,7 +942,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-    Widget _buildGiftInfoContainer(
+
+  Widget _buildGiftInfoContainer(
       {required String title, required String value}) {
     return Container(
       width: MediaQuery.of(context).size.width / 2,
@@ -976,7 +976,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-   Widget _buildGiftsSection(MySubscribeAndWinModel data) {
+
+  Widget _buildGiftsSection(MySubscribeAndWinModel data) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       color: const Color.fromARGB(255, 235, 234, 234),
@@ -1017,7 +1018,8 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-   Widget _buildWinnersSection(MySubscribeAndWinModel data) {
+
+  Widget _buildWinnersSection(MySubscribeAndWinModel data) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
       width: MediaQuery.of(context).size.width,
@@ -1074,7 +1076,6 @@ final mySubscribeAndWinAsyncValue =
       ),
     );
   }
-  
 }
 
 class valuenotifilersidebutton extends StatelessWidget {
@@ -1102,7 +1103,7 @@ class valuenotifilersidebutton extends StatelessWidget {
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'mysubhero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -1110,21 +1111,30 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -1146,151 +1156,256 @@ class valuenotifilersidebutton extends StatelessWidget {
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'mysubhero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                     onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),
@@ -1302,8 +1417,7 @@ class valuenotifilersidebutton extends StatelessWidget {
   }
 }
 
- 
- class GiftDetails extends StatelessWidget {
+class GiftDetails extends StatelessWidget {
   final String giftName;
   final String giftImage;
   final String giftWorth;

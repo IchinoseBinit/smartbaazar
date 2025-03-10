@@ -4,9 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/pending_approval/api/pending_approval_api.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/api/delete_listing_api.dart';
+import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/features/pending_approval/model/pending_approval_model.dart';
 
@@ -72,6 +75,8 @@ class PendingApprovalScreen extends ConsumerWidget {
                       shrinkWrap: true,
                       itemBuilder: (context, int index) {
                         final product = productList[index];
+                        print('pop ${product.pickup}');
+
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
                           child: PedingApprovalContainer(productData: product),
@@ -82,15 +87,14 @@ class PendingApprovalScreen extends ConsumerWidget {
                       itemCount: productList.length,
                     );
                   },
-                  loading: () =>
-                      Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!, 
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          height: 150.h,
-                          color: Colors.white, 
-                        ),
-                      ),
+                  loading: () => Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 150.h,
+                      color: Colors.white,
+                    ),
+                  ),
                   error: (error, stackTrace) => const Center(
                     child: Text('Please login again'),
                   ),
@@ -107,7 +111,7 @@ class PendingApprovalScreen extends ConsumerWidget {
 }
 
 class PedingApprovalContainer extends ConsumerWidget {
-  final ProductData productData;
+  final MyListingProduct productData;
 
   const PedingApprovalContainer({super.key, required this.productData});
 
@@ -116,13 +120,19 @@ class PedingApprovalContainer extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to the product details page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ProductDetailScreen(productId: productData.id!),
-          ),
+         navigateToPage(
+          context: context,
+          page: ProductDetailScreen(productId: productData.id!),
+          ref: ref,
+          showNavBar: false, // Hide bottom navbar
         );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) =>
+        //         ProductDetailScreen(productId: productData.id!),
+        //   ),
+        // );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
@@ -148,6 +158,25 @@ class PedingApprovalContainer extends ConsumerWidget {
                 const Icon(
                   Icons.arrow_forward_ios,
                   color: Color(0xffADADAD),
+                ),
+                InkWell(
+                  onTap: () {
+                    print("niko ${productData.categoryId}");
+                    Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UpdateListing(ref: ref, prod: productData)));
+
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (_) => UpdateListing(prod: productData)),
+                    // );
+                  },
+                  child: const Icon(
+                    Icons.edit,
+                    color: Color(0xffADADAD),
+                  ),
                 ),
                 const Spacer(),
                 GestureDetector(
@@ -206,17 +235,16 @@ class PedingApprovalContainer extends ConsumerWidget {
                         return SizedBox(
                           height: 70.h,
                           child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!, 
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            width: 50.w,
-            height: 60.h,
-            color: Colors.white, 
-          ),
-        ),
-      
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 50.w,
+                                height: 60.h,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         );
                       },

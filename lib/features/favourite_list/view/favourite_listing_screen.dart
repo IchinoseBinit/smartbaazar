@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:smartbazar/features/favourite_list/api/favourite_list_api.dart';
+import 'package:smartbazar/features/favourite_list/model/favourite_product_list.dart';
+import 'package:smartbazar/scratch.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,22 +15,77 @@ import 'package:smartbazar/features/favourite_list/view/favourite_listing_skelet
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
-class FavouriteListingScreen extends ConsumerWidget {
-  const FavouriteListingScreen({super.key});
+
+class FavouriteListingScreen extends StatefulWidget {
+  @override
+  _FavouriteListingScreenState createState() => _FavouriteListingScreenState();
+}
+
+class _FavouriteListingScreenState extends State<FavouriteListingScreen> {
+  List<FavouriteProduct> favouriteList = [];
+  bool isLoading = false;
+  int pageNum = 1;
+  ScrollController _scrollController = ScrollController();
+
+  // Fetch data function
+  Future<void> fetchFavouriteData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final result = await getFavouriteList(context, pagenum: pageNum);
+      if (result.data?.savedProducts?.data != null) {
+        setState(() {
+          favouriteList.addAll(result.data!.savedProducts!.data!);
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error fetching data: $e');
+    }
+  }
+
+  // Listen for scroll changes to detect when user reaches the bottom
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (!isLoading) {
+        // If we're not already loading, increment the page number and fetch more data
+        setState(() {
+          pageNum++;
+        });
+        fetchFavouriteData();
+      }
+    }
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final favouriteListAsyncValue = ref.watch(getFavouriteListProvider);
+  void initState() {
+    super.initState();
+    fetchFavouriteData(); // Initial data fetch
+    _scrollController.addListener(_scrollListener); // Add scroll listener
+  }
 
-    return GenericSafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF6F1F1),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.h),
-            child: Column(
-              children: [
-                Padding(
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener); // Clean up scroll listener
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+ 
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+
+          children: [
+              Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Row(
                     children: [
@@ -64,21 +124,15 @@ class FavouriteListingScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Divider(
+                     const Divider(
                   thickness: 2,
                   color: Color(0xffD9D9D9),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                favouriteListAsyncValue.when(
-                  data: (favouriteListResponse) {
-                    final favouriteList =
-                        favouriteListResponse.data!.savedProducts?.data ?? [];
-                    if (favouriteList.isEmpty) {
-                      return const Center(child: Text('No favourites found.'));
-                    }
-                    return ListView.separated(
+            ...favouriteList.map((product) {
+              return ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
@@ -94,22 +148,9 @@ class FavouriteListingScreen extends ConsumerWidget {
                       ),
                       itemCount: favouriteList.length,
                     );
-                  },
-                  loading: () => ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) =>
-                        const FavouriteListSkeleton(),
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 16.h),
-                    itemCount: 6, // Number of skeleton items
-                  ),
-                  error: (error, stack) =>
-                      const Text('Please login and try again'),
-                )
-              ],
-            ),
-          ),
+            }).toList(),
+            if (isLoading) CircularProgressIndicator(), // Show loading indicator at the bottom
+          ],
         ),
       ),
     );

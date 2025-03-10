@@ -48,6 +48,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.da
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendorfollow_unfollow_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_all_products_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
@@ -273,6 +274,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _vendorsearchController = TextEditingController();
   List<GetOnlyData>? searchResult;
+  final ScrollController _singleChildScrollController =
+      ScrollController(); // For SingleChildScrollView
+
+  final ScrollController _customScrollController =
+      ScrollController(); // For CustomScrollView
+  int _page = 1;
+  List<VendorAllproductsModel> _products = [];
+  bool _isLoading = false;
   final _debouncer = BehaviorSubject<String>();
   bool _showSearchProductModels = false;
   final bool _vendorsearchResullts = false;
@@ -338,6 +347,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
 
   @override
   void initState() {
+    _fetchProducts();
+    _customScrollController.addListener(_onScroll); //
     showsearch = true;
     _categorieslength = categories.length;
     // gets();
@@ -392,6 +403,38 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
     });
   }
 
+  void _onScroll() {
+    if (_customScrollController.position.pixels >=
+        _customScrollController.position.maxScrollExtent - 200) {
+      _fetchProducts();
+    }
+  }
+
+  Future<void> _fetchProducts() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await ref.read(
+        getVendorAllProductsProvider(widget.vid, page: _page).future,
+      );
+
+      setState(() {
+        _products.addAll(response.data?.all_products?.data ?? []);
+        _page++; // Increment page for next request
+      });
+    } catch (e) {
+      debugPrint("Error fetching products: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
       _showSearchProductModels = hasFocus;
@@ -425,7 +468,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   @override
   Widget build(BuildContext context) {
     final allproductsresp = ref.watch(getVendorAllProductsProvider(widget.vid));
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -433,6 +476,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
         throw Exception("Failed to fetch enquiry data");
       }
     }
+
     final vendorCardAsync =
         ref.watch(getVendorCardProvider(widget.vid)); // Corrected watch syntax
 
@@ -556,6 +600,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
           child: Stack(
             children: [
               CustomScrollView(
+                controller:
+                    _customScrollController, // Attach to CustomScrollView
+
                 slivers: [
                   SliverPersistentHeader(
                       pinned: true,
@@ -778,12 +825,15 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     child: Container(
                                       color: Colors.white,
                                       child: BigContainer(
+                                        onconnectclicked: () {
+                                          ref.invalidate((getVendorCardProvider(
+                                              widget.vid)));
+                                          setState(() {});
+                                        },
                                         ondoenload: _captureAndSave,
                                         onsubscribed: () {
                                           ref.invalidate(getVendorCardProvider(
-                                              widget
-                                                  .vid)); // Invalidate provider to refresh the data
-//                               !ref.read(subscribedProvider.state).state; //
+                                              widget.vid));
                                         },
                                         lat: double.tryParse(vendorcard
                                                 .data!.vendor_card?.latitude ??
@@ -948,6 +998,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             .watch(getvendorbybrandnameProvider(widget.vid))
                             .when(
                               data: (data) {
+                                print('halla ${data.data!.brandnew!.first.savedByLoggedUser}');
                                 // if (data.data!.b2b?.length == 0) {
                                 //   categories.where(
                                 //     (element) => element == 'b2b',
@@ -1427,6 +1478,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                   ),
                                                 )
                                               : AnimatedContainer(
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   duration: const Duration(
                                                       milliseconds: 400),
                                                   child: SingleChildScrollView(
@@ -1440,71 +1493,65 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         BrandNewModel prod =
                                                             alldata![index];
                                                         return ProductDetailWidget(
-                                                            onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                          onenquiredclicked:
+                                                              () {
+                                                            print(
+                                                                'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                            getEnquire(ref,
+                                                                    prod.id)
+                                                                .then(
+                                                              (value) {
+                                                                value.data?.enquire ==
+                                                                        0
+                                                                    ? showModalBottomSheet(
+                                                                        useSafeArea:
+                                                                            true,
+                                                                        isScrollControlled:
+                                                                            true,
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return SizedBox(
+                                                                            height:
+                                                                                MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
+                                                                            child:
+                                                                                SendMessageBottomWidget(
+                                                                              ref: ref,
+                                                                              productidid: prod.id,
+                                                                            ),
+                                                                          );
+                                                                        },
+                                                                      )
+                                                                    : navigateToPage(
+                                                                        context:
+                                                                            context,
+                                                                        page: ChatScreen(
+                                                                            threadId:
+                                                                                value.data!.thread!.id!,
+                                                                            username: value.data!.thread!.subject!,
+                                                                            postId: value.data!.thread!.post_id!),
+                                                                        ref:
+                                                                            ref,
+                                                                        showNavBar:
+                                                                            false, // Hide bottom navbar
                                                                       );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
+                                                                // SendMessageBottomWidget(
+                                                                //     ref: ref,
+                                                                //     productidid:
+                                                                //         prod.id);
+                                                              },
+                                                            ).catchError(
+                                                                    (error) {
+                                                              print(
+                                                                  'Error: $error');
+                                                            });
                                                           },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
                                                           lat: prod.userdetails
                                                               ?.latitude,
                                                           long: prod.userdetails
@@ -1596,71 +1643,74 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                       vendorsearchrespnse![
                                                           index];
                                                   return ProductDetailWidget(
-                                                      onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                    onenquiredclicked: () {
+                                                      print('lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id.toString())
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                      getEnquire(
+                                                              ref,
+                                                              prod.id
+                                                                  .toString())
+                                                          .then(
+                                                        (value) {
+                                                          value.data?.enquire ==
+                                                                  0
+                                                              ? showModalBottomSheet(
+                                                                  useSafeArea:
+                                                                      true,
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return SizedBox(
+                                                                      height: MediaQuery.of(context)
+                                                                              .size
+                                                                              .height *
+                                                                          0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
+                                                                      child:
+                                                                          SendMessageBottomWidget(
+                                                                        ref:
+                                                                            ref,
+                                                                        productidid:
+                                                                            prod.id,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                )
+                                                              : navigateToPage(
+                                                                  context:
+                                                                      context,
+                                                                  page: ChatScreen(
+                                                                      threadId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .id!,
+                                                                      username: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .subject!,
+                                                                      postId: value
+                                                                          .data!
+                                                                          .thread!
+                                                                          .post_id!),
+                                                                  ref: ref,
+                                                                  showNavBar:
+                                                                      false, // Hide bottom navbar
+                                                                );
+                                                          // if ()
 
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                          // SendMessageBottomWidget(
+                                                          //     ref: ref,
+                                                          //     productidid:
+                                                          //         prod.id);
+                                                        },
+                                                      ).catchError((error) {
+                                                        print('Error: $error');
+                                                      });
+                                                    },
                                                     lat: prod
                                                         .userdetails?.latitude,
                                                     long: prod
@@ -1789,17 +1839,24 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: data.feedPosts.map((dataz) {
                                     print("raja ${dataz.photo}");
 
-                                    return PostCard(
-                                      id: dataz.id,
-                                      image: dataz.image ?? "",
-                                      name: dataz.name ?? "Unknown",
-                                      caption: dataz.caption ?? "",
-                                      photo: dataz.photo ?? "",
-                                      subscribers:
-                                          dataz.subscribers?.toString() ?? "0",
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      child: PostCard(
+                                        id: dataz.id,
+                                        image: dataz.image ?? "",
+                                        name: dataz.name ?? "Unknown",
+                                        caption: dataz.caption ?? "",
+                                        photo: dataz.photo ?? "",
+                                        subscribers:
+                                            dataz.subscribers?.toString() ??
+                                                "0",
+                                      ),
                                     );
                                   }).toList(),
                                 ),
@@ -1857,6 +1914,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
                         liveandpost.when(
                           data: (data) {
                             if (data.live_prizes == null ||
@@ -1870,6 +1930,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               child: Row(
+                                spacing: 10.w,
                                 children: data.live_prizes!.map((card) {
                                   return PostCard(
                                     id: card.id,
@@ -1927,205 +1988,174 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 color: ColorConstant.blackColor),
                           ),
                         ),
-                        allproductsresp.when(
-                          data: (data) {
-                            if (data.data.all_products == null ||
-                                data.data.all_products!.isEmpty) {
-                              return Center(
-                                  child:
-                                      nolistingfound()); // ✅ Shows "No Listing Found" when empty
-                            }
-
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20.h),
-                              child: SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                child: Wrap(
-                                  spacing: 5.w,
-                                  runSpacing: 15.h,
-                                  children: List.generate(
-                                    data.data.all_products!.length,
-                                    (index) {
-                                      BrandNewModel res =
-                                          data.data.all_products![index];
-
-                                      return SizedBox(
-                                        width:
-                                            (MediaQuery.of(context).size.width -
-                                                    30.w) /
-                                                2,
-                                        child: Card(
-                                          clipBehavior: Clip.antiAlias,
-                                          shadowColor: const Color(0xff3D215F)
-                                              .withOpacity(0.5),
-                                          elevation: 9,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: AllProductDetailWidget(
-                                              onenquiredclicked: () {
-                                           
-
-                                                        getEnquire(ref, res.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              res.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                                            savedid: res.savedByLoggedUser ==
-                                                        null ||
-                                                    res.savedByLoggedUser!
-                                                        .isEmpty
-                                                ? []
-                                                : res.savedByLoggedUser
-                                                    ?.map(
-                                                      (e) => SavedPost(
-                                                          id: e.id!,
-                                                          userId: e.user_id!,
-                                                          postId: e.post_id!,
-                                                          createdAt:
-                                                              e.createdAt ?? '',
-                                                          updatedAt:
-                                                              e.updatedAt ??
-                                                                  ''),
-                                                    )
-                                                    .toList(),
-                                            onRefresh: () {
-                                              ref.invalidate(
-                                                  getVendorAllProductsProvider); // This will force a fresh fetch
-                                            },
-                                            lat: res.userdetails?.latitude,
-                                            long: res.userdetails?.longitude,
-                                            productid: res.id,
-                                            posttype: res.post_type_id,
-                                            membershipid:
-                                                res.userdetails?.membership_id,
-                                            id: int.tryParse(res.id),
-                                            didcountpercentage:
-                                                res.discount_percentage ?? 0,
-                                            productImage: res.image,
-                                            Vimage:
-                                                res.userdetails?.photo ?? "",
-                                            avg_rating:
-                                                res.avg_rating?.toDouble(),
-                                            comment:
-                                                res.commentcount.toString(),
-                                            discounttedPrice: res
-                                                    .discounted_price
-                                                    ?.toString() ??
-                                                "0",
-                                            distance:
-                                                res.shortestDistance ?? 0.0,
-                                            issponsored:
-                                                res.userdetails?.sponsored ??
-                                                    false,
-                                            lefttile: "All Products",
-                                            membershipColor: res.userdetails
-                                                    ?.membership_color ??
-                                                "",
-                                            membershipTitle: res.userdetails
-                                                    ?.membership_title ??
-                                                "",
-                                            offer: res.offers ?? "",
-                                            price: res.price ?? "0",
-                                            shortestDistance:
-                                                res.shortestDistance ?? 0.0,
-                                            similarproductCount:
-                                                res.similarVendorProfileProductCount ??
-                                                    0,
-                                            title: res.title ?? "No Title",
-                                            vendorname: res.userdetails?.name ??
-                                                "Unknown",
-                                            wow: res.wow ?? "",
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          loading: () => Center(
-                            child: SizedBox(
-                              width: 100.w,
-                              height: 100.h,
-                              child: Center(
-                                child: Image.asset(
-                                  'assets/images/preloader.gif',
-                                  width: 100.w,
-                                  height: 100.h,
-                                  fit: BoxFit
-                                      .contain, // Ensures the image fits within its bounds
-                                ),
-                              ),
-                            ),
-                          ),
-                          error: (error, stack) => Center(
-                            child: Text("Error: $error",
-                                style: const TextStyle(color: Colors.red)),
-                          ),
-                        )
                       ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        child: Wrap(
+                          spacing: 5.w,
+                          runSpacing: 15.h,
+                          children: _products.isEmpty
+                              ? [
+                                  // Show a "No Listings Found" message if no products are available
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 20.h),
+                                    child: Text(
+                                      'No Listings Found',
+                                      style: TextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ]
+                              : List.generate(
+                                  _products
+                                      .length, // Use _products list for data
+                                  (index) {
+                                    VendorAllproductsModel res =
+                                        _products[index];
+                                    print('katta ${res.savedByLoggedUser}');
+
+                                    return SizedBox(
+                                      width:
+                                          (MediaQuery.of(context).size.width -
+                                                  26.w) /
+                                              2, // Responsive width for items
+                                      child: Card(
+                                        clipBehavior: Clip.antiAlias,
+                                        shadowColor: const Color(0xff3D215F)
+                                            .withOpacity(0.5),
+                                        elevation: 9,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: AllProductDetailWidget(
+                                          ref: ref,
+                                          onenquiredclicked: () {
+                                            getEnquire(ref, res.id)
+                                                .then((value) {
+                                              if (value.data?.enquire == 0) {
+                                                showModalBottomSheet(
+                                                  useSafeArea: true,
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return SizedBox(
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.8, // 80% height of screen
+                                                      child:
+                                                          SendMessageBottomWidget(
+                                                        ref: ref,
+                                                        productidid: res.id,
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              } else {
+                                                navigateToPage(
+                                                  context: context,
+                                                  page: ChatScreen(
+                                                    threadId:
+                                                        value.data!.thread!.id!,
+                                                    username: value
+                                                        .data!.thread!.subject!,
+                                                    postId: value
+                                                        .data!.thread!.post_id!,
+                                                  ),
+                                                  ref: ref,
+                                                  showNavBar:
+                                                      false, // Hide bottom navbar
+                                                );
+                                              }
+                                            }).catchError((error) {
+                                              print('Error: $error');
+                                            });
+                                          },
+                                          savedid: res.savedByLoggedUser ==
+                                                      null ||
+                                                  res.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : res.savedByLoggedUser
+                                                  ?.map((e) => SavedPost(
+                                                        id: e.id!,
+                                                        userId: e.user_id!,
+                                                        postId: e.post_id!,
+                                                        createdAt:
+                                                            e.createdAt ?? '',
+                                                        updatedAt:
+                                                            e.updatedAt ?? '',
+                                                      ))
+                                                  .toList(),
+                                          onRefresh: () {
+                                            ref.invalidate(
+                                                getVendorAllProductsProvider); // Refresh data
+                                          },
+                                          lat: res.userdetails?.latitude,
+                                          long: res.userdetails?.longitude,
+                                          productid: res.id,
+                                          posttype: res.post_type_id,
+                                          membershipid:
+                                              res.userdetails?.membership_id,
+                                          id: int.tryParse(res.id),
+                                          didcountpercentage:
+                                              res.discount_percentage ?? 0,
+                                          productImage: res.image,
+                                          Vimage: res.userdetails?.photo ?? "",
+                                          avg_rating:
+                                              res.avg_rating?.toDouble(),
+                                          comment: res.commentcount.toString(),
+                                          discounttedPrice: res.discounted_price
+                                                  ?.toString() ??
+                                              "0",
+                                          distance: res.shortestDistance ?? 0.0,
+                                          issponsored:
+                                              res.userdetails?.sponsored ??
+                                                  false,
+                                          lefttile: "All Products",
+                                          membershipColor: res.userdetails
+                                                  ?.membership_color ??
+                                              "",
+                                          membershipTitle: res.userdetails
+                                                  ?.membership_title ??
+                                              "",
+                                          offer: res.offers ?? "",
+                                          price: res.price ?? "0",
+                                          shortestDistance:
+                                              res.shortestDistance ?? 0.0,
+                                          similarproductCount:
+                                              res.similarVendorProfileProductCount ??
+                                                  0,
+                                          title: res.title ?? "No Title",
+                                          vendorname: res.userdetails?.name ??
+                                              "Unknown",
+                                          wow: res.wow ?? "",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 20.h,
                     ),
                   )
                 ],
@@ -2578,6 +2608,7 @@ class BigContainer extends StatefulWidget {
   bool issubbed = false;
   final VoidCallback? onsubscribed; // Changed this to VoidCallback?
   final VoidCallback? ondoenload; // Changed this to VoidCallback?
+  final VoidCallback? onconnectclicked;
 
   // Constructor
   BigContainer(
@@ -2599,7 +2630,8 @@ class BigContainer extends StatefulWidget {
       required this.issubbed,
       required this.memebertitle,
       required this.onsubscribed,
-      required this.ondoenload});
+      required this.ondoenload,
+      required this.onconnectclicked});
 
   @override
   State<BigContainer> createState() => _BigContainerState();
@@ -2612,542 +2644,603 @@ class _BigContainerState extends State<BigContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: DottedBorder(
-        color: const Color(0xFF6D1A49),
-        strokeWidth: 1,
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(35),
-        dashPattern: const [7, 5],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      widget.ondoenload?.call(); // ✅ Make sure it's called
-                    },
-                    icon: const Icon(
-                      Icons.file_download_outlined,
-                      color: Color(0xFF6D1A49),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VendorHomeScreen(
+                  vid: int.tryParse(widget.id) ?? 9, vendorName: widget.title),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: DottedBorder(
+          color: const Color(0xFF6D1A49),
+          strokeWidth: 1,
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(35),
+          dashPattern: const [7, 5],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        widget.ondoenload?.call(); // ✅ Make sure it's called
+                      },
+                      icon: const Icon(
+                        Icons.file_download_outlined,
+                        color: Color(0xFF6D1A49),
+                      ),
                     ),
-                  ),
-                  PopupMenuButton(
-                    icon: const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'Enquire',
-                        child: Text('Enquire',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-                      PopupMenuItem(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddNewDisputes(
-                                  vendorname: widget.title,
-                                ),
-                              ));
-                        },
-                        value: 'Report',
-                        child: const Text('Report',
-                            style: TextStyle(color: Colors.black)),
-                      ),
-                      PopupMenuItem(
-                        onTap: () async {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              Future.delayed(const Duration(milliseconds: 300),
-                                  () async {
-                                Navigator.of(context)
-                                    .pop(); // Close dialog after 300ms
-                                await captureAndShare(); // Capture and share image
-                              });
+                    PopupMenuButton(
+                      icon:
+                          const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 'Enquire',
+                          child: Text('Enquire',
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddNewDisputes(
+                                    vendorname: widget.title,
+                                  ),
+                                ));
+                          },
+                          value: 'Report',
+                          child: const Text('Report',
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                        PopupMenuItem(
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                Future.delayed(
+                                    const Duration(milliseconds: 300),
+                                    () async {
+                                  Navigator.of(context)
+                                      .pop(); // Close dialog after 300ms
+                                  await captureAndShare(); // Capture and share image
+                                });
 
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                insetPadding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: RepaintBoundary(
-                                    key: _widgetKey,
-                                    child: Container(
-                                      color: Colors
-                                          .white, // Ensure background color
-                                      padding: const EdgeInsets.all(
-                                          10), // Avoid layout issues
-                                      child: SizedBox(
-                                        height: 600.h,
-                                        width: 450.w,
-                                        child: BigContainer(
-                                          storycount: widget.storyCount,
-                                          lat: widget.lat,
-                                          long: widget.long,
-                                          id: widget.id,
-                                          title: widget.title,
-                                          logo: widget.logo,
-                                          contact: widget.contact,
-                                          storyCount: widget.storyCount,
-                                          membershipTitle:
-                                              widget.membershipTitle,
-                                          total_connections:
-                                              widget.total_connections,
-                                          total_prize_worth:
-                                              widget.total_prize_worth,
-                                          location: widget.location,
-                                          Cnumber: widget.Cnumber,
-                                          issubbed: widget.issubbed == 1
-                                              ? true
-                                              : false,
-                                          memebertitle: widget.membershipTitle,
-                                          onsubscribed: widget.onsubscribed,
-                                          ondoenload: () {},
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  insetPadding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: RepaintBoundary(
+                                      key: _widgetKey,
+                                      child: Container(
+                                        color: Colors
+                                            .white, // Ensure background color
+                                        padding: const EdgeInsets.all(
+                                            10), // Avoid layout issues
+                                        child: SizedBox(
+                                          height: 600.h,
+                                          width: 450.w,
+                                          child: BigContainer(
+                                            onconnectclicked: () {},
+                                            storycount: widget.storyCount,
+                                            lat: widget.lat,
+                                            long: widget.long,
+                                            id: widget.id,
+                                            title: widget.title,
+                                            logo: widget.logo,
+                                            contact: widget.contact,
+                                            storyCount: widget.storyCount,
+                                            membershipTitle:
+                                                widget.membershipTitle,
+                                            total_connections:
+                                                widget.total_connections,
+                                            total_prize_worth:
+                                                widget.total_prize_worth,
+                                            location: widget.location,
+                                            Cnumber: widget.Cnumber,
+                                            issubbed: widget.issubbed == 1
+                                                ? true
+                                                : false,
+                                            memebertitle:
+                                                widget.membershipTitle,
+                                            onsubscribed: widget.onsubscribed,
+                                            ondoenload: () {},
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        value: 'Share',
-                        child: const Text('Share',
-                            style: TextStyle(color: Colors.black)),
+                                );
+                              },
+                            );
+                          },
+                          value: 'Share',
+                          child: const Text('Share',
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                      ],
+                      onSelected: (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("$value Clicked")),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Connect",
+                          style: TextStyle(fontSize: 9.sp),
+                        ),
+                        Text(
+                          "Pass",
+                          style: TextStyle(fontSize: 9.sp),
+                        )
+                      ],
+                    ),
+                  ),
+                  DottedBorder(
+                    color: const Color(0xff6d1a49),
+                    strokeWidth: 2,
+                    borderPadding: const EdgeInsets.all(3),
+                    dashPattern: const [9, 5],
+                    borderType: BorderType.Circle,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CircleAvatar(
+                          radius: 40,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget.logo),
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                          ),
+                        )),
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(
+                        widget.id.toString() == "2"
+                            ? spotlighticon
+                            : widget.id.toString() == "1"
+                                ? basicsellericon
+                                : widget.id.toString() == "3"
+                                    ? domesticseller
+                                    : widget.id.toString() == "25"
+                                        ? globalicon
+                                        : basicsellericon, // Default icon
+                        width: 50,
+                        height: 50,
+                        color: Colors.grey,
                       ),
+
+                      Text(
+                        widget.membershipTitle,
+                        style: TextStyle(fontSize: 9.sp),
+                      ),
+                      // Text(
+                      //   "Exclusive",
+                      //   style: TextStyle(fontSize: 9.sp),
+                      // ),
+                      // Text(
+                      //   "Brand",
+                      //   style: TextStyle(fontSize: 9.sp),
+                      // )
                     ],
-                    onSelected: (value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("$value Clicked")),
-                      );
-                    },
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Connect",
-                        style: TextStyle(fontSize: 9.sp),
-                      ),
-                      Text(
-                        "Pass",
-                        style: TextStyle(fontSize: 9.sp),
-                      )
-                    ],
+              SizedBox(height: 10.sp),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                          fontSize: 24.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                DottedBorder(
-                  color: const Color(0xff6d1a49),
-                  strokeWidth: 2,
-                  borderPadding: const EdgeInsets.all(3),
-                  dashPattern: const [9, 5],
-                  borderType: BorderType.Circle,
-                  child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: CircleAvatar(
-                        radius: 40,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(widget.logo),
-                          radius: 60,
-                          backgroundColor: Colors.white,
-                        ),
-                      )),
-                ),
-                Column(
-                  children: [
-                    Image.asset(
-                      widget.id.toString() == "2"
-                          ? spotlighticon
-                          : widget.id.toString() == "1"
-                              ? basicsellericon
-                              : widget.id.toString() == "3"
-                                  ? domesticseller
-                                  : widget.id.toString() == "25"
-                                      ? globalicon
-                                      : basicsellericon, // Default icon
-                      width: 50,
-                      height: 50,
-                      color: Colors.grey,
-                    ),
-
-                    Text(
-                      widget.membershipTitle,
-                      style: TextStyle(fontSize: 9.sp),
-                    ),
-                    // Text(
-                    //   "Exclusive",
-                    //   style: TextStyle(fontSize: 9.sp),
-                    // ),
-                    // Text(
-                    //   "Brand",
-                    //   style: TextStyle(fontSize: 9.sp),
-                    // )
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10.sp),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                        fontSize: 24.sp,
+                  Center(
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 14.sp,
                         color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            // Use Google Maps app-specific URL scheme
-                            final Uri mapsIntentUrl = Uri.parse(
-                                'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.long}');
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              // Use Google Maps app-specific URL scheme
+                              final Uri mapsIntentUrl = Uri.parse(
+                                  'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.long}');
 
-                            // Fallback check
-                            if (await canLaunchUrl(mapsIntentUrl)) {
-                              await launchUrl(
-                                mapsIntentUrl,
-                                mode: LaunchMode.externalApplication,
-                              );
-                            } else {
-                              print(
-                                  "Could not open Google Maps using intent URL");
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                color: const Color(0xFF370C6B),
-                                size: 15.w,
-                              ),
-                              Text(
-                                "Open",
-                                style: TextStyle(
-                                  fontSize: 9.sp,
+                              // Fallback check
+                              if (await canLaunchUrl(mapsIntentUrl)) {
+                                await launchUrl(
+                                  mapsIntentUrl,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              } else {
+                                print(
+                                    "Could not open Google Maps using intent URL");
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
                                   color: const Color(0xFF370C6B),
+                                  size: 15.w,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "Open",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        Icon(
-                          Icons.directions,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Directions",
-                          style: TextStyle(
-                            fontSize: 9.sp,
+                          SizedBox(width: 5.w),
+                          Icon(
+                            Icons.directions,
                             color: const Color(0xFF370C6B),
+                            size: 15.w,
                           ),
-                        ),
-                      ],
-                    ),
-                    widget.location == 'null'
-                        ? const SizedBox()
-                        : Text(
-                            widget.location,
+                          Text(
+                            "Directions",
                             style: TextStyle(
                               fontSize: 9.sp,
                               color: const Color(0xFF370C6B),
                             ),
-                          )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Customer Service",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            color: const Color(0xFF370C6B),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                      ],
-                    ),
-                    Text(
-                      widget.Cnumber,
-                      style: TextStyle(
-                        fontSize: 9.sp,
-                        color: const Color(0xFF370C6B),
+                        ],
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5.h),
-              width: MediaQuery.sizeOf(context).width,
-              color: const Color(0xFF4B004B),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 18.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          widget.total_connections,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
+                      widget.location == 'null'
+                          ? const SizedBox()
+                          : Text(
+                              widget.location,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            color: const Color(0xFF370C6B),
+                            size: 15.w,
+                          ),
+                          Text(
+                            "Customer Service",
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: const Color(0xFF370C6B),
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                        ],
+                      ),
+                      Text(
+                        widget.Cnumber,
+                        style: TextStyle(
+                          fontSize: 9.sp,
+                          color: const Color(0xFF370C6B),
                         ),
-                        Text(
-                          "Connections",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      children: [
-                        Text(
-                          widget.storycount,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          "DealzCircle",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      children: [
-                        Text(
-                          "Rs.${widget.total_prize_worth}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          "Prize Worth",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.h),
+                width: MediaQuery.sizeOf(context).width,
+                color: const Color(0xFF4B004B),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            widget.total_connections,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "Connections",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 15.w),
+                      Column(
+                        children: [
+                          Text(
+                            widget.storycount,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "DealzCircle",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 15.w),
+                      Column(
+                        children: [
+                          Text(
+                            "Rs.${widget.total_prize_worth}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "Prize Worth",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  color: const Color(0xFF4B004B),
-                  width: MediaQuery.sizeOf(context).width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0),
-                    child: Text(
-                      "smartbazaar.com.np/${widget.title}",
-                      style: const TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    color: const Color(0xFF4B004B),
+                    width: MediaQuery.sizeOf(context).width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: Text(
+                        "smartbazaar.com.np/${widget.title}",
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom:
+                        -40, // Adjust based on how much the CircleAvatar should overlap
+                    left: MediaQuery.sizeOf(context).width / 2 -
+                        50, // Center the avatar
+                    child: ClipOval(
+                        child: _loading
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                width: 60,
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      _loading = true;
+                                    });
+                                    await Future.delayed(const Duration(
+                                        seconds: 2)); // Simulate some delay
+
+                                    followUnfollowVendor(widget.id).then(
+                                      (value) {
+                                        showCustomToast(context, value.msg!);
+                                        if (value.scratchAva == '1') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return const Dialog(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  insetPadding:
+                                                      EdgeInsets.all(10),
+                                                  child: ScratchCard());
+                                            },
+                                          );
+                                        }
+                                      },
+                                    );
+                                    widget.onsubscribed?.call();
+                                    _loading = false;
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/zoomlogo.png',
+                                    fit: BoxFit.cover,
+                                    width: 140,
+                                    height: 140,
+                                  ),
+                                ),
+                              )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              SizedBox(height: 40.h),
+              InkWell(
+                onTap: () async {
+                  setState(() {
+                    _loading = true;
+                  });
+
+                  await Future.delayed(
+                      const Duration(seconds: 2)); // Simulate delay
+
+                  followUnfollowVendor(widget.id).then(
+                    (value) {
+                      showCustomToast(context, value.msg!);
+
+                      if (value.scratchAva == '1') {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Dialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: EdgeInsets.all(10),
+                              child: ScratchCard(),
+                            );
+                          },
+                        );
+                      }
+
+                      // Update state to reflect subscription status
+                      setState(() {
+                        _loading = false;
+                        widget.issubbed =
+                            !widget.issubbed; // Toggle subscription status
+                      });
+
+                      widget.onsubscribed?.call();
+                      widget.onconnectclicked?.call();
+                    },
+                  ).catchError((error) {
+                    setState(() {
+                      _loading = false;
+                    });
+                    showCustomToast(context, "Something went wrong");
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w, bottom: 5.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.issubbed ? "Connected" : "Connect",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                            color: const Color(0xff370C6B),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom:
-                      -40, // Adjust based on how much the CircleAvatar should overlap
-                  left: MediaQuery.sizeOf(context).width / 2 -
-                      50, // Center the avatar
-                  child: ClipOval(
-                      child: _loading
-                          ? const CircularProgressIndicator()
-                          : Container(
-                              width: 60,
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: InkWell(
-                                onTap: () async {
-                                  setState(() {
-                                    _loading = true;
-                                  });
-                                  await Future.delayed(const Duration(
-                                      seconds: 2)); // Simulate some delay
-
-                                  followUnfollowVendor(widget.id).then(
-                                    (value) {
-                                      showCustomToast(context, value.msg!);
-                                      if (value.scratchAva == '1') {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return const Dialog(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                insetPadding:
-                                                    EdgeInsets.all(10),
-                                                child: ScratchCard());
-                                          },
-                                        );
-                                      }
-                                    },
-                                  );
-                                  widget.onsubscribed?.call();
-                                  _loading = false;
-                                },
-                                child: Image.asset(
-                                  'assets/images/zoomlogo.png',
-                                  fit: BoxFit.cover,
-                                  width: 140,
-                                  height: 140,
-                                ),
-                              ),
-                            )),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            SizedBox(height: 40.h),
-            Padding(
-              padding: EdgeInsets.only(left: 8.w, bottom: 5.w),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(widget.issubbed ? "Connected" : "Connect",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
-                          color: const Color(0xff370C6B),
-                        ),
-                        textAlign: TextAlign.center),
-                  ],
-                ),
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Shop",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "Feed",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "FreePrizes",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "Brands",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset('assets/images/arrow_down.png')
-                  ]),
-            ),
-            SizedBox(
-              height: 3.h,
-            )
-          ],
+              SizedBox(
+                height: 30.h,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Shop",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Profile",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Feed",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "FreePrizes",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Brands",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Image.asset('assets/images/arrow_down.png')
+                    ]),
+              ),
+              SizedBox(
+                height: 3.h,
+              )
+            ],
+          ),
         ),
       ),
     );

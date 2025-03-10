@@ -16,6 +16,7 @@ import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
 import 'package:smartbazar/features/message/model/message_thread_model.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class FeedContainer extends ConsumerStatefulWidget {
   const FeedContainer(
@@ -39,8 +40,7 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.feedId,
       required this.isLiked,
       required this.refreshprovider,
-      required this.productinfo
-      });
+      required this.productinfo});
 
   final String? vendorImage;
   final String? vendorName;
@@ -61,7 +61,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String? isLiked;
   final String? productinfo;
   final VoidCallback? refreshprovider;
-  
+
   // final UserDetail? userDetails;
   // final Interested? interested;
   // final FeedDetail? feedDetail;
@@ -137,12 +137,9 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
         });
   }
 
-  void _shareImage(String imageUrl,String bio) {
+  void _shareImage(String imageUrl, String bio) {
     if (imageUrl.isNotEmpty) {
-      Share.share("It's about $bio\n : $imageUrl",
-      subject: bio
-
-      );
+      Share.share("It's about $bio\n : $imageUrl", subject: bio);
     } else {
       print("No image URL provided.");
     }
@@ -275,19 +272,29 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                             ),
                           )
                         : Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, top: 3, bottom: 3, right: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(),
-                        ),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor:
-                              const Color(0x7F7F7F73).withOpacity(0.45),
-                          child: ClipOval(
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VendorHomeScreen(
+                                  vid: int.tryParse(widget.userId)!,
+                                  vendorName: widget.vendorName!),
+                            ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, top: 3, bottom: 3, right: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(),
+                          ),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor:
+                                const Color(0x7F7F7F73).withOpacity(0.45),
+                            child: ClipOval(
                               child: widget.vendorImage != null &&
                                       widget.vendorImage!.isNotEmpty
                                   ? Image.network(
@@ -295,11 +302,36 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                       fit: BoxFit.cover,
                                       width: 52,
                                       height: 52,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            width: 52,
+                                            height: 52,
+                                            color: Colors.white,
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(
+                                                () {}); // Retry fetching the image on tap
+                                          },
+                                          child:
+                                              Icon(Icons.refresh, size: 24.sp),
+                                        );
+                                      },
                                     )
-                                  : Icon(
-                                      Icons.person,
-                                      size: 24.sp,
-                                    )),
+                                  : Icon(Icons.person, size: 24.sp),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -522,11 +554,11 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                   child: Image.network(
                     widget.feedDetailImage ?? '',
                     width: double.infinity,
-                    height: double.infinity, // Make the image take full height
+                    height: double.infinity,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {
-                        return child; // If no loading, show the image
+                        return child;
                       } else {
                         return Shimmer.fromColors(
                           baseColor: Colors.grey[300]!,
@@ -534,18 +566,17 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           child: Container(
                             width: double.infinity,
                             height: double.infinity,
-                            color:
-                                Colors.white, // Placeholder color for shimmer
+                            color: Colors.white,
                           ),
-                        ); // Show shimmer while loading
+                        );
                       }
                     },
                     errorBuilder: (context, error, stackTrace) {
-                      return const SizedBox(
-                        width: 130,
-                        height: 70,
+                      return SizedBox(
+                        width: 130.w,
+                        height: 70.h,
                         child: Icon(Icons.error),
-                      ); // Show error icon if image fails to load
+                      );
                     },
                   ),
                 ),
@@ -692,6 +723,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     ),
 
                     SizedBox(width: 15.w),
+
                     // Comment Icon
 
                     messageThreadProvider.when(
@@ -727,8 +759,36 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                         );
                       },
                       error: (error, stackTrace) => InkWell(
-                          onTap: () => const LoginScreen(),
-                          child: const Center(child: Text("login"))),
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle, // Circular container
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.blue,
+                                Colors.green
+                              ], // Define gradient colors
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(
+                              8), // Optional: add padding around the image
+                          child: Image.asset(
+                            'assets/icon/tabler_location-share.png',
+                            width: 24, // Adjust width as needed
+                            height: 24, // Adjust height as needed
+                          ),
+                        ),
+                      ),
                       loading: () => Shimmer.fromColors(
                         baseColor: Colors.grey[300]!,
                         highlightColor: Colors.grey[100]!,
@@ -747,7 +807,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                     // Share Icon
                     GestureDetector(
                         onTap: () {
-                          _shareImage(widget.feedDetailImage!,widget.productinfo?? 'info');
+                          _shareImage(widget.feedDetailImage!,
+                              widget.productinfo ?? 'info');
                           // Share.share('Share this ${widget.feedDetailImage}');
                         },
                         child: Container(

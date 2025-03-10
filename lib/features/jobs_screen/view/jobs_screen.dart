@@ -12,6 +12,11 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
@@ -58,7 +63,6 @@ import '../../product_details/constant/all_product_detail_widget.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
-
 
 class JobssScreen extends ConsumerStatefulWidget {
   const JobssScreen({super.key});
@@ -238,9 +242,11 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
 
   @override
   Widget build(BuildContext context) {
+    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
+
     // ref.watch(fetchAdsProvider);
     var homecategory = ref.watch(homeCategoryProvider);
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -277,8 +283,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
         extendBody: true,
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
-        body: NotificationListener<ScrollNotification>( 
-  onNotification: (notification) {
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
             if (notification is ScrollUpdateNotification &&
                 notification.metrics.axis == Axis.vertical) {
               // Check if the scroll is vertical
@@ -306,7 +312,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
             children: [
               CustomScrollView(
                 slivers: [
-                    SliverPersistentHeader(
+                  SliverPersistentHeader(
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
@@ -318,35 +324,39 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                           dropdownValueNotifier: dropdownValueNotifier,
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
-                    SliverAppBar(
-                          automaticallyImplyLeading: false,
-                        expandedHeight: 90.h,
-                        floating: false,
-                        pinned: false,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: const Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
+                        SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: 150.h,
+                      floating: false,
+                      pinned: false,
+                      flexibleSpace: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        duration: const Duration(milliseconds: 150),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  // Color(0xFF681b4e),
+                                  // Color(0xFF392574),
+                                  // Color(0xFF681b4e),
+                                  Color(0xff651c50),
+                                  Color(0xff54225f),
+                                  // Color(0xFF392574).
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: List.generate(4, (index) {
                                     return GestureDetector(
@@ -377,108 +387,112 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                     );
                                   }),
                                 ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = value;
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              SizedBox(
+                                height: 55.h,
+                                child: PageView.builder(
+                                  itemCount: _items.length,
+                                  padEnds: false,
+                                  controller: _pageController,
+                                  onPageChanged: (value) {
+                                    ref
+                                        .read(_selectedIndexProvider.notifier)
+                                        .state = value;
+                                  },
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> data = _items[index];
 
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                        },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
+                                    // Highlight only when index == 4
+                                    bool isActive = index == 1;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                      },
+                                      child: AnimatedContainer(
+                                        margin: EdgeInsets.only(left: 16.w),
+                                        padding: EdgeInsets.zero,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      data['screen']),
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (data['icon']
+                                                  .toString()
+                                                  .endsWith('.svg'))
+                                                SvgPicture.asset(
+                                                  data['icon'],
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  theme: const SvgTheme(
+                                                      currentColor:
+                                                          Color(0xffdd9d9d9)),
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              else
+                                                Image.asset(
+                                                  data['icon'],
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
                                                 ),
-                                              ],
-                                            ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                data['label'],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Image.asset(
+                                  height: 60.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  'assets/images/circle.png')
+                            ],
                           ),
-                        )),
+                        ),
+                      )),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 11, top: 11),
@@ -503,1017 +517,1040 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        homecategory.when(
-                    data: (feedStoryData) {
-                      List<HomeStoryPost>? homeStory =
-                          feedStoryData.home_story?.story.posts;
-                      // print("rada ${feedStoryData.home_story!.story.posts?.length}");
+                    child: asyncForYouStoryContent.when(
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.data?.feedstory;
+                        final posts = feedStoryContent?.posts ?? [];
 
-                      if (homeStory != null) {
-                        final posts = homeStory;
+                        if (posts.isEmpty) {
+                          return const Center(
+                              child: Text("No stories available"));
+                        }
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: SizedBox(
-                            height: 100.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: posts.length,
-                              itemBuilder: (context, index) {
-                                final story = posts[index];
-
-                                return HomePageStoryContainer(
-                                  feedStoryContent: Story(
-                                      HomeStoryAllPosts: feedStoryData
-                                          .home_story?.story.posts
-                                          ?.map((e) => HomeStoryAllPost(
-                                              hasSponsoredGifts:
-                                                  e.hasSponsoredGifts,
-                                              id: e.id,
-                                              image: e.image,
-                                              storyCount: e.storyCount,
-                                              title: e.title,
-                                              vendorId: e.vendorId,
-                                              vendorImage: e.vendorImage,
-                                              vendorName: e.vendorName))
-                                          .toList()),
-                                  userId: story.id,
-                                  index: index,
-                                  vendorName:
-                                      story.vendorName ?? "Unknown Vendor",
-                                  vendorImage: story.vendorImage ??
-                                      "https://example.com/default-image.png",
-                                  storyCount: story.storyCount ?? 0,
-                                  showGift: story.hasSponsoredGifts ?? false,
-                                );
-                              },
+                        return SizedBox(
+                          height: 100.h,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent: feedStoryContent!,
+                                      userId: story.vendorId ?? '',
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         );
-                      }
-
-                      return const Center(
-                        child: Text('No stories available.'),
-                      );
-                    },
-                    loading: () => SizedBox(
-                      height: 100.h,
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5, // Number of shimmer placeholders
-                        itemBuilder: (context, index) => Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            width: 70.w,
-                            height: 100.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
+                      },
+                      loading: () => SizedBox(
+                        height: 40.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 80,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      error: (error, _) => Center(
+                        child: Text(
+                          error.toString().contains('Session has expired')
+                              ? 'Please log in again.'
+                              : 'Error: $error',
+                        ),
+                      ),
                     ),
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
                   ),
-
-                  SizedBox(
-                    height: 6.h,
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 5.h),
-                        child: Stack(
-                          children: [
-                            // Carousel Slider
-                            Positioned(
-                              child: Column(
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 6.h,
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5.h),
+                              child: Stack(
                                 children: [
-                                  SizedBox(
-                                    height: 130.h,
-                                    width: double.infinity,
-                                    child: CarouselSlider(
-                                      items: data.sliders!.map((banner) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const B2bScreen(),
-                                              ),
-                                            );
-                                          },
-                                          child: CachedNetworkImage(
-                                            width: double.infinity,
-                                            fit: BoxFit.fill,
-                                            imageUrl: banner.image!,
-                                            errorWidget: (context, url, error) =>
-                                                const Icon(Icons.error),
+                                  // Carousel Slider
+                                  Positioned(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 130.h,
+                                          width: double.infinity,
+                                          child: CarouselSlider(
+                                            items: data.sliders!.map((banner) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const B2bScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: CachedNetworkImage(
+                                                  width: double.infinity,
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: banner.image!,
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            options: CarouselOptions(
+                                              aspectRatio:
+                                                  2.5, // Adjust this as per design
+                                              viewportFraction:
+                                                  1.0, // Full-screen carousel
+                                              autoPlay: true,
+                                              enlargeCenterPage: false,
+                                              onPageChanged: (index, reason) {
+                                                setState(() {
+                                                  _currentIndex =
+                                                      index; // Update the current index
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Dots Indicator
+                                  Positioned(
+                                    left:
+                                        MediaQuery.of(context).size.width / 2 -
+                                            50, // Center the dots
+                                    bottom: 10.h,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: data.sliders!.map((banner) {
+                                        int index =
+                                            data.sliders!.indexOf(banner);
+                                        return AnimatedContainer(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          height: 9.0,
+                                          width: _currentIndex == index
+                                              ? 12.0
+                                              : 9.0, // Active dot is wider
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: _currentIndex == index
+                                                ? Colors
+                                                    .white // Active dot color
+                                                : Colors
+                                                    .grey, // Inactive dot color
                                           ),
                                         );
                                       }).toList(),
-                                      options: CarouselOptions(
-                                        aspectRatio:
-                                            2.5, // Adjust this as per design
-                                        viewportFraction:
-                                            1.0, // Full-screen carousel
-                                        autoPlay: true,
-                                        enlargeCenterPage: false,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _currentIndex =
-                                                index; // Update the current index
-                                          });
-                                        },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text("Try again: $error");
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+
+                          category.when(
+                          data: (data) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10.h),
+                              child: Column(
+                                children: [
+                                  // Row for "ALL" and other services
+                                  SizedBox(
+                                    height: 100.h, // Adjust height as necessary
+                                    width: double.infinity,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          // "ALL" Services (Standalone)
+                                          DottedBorder(
+                                            strokeWidth: 2,
+                                            color: Colors.grey,
+                                            borderType: BorderType.RRect,
+                                            radius: const Radius.circular(10),
+                                            dashPattern: const [15, 15],
+                                            child: SizedBox(
+                                              width: 100,
+                                              height: 100,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "ALL",
+                                                    style: headerstyle.copyWith(
+                                                      color: ColorConstant
+                                                          .blackColor,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Jobs",
+                                                    style: headerstyle.copyWith(
+                                                      color: ColorConstant
+                                                          .blackColor,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5.w,
+                                          ),
+
+                                          // Other Services List
+                                          ListView(
+                                            physics:
+                                                const BouncingScrollPhysics(),
+                                            scrollDirection: Axis.horizontal,
+                                            shrinkWrap: true,
+                                            children: data.map((e) {
+                                              return Container(
+                                                width: 150.w,
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xff651c50)),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 5,
+                                                      vertical:
+                                                          5), // Adds spacing
+                                                  child: Text(
+                                                    e.name,
+                                                    textAlign: TextAlign
+                                                        .center, // Centers text
+                                                    maxLines:
+                                                        2, // Allows text to wrap into two lines
+                                                    overflow: TextOverflow
+                                                        .ellipsis, // Shows "..." if too long
+                                                    style: const TextStyle(
+                                                        fontSize:
+                                                            14), // Adjust font size if needed
+                                                  ),
+                                                ),
+                                              );
+
+                                              // return Padding(
+                                              //   padding: EdgeInsets.zero,
+                                              //   child: GestureDetector(
+                                              //     onTap: () {
+                                              //       showMenu(
+                                              //         context: context,
+                                              //         position: const RelativeRect
+                                              //             .fromLTRB(0, 0, 0,
+                                              //             0), // Base position; offset is handled by PopupMenuButton
+                                              //         items: [
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: ListTile(
+                                              //               title: const Text(
+                                              //                   "View Story"),
+                                              //               leading: const Icon(
+                                              //                   Icons.book),
+                                              //               onTap: () {
+                                              //                 // Implement onTap logic
+                                              //               },
+                                              //             ),
+                                              //           ),
+                                              //         ],
+                                              //       );
+                                              //     },
+                                              //     child: PopupMenuButton<int>(
+                                              //       offset: const Offset(0,
+                                              //           60), // The offset to position the menu above the widget
+                                              //       itemBuilder: (context) => [
+                                              //         const PopupMenuItem(
+                                              //           value: 1,
+                                              //           child: Text("View Story",
+                                              //               style: TextStyle(
+                                              //                   fontSize: 16.0)),
+                                              //         ),
+                                              //         if (e.parentClosure != null)
+                                              //           PopupMenuItem(
+                                              //             value: 1,
+                                              //             child: Text(
+                                              //               e.slug,
+                                              //               style: const TextStyle(
+                                              //                   fontSize: 16.0),
+                                              //             ),
+                                              //           ),
+                                              //       ],
+                                              //       child: Padding(
+                                              //         padding: EdgeInsets.symmetric(
+                                              //             horizontal: 10.w),
+                                              //         child: DashedBorder(
+                                              //           padding: 0,
+                                              //           dashCount: 2,
+                                              //           child: SizedBox(
+                                              //             // width: 100.w,
+                                              //             // height: 100.h,
+                                              //             child: Column(
+                                              //               mainAxisAlignment:
+                                              //                   MainAxisAlignment
+                                              //                       .center,
+                                              //               crossAxisAlignment:
+                                              //                   CrossAxisAlignment
+                                              //                       .center,
+                                              //               children: [
+                                              //                 Image.asset(
+                                              //                     'assets/images/cloth.png'),
+                                              //                 Center(
+                                              //                   child: Text(
+                                              //                     e.name ?? 'No Name',
+                                              //                     style:
+                                              //                         const TextStyle(
+                                              //                       color:
+                                              //                           Colors.black,
+                                              //                       fontWeight:
+                                              //                           FontWeight
+                                              //                               .w500,
+                                              //                       fontSize: 13,
+                                              //                     ),
+                                              //                     textAlign: TextAlign
+                                              //                         .center,
+                                              //                   ),
+                                              //                 )
+                                              //               ],
+                                              //             ),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // );
+                                            }).toList(),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                        
-                            // Dots Indicator
-                            Positioned(
-                              left: MediaQuery.of(context).size.width / 2 -
-                                  50, // Center the dots
-                              bottom: 10.h,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: data.sliders!.map((banner) {
-                                  int index = data.sliders!.indexOf(banner);
-                                  return AnimatedContainer(
-                                    duration: const Duration(milliseconds: 300),
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 5.0),
-                                    height: 9.0,
-                                    width: _currentIndex == index
-                                        ? 12.0
-                                        : 9.0, // Active dot is wider
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentIndex == index
-                                          ? Colors.white // Active dot color
-                                          : Colors.grey, // Inactive dot color
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("Try again: $error");
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-
-                  category.when(
-                    data: (data) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
-                        child: Column(
-                          children: [
-                            // Row for "ALL" and other services
-                            SizedBox(
-                              height: 100.h, // Adjust height as necessary
-                              width: double.infinity,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    // "ALL" Services (Standalone)
-                                    DottedBorder(
-                                      strokeWidth: 2,
-                                      color: Colors.grey,
-                                      borderType: BorderType.RRect,
-                                      radius: const Radius.circular(10),
-                                      dashPattern: const [15, 15],
-                                      child: SizedBox(
-                                        width: 100,
-                                        height: 100,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "ALL",
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Jobs",
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Other Services List
-                                    ListView(
-                                      physics: const BouncingScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      children: data.map((e) {
-                                        return Padding(
-                                          padding: EdgeInsets.zero,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showMenu(
-                                                context: context,
-                                                position:
-                                                    const RelativeRect.fromLTRB(
-                                                        0,
-                                                        0,
-                                                        0,
-                                                        0), // Base position
-                                                items: [
-                                                  PopupMenuItem(
-                                                    value: 1,
-                                                    child: ListTile(
-                                                      title: const Text(
-                                                          "View Story"),
-                                                      leading: const Icon(
-                                                          Icons.book),
-                                                      onTap: () {
-                                                        // Implement onTap logic
-                                                      },
-                                                    ),
-                                                  ),
-                                                  // Check if parentClosure is not null and show it
-                                                  if (e.parentClosure != null)
-                                                    PopupMenuItem(
-                                                      value: 2,
-                                                      child: ListTile(
-                                                        title: Text(e
-                                                                .parentClosure
-                                                                ?.slug ??
-                                                            'N/A'),
-                                                        leading: const Icon(
-                                                            Icons.info),
-                                                      ),
-                                                    ),
-                                                ],
-                                              );
-                                            },
-                                            child: PopupMenuButton<int>(
-                                              offset: const Offset(0,
-                                                  60), // Position for the menu
-                                              itemBuilder: (context) => [
-                                                const PopupMenuItem(
-                                                  value: 1,
-                                                  child: Text("View Story",
-                                                      style: TextStyle(
-                                                          fontSize: 16.0)),
-                                                ),
-                                                if (e.parentClosure != null)
-                                                  PopupMenuItem(
-                                                    value: 2,
-                                                    child: Text(
-                                                      e.parentClosure?.slug ??
-                                                          'No Parent',
-                                                      style: const TextStyle(
-                                                          fontSize: 16.0),
-                                                    ),
-                                                  ),
-                                              ],
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.w),
-                                                child: DashedBorder(
-                                                  dashCount:
-                                                      1, // Number of dashes in the border
-                                                  child: SizedBox(
-                                                    width: 150
-                                                        .w, // Fixed width for the container
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Image.asset(
-                                                            'assets/images/cloth.png'),
-                                                        Center(
-                                                          child: Text(
-                                                            e.name ?? 'No Name',
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 13,
-                                                            ),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ],
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text(error.toString());
+                          },
+                          loading: () => Center(
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                width: 40.w,
+                                height: 100.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => const CircularProgressIndicator(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Text(
-                          'HOT DEALS',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.black),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Image.asset(
-                          'assets/images/flameIcon.png',
-                          width: 16.w,
-                          height: 17.h,
-                        )
-                      ],
-                    ),
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      if (data.hotProducts.isNotEmpty) {
-                        return SizedBox(
-                          // height: 340.h,
-                          width: double.infinity,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.all(3),
-                            clipBehavior: Clip.antiAlias,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: data.hotProducts.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              VProduct hot = data.hotProducts[index];
-                              return ProductDetailWidget(
-                                  onenquiredclicked: () {
-                                                       
-
-                                                        getEnquire(ref, hot.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              hot.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                                savedid: hot.savedByLoggedUser == null ||
-                                        hot.savedByLoggedUser!.isEmpty
-                                    ? []
-                                    : hot.savedByLoggedUser
-                                        ?.map(
-                                          (e) => SavedPost(
-                                              id: e.id,
-                                              userId: e.userId,
-                                              postId: e.postId,
-                                              createdAt: e.createdAt,
-                                              updatedAt: e.updatedAt),
-                                        )
-                                        .toList(),
-                                onRefresh: () {
-                                  refresh();
-                                },
-                                lat: hot.user.latitude,
-                                long: hot.user.longitude,
-                                avg_rating: double.tryParse(
-                                    hot.avg_rating.toString() ?? '0'),
-                                didcountpercentage: hot.discount_percentage,
-                                vendorid: hot.user.id,
-                                membershipid: hot.user.membership_id,
-                                offer: hot.offers,
-                                posttype: hot.post_type_id,
-                                productid: hot.id,
-                                wow: hot.wow,
-                                comment: hot.commentcount.toString(),
-                                discounttedPrice: hot.discounted_price,
-                                issponsored: hot.user.sponsored,
-                                lefttile: "Jobs",
-                                productImage: hot.image,
-                                Vimage: hot.user.photo,
-                                price: hot.price,
-                                title: hot.title,
-                                vendorname: hot.user.name,
-                                similarproductCount: hot.similarProductCount,
-                                membershipColor: hot.user.membershipColor,
-                                membershipTitle: hot.user.membershipTitle,
-                              );
-                            },
                           ),
-                        );
-                      }
-                      return Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(top: 10.0.h), // Add padding here
-                          child: nolistingfound(),
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => const CircularProgressIndicator(),
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Text(
+                                'HOT DEALS',
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Image.asset(
+                                'assets/images/flameIcon.png',
+                                width: 16.w,
+                                height: 17.h,
+                              )
+                            ],
+                          ),
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            if (data.hotProducts.isNotEmpty) {
+                              return SizedBox(
+                                // height: 340.h,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.all(3),
+                                  clipBehavior: Clip.antiAlias,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: data.hotProducts.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    VProduct hot = data.hotProducts[index];
+                                    return ProductDetailWidget(
+                                      onenquiredclicked: () {
+                                        getEnquire(ref, hot.id).then(
+                                          (value) {
+                                            value.data?.enquire == 0
+                                                ? showModalBottomSheet(
+                                                    useSafeArea: true,
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.8, // Use 80% of the screen height
 
-                  // Expanded(
+                                                        child:
+                                                            SendMessageBottomWidget(
+                                                          ref: ref,
+                                                          productidid: hot.id,
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : navigateToPage(
+                                                    context: context,
+                                                    page: ChatScreen(
+                                                        threadId: value
+                                                            .data!.thread!.id!,
+                                                        username: value.data!
+                                                            .thread!.subject!,
+                                                        postId: value.data!
+                                                            .thread!.post_id!),
+                                                    ref: ref,
+                                                    showNavBar:
+                                                        false, // Hide bottom navbar
+                                                  );
+                                            // if ()
 
-                  // child: product_item_wid(),),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: data.hotProducts.isEmpty ? 5.h : 340.h,
-                        width: double.infinity,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(3),
-                          clipBehavior: Clip.antiAlias,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: data.hotProducts.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            VProduct hot = data.hotProducts[index];
-                            return ProductDetailWidget(
-                                onenquiredclicked: () {
-                                                        
-
-                                                        getEnquire(ref, hot.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              hot.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                              savedid: hot.savedByLoggedUser == null ||
-                                      hot.savedByLoggedUser!.isEmpty
-                                  ? []
-                                  : hot.savedByLoggedUser
-                                      ?.map(
-                                        (e) => SavedPost(
-                                            id: e.id,
-                                            userId: e.userId,
-                                            postId: e.postId,
-                                            createdAt: e.createdAt,
-                                            updatedAt: e.updatedAt),
-                                      )
-                                      .toList(),
-                              onRefresh: () {
-                                refresh();
-                              },
-                              lat: hot.user.latitude,
-                              long: hot.user.longitude,
-                              avg_rating:
-                                  double.tryParse(hot.avg_rating.toString()),
-                              didcountpercentage: hot.discount_percentage,
-                              vendorid: hot.user.id,
-                              membershipid: hot.user.membership_id,
-                              offer: hot.offers,
-                              posttype: hot.post_type_id,
-                              productid: hot.id,
-                              wow: hot.wow,
-                              comment: hot.commentcount.toString(),
-                              discounttedPrice: hot.discounted_price,
-                              issponsored: hot.user.sponsored,
-                              lefttile: "Jobs",
-                              productImage: hot.image,
-                              Vimage: hot.user.photo,
-                              price: hot.price,
-                              title: hot.title,
-                              vendorname: hot.user.name,
-                              similarproductCount: hot.similarProductCount,
-                              membershipColor: hot.user.membershipColor,
-                              membershipTitle: hot.user.membershipTitle,
+                                            // SendMessageBottomWidget(
+                                            //     ref: ref,
+                                            //     productidid:
+                                            //         prod.id);
+                                          },
+                                        ).catchError((error) {
+                                          print('Error: $error');
+                                        });
+                                      },
+                                      savedid: hot.savedByLoggedUser == null ||
+                                              hot.savedByLoggedUser!.isEmpty
+                                          ? []
+                                          : hot.savedByLoggedUser
+                                              ?.map(
+                                                (e) => SavedPost(
+                                                    id: e.id,
+                                                    userId: e.userId,
+                                                    postId: e.postId,
+                                                    createdAt: e.createdAt,
+                                                    updatedAt: e.updatedAt),
+                                              )
+                                              .toList(),
+                                      onRefresh: () {
+                                        refresh();
+                                      },
+                                      lat: hot.user.latitude,
+                                      long: hot.user.longitude,
+                                      avg_rating: double.tryParse(
+                                          hot.avg_rating.toString() ?? '0'),
+                                      didcountpercentage:
+                                          hot.discount_percentage,
+                                      vendorid: hot.user.id,
+                                      membershipid: hot.user.membership_id,
+                                      offer: hot.offers,
+                                      posttype: hot.post_type_id,
+                                      productid: hot.id,
+                                      wow: hot.wow,
+                                      comment: hot.commentcount.toString(),
+                                      discounttedPrice: hot.discounted_price,
+                                      issponsored: hot.user.sponsored,
+                                      lefttile: "Jobs",
+                                      productImage: hot.image,
+                                      Vimage: hot.user.photo,
+                                      price: hot.price,
+                                      title: hot.title,
+                                      vendorname: hot.user.name,
+                                      similarproductCount:
+                                          hot.similarProductCount,
+                                      membershipColor: hot.user.membershipColor,
+                                      membershipTitle: hot.user.membershipTitle,
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 10.0.h), // Add padding here
+                                child: nolistingfound(),
+                              ),
                             );
                           },
+                          error: (error, stackTrace) {
+                            return Text(error.toString());
+                          },
+                          loading: () => const CircularProgressIndicator(),
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => const CircularProgressIndicator(),
-                  ),
 
-                  // Expanded(
+                        // Expanded(
 
-                  // child: product_item_wid(),),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-
-                  // // SizedBox(
-                  // //     height: 360.h,
-                  // //     width: double.infinity,
-                  // //     child: ListView.builder(
-                  // //       padding: EdgeInsets.zero,
-                  // //       clipBehavior: Clip.antiAlias,
-                  // //       scrollDirection: Axis.horizontal,
-                  // //       itemCount: 5,
-                  // //       shrinkWrap: true,
-                  // //       itemBuilder: (context, index) {
-                  // //         return ProductDetailWidget();
-                  // //       },
-                  // //     ),
-                  // //   ),
-                  // // asyncbajarValue.when(
-                  // //   data: (data) {
-                  // //     return Padding(
-                  // //       padding: const EdgeInsets.all(10),
-                  // //       child: Column(
-                  // //         children: [
-                  // //           Row(
-                  // //             children: [
-                  // //                       Text(
-                  // //         data.cat[0].slug,
-                  // //         style: headerstyle.copyWith(
-                  // //             fontWeight: FontWeight.bold,
-                  // //             fontSize: 17,
-                  // //             color: Colors.black),
-                  // //       ),
-                  // //             ],
-                  // //           ),
-                  // //           SizedBox(
-                  // //             height: 360.h,
-                  // //             width: double.infinity,
-                  // //             child: ListView.builder(
-                  // //               padding: EdgeInsets.zero,
-                  // //               clipBehavior: Clip.antiAlias,
-                  // //               scrollDirection: Axis.horizontal,
-                  // //               itemCount: data.insidearr[0].length,
-                  // //               shrinkWrap: true,
-                  // //               itemBuilder: (context, index) {
-                  // //                 VProduct pro = data.insidearr[0][index];
-                  // //                 return ProductDetailWidget(
-                  // //                   Vimage: pro.user.photo,
-                  // //                   price: pro.price,
-                  // //                   title: pro.title,
-                  // //                   vendorname: pro.user.name,
-                  // //                   productImage: pro.image,
-                  // //                 );
-                  // //               },
-                  // //             ),
-                  // //           ),
-                  // //         ],
-                  // //       ),
-                  // //     );
-                  // //   },
-                  // //   error: (error, stackTrace) {
-                  // //     return Text("error $error");
-                  // //   },
-                  // //   loading: () {
-                  // //     return CircularProgressIndicator();
-                  // //   },
-                  // // ),
-
-                  // // Expanded(
-
-                  // // child: product_item_wid(),),
-                  // SizedBox(
-                  //   height: 5.h,
-                  // ),
-
-                  // // asyncbajarValue.when(
-                  // //   data: (data) {
-                  // //     return Padding(
-                  // //       padding: const EdgeInsets.all(10),
-                  // //       child: Column(
-                  // //         children: [
-                  // //           Row(
-                  // //             children: [
-                  // //               Text(
-                  // //         data.cat[1].slug,
-                  // //         style: headerstyle.copyWith(
-                  // //             fontWeight: FontWeight.bold,
-                  // //             fontSize: 17,
-                  // //             color: Colors.black),
-                  // //       ),
-                  // //             ],
-                  // //           ),
-                  // //           SizedBox(
-                  // //             height: 360.h,
-                  // //             width: double.infinity,
-                  // //             child: ListView.builder(
-                  // //               padding: EdgeInsets.zero,
-                  // //               clipBehavior: Clip.antiAlias,
-                  // //               scrollDirection: Axis.horizontal,
-                  // //               itemCount: data.insidearr[1].length,
-                  // //               shrinkWrap: true,
-                  // //               itemBuilder: (context, index) {
-                  // //                 VProduct pro = data.insidearr[1][index];
-                  // //                 return ProductDetailWidget(
-                  // //                   Vimage: pro.user.photo,
-                  // //                   price: pro.price,
-                  // //                   title: pro.title,
-                  // //                   vendorname: pro.user.name,
-                  // //                   productImage: pro.image,
-                  // //                 );
-                  // //               },
-                  // //             ),
-                  // //           ),
-                  // //         ],
-                  // //       ),
-                  // //     );
-                  // //   },
-                  // //   error: (error, stackTrace) {
-                  // //     return Text("error $error");
-                  // //   },
-                  // //   loading: () {
-                  // //     return CircularProgressIndicator();
-                  // //   },
-                  // // ),
-
-                  // asyncbajarValue.when(
-                  //   data: (data) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.all(10),
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             children: [
-                  //                      Text(
-                  //         data.cat[2].slug,
-                  //         style: headerstyle.copyWith(
-                  //             fontWeight: FontWeight.bold,
-                  //             fontSize: 17,
-                  //             color: Colors.black),
-                  //       ),
-                  //             ],
-                  //           ),
-                  //           SizedBox(
-                  //             height: 360.h,
-                  //             width: double.infinity,
-                  //             child: ListView.builder(
-                  //               padding: EdgeInsets.zero,
-                  //               clipBehavior: Clip.antiAlias,
-                  //               scrollDirection: Axis.horizontal,
-                  //               itemCount: data.insidearr[2].length,
-                  //               shrinkWrap: true,
-                  //               itemBuilder: (context, index) {
-                  //                 VProduct pro = data.insidearr[2][index];
-                  //                 return ProductDetailWidget(
-                  //                   Vimage: pro.user.photo,
-                  //                   price: pro.price,
-                  //                   title: pro.title,
-                  //                   vendorname: pro.user.name,
-                  //                   productImage: pro.image,
-                  //                 );
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   error: (error, stackTrace) {
-                  //     return Text("error $error");
-                  //   },
-                  //   loading: () {
-                  //     return CircularProgressIndicator();
-                  //   },
-                  // ),
-                  // asyncbajarValue.when(
-                  //   data: (data) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.all(10),
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             children: [
-                  //                      Text(
-                  //         data.cat[3].slug,
-                  //         style: headerstyle.copyWith(
-                  //             fontWeight: FontWeight.bold,
-                  //             fontSize: 17,
-                  //             color: Colors.black),
-                  //       ),
-                  //             ],
-                  //           ),
-                  //           SizedBox(
-                  //             height: 360.h,
-                  //             width: double.infinity,
-                  //             child: ListView.builder(
-                  //               padding: EdgeInsets.zero,
-                  //               clipBehavior: Clip.antiAlias,
-                  //               scrollDirection: Axis.horizontal,
-                  //               itemCount: data.insidearr[3].length,
-                  //               shrinkWrap: true,
-                  //               itemBuilder: (context, index) {
-                  //                 VProduct pro = data.insidearr[3][index];
-                  //                 return ProductDetailWidget(
-                  //                   Vimage: pro.user.photo,
-                  //                   price: pro.price,
-                  //                   title: pro.title,
-                  //                   vendorname: pro.user.name,
-                  //                   productImage: pro.image,
-                  //                 );
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   error: (error, stackTrace) {
-                  //     return Text("error $error");
-                  //   },
-                  //   loading: () {
-                  //     return CircularProgressIndicator();
-                  //   },
-                  // ),
-                  // asyncbajarValue.when(
-                  //   data: (data) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.all(10),
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             children: [
-                  //                        Text(
-                  //         data.cat[4].slug,
-                  //         style: headerstyle.copyWith(
-                  //             fontWeight: FontWeight.bold,
-                  //             fontSize: 17,
-                  //             color: Colors.black),
-                  //       ),
-                  //             ],
-                  //           ),
-                  //           SizedBox(
-                  //             height: 360.h,
-                  //             width: double.infinity,
-                  //             child: ListView.builder(
-                  //               padding: EdgeInsets.zero,
-                  //               clipBehavior: Clip.antiAlias,
-                  //               scrollDirection: Axis.horizontal,
-                  //               itemCount: data.insidearr[4].length,
-                  //               shrinkWrap: true,
-                  //               itemBuilder: (context, index) {
-                  //                 VProduct pro = data.insidearr[4][index];
-                  //                 return ProductDetailWidget(
-                  //                   Vimage: pro.user.photo,
-                  //                   price: pro.price,
-                  //                   title: pro.title,
-                  //                   vendorname: pro.user.name,
-                  //                   productImage: pro.image,
-                  //                 );
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   error: (error, stackTrace) {
-                  //     return Text("error $error");
-                  //   },
-                  //   loading: () {
-                  //     return CircularProgressIndicator();
-                  //   },
-                  // ),
-                  SizedBox(
-                    height: 50,
-                    width: double.infinity,
-                    child: TabBar(
-                      controller: tabController,
-                      tabs: const [
-                        Tab(
-                          text: ' Global\n Brands',
+                        // child: product_item_wid(),),
+                        SizedBox(
+                          height: 5.h,
                         ),
-                        Tab(text: ' Domestic\n Brands'),
-                        Tab(
-                            text:
-                                ' Spotlight\n Sellers'), // Changed label for clarity
-                      ],
-                      labelColor: const Color(0xff909090),
-                    ),
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      double dynamicHeight;
 
-                      if (tabController.index == 0) {
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[0].isEmpty
-                                ? 150
-                                : 430;
-                      } else if (tabController.index == 1) {
-                        // Ensure data.doma[0] is valid and has length
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[1].isEmpty
-                                ? 150
-                                : 430;
-                      } else if (tabController.index == 2)
-                        dynamicHeight =
-                            data.insidearr.isEmpty || data.insidearr[2].isEmpty
-                                ? 150
-                                : 430;
-                      else
-                        dynamicHeight = 430;
+                        asyncbajarValue.when(
+                          data: (data) {
+                            return SizedBox(
+                              height: data.hotProducts.isEmpty ? 5.h : 340.h,
+                              width: double.infinity,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.all(3),
+                                clipBehavior: Clip.antiAlias,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: data.hotProducts.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  VProduct hot = data.hotProducts[index];
+                                  return ProductDetailWidget(
+                                    onenquiredclicked: () {
+                                      getEnquire(ref, hot.id).then(
+                                        (value) {
+                                          value.data?.enquire == 0
+                                              ? showModalBottomSheet(
+                                                  useSafeArea: true,
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return SizedBox(
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.8, // Use 80% of the screen height
 
-                      return SizedBox(
-                        // Use Expanded for better layout management
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          height: dynamicHeight,
+                                                      child:
+                                                          SendMessageBottomWidget(
+                                                        ref: ref,
+                                                        productidid: hot.id,
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              : navigateToPage(
+                                                  context: context,
+                                                  page: ChatScreen(
+                                                      threadId: value
+                                                          .data!.thread!.id!,
+                                                      username: value.data!
+                                                          .thread!.subject!,
+                                                      postId: value.data!
+                                                          .thread!.post_id!),
+                                                  ref: ref,
+                                                  showNavBar:
+                                                      false, // Hide bottom navbar
+                                                );
+                                          // if ()
+
+                                          // SendMessageBottomWidget(
+                                          //     ref: ref,
+                                          //     productidid:
+                                          //         prod.id);
+                                        },
+                                      ).catchError((error) {
+                                        print('Error: $error');
+                                      });
+                                    },
+                                    savedid: hot.savedByLoggedUser == null ||
+                                            hot.savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : hot.savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                    lat: hot.user.latitude,
+                                    long: hot.user.longitude,
+                                    avg_rating: double.tryParse(
+                                        hot.avg_rating.toString()),
+                                    didcountpercentage: hot.discount_percentage,
+                                    vendorid: hot.user.id,
+                                    membershipid: hot.user.membership_id,
+                                    offer: hot.offers,
+                                    posttype: hot.post_type_id,
+                                    productid: hot.id,
+                                    wow: hot.wow,
+                                    comment: hot.commentcount.toString(),
+                                    discounttedPrice: hot.discounted_price,
+                                    issponsored: hot.user.sponsored,
+                                    lefttile: "Jobs",
+                                    productImage: hot.image,
+                                    Vimage: hot.user.photo,
+                                    price: hot.price,
+                                    title: hot.title,
+                                    vendorname: hot.user.name,
+                                    similarproductCount:
+                                        hot.similarProductCount,
+                                    membershipColor: hot.user.membershipColor,
+                                    membershipTitle: hot.user.membershipTitle,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text(error.toString());
+                          },
+                          loading: () => const CircularProgressIndicator(),
+                        ),
+
+                        // Expanded(
+
+                        // child: product_item_wid(),),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+
+                        // // SizedBox(
+                        // //     height: 360.h,
+                        // //     width: double.infinity,
+                        // //     child: ListView.builder(
+                        // //       padding: EdgeInsets.zero,
+                        // //       clipBehavior: Clip.antiAlias,
+                        // //       scrollDirection: Axis.horizontal,
+                        // //       itemCount: 5,
+                        // //       shrinkWrap: true,
+                        // //       itemBuilder: (context, index) {
+                        // //         return ProductDetailWidget();
+                        // //       },
+                        // //     ),
+                        // //   ),
+                        // // asyncbajarValue.when(
+                        // //   data: (data) {
+                        // //     return Padding(
+                        // //       padding: const EdgeInsets.all(10),
+                        // //       child: Column(
+                        // //         children: [
+                        // //           Row(
+                        // //             children: [
+                        // //                       Text(
+                        // //         data.cat[0].slug,
+                        // //         style: headerstyle.copyWith(
+                        // //             fontWeight: FontWeight.bold,
+                        // //             fontSize: 17,
+                        // //             color: Colors.black),
+                        // //       ),
+                        // //             ],
+                        // //           ),
+                        // //           SizedBox(
+                        // //             height: 360.h,
+                        // //             width: double.infinity,
+                        // //             child: ListView.builder(
+                        // //               padding: EdgeInsets.zero,
+                        // //               clipBehavior: Clip.antiAlias,
+                        // //               scrollDirection: Axis.horizontal,
+                        // //               itemCount: data.insidearr[0].length,
+                        // //               shrinkWrap: true,
+                        // //               itemBuilder: (context, index) {
+                        // //                 VProduct pro = data.insidearr[0][index];
+                        // //                 return ProductDetailWidget(
+                        // //                   Vimage: pro.user.photo,
+                        // //                   price: pro.price,
+                        // //                   title: pro.title,
+                        // //                   vendorname: pro.user.name,
+                        // //                   productImage: pro.image,
+                        // //                 );
+                        // //               },
+                        // //             ),
+                        // //           ),
+                        // //         ],
+                        // //       ),
+                        // //     );
+                        // //   },
+                        // //   error: (error, stackTrace) {
+                        // //     return Text("error $error");
+                        // //   },
+                        // //   loading: () {
+                        // //     return CircularProgressIndicator();
+                        // //   },
+                        // // ),
+
+                        // // Expanded(
+
+                        // // child: product_item_wid(),),
+                        // SizedBox(
+                        //   height: 5.h,
+                        // ),
+
+                        // // asyncbajarValue.when(
+                        // //   data: (data) {
+                        // //     return Padding(
+                        // //       padding: const EdgeInsets.all(10),
+                        // //       child: Column(
+                        // //         children: [
+                        // //           Row(
+                        // //             children: [
+                        // //               Text(
+                        // //         data.cat[1].slug,
+                        // //         style: headerstyle.copyWith(
+                        // //             fontWeight: FontWeight.bold,
+                        // //             fontSize: 17,
+                        // //             color: Colors.black),
+                        // //       ),
+                        // //             ],
+                        // //           ),
+                        // //           SizedBox(
+                        // //             height: 360.h,
+                        // //             width: double.infinity,
+                        // //             child: ListView.builder(
+                        // //               padding: EdgeInsets.zero,
+                        // //               clipBehavior: Clip.antiAlias,
+                        // //               scrollDirection: Axis.horizontal,
+                        // //               itemCount: data.insidearr[1].length,
+                        // //               shrinkWrap: true,
+                        // //               itemBuilder: (context, index) {
+                        // //                 VProduct pro = data.insidearr[1][index];
+                        // //                 return ProductDetailWidget(
+                        // //                   Vimage: pro.user.photo,
+                        // //                   price: pro.price,
+                        // //                   title: pro.title,
+                        // //                   vendorname: pro.user.name,
+                        // //                   productImage: pro.image,
+                        // //                 );
+                        // //               },
+                        // //             ),
+                        // //           ),
+                        // //         ],
+                        // //       ),
+                        // //     );
+                        // //   },
+                        // //   error: (error, stackTrace) {
+                        // //     return Text("error $error");
+                        // //   },
+                        // //   loading: () {
+                        // //     return CircularProgressIndicator();
+                        // //   },
+                        // // ),
+
+                        // asyncbajarValue.when(
+                        //   data: (data) {
+                        //     return Padding(
+                        //       padding: const EdgeInsets.all(10),
+                        //       child: Column(
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //                      Text(
+                        //         data.cat[2].slug,
+                        //         style: headerstyle.copyWith(
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 17,
+                        //             color: Colors.black),
+                        //       ),
+                        //             ],
+                        //           ),
+                        //           SizedBox(
+                        //             height: 360.h,
+                        //             width: double.infinity,
+                        //             child: ListView.builder(
+                        //               padding: EdgeInsets.zero,
+                        //               clipBehavior: Clip.antiAlias,
+                        //               scrollDirection: Axis.horizontal,
+                        //               itemCount: data.insidearr[2].length,
+                        //               shrinkWrap: true,
+                        //               itemBuilder: (context, index) {
+                        //                 VProduct pro = data.insidearr[2][index];
+                        //                 return ProductDetailWidget(
+                        //                   Vimage: pro.user.photo,
+                        //                   price: pro.price,
+                        //                   title: pro.title,
+                        //                   vendorname: pro.user.name,
+                        //                   productImage: pro.image,
+                        //                 );
+                        //               },
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   },
+                        //   error: (error, stackTrace) {
+                        //     return Text("error $error");
+                        //   },
+                        //   loading: () {
+                        //     return CircularProgressIndicator();
+                        //   },
+                        // ),
+                        // asyncbajarValue.when(
+                        //   data: (data) {
+                        //     return Padding(
+                        //       padding: const EdgeInsets.all(10),
+                        //       child: Column(
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //                      Text(
+                        //         data.cat[3].slug,
+                        //         style: headerstyle.copyWith(
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 17,
+                        //             color: Colors.black),
+                        //       ),
+                        //             ],
+                        //           ),
+                        //           SizedBox(
+                        //             height: 360.h,
+                        //             width: double.infinity,
+                        //             child: ListView.builder(
+                        //               padding: EdgeInsets.zero,
+                        //               clipBehavior: Clip.antiAlias,
+                        //               scrollDirection: Axis.horizontal,
+                        //               itemCount: data.insidearr[3].length,
+                        //               shrinkWrap: true,
+                        //               itemBuilder: (context, index) {
+                        //                 VProduct pro = data.insidearr[3][index];
+                        //                 return ProductDetailWidget(
+                        //                   Vimage: pro.user.photo,
+                        //                   price: pro.price,
+                        //                   title: pro.title,
+                        //                   vendorname: pro.user.name,
+                        //                   productImage: pro.image,
+                        //                 );
+                        //               },
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   },
+                        //   error: (error, stackTrace) {
+                        //     return Text("error $error");
+                        //   },
+                        //   loading: () {
+                        //     return CircularProgressIndicator();
+                        //   },
+                        // ),
+                        // asyncbajarValue.when(
+                        //   data: (data) {
+                        //     return Padding(
+                        //       padding: const EdgeInsets.all(10),
+                        //       child: Column(
+                        //         children: [
+                        //           Row(
+                        //             children: [
+                        //                        Text(
+                        //         data.cat[4].slug,
+                        //         style: headerstyle.copyWith(
+                        //             fontWeight: FontWeight.bold,
+                        //             fontSize: 17,
+                        //             color: Colors.black),
+                        //       ),
+                        //             ],
+                        //           ),
+                        //           SizedBox(
+                        //             height: 360.h,
+                        //             width: double.infinity,
+                        //             child: ListView.builder(
+                        //               padding: EdgeInsets.zero,
+                        //               clipBehavior: Clip.antiAlias,
+                        //               scrollDirection: Axis.horizontal,
+                        //               itemCount: data.insidearr[4].length,
+                        //               shrinkWrap: true,
+                        //               itemBuilder: (context, index) {
+                        //                 VProduct pro = data.insidearr[4][index];
+                        //                 return ProductDetailWidget(
+                        //                   Vimage: pro.user.photo,
+                        //                   price: pro.price,
+                        //                   title: pro.title,
+                        //                   vendorname: pro.user.name,
+                        //                   productImage: pro.image,
+                        //                 );
+                        //               },
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     );
+                        //   },
+                        //   error: (error, stackTrace) {
+                        //     return Text("error $error");
+                        //   },
+                        //   loading: () {
+                        //     return CircularProgressIndicator();
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: 50,
                           width: double.infinity,
-                          child: TabBarView(
+                          child: TabBar(
                             controller: tabController,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Row(
+                            tabs: const [
+                              Tab(
+                                text: ' Global\n Brands',
+                              ),
+                              Tab(text: ' Domestic\n Brands'),
+                              Tab(
+                                  text:
+                                      ' Spotlight\n Sellers'), // Changed label for clarity
+                            ],
+                            labelColor: const Color(0xff909090),
+                          ),
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            double dynamicHeight;
+
+                            if (tabController.index == 0) {
+                              dynamicHeight = data.insidearr.isEmpty ||
+                                      data.insidearr[0].isEmpty
+                                  ? 150
+                                  : 430;
+                            } else if (tabController.index == 1) {
+                              // Ensure data.doma[0] is valid and has length
+                              dynamicHeight = data.insidearr.isEmpty ||
+                                      data.insidearr[1].isEmpty
+                                  ? 150
+                                  : 430;
+                            } else if (tabController.index == 2)
+                              dynamicHeight = data.insidearr.isEmpty ||
+                                      data.insidearr[2].isEmpty
+                                  ? 150
+                                  : 430;
+                            else
+                              dynamicHeight = 430;
+
+                            return SizedBox(
+                              // Use Expanded for better layout management
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                height: dynamicHeight,
+                                width: double.infinity,
+                                child: TabBarView(
+                                  controller: tabController,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        if (data.global.isNotEmpty)
-                                          ...data.global.map((e) {
-                                            return NotStoryWidget(
-                                              vImage: e
-                                                  .brandLogo, // Use the correct variable name
-                                              index: data.global
-                                                  .indexOf(e), // Get the index
-                                              brandname: e.brandName,
-                                            );
-                                          }).toList(),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  data.insidearr.isNotEmpty &&
-                                          data.insidearr[0].isNotEmpty
-                                      ? SizedBox(
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[0].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[0][index];
-                                              return ProductDetailWidget(
-                                                  onenquiredclicked: () {
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: Row(
+                                            children: [
+                                              if (data.global.isNotEmpty)
+                                                ...data.global.map((e) {
+                                                  return NotStoryWidget(
+                                                    vImage: e
+                                                        .brandLogo, // Use the correct variable name
+                                                    index: data.global.indexOf(
+                                                        e), // Get the index
+                                                    brandname: e.brandName,
+                                                  );
+                                                }).toList(),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        data.insidearr.isNotEmpty &&
+                                                data.insidearr[0].isNotEmpty
+                                            ? SizedBox(
+                                                child: ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.insidearr[0].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    VProduct prod = data
+                                                        .insidearr[0][index];
+                                                    return ProductDetailWidget(
+                                                      onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
 
@@ -1578,6 +1615,716 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                               'Error: $error');
                                                         });
                                                       },
+                                                      savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refresh();
+                                                      },
+                                                      lat: prod.user.latitude,
+                                                      long: prod.user.longitude,
+                                                      productid: prod.id,
+                                                      shortestDistance: prod
+                                                          .user
+                                                          .shortestDistance,
+                                                      vendorid: prod.user.id,
+                                                      posttype:
+                                                          prod.post_type_id,
+                                                      membershipid: prod
+                                                          .user.membership_id,
+                                                      offer: prod.offers,
+                                                      tradeImage:
+                                                          'assets/icon/b2bIcon.svg',
+                                                      didcountpercentage: prod
+                                                          .discount_percentage,
+                                                      avg_rating: prod
+                                                          .avg_rating
+                                                          ?.toDouble(),
+                                                      wow: prod.wow,
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      lefttile: "Jobs",
+                                                      vendorname:
+                                                          prod.user.name,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.title,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor: prod
+                                                          .user.membershipColor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            : Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 15.h),
+                                                child: Center(
+                                                  child: nolistingfound(),
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: data.domestic.map((e) {
+                                                return NotStoryWidget(
+                                                  vImage: e.brandLogo,
+                                                  index:
+                                                      data.domestic.indexOf(e),
+                                                  brandname: e.brandName,
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        data.insidearr.isEmpty
+                                            ? Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 15.h),
+                                                child: Center(
+                                                  child: nolistingfound(),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: 340.h,
+                                                child: ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.insidearr[1].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    VProduct prod = data
+                                                        .insidearr[1][index];
+
+                                                    return ProductDetailWidget(
+                                                      onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
+                                                      savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refresh();
+                                                      },
+                                                      lat: prod.user.latitude,
+                                                      long: prod.user.longitude,
+                                                      productid: prod.id,
+                                                      offer: prod.offers,
+                                                      posttype:
+                                                          prod.post_type_id,
+                                                      shortestDistance: prod
+                                                          .user
+                                                          .shortestDistance,
+                                                      membershipid: prod
+                                                          .user.membership_id,
+                                                      vendorid: prod.user.id,
+                                                      didcountpercentage: prod
+                                                          .discount_percentage,
+                                                      avg_rating: prod
+                                                          .avg_rating
+                                                          ?.toDouble(),
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      wow: prod.wow,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      lefttile: "Jobs",
+                                                      vendorname: prod.title,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.user.photo,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor: prod
+                                                          .user.membershipColor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: data.spotlight.map((e) {
+                                                return NotStoryWidget(
+                                                  vImage: e.brandLogo,
+                                                  index:
+                                                      data.spotlight.indexOf(e),
+                                                  brandname: e.brandName,
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        data.insidearr.isEmpty
+                                            ? Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 15
+                                                          .h), // Add padding here
+                                                  child: nolistingfound(),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: 340.h,
+                                                child: ListView.builder(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  padding:
+                                                      const EdgeInsets.all(3),
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      data.insidearr[2].length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    VProduct prod = data
+                                                        .insidearr[2][index];
+                                                    return ProductDetailWidget(
+                                                      onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(ref, prod.id)
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
+                                                      savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser
+                                                              ?.map(
+                                                                (e) => SavedPost(
+                                                                    id: e.id,
+                                                                    userId: e
+                                                                        .userId,
+                                                                    postId: e
+                                                                        .postId,
+                                                                    createdAt: e
+                                                                        .createdAt,
+                                                                    updatedAt: e
+                                                                        .updatedAt),
+                                                              )
+                                                              .toList(),
+                                                      onRefresh: () {
+                                                        refresh();
+                                                      },
+                                                      lat: prod.user.latitude,
+                                                      long: prod.user.longitude,
+                                                      productid: prod.id,
+                                                      posttype:
+                                                          prod.post_type_id,
+                                                      shortestDistance: prod
+                                                          .user
+                                                          .shortestDistance,
+                                                      offer: prod.offers,
+                                                      membershipid: prod
+                                                          .user.membership_id,
+                                                      vendorid: prod.user.id,
+                                                      didcountpercentage:
+                                                          prod.avg_rating,
+                                                      avg_rating: prod
+                                                          .avg_rating
+                                                          ?.toDouble(),
+                                                      comment: prod.commentcount
+                                                          .toString(),
+                                                      wow: prod.wow,
+                                                      issponsored:
+                                                          prod.user.sponsored,
+                                                      lefttile: "Jobs",
+                                                      vendorname: prod.title,
+                                                      discounttedPrice:
+                                                          prod.discounted_price,
+                                                      Vimage: prod.user.photo,
+                                                      price: prod.price,
+                                                      title: prod.title,
+                                                      productImage: prod.image,
+                                                      similarproductCount: prod
+                                                          .similarProductCount,
+                                                      membershipColor: prod
+                                                          .user.membershipColor,
+                                                      membershipTitle: prod
+                                                          .user.membershipTitle,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text("error $error");
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+
+                        Center(
+                          child: Column(
+                            children: [
+                              Text(
+                                "BuyOrWin",
+                                textAlign: TextAlign.center,
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: const Color(0xff551b55)),
+                              ),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+                              Center(
+                                child: Container(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  margin: EdgeInsets.only(bottom: 5.h),
+                                  height: 5.h,
+                                  width: 100.w,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF681b4e),
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            return SizedBox(
+                              height: 300.h,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: data.buynow!.length,
+                                itemBuilder: (context, index) {
+                                  Buynowmodel resp = data.buynow![index];
+
+                                  return buyorwin_widget(
+                                    vendorid: resp.vendor_id!,
+                                      wow: resp.wow ?? '0',
+                                      gift_qty: resp.gift_qty!,
+                                      worth: resp.worth!,
+                                      productname: resp.name!,
+                                      vendorImage: resp.vendorImage,
+                                      vendorname: resp.vendor_name,
+                                      winners: resp.winners.toString(),
+                                      proctimage: resp.image ?? '');
+                                },
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text("error $error");
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+
+                        asyncbajarValue.when(
+                          data: (data) {
+                            return SizedBox(
+                              height: 70.h,
+                              width: double.infinity,
+                              child: PageView.builder(
+                                controller: _adscontroller,
+                                reverse: true,
+                                allowImplicitScrolling: true,
+                                itemCount: data.ads.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Image.network(
+                                    data.ads[index].image!,
+                                    // height: 150.h,
+                                    width: double.infinity,
+                                    // fit: BoxFit.fill,
+                                  );
+                                  // Image.asset(
+                                  //     height: 150.h,
+                                  //     width: double.infinity,
+                                  //     fit: BoxFit.fill,
+                                  //     );
+                                },
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text(error.toString());
+                          },
+                          loading: () => const CircularProgressIndicator(),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            List<List<VProduct>> productsList = [
+                              data.low_price_guarantee, // Corresponds to SHOPZONE
+                              data.Launch_offer, // Corresponds to HOB
+                              data.seasonal, // Corresponds to SERVICES
+                              data.promotional, // Corresponds to TRADEHUB
+                              data.Launch_festival_offer, // Corresponds to USED
+                            ];
+
+                            return SizedBox(
+                              width: double.infinity,
+                              height: productsList.every((list) => list.isEmpty)
+                                  ? 150.h
+                                  : 420.h,
+                              child: ValueListenableBuilder<int>(
+                                valueListenable: selectedIndexNotifier,
+                                builder: (context, selectedIndex, child) {
+                                  // Map category labels to their respective product lists
+                                  List<String> categories = services
+                                      .map((e) => e['label'] as String)
+                                      .toList();
+
+                                  return Column(
+                                    children: [
+                                      // Category Selector Row
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: 50.h,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: categories.length,
+                                          itemBuilder: (context, index) {
+                                            bool isSelected =
+                                                index == selectedIndex;
+                                            return GestureDetector(
+                                              onTap: () {
+                                                // Update the selected index
+                                                selectedIndexNotifier.value =
+                                                    index;
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                margin: const EdgeInsets.all(5),
+                                                width: 150.w,
+                                                decoration: BoxDecoration(
+                                                  color: isSelected
+                                                      ? const Color(0xFF681b4e)
+                                                      : const Color(0xffA5A5A5),
+                                                ),
+                                                child: Text(
+                                                  categories[index],
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorConstant
+                                                        .whiteColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+
+                                      // Spacer
+                                      SizedBox(height: 5.h),
+
+                                      // Display Products for the selected category
+                                      Builder(builder: (context) {
+                                        // Ensure the index is valid
+                                        if (selectedIndex < 0 ||
+                                            selectedIndex >=
+                                                productsList.length) {
+                                          selectedIndex =
+                                              0; // Default to the first category
+                                        }
+
+                                        List<VProduct> products =
+                                            productsList[selectedIndex];
+
+                                        if (products.isEmpty) {
+                                          return SizedBox(
+                                            height: 50.h,
+                                            child: Center(
+                                              child: Text(
+                                                "No listing available",
+                                                style: TextStyle(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        return SizedBox(
+                                          height: 340.h,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            padding: const EdgeInsets.all(3),
+                                            itemCount: products.length,
+                                            itemBuilder: (context, index) {
+                                              VProduct prod = products[index];
+                                              return ProductDetailWidget(
+                                                onenquiredclicked: () {
+                                                  print('lanka ${prod.id}');
+
+                                                  getEnquire(ref, prod.id).then(
+                                                    (value) {
+                                                      value.data?.enquire == 0
+                                                          ? showModalBottomSheet(
+                                                              useSafeArea: true,
+                                                              isScrollControlled:
+                                                                  true,
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return SizedBox(
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.8, // Use 80% of the screen height
+
+                                                                  child:
+                                                                      SendMessageBottomWidget(
+                                                                    ref: ref,
+                                                                    productidid:
+                                                                        prod.id,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            )
+                                                          : navigateToPage(
+                                                              context: context,
+                                                              page: ChatScreen(
+                                                                  threadId: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .id!,
+                                                                  username: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .subject!,
+                                                                  postId: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .post_id!),
+                                                              ref: ref,
+                                                              showNavBar:
+                                                                  false, // Hide bottom navbar
+                                                            );
+                                                      // if ()
+
+                                                      // SendMessageBottomWidget(
+                                                      //     ref: ref,
+                                                      //     productidid:
+                                                      //         prod.id);
+                                                    },
+                                                  ).catchError((error) {
+                                                    print('Error: $error');
+                                                  });
+                                                },
                                                 savedid: prod.savedByLoggedUser ==
                                                             null ||
                                                         prod.savedByLoggedUser!
@@ -1601,19 +2348,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                                 lat: prod.user.latitude,
                                                 long: prod.user.longitude,
                                                 productid: prod.id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                vendorid: prod.user.id,
-                                                posttype: prod.post_type_id,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                offer: prod.offers,
-                                                tradeImage:
-                                                    'assets/icon/b2bIcon.svg',
-                                                didcountpercentage:
-                                                    prod.discount_percentage,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
                                                 wow: prod.wow,
                                                 comment: prod.commentcount
                                                     .toString(),
@@ -1636,842 +2370,186 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                               );
                                             },
                                           ),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: Center(
-                                            child: nolistingfound(),
-                                          ),
-                                        ),
-                                ],
+                                        );
+                                      }),
+                                    ],
+                                  );
+                                },
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: data.domestic.map((e) {
-                                          return NotStoryWidget(
-                                            vImage: e.brandLogo,
-                                            index: data.domestic.indexOf(e),
-                                            brandname: e.brandName,
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  data.insidearr.isEmpty
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 15.h),
-                                          child: Center(
-                                            child: nolistingfound(),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 340.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[1].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[1][index];
+                            );
+                          },
+                          error: (error, stackTrace) => Text("Error: $error"),
+                          loading: () => const CircularProgressIndicator(),
+                        ),
 
-                                              return ProductDetailWidget(
-                                                  onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refresh();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                offer: prod.offers,
-                                                posttype: prod.post_type_id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                vendorid: prod.user.id,
-                                                didcountpercentage:
-                                                    prod.discount_percentage,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                wow: prod.wow,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "Jobs",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                ],
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'All Jobs',
+                                style: headerstyle.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                    color: Colors.black),
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: data.spotlight.map((e) {
-                                          return NotStoryWidget(
-                                            vImage: e.brandLogo,
-                                            index: data.spotlight.indexOf(e),
-                                            brandname: e.brandName,
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  data.insidearr.isEmpty
-                                      ? Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 15.h), // Add padding here
-                                            child: nolistingfound(),
-                                          ),
-                                        )
-                                      : SizedBox(
-                                          height: 340.h,
-                                          child: ListView.builder(
-                                            clipBehavior: Clip.antiAlias,
-                                            padding: const EdgeInsets.all(3),
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.insidearr[2].length,
-                                            itemBuilder: (context, index) {
-                                              VProduct prod =
-                                                  data.insidearr[2][index];
-                                              return ProductDetailWidget(
-                                                  onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-
-                                                savedid: prod.savedByLoggedUser ==
-                                                            null ||
-                                                        prod.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : prod.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
-                                                onRefresh: () {
-                                                  refresh();
-                                                },
-                                                lat: prod.user.latitude,
-                                                long: prod.user.longitude,
-                                                productid: prod.id,
-                                                posttype: prod.post_type_id,
-                                                shortestDistance:
-                                                    prod.user.shortestDistance,
-                                                offer: prod.offers,
-                                                membershipid:
-                                                    prod.user.membership_id,
-                                                vendorid: prod.user.id,
-                                                didcountpercentage:
-                                                    prod.avg_rating,
-                                                avg_rating:
-                                                    prod.avg_rating?.toDouble(),
-                                                comment: prod.commentcount
-                                                    .toString(),
-                                                wow: prod.wow,
-                                                issponsored:
-                                                    prod.user.sponsored,
-                                                lefttile: "Jobs",
-                                                vendorname: prod.title,
-                                                discounttedPrice:
-                                                    prod.discounted_price,
-                                                Vimage: prod.user.photo,
-                                                price: prod.price,
-                                                title: prod.title,
-                                                productImage: prod.image,
-                                                similarproductCount:
-                                                    prod.similarProductCount,
-                                                membershipColor:
-                                                    prod.user.membershipColor,
-                                                membershipTitle:
-                                                    prod.user.membershipTitle,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                ],
+                              SizedBox(
+                                width: 10.w,
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
-                  ),
 
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          "BuyOrWin",
-                          textAlign: TextAlign.center,
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: const Color(0xff551b55)),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.centerStart,
-                            margin: EdgeInsets.only(bottom: 5.h),
-                            height: 5.h,
-                            width: 100.w,
-                            decoration: BoxDecoration(
-                                color: const Color(0xFF681b4e),
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: 300.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: data.buynow!.length,
-                          itemBuilder: (context, index) {
-                            Buynowmodel resp = data.buynow![index];
-
-                            return buyorwin_widget(
-                                wow: resp.wow ?? '0',
-                                gift_qty: resp.gift_qty!,
-                                worth: resp.worth!,
-                                productname: resp.name,
-                                vendorImage: resp.vendorImage,
-                                vendorname: resp.name,
-                                winners: resp.winners.toString(),
-                                proctimage: resp.image ?? '');
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text("error $error");
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-
-                  asyncbajarValue.when(
-                    data: (data) {
-                      return SizedBox(
-                        height: 70.h,
-                        width: double.infinity,
-                        child: PageView.builder(
-                          controller: _adscontroller,
-                          reverse: true,
-                          allowImplicitScrolling: true,
-                          itemCount: data.ads.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              data.ads[index].image!,
-                              // height: 150.h,
-                              width: double.infinity,
-                              // fit: BoxFit.fill,
-                            );
-                            // Image.asset(
-                            //     height: 150.h,
-                            //     width: double.infinity,
-                            //     fit: BoxFit.fill,
-                            //     );
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Text(error.toString());
-                    },
-                    loading: () => const CircularProgressIndicator(),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  asyncbajarValue.when(
-                    data: (data) {
-                      List<List<VProduct>> productsList = [
-                        data.low_price_guarantee, // Corresponds to SHOPZONE
-                        data.Launch_offer, // Corresponds to HOB
-                        data.seasonal, // Corresponds to SERVICES
-                        data.promotional, // Corresponds to TRADEHUB
-                        data.Launch_festival_offer, // Corresponds to USED
-                      ];
-
-                      return SizedBox(
-                        width: double.infinity,
-                        height: productsList.every((list) => list.isEmpty)
-                            ? 150.h
-                            : 420.h,
-                        child: ValueListenableBuilder<int>(
-                          valueListenable: selectedIndexNotifier,
-                          builder: (context, selectedIndex, child) {
-                            // Map category labels to their respective product lists
-                            List<String> categories = services
-                                .map((e) => e['label'] as String)
-                                .toList();
-
-                            return Column(
-                              children: [
-                                // Category Selector Row
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50.h,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: categories.length,
-                                    itemBuilder: (context, index) {
-                                      bool isSelected = index == selectedIndex;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          // Update the selected index
-                                          selectedIndexNotifier.value = index;
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          margin: const EdgeInsets.all(5),
-                                          width: 150.w,
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? const Color(0xFF681b4e)
-                                                : const Color(0xffA5A5A5),
-                                          ),
-                                          child: Text(
-                                            categories[index],
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorConstant.whiteColor,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
+                        asyncbajarValue.when(
+                          data: (data) {
+                            if (data.product.isEmpty) {
+                              return SizedBox(
+                                height: 50.h,
+                                child: Center(
+                                  child: Text(
+                                    "No listing available",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
+                              );
+                            }
 
-                                // Spacer
-                                SizedBox(height: 5.h),
+                            return GridView.builder(
+                              physics:
+                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                              shrinkWrap: true, // Adjust to fit content
+                              itemCount: data.product.length,
 
-                                // Display Products for the selected category
-                                Builder(builder: (context) {
-                                  // Ensure the index is valid
-                                  if (selectedIndex < 0 ||
-                                      selectedIndex >= productsList.length) {
-                                    selectedIndex =
-                                        0; // Default to the first category
-                                  }
-
-                                  List<VProduct> products =
-                                      productsList[selectedIndex];
-
-                                  if (products.isEmpty) {
-                                    return SizedBox(
-                                      height: 50.h,
-                                      child: Center(
-                                        child: Text(
-                                          "No listing available",
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-
-                                  return SizedBox(
-                                    height: 340.h,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      padding: const EdgeInsets.all(3),
-                                      itemCount: products.length,
-                                      itemBuilder: (context, index) {
-                                        VProduct prod = products[index];
-                                        return ProductDetailWidget(
-                                            onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                                          savedid: prod.savedByLoggedUser ==
-                                                      null ||
-                                                  prod.savedByLoggedUser!
-                                                      .isEmpty
-                                              ? []
-                                              : prod.savedByLoggedUser
-                                                  ?.map(
-                                                    (e) => SavedPost(
-                                                        id: e.id,
-                                                        userId: e.userId,
-                                                        postId: e.postId,
-                                                        createdAt: e.createdAt,
-                                                        updatedAt: e.updatedAt),
-                                                  )
-                                                  .toList(),
-                                          onRefresh: () {
-                                            refresh();
-                                          },
-                                          lat: prod.user.latitude,
-                                          long: prod.user.longitude,
-                                          productid: prod.id,
-                                          wow: prod.wow,
-                                          comment: prod.commentcount.toString(),
-                                          lefttile: "Jobs",
-                                          vendorname: prod.user.name,
-                                          discounttedPrice:
-                                              prod.discounted_price,
-                                          Vimage: prod.title,
-                                          issponsored: prod.user.sponsored,
-                                          price: prod.price,
-                                          title: prod.title,
-                                          productImage: prod.image,
-                                          similarproductCount:
-                                              prod.similarProductCount,
-                                          membershipColor:
-                                              prod.user.membershipColor,
-                                          membershipTitle:
-                                              prod.user.membershipTitle,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }),
-                              ],
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisExtent: 370,
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 0.6,
+                                mainAxisSpacing: 0.2,
+                                childAspectRatio: 0.5,
+                              ),
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: 5.h),
+                                  child: AllProductDetailWidget(
+                                    ref: ref,
+                                    savedid: data.product[index]
+                                                    .savedByLoggedUser ==
+                                                null ||
+                                            data.product[index]
+                                                .savedByLoggedUser!.isEmpty
+                                        ? []
+                                        : data.product[index].savedByLoggedUser
+                                            ?.map(
+                                              (e) => SavedPost(
+                                                  id: e.id,
+                                                  userId: e.userId,
+                                                  postId: e.postId,
+                                                  createdAt: e.createdAt,
+                                                  updatedAt: e.updatedAt),
+                                            )
+                                            .toList(),
+                                    onRefresh: () {
+                                      refresh();
+                                    },
+                                    productid:
+                                        data.product[index].post_type_id!,
+                                    long: data.product[index].user.longitude,
+                                    lat: data.product[index].user.latitude,
+                                    avg_rating: data.product[index].avg_rating
+                                        ?.toDouble(),
+                                    didcountpercentage:
+                                        data.product[index].discount_percentage,
+                                    id: int.tryParse(data.product[index].id),
+                                    offer: data.product[index].offers,
+                                    membershipid:
+                                        data.product[index].user.membership_id,
+                                    posttype: data.product[index].post_type_id,
+                                    shortestDistance: data
+                                        .product[index].user.shortestDistance,
+                                    wow: data.product[index].wow,
+                                    comment: data.product[index].commentcount
+                                        .toString(),
+                                    issponsored:
+                                        data.product[index].user.sponsored,
+                                    discounttedPrice:
+                                        data.product[index].discounted_price,
+                                    lefttile: "Jobs",
+                                    productImage: data.product[index].image,
+                                    Vimage: data.product[index].user.photo,
+                                    vendorname: data.product[index].user.name,
+                                    title: data.product[index].title,
+                                    price: data.product[index].price,
+                                    similarproductCount:
+                                        data.product[index].similarProductCount,
+                                    membershipColor: data
+                                        .product[index].user.membershipColor,
+                                    membershipTitle: data
+                                        .product[index].user.membershipTitle,
+                                  ),
+                                );
+                              },
                             );
+                            // SizedBox(
+                            //   height: 360.h,
+                            //   width: double.infinity,
+                            //   child: ListView.builder(
+                            //     padding: EdgeInsets.zero,
+                            //     clipBehavior: Clip.antiAlias,
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemCount: data.allProducts.length,
+                            //     shrinkWrap: true,
+                            //     itemBuilder: (context, index) {
+                            //       // print(
+                            //       //     "ram ${}");
+                            //       return ProductDetailWidget(
+                            //         // productImage: data.allProducts[index].image,
+                            //         Vimage:
+                            //             data.allProducts[index].user.photo,
+
+                            //         vendorname:
+                            //             data.allProducts[index].user.name,
+                            //         title: data.allProducts[index].title,
+                            //         price: data.allProducts[index].price,
+                            //       );
+                            //     },
+                            //   ),
+                            // );
+                          },
+                          error: (error, stackTrace) {
+                            return Text('error is $error');
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
                           },
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) => Text("Error: $error"),
-                    loading: () => const CircularProgressIndicator(),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'All Jobs',
-                          style: headerstyle.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              color: Colors.black),
-                        ),
                         SizedBox(
-                          width: 10.w,
+                          height: 45.h,
                         ),
-                      ],
-                    ),
-                  ),
 
-                  asyncbajarValue.when(
-                    data: (data) {
-                      if (data.product.isEmpty) {
-                        return SizedBox(
-                          height: 50.h,
-                          child: Center(
-                            child: Text(
-                              "No listing available",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-
-                      return GridView.builder(
-                        physics:
-                            const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                        shrinkWrap: true, // Adjust to fit content
-                        itemCount: data.product.length,
-
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisExtent: 370,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 0.6,
-                          mainAxisSpacing: 0.2,
-                          childAspectRatio: 0.5,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 5.h),
-                            child: AllProductDetailWidget(
-                              savedid: data.product[index].savedByLoggedUser ==
-                                          null ||
-                                      data.product[index].savedByLoggedUser!
-                                          .isEmpty
-                                  ? []
-                                  : data.product[index].savedByLoggedUser
-                                      ?.map(
-                                        (e) => SavedPost(
-                                            id: e.id,
-                                            userId: e.userId,
-                                            postId: e.postId,
-                                            createdAt: e.createdAt,
-                                            updatedAt: e.updatedAt),
-                                      )
-                                      .toList(),
-                              onRefresh: () {
-                                refresh();
-                              },
-                              productid: data.product[index].post_type_id!,
-                              long: data.product[index].user.longitude,
-                              lat: data.product[index].user.latitude,
-                              avg_rating:
-                                  data.product[index].avg_rating?.toDouble(),
-                              didcountpercentage:
-                                  data.product[index].discount_percentage,
-                              id: int.tryParse(data.product[index].id),
-                              offer: data.product[index].offers,
-                              membershipid:
-                                  data.product[index].user.membership_id,
-                              posttype: data.product[index].post_type_id,
-                              shortestDistance:
-                                  data.product[index].user.shortestDistance,
-                              wow: data.product[index].wow,
-                              comment:
-                                  data.product[index].commentcount.toString(),
-                              issponsored: data.product[index].user.sponsored,
-                              discounttedPrice:
-                                  data.product[index].discounted_price,
-                              lefttile: "Jobs",
-                              productImage: data.product[index].image,
-                              Vimage: data.product[index].user.photo,
-                              vendorname: data.product[index].user.name,
-                              title: data.product[index].title,
-                              price: data.product[index].price,
-                              similarproductCount:
-                                  data.product[index].similarProductCount,
-                              membershipColor:
-                                  data.product[index].user.membershipColor,
-                              membershipTitle:
-                                  data.product[index].user.membershipTitle,
-                            ),
-                          );
-                        },
-                      );
-                      // SizedBox(
-                      //   height: 360.h,
-                      //   width: double.infinity,
-                      //   child: ListView.builder(
-                      //     padding: EdgeInsets.zero,
-                      //     clipBehavior: Clip.antiAlias,
-                      //     scrollDirection: Axis.horizontal,
-                      //     itemCount: data.allProducts.length,
-                      //     shrinkWrap: true,
-                      //     itemBuilder: (context, index) {
-                      //       // print(
-                      //       //     "ram ${}");
-                      //       return ProductDetailWidget(
-                      //         // productImage: data.allProducts[index].image,
-                      //         Vimage:
-                      //             data.allProducts[index].user.photo,
-
-                      //         vendorname:
-                      //             data.allProducts[index].user.name,
-                      //         title: data.allProducts[index].title,
-                      //         price: data.allProducts[index].price,
-                      //       );
-                      //     },
-                      //   ),
-                      // );
-                    },
-                    error: (error, stackTrace) {
-                      return Text('error is $error');
-                    },
-                    loading: () {
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                  SizedBox(
-                    height: 45.h,
-                  ),
-
-                  // Container(
-                  //   margin: const EdgeInsets.only(top: 2),
-                  //   height: 40.h,
-                  //   padding: const EdgeInsets.all(10),
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //     border: Border.all(color: Colors.black),
-                  //   ),
-                  //   child: Image.asset('assets/icon/home.png'),
-                  // ),
-                
-
+                        // Container(
+                        //   margin: const EdgeInsets.only(top: 2),
+                        //   height: 40.h,
+                        //   padding: const EdgeInsets.all(10),
+                        //   decoration: BoxDecoration(
+                        //     shape: BoxShape.circle,
+                        //     border: Border.all(color: Colors.black),
+                        //   ),
+                        //   child: Image.asset('assets/icon/home.png'),
+                        // ),
                       ],
                     ),
                   )
-
                 ],
-              )
-           
-             ,valuenotifilersidebutton(
+              ),
+              valuenotifilersidebutton(
                   showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
+              Positioned(
                 top: 65,
                 left: 48,
                 child: Container(
@@ -2551,16 +2629,13 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                   ),
                 ),
               )
-           
             ],
           ),
-        )
-
-           );
+        ));
   }
-    }
-       
-       class valuenotifilersidebutton extends StatelessWidget {
+}
+
+class valuenotifilersidebutton extends StatelessWidget {
   const valuenotifilersidebutton({
     super.key,
     required this.showSideBar,
@@ -2585,7 +2660,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'jobhero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -2593,21 +2668,30 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -2629,151 +2713,256 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'jobhero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

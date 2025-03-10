@@ -107,15 +107,14 @@ class PostResult with _$PostResult {
     required int? commentCount,
     required ExtraModel? extra,
     Ratings? ratings,
+    required MyProductDeailModel? user_details,
     LocationModel? location,
     usermodel? user,
-    @JsonKey(name: 'detail_user') required SimilarProducts? userDetails,
+    @JsonKey(name: 'detail_user') required SimilarProducts? detailuser,
     required List<Picture>? pictures,
     final List<SavedByUser>? savedByLoggedUser,
-
     PostType? postType,
     City? city,
-    required MyProductDeailModel? user_details,
     int? similarProductCount,
     @JsonKey(name: 'rating_comment') required List<RatingComment> ratingComment,
     @Default([]) List<LivePrize> live_prizes,
@@ -127,10 +126,11 @@ class PostResult with _$PostResult {
   factory PostResult.fromJson(Map<String, dynamic> json) =>
       _$PostResultFromJson(json);
 }
+
 @freezed
 class SavedByUser with _$SavedByUser {
   const factory SavedByUser({
-    @JsonKey(name: 'id') int? id,
+    //   @JsonKey(name: 'id') String? id,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'username') String? username,
     @JsonKey(name: 'user_id') String? userId,
@@ -176,9 +176,9 @@ class MyProductDeailModel with _$MyProductDeailModel {
     int? storyCount,
     int? subscribers,
     double? distance,
-    @JsonKey(name: 'membership_id') String? membershipId,
-    @JsonKey(name: 'membership_title') String? membershipTitle,
-    @JsonKey(name: 'membership_color') String? membershipColor,
+    String? membership_id,
+    @Default('Domestic Brand') String? membership_title,
+    String? membership_color,
   }) = _MyProductDeailModel;
 
   factory MyProductDeailModel.fromJson(Map<String, dynamic> json) =>
@@ -258,7 +258,6 @@ class Shop with _$Shop {
     required int? similarproductcount,
     required String? comment_count,
     required int? average_rating,
-
     @JsonKey(name: 'discount_percentage') required double? discountPercentage,
   }) = _Shop;
 

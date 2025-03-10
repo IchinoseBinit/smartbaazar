@@ -126,13 +126,17 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       ratings: json['ratings'] == null
           ? null
           : Ratings.fromJson(json['ratings'] as Map<String, dynamic>),
+      user_details: json['user_details'] == null
+          ? null
+          : MyProductDeailModel.fromJson(
+              json['user_details'] as Map<String, dynamic>),
       location: json['location'] == null
           ? null
           : LocationModel.fromJson(json['location'] as Map<String, dynamic>),
       user: json['user'] == null
           ? null
           : usermodel.fromJson(json['user'] as Map<String, dynamic>),
-      userDetails: json['detail_user'] == null
+      detailuser: json['detail_user'] == null
           ? null
           : SimilarProducts.fromJson(
               json['detail_user'] as Map<String, dynamic>),
@@ -148,10 +152,6 @@ _$PostResultImpl _$$PostResultImplFromJson(Map<String, dynamic> json) =>
       city: json['city'] == null
           ? null
           : City.fromJson(json['city'] as Map<String, dynamic>),
-      user_details: json['user_details'] == null
-          ? null
-          : MyProductDeailModel.fromJson(
-              json['user_details'] as Map<String, dynamic>),
       similarProductCount: (json['similarProductCount'] as num?)?.toInt(),
       ratingComment: (json['rating_comment'] as List<dynamic>)
           .map((e) => RatingComment.fromJson(e as Map<String, dynamic>))
@@ -236,14 +236,14 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
       'commentCount': instance.commentCount,
       'extra': instance.extra,
       'ratings': instance.ratings,
+      'user_details': instance.user_details,
       'location': instance.location,
       'user': instance.user,
-      'detail_user': instance.userDetails,
+      'detail_user': instance.detailuser,
       'pictures': instance.pictures,
       'savedByLoggedUser': instance.savedByLoggedUser,
       'postType': instance.postType,
       'city': instance.city,
-      'user_details': instance.user_details,
       'similarProductCount': instance.similarProductCount,
       'rating_comment': instance.ratingComment,
       'live_prizes': instance.live_prizes,
@@ -254,7 +254,6 @@ Map<String, dynamic> _$$PostResultImplToJson(_$PostResultImpl instance) =>
 
 _$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
     _$SavedByUserImpl(
-      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       username: json['username'] as String?,
       userId: json['user_id'] as String?,
@@ -263,7 +262,6 @@ _$SavedByUserImpl _$$SavedByUserImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$SavedByUserImplToJson(_$SavedByUserImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'name': instance.name,
       'username': instance.username,
       'user_id': instance.userId,
@@ -311,9 +309,9 @@ _$MyProductDeailModelImpl _$$MyProductDeailModelImplFromJson(
       storyCount: (json['storyCount'] as num?)?.toInt(),
       subscribers: (json['subscribers'] as num?)?.toInt(),
       distance: (json['distance'] as num?)?.toDouble(),
-      membershipId: json['membership_id'] as String?,
-      membershipTitle: json['membership_title'] as String?,
-      membershipColor: json['membership_color'] as String?,
+      membership_id: json['membership_id'] as String?,
+      membership_title: json['membership_title'] as String? ?? 'Domestic Brand',
+      membership_color: json['membership_color'] as String?,
     );
 
 Map<String, dynamic> _$$MyProductDeailModelImplToJson(
@@ -328,9 +326,9 @@ Map<String, dynamic> _$$MyProductDeailModelImplToJson(
       'storyCount': instance.storyCount,
       'subscribers': instance.subscribers,
       'distance': instance.distance,
-      'membership_id': instance.membershipId,
-      'membership_title': instance.membershipTitle,
-      'membership_color': instance.membershipColor,
+      'membership_id': instance.membership_id,
+      'membership_title': instance.membership_title,
+      'membership_color': instance.membership_color,
     };
 
 _$SimilarProductsImpl _$$SimilarProductsImplFromJson(

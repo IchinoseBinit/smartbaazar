@@ -8,6 +8,7 @@ class AdditionalDetailsWidget extends StatelessWidget {
   final dynamic desp; // Could be a string or a map
   final List<FieldOption>? options; // List of options for the field
   final dynamic defaultValue; // Could be a string or a map
+  final bool searchByOption; // New flag to check option by value
 
   const AdditionalDetailsWidget({
     super.key,
@@ -15,86 +16,86 @@ class AdditionalDetailsWidget extends StatelessWidget {
     required this.desp,
     this.options,
     this.defaultValue,
+    this.searchByOption = false, // Default is false (search by ID)
   });
 
   @override
   Widget build(BuildContext context) {
-    // Parse the default value if it's a string
-    int? parseDefaultValue() {
-      if (defaultValue is String) {
-        return int.tryParse(defaultValue);
-      } else if (defaultValue is Map<String, dynamic> &&
-          defaultValue.values.isNotEmpty) {
-        final firstEntry = defaultValue.values.first;
-        if (firstEntry is Map<String, dynamic> &&
-            firstEntry.containsKey('id')) {
-          return firstEntry['id'] as int?;
-        }
+    // Parse defaultValue as a list of integers or strings
+    List<dynamic> parseDefaultValues() {
+      if (defaultValue is String && defaultValue.isNotEmpty) {
+        return defaultValue
+            .split(',') // Split by comma
+            .map((e) => e.trim()) // Trim spaces
+            .toList();
       }
-      return null;
+      return [];
     }
 
-    // Determine the appropriate value to display
     String getDisplayValue() {
       print("Options: $options, Default Value: $defaultValue");
 
-      final parsedDefaultValue = parseDefaultValue();
+      final parsedDefaultValues = parseDefaultValues();
 
       if (options != null && options!.isNotEmpty) {
-        // Find the option that matches the parsed default value
-        final matchingOption = options!.firstWhere(
-          (option) => option.id == parsedDefaultValue,
-          orElse: () => const FieldOption(value: null),
-        );
-        return matchingOption.value ?? "No details available";
-      } else if (desp is String) {
-        return desp;
-      } else if (desp is Map<String, dynamic> && desp.values.isNotEmpty) {
-        final firstEntry = desp.values.first;
-        if (firstEntry is Map<String, dynamic> &&
-            firstEntry.containsKey('value')) {
-          return firstEntry['value'] ?? "No details available";
+        final matchingOptions = options!
+            .where((option) {
+              if (searchByOption) {
+                return parsedDefaultValues.contains(option.value);
+              } else {
+                return parsedDefaultValues.contains(option.id.toString());
+              }
+            })
+            .map((option) => option.value)
+            .where((value) => value != null)
+            .cast<String>()
+            .toList();
+
+        // If there are matching options, return them; otherwise, return defaultValue
+        if (matchingOptions.isNotEmpty) {
+          return matchingOptions.join(', '); // Join values with comma
         }
       }
-      return "No details available";
+
+      // If no matching option is found, return defaultValue
+      return defaultValue?.toString() ?? "No details available";
     }
 
     final displayValue = getDisplayValue();
 
-  return Container(
-  margin: EdgeInsets.symmetric(horizontal: 10.w),
-  padding: const EdgeInsets.all(10),
-  width: double.infinity,
-  color: const Color(0xFFf9fbfe),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded( // Ensures the title doesn't overflow
-        child: Text(
-          title,
-          style: headerstyle.copyWith(
-            fontWeight: FontWeight.bold,
-            color: ColorConstant.blackColor,
-            fontSize: 13,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: const EdgeInsets.all(10),
+      width: double.infinity,
+      color: const Color(0xFFf9fbfe),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: headerstyle.copyWith(
+                fontWeight: FontWeight.bold,
+                color: ColorConstant.blackColor,
+                fontSize: 13,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
-          overflow: TextOverflow.ellipsis, // Prevents overflow
-          maxLines: 1, // Limits to one line
-        ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              displayValue,
+              style: TextStyle(fontSize: 12.sp, color: Colors.black),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ],
       ),
-      const SizedBox(width: 8), // Add spacing
-      Expanded( // Ensures the value text doesn't overflow
-        child: Text(
-          displayValue,
-          style: TextStyle(fontSize: 12.sp, color: Colors.black),
-          overflow: TextOverflow.ellipsis, // Prevents overflow
-          maxLines: 1, // Limits to one line
-          textAlign: TextAlign.end, // Aligns text to the right
-        ),
-      ),
-    ],
-  ),
-);
-
+    );
   }
 }

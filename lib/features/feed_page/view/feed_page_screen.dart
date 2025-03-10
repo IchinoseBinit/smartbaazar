@@ -5,12 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
@@ -74,6 +78,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
   Map<String, String>? dropdownValue;
   int? postypeid = 0;
   final _debouncer = BehaviorSubject<String>();
+  final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
 
   final List<Map<String, dynamic>> _items = [
     {
@@ -122,8 +127,18 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       'screen': const EventsScreen()
     },
   ];
+  // Future<void> load() async {
+  //   SharedPreferences prf = await SharedPreferences.getInstance();
+  //   print('paka ${prf.getString('photo')}');
+
+  //   SmartClient.token != ""
+  //       ? SmartClient.userPhoto = prf.getString('photo') ?? ''
+  //       : SmartClient.userPhoto = prf.getString('photo')!;
+  // }
+
   @override
   void initState() {
+   // load();
     super.initState();
 
     // Initialize the PageController with the selected page
@@ -332,170 +347,175 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                             dropdownValueNotifier: dropdownValueNotifier,
                             filteredSuggestions: [])),
                     if (isSliverAppBarVisible)
-                      SliverAppBar(
-                          expandedHeight: 90.h,
-                          floating: false,
-                          pinned: true,
-                          flexibleSpace: AnimatedContainer(
-                            padding: EdgeInsets.zero,
-                            duration: const Duration(milliseconds: 150),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(40),
-                                    bottomRight: Radius.circular(40)),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      // Color(0xFF681b4e),
-                                      // Color(0xFF392574),
-                                      // Color(0xFF681b4e),
-                                      Color(0xff651c50),
-                                      Color(0xff54225f),
-                                      // Color(0xFF392574).
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(4, (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                          _pageController.animateToPage(
-                                            index,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          decoration: BoxDecoration(
-                                            color: selectedIndex == index
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                  SizedBox(
-                                    height: 15.h,
-                                  ),
-                                  SizedBox(
-                                    height: 55.h,
-                                    child: PageView.builder(
-                                      itemCount: _items.length,
-                                      padEnds: false,
-                                      controller: _pageController,
-                                      onPageChanged: (value) {
+                        SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: 150.h,
+                      floating: false,
+                      pinned: false,
+                      flexibleSpace: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        duration: const Duration(milliseconds: 150),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  // Color(0xFF681b4e),
+                                  // Color(0xFF392574),
+                                  // Color(0xFF681b4e),
+                                  Color(0xff651c50),
+                                  Color(0xff54225f),
+                                  // Color(0xFF392574).
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
                                         ref
                                             .read(
                                                 _selectedIndexProvider.notifier)
-                                            .state = value;
-                                      },
-                                      itemBuilder: (context, index) {
-                                        Map<String, dynamic> data =
-                                            _items[index];
-
-                                        // Highlight only when index == 4
-                                        bool isActive = index == 1;
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ref
-                                                .read(_selectedIndexProvider
-                                                    .notifier)
-                                                .state = index;
-                                          },
-                                          child: AnimatedContainer(
-                                            padding: EdgeInsets.zero,
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            alignment: Alignment.center,
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          data['screen']),
-                                                );
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  if (data['icon']
-                                                      .toString()
-                                                      .endsWith('.svg'))
-                                                    SvgPicture.asset(
-                                                      data['icon'],
-                                                      alignment:
-                                                          Alignment.center,
-                                                      fit: BoxFit.contain,
-                                                      theme: const SvgTheme(
-                                                          currentColor: Color(
-                                                              0xffdd9d9d9)),
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                      width: 20,
-                                                      height: 20,
-                                                    )
-                                                  else
-                                                    Image.asset(
-                                                      data['icon'],
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                      width: 20,
-                                                      height: 20,
-                                                    ),
-                                                  const SizedBox(height: 8),
-                                                  Text(
-                                                    data['label'],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                            .state = index;
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
                                         );
                                       },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                ],
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ),
                               ),
-                            ),
-                          )),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              SizedBox(
+                                height: 55.h,
+                                child: PageView.builder(
+                                  itemCount: _items.length,
+                                  padEnds: false,
+                                  controller: _pageController,
+                                  onPageChanged: (value) {
+                                    ref
+                                        .read(_selectedIndexProvider.notifier)
+                                        .state = value;
+                                  },
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> data = _items[index];
+
+                                    // Highlight only when index == 4
+                                    bool isActive = index == 1;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                      },
+                                      child: AnimatedContainer(
+                                        margin: EdgeInsets.only(left: 16.w),
+                                        padding: EdgeInsets.zero,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      data['screen']),
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (data['icon']
+                                                  .toString()
+                                                  .endsWith('.svg'))
+                                                SvgPicture.asset(
+                                                  data['icon'],
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  theme: const SvgTheme(
+                                                      currentColor:
+                                                          Color(0xffdd9d9d9)),
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              else
+                                                Image.asset(
+                                                  data['icon'],
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                data['label'],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Image.asset(
+                                  height: 60.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  'assets/images/circle.png')
+                            ],
+                          ),
+                        ),
+                      )),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8, top: 11),
@@ -568,7 +588,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                   ],
                 ),
                 valuenotifilersidebutton(
-                    showSideBar: showSideBar, isSectionsVisible: true),
+                    showSideBar: _showSideBar, isSectionsVisible: true),
                 Positioned(
                   top: 65,
                   left: 48,
@@ -670,7 +690,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
-        spacing: 5.h,
+        // spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(
@@ -762,7 +782,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                     const Center(child: Text("please login"))),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
+            padding: EdgeInsets.symmetric(vertical: 5.h),
             child: asyncFollowingFeedContent.when(
                 data: (feedData) {
                   if (feedData.data != null &&
@@ -842,7 +862,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                 error: (error, stack) =>
                     const Center(child: Text("please login"))),
           ),
-          SizedBox(height: 30.h),
+          // SizedBox(height: 10.h),
         ],
       ),
     );
@@ -862,7 +882,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
       physics: const NeverScrollableScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 5.h,
+        //  spacing: 5.h,
         children: [
           SizedBox(height: 5.h),
           Padding(
@@ -953,7 +973,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                       final userDetails = feedItem.userDetail;
                       final interested = feedItem.interested;
                       final feedDetail = feedItem.feedDetail;
-                      // print("kala ${feedItem.wow_status}");
+                       print("kala ${feedItem.wow_status} and title ${feedItem.id}");
 
                       // return _buildFeedItem(feedItems[index]);
                       return Padding(
@@ -965,6 +985,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             FeedContainer(
+
                               productinfo: feedItem.captionTitle,
                               refreshprovider: () async {
                                 refreshprovider();
@@ -1055,21 +1076,29 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "") {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -1092,149 +1121,255 @@ class valuenotifilersidebutton extends StatelessWidget {
                           SizedBox(height: 6.h),
                           Hero(
                             tag: 'FeedHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                   onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

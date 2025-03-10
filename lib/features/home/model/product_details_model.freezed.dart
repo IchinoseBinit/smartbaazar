@@ -749,16 +749,16 @@ mixin _$PostResult {
   int? get commentCount => throw _privateConstructorUsedError;
   ExtraModel? get extra => throw _privateConstructorUsedError;
   Ratings? get ratings => throw _privateConstructorUsedError;
+  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
   LocationModel? get location => throw _privateConstructorUsedError;
   usermodel? get user => throw _privateConstructorUsedError;
   @JsonKey(name: 'detail_user')
-  SimilarProducts? get userDetails => throw _privateConstructorUsedError;
+  SimilarProducts? get detailuser => throw _privateConstructorUsedError;
   List<Picture>? get pictures => throw _privateConstructorUsedError;
   List<SavedByUser>? get savedByLoggedUser =>
       throw _privateConstructorUsedError;
   PostType? get postType => throw _privateConstructorUsedError;
   City? get city => throw _privateConstructorUsedError;
-  MyProductDeailModel? get user_details => throw _privateConstructorUsedError;
   int? get similarProductCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_comment')
   List<RatingComment> get ratingComment => throw _privateConstructorUsedError;
@@ -844,14 +844,14 @@ abstract class $PostResultCopyWith<$Res> {
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      MyProductDeailModel? user_details,
       LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? detailuser,
       List<Picture>? pictures,
       List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
-      MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> live_prizes,
@@ -861,12 +861,12 @@ abstract class $PostResultCopyWith<$Res> {
 
   $ExtraModelCopyWith<$Res>? get extra;
   $RatingsCopyWith<$Res>? get ratings;
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
   $LocationModelCopyWith<$Res>? get location;
   $usermodelCopyWith<$Res>? get user;
-  $SimilarProductsCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get detailuser;
   $PostTypeCopyWith<$Res>? get postType;
   $CityCopyWith<$Res>? get city;
-  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -944,14 +944,14 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user_details = freezed,
     Object? location = freezed,
     Object? user = freezed,
-    Object? userDetails = freezed,
+    Object? detailuser = freezed,
     Object? pictures = freezed,
     Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? live_prizes = null,
@@ -1200,6 +1200,10 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -1208,9 +1212,9 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      userDetails: freezed == userDetails
-          ? _value.userDetails
-          : userDetails // ignore: cast_nullable_to_non_nullable
+      detailuser: freezed == detailuser
+          ? _value.detailuser
+          : detailuser // ignore: cast_nullable_to_non_nullable
               as SimilarProducts?,
       pictures: freezed == pictures
           ? _value.pictures
@@ -1228,10 +1232,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as MyProductDeailModel?,
       similarProductCount: freezed == similarProductCount
           ? _value.similarProductCount
           : similarProductCount // ignore: cast_nullable_to_non_nullable
@@ -1287,8 +1287,18 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     });
   }
 
-  /// Create a copy of PostResult
-  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MyProductDeailModelCopyWith<$Res>? get user_details {
+    if (_value.user_details == null) {
+      return null;
+    }
+
+    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
+      return _then(_value.copyWith(user_details: value) as $Val);
+    });
+  }
+
   @override
   @pragma('vm:prefer-inline')
   $LocationModelCopyWith<$Res>? get location {
@@ -1319,13 +1329,13 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $SimilarProductsCopyWith<$Res>? get userDetails {
-    if (_value.userDetails == null) {
+  $SimilarProductsCopyWith<$Res>? get detailuser {
+    if (_value.detailuser == null) {
       return null;
     }
 
-    return $SimilarProductsCopyWith<$Res>(_value.userDetails!, (value) {
-      return _then(_value.copyWith(userDetails: value) as $Val);
+    return $SimilarProductsCopyWith<$Res>(_value.detailuser!, (value) {
+      return _then(_value.copyWith(detailuser: value) as $Val);
     });
   }
 
@@ -1354,20 +1364,6 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
 
     return $CityCopyWith<$Res>(_value.city!, (value) {
       return _then(_value.copyWith(city: value) as $Val);
-    });
-  }
-
-  /// Create a copy of PostResult
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $MyProductDeailModelCopyWith<$Res>? get user_details {
-    if (_value.user_details == null) {
-      return null;
-    }
-
-    return $MyProductDeailModelCopyWith<$Res>(_value.user_details!, (value) {
-      return _then(_value.copyWith(user_details: value) as $Val);
     });
   }
 }
@@ -1441,14 +1437,14 @@ abstract class _$$PostResultImplCopyWith<$Res>
       int? commentCount,
       ExtraModel? extra,
       Ratings? ratings,
+      MyProductDeailModel? user_details,
       LocationModel? location,
       usermodel? user,
-      @JsonKey(name: 'detail_user') SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') SimilarProducts? detailuser,
       List<Picture>? pictures,
       List<SavedByUser>? savedByLoggedUser,
       PostType? postType,
       City? city,
-      MyProductDeailModel? user_details,
       int? similarProductCount,
       @JsonKey(name: 'rating_comment') List<RatingComment> ratingComment,
       List<LivePrize> live_prizes,
@@ -1461,17 +1457,17 @@ abstract class _$$PostResultImplCopyWith<$Res>
   @override
   $RatingsCopyWith<$Res>? get ratings;
   @override
+  $MyProductDeailModelCopyWith<$Res>? get user_details;
+  @override
   $LocationModelCopyWith<$Res>? get location;
   @override
   $usermodelCopyWith<$Res>? get user;
   @override
-  $SimilarProductsCopyWith<$Res>? get userDetails;
+  $SimilarProductsCopyWith<$Res>? get detailuser;
   @override
   $PostTypeCopyWith<$Res>? get postType;
   @override
   $CityCopyWith<$Res>? get city;
-  @override
-  $MyProductDeailModelCopyWith<$Res>? get user_details;
 }
 
 /// @nodoc
@@ -1547,14 +1543,14 @@ class __$$PostResultImplCopyWithImpl<$Res>
     Object? commentCount = freezed,
     Object? extra = freezed,
     Object? ratings = freezed,
+    Object? user_details = freezed,
     Object? location = freezed,
     Object? user = freezed,
-    Object? userDetails = freezed,
+    Object? detailuser = freezed,
     Object? pictures = freezed,
     Object? savedByLoggedUser = freezed,
     Object? postType = freezed,
     Object? city = freezed,
-    Object? user_details = freezed,
     Object? similarProductCount = freezed,
     Object? ratingComment = null,
     Object? live_prizes = null,
@@ -1803,6 +1799,10 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.ratings
           : ratings // ignore: cast_nullable_to_non_nullable
               as Ratings?,
+      user_details: freezed == user_details
+          ? _value.user_details
+          : user_details // ignore: cast_nullable_to_non_nullable
+              as MyProductDeailModel?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -1811,9 +1811,9 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as usermodel?,
-      userDetails: freezed == userDetails
-          ? _value.userDetails
-          : userDetails // ignore: cast_nullable_to_non_nullable
+      detailuser: freezed == detailuser
+          ? _value.detailuser
+          : detailuser // ignore: cast_nullable_to_non_nullable
               as SimilarProducts?,
       pictures: freezed == pictures
           ? _value._pictures
@@ -1831,10 +1831,6 @@ class __$$PostResultImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as City?,
-      user_details: freezed == user_details
-          ? _value.user_details
-          : user_details // ignore: cast_nullable_to_non_nullable
-              as MyProductDeailModel?,
       similarProductCount: freezed == similarProductCount
           ? _value.similarProductCount
           : similarProductCount // ignore: cast_nullable_to_non_nullable
@@ -1928,14 +1924,14 @@ class _$PostResultImpl implements _PostResult {
       required this.commentCount,
       required this.extra,
       this.ratings,
+      required this.user_details,
       this.location,
       this.user,
-      @JsonKey(name: 'detail_user') required this.userDetails,
+      @JsonKey(name: 'detail_user') required this.detailuser,
       required final List<Picture>? pictures,
       final List<SavedByUser>? savedByLoggedUser,
       this.postType,
       this.city,
-      required this.user_details,
       this.similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
@@ -2111,12 +2107,14 @@ class _$PostResultImpl implements _PostResult {
   @override
   final Ratings? ratings;
   @override
+  final MyProductDeailModel? user_details;
+  @override
   final LocationModel? location;
   @override
   final usermodel? user;
   @override
   @JsonKey(name: 'detail_user')
-  final SimilarProducts? userDetails;
+  final SimilarProducts? detailuser;
   final List<Picture>? _pictures;
   @override
   List<Picture>? get pictures {
@@ -2142,8 +2140,6 @@ class _$PostResultImpl implements _PostResult {
   final PostType? postType;
   @override
   final City? city;
-  @override
-  final MyProductDeailModel? user_details;
   @override
   final int? similarProductCount;
   final List<RatingComment> _ratingComment;
@@ -2199,7 +2195,7 @@ class _$PostResultImpl implements _PostResult {
 
   @override
   String toString() {
-    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, location: $location, user: $user, userDetails: $userDetails, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, user_details: $user_details, similarProductCount: $similarProductCount, ratingComment: $ratingComment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
+    return 'PostResult(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, userPhotoUrl: $userPhotoUrl, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, discount_percentage: $discount_percentage, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lat: $lat, lon: $lon, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, image: $image, archivedAt: $archivedAt, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, b2bPricing: $b2bPricing, offers: $offers, wow: $wow, sku: $sku, createdAt: $createdAt, updatedAt: $updatedAt, slug: $slug, createdAtFormatted: $createdAtFormatted, commentCount: $commentCount, extra: $extra, ratings: $ratings, user_details: $user_details, location: $location, user: $user, detailuser: $detailuser, pictures: $pictures, savedByLoggedUser: $savedByLoggedUser, postType: $postType, city: $city, similarProductCount: $similarProductCount, ratingComment: $ratingComment, live_prizes: $live_prizes, deals: $deals, shop: $shop, feed_post: $feed_post)';
   }
 
   @override
@@ -2298,19 +2294,19 @@ class _$PostResultImpl implements _PostResult {
                 other.commentCount == commentCount) &&
             (identical(other.extra, extra) || other.extra == extra) &&
             (identical(other.ratings, ratings) || other.ratings == ratings) &&
+            (identical(other.user_details, user_details) ||
+                other.user_details == user_details) &&
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.userDetails, userDetails) ||
-                other.userDetails == userDetails) &&
+            (identical(other.detailuser, detailuser) ||
+                other.detailuser == detailuser) &&
             const DeepCollectionEquality().equals(other._pictures, _pictures) &&
             const DeepCollectionEquality()
                 .equals(other._savedByLoggedUser, _savedByLoggedUser) &&
             (identical(other.postType, postType) ||
                 other.postType == postType) &&
             (identical(other.city, city) || other.city == city) &&
-            (identical(other.user_details, user_details) ||
-                other.user_details == user_details) &&
             (identical(other.similarProductCount, similarProductCount) ||
                 other.similarProductCount == similarProductCount) &&
             const DeepCollectionEquality()
@@ -2387,14 +2383,14 @@ class _$PostResultImpl implements _PostResult {
         commentCount,
         extra,
         ratings,
+        user_details,
         location,
         user,
-        userDetails,
+        detailuser,
         const DeepCollectionEquality().hash(_pictures),
         const DeepCollectionEquality().hash(_savedByLoggedUser),
         postType,
         city,
-        user_details,
         similarProductCount,
         const DeepCollectionEquality().hash(_ratingComment),
         const DeepCollectionEquality().hash(_live_prizes),
@@ -2483,14 +2479,14 @@ abstract class _PostResult implements PostResult {
       required final int? commentCount,
       required final ExtraModel? extra,
       final Ratings? ratings,
+      required final MyProductDeailModel? user_details,
       final LocationModel? location,
       final usermodel? user,
-      @JsonKey(name: 'detail_user') required final SimilarProducts? userDetails,
+      @JsonKey(name: 'detail_user') required final SimilarProducts? detailuser,
       required final List<Picture>? pictures,
       final List<SavedByUser>? savedByLoggedUser,
       final PostType? postType,
       final City? city,
-      required final MyProductDeailModel? user_details,
       final int? similarProductCount,
       @JsonKey(name: 'rating_comment')
       required final List<RatingComment> ratingComment,
@@ -2650,12 +2646,14 @@ abstract class _PostResult implements PostResult {
   @override
   Ratings? get ratings;
   @override
+  MyProductDeailModel? get user_details;
+  @override
   LocationModel? get location;
   @override
   usermodel? get user;
   @override
   @JsonKey(name: 'detail_user')
-  SimilarProducts? get userDetails;
+  SimilarProducts? get detailuser;
   @override
   List<Picture>? get pictures;
   @override
@@ -2664,8 +2662,6 @@ abstract class _PostResult implements PostResult {
   PostType? get postType;
   @override
   City? get city;
-  @override
-  MyProductDeailModel? get user_details;
   @override
   int? get similarProductCount;
   @override
@@ -2694,8 +2690,7 @@ SavedByUser _$SavedByUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SavedByUser {
-  @JsonKey(name: 'id')
-  int? get id => throw _privateConstructorUsedError;
+//   @JsonKey(name: 'id') String? id,
   @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'username')
@@ -2722,8 +2717,7 @@ abstract class $SavedByUserCopyWith<$Res> {
       _$SavedByUserCopyWithImpl<$Res, SavedByUser>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
+      {@JsonKey(name: 'name') String? name,
       @JsonKey(name: 'username') String? username,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'post_id') String? postId});
@@ -2744,17 +2738,12 @@ class _$SavedByUserCopyWithImpl<$Res, $Val extends SavedByUser>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? name = freezed,
     Object? username = freezed,
     Object? userId = freezed,
     Object? postId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -2784,8 +2773,7 @@ abstract class _$$SavedByUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int? id,
-      @JsonKey(name: 'name') String? name,
+      {@JsonKey(name: 'name') String? name,
       @JsonKey(name: 'username') String? username,
       @JsonKey(name: 'user_id') String? userId,
       @JsonKey(name: 'post_id') String? postId});
@@ -2804,17 +2792,12 @@ class __$$SavedByUserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? name = freezed,
     Object? username = freezed,
     Object? userId = freezed,
     Object? postId = freezed,
   }) {
     return _then(_$SavedByUserImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -2839,8 +2822,7 @@ class __$$SavedByUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SavedByUserImpl implements _SavedByUser {
   const _$SavedByUserImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'name') this.name,
+      {@JsonKey(name: 'name') this.name,
       @JsonKey(name: 'username') this.username,
       @JsonKey(name: 'user_id') this.userId,
       @JsonKey(name: 'post_id') this.postId});
@@ -2848,9 +2830,7 @@ class _$SavedByUserImpl implements _SavedByUser {
   factory _$SavedByUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$SavedByUserImplFromJson(json);
 
-  @override
-  @JsonKey(name: 'id')
-  final int? id;
+//   @JsonKey(name: 'id') String? id,
   @override
   @JsonKey(name: 'name')
   final String? name;
@@ -2866,7 +2846,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
   @override
   String toString() {
-    return 'SavedByUser(id: $id, name: $name, username: $username, userId: $userId, postId: $postId)';
+    return 'SavedByUser(name: $name, username: $username, userId: $userId, postId: $postId)';
   }
 
   @override
@@ -2874,7 +2854,6 @@ class _$SavedByUserImpl implements _SavedByUser {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SavedByUserImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.username, username) ||
                 other.username == username) &&
@@ -2884,8 +2863,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, username, userId, postId);
+  int get hashCode => Object.hash(runtimeType, name, username, userId, postId);
 
   /// Create a copy of SavedByUser
   /// with the given fields replaced by the non-null parameter values.
@@ -2905,8 +2883,7 @@ class _$SavedByUserImpl implements _SavedByUser {
 
 abstract class _SavedByUser implements SavedByUser {
   const factory _SavedByUser(
-      {@JsonKey(name: 'id') final int? id,
-      @JsonKey(name: 'name') final String? name,
+      {@JsonKey(name: 'name') final String? name,
       @JsonKey(name: 'username') final String? username,
       @JsonKey(name: 'user_id') final String? userId,
       @JsonKey(name: 'post_id') final String? postId}) = _$SavedByUserImpl;
@@ -2914,10 +2891,7 @@ abstract class _SavedByUser implements SavedByUser {
   factory _SavedByUser.fromJson(Map<String, dynamic> json) =
       _$SavedByUserImpl.fromJson;
 
-  @override
-  @JsonKey(name: 'id')
-  int? get id;
-  @override
+  @override //   @JsonKey(name: 'id') String? id,
   @JsonKey(name: 'name')
   String? get name;
   @override
@@ -3334,12 +3308,9 @@ mixin _$MyProductDeailModel {
   int? get storyCount => throw _privateConstructorUsedError;
   int? get subscribers => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_id')
-  String? get membershipId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor => throw _privateConstructorUsedError;
+  String? get membership_id => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
 
   /// Serializes this MyProductDeailModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -3367,9 +3338,9 @@ abstract class $MyProductDeailModelCopyWith<$Res> {
       int? storyCount,
       int? subscribers,
       double? distance,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
@@ -3396,9 +3367,9 @@ class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
     Object? storyCount = freezed,
     Object? subscribers = freezed,
     Object? distance = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -3437,17 +3408,17 @@ class _$MyProductDeailModelCopyWithImpl<$Res, $Val extends MyProductDeailModel>
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -3471,9 +3442,9 @@ abstract class _$$MyProductDeailModelImplCopyWith<$Res>
       int? storyCount,
       int? subscribers,
       double? distance,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
@@ -3498,9 +3469,9 @@ class __$$MyProductDeailModelImplCopyWithImpl<$Res>
     Object? storyCount = freezed,
     Object? subscribers = freezed,
     Object? distance = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
     return _then(_$MyProductDeailModelImpl(
       name: freezed == name
@@ -3539,17 +3510,17 @@ class __$$MyProductDeailModelImplCopyWithImpl<$Res>
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -3568,9 +3539,9 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
       this.storyCount,
       this.subscribers,
       this.distance,
-      @JsonKey(name: 'membership_id') this.membershipId,
-      @JsonKey(name: 'membership_title') this.membershipTitle,
-      @JsonKey(name: 'membership_color') this.membershipColor});
+      this.membership_id,
+      this.membership_title = 'Domestic Brand',
+      this.membership_color});
 
   factory _$MyProductDeailModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyProductDeailModelImplFromJson(json);
@@ -3596,18 +3567,16 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
   @override
   final double? distance;
   @override
-  @JsonKey(name: 'membership_id')
-  final String? membershipId;
+  final String? membership_id;
   @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
+  @JsonKey()
+  final String? membership_title;
   @override
-  @JsonKey(name: 'membership_color')
-  final String? membershipColor;
+  final String? membership_color;
 
   @override
   String toString() {
-    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membershipId: $membershipId, membershipTitle: $membershipTitle, membershipColor: $membershipColor)';
+    return 'MyProductDeailModel(name: $name, photo: $photo, userPhotoUrl: $userPhotoUrl, hasSponsoredGifts: $hasSponsoredGifts, livePrizes: $livePrizes, productCount: $productCount, storyCount: $storyCount, subscribers: $subscribers, distance: $distance, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
   }
 
   @override
@@ -3631,12 +3600,12 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
                 other.subscribers == subscribers) &&
             (identical(other.distance, distance) ||
                 other.distance == distance) &&
-            (identical(other.membershipId, membershipId) ||
-                other.membershipId == membershipId) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle) &&
-            (identical(other.membershipColor, membershipColor) ||
-                other.membershipColor == membershipColor));
+            (identical(other.membership_id, membership_id) ||
+                other.membership_id == membership_id) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title) &&
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3652,9 +3621,9 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
       storyCount,
       subscribers,
       distance,
-      membershipId,
-      membershipTitle,
-      membershipColor);
+      membership_id,
+      membership_title,
+      membership_color);
 
   /// Create a copy of MyProductDeailModel
   /// with the given fields replaced by the non-null parameter values.
@@ -3675,19 +3644,18 @@ class _$MyProductDeailModelImpl implements _MyProductDeailModel {
 
 abstract class _MyProductDeailModel implements MyProductDeailModel {
   const factory _MyProductDeailModel(
-          {final String? name,
-          final String? photo,
-          @JsonKey(name: 'user_photo_url') final String? userPhotoUrl,
-          @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
-          final int? livePrizes,
-          final int? productCount,
-          final int? storyCount,
-          final int? subscribers,
-          final double? distance,
-          @JsonKey(name: 'membership_id') final String? membershipId,
-          @JsonKey(name: 'membership_title') final String? membershipTitle,
-          @JsonKey(name: 'membership_color') final String? membershipColor}) =
-      _$MyProductDeailModelImpl;
+      {final String? name,
+      final String? photo,
+      @JsonKey(name: 'user_photo_url') final String? userPhotoUrl,
+      @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
+      final int? livePrizes,
+      final int? productCount,
+      final int? storyCount,
+      final int? subscribers,
+      final double? distance,
+      final String? membership_id,
+      final String? membership_title,
+      final String? membership_color}) = _$MyProductDeailModelImpl;
 
   factory _MyProductDeailModel.fromJson(Map<String, dynamic> json) =
       _$MyProductDeailModelImpl.fromJson;
@@ -3713,17 +3681,11 @@ abstract class _MyProductDeailModel implements MyProductDeailModel {
   @override
   double? get distance;
   @override
-  @JsonKey(name: 'membership_id')
-  String? get membershipId;
+  String? get membership_id;
   @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
+  String? get membership_title;
   @override
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor;
-
-  /// Create a copy of MyProductDeailModel
-  /// with the given fields replaced by the non-null parameter values.
+  String? get membership_color;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MyProductDeailModelImplCopyWith<_$MyProductDeailModelImpl> get copyWith =>

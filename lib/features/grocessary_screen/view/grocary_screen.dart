@@ -12,6 +12,12 @@ import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
+import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
+import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
+import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
@@ -246,8 +252,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
   @override
   Widget build(BuildContext context) {
+    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
+
     var homecategory = ref.watch(homeCategoryProvider);
-      Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
+    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
       } catch (e) {
@@ -326,35 +334,39 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           dropdownValueNotifier: dropdownValueNotifier,
                           filteredSuggestions: [])),
                   if (isSliverAppBarVisible)
-                    SliverAppBar(
-                          automaticallyImplyLeading: false,
-                        expandedHeight: 90.h,
-                        floating: false,
-                        pinned: false,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: const Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
+                       SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: 150.h,
+                      floating: false,
+                      pinned: false,
+                      flexibleSpace: AnimatedContainer(
+                        padding: EdgeInsets.zero,
+                        duration: const Duration(milliseconds: 150),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(40),
+                                bottomRight: Radius.circular(40)),
+                            gradient: LinearGradient(
+                                colors: [
+                                  // Color(0xFF681b4e),
+                                  // Color(0xFF392574),
+                                  // Color(0xFF681b4e),
+                                  Color(0xff651c50),
+                                  Color(0xff54225f),
+                                  // Color(0xFF392574).
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: List.generate(4, (index) {
                                     return GestureDetector(
@@ -385,108 +397,112 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     );
                                   }),
                                 ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = value;
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
+                              ),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                              SizedBox(
+                                height: 55.h,
+                                child: PageView.builder(
+                                  itemCount: _items.length,
+                                  padEnds: false,
+                                  controller: _pageController,
+                                  onPageChanged: (value) {
+                                    ref
+                                        .read(_selectedIndexProvider.notifier)
+                                        .state = value;
+                                  },
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> data = _items[index];
 
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                        },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
+                                    // Highlight only when index == 4
+                                    bool isActive = index == 1;
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                      },
+                                      child: AnimatedContainer(
+                                        margin: EdgeInsets.only(left: 16.w),
+                                        padding: EdgeInsets.zero,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        alignment: Alignment.center,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      data['screen']),
+                                            );
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              if (data['icon']
+                                                  .toString()
+                                                  .endsWith('.svg'))
+                                                SvgPicture.asset(
+                                                  data['icon'],
+                                                  alignment: Alignment.center,
+                                                  fit: BoxFit.contain,
+                                                  theme: const SvgTheme(
+                                                      currentColor:
+                                                          Color(0xffdd9d9d9)),
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
+                                                )
+                                              else
+                                                Image.asset(
+                                                  data['icon'],
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                  width: 20,
+                                                  height: 20,
                                                 ),
-                                              ],
-                                            ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                data['label'],
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isActive
+                                                      ? Colors.amber
+                                                      : const Color(0xffD9D9D9)
+                                                          .withOpacity(0.5),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Image.asset(
+                                  height: 60.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  'assets/images/circle.png')
+                            ],
                           ),
-                        )),
+                        ),
+                      )),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 11, top: 11),
@@ -511,90 +527,195 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        homecategory.when(
-                          data: (feedStoryData) {
-                            List<HomeStoryPost>? homeStory =
-                                feedStoryData.home_story?.story.posts;
-                            // print("rada ${feedStoryData.home_story!.story.posts?.length}");
+                    child: asyncForYouStoryContent.when(
+                      data: (feedStoryData) {
+                        final feedStoryContent = feedStoryData.data?.feedstory;
+                        final posts = feedStoryContent?.posts ?? [];
 
-                            if (homeStory != null) {
-                              final posts = homeStory;
+                        if (posts.isEmpty) {
+                          return const Center(
+                              child: Text("No stories available"));
+                        }
 
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: SizedBox(
-                                  height: 100.h,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: posts.length,
-                                    itemBuilder: (context, index) {
-                                      final story = posts[index];
-
-                                      return HomePageStoryContainer(
-                                        feedStoryContent: Story(
-                                            HomeStoryAllPosts: feedStoryData
-                                                .home_story?.story.posts
-                                                ?.map((e) => HomeStoryAllPost(
-                                                    hasSponsoredGifts:
-                                                        e.hasSponsoredGifts,
-                                                    id: e.id,
-                                                    image: e.image,
-                                                    storyCount: e.storyCount,
-                                                    title: e.title,
-                                                    vendorId: e.vendorId,
-                                                    vendorImage: e.vendorImage,
-                                                    vendorName: e.vendorName))
-                                                .toList()),
-                                        userId: story.id,
-                                        index: index,
-                                        vendorName: story.vendorName ??
-                                            "Unknown Vendor",
-                                        vendorImage: story.vendorImage ??
-                                            "https://example.com/default-image.png",
-                                        storyCount: story.storyCount ?? 0,
-                                        showGift:
-                                            story.hasSponsoredGifts ?? false,
-                                      );
-                                    },
-                                  ),
+                        return SizedBox(
+                          height: 100.h,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                ListView.builder(
+                                  padding: EdgeInsets.only(left: 3.w),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: posts.length,
+                                  itemBuilder: (context, index) {
+                                    final story = posts[index];
+                                    return FeedStoryAddWidget(
+                                      index: index,
+                                      vendorName:
+                                          story.vendorName ?? "Unknown Vendor",
+                                      vendorImage: story.vendorImage ??
+                                          "https://example.com/default-image.png",
+                                      storyCount: story.storyCount ?? 0,
+                                      showGift:
+                                          story.hasSponsoredGifts ?? false,
+                                      feedStoryContent: feedStoryContent!,
+                                      userId: story.vendorId ?? '',
+                                    );
+                                  },
                                 ),
-                              );
-                            }
-
-                            return const Center(
-                              child: Text('No stories available.'),
-                            );
-                          },
-                          loading: () => SizedBox(
-                            height: 100.h,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5, // Number of shimmer placeholders
-                              itemBuilder: (context, index) =>
-                                  Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  width: 70.w,
-                                  height: 100.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      loading: () => SizedBox(
+                        height: 40.h,
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: 80,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
-                          error: (error, stack) =>
-                              Center(child: Text('Error: $error')),
+                        ),
+                      ),
+                      error: (error, _) => Center(
+                        child: Text(
+                          error.toString().contains('Session has expired')
+                              ? 'Please log in again.'
+                              : 'Error: $error',
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 6.h,
+                        ),
+                        asyncbajarValue.when(
+                          data: (data) {
+                            if (data.sliders == null || data.sliders!.isEmpty) {
+                              // If sliders is null or empty, return an empty widget or simply return SizedBox.shrink
+                              return SizedBox
+                                  .shrink(); // This ensures no space is occupied
+                            }
+
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5.h),
+                              child: Stack(
+                                children: [
+                                  // Carousel Slider
+                                  Positioned(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 130.h,
+                                          width: double.infinity,
+                                          child: CarouselSlider(
+                                            items: data.sliders!.map((banner) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const B2bScreen(),
+                                                    ),
+                                                  );
+                                                },
+                                                child: CachedNetworkImage(
+                                                  width: double.infinity,
+                                                  fit: BoxFit.fill,
+                                                  imageUrl: banner.image!,
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            options: CarouselOptions(
+                                              aspectRatio:
+                                                  2.5, // Adjust this as per design
+                                              viewportFraction:
+                                                  1.0, // Full-screen carousel
+                                              autoPlay: true,
+                                              enlargeCenterPage: false,
+                                              onPageChanged: (index, reason) {
+                                                setState(() {
+                                                  _currentIndex =
+                                                      index; // Update the current index
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // Dots Indicator
+                                  Positioned(
+                                    left:
+                                        MediaQuery.of(context).size.width / 2 -
+                                            50, // Center the dots
+                                    bottom: 10.h,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: data.sliders!.map((banner) {
+                                        int index =
+                                            data.sliders!.indexOf(banner);
+                                        return AnimatedContainer(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          height: 9.0,
+                                          width: _currentIndex == index
+                                              ? 12.0
+                                              : 9.0, // Active dot is wider
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: _currentIndex == index
+                                                ? Colors
+                                                    .white // Active dot color
+                                                : Colors
+                                                    .grey, // Inactive dot color
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            return Text("Try again: $error");
+                          },
+                          loading: () {
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+
+                        SizedBox(
+                          height: 10.h,
                         ),
 
                         asyncbajarValue.when(
@@ -703,10 +824,9 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                           data: (data) {
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 10.h),
-                              child: Column(
-                                children: [
-                                   Padding(
-                                  padding:  EdgeInsets.only(left: 5.w),
+                              child: Column(children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 5.w),
                                   child: SizedBox(
                                     height: 100.h, // Adjust height as necessary
                                     width: double.infinity,
@@ -734,7 +854,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
@@ -743,7 +864,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                       color: ColorConstant
                                                           .blackColor,
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -753,7 +875,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                           SizedBox(
                                             width: 5.w,
                                           ),
-                                  
+
                                           // Other Services List
                                           ListView(
                                             physics:
@@ -762,25 +884,39 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             shrinkWrap: true,
                                             children: data.map((e) {
                                               return Container(
-                                    width: 150.w,
-                                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: const Color(0xff651c50)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Adds spacing
-                                      child: Text(
-                                        e.name,
-                                        textAlign: TextAlign.center, // Centers text
-                                        maxLines: 2, // Allows text to wrap into two lines
-                                        overflow: TextOverflow.ellipsis, // Shows "..." if too long
-                                        style: const TextStyle(fontSize: 14), // Adjust font size if needed
-                                      ),
-                                    ),
-                                  );
-                                  
+                                                width: 150.w,
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xff651c50)),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 5,
+                                                      vertical:
+                                                          5), // Adds spacing
+                                                  child: Text(
+                                                    e.name,
+                                                    textAlign: TextAlign
+                                                        .center, // Centers text
+                                                    maxLines:
+                                                        2, // Allows text to wrap into two lines
+                                                    overflow: TextOverflow
+                                                        .ellipsis, // Shows "..." if too long
+                                                    style: const TextStyle(
+                                                        fontSize:
+                                                            14), // Adjust font size if needed
+                                                  ),
+                                                ),
+                                              );
+
                                               // return Padding(
                                               //   padding: EdgeInsets.zero,
                                               //   child: GestureDetector(
@@ -876,8 +1012,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                     ),
                                   ),
                                 ),
-                                ]
-                              ),
+                              ]),
                             );
                           },
                           error: (error, stackTrace) {
@@ -941,70 +1076,63 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 2.w),
                                         child: ProductDetailWidget(
-                                            onenquiredclicked: () {
-                                                      
+                                          onenquiredclicked: () {
+                                            getEnquire(ref, hot.id).then(
+                                              (value) {
+                                                value.data?.enquire == 0
+                                                    ? showModalBottomSheet(
+                                                        useSafeArea: true,
+                                                        isScrollControlled:
+                                                            true,
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, hot.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                            child:
+                                                                SendMessageBottomWidget(
+                                                              ref: ref,
+                                                              productidid:
+                                                                  hot.id,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : navigateToPage(
+                                                        context: context,
+                                                        page: ChatScreen(
+                                                            threadId: value
+                                                                .data!
+                                                                .thread!
+                                                                .id!,
+                                                            username: value
+                                                                .data!
+                                                                .thread!
+                                                                .subject!,
+                                                            postId: value
+                                                                .data!
+                                                                .thread!
+                                                                .post_id!),
+                                                        ref: ref,
+                                                        showNavBar:
+                                                            false, // Hide bottom navbar
+                                                      );
+                                                // if ()
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              hot.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                // SendMessageBottomWidget(
+                                                //     ref: ref,
+                                                //     productidid:
+                                                //         prod.id);
+                                              },
+                                            ).catchError((error) {
+                                              print('Error: $error');
+                                            });
+                                          },
                                           savedid: hot.savedByLoggedUser ==
                                                       null ||
                                                   hot.savedByLoggedUser!.isEmpty
@@ -1457,7 +1585,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     VProduct prod = data
                                                         .insidearr[1][index];
                                                     return ProductDetailWidget(
-                                                        onenquiredclicked: () {
+                                                      onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
 
@@ -1638,7 +1766,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                     VProduct prod = data
                                                         .insidearr[1][index];
                                                     return ProductDetailWidget(
-                                                        onenquiredclicked: () {
+                                                      onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
 
@@ -1804,155 +1932,139 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                               )
                                             : SizedBox(
                                                 height: 340.h,
-                                                child: data
-                                                        .insidearr.first.isEmpty
-                                                    ? Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 15.h),
-                                                        child: Center(
-                                                          child:
-                                                              nolistingfound(),
-                                                        ),
-                                                      )
-                                                    : ListView.builder(
-                                                        clipBehavior:
-                                                            Clip.antiAlias,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3),
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        itemCount: data
-                                                            .insidearr[2]
-                                                            .length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          VProduct prod =
-                                                              data.insidearr[2]
-                                                                  [index];
-                                                          return ProductDetailWidget(
-                                                              onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
+                                                child:
+                                                    data.insidearr.first.isEmpty
+                                                        ? Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 15.h),
+                                                            child: Center(
+                                                              child:
+                                                                  nolistingfound(),
+                                                            ),
+                                                          )
+                                                        : ListView.builder(
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(3),
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount: data
+                                                                .insidearr[2]
+                                                                .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              VProduct prod =
+                                                                  data.insidearr[
+                                                                      2][index];
+                                                              return ProductDetailWidget(
+                                                                onenquiredclicked:
+                                                                    () {
+                                                                  print(
+                                                                      'lanka ${prod.id}');
 
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
+                                                                  getEnquire(
+                                                                          ref,
+                                                                          prod
+                                                                              .id)
+                                                                      .then(
+                                                                    (value) {
+                                                                      value.data?.enquire ==
+                                                                              0
+                                                                          ? showModalBottomSheet(
+                                                                              useSafeArea: true,
+                                                                              isScrollControlled: true,
+                                                                              context: context,
+                                                                              builder: (BuildContext context) {
+                                                                                return SizedBox(
+                                                                                  height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
+                                                                                  child: SendMessageBottomWidget(
+                                                                                    ref: ref,
+                                                                                    productidid: prod.id,
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                            )
+                                                                          : navigateToPage(
+                                                                              context: context,
+                                                                              page: ChatScreen(threadId: value.data!.thread!.id!, username: value.data!.thread!.subject!, postId: value.data!.thread!.post_id!),
+                                                                              ref: ref,
+                                                                              showNavBar: false, // Hide bottom navbar
+                                                                            );
+                                                                      // if ()
+
+                                                                      // SendMessageBottomWidget(
+                                                                      //     ref: ref,
+                                                                      //     productidid:
+                                                                      //         prod.id);
                                                                     },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
-                                                            savedid: prod.savedByLoggedUser ==
-                                                                        null ||
-                                                                    prod.savedByLoggedUser!
-                                                                        .isEmpty
-                                                                ? []
-                                                                : prod
-                                                                    .savedByLoggedUser
-                                                                    ?.map(
-                                                                      (e) => SavedPost(
-                                                                          id: e
-                                                                              .id,
-                                                                          userId: e
-                                                                              .userId,
-                                                                          postId: e
-                                                                              .postId,
-                                                                          createdAt: e
-                                                                              .createdAt,
-                                                                          updatedAt:
-                                                                              e.updatedAt),
-                                                                    )
-                                                                    .toList(),
-                                                            onRefresh: () {
-                                                              refresh();
+                                                                  ).catchError(
+                                                                          (error) {
+                                                                    print(
+                                                                        'Error: $error');
+                                                                  });
+                                                                },
+                                                                savedid: prod.savedByLoggedUser ==
+                                                                            null ||
+                                                                        prod.savedByLoggedUser!
+                                                                            .isEmpty
+                                                                    ? []
+                                                                    : prod
+                                                                        .savedByLoggedUser
+                                                                        ?.map(
+                                                                          (e) => SavedPost(
+                                                                              id: e.id,
+                                                                              userId: e.userId,
+                                                                              postId: e.postId,
+                                                                              createdAt: e.createdAt,
+                                                                              updatedAt: e.updatedAt),
+                                                                        )
+                                                                        .toList(),
+                                                                onRefresh: () {
+                                                                  refresh();
+                                                                },
+                                                                lat: prod.user
+                                                                    .latitude,
+                                                                long: prod.user
+                                                                    .longitude,
+                                                                productid:
+                                                                    prod.id,
+                                                                wow: prod.wow,
+                                                                comment: prod
+                                                                    .commentcount
+                                                                    .toString(),
+                                                                lefttile:
+                                                                    "Grocary",
+                                                                vendorname: prod
+                                                                    .user.name,
+                                                                discounttedPrice:
+                                                                    prod.discounted_price,
+                                                                Vimage:
+                                                                    prod.title,
+                                                                issponsored: prod
+                                                                    .user
+                                                                    .sponsored,
+                                                                price:
+                                                                    prod.price,
+                                                                title:
+                                                                    prod.title,
+                                                                productImage:
+                                                                    prod.image,
+                                                                similarproductCount:
+                                                                    prod.similarProductCount,
+                                                                membershipColor:
+                                                                    prod.user
+                                                                        .membershipColor,
+                                                                membershipTitle:
+                                                                    prod.user
+                                                                        .membershipTitle,
+                                                              );
                                                             },
-                                                            lat: prod
-                                                                .user.latitude,
-                                                            long: prod
-                                                                .user.longitude,
-                                                            productid: prod.id,
-                                                            wow: prod.wow,
-                                                            comment: prod
-                                                                .commentcount
-                                                                .toString(),
-                                                            lefttile: "Grocary",
-                                                            vendorname:
-                                                                prod.user.name,
-                                                            discounttedPrice: prod
-                                                                .discounted_price,
-                                                            Vimage: prod.title,
-                                                            issponsored: prod
-                                                                .user.sponsored,
-                                                            price: prod.price,
-                                                            title: prod.title,
-                                                            productImage:
-                                                                prod.image,
-                                                            similarproductCount:
-                                                                prod.similarProductCount,
-                                                            membershipColor: prod
-                                                                .user
-                                                                .membershipColor,
-                                                            membershipTitle: prod
-                                                                .user
-                                                                .membershipTitle,
-                                                          );
-                                                        },
-                                                      ),
+                                                          ),
                                               )
                                       ],
                                     ),
@@ -2049,6 +2161,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   Buynowmodel resp = data.buynow![index];
 
                                   return buyorwin_widget(
+                                    vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,
                                       worth: resp.worth!,
@@ -2225,71 +2338,72 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                               horizontal: 5.w),
                                                       child:
                                                           ProductDetailWidget(
-                                                              onenquiredclicked: () {
-                                                        print(
-                                                            'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              prod.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
+                                                        onenquiredclicked: () {
                                                           print(
-                                                              'Error: $error');
-                                                        });
-                                                      },
+                                                              'lanka ${prod.id}');
+
+                                                          getEnquire(
+                                                                  ref, prod.id)
+                                                              .then(
+                                                            (value) {
+                                                              value.data?.enquire ==
+                                                                      0
+                                                                  ? showModalBottomSheet(
+                                                                      useSafeArea:
+                                                                          true,
+                                                                      isScrollControlled:
+                                                                          true,
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return SizedBox(
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
+
+                                                                          child:
+                                                                              SendMessageBottomWidget(
+                                                                            ref:
+                                                                                ref,
+                                                                            productidid:
+                                                                                prod.id,
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    )
+                                                                  : navigateToPage(
+                                                                      context:
+                                                                          context,
+                                                                      page: ChatScreen(
+                                                                          threadId: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .id!,
+                                                                          username: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .subject!,
+                                                                          postId: value
+                                                                              .data!
+                                                                              .thread!
+                                                                              .post_id!),
+                                                                      ref: ref,
+                                                                      showNavBar:
+                                                                          false, // Hide bottom navbar
+                                                                    );
+                                                              // if ()
+
+                                                              // SendMessageBottomWidget(
+                                                              //     ref: ref,
+                                                              //     productidid:
+                                                              //         prod.id);
+                                                            },
+                                                          ).catchError((error) {
+                                                            print(
+                                                                'Error: $error');
+                                                          });
+                                                        },
                                                         savedid: prod.savedByLoggedUser ==
                                                                     null ||
                                                                 prod.savedByLoggedUser!
@@ -2415,70 +2529,58 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                             BorderRadius.circular(15.0),
                                       ),
                                       child: AllProductDetailWidget(
-                                          onenquiredclicked: () {
-                                           
+                                        ref: ref,
+                                        onenquiredclicked: () {
+                                          getEnquire(ref, res.id).then(
+                                            (value) {
+                                              value.data?.enquire == 0
+                                                  ? showModalBottomSheet(
+                                                      useSafeArea: true,
+                                                      isScrollControlled: true,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return SizedBox(
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height *
+                                                              0.8, // Use 80% of the screen height
 
-                                                        getEnquire(ref, res.id)
-                                                            .then(
-                                                          (value) {
-                                                            value.data?.enquire ==
-                                                                    0
-                                                                ? showModalBottomSheet(
-                                                                    useSafeArea:
-                                                                        true,
-                                                                    isScrollControlled:
-                                                                        true,
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
-                                                                        child:
-                                                                            SendMessageBottomWidget(
-                                                                          ref:
-                                                                              ref,
-                                                                          productidid:
-                                                                              res.id,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  )
-                                                                : navigateToPage(
-                                                                    context:
-                                                                        context,
-                                                                    page: ChatScreen(
-                                                                        threadId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .id!,
-                                                                        username: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .subject!,
-                                                                        postId: value
-                                                                            .data!
-                                                                            .thread!
-                                                                            .post_id!),
-                                                                    ref: ref,
-                                                                    showNavBar:
-                                                                        false, // Hide bottom navbar
-                                                                  );
-                                                            // if ()
-
-                                                            // SendMessageBottomWidget(
-                                                            //     ref: ref,
-                                                            //     productidid:
-                                                            //         prod.id);
-                                                          },
-                                                        ).catchError((error) {
-                                                          print(
-                                                              'Error: $error');
-                                                        });
+                                                          child:
+                                                              SendMessageBottomWidget(
+                                                            ref: ref,
+                                                            productidid: res.id,
+                                                          ),
+                                                        );
                                                       },
+                                                    )
+                                                  : navigateToPage(
+                                                      context: context,
+                                                      page: ChatScreen(
+                                                          threadId: value.data!
+                                                              .thread!.id!,
+                                                          username: value.data!
+                                                              .thread!.subject!,
+                                                          postId: value
+                                                              .data!
+                                                              .thread!
+                                                              .post_id!),
+                                                      ref: ref,
+                                                      showNavBar:
+                                                          false, // Hide bottom navbar
+                                                    );
+                                              // if ()
+
+                                              // SendMessageBottomWidget(
+                                              //     ref: ref,
+                                              //     productidid:
+                                              //         prod.id);
+                                            },
+                                          ).catchError((error) {
+                                            print('Error: $error');
+                                          });
+                                        },
                                         savedid: res.savedByLoggedUser ==
                                                     null ||
                                                 res.savedByLoggedUser!.isEmpty
@@ -2494,7 +2596,8 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                                 )
                                                 .toList(),
                                         onRefresh: () {
-                                          refresh();
+                                          ref.invalidate(
+                                              getGrocertResponseProvider);
                                         },
                                         productid: res.id,
                                         lat: res.user.latitude,
@@ -2582,11 +2685,10 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                     ),
                   )
                 ],
-              )
-            
-              ,valuenotifilersidebutton(
+              ),
+              valuenotifilersidebutton(
                   showSideBar: showSideBar, isSectionsVisible: true),
-                      Positioned(
+              Positioned(
                 top: 65,
                 left: 48,
                 child: Container(
@@ -2697,7 +2799,7 @@ class valuenotifilersidebutton extends StatelessWidget {
             },
             child: value
                 ? Hero(
-                    tag: 'profileHero',
+                    tag: 'groceryhero',
                     child: TweenAnimationBuilder<Color?>(
                       tween: ColorTween(
                         begin: Colors.blue.withOpacity(0.6),
@@ -2705,21 +2807,30 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        return Container(
-                          margin: EdgeInsets.only(right: 3.w),
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
+                        if (SmartClient.token == "" &&
+                            SmartClient.userPhoto!.isEmpty) {
+                          return CircleAvatar(
+                            child: Image.asset(
+                                'assets/images/Smartbazaar-Icon-for-QR.png'),
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(right: 3.w),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
                                 color: const Color.fromARGB(255, 115, 92, 119),
-                                width: 0.7),
-                          ),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage:
-                                NetworkImage(SmartClient.userPhoto),
-                          ),
-                        );
+                                width: 0.7,
+                              ),
+                            ),
+                            child: CircleAvatar(
+                              radius: 18,
+                              backgroundImage:
+                                  NetworkImage(SmartClient.userPhoto),
+                            ),
+                          );
+                        }
                       },
                     ),
                   )
@@ -2741,151 +2852,256 @@ class valuenotifilersidebutton extends StatelessWidget {
                         children: [
                           SizedBox(height: 6.h),
                           Hero(
-                            tag: 'profileHero',
-                            child: Container(
-                              margin: EdgeInsets.only(right: 3.w),
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.black, width: 0.5),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const VendorProfileScreen(),
-                                      ));
-                                },
-                                child: CircleAvatar(
-                                  radius: 15,
-                                  backgroundImage:
-                                      NetworkImage(SmartClient.userPhoto),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10.h),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ScanScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/scanner.png',
-                                  height: 15,
-                                  color: const Color(0xff918994),
-                                ),
-                                Text(
-                                  "Connect",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
+                            tag: 'groceryhero',
+                            child: SmartClient.token == ""
+                                ? CircleAvatar(
+                                    radius: 15,
+                                    child: Image.asset(
+                                        'assets/images/Smartbazaar-Icon-for-QR.png'),
+                                  )
+                                : Container(
+                                    margin: EdgeInsets.only(right: 3.w),
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 0.5),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const VendorProfileScreen(),
+                                            ));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundImage:
+                                            NetworkImage(SmartClient.userPhoto),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddToCartScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_outlined,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Cart",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CreateNewListinScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                const Icon(
-                                  Icons.add,
-                                  size: 15,
-                                  color: Color(0xff918994),
-                                ),
-                                Text(
-                                  "Sell",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyOrderScreen(),
-                                ),
-                              );
-                            },
-                            icon: Column(
-                              children: [
-                                Image.asset('assets/images/tennis.png'),
-                                Text(
-                                  "Orders",
-                                  style: headerstyle.copyWith(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xff918994),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showSideBar.value = !value;
-                            },
-                            icon: const Column(
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: Color(0xff918994),
-                                ),
-                              ],
-                            ),
-                          ),
+                          SmartClient.token == ""
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginScreen(),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Log in",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    //   SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUpScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_2_outlined),
+                                          Text(
+                                            "Sign up",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                LeftArrowScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Icon(Icons.person_add),
+                                          Text(
+                                            "Membership",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 5,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10.h),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ScanScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/scanner.png',
+                                            height: 15,
+                                            color: const Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Connect",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AddToCartScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Cart",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CreateNewListinScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Color(0xff918994),
+                                          ),
+                                          Text(
+                                            "Sell",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MyOrderScreen(),
+                                          ),
+                                        );
+                                      },
+                                      icon: Column(
+                                        children: [
+                                          Image.asset(
+                                              'assets/images/tennis.png'),
+                                          Text(
+                                            "Orders",
+                                            style: headerstyle.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff918994),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        showSideBar.value = !value;
+                                      },
+                                      icon: const Column(
+                                        children: [
+                                          Icon(
+                                            Icons.close,
+                                            size: 16,
+                                            color: Color(0xff918994),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
                         ],
                       ),
                     ),

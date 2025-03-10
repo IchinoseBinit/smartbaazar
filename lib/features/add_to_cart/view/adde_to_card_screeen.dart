@@ -60,7 +60,10 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     }
   }
 
-  void proceedToCheckout(List<CartItem> cartItems, List<bool> selectedItems) {
+  void proceedToCheckout(
+    List<CartItem> cartItems,
+    List<bool> selectedItems,
+  ) {
     List<String> selectedProductIds = [];
     List<String?> selectedVendorIds = [];
 
@@ -76,12 +79,38 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
         context,
         MaterialPageRoute(
           builder: (_) => OrderDetailsScreen(
+            
+            vendorphone: cartItems
+                    .where(
+                      (element) => element.id == selectedProductIds[0],
+                    )
+                    .first
+                    .phone ??
+                '+977', 
+            vendorid: int.tryParse(cartItems.first.vendorId!)!,
+            vendorname: cartItems.first.name,
+            wiright: int.tryParse(cartItems
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .weight ?? 
+                '1')!,   
+            latitude: double.tryParse(cartItems 
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .latitude) ?? 
+                0.0,
+            longitude: double.tryParse(cartItems
+                    .where((element) => element.id == selectedProductIds[0])
+                    .first
+                    .longitude) ??
+                0.0,
+            pickup: cartItems.first.pickup,
             selectedProductIds: selectedProductIds,
             selectedVendorIds: selectedVendorIds,
           ),
         ),
       );
-    } else {
+    } else { //9844076655
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select items to proceed')),
       );

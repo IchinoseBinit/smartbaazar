@@ -3,75 +3,144 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
+import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
+import 'package:smartbazar/features/add_to_cart/model/delivery_charge_model.dart';
+import 'package:smartbazar/features/add_to_cart/model/smart_biz_login_model.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/auth/widgets/rich_text_widget.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/buy_now_screen/api/get_estimated_fair_api.dart';
+import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/order_details/api/checkout_details_api.dart';
 import 'package:smartbazar/features/order_details/api/checkout_form_submission_api.dart';
 import 'package:smartbazar/features/order_details/api/shipping_cities_api.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/order_details/model/checkout_details_model.dart';
+import 'package:smartbazar/features/order_details/model/street_address_model.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
+import 'package:smartbazar/payment/payment_screen.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
-  const OrderDetailsScreen({
-    super.key,
-    required this.selectedProductIds,
-    required this.selectedVendorIds,
-  });
+  const OrderDetailsScreen(
+      {super.key,
+      required this.selectedProductIds,
+      required this.selectedVendorIds,
+      required this.pickup,
+      required this.longitude,
+      required this.latitude,
+      required this.wiright,
+      required this.vendorname,
+      required this.vendorid,
+      required this.vendorphone});
   final List<String> selectedProductIds;
   final List<String?> selectedVendorIds;
+  final String pickup;
+  final double longitude;
+  final double latitude;
+  final int wiright;
+  final String vendorname;
+  final int vendorid;
+  final String vendorphone;
 
   @override
   ConsumerState<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
 }
 
 class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
-  String selectedPaymentMethod = "Pre-Payement"; // Default payment method
-  String selectedDeliveryOption = "Self Pickup"; // Default delivery option
+  String selectedPaymentMethod = "pre-payement"; // Default payment method
+  String selectedDeliveryOption = "Self pickup"; // Default delivery option
   String? selectedCoupon = '';
-  String selectedCity = '';
-  String selectedStreet = '';
+  // String selectedCity = '';
+  StreetAddressModel? selectedStreet;
   List<double> itemRates = [];
   List<double> itemTotalPayments = [];
+  ParcelFareResponse? _fairresponse;
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController pricecontroller = TextEditingController();
+  String hyperOption = 'standard';
+
   void clearSelectedCoupon() {
     setState(() {
       selectedCoupon = null;
     });
   }
 
-  void updateCity(String city) {
-    setState(() {
-      selectedCity = city;
-    });
-  }
+  // void updateCity(String city) {
+  //   setState(() {
+  //     selectedCity = city;
+  //   });
+  // }
 
-  void updateStreet(String street) {
+  void updateStreet(StreetAddressModel street) {
     setState(() {
       selectedStreet = street;
+      print('Selected Street: $selectedStreet');
     });
+
+    if (_bizLoginResponse?.data?.token != null && selectedStreet != null) {
+      getDeliveryChargeSmartbiz(
+        _bizLoginResponse!.data!.token!, // Replace with actual token
+        [
+          widget.latitude,
+          widget.longitude,
+        ], // Pickup coordinates
+        [
+          selectedStreet?.latitude ?? 0.0,
+          selectedStreet?.longitude ?? 0.0,
+        ], // Destination coordinates
+        "parcel", // Type
+        widget.pickup ?? 'kathmandu', // Pickup address
+        selectedStreet?.description ?? 'kathmandu', // Destination address
+        [], // No intermediate coordinates
+        widget.wiright ?? 1, // Parcel weight
+        "44cb222c-b93c-44e2-a5aa-a3a5932e0d63", // Parcel category ID
+        widget.selectedVendorIds.toString(), // Vendor ID
+      ).then(
+        (value) {
+          setState(() {
+            _fairresponse = value;
+            print('kingko ${_fairresponse?.data?.estimatedFare}');
+          });
+        },
+      );
+    }
   }
 
   void updatePaymentMethod(String value) {
     setState(() {
       selectedPaymentMethod = value;
     });
+    print('kama ${selectedPaymentMethod}');
   }
 
   void updateDeliveryOption(String value) {
     setState(() {
       selectedDeliveryOption = value;
     });
+    print('ranka ${selectedDeliveryOption}');
   }
+
+  BizLoginResponse? _bizLoginResponse;
+  // String? token;
 
   @override
   Widget build(BuildContext context) {
+    final loginBoiData = ref.watch(loginSmartBizProvider);
     final asyncCheckoutDetails = ref.watch(postSelectedItemOfCartProvider(
         widget.selectedVendorIds, widget.selectedProductIds));
+    loginBoiData.whenData(
+      (value) {
+        _bizLoginResponse = value;
+      },
+    );
 
     return GenericSafeArea(
         child: Scaffold(
@@ -81,6 +150,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
           padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
           child: asyncCheckoutDetails.when(
             data: (checkoutDetails) {
+              namecontroller.text = checkoutDetails.data!.user!.first.name!;
+              phonecontroller.text = checkoutDetails.data!.user!.first.phone!;
+              emailcontroller.text = checkoutDetails.data!.user!.first.email!;
+              pricecontroller.text = checkoutDetails.data!.cartTotal.toString();
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -123,7 +197,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 15.h,
                   ),
                   CustomTextFieldWidget(
-                    readOnly: true,
+                    controller: namecontroller,
+                    readOnly: false,
                     icon: Icons.person,
                     hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
                         ? checkoutDetails.data!.user!.first.name ?? 'Name'
@@ -138,7 +213,8 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 8.h,
                   ),
                   CustomTextFieldWidget(
-                    readOnly: true,
+                    readOnly: false,
+                    controller: phonecontroller,
                     icon: Icons.call,
                     hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
                         ? checkoutDetails.data!.user!.first.phone ??
@@ -154,6 +230,23 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     height: 8.h,
                   ),
                   CustomTextFieldWidget(
+                    readOnly: false,
+                    controller: emailcontroller,
+                    icon: Icons.email,
+                    hintText: (checkoutDetails.data!.user?.isNotEmpty ?? false)
+                        ? checkoutDetails.data!.user!.first.email ?? 'Email'
+                        : 'Email',
+                    fill: true,
+                    fillColor: const Color.fromARGB(255, 241, 234, 234),
+                    validator: (number) {
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  CustomTextFieldWidget(
+                    controller: pricecontroller,
                     icon: Icons.money,
                     hintText: 'Rs ${checkoutDetails.data!.cartTotal ?? '0'}',
                     readOnly: true,
@@ -227,7 +320,11 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                   CustomRadioButton(
                     title1: 'Pre-Payment',
                     title2: 'Cash on Delivery',
-                    onChanged: updatePaymentMethod,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPaymentMethod = value;
+                      });
+                    },
                   ),
                   const Divider(
                     thickness: 2,
@@ -248,16 +345,29 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     title2: 'Home Delivery',
                     onChanged: updateDeliveryOption,
                   ),
-                  ShippingCitiesField(
-                    onSelected: updateCity,
-                  ),
+                  // ShippingCitiesField(
+                  //   onSelected: updateCity,
+                  // ),
 
                   SizedBox(
                     height: 8.h,
                   ),
-                  StreetAddressFieldWidget(
-                    onSelected: updateStreet,
-                  ),
+                  if (selectedDeliveryOption == 'Home Delivery')
+                    Padding(
+                      padding: EdgeInsets.only(right: 58.w),
+                      child: CustomRadioButton(
+                        title1: 'standard',
+                        title2: 'Hyper',
+                        onChanged: (p0) { 
+                          hyperOption = p0.toLowerCase();
+                          //  print('bibah ${hyperOption}');
+                        },
+                      ),
+                    ),
+                  if (selectedDeliveryOption == 'Home Delivery')
+                    StreetAddressFieldWidget(
+                      onSelected: updateStreet,
+                    ),
                   SizedBox(
                     height: 12.h,
                   ),
@@ -311,52 +421,40 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                     thickness: 2,
                     color: Color(0xffD9D9D9),
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: [
-                  //     Text(
-                  //       'Quantity',
-                  //       style: TextStyle(
-                  //           fontSize: 16.sp,
-                  //           fontWeight: FontWeight.w500,
-                  //           color: const Color(0xfff000000)),
-                  //     ),
-                  //     const Spacer(),
-                  //     const Icon(Icons.remove),
-                  //     SizedBox(
-                  //       width: 5.w,
-                  //     ),
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: 8.w, vertical: 3.h),
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(4.r),
-                  //         border: Border.all(
-                  //           color: const Color(0xffD9D9D9),
-                  //           width: 1,
-                  //         ),
-                  //       ),
-                  //       child: const Text('1'),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 5.w,
-                  //     ),
-                  //     const Icon(Icons.add)
-                  //   ],
-                  // ),
-                  // const Divider(
-                  //   thickness: 2,
-                  //   color: Color(0xffD9D9D9),
-                  // ),
+
                   OrderSummaryWidget(
+                    key: ValueKey(selectedPaymentMethod),
+
+                    totalfromtop: int.tryParse(pricecontroller.text)!,
+                    bizLoginResponseparams: _bizLoginResponse,
+                    hyper: hyperOption,
+                    weight: widget.wiright.toDouble() ?? 0.0,
+                    address: selectedStreet?.description ?? 'kathmandu',
+                    deliverychareg: _fairresponse ?? ParcelFareResponse(),
+                    email: emailcontroller.text,
+                    name: namecontroller.text,
+                    phone: phonecontroller.text,
+                    pickuplatitutevednor: widget.latitude,
+                    pickuplongitutevendor: widget.longitude,
+                    receiverphone: phonecontroller.text,
+                    senderPhone: widget.vendorphone,
+                    senderaddress: widget.pickup,
+                    sendername: widget.vendorname,
+                    vendorid: widget.vendorid,
+
                     items: checkoutDetails.data!.items ?? [],
                     discounts:
                         checkoutDetails.data!.items!.first.discountOnBulks ??
                             [],
                     selectedPaymentMethod: selectedPaymentMethod,
                     selectedDeliveryOption: selectedDeliveryOption,
-                    selectedCity: selectedCity,
-                    selectedStreet: selectedStreet,
+                    // selectedCity: selectedCity,
+                    selectedStreet: selectedStreet ??
+                        StreetAddressModel(
+                            description: 'kathmandu',
+                            placeId: '12',
+                            latitude: 0.1,
+                            longitude: 1.1),
                     selectedCoupon: selectedCoupon,
                     selectedProductIds: widget.selectedProductIds,
                     checkoutDetails: checkoutDetails,
@@ -376,35 +474,59 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
 }
 
 class OrderSummaryWidget extends ConsumerStatefulWidget {
+  final int totalfromtop;
+
   final List<Item> items;
+  final ParcelFareResponse deliverychareg;
+  final String name;
+  final String email;
+  final String phone;
+  final String address;
+  final double pickuplatitutevednor;
+  final double pickuplongitutevendor;
+  final String sendername;
+  final String senderPhone;
+  final BizLoginResponse? bizLoginResponseparams;
+  final int vendorid;
+  final String senderaddress;
+  final String receiverphone;
+  final double weight;
   final List<DiscountOnBulk>? discounts;
   final String selectedPaymentMethod;
   final String selectedDeliveryOption;
   final String? selectedCoupon;
-  final String selectedCity;
-  final String selectedStreet;
-
+  final StreetAddressModel selectedStreet;
   final List<String> selectedProductIds;
   final CheckoutDetailsModel checkoutDetails;
-  // final String? pieceFrom;
-  // final String? pieceTo;
-  // final String? rateFromBulkDiscount;
+  final String hyper;
 
-  const OrderSummaryWidget({
-    Key? key,
-    required this.items,
-    this.discounts,
-    required this.selectedPaymentMethod,
-    required this.selectedDeliveryOption,
-    required this.selectedCoupon,
-    required this.selectedCity,
-    required this.selectedStreet,
-    required this.selectedProductIds,
-    required this.checkoutDetails,
-    //  this.pieceFrom,
-    //  this.pieceTo,
-    //   this.rateFromBulkDiscount,
-  }) : super(key: key);
+  const OrderSummaryWidget(
+      {Key? key,
+      required this.items,
+      required this.deliverychareg,
+      required this.name,
+      required this.email,
+      required this.phone,
+      required this.address,
+      required this.pickuplatitutevednor,
+      required this.pickuplongitutevendor,
+      required this.sendername,
+      required this.senderPhone,
+      this.bizLoginResponseparams,
+      required this.vendorid,
+      required this.senderaddress,
+      required this.receiverphone,
+      required this.weight,
+      this.discounts,
+      required this.selectedPaymentMethod,
+      required this.selectedDeliveryOption,
+      this.selectedCoupon,
+      required this.selectedStreet,
+      required this.selectedProductIds,
+      required this.checkoutDetails,
+      required this.hyper,
+      required this.totalfromtop})
+      : super(key: key);
 
   @override
   ConsumerState<OrderSummaryWidget> createState() => _OrderSummaryWidgetState();
@@ -414,9 +536,19 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   late double totalAmount;
   late double finalTotal;
   late double finallyRate;
+  String? paymentmethod;
+  int? toalprice;
+
+  int gettoal(int total, int deliverycharge) {
+    int _a = total + deliverycharge;
+    toalprice = _a.toInt();
+    return _a;
+  }
 
   @override
   void initState() {
+    print('bibash ${widget.selectedPaymentMethod}');
+
     super.initState();
     widget.items.map((item) => calculateTotals(item)).toList();
   }
@@ -477,84 +609,331 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
       final postName =
           checkoutDetails.data!.items?.map((e) => e.name!).toList() ?? [];
       print(
-          '--------------------------------$prices,$totalAmount, $finallyRate');
+          'Bibash -${prices}-------------------------------$prices,$totalAmount, $finallyRate');
       print('--------------------------------');
-      ref
-          .read(postCheckoutFormProvider(
-        userName,
-        address,
-        email,
-        widget.selectedPaymentMethod,
-        widget.selectedDeliveryOption,
-        "Standard",
-        widget.selectedCity,
-        widget.selectedStreet,
-        widget.selectedCoupon,
-        postIds,
-        widget.selectedProductIds,
-        postName,
-        quantities,
-        [finallyRate.toStringAsFixed(2)],
-        totalAmount.toStringAsFixed(2),
-      ).future)
-          .then((success) {
-        if (success) {
-          const message =
-              "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
-          showDialog(
-            context: context,
-            barrierDismissible: false, // Prevents dismissal on outside tap
-            builder: (_) => AlertDialog(
-              title: Center(
-                child: Text(
-                  'Successfull!',
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF362677)),
-                ),
-              ),
-              content: Text(
-                message,
-                style: TextStyle(fontSize: 12.sp),
-              ),
-              actions: [
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      // Navigate to the BottomNavigationScreen when the user clicks "OK"
-                      Navigator.of(context, rootNavigator: true)
-                                    .pop();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainScreen()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('OK'),
-                        SizedBox(width: 8.w),
-                        const Icon(
-                          Icons.check_circle,
-                          color: Color(0xFF362677),
-                        )
-                      ],
-                    ),
+
+      if (widget.selectedPaymentMethod == "pre-payement") {
+        paymentmethod = 'qr';
+      } else {
+        paymentmethod = 'cod';
+      }
+
+      if (widget.selectedPaymentMethod == "pre-payement") {
+        showBottomSheet(
+          enableDrag: true,
+          elevation: 10,
+          sheetAnimationStyle:
+              AnimationStyle(curve: FlippedCurve(Curves.bounceIn)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+          ),
+          backgroundColor: Colors.white,
+          showDragHandle: true,
+          context: context,
+          builder: (context) {
+            return Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
+              child: SizedBox(
+                width: 200.w,
+                height: 50.h,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade300,
+                      elevation: 0,
+                      side: const BorderSide(
+                        width: 2,
+                        color: Colors.black87,
+                      )),
+                  onPressed: () async {
+                       bool success = await initiatePayment(
+                              context, '100', true);
+                    // bool success = await initiatePayment(  
+                    //     context,
+                    //     gettoal(widget.totalfromtop,
+                    //             widget.deliverychareg.data?.estimatedFare ?? 0)
+                    //         .toStringAsFixed(2),
+                    //     true);
+//9844076655
+                    if (success)
+                   await   ref
+                          .read(postCheckoutFormProvider(
+                        userName,
+                        address,
+                        email,
+                        paymentmethod ?? 'cod',
+                        widget.selectedDeliveryOption,
+                        widget.hyper,
+                        // widget.selectedCity,
+                        widget.selectedStreet.description,
+                        widget.deliverychareg.data?.discountAmount.toString() ??
+                            '0',
+                        widget.selectedCoupon,
+                        postIds,
+                        widget.selectedProductIds,
+
+                        postName,
+                        quantities,
+                        prices,
+
+                        gettoal(widget.totalfromtop,
+                                widget.deliverychareg.data?.estimatedFare ?? 0)
+                            .toStringAsFixed(2),
+                        //from delivery
+                        widget.bizLoginResponseparams!.data!.token!,
+                        widget.deliverychareg.data?.zoneId ?? '0',
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //pickup
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //cusomer
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //customer
+                        [
+                          widget.selectedStreet.latitude,
+                          widget.selectedStreet.longitude
+                        ], //destination
+                        widget.deliverychareg.data?.estId ?? 0,
+                        widget.deliverychareg.data?.estimatedFare?.toDouble() ??
+                            0,
+                        widget.deliverychareg.data?.estimatedDistance ?? 0,
+                        double.parse(
+                            widget.deliverychareg.data?.estimatedDuration ??
+                                '0'.replaceAll(RegExp(r'[^0-9.]'), '')),
+
+                        widget.senderaddress,
+                        widget.selectedStreet.description, //m
+
+                        widget.vendorid,
+                        "parcel",
+                        (widget.deliverychareg.data?.returnFee ?? 0)
+                            .toDouble(), //return fee
+                        widget.deliverychareg.data?.cancellationFee
+                                ?.toDouble() ??
+                            0,
+                        widget.sendername,
+                        widget.senderPhone,
+                        widget.senderaddress,
+                        widget.name,
+                        widget.receiverphone,
+                        widget.selectedStreet.description,
+                        widget.deliverychareg.data?.fare?.first
+                                .parcelCategoryId ??
+                            '',
+                        widget.weight,
+                        "sender",
+                      ).future)
+                          .then(
+                        (success) {
+                          if (success) {
+                            const message =
+                                "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
+                            showDialog(
+                              context: context,
+                              barrierDismissible:
+                                  false, // Prevents dismissal on outside tap
+                              builder: (_) => AlertDialog(
+                                title: Center(
+                                  child: Text(
+                                    'Successfull!',
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF362677)),
+                                  ),
+                                ),
+                                content: Text(
+                                  message,
+                                  style: TextStyle(fontSize: 12.sp),
+                                ),
+                                actions: [
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        // Navigate to the BottomNavigationScreen when the user clicks "OK"
+                                        Navigator.pop(context);
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const OnlineTransactionRecordScreen()));
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const Text('OK'),
+                                          SizedBox(width: 8.w),
+                                          const Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xFF362677),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Failed to place order. Please try again.')),
+                            );
+                          }
+                        },
+                      );
+                  },
+                  child: const Text(
+                    'Pay with Fonepay',
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
-              ],
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Failed to place order. Please try again.')),
-          );
-        }
-      });
+              ),
+            );
+          },
+        );
+      } else {
+        ref
+            .read(postCheckoutFormProvider(
+          userName,
+          address,
+          email,
+          paymentmethod ?? 'cod',
+          widget.selectedDeliveryOption,
+          widget.hyper,
+          // widget.selectedCity,9855487766
+          widget.selectedStreet.description,
+          widget.deliverychareg.data?.discountAmount.toString() ?? '0',
+          widget.selectedCoupon,
+          postIds,
+          widget.selectedProductIds,
+          postName,
+          quantities,
+          prices,
+          gettoal(widget.totalfromtop,
+                  widget.deliverychareg.data?.estimatedFare ?? 0)
+              .toStringAsFixed(2),
+          //from delivery
+          widget.bizLoginResponseparams!.data!.token!,
+          widget.deliverychareg.data!.zoneId!,
+          [widget.pickuplatitutevednor, widget.pickuplongitutevendor], //pickup
+          [widget.pickuplatitutevednor, widget.pickuplongitutevendor], //cusomer
+          [
+            widget.pickuplatitutevednor,
+            widget.pickuplongitutevendor
+          ], //customer
+          [
+            widget.selectedStreet.latitude,
+            widget.selectedStreet.longitude
+          ], //destination
+          widget.deliverychareg.data!.estId!,
+          widget.deliverychareg.data!.estimatedFare!.toDouble(),
+          widget.deliverychareg.data!.estimatedDistance!,
+          double.parse(widget.deliverychareg.data!.estimatedDuration!
+              .replaceAll(RegExp(r'[^0-9.]'), '')),
+
+          widget.senderaddress,
+          widget.selectedStreet.description, //m
+
+          widget.vendorid,
+          "parcel",
+          widget.deliverychareg.data!.returnFee!.toDouble(), //return fee
+          widget.deliverychareg.data!.cancellationFee!.toDouble(),
+          widget.sendername,
+          widget.senderPhone,
+          widget.senderaddress,
+          widget.name,
+          widget.receiverphone,
+          widget.selectedStreet.description,
+          widget.deliverychareg.data!.fare!.first.parcelCategoryId!,
+          widget.weight,
+          "sender",
+        ).future)
+            .then((success) {
+          if (success) {
+            const message =
+                "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details to Track Your Order.";
+            showDialog(
+              context: context,
+              barrierDismissible: true, // Allows user to dismiss dialog
+              builder: (context) {
+                // Close the dialog after 3 seconds
+                Future.delayed(const Duration(seconds: 2), () {
+                  if (context.mounted) {
+                    Navigator.pop(context); // Close the dialog
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const OnlineTransactionRecordScreen(),
+                      ),
+                    );
+                  }
+                });
+
+                return AlertDialog(
+                  title: Center(
+                    child: Text(
+                      'Successful!',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF362677),
+                      ),
+                    ),
+                  ),
+                  content: Text(
+                    message,
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          if (context.mounted) {
+                            Navigator.pop(context); // Manually close the dialog
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const OnlineTransactionRecordScreen(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('OK'),
+                            SizedBox(width: 8.w),
+                            const Icon(
+                              Icons.check_circle,
+                              color: Color(0xFF362677),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('Failed to place order. Please try again.')),
+            );
+          }
+        });
+      }
     } catch (e) {
-      // Handle any error that occurred during submission
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to submit the order. Please try again.')),
@@ -575,12 +954,39 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
               color: const Color(0xff000000)),
         ),
         SizedBox(height: 5.h),
+        //  Text(widget.deliverychareg.data!.estimatedFare.toString()),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: widget.items.map((item) => buildItemRow(item)).toList(),
+            children: widget.items
+                .map((item) => buildItemRow(item, (value) {
+                      //price changed
+                      print('rama $value');
+                    }, widget.deliverychareg.data?.estimatedFare ?? 0))
+                .toList(),
           ),
         ),
+        if (widget.selectedDeliveryOption == "Home Delivery")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Delivery Charge',
+                  style:
+                      TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+              Text('Rs ${widget.deliverychareg.data?.estimatedFare ?? 0}')
+            ],
+          ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Your Total Payment',
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+            Text(
+                'Rs ${gettoal(widget.totalfromtop, widget.deliverychareg.data?.estimatedFare ?? 0)}')
+          ],
+        ),
+
         // const Divider(thickness: 2, color: Color(0xffD9D9D9)),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -671,11 +1077,29 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   }
 
   // Widget buildItemRow(Item item) {
-  Widget buildItemRow(Item item) {
-    DiscountOnBulk? matchingDiscount =
-        findMatchingDiscount(int.tryParse(item.qty) ?? 0, widget.discounts);
+  Widget buildItemRow(
+    // int deliverycharge,
+    Item item,
+    Function(String) _pricechanged, // _pricechanged is required (non-nullable)
+    int deliveryfair, // deliveryfair is required (non-nullable)
+  ) {
+    print('binod ${deliveryfair}');
+    // Ensure item.qty is non-nullable and valid
+    int qty = int.tryParse(item.qty) ?? 0;
+    if (qty == 0) {
+      throw ArgumentError("Invalid quantity: ${item.qty}");
+    }
 
+    // Ensure item.price is non-nullable and valid
     double originalPrice = double.tryParse(item.price) ?? 0.0;
+    if (originalPrice == 0.0) {
+      throw ArgumentError("Invalid price: ${item.price}");
+    }
+
+    // Finding matching discount
+    DiscountOnBulk? matchingDiscount =
+        findMatchingDiscount(qty, widget.discounts);
+
     double discountedPrice = originalPrice;
 
     // Determine the final rate (discounted or original)
@@ -685,11 +1109,22 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
       double discountPercentage =
           double.tryParse(matchingDiscount.rate!) ?? 0.0;
       if (discountPercentage > 0) {
-        discountedPrice = discountPercentage;
+        discountedPrice =
+            originalPrice - (originalPrice * discountPercentage / 100);
       }
     }
 
     double finalRate = discountedPrice;
+
+    double getfinalprice() {
+      double total =
+          finalRate * (int.tryParse(item.qty) ?? 0).toDouble() + deliveryfair;
+
+      // Assuming you want to notify about price change
+      _pricechanged?.call(total.toStringAsFixed(2));
+
+      return total;
+    }
 
     return Column(
       children: [
@@ -722,14 +1157,22 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
             Text('Rs ${finalRate.toStringAsFixed(2)}')
           ],
         ),
+        // SizedBox(height: 5.h),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Text('Delivery charge',
+        //         style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+        //     Text('Rs ${deliveryfair}')
+        //   ],
+        // ),
         SizedBox(height: 5.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Total Payment',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
-            Text(
-                'Rs ${(finalRate * int.tryParse(item.qty)!).toStringAsFixed(2)}')
+            Text('Rs ${getfinalprice()}')
           ],
         ),
         SizedBox(height: 5.h),
@@ -930,113 +1373,113 @@ class _ShippingCitiesFieldState extends ConsumerState<ShippingCitiesField> {
   }
 }
 
-class StreetAddressFieldWidget extends ConsumerStatefulWidget {
-  const StreetAddressFieldWidget({super.key, this.onSelected});
-  final Function(String)? onSelected;
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _StreetAddressFieldWidgetState();
-}
+// class StreetAddressFieldWidget extends ConsumerStatefulWidget {
+//   const StreetAddressFieldWidget({super.key, this.onSelected});
+//   final Function(String)? onSelected;
+//   @override
+//   ConsumerState<ConsumerStatefulWidget> createState() =>
+//       _StreetAddressFieldWidgetState();
+// }
 
-class _StreetAddressFieldWidgetState
-    extends ConsumerState<StreetAddressFieldWidget> {
-  final TextEditingController _streetController = TextEditingController();
-  String query = '';
+// class _StreetAddressFieldWidgetState
+//     extends ConsumerState<StreetAddressFieldWidget> {
+//   final TextEditingController _streetController = TextEditingController();
+//   String query = '';
 
-  @override
-  Widget build(BuildContext context) {
-    // Use the new provider to get street address suggestions
-    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+//   @override
+//   Widget build(BuildContext context) {
+//     // Use the new provider to get street address suggestions
+//     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
-          textInputAction: TextInputAction.next,
-          controller: _streetController,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-            hintText: "Street Address",
-            hintStyle: TextStyle(
-              color: const Color(0xffADADAD),
-              fontSize: 14.sp,
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            filled: true,
-            fillColor: const Color.fromARGB(255, 241, 234, 234),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
-              child: Container(
-                height: 50,
-                width: 52,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: const Color(0xffAEC5FF),
-                ),
-                child: const Icon(
-                  Icons.location_disabled_outlined,
-                  color: Color(0xff362677),
-                ),
-              ),
-            ),
-          ),
-          onChanged: (value) {
-            setState(() {
-              query = value; // Update query when text changes
-            });
-          },
-        ),
-        const SizedBox(height: 10),
-        if (query.isNotEmpty) // Only show suggestions if the query is not empty
-          streetSuggestionsAsync.when(
-            data: (addresses) {
-              if (addresses.isEmpty) {
-                return const Text('No street address found.');
-              }
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         TextFormField(
+//           textInputAction: TextInputAction.next,
+//           controller: _streetController,
+//           decoration: InputDecoration(
+//             contentPadding: const EdgeInsets.symmetric(vertical: 10),
+//             hintText: "Street Address",
+//             hintStyle: TextStyle(
+//               color: const Color(0xffADADAD),
+//               fontSize: 14.sp,
+//             ),
+//             border: OutlineInputBorder(
+//               borderSide: BorderSide.none,
+//               borderRadius: BorderRadius.circular(10.r),
+//             ),
+//             filled: true,
+//             fillColor: const Color.fromARGB(255, 241, 234, 234),
+//             prefixIcon: Padding(
+//               padding: EdgeInsets.only(
+//                   right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+//               child: Container(
+//                 height: 50,
+//                 width: 52,
+//                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(10.r),
+//                   color: const Color(0xffAEC5FF),
+//                 ),
+//                 child: const Icon(
+//                   Icons.location_disabled_outlined,
+//                   color: Color(0xff362677),
+//                 ),
+//               ),
+//             ),
+//           ),
+//           onChanged: (value) {
+//             setState(() {
+//               query = value; // Update query when text changes
+//             });
+//           },
+//         ),
+//         const SizedBox(height: 10),
+//         if (query.isNotEmpty) // Only show suggestions if the query is not empty
+//           streetSuggestionsAsync.when(
+//             data: (addresses) {
+//               if (addresses.isEmpty) {
+//                 return const Text('No street address found.');
+//               }
 
-              return Flexible(
-                fit: FlexFit.loose,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) {
-                    final address = addresses[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2.0), // Adjust spacing as needed
-                      child: ListTile(
-                        title: Text(
-                          address.description,
-                          style: TextStyle(
-                              fontSize: 12.sp), // Set the desired font size
-                        ),
-                        onTap: () {
-                          _streetController.text = address.description;
-                          setState(() {
-                            query = ''; // Clear the query to hide suggestions
-                            widget.onSelected!(address.description);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => const Text('Please login again'),
-          ),
-      ],
-    );
-  }
-}
+//               return Flexible(
+//                 fit: FlexFit.loose,
+//                 child: ListView.builder(
+//                   shrinkWrap: true,
+//                   physics: const NeverScrollableScrollPhysics(),
+//                   itemCount: addresses.length,
+//                   itemBuilder: (context, index) {
+//                     final address = addresses[index];
+//                     return Padding(
+//                       padding: const EdgeInsets.symmetric(
+//                           vertical: 2.0), // Adjust spacing as needed
+//                       child: ListTile(
+//                         title: Text(
+//                           address.description,
+//                           style: TextStyle(
+//                               fontSize: 12.sp), // Set the desired font size
+//                         ),
+//                         onTap: () {
+//                           _streetController.text = address.description;
+//                           setState(() {
+//                             query = ''; // Clear the query to hide suggestions
+//                             widget.onSelected!(address.description);
+//                           });
+//                         },
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               );
+//             },
+//             loading: () => const CircularProgressIndicator(),
+//             error: (error, stackTrace) => const Text('Please login again'),
+//           ),
+//       ],
+//     );
+//   }
+// }
 
 class DiscountOnBulkContainer extends StatelessWidget {
   const DiscountOnBulkContainer({

@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
@@ -7,24 +7,27 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'get_subscription_api.g.dart';
 
 @riverpod
-Future<GetSubscriptionModel> getSubscription(GetSubscriptionRef ref) async {
+Future<SubscriptionResponse> getSubscription(GetSubscriptionRef ref, {int pageval = 1}) async {
   final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
       requestType: RequestType.getWithToken,
-      url: ApiConstants.getMySubscriptionUrl,
+      url: 'https://smartbazaar.jianjun-rnd.com.np/api/subscription?page=$pageval',
     );
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
-      return GetSubscriptionModel.fromJson(jsonResponse);
+      return SubscriptionResponse.fromJson(response.data);
     } else {
-      throw Exception('Failed to load your subscription');
+      throw Exception('Failed to load subscription');
     }
   } catch (e) {
-    // Handle or log the error here
-    print('Error loading your subscription $e');
+    print('Error loading subscription: $e');
 
-    throw Exception('Failed to load your subscription: $e');
+    if (e.toString().contains("Unauthorized")) {
+      ref.read(isLogin.notifier).state = false; // Ensure `isLogin` is available in the scope
+    }
+
+    throw Exception('Failed to load subscription');
   }
 }

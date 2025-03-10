@@ -268,6 +268,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
         /// 2. Update `_card` inside `setState`
         setState(() {
           _card = BigContainer(
+            onconnectclicked: () {
+              
+            },
             ondoenload: () {},
             onsubscribed: () {},
             key: GlobalKey(),
@@ -430,7 +433,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
 
                 // Bottom Controls (Zoom, Flash, Add QR)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black
@@ -443,7 +446,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 8), // Smaller padding
+                        horizontal: 7, vertical: 8), // Smaller padding
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment
                           .spaceEvenly, // Even spacing between elements
@@ -528,7 +531,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                           onPressed: _pickAndScanQR,
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 6), // Smaller padding
+                                horizontal: 7, vertical: 6), // Smaller padding
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -561,7 +564,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
                     );
                   },
                   error: (error, stackTrace) =>
-                      Center(child: Text("Error: $error")),
+                      Center(child: Text("Internet issue check your internet")),
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
                 )

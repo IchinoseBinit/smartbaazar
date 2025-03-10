@@ -14,38 +14,37 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-GetSubscriptionModel _$GetSubscriptionModelFromJson(Map<String, dynamic> json) {
-  return _GetSubscriptionModel.fromJson(json);
+SubscriptionResponse _$SubscriptionResponseFromJson(Map<String, dynamic> json) {
+  return _SubscriptionResponse.fromJson(json);
 }
 
 /// @nodoc
-mixin _$GetSubscriptionModel {
-  List<Subscription>? get subscriptions => throw _privateConstructorUsedError;
+mixin _$SubscriptionResponse {
+  Subscriptions? get subscriptions => throw _privateConstructorUsedError;
 
   /// Serializes this GetSubscriptionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of GetSubscriptionModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $GetSubscriptionModelCopyWith<GetSubscriptionModel> get copyWith =>
+  @JsonKey(ignore: true)
+  $SubscriptionResponseCopyWith<SubscriptionResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GetSubscriptionModelCopyWith<$Res> {
-  factory $GetSubscriptionModelCopyWith(GetSubscriptionModel value,
-          $Res Function(GetSubscriptionModel) then) =
-      _$GetSubscriptionModelCopyWithImpl<$Res, GetSubscriptionModel>;
+abstract class $SubscriptionResponseCopyWith<$Res> {
+  factory $SubscriptionResponseCopyWith(SubscriptionResponse value,
+          $Res Function(SubscriptionResponse) then) =
+      _$SubscriptionResponseCopyWithImpl<$Res, SubscriptionResponse>;
   @useResult
-  $Res call({List<Subscription>? subscriptions});
+  $Res call({Subscriptions? subscriptions});
+
+  $SubscriptionsCopyWith<$Res>? get subscriptions;
 }
 
 /// @nodoc
-class _$GetSubscriptionModelCopyWithImpl<$Res,
-        $Val extends GetSubscriptionModel>
-    implements $GetSubscriptionModelCopyWith<$Res> {
-  _$GetSubscriptionModelCopyWithImpl(this._value, this._then);
+class _$SubscriptionResponseCopyWithImpl<$Res,
+        $Val extends SubscriptionResponse>
+    implements $SubscriptionResponseCopyWith<$Res> {
+  _$SubscriptionResponseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -63,28 +62,43 @@ class _$GetSubscriptionModelCopyWithImpl<$Res,
       subscriptions: freezed == subscriptions
           ? _value.subscriptions
           : subscriptions // ignore: cast_nullable_to_non_nullable
-              as List<Subscription>?,
+              as Subscriptions?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SubscriptionsCopyWith<$Res>? get subscriptions {
+    if (_value.subscriptions == null) {
+      return null;
+    }
+
+    return $SubscriptionsCopyWith<$Res>(_value.subscriptions!, (value) {
+      return _then(_value.copyWith(subscriptions: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$GetSubscriptionModelImplCopyWith<$Res>
-    implements $GetSubscriptionModelCopyWith<$Res> {
-  factory _$$GetSubscriptionModelImplCopyWith(_$GetSubscriptionModelImpl value,
-          $Res Function(_$GetSubscriptionModelImpl) then) =
-      __$$GetSubscriptionModelImplCopyWithImpl<$Res>;
+abstract class _$$SubscriptionResponseImplCopyWith<$Res>
+    implements $SubscriptionResponseCopyWith<$Res> {
+  factory _$$SubscriptionResponseImplCopyWith(_$SubscriptionResponseImpl value,
+          $Res Function(_$SubscriptionResponseImpl) then) =
+      __$$SubscriptionResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Subscription>? subscriptions});
+  $Res call({Subscriptions? subscriptions});
+
+  @override
+  $SubscriptionsCopyWith<$Res>? get subscriptions;
 }
 
 /// @nodoc
-class __$$GetSubscriptionModelImplCopyWithImpl<$Res>
-    extends _$GetSubscriptionModelCopyWithImpl<$Res, _$GetSubscriptionModelImpl>
-    implements _$$GetSubscriptionModelImplCopyWith<$Res> {
-  __$$GetSubscriptionModelImplCopyWithImpl(_$GetSubscriptionModelImpl _value,
-      $Res Function(_$GetSubscriptionModelImpl) _then)
+class __$$SubscriptionResponseImplCopyWithImpl<$Res>
+    extends _$SubscriptionResponseCopyWithImpl<$Res, _$SubscriptionResponseImpl>
+    implements _$$SubscriptionResponseImplCopyWith<$Res> {
+  __$$SubscriptionResponseImplCopyWithImpl(_$SubscriptionResponseImpl _value,
+      $Res Function(_$SubscriptionResponseImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of GetSubscriptionModel
@@ -94,139 +108,282 @@ class __$$GetSubscriptionModelImplCopyWithImpl<$Res>
   $Res call({
     Object? subscriptions = freezed,
   }) {
-    return _then(_$GetSubscriptionModelImpl(
+    return _then(_$SubscriptionResponseImpl(
       subscriptions: freezed == subscriptions
-          ? _value._subscriptions
+          ? _value.subscriptions
           : subscriptions // ignore: cast_nullable_to_non_nullable
-              as List<Subscription>?,
+              as Subscriptions?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$GetSubscriptionModelImpl implements _GetSubscriptionModel {
-  const _$GetSubscriptionModelImpl(
-      {required final List<Subscription>? subscriptions})
-      : _subscriptions = subscriptions;
+class _$SubscriptionResponseImpl implements _SubscriptionResponse {
+  _$SubscriptionResponseImpl({this.subscriptions});
 
-  factory _$GetSubscriptionModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GetSubscriptionModelImplFromJson(json);
+  factory _$SubscriptionResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SubscriptionResponseImplFromJson(json);
 
-  final List<Subscription>? _subscriptions;
   @override
-  List<Subscription>? get subscriptions {
-    final value = _subscriptions;
+  final Subscriptions? subscriptions;
+
+  @override
+  String toString() {
+    return 'SubscriptionResponse(subscriptions: $subscriptions)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubscriptionResponseImpl &&
+            (identical(other.subscriptions, subscriptions) ||
+                other.subscriptions == subscriptions));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, subscriptions);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SubscriptionResponseImplCopyWith<_$SubscriptionResponseImpl>
+      get copyWith =>
+          __$$SubscriptionResponseImplCopyWithImpl<_$SubscriptionResponseImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SubscriptionResponseImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SubscriptionResponse implements SubscriptionResponse {
+  factory _SubscriptionResponse({final Subscriptions? subscriptions}) =
+      _$SubscriptionResponseImpl;
+
+  factory _SubscriptionResponse.fromJson(Map<String, dynamic> json) =
+      _$SubscriptionResponseImpl.fromJson;
+
+  @override
+  Subscriptions? get subscriptions;
+  @override
+  @JsonKey(ignore: true)
+  _$$SubscriptionResponseImplCopyWith<_$SubscriptionResponseImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+Subscriptions _$SubscriptionsFromJson(Map<String, dynamic> json) {
+  return _Subscriptions.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Subscriptions {
+  int? get current_page => throw _privateConstructorUsedError;
+  List<SubscriptionData>? get data => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SubscriptionsCopyWith<Subscriptions> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SubscriptionsCopyWith<$Res> {
+  factory $SubscriptionsCopyWith(
+          Subscriptions value, $Res Function(Subscriptions) then) =
+      _$SubscriptionsCopyWithImpl<$Res, Subscriptions>;
+  @useResult
+  $Res call({int? current_page, List<SubscriptionData>? data});
+}
+
+/// @nodoc
+class _$SubscriptionsCopyWithImpl<$Res, $Val extends Subscriptions>
+    implements $SubscriptionsCopyWith<$Res> {
+  _$SubscriptionsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? current_page = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_value.copyWith(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<SubscriptionData>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SubscriptionsImplCopyWith<$Res>
+    implements $SubscriptionsCopyWith<$Res> {
+  factory _$$SubscriptionsImplCopyWith(
+          _$SubscriptionsImpl value, $Res Function(_$SubscriptionsImpl) then) =
+      __$$SubscriptionsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int? current_page, List<SubscriptionData>? data});
+}
+
+/// @nodoc
+class __$$SubscriptionsImplCopyWithImpl<$Res>
+    extends _$SubscriptionsCopyWithImpl<$Res, _$SubscriptionsImpl>
+    implements _$$SubscriptionsImplCopyWith<$Res> {
+  __$$SubscriptionsImplCopyWithImpl(
+      _$SubscriptionsImpl _value, $Res Function(_$SubscriptionsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? current_page = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_$SubscriptionsImpl(
+      current_page: freezed == current_page
+          ? _value.current_page
+          : current_page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<SubscriptionData>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SubscriptionsImpl implements _Subscriptions {
+  _$SubscriptionsImpl({this.current_page, final List<SubscriptionData>? data})
+      : _data = data;
+
+  factory _$SubscriptionsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SubscriptionsImplFromJson(json);
+
+  @override
+  final int? current_page;
+  final List<SubscriptionData>? _data;
+  @override
+  List<SubscriptionData>? get data {
+    final value = _data;
     if (value == null) return null;
-    if (_subscriptions is EqualUnmodifiableListView) return _subscriptions;
+    if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'GetSubscriptionModel(subscriptions: $subscriptions)';
+    return 'Subscriptions(current_page: $current_page, data: $data)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GetSubscriptionModelImpl &&
-            const DeepCollectionEquality()
-                .equals(other._subscriptions, _subscriptions));
+            other is _$SubscriptionsImpl &&
+            (identical(other.current_page, current_page) ||
+                other.current_page == current_page) &&
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_subscriptions));
+      runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
   /// Create a copy of GetSubscriptionModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GetSubscriptionModelImplCopyWith<_$GetSubscriptionModelImpl>
-      get copyWith =>
-          __$$GetSubscriptionModelImplCopyWithImpl<_$GetSubscriptionModelImpl>(
-              this, _$identity);
+  _$$SubscriptionsImplCopyWith<_$SubscriptionsImpl> get copyWith =>
+      __$$SubscriptionsImplCopyWithImpl<_$SubscriptionsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GetSubscriptionModelImplToJson(
+    return _$$SubscriptionsImplToJson(
       this,
     );
   }
 }
 
-abstract class _GetSubscriptionModel implements GetSubscriptionModel {
-  const factory _GetSubscriptionModel(
-          {required final List<Subscription>? subscriptions}) =
-      _$GetSubscriptionModelImpl;
+abstract class _Subscriptions implements Subscriptions {
+  factory _Subscriptions(
+      {final int? current_page,
+      final List<SubscriptionData>? data}) = _$SubscriptionsImpl;
 
-  factory _GetSubscriptionModel.fromJson(Map<String, dynamic> json) =
-      _$GetSubscriptionModelImpl.fromJson;
+  factory _Subscriptions.fromJson(Map<String, dynamic> json) =
+      _$SubscriptionsImpl.fromJson;
 
   @override
-  List<Subscription>? get subscriptions;
-
-  /// Create a copy of GetSubscriptionModel
-  /// with the given fields replaced by the non-null parameter values.
+  int? get current_page;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GetSubscriptionModelImplCopyWith<_$GetSubscriptionModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  List<SubscriptionData>? get data;
+  @override
+  @JsonKey(ignore: true)
+  _$$SubscriptionsImplCopyWith<_$SubscriptionsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
-Subscription _$SubscriptionFromJson(Map<String, dynamic> json) {
-  return _Subscription.fromJson(json);
+SubscriptionData _$SubscriptionDataFromJson(Map<String, dynamic> json) {
+  return _SubscriptionData.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Subscription {
+mixin _$SubscriptionData {
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_id')
-  String? get userId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vendor_id')
-  String? get vendorId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'followed_date')
-  String? get followedDate => throw _privateConstructorUsedError;
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get vendor_id => throw _privateConstructorUsedError;
+  String? get followed_date => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vendor_card')
-  Vendor? get vendor => throw _privateConstructorUsedError;
+  SubscriptionVendorCard? get vendor_card => throw _privateConstructorUsedError;
 
   /// Serializes this Subscription to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Subscription
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $SubscriptionCopyWith<Subscription> get copyWith =>
+  @JsonKey(ignore: true)
+  $SubscriptionDataCopyWith<SubscriptionData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SubscriptionCopyWith<$Res> {
-  factory $SubscriptionCopyWith(
-          Subscription value, $Res Function(Subscription) then) =
-      _$SubscriptionCopyWithImpl<$Res, Subscription>;
+abstract class $SubscriptionDataCopyWith<$Res> {
+  factory $SubscriptionDataCopyWith(
+          SubscriptionData value, $Res Function(SubscriptionData) then) =
+      _$SubscriptionDataCopyWithImpl<$Res, SubscriptionData>;
   @useResult
   $Res call(
       {String? id,
-      @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'vendor_id') String? vendorId,
-      @JsonKey(name: 'followed_date') String? followedDate,
+      String? user_id,
+      String? vendor_id,
+      String? followed_date,
       String? status,
-      @JsonKey(name: 'vendor_card') Vendor? vendor});
+      SubscriptionVendorCard? vendor_card});
 
-  $VendorCopyWith<$Res>? get vendor;
+  $SubscriptionVendorCardCopyWith<$Res>? get vendor_card;
 }
 
 /// @nodoc
-class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
-    implements $SubscriptionCopyWith<$Res> {
-  _$SubscriptionCopyWithImpl(this._value, this._then);
+class _$SubscriptionDataCopyWithImpl<$Res, $Val extends SubscriptionData>
+    implements $SubscriptionDataCopyWith<$Res> {
+  _$SubscriptionDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -239,37 +396,37 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
-    Object? vendorId = freezed,
-    Object? followedDate = freezed,
+    Object? user_id = freezed,
+    Object? vendor_id = freezed,
+    Object? followed_date = freezed,
     Object? status = freezed,
-    Object? vendor = freezed,
+    Object? vendor_card = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendorId: freezed == vendorId
-          ? _value.vendorId
-          : vendorId // ignore: cast_nullable_to_non_nullable
+      vendor_id: freezed == vendor_id
+          ? _value.vendor_id
+          : vendor_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      followedDate: freezed == followedDate
-          ? _value.followedDate
-          : followedDate // ignore: cast_nullable_to_non_nullable
+      followed_date: freezed == followed_date
+          ? _value.followed_date
+          : followed_date // ignore: cast_nullable_to_non_nullable
               as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendor: freezed == vendor
-          ? _value.vendor
-          : vendor // ignore: cast_nullable_to_non_nullable
-              as Vendor?,
+      vendor_card: freezed == vendor_card
+          ? _value.vendor_card
+          : vendor_card // ignore: cast_nullable_to_non_nullable
+              as SubscriptionVendorCard?,
     ) as $Val);
   }
 
@@ -277,43 +434,43 @@ class _$SubscriptionCopyWithImpl<$Res, $Val extends Subscription>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $VendorCopyWith<$Res>? get vendor {
-    if (_value.vendor == null) {
+  $SubscriptionVendorCardCopyWith<$Res>? get vendor_card {
+    if (_value.vendor_card == null) {
       return null;
     }
 
-    return $VendorCopyWith<$Res>(_value.vendor!, (value) {
-      return _then(_value.copyWith(vendor: value) as $Val);
+    return $SubscriptionVendorCardCopyWith<$Res>(_value.vendor_card!, (value) {
+      return _then(_value.copyWith(vendor_card: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$SubscriptionImplCopyWith<$Res>
-    implements $SubscriptionCopyWith<$Res> {
-  factory _$$SubscriptionImplCopyWith(
-          _$SubscriptionImpl value, $Res Function(_$SubscriptionImpl) then) =
-      __$$SubscriptionImplCopyWithImpl<$Res>;
+abstract class _$$SubscriptionDataImplCopyWith<$Res>
+    implements $SubscriptionDataCopyWith<$Res> {
+  factory _$$SubscriptionDataImplCopyWith(_$SubscriptionDataImpl value,
+          $Res Function(_$SubscriptionDataImpl) then) =
+      __$$SubscriptionDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String? id,
-      @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'vendor_id') String? vendorId,
-      @JsonKey(name: 'followed_date') String? followedDate,
+      String? user_id,
+      String? vendor_id,
+      String? followed_date,
       String? status,
-      @JsonKey(name: 'vendor_card') Vendor? vendor});
+      SubscriptionVendorCard? vendor_card});
 
   @override
-  $VendorCopyWith<$Res>? get vendor;
+  $SubscriptionVendorCardCopyWith<$Res>? get vendor_card;
 }
 
 /// @nodoc
-class __$$SubscriptionImplCopyWithImpl<$Res>
-    extends _$SubscriptionCopyWithImpl<$Res, _$SubscriptionImpl>
-    implements _$$SubscriptionImplCopyWith<$Res> {
-  __$$SubscriptionImplCopyWithImpl(
-      _$SubscriptionImpl _value, $Res Function(_$SubscriptionImpl) _then)
+class __$$SubscriptionDataImplCopyWithImpl<$Res>
+    extends _$SubscriptionDataCopyWithImpl<$Res, _$SubscriptionDataImpl>
+    implements _$$SubscriptionDataImplCopyWith<$Res> {
+  __$$SubscriptionDataImplCopyWithImpl(_$SubscriptionDataImpl _value,
+      $Res Function(_$SubscriptionDataImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of Subscription
@@ -322,212 +479,202 @@ class __$$SubscriptionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
-    Object? vendorId = freezed,
-    Object? followedDate = freezed,
+    Object? user_id = freezed,
+    Object? vendor_id = freezed,
+    Object? followed_date = freezed,
     Object? status = freezed,
-    Object? vendor = freezed,
+    Object? vendor_card = freezed,
   }) {
-    return _then(_$SubscriptionImpl(
+    return _then(_$SubscriptionDataImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendorId: freezed == vendorId
-          ? _value.vendorId
-          : vendorId // ignore: cast_nullable_to_non_nullable
+      vendor_id: freezed == vendor_id
+          ? _value.vendor_id
+          : vendor_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      followedDate: freezed == followedDate
-          ? _value.followedDate
-          : followedDate // ignore: cast_nullable_to_non_nullable
+      followed_date: freezed == followed_date
+          ? _value.followed_date
+          : followed_date // ignore: cast_nullable_to_non_nullable
               as String?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
-      vendor: freezed == vendor
-          ? _value.vendor
-          : vendor // ignore: cast_nullable_to_non_nullable
-              as Vendor?,
+      vendor_card: freezed == vendor_card
+          ? _value.vendor_card
+          : vendor_card // ignore: cast_nullable_to_non_nullable
+              as SubscriptionVendorCard?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$SubscriptionImpl implements _Subscription {
-  const _$SubscriptionImpl(
+class _$SubscriptionDataImpl implements _SubscriptionData {
+  _$SubscriptionDataImpl(
       {this.id,
-      @JsonKey(name: 'user_id') this.userId,
-      @JsonKey(name: 'vendor_id') this.vendorId,
-      @JsonKey(name: 'followed_date') this.followedDate,
+      this.user_id,
+      this.vendor_id,
+      this.followed_date,
       this.status,
-      @JsonKey(name: 'vendor_card') this.vendor});
+      this.vendor_card});
 
-  factory _$SubscriptionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SubscriptionImplFromJson(json);
+  factory _$SubscriptionDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SubscriptionDataImplFromJson(json);
 
   @override
   final String? id;
   @override
-  @JsonKey(name: 'user_id')
-  final String? userId;
+  final String? user_id;
   @override
-  @JsonKey(name: 'vendor_id')
-  final String? vendorId;
+  final String? vendor_id;
   @override
-  @JsonKey(name: 'followed_date')
-  final String? followedDate;
+  final String? followed_date;
   @override
   final String? status;
   @override
-  @JsonKey(name: 'vendor_card')
-  final Vendor? vendor;
+  final SubscriptionVendorCard? vendor_card;
 
   @override
   String toString() {
-    return 'Subscription(id: $id, userId: $userId, vendorId: $vendorId, followedDate: $followedDate, status: $status, vendor: $vendor)';
+    return 'SubscriptionData(id: $id, user_id: $user_id, vendor_id: $vendor_id, followed_date: $followed_date, status: $status, vendor_card: $vendor_card)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SubscriptionImpl &&
+            other is _$SubscriptionDataImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.vendorId, vendorId) ||
-                other.vendorId == vendorId) &&
-            (identical(other.followedDate, followedDate) ||
-                other.followedDate == followedDate) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.vendor_id, vendor_id) ||
+                other.vendor_id == vendor_id) &&
+            (identical(other.followed_date, followed_date) ||
+                other.followed_date == followed_date) &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.vendor, vendor) || other.vendor == vendor));
+            (identical(other.vendor_card, vendor_card) ||
+                other.vendor_card == vendor_card));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, userId, vendorId, followedDate, status, vendor);
+      runtimeType, id, user_id, vendor_id, followed_date, status, vendor_card);
 
   /// Create a copy of Subscription
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$SubscriptionImplCopyWith<_$SubscriptionImpl> get copyWith =>
-      __$$SubscriptionImplCopyWithImpl<_$SubscriptionImpl>(this, _$identity);
+  _$$SubscriptionDataImplCopyWith<_$SubscriptionDataImpl> get copyWith =>
+      __$$SubscriptionDataImplCopyWithImpl<_$SubscriptionDataImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SubscriptionImplToJson(
+    return _$$SubscriptionDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _Subscription implements Subscription {
-  const factory _Subscription(
+abstract class _SubscriptionData implements SubscriptionData {
+  factory _SubscriptionData(
       {final String? id,
-      @JsonKey(name: 'user_id') final String? userId,
-      @JsonKey(name: 'vendor_id') final String? vendorId,
-      @JsonKey(name: 'followed_date') final String? followedDate,
+      final String? user_id,
+      final String? vendor_id,
+      final String? followed_date,
       final String? status,
-      @JsonKey(name: 'vendor_card') final Vendor? vendor}) = _$SubscriptionImpl;
+      final SubscriptionVendorCard? vendor_card}) = _$SubscriptionDataImpl;
 
-  factory _Subscription.fromJson(Map<String, dynamic> json) =
-      _$SubscriptionImpl.fromJson;
+  factory _SubscriptionData.fromJson(Map<String, dynamic> json) =
+      _$SubscriptionDataImpl.fromJson;
 
   @override
   String? get id;
   @override
-  @JsonKey(name: 'user_id')
-  String? get userId;
+  String? get user_id;
   @override
-  @JsonKey(name: 'vendor_id')
-  String? get vendorId;
+  String? get vendor_id;
   @override
-  @JsonKey(name: 'followed_date')
-  String? get followedDate;
+  String? get followed_date;
   @override
   String? get status;
   @override
-  @JsonKey(name: 'vendor_card')
-  Vendor? get vendor;
-
-  /// Create a copy of Subscription
-  /// with the given fields replaced by the non-null parameter values.
+  SubscriptionVendorCard? get vendor_card;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SubscriptionImplCopyWith<_$SubscriptionImpl> get copyWith =>
+  @JsonKey(ignore: true)
+  _$$SubscriptionDataImplCopyWith<_$SubscriptionDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-Vendor _$VendorFromJson(Map<String, dynamic> json) {
-  return _Vendor.fromJson(json);
+SubscriptionVendorCard _$SubscriptionVendorCardFromJson(
+    Map<String, dynamic> json) {
+  return _SubscriptionVendorCard.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Vendor {
+mixin _$SubscriptionVendorCard {
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(name: 'profile_url')
-  String? get profileUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'storycount')
-  int? get storyCount => throw _privateConstructorUsedError;
-  @JsonKey(name: 'dealzcircle')
-  int? get dealzCircle => throw _privateConstructorUsedError;
+  String? get profile_url => throw _privateConstructorUsedError;
+  int? get storycount => throw _privateConstructorUsedError;
+  int? get dealzcircle => throw _privateConstructorUsedError;
+  int? get subscribed => throw _privateConstructorUsedError;
   int? get connection => throw _privateConstructorUsedError;
-  @JsonKey(name: 'prize_worth')
-  int? get prizeWorth => throw _privateConstructorUsedError;
-  @JsonKey(name: 'has_sponsored_gifts')
-  bool? get hasSponsoredGifts => throw _privateConstructorUsedError;
+  int? get prize_worth => throw _privateConstructorUsedError;
+  bool? get has_sponsored_gifts => throw _privateConstructorUsedError;
   String? get nearestbranch => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_id')
-  String? get membershipId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle => throw _privateConstructorUsedError;
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor => throw _privateConstructorUsedError;
+  String? get longitude => throw _privateConstructorUsedError;
+  String? get latitude => throw _privateConstructorUsedError;
+  String? get membership_id => throw _privateConstructorUsedError;
+  String? get membership_title => throw _privateConstructorUsedError;
+  String? get membership_color => throw _privateConstructorUsedError;
 
   /// Serializes this Vendor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $VendorCopyWith<Vendor> get copyWith => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SubscriptionVendorCardCopyWith<SubscriptionVendorCard> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $VendorCopyWith<$Res> {
-  factory $VendorCopyWith(Vendor value, $Res Function(Vendor) then) =
-      _$VendorCopyWithImpl<$Res, Vendor>;
+abstract class $SubscriptionVendorCardCopyWith<$Res> {
+  factory $SubscriptionVendorCardCopyWith(SubscriptionVendorCard value,
+          $Res Function(SubscriptionVendorCard) then) =
+      _$SubscriptionVendorCardCopyWithImpl<$Res, SubscriptionVendorCard>;
   @useResult
   $Res call(
       {String? name,
       String? photo,
       String? phone,
-      @JsonKey(name: 'profile_url') String? profileUrl,
-      @JsonKey(name: 'storycount') int? storyCount,
-      @JsonKey(name: 'dealzcircle') int? dealzCircle,
+      String? profile_url,
+      int? storycount,
+      int? dealzcircle,
+      int? subscribed,
       int? connection,
-      @JsonKey(name: 'prize_worth') int? prizeWorth,
-      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      int? prize_worth,
+      bool? has_sponsored_gifts,
       String? nearestbranch,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? longitude,
+      String? latitude,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
-class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
-    implements $VendorCopyWith<$Res> {
-  _$VendorCopyWithImpl(this._value, this._then);
+class _$SubscriptionVendorCardCopyWithImpl<$Res,
+        $Val extends SubscriptionVendorCard>
+    implements $SubscriptionVendorCardCopyWith<$Res> {
+  _$SubscriptionVendorCardCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -542,16 +689,19 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
     Object? name = freezed,
     Object? photo = freezed,
     Object? phone = freezed,
-    Object? profileUrl = freezed,
-    Object? storyCount = freezed,
-    Object? dealzCircle = freezed,
+    Object? profile_url = freezed,
+    Object? storycount = freezed,
+    Object? dealzcircle = freezed,
+    Object? subscribed = freezed,
     Object? connection = freezed,
-    Object? prizeWorth = freezed,
-    Object? hasSponsoredGifts = freezed,
+    Object? prize_worth = freezed,
+    Object? has_sponsored_gifts = freezed,
     Object? nearestbranch = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -566,79 +716,98 @@ class _$VendorCopyWithImpl<$Res, $Val extends Vendor>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileUrl: freezed == profileUrl
-          ? _value.profileUrl
-          : profileUrl // ignore: cast_nullable_to_non_nullable
+      profile_url: freezed == profile_url
+          ? _value.profile_url
+          : profile_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      storyCount: freezed == storyCount
-          ? _value.storyCount
-          : storyCount // ignore: cast_nullable_to_non_nullable
+      storycount: freezed == storycount
+          ? _value.storycount
+          : storycount // ignore: cast_nullable_to_non_nullable
               as int?,
-      dealzCircle: freezed == dealzCircle
-          ? _value.dealzCircle
-          : dealzCircle // ignore: cast_nullable_to_non_nullable
+      dealzcircle: freezed == dealzcircle
+          ? _value.dealzcircle
+          : dealzcircle // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
               as int?,
       connection: freezed == connection
           ? _value.connection
           : connection // ignore: cast_nullable_to_non_nullable
               as int?,
-      prizeWorth: freezed == prizeWorth
-          ? _value.prizeWorth
-          : prizeWorth // ignore: cast_nullable_to_non_nullable
+      prize_worth: freezed == prize_worth
+          ? _value.prize_worth
+          : prize_worth // ignore: cast_nullable_to_non_nullable
               as int?,
-      hasSponsoredGifts: freezed == hasSponsoredGifts
-          ? _value.hasSponsoredGifts
-          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
               as bool?,
       nearestbranch: freezed == nearestbranch
           ? _value.nearestbranch
           : nearestbranch // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$VendorImplCopyWith<$Res> implements $VendorCopyWith<$Res> {
-  factory _$$VendorImplCopyWith(
-          _$VendorImpl value, $Res Function(_$VendorImpl) then) =
-      __$$VendorImplCopyWithImpl<$Res>;
+abstract class _$$SubscriptionVendorCardImplCopyWith<$Res>
+    implements $SubscriptionVendorCardCopyWith<$Res> {
+  factory _$$SubscriptionVendorCardImplCopyWith(
+          _$SubscriptionVendorCardImpl value,
+          $Res Function(_$SubscriptionVendorCardImpl) then) =
+      __$$SubscriptionVendorCardImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String? name,
       String? photo,
       String? phone,
-      @JsonKey(name: 'profile_url') String? profileUrl,
-      @JsonKey(name: 'storycount') int? storyCount,
-      @JsonKey(name: 'dealzcircle') int? dealzCircle,
+      String? profile_url,
+      int? storycount,
+      int? dealzcircle,
+      int? subscribed,
       int? connection,
-      @JsonKey(name: 'prize_worth') int? prizeWorth,
-      @JsonKey(name: 'has_sponsored_gifts') bool? hasSponsoredGifts,
+      int? prize_worth,
+      bool? has_sponsored_gifts,
       String? nearestbranch,
-      @JsonKey(name: 'membership_id') String? membershipId,
-      @JsonKey(name: 'membership_title') String? membershipTitle,
-      @JsonKey(name: 'membership_color') String? membershipColor});
+      String? longitude,
+      String? latitude,
+      String? membership_id,
+      String? membership_title,
+      String? membership_color});
 }
 
 /// @nodoc
-class __$$VendorImplCopyWithImpl<$Res>
-    extends _$VendorCopyWithImpl<$Res, _$VendorImpl>
-    implements _$$VendorImplCopyWith<$Res> {
-  __$$VendorImplCopyWithImpl(
-      _$VendorImpl _value, $Res Function(_$VendorImpl) _then)
+class __$$SubscriptionVendorCardImplCopyWithImpl<$Res>
+    extends _$SubscriptionVendorCardCopyWithImpl<$Res,
+        _$SubscriptionVendorCardImpl>
+    implements _$$SubscriptionVendorCardImplCopyWith<$Res> {
+  __$$SubscriptionVendorCardImplCopyWithImpl(
+      _$SubscriptionVendorCardImpl _value,
+      $Res Function(_$SubscriptionVendorCardImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of Vendor
@@ -649,18 +818,21 @@ class __$$VendorImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? photo = freezed,
     Object? phone = freezed,
-    Object? profileUrl = freezed,
-    Object? storyCount = freezed,
-    Object? dealzCircle = freezed,
+    Object? profile_url = freezed,
+    Object? storycount = freezed,
+    Object? dealzcircle = freezed,
+    Object? subscribed = freezed,
     Object? connection = freezed,
-    Object? prizeWorth = freezed,
-    Object? hasSponsoredGifts = freezed,
+    Object? prize_worth = freezed,
+    Object? has_sponsored_gifts = freezed,
     Object? nearestbranch = freezed,
-    Object? membershipId = freezed,
-    Object? membershipTitle = freezed,
-    Object? membershipColor = freezed,
+    Object? longitude = freezed,
+    Object? latitude = freezed,
+    Object? membership_id = freezed,
+    Object? membership_title = freezed,
+    Object? membership_color = freezed,
   }) {
-    return _then(_$VendorImpl(
+    return _then(_$SubscriptionVendorCardImpl(
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -673,45 +845,57 @@ class __$$VendorImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileUrl: freezed == profileUrl
-          ? _value.profileUrl
-          : profileUrl // ignore: cast_nullable_to_non_nullable
+      profile_url: freezed == profile_url
+          ? _value.profile_url
+          : profile_url // ignore: cast_nullable_to_non_nullable
               as String?,
-      storyCount: freezed == storyCount
-          ? _value.storyCount
-          : storyCount // ignore: cast_nullable_to_non_nullable
+      storycount: freezed == storycount
+          ? _value.storycount
+          : storycount // ignore: cast_nullable_to_non_nullable
               as int?,
-      dealzCircle: freezed == dealzCircle
-          ? _value.dealzCircle
-          : dealzCircle // ignore: cast_nullable_to_non_nullable
+      dealzcircle: freezed == dealzcircle
+          ? _value.dealzcircle
+          : dealzcircle // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subscribed: freezed == subscribed
+          ? _value.subscribed
+          : subscribed // ignore: cast_nullable_to_non_nullable
               as int?,
       connection: freezed == connection
           ? _value.connection
           : connection // ignore: cast_nullable_to_non_nullable
               as int?,
-      prizeWorth: freezed == prizeWorth
-          ? _value.prizeWorth
-          : prizeWorth // ignore: cast_nullable_to_non_nullable
+      prize_worth: freezed == prize_worth
+          ? _value.prize_worth
+          : prize_worth // ignore: cast_nullable_to_non_nullable
               as int?,
-      hasSponsoredGifts: freezed == hasSponsoredGifts
-          ? _value.hasSponsoredGifts
-          : hasSponsoredGifts // ignore: cast_nullable_to_non_nullable
+      has_sponsored_gifts: freezed == has_sponsored_gifts
+          ? _value.has_sponsored_gifts
+          : has_sponsored_gifts // ignore: cast_nullable_to_non_nullable
               as bool?,
       nearestbranch: freezed == nearestbranch
           ? _value.nearestbranch
           : nearestbranch // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipId: freezed == membershipId
-          ? _value.membershipId
-          : membershipId // ignore: cast_nullable_to_non_nullable
+      longitude: freezed == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipTitle: freezed == membershipTitle
-          ? _value.membershipTitle
-          : membershipTitle // ignore: cast_nullable_to_non_nullable
+      latitude: freezed == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
               as String?,
-      membershipColor: freezed == membershipColor
-          ? _value.membershipColor
-          : membershipColor // ignore: cast_nullable_to_non_nullable
+      membership_id: freezed == membership_id
+          ? _value.membership_id
+          : membership_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_title: freezed == membership_title
+          ? _value.membership_title
+          : membership_title // ignore: cast_nullable_to_non_nullable
+              as String?,
+      membership_color: freezed == membership_color
+          ? _value.membership_color
+          : membership_color // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -719,24 +903,27 @@ class __$$VendorImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$VendorImpl implements _Vendor {
-  const _$VendorImpl(
+class _$SubscriptionVendorCardImpl implements _SubscriptionVendorCard {
+  _$SubscriptionVendorCardImpl(
       {this.name,
       this.photo,
       this.phone,
-      @JsonKey(name: 'profile_url') this.profileUrl,
-      @JsonKey(name: 'storycount') this.storyCount,
-      @JsonKey(name: 'dealzcircle') this.dealzCircle,
+      this.profile_url,
+      this.storycount,
+      this.dealzcircle,
+      this.subscribed,
       this.connection,
-      @JsonKey(name: 'prize_worth') this.prizeWorth,
-      @JsonKey(name: 'has_sponsored_gifts') this.hasSponsoredGifts,
+      this.prize_worth,
+      this.has_sponsored_gifts,
       this.nearestbranch,
-      @JsonKey(name: 'membership_id') this.membershipId,
-      @JsonKey(name: 'membership_title') this.membershipTitle,
-      @JsonKey(name: 'membership_color') this.membershipColor});
+      this.longitude,
+      this.latitude,
+      this.membership_id,
+      this.membership_title,
+      this.membership_color});
 
-  factory _$VendorImpl.fromJson(Map<String, dynamic> json) =>
-      _$$VendorImplFromJson(json);
+  factory _$SubscriptionVendorCardImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SubscriptionVendorCardImplFromJson(json);
 
   @override
   final String? name;
@@ -745,67 +932,71 @@ class _$VendorImpl implements _Vendor {
   @override
   final String? phone;
   @override
-  @JsonKey(name: 'profile_url')
-  final String? profileUrl;
+  final String? profile_url;
   @override
-  @JsonKey(name: 'storycount')
-  final int? storyCount;
+  final int? storycount;
   @override
-  @JsonKey(name: 'dealzcircle')
-  final int? dealzCircle;
+  final int? dealzcircle;
+  @override
+  final int? subscribed;
   @override
   final int? connection;
   @override
-  @JsonKey(name: 'prize_worth')
-  final int? prizeWorth;
+  final int? prize_worth;
   @override
-  @JsonKey(name: 'has_sponsored_gifts')
-  final bool? hasSponsoredGifts;
+  final bool? has_sponsored_gifts;
   @override
   final String? nearestbranch;
   @override
-  @JsonKey(name: 'membership_id')
-  final String? membershipId;
+  final String? longitude;
   @override
-  @JsonKey(name: 'membership_title')
-  final String? membershipTitle;
+  final String? latitude;
   @override
-  @JsonKey(name: 'membership_color')
-  final String? membershipColor;
+  final String? membership_id;
+  @override
+  final String? membership_title;
+  @override
+  final String? membership_color;
 
   @override
   String toString() {
-    return 'Vendor(name: $name, photo: $photo, phone: $phone, profileUrl: $profileUrl, storyCount: $storyCount, dealzCircle: $dealzCircle, connection: $connection, prizeWorth: $prizeWorth, hasSponsoredGifts: $hasSponsoredGifts, nearestbranch: $nearestbranch, membershipId: $membershipId, membershipTitle: $membershipTitle, membershipColor: $membershipColor)';
+    return 'SubscriptionVendorCard(name: $name, photo: $photo, phone: $phone, profile_url: $profile_url, storycount: $storycount, dealzcircle: $dealzcircle, subscribed: $subscribed, connection: $connection, prize_worth: $prize_worth, has_sponsored_gifts: $has_sponsored_gifts, nearestbranch: $nearestbranch, longitude: $longitude, latitude: $latitude, membership_id: $membership_id, membership_title: $membership_title, membership_color: $membership_color)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$VendorImpl &&
+            other is _$SubscriptionVendorCardImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.profileUrl, profileUrl) ||
-                other.profileUrl == profileUrl) &&
-            (identical(other.storyCount, storyCount) ||
-                other.storyCount == storyCount) &&
-            (identical(other.dealzCircle, dealzCircle) ||
-                other.dealzCircle == dealzCircle) &&
+            (identical(other.profile_url, profile_url) ||
+                other.profile_url == profile_url) &&
+            (identical(other.storycount, storycount) ||
+                other.storycount == storycount) &&
+            (identical(other.dealzcircle, dealzcircle) ||
+                other.dealzcircle == dealzcircle) &&
+            (identical(other.subscribed, subscribed) ||
+                other.subscribed == subscribed) &&
             (identical(other.connection, connection) ||
                 other.connection == connection) &&
-            (identical(other.prizeWorth, prizeWorth) ||
-                other.prizeWorth == prizeWorth) &&
-            (identical(other.hasSponsoredGifts, hasSponsoredGifts) ||
-                other.hasSponsoredGifts == hasSponsoredGifts) &&
+            (identical(other.prize_worth, prize_worth) ||
+                other.prize_worth == prize_worth) &&
+            (identical(other.has_sponsored_gifts, has_sponsored_gifts) ||
+                other.has_sponsored_gifts == has_sponsored_gifts) &&
             (identical(other.nearestbranch, nearestbranch) ||
                 other.nearestbranch == nearestbranch) &&
-            (identical(other.membershipId, membershipId) ||
-                other.membershipId == membershipId) &&
-            (identical(other.membershipTitle, membershipTitle) ||
-                other.membershipTitle == membershipTitle) &&
-            (identical(other.membershipColor, membershipColor) ||
-                other.membershipColor == membershipColor));
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.membership_id, membership_id) ||
+                other.membership_id == membership_id) &&
+            (identical(other.membership_title, membership_title) ||
+                other.membership_title == membership_title) &&
+            (identical(other.membership_color, membership_color) ||
+                other.membership_color == membership_color));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -815,51 +1006,58 @@ class _$VendorImpl implements _Vendor {
       name,
       photo,
       phone,
-      profileUrl,
-      storyCount,
-      dealzCircle,
+      profile_url,
+      storycount,
+      dealzcircle,
+      subscribed,
       connection,
-      prizeWorth,
-      hasSponsoredGifts,
+      prize_worth,
+      has_sponsored_gifts,
       nearestbranch,
-      membershipId,
-      membershipTitle,
-      membershipColor);
+      longitude,
+      latitude,
+      membership_id,
+      membership_title,
+      membership_color);
 
   /// Create a copy of Vendor
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
-      __$$VendorImplCopyWithImpl<_$VendorImpl>(this, _$identity);
+  _$$SubscriptionVendorCardImplCopyWith<_$SubscriptionVendorCardImpl>
+      get copyWith => __$$SubscriptionVendorCardImplCopyWithImpl<
+          _$SubscriptionVendorCardImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$VendorImplToJson(
+    return _$$SubscriptionVendorCardImplToJson(
       this,
     );
   }
 }
 
-abstract class _Vendor implements Vendor {
-  const factory _Vendor(
-          {final String? name,
-          final String? photo,
-          final String? phone,
-          @JsonKey(name: 'profile_url') final String? profileUrl,
-          @JsonKey(name: 'storycount') final int? storyCount,
-          @JsonKey(name: 'dealzcircle') final int? dealzCircle,
-          final int? connection,
-          @JsonKey(name: 'prize_worth') final int? prizeWorth,
-          @JsonKey(name: 'has_sponsored_gifts') final bool? hasSponsoredGifts,
-          final String? nearestbranch,
-          @JsonKey(name: 'membership_id') final String? membershipId,
-          @JsonKey(name: 'membership_title') final String? membershipTitle,
-          @JsonKey(name: 'membership_color') final String? membershipColor}) =
-      _$VendorImpl;
+abstract class _SubscriptionVendorCard implements SubscriptionVendorCard {
+  factory _SubscriptionVendorCard(
+      {final String? name,
+      final String? photo,
+      final String? phone,
+      final String? profile_url,
+      final int? storycount,
+      final int? dealzcircle,
+      final int? subscribed,
+      final int? connection,
+      final int? prize_worth,
+      final bool? has_sponsored_gifts,
+      final String? nearestbranch,
+      final String? longitude,
+      final String? latitude,
+      final String? membership_id,
+      final String? membership_title,
+      final String? membership_color}) = _$SubscriptionVendorCardImpl;
 
-  factory _Vendor.fromJson(Map<String, dynamic> json) = _$VendorImpl.fromJson;
+  factory _SubscriptionVendorCard.fromJson(Map<String, dynamic> json) =
+      _$SubscriptionVendorCardImpl.fromJson;
 
   @override
   String? get name;
@@ -868,38 +1066,33 @@ abstract class _Vendor implements Vendor {
   @override
   String? get phone;
   @override
-  @JsonKey(name: 'profile_url')
-  String? get profileUrl;
+  String? get profile_url;
   @override
-  @JsonKey(name: 'storycount')
-  int? get storyCount;
+  int? get storycount;
   @override
-  @JsonKey(name: 'dealzcircle')
-  int? get dealzCircle;
+  int? get dealzcircle;
+  @override
+  int? get subscribed;
   @override
   int? get connection;
   @override
-  @JsonKey(name: 'prize_worth')
-  int? get prizeWorth;
+  int? get prize_worth;
   @override
-  @JsonKey(name: 'has_sponsored_gifts')
-  bool? get hasSponsoredGifts;
+  bool? get has_sponsored_gifts;
   @override
   String? get nearestbranch;
   @override
-  @JsonKey(name: 'membership_id')
-  String? get membershipId;
+  String? get longitude;
   @override
-  @JsonKey(name: 'membership_title')
-  String? get membershipTitle;
+  String? get latitude;
   @override
-  @JsonKey(name: 'membership_color')
-  String? get membershipColor;
-
-  /// Create a copy of Vendor
-  /// with the given fields replaced by the non-null parameter values.
+  String? get membership_id;
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VendorImplCopyWith<_$VendorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  String? get membership_title;
+  @override
+  String? get membership_color;
+  @override
+  @JsonKey(ignore: true)
+  _$$SubscriptionVendorCardImplCopyWith<_$SubscriptionVendorCardImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -436,7 +436,7 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             widget.discounttedPrice != '0' &&
                             widget.discounttedPrice!.isNotEmpty)
                           Text(
-                            "Rs$showRs${widget.discounttedPrice}",
+                            "$showRs${widget.discounttedPrice}",
                             style: headerstyle.copyWith(
                               fontSize: 8.sp,
                               fontWeight: FontWeight.w600,
@@ -729,13 +729,32 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             //   ref: ref,
                             //   showNavBar: false, // Hide bottom navbar
                             // );
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VendorHomeScreen(
+                            //yaxa
+
+                              navigateToPage(
+                                showNavBar: true,
+                                ref: ref,
+                                  context: context,
+                                  page: VendorHomeScreen(
                                       vendorName: widget.vendorname!,
-                                      vid: int.tryParse(widget.vendorid!)!),
-                                ));
+                                       vid: int.tryParse(widget.vendorid!)!,
+                                      
+                                    
+                                  ),
+                                      
+                                  //     ,
+                                  // ref: ref,
+                                  // showNavBar: false, // Hide bottom navbar
+                                );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => VendorHomeScreen(
+                            //           vendorName: widget.vendorname!,
+                            //           vid: int.tryParse(widget.vendorid!,
+                            // )!),
+                            //     ),
+                            //     );
                           },
                           child: Padding(
                               padding: EdgeInsets.only(left: 13.w, right: 3.w),

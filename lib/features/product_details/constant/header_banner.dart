@@ -22,7 +22,7 @@ class HeaderBannerWidget extends StatelessWidget {
       required this.membershipid,
       required this.posttypeid,
       required this.membershiptitle,
-    required  this.ref});
+      required this.ref});
 
   @override
   Widget build(BuildContext context) {

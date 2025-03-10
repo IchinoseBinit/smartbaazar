@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/api/my_order_api.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class MyOrderScreen extends ConsumerWidget {
   const MyOrderScreen({super.key});
@@ -206,14 +208,15 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
 
   @override
   Widget build(BuildContext context) {
+    bool _showdialog = false;
     final order = widget.order;
     // Ensure createdAt is parsed as DateTime
     final createdAt = order.createdAt is String
-        ? DateTime.tryParse(order.createdAt)
+        ? DateTime.tryParse(order.createdAt) ?? DateTime.now()
         : order.createdAt;
 
     // Check eligibility if createdAt is successfully parsed
-    final isReturnEligible = createdAt != null && _isReturnEligible(createdAt);
+    final isReturnEligible = _isReturnEligible(createdAt);
     final vendorName = widget.order.vendorName;
     final productTitle = widget.order.postTitle;
 
@@ -234,14 +237,24 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              SizedBox(width: 7.w),
-              Text(vendorName),
-              const Icon(Icons.arrow_forward_ios, color: Color(0xffADADAD)),
-              const Spacer(),
-              const SizedBox()
-            ],
+          InkWell(
+            onTap: () {
+              navigateToPage(
+                context: context,
+                page: ProductDetailScreen(productId: widget.order.id),
+                ref: ref,
+                showNavBar: false, // Hide bottom navbar
+              );
+            },
+            child: Row(
+              children: [
+                SizedBox(width: 7.w),
+                Text(vendorName),
+                const Icon(Icons.arrow_forward_ios, color: Color(0xffADADAD)),
+                const Spacer(),
+                const SizedBox()
+              ],
+            ),
           ),
           SizedBox(height: 10.h),
           Row(
@@ -286,7 +299,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                       ),
                     ),
                     Text(
-                      'Order ID: ${widget.order.orderId}',
+                      'Order ID: ${widget.order.id}',
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
@@ -348,7 +361,7 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                           title: 'Track',
                           isSmallText: true,
                           onPressed: () {
-                            CustomDialougeBox().orderDetailDialouge(
+                            OrderDetialsOderDialogBox().orderDetailDialouge(
                               context,
                               title: 'Status',
                               heading: 'Track Order',
@@ -385,10 +398,80 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                             textPadding: EdgeInsets.symmetric(horizontal: 2.w),
                             title: 'Return',
                             onPressed: () {
-                              ReturnProductDialog().returnProductDialog(context,
-                                  widget:  ReturnProductDetails(order: widget.order,));
+                              OrderDetialsOderDialogBox().orderDetailDialouge(
+                                context,
+                                buttonTitle: 'Submit',
+                                callback: () {
+                                  if (!mounted)
+                                    return; // Prevent execution if the widget is unmounted
 
-                              // Navigator.pop(context);
+                                  ref
+                                      .read(postmyreturnProvider(
+                                    widget.order.id, // Order ID
+                                    widget.order.vendorId, // Vendor ID
+                                    widget.order.postId, // Post ID
+                                    issue!, // Issue description
+                                    message!, // Message
+                                    place!.description!, // Place description
+                                    place!.place_id!, // City name
+                                    address!, // Address
+                                    place!.latitude!.toString(), // Latitude
+                                    place!.longitude!.toString(), // Longitude
+                                    image!,
+                                  ))
+                                      .whenData(
+                                    (value) {
+                                      if (!mounted)
+                                        return; // Check again before calling UI updates
+
+                                      // Show success dialog
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text("Success"),
+                                          content: const Text(
+                                              "Data inserted successfully"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(); // Close success dialog
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(); // Close main dialog
+                                              },
+                                              child: const Text("OK"),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                widget: ReturnProductDetails(
+                                  issue: (p1) {
+                                    issue = p1;
+                                  },
+                                  message: (p0) {
+                                    message = p0;
+                                  },
+                                  address: (p3) {
+                                    address = p3;
+                                  },
+                                  place: (p4) {
+                                    print('bibash $p4');
+                                    place = p4;
+                                  },
+                                  file: (p5) {
+                                    image = p5;
+                                  },
+                                ),
+                                title: 'Fill the form',
+                                heading: 'Return Products',
+                              );
+
+                              //  Navigator.pop(context);
                             },
                           )
                         ],

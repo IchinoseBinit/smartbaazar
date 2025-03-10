@@ -76,7 +76,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.mail,
       "title": 'Favourite',
       "subtitle": 'Listing',
-      "screen": const FavouriteListingScreen(),
+      "screen":  FavouriteListingScreen(),
     },
     {
       "icon": Icons.saved_search,
@@ -605,7 +605,7 @@ class VendorProfileGridWidget extends StatelessWidget {
                      Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const FavouriteListingScreen(),
+                    builder: (context) =>  FavouriteListingScreen(),
                   ));
                    }
           },

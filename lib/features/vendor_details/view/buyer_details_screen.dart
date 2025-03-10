@@ -487,7 +487,7 @@ class _BuyerAccountDetailsWidgetState
                           // ),
                           LocationFieldWidget(
                             onSelected: (p0) {
-                              print("kalu $p0");
+                           //   print("kalu $p0");
                               updateStreet(p0);
                             },
                             streetController: _branchController,
@@ -609,7 +609,7 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         onTap: () {
-                          print("kala ${widget.streetController.text}");
+                       //   print("kala ${widget.streetController.text}");
                           setState(() {
                             widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions

@@ -2218,7 +2218,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       Expanded(
                         child: TextField(
                           controller: stockcontroller,
@@ -2986,7 +2986,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                           )
                         ],
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       Expanded(
                         child: TextField(
                           onSubmitted: (value) {
@@ -3436,7 +3436,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         )
                       ],
                     ),
-                    const Spacer(),
+                    //   const Spacer(),
                     Expanded(
                       child: TextField(
                         controller: discountcontroller,
@@ -4538,7 +4538,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        print('kalu $typeid');
+                        // print('kalu ${selectedcategory}');
                         setState(() {
                           _acceptterms = newValue;
                         });
