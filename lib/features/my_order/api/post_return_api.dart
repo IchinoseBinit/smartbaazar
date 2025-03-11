@@ -19,7 +19,7 @@ Future<String> postmyreturn(
   String street,
   String longitude,
   String latitude,
-  File image, // Accept image file as input
+  File image,
 ) async {
   final SmartClient client = SmartClient();
 
@@ -45,9 +45,9 @@ Future<String> postmyreturn(
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
+      final jsonResponse = response.data;
       print('Raw JSON Response: $jsonResponse');
-      return jsonResponse.toString(); // Return response
+      return jsonResponse.toString(); 
     } else {
       print('Error: ${response.statusCode}');
       print('Response Data: ${response.data}');
@@ -55,6 +55,6 @@ Future<String> postmyreturn(
     }
   } catch (e) {
     print('Error submitting return request: $e');
-    throw Exception('Failed to submit return request: $e');
+    return Future.error('Failed to submit return request: $e'); // Ensure error is handled
   }
 }

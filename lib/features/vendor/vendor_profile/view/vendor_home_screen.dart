@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screenshot/screenshot.dart';
@@ -825,6 +826,12 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                     child: Container(
                                       color: Colors.white,
                                       child: BigContainer(
+                                        membershipid: int.tryParse(vendorcard
+                                                    .data
+                                                    ?.vendor_card
+                                                    ?.membership_id ??
+                                                '1') ??
+                                            1,
                                         onconnectclicked: () {
                                           ref.invalidate((getVendorCardProvider(
                                               widget.vid)));
@@ -841,7 +848,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                         long: double.tryParse(vendorcard
                                                 .data!.vendor_card?.longitude ??
                                             '0')!,
-                                        id: widget.vid.toString(),
+                                        vendorid: widget.vid.toString(),
                                         title:
                                             vendorcard.data!.vendor_card!.name!,
                                         logo: vendorcard
@@ -998,7 +1005,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             .watch(getvendorbybrandnameProvider(widget.vid))
                             .when(
                               data: (data) {
-                                print('halla ${data.data!.brandnew!.first.savedByLoggedUser}');
+                                // print(
+                                //     'halla ${data.data?.brandnew?.first.savedByLoggedUser}');
                                 // if (data.data!.b2b?.length == 0) {
                                 //   categories.where(
                                 //     (element) => element == 'b2b',
@@ -2101,9 +2109,30 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                             e.updatedAt ?? '',
                                                       ))
                                                   .toList(),
-                                          onRefresh: () {
+                                          onRefresh: () async {
+                                            setstate() {
+                                              _products = [];
+                                              _fetchProducts();
+                                              ref.refresh(
+                                                  getVendorAllProductsProvider(
+                                                      widget.vid,
+                                                      page: _page));
+                                              ref.invalidate(
+                                                  getVendorAllProductsProvider(
+                                                      widget.vid,
+                                                      page: _page));
+                                            }
+
                                             ref.invalidate(
-                                                getVendorAllProductsProvider); // Refresh data
+                                                getVendorAllProductsProvider(
+                                                    widget.vid,
+                                                    page:
+                                                        _page)); // Refresh data
+
+                                            showCustomToast(context,
+                                                'Your action will be performed shortly',
+                                                
+                                                );
                                           },
                                           lat: res.userdetails?.latitude,
                                           long: res.userdetails?.longitude,
@@ -2591,7 +2620,7 @@ class buildDealItemWidget extends StatelessWidget {
 // }
 
 class BigContainer extends StatefulWidget {
-  final String id;
+  final String vendorid;
   final String title;
   final String logo;
   final String contact;
@@ -2609,12 +2638,13 @@ class BigContainer extends StatefulWidget {
   final VoidCallback? onsubscribed; // Changed this to VoidCallback?
   final VoidCallback? ondoenload; // Changed this to VoidCallback?
   final VoidCallback? onconnectclicked;
+  final int membershipid;
 
   // Constructor
   BigContainer(
       {required this.lat,
       required this.long,
-      required this.id,
+      required this.vendorid,
       super.key,
       required this.title,
       required this.logo,
@@ -2631,7 +2661,8 @@ class BigContainer extends StatefulWidget {
       required this.memebertitle,
       required this.onsubscribed,
       required this.ondoenload,
-      required this.onconnectclicked});
+      required this.onconnectclicked,
+      required this.membershipid});
 
   @override
   State<BigContainer> createState() => _BigContainerState();
@@ -2650,7 +2681,8 @@ class _BigContainerState extends State<BigContainer> {
             context,
             MaterialPageRoute(
               builder: (context) => VendorHomeScreen(
-                  vid: int.tryParse(widget.id) ?? 9, vendorName: widget.title),
+                  vid: int.tryParse(widget.vendorid) ?? 9,
+                  vendorName: widget.title),
             ));
       },
       child: Padding(
@@ -2731,11 +2763,12 @@ class _BigContainerState extends State<BigContainer> {
                                           height: 600.h,
                                           width: 450.w,
                                           child: BigContainer(
+                                            membershipid: widget.membershipid,
                                             onconnectclicked: () {},
                                             storycount: widget.storyCount,
                                             lat: widget.lat,
                                             long: widget.long,
-                                            id: widget.id,
+                                            vendorid: widget.vendorid,
                                             title: widget.title,
                                             logo: widget.logo,
                                             contact: widget.contact,
@@ -2816,13 +2849,13 @@ class _BigContainerState extends State<BigContainer> {
                   Column(
                     children: [
                       Image.asset(
-                        widget.id.toString() == "2"
+                        widget.membershipid.toString() == "2"
                             ? spotlighticon
-                            : widget.id.toString() == "1"
+                            : widget.membershipid.toString() == "1"
                                 ? basicsellericon
-                                : widget.id.toString() == "3"
+                                : widget.membershipid.toString() == "3"
                                     ? domesticseller
-                                    : widget.id.toString() == "25"
+                                    : widget.membershipid.toString() == "25"
                                         ? globalicon
                                         : basicsellericon, // Default icon
                         width: 50,
@@ -3076,7 +3109,7 @@ class _BigContainerState extends State<BigContainer> {
                                     await Future.delayed(const Duration(
                                         seconds: 2)); // Simulate some delay
 
-                                    followUnfollowVendor(widget.id).then(
+                                    followUnfollowVendor(widget.vendorid).then(
                                       (value) {
                                         showCustomToast(context, value.msg!);
                                         if (value.scratchAva == '1') {
@@ -3121,7 +3154,7 @@ class _BigContainerState extends State<BigContainer> {
                   await Future.delayed(
                       const Duration(seconds: 2)); // Simulate delay
 
-                  followUnfollowVendor(widget.id).then(
+                  followUnfollowVendor(widget.vendorid).then(
                     (value) {
                       showCustomToast(context, value.msg!);
 

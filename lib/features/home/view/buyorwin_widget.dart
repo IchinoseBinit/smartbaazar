@@ -196,7 +196,7 @@ class buyorwin_widget extends StatelessWidget {
                               // ),
 
                               Text(
-                                "by ${vendorname.length > 15 ? '${vendorname.substring(0, 12)}...' : vendorname}",
+                                "by ${vendorname.length > 16 ? '${vendorname.substring(0, 16)}...' : vendorname}",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   // Use a fixed font size for debugging

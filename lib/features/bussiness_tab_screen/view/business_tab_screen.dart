@@ -1011,6 +1011,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             child: Container(
                                               color: Colors.white,
                                               child: BigContainer(
+                                                membershipid: int.tryParse(e.membershipId?? '1')?? 1,
                                                 onconnectclicked: () {
                                                   ref.invalidate(
                                                       getSearchResponseProvider(
@@ -1031,7 +1032,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                 },
                                                 storycount:
                                                     e.storyCount.toString(),
-                                                id: e.vendorId!,
+                                                vendorid: e.vendorId!,
                                                 issubbed: e.subscribed == 1
                                                     ? true
                                                     : false,

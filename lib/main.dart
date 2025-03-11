@@ -27,6 +27,7 @@ import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
@@ -50,6 +51,7 @@ import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
@@ -134,11 +136,16 @@ class _MyAppState extends State<MyApp> {
     // home: SplashScreen()));
   }
 } //123
-//9810443212
+// //9810443212
+// Redmi note 1 has the feature of long and and things like wifi is there 
+// Phone
 
-//9844543322
-// 120
-// 12
+// Near darbar marga nepal
+// // wwww.google.com
+// //9844543322 bhaktapur
+// // 12.90
+// // 12.9
+// //7 bhaktapur
 
 class ImageConvert extends StatefulWidget {
   const ImageConvert({super.key});

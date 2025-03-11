@@ -28,6 +28,7 @@ import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/privacy_policy/view/privacy_policy_screen.dart';
 import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/saved_search/saved_search_screen.dart';
+import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/terms_condition/view/terms_condtion_screen.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
@@ -730,7 +731,7 @@ class MyAccountWidget extends StatelessWidget {
       showCustomToast(context, "logged out successfully");
       await preferences.clear();
       Navigator.of(context, rootNavigator: true).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
+          MaterialPageRoute(builder: (context) => const SplashScreen()));
     } else if (title == 'Messenger') {
       Navigator.push(
         context,

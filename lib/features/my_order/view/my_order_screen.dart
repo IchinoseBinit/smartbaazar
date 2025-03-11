@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
@@ -10,6 +11,7 @@ import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/api/my_order_api.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/utils/custom_toast.dart';
 
 class MyOrderScreen extends ConsumerWidget {
   const MyOrderScreen({super.key});
@@ -401,53 +403,68 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                               OrderDetialsOderDialogBox().orderDetailDialouge(
                                 context,
                                 buttonTitle: 'Submit',
-                                callback: () {
+                                callback: () async {
                                   if (!mounted)
                                     return; // Prevent execution if the widget is unmounted
 
-                                  ref
-                                      .read(postmyreturnProvider(
-                                    widget.order.id, // Order ID
-                                    widget.order.vendorId, // Vendor ID
-                                    widget.order.postId, // Post ID
-                                    issue!, // Issue description
-                                    message!, // Message
-                                    place!.description!, // Place description
-                                    place!.place_id!, // City name
-                                    address!, // Address
-                                    place!.latitude!.toString(), // Latitude
-                                    place!.longitude!.toString(), // Longitude
-                                    image!,
-                                  ))
+                                  await ref
+                                      .read(
+                                    postmyreturnProvider(
+                                      widget.order.id, // Order ID
+                                      widget.order.vendorId, // Vendor ID
+                                      widget.order.postId, // Post ID
+                                      issue!, // Issue description
+                                      message!, // Message
+                                      place!.description!, // Place description
+                                      place!.place_id!, // City name
+                                      address!, // Address
+                                      place!.latitude!.toString(), // Latitude
+                                      place!.longitude!.toString(), // Longitude
+                                      image!,
+                                    ),
+                                  )
                                       .whenData(
                                     (value) {
-                                      if (!mounted)
-                                        return; // Check again before calling UI updates
-
-                                      // Show success dialog
                                       showDialog(
                                         context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text("Success"),
+                                        builder: (ctx) => AlertDialog(
+                                          title: const Text("Return Sent"),
                                           content: const Text(
-                                              "Data inserted successfully"),
-                                          actions: [
+                                              "You have send a return"),
+                                          actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(); // Close success dialog
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(); // Close main dialog
+                                                Navigator.of(ctx).pop();
                                               },
-                                              child: const Text("OK"),
+                                              child: const Text("okay"),
                                             ),
                                           ],
                                         ),
                                       );
                                     },
                                   );
+                                  Future.delayed(
+                                      const Duration(milliseconds: 90), () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: const Text("Return Sent"),
+                                        content: const Text(
+                                            "You have send a return"),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(ctx).pop();
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("okay"),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                    // deleayed code here
+                                    print('delayed execution');
+                                  });
                                 },
                                 widget: ReturnProductDetails(
                                   issue: (p1) {

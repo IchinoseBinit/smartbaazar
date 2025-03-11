@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/payment/create_listing_payement.dart';
 import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/delivery_charge_model.dart';
@@ -23,6 +24,7 @@ import 'package:smartbazar/features/order_details/model/street_address_model.dar
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
+import 'package:smartbazar/practice.dart';
 
 final quantityProvider = StateProvider<int>((ref) => 1);
 
@@ -63,6 +65,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
   String selectedDeliveryOption = "self pickup"; // Default delivery option
   String hyperOption = 'standard';
   // String standard = 'Standard';
+
   String? selectedCoupon = '';
   ParcelFareResponse? _fairresponse;
   // String selectedCity = '';
@@ -599,9 +602,11 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
   late double finallyRate;
   String? paymentmethod;
   String? newproducttype;
+  bool? _isloading;
 
   @override
   void initState() {
+    _isloading = false;
     print('bibash ${widget.selectedPaymentMethod}');
     if (widget.selectedPaymentMethod == "pre-payement") {
       //  print('binod ${widget.paymentpethod.length}');
@@ -760,316 +765,339 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
         SizedBox(
           height: 30.h,
         ),
-        GeneralTextButton(
-          width: MediaQuery.of(context).size.width,
-          bgColor: const Color(0xff362677),
-          fgColor: Colors.white,
-          title: 'Place Order',
-          onPressed: () async {
-            if (widget.selectedPaymentMethod == "pre-payement") {
-              //  print('binod ${widget.paymentpethod.length}');
-              setState(() {
-                newproducttype = 'qr';
-              });
-            } else {
-              //   print('binodl ${widget.paymentpethod.length}');
-              setState(() {
-                newproducttype = 'cod';
-              });
-            }
-            await Future.delayed(const Duration(seconds: 2), () {});
-            // Test data for checking
-            if (widget.selectedPaymentMethod == "pre-payement") {
-              showBottomSheet(
-                enableDrag: true,
-                elevation: 10,
-                sheetAnimationStyle:
-                    AnimationStyle(curve: FlippedCurve(Curves.bounceIn)),
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(10.0)),
-                ),
-                backgroundColor: Colors.white,
-                showDragHandle: true,
-                context: context,
-                builder: (context) {
-                  return Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 20),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
-                    child: SizedBox(
-                      width: 200.w,
-                      height: 50.h,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade300,
-                            elevation: 0,
-                            side: const BorderSide(
-                              width: 2,
-                              color: Colors.black87,
-                            )),
-                        onPressed: () async {
-                          bool success = await initiatePayment(
-                              context, _finalPrice!, true);
-                          if (success)
-                            await buynowsubmit(
-                              ref,
-                              '715216549', // cityCode
-                              widget.name, // username
-                              widget.venoraddress, // address
-                              widget.email, // email
-                              double.tryParse(widget.items.price!)!, // price
-                              newproducttype ??
-                                  paymentmethod ??
-                                  'qr', // payMethod
-                              widget.selectedDeliveryOption ??
-                                  'self', // delivery
-                              widget.hyper ?? 'standard', // deliveryType
-                              widget.selectedStreet.description, // city
-                              widget.selectedStreet.description, // street
-                              widget.selectedStreet.latitude, // latitude
-                              widget.selectedStreet.longitude, // longitude
-                              null, // coupon
-                              ref.read(quantityProvider.notifier).state, // qty
-                              widget.deliverychareg.data?.estimatedFare!
-                                      .toDouble() ??
-                                  0, // delCost
-                              0.0, // couponDiscount
-                              double.tryParse(_finalPrice!)!, // total
-                              int.tryParse(widget.items.id!)!, // productId
-                              widget.items.title!, // productTitle
-                              //from delivery
-
-                              widget.bizLoginResponseparams!.data!.token!,
-                              widget.deliverychareg.data?.zoneId ?? '0.0',
-                              [
-                                widget.pickuplatitutevednor,
-                                widget.pickuplongitutevendor
-                              ], //pickup
-                              [
-                                widget.pickuplatitutevednor,
-                                widget.pickuplongitutevendor
-                              ], //cusomer
-                              [
-                                widget.pickuplatitutevednor,
-                                widget.pickuplongitutevendor
-                              ], //customer
-                              [
-                                widget.selectedStreet.latitude,
-                                widget.selectedStreet.longitude
-                              ], //destination
-                              widget.deliverychareg.data?.estId ?? 0,
-                              widget.deliverychareg.data?.estimatedFare!
-                                      .toDouble() ??
-                                  0,
-                              widget.deliverychareg.data?.estimatedDistance ??
-                                  0,
-                              double.parse(widget.deliverychareg.data
-                                          ?.estimatedDuration
-                                          ?.replaceAll(
-                                              RegExp(r'[^0-9.]'), '') ??
-                                      '0.0') ??
-                                  0.0,
-
-                              widget.venoraddress,
-                              widget.selectedStreet.description, //m
-
-                              widget.vendorid,
-                              "parcel",
-                              widget.deliverychareg.data?.returnFee!
-                                      .toDouble() ??
-                                  0.0, //return fee
-                              widget.deliverychareg.data?.cancellationFee!
-                                      .toDouble() ??
-                                  0.0,
-                              widget.sendername,
-                              widget.senderPhone,
-                              widget.senderaddress,
-                              widget.name,
-                              widget.receiverphone,
-                              widget.selectedStreet.description,
-                              widget.deliverychareg.data?.fare?.first
-                                      .parcelCategoryId ??
-                                  '0',
-                              widget.weight,
-                              "sender",
-                            );
-                        },
-                        child: const Text(
-                          'Pay with Fonepay',
-                          style: TextStyle(color: Colors.black),
-                        ),
+        _isloading ?? false
+            ? Center(child: CircularProgressIndicator())
+            : GeneralTextButton(
+                width: MediaQuery.of(context).size.width,
+                bgColor: const Color(0xff362677),
+                fgColor: Colors.white,
+                title: 'Place Order',
+                onPressed: () async {
+                  setState(() {
+                    _isloading = true;
+                  });
+                  if (widget.selectedPaymentMethod == "pre-payement") {
+                    //  print('binod ${widget.paymentpethod.length}');
+                    setState(() {
+                      newproducttype = 'qr';
+                    });
+                  } else {
+                    //   print('binodl ${widget.paymentpethod.length}');
+                    setState(() {
+                      newproducttype = 'cod';
+                    });
+                  }
+                  await Future.delayed(const Duration(seconds: 2), () {});
+                  // Test data for checking
+                  if (widget.selectedPaymentMethod == "pre-payement") {
+                    showBottomSheet(
+                      enableDrag: true,
+                      elevation: 10,
+                      sheetAnimationStyle:
+                          AnimationStyle(curve: FlippedCurve(Curves.bounceIn)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10.0)),
                       ),
-                    ),
-                  );
-                },
-              );
-            } else {
-              final bool success = await buynowsubmit(
-                ref,
-                '715216549', // cityCode
-                widget.name, // username
-                widget.venoraddress, // address
-                widget.email, // email
-                double.tryParse(widget.items.price!)!, // price
-                newproducttype ?? paymentmethod ?? 'qr', // payMethod
-                widget.selectedDeliveryOption ?? 'self', // delivery
-                widget.hyper ?? 'standard', // deliveryType
-                widget.selectedStreet.description, // city
-                widget.selectedStreet.description, // street
-                widget.selectedStreet.latitude, // latitude
-                widget.selectedStreet.longitude, // longitude
-                null, // coupon
-                ref.read(quantityProvider.notifier).state, // qty
-                widget.deliverychareg.data?.estimatedFare!.toDouble() ??
-                    0, // delCost
-                0.0, // couponDiscount
-                double.tryParse(_finalPrice!)!, // total
-                int.tryParse(widget.items.id!)!, // productId
-                widget.items.title!, // productTitle
-                //from delivery
-
-                widget.bizLoginResponseparams!.data!.token!,
-                widget.deliverychareg.data?.zoneId ?? '0.0',
-                [
-                  widget.pickuplatitutevednor,
-                  widget.pickuplongitutevendor
-                ], //pickup
-                [
-                  widget.pickuplatitutevednor,
-                  widget.pickuplongitutevendor
-                ], //cusomer
-                [
-                  widget.pickuplatitutevednor,
-                  widget.pickuplongitutevendor
-                ], //customer
-                [
-                  widget.selectedStreet.latitude,
-                  widget.selectedStreet.longitude
-                ], //destination
-                widget.deliverychareg.data?.estId ?? 0,
-                widget.deliverychareg.data?.estimatedFare!.toDouble() ?? 0,
-                widget.deliverychareg.data?.estimatedDistance ?? 0,
-                double.parse(widget.deliverychareg.data?.estimatedDuration
-                            ?.replaceAll(RegExp(r'[^0-9.]'), '') ??
-                        '0.0') ??
-                    0.0,
-
-                widget.venoraddress,
-                widget.selectedStreet.description, //m
-
-                widget.vendorid,
-                "parcel",
-                widget.deliverychareg.data?.returnFee!.toDouble() ??
-                    0.0, //return fee
-                widget.deliverychareg.data?.cancellationFee!.toDouble() ?? 0.0,
-                widget.sendername,
-                widget.senderPhone,
-                widget.senderaddress,
-                widget.name,
-                widget.receiverphone,
-                widget.selectedStreet.description,
-                widget.deliverychareg.data?.fare?.first.parcelCategoryId ?? '0',
-                widget.weight,
-                "sender",
-              );
-              if (success) {
-                showDialog(
-                  barrierDismissible: true,
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
                       backgroundColor: Colors.white,
-                      title: const Text("Order Placed Successfully!"),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Lottie.asset('assets/images/delivery.json',
-                              height: 150),
-                          const SizedBox(height: 30),
-                          const Text(
-                            "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details. Click here to Track Your Order.",
-                            style: TextStyle(fontSize: 16),
+                      showDragHandle: true,
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 20),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50.w, vertical: 20.h),
+                          child: SizedBox(
+                            width: 200.w,
+                            height: 50.h,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey.shade300,
+                                  elevation: 0,
+                                  side: const BorderSide(
+                                    width: 2,
+                                    color: Colors.black87,
+                                  )),
+                              onPressed: () async {
+                                var success = await makepaymentnow(
+                                    context, _finalPrice!, true);
+                                if (success["success"])
+                                  await buynowsubmit(
+                                    ref,
+                                    '715216549', // cityCode
+                                    widget.name, // username 9810443212
+                                    widget.venoraddress, // address
+                                    widget.email, // email
+                                    double.tryParse(
+                                        widget.items.price!)!, // price
+                                    newproducttype ??
+                                        paymentmethod ??
+                                        'qr', // payMethod
+                                    widget.selectedDeliveryOption ??
+                                        'self', // delivery
+                                    widget.hyper ?? 'standard', // deliveryType
+                                    widget.selectedStreet.description, // city
+                                    widget.selectedStreet.description, // street
+                                    widget.selectedStreet.latitude, // latitude
+                                    widget
+                                        .selectedStreet.longitude, // longitude
+                                    null, // coupon
+                                    ref
+                                        .read(quantityProvider.notifier)
+                                        .state, // qty
+                                    widget.deliverychareg.data?.estimatedFare!
+                                            .toDouble() ??
+                                        0, // delCost
+                                    0.0, // couponDiscount
+                                    double.tryParse(_finalPrice!)!, // total
+                                    int.tryParse(
+                                        widget.items.id!)!, // productId
+                                    widget.items.title!, // productTitle
+                                    //from delivery
+
+                                    widget.bizLoginResponseparams!.data!.token!,
+                                    widget.deliverychareg.data?.zoneId ?? '0.0',
+                                    [
+                                      widget.pickuplatitutevednor,
+                                      widget.pickuplongitutevendor
+                                    ], //pickup
+                                    [
+                                      widget.pickuplatitutevednor,
+                                      widget.pickuplongitutevendor
+                                    ], //cusomer
+                                    [
+                                      widget.pickuplatitutevednor,
+                                      widget.pickuplongitutevendor
+                                    ], //customer
+                                    [
+                                      widget.selectedStreet.latitude,
+                                      widget.selectedStreet.longitude
+                                    ], //destination
+                                    widget.deliverychareg.data?.estId ?? 0,
+                                    widget.deliverychareg.data?.estimatedFare!
+                                            .toDouble() ??
+                                        0,
+                                    widget.deliverychareg.data
+                                            ?.estimatedDistance ??
+                                        0,
+                                    double.parse(widget.deliverychareg.data
+                                                ?.estimatedDuration
+                                                ?.replaceAll(
+                                                    RegExp(r'[^0-9.]'), '') ??
+                                            '0.0') ??
+                                        0.0,
+
+                                    widget.venoraddress,
+                                    widget.selectedStreet.description, //m
+
+                                    widget.vendorid,
+                                    "parcel",
+                                    widget.deliverychareg.data?.returnFee!
+                                            .toDouble() ??
+                                        0.0, //return fee
+                                    widget.deliverychareg.data?.cancellationFee!
+                                            .toDouble() ??
+                                        0.0,
+                                    widget.sendername,
+                                    widget.senderPhone,
+                                    widget.senderaddress,
+                                    widget.name,
+                                    widget.receiverphone,
+                                    widget.selectedStreet.description,
+                                    widget.deliverychareg.data?.fare?.first
+                                            .parcelCategoryId ??
+                                        '0',
+                                    widget.weight,
+                                    "sender",
+                                  ).whenComplete(
+                                    () {
+                                      successfulpayment(context);
+                                    },
+                                  );
+                              },
+                              child: const Text(
+                                'Pay with Fonepay',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const OnlineTransactionRecordScreen(),
-                                ));
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
+                        );
+                      },
                     );
-                  },
-                );
-              }
-            }
+                  } else {
+                    final bool success = await buynowsubmit(
+                      ref,
+                      '715216549', // cityCode
+                      widget.name, // username
+                      widget.venoraddress, // address
+                      widget.email, // email
+                      double.tryParse(widget.items.price!)!, // price
+                      newproducttype ?? paymentmethod ?? 'qr', // payMethod
+                      widget.selectedDeliveryOption ?? 'self', // delivery
+                      widget.hyper ?? 'standard', // deliveryType
+                      widget.selectedStreet.description, // city
+                      widget.selectedStreet.description, // street
+                      widget.selectedStreet.latitude, // latitude
+                      widget.selectedStreet.longitude, // longitude
+                      null, // coupon
+                      ref.read(quantityProvider.notifier).state, // qty
+                      widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                          0, // delCost
+                      0.0, // couponDiscount
+                      double.tryParse(_finalPrice!)!, // total
+                      int.tryParse(widget.items.id!)!, // productId
+                      widget.items.title!, // productTitle
+                      //from delivery
 
-            //  if (false)
-          },
+                      widget.bizLoginResponseparams!.data!.token!,
+                      widget.deliverychareg.data?.zoneId ?? '0.0',
+                      [
+                        widget.pickuplatitutevednor,
+                        widget.pickuplongitutevendor
+                      ], //pickup
+                      [
+                        widget.pickuplatitutevednor,
+                        widget.pickuplongitutevendor
+                      ], //cusomer
+                      [
+                        widget.pickuplatitutevednor,
+                        widget.pickuplongitutevendor
+                      ], //customer
+                      [
+                        widget.selectedStreet.latitude,
+                        widget.selectedStreet.longitude
+                      ], //destination
+                      widget.deliverychareg.data?.estId ?? 0,
+                      widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                          0,
+                      widget.deliverychareg.data?.estimatedDistance ?? 0,
+                      double.parse(widget.deliverychareg.data?.estimatedDuration
+                                  ?.replaceAll(RegExp(r'[^0-9.]'), '') ??
+                              '0.0') ??
+                          0.0,
 
-          // if (success) {
-          //   await Future.delayed(const Duration(seconds: 5), () {});
-          //   await requestdelivery(
-          //     widget.bizLoginResponseparams!.data!.token!,
-          //     widget.deliverychareg.data!.zoneId!,
-          //     [
-          //       widget.pickuplatitutevednor,
-          //       widget.pickuplongitutevendor
-          //     ], //pickup
-          //     [
-          //       widget.pickuplatitutevednor,
-          //       widget.pickuplongitutevendor
-          //     ], //cusomer
-          //     [
-          //       widget.pickuplatitutevednor,
-          //       widget.pickuplongitutevendor
-          //     ], //customer
-          //     [
-          //       widget.selectedStreet.latitude,
-          //       widget.selectedStreet.longitude
-          //     ], //destination
-          //     widget.deliverychareg.data!.estId!,
-          //     widget.deliverychareg.data!.estimatedFare!.toDouble(),
-          //     widget.deliverychareg.data!.estimatedDistance!,
-          //     double.parse(widget.deliverychareg.data!.estimatedDuration!
-          //         .replaceAll(RegExp(r'[^0-9.]'), '')),
+                      widget.venoraddress,
+                      widget.selectedStreet.description, //m
 
-          //     widget.venoraddress,
-          //     widget.selectedStreet.description, //m
+                      widget.vendorid,
+                      "parcel",
+                      widget.deliverychareg.data?.returnFee!.toDouble() ??
+                          0.0, //return fee
+                      widget.deliverychareg.data?.cancellationFee!.toDouble() ??
+                          0.0,
+                      widget.sendername,
+                      widget.senderPhone,
+                      widget.senderaddress,
+                      widget.name,
+                      widget.receiverphone,
+                      widget.selectedStreet.description,
+                      widget.deliverychareg.data?.fare?.first
+                              .parcelCategoryId ??
+                          '0',
+                      widget.weight,
+                      "sender",
+                    );
+                    if (success) {
+                      showDialog(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white,
+                            title: const Text("Order Placed Successfully!"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Lottie.asset('assets/images/delivery.json',
+                                    height: 150),
+                                const SizedBox(height: 30),
+                                const Text(
+                                  "Congratulations, your order has been placed successfully! Please check your email or view My Orders for order details. Click here to Track Your Order.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const OnlineTransactionRecordScreen(),
+                                      ));
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  }
 
-          //     widget.vendorid,
-          //     "parcel",
-          //     widget.deliverychareg.data!.returnFee!
-          //         .toDouble(), //return fee
-          //     widget.deliverychareg.data!.cancellationFee!.toDouble(),
-          //     widget.sendername,
-          //     widget.senderPhone,
-          //     widget.senderaddress,
-          //     widget.selectedStreet.description,
-          //     widget.receiverphone,
-          //     widget.selectedStreet.description,
-          //     widget.deliverychareg.data!.fare!.first.parcelCategoryId!,
-          //     widget.weight,
-          //     "sender",
-          //   );
+                  setState(() {
+                    _isloading = false;
+                  });
 
-          // Do something after successful submission
-          //   print('Successfully submitted the buy now request!');
-          // } else {
-          //   // Handle failure
-          //   print('Failed to submit the buy now request');
-          // }
-          // }),
-        ),
+                  //  if (false)
+                },
+
+                // if (success) {
+                //   await Future.delayed(const Duration(seconds: 5), () {});
+                //   await requestdelivery(
+                //     widget.bizLoginResponseparams!.data!.token!,
+                //     widget.deliverychareg.data!.zoneId!,
+                //     [
+                //       widget.pickuplatitutevednor,
+                //       widget.pickuplongitutevendor
+                //     ], //pickup
+                //     [
+                //       widget.pickuplatitutevednor,
+                //       widget.pickuplongitutevendor
+                //     ], //cusomer
+                //     [
+                //       widget.pickuplatitutevednor,
+                //       widget.pickuplongitutevendor
+                //     ], //customer
+                //     [
+                //       widget.selectedStreet.latitude,
+                //       widget.selectedStreet.longitude
+                //     ], //destination
+                //     widget.deliverychareg.data!.estId!,
+                //     widget.deliverychareg.data!.estimatedFare!.toDouble(),
+                //     widget.deliverychareg.data!.estimatedDistance!,
+                //     double.parse(widget.deliverychareg.data!.estimatedDuration!
+                //         .replaceAll(RegExp(r'[^0-9.]'), '')),
+
+                //     widget.venoraddress,
+                //     widget.selectedStreet.description, //m
+
+                //     widget.vendorid,
+                //     "parcel",
+                //     widget.deliverychareg.data!.returnFee!
+                //         .toDouble(), //return fee
+                //     widget.deliverychareg.data!.cancellationFee!.toDouble(),
+                //     widget.sendername,
+                //     widget.senderPhone,
+                //     widget.senderaddress,
+                //     widget.selectedStreet.description,
+                //     widget.receiverphone,
+                //     widget.selectedStreet.description,
+                //     widget.deliverychareg.data!.fare!.first.parcelCategoryId!,
+                //     widget.weight,
+                //     "sender",
+                //   );
+
+                // Do something after successful submission
+                //   print('Successfully submitted the buy now request!');
+                // } else {
+                //   // Handle failure
+                //   print('Failed to submit the buy now request');
+                // }
+                // }),
+              ),
         SizedBox(
           height: 20.h,
         )

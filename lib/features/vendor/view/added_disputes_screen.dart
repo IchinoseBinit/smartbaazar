@@ -83,7 +83,10 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
   Widget build(BuildContext context) {
   
     return GenericSafeArea(
+    
       child: Scaffold(
+        
+        
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 16.h),

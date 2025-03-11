@@ -53,6 +53,7 @@ import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
@@ -196,7 +197,6 @@ class ProductDetailScreen extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                             builder: (_) => BuyNowFormScreen(
-                              
                                   postypeid: data.result!.postTypeId!,
                                   vendorname: data.result?.contactName ?? '',
                                   phonenumber:
@@ -1054,11 +1054,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                 );
                                           showCustomToast(
                                               context, "Thanks for review");
-                                          ref.refresh(
-                                              productDetailsProvider(productId)
-                                                  .future);
-                                          ref.refresh(productDetailsProvider(
-                                              productId));
+                                        
 
                                           _reviewcontroller.text = '';
                                           ref
@@ -1291,8 +1287,23 @@ class ProductDetailScreen extends ConsumerWidget {
                                           //     "kala ${prod.savedByLoggedUser}");
 
                                           return ProductDetailWidget(
+                                           savedid: prod.savedByLoggedUser ==
+                                                      null ||
+                                                  prod.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : prod.savedByLoggedUser
+                                                  ?.map((e) => SavedPost(
+                                                        id: e.postId!,
+                                                        userId: e.userId!,
+                                                        postId: e.postId!,
+                                                        createdAt:
+                                                             '',
+                                                        updatedAt:
+                                                           '',
+                                                      ))
+                                                  .toList(),
                                               onenquiredclicked: () {
-                                                print('lanka ${prod.id}');
+//print('lanka ${prod.id}');
 
                                                 getEnquire(
                                                         ref, prod.id.toString())
@@ -1350,15 +1361,15 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   },
                                                 );
                                               },
-                                              //  savedid: prod.savedByLoggedUser ==
-                                              //                         null ||
-                                              //                     prod.savedByLoggedUser!
-                                              //                         .isEmpty
-                                              //                 ? []
-                                              //                 : prod
-                                              //                     .savedByLoggedUser,
                                               onRefresh: () {
-                                                refreshprovider();
+                                                
+                                                ref.invalidate(
+                                                    productDetailsProvider(
+                                                        productId));
+                                                         ref.refresh(
+                                              productDetailsProvider(productId)
+                                                  .future);
+                                        ref.invalidate(selectedIndexProvider);
                                               },
                                               lat: prod.latitude,
                                               long: prod.longitude,

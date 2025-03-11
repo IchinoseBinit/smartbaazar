@@ -736,6 +736,7 @@ class _SellerInformationWidgetState
                               context, '50', true);
                           if (success) {
                             responseMessage = await createlisting(
+                              
                               trending: widget.trending,
                               package: _selectedpackage,
                               pieces: widget.pieces,

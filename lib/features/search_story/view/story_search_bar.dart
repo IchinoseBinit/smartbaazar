@@ -7,9 +7,16 @@ class StorySearchBar extends StatefulWidget {
   final TextEditingController? searchcontroller;
   final Function(String)? unchanged;
   final Function(String)? onsubmitted;
+  final void Function()? onsearchpressed;
 
   const StorySearchBar(
-      {Key? key, required this.onClose, this.searchcontroller, this.unchanged, this.onsubmitted})
+      {Key? key,
+      required this.onClose,
+      this.searchcontroller,
+      this.unchanged,
+      this.onsubmitted,
+      this.onsearchpressed
+      })
       : super(key: key);
 
   @override
@@ -92,7 +99,7 @@ class _StorySearchBarState extends State<StorySearchBar> {
                         BorderRadius.horizontal(right: Radius.circular(7.r)),
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed:widget.onsearchpressed,
                     icon: const Icon(
                       Icons.search,
                       color: Colors.white,

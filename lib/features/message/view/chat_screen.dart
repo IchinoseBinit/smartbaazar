@@ -103,6 +103,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void initState() {
+  if(widget.imageUrl!=null)  _messageController.text = "I'm interested. Can you share more details about this TechStore Feed?";
     loaduserid();
     _isverified = false;
     checkUserVerified().then(
@@ -796,7 +797,7 @@ class ChatMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String baseUrl = ApiConstants.imgUrl;
-    print("alat ${message.filename}");
+    //  print("alat ${message.filename}");
 
     return Padding(
       padding: const EdgeInsets.all(4.0),

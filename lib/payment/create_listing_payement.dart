@@ -58,9 +58,11 @@ class CreateView extends StatefulWidget {
 class _CreateViewState extends State<CreateView> {
   late WebViewController _controller;
   bool isLoading = true;
+  bool? _showdata;
 
   @override
   void initState() {
+    _showdata = true;
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -74,6 +76,7 @@ class _CreateViewState extends State<CreateView> {
             if (url.contains("api_payment_verify") &&
                 url.contains("RC=successful")) {
               handlePaymentSuccess();
+              _showdata = false;
             }
           },
         ),
@@ -107,7 +110,7 @@ class _CreateViewState extends State<CreateView> {
     return Scaffold(
       body: Stack(
         children: [
-          WebViewWidget(controller: _controller),
+       if(_showdata!)   WebViewWidget(controller: _controller),
           if (isLoading) Center(child: CircularProgressIndicator()),
         ],
       ),

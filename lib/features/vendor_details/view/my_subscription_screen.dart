@@ -9,16 +9,8 @@ import 'dart:typed_data';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/pending_approval/pending_approval.dart';
-import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget_list_search.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'dart:ui' as ui;
 
@@ -29,54 +21,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 // import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
-import 'package:smartbazar/features/home/api/story_search_api.dart';
 import 'package:smartbazar/features/home/model/home_search_model.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
-import 'package:smartbazar/features/message/view/chat_screen.dart';
-import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
-import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
-import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/home/api/home_posts_proivider.dart';
-import 'package:smartbazar/features/home/api/home_story_api.dart';
-import 'package:smartbazar/features/home/api/sponsored_provider.dart';
-import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
-import 'package:smartbazar/features/home/api/home_slider_provider.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/api/shopzone_provider.dart';
-import 'package:smartbazar/features/home/model/home_posts_model.dart';
-import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
-import 'package:smartbazar/features/home/view/header.dart';
-import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
-import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
-import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/features/vendor_details/api/get_subscription_api.dart';
 import 'package:smartbazar/features/vendor_details/model/get_subscription_model.dart';
-import 'package:smartbazar/main.dart';
-import 'package:smartbazar/network_service/smart-client.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart'
-    as home_model;
 
 import '../../events_screen/view/events_screen.dart';
 import '../../grocessary_screen/view/grocary_screen.dart';
@@ -103,10 +63,9 @@ class MySubscriptionScreen extends ConsumerStatefulWidget {
 
 class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
     with SingleTickerProviderStateMixin {
-  HomeSearchResopnse? _storysearchresponse;
-  List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
+  // HomeSearchResopnse? _storysearchresponse;
+  // List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
 
-  bool _isPopupVisible = false;
   int currentPageIndex = 0;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
@@ -244,8 +203,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
   bool _isLoading = false; // To track if new data is being loaded
 
   Future<void> _loadUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    print("reku ${prefs.getString('userId')}");
   }
 
   int _pageVal = 1;
@@ -325,7 +282,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
       setState(() {
         _isSectionsVisible = true;
       });
-      print('saka ');
     } else if (dragDistance < -50 && _isSectionsVisible) {
       setState(() {
         _isSectionsVisible = false;
@@ -341,15 +297,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
     }
   }
 
-  void _onDragStart(DragStartDetails details) {
-    _initialDragPosition = details.globalPosition;
-  }
 
-  void _onSearchFocusChanged(bool hasFocus) {
-    setState(() {
-      _showSearchProductModels = hasFocus;
-    });
-  }
 
   Future<void> _loadSubscriptions() async {
     if (_isLoading) return;
@@ -368,7 +316,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
         });
       }
     } catch (e) {
-      print("Error fetching subscriptions: $e");
     } finally {
    if (mounted) {
   setState(() {
@@ -404,26 +351,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
   int selectedIndexx = 0; // State variable for selected index
   bool isSliverAppBarVisible = true;
 
-  Future<void> _searchStories(String query) async {
-    if (query.isNotEmpty) {
-      try {
-        final stories = await ref.watch(searchstoryapiProvider(query).future);
 
-        if (stories == null ||
-            stories.data == null ||
-            stories.data.home_story == null) {
-          throw Exception("No data available");
-        }
-
-        setState(() {
-          _storysearchresponse = stories;
-          _storysearchresult = stories.data.home_story.story.posts ?? [];
-        });
-      } catch (e) {
-        debugPrint("Error loading stories: $e");
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -433,14 +361,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
     // final dilevery = ref.watch(getDeliveryChargeProvider('eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YTg3OGI0MS1mYzllLTQ3ODktYTgzNS0wYjNlYmUwNjA3NzgiLCJqdGkiOiJiNDA3ZGJiYzhiYjQ4ZTA2YjIyZmRjYTI0OTIyM2Q4NGM5NGIxNTNiNzEyM2Q1YzdlNzk2YWFlMTc2ODMzNmYxMTkyYTcyYTk5OTAxMmUxYyIsImlhdCI6MTc0MDY0OTY5MC44MDI5MDgsIm5iZiI6MTc0MDY0OTY5MC44MDI5MTEsImV4cCI6MTc3MjE4NTY5MC44MDExMSwic3ViIjoiMDI2ODgxZWMtN2I0ZC00ZDZiLTk2NGEtNTk2MjUyNjZiMDkzIiwic2NvcGVzIjpbXX0.I2aUMUWRE_FyuPeqE7CB-xV7BNE2xyx6Ny6-fo_vWf9uzDfWUpd80BUeN5wLHRBPBMIFIx9qf4yw1szVs-6lC4L4xMXlgbtPSG9rfI9JorOFJasgL6NvFx5ouZowxsFneTPFllw-G81dEOoQTwNZF60t7L2jVECsgy-suiAskWPBTXm9f7sbw9hURV1wDvEoJrEC7_9_kRrjG-0t6ukP2i-aP2AZW4CEL4Su0_Eqg6XzxbkDv_fcO25DYIQ5JzWwRawLIChf2iRjOQo0Wab0cCByD3lsvC2QnqcF4GMibx0QygP_vKSbcIkUSa1UOGIPhGg9RR4cMB7-6t6HtICRO9LrIa6q2Je90mrNesC8G4Nd5IUiayy_zMOmh6il6b7zlfqbL4NwhYi0zAwu81-GL9OVynHLcR2oSMluJq9KGC0sQWHcUpJbdGcAs-ySUNq8JBPZ6OSCDMTGfymyKi-l6oqXgVVWp7N3jE0GvsLs47i72Nl_yv74Z5g-D4y3y_Vnm2DwGDNhoAIqyLKAxh8i405T1Pk-M7NETvq0kZBZJhNQE9B8ab15iqGSqDgt0UH-jb1N3JjrQgfjLCgDD5iv0nb9io32g-2FgOfqmj5osYjuUxpeHNQzaT2qAp0HHGWwoJKE4JtnpNEB9h2B_t89hlUynz63CcIZXd4uocKmjAo'));
 
     final selectedIndex = ref.watch(_selectedIndexProvider);
-    Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
-      try {
-        return await ref.read(checkEnquireProvider(id).future);
-      } catch (e) {
-        print("Error fetching enquiry: $e");
-        throw Exception("Failed to fetch enquiry data");
-      }
-    }
 
     _pageController = PageController(
       viewportFraction: 0.3,
@@ -450,36 +370,19 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
     // AsyncLoading<VendorProductSearchResponse>() _vendorinnsersearch;
 
-    List<String> categories =
-        _services.map((e) => e['label'] as String).toList();
-    final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
+  
 
     // final adsList = ref.watch(fetchAdsProvider);
     // double _mediaheight = MediaQuery.of(context).size.height;
     // final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-    final sliders = ref.watch(fetchAdvertisementsProvider);
-    var category = ref.watch(homeCategoryProvider);
-    // ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
-    final buyorwin = ref.watch(fetchBuyAndHotProvider);
-    final getSponsored = ref.watch(fetchSponsoredProvider);
-    final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
+ 
 
-    Future<void> refresh() async {
-      // Refreshing individual providers
-      ref.refresh(getHomeStoryProvider);
-      ref.refresh(fetchAdvertisementsProvider);
-      ref.refresh(homeCategoryProvider);
-      ref.refresh(fetchBuyAndHotProvider);
-      ref.refresh(fetchSponsoredProvider);
-      ref.refresh(homePostsProvider);
 
-      // If you need to perform any additional tasks after refreshing, you can do so here
-    }
+
 
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
-    final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -497,7 +400,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                   setState(() {
                     isSliverAppBarVisible = false;
                   });
-                  print("SliverAppBar disappeared");
                 }
               } else {
                 if (!isSliverAppBarVisible) {
@@ -505,7 +407,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                     _isSectionsVisible = true;
                     isSliverAppBarVisible = true;
                   });
-                  print("SliverAppBar visible");
                 }
               }
             }
@@ -523,7 +424,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
-                            print('value $value');
                           },
                           dropdownValueNotifier: dropdownValueNotifier,
                           filteredSuggestions: [])),
@@ -721,92 +621,70 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: SingleChildScrollView(
-                      controller: _vendorScrollController,
-                      child: Column(
-                        children: [
-                          ..._subscriptions.map((e) => Column(
-                                children: [
-                                  RepaintBoundary(
-                                    key: _captureKeys.putIfAbsent(
-                                        e.vendor_id!, () => GlobalKey()),
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: BigContainer(
-
-                                        storycount: e.vendor_card?.storycount
-                                                .toString() ??
-                                            '0',
-
-                                        lat: double.tryParse(
-                                                e.vendor_card?.latitude ??
-                                                    '0') ??
-                                            0.0,
-                                        long: double.tryParse(
-                                                e.vendor_card?.longitude ??
-                                                    '0.0') ??
-                                            0.0,
-                                        id: e.vendor_id ?? '9',
-                                        title: e.vendor_card?.name ?? '',
-                                        logo: e.vendor_card?.photo ??
-                                            'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
-                                        contact: e.vendor_card?.phone ?? '977+',
-                                        storyCount: e.vendor_card?.storycount
-                                                .toString() ??
-                                            '0',
-                                        membershipTitle:
-                                            e.vendor_card?.membership_title ??
-                                                'N/A',
-                                        // storycount: 'storycount',
-                                        total_connections: e
-                                                .vendor_card?.connection
-                                                .toString() ??
-                                            '0',
-                                        total_prize_worth: e
-                                                .vendor_card?.prize_worth
-                                                .toString() ??
-                                            '0',
-                                        location:
-                                            e.vendor_card?.nearestbranch ??
-                                                'kathmandu',
-                                        Cnumber:
-                                            e.vendor_card?.phone ?? '9744+',
-                                        issubbed: e.vendor_card?.subscribed == 1
-                                            ? true
-                                            : false,
-                                        memebertitle:
-                                            e.vendor_card?.membership_title ??
-                                                'Title',
-                                        onsubscribed: () {
-                                          ref.invalidate(
-                                              getSubscriptionProvider(
-                                                  pageval: _pageVal));
-                                        },
-                                        ondoenload: () => _captureAndSave(
-                                            _captureKeys[e.vendor_id]!),
-                                        onconnectclicked: () {
-                                          ref.invalidate(
-                                              getSubscriptionProvider(
-                                                  pageval: _pageVal));
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 3.h,
-                                    color: ColorConstant.grayColor,
-                                  )
-                                ],
-                              )),
-                          if (_isLoading)
-                            const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                        ],
-                      ),
+  child: SingleChildScrollView(
+    controller: _vendorScrollController,
+    child: Column(
+      children: [
+        if (_subscriptions.isEmpty && !_isLoading) // ✅ Show message when empty
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Text(
+                "No Data Available",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.grey),
+              ),
+            ),
+          )
+        else
+          ..._subscriptions.map(
+            (e) => Column(
+              children: [
+                RepaintBoundary(
+                  key: _captureKeys.putIfAbsent(e.vendor_id!, () => GlobalKey()),
+                  child: Container(
+                    color: Colors.white,
+                    child: BigContainer(
+                      membershipid: int.tryParse(e.vendor_card?.membership_id ?? '1') ?? 1,
+                      storycount: e.vendor_card?.storycount.toString() ?? '0',
+                      lat: double.tryParse(e.vendor_card?.latitude ?? '0') ?? 0.0,
+                      long: double.tryParse(e.vendor_card?.longitude ?? '0.0') ?? 0.0,
+                      vendorid: e.vendor_id ?? '9',
+                      title: e.vendor_card?.name ?? '',
+                      logo: e.vendor_card?.photo ??
+                          'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                      contact: e.vendor_card?.phone ?? '977+',
+                      storyCount: e.vendor_card?.storycount.toString() ?? '0',
+                      membershipTitle: e.vendor_card?.membership_title ?? 'N/A',
+                      total_connections: e.vendor_card?.connection.toString() ?? '0',
+                      total_prize_worth: e.vendor_card?.prize_worth.toString() ?? '0',
+                      location: e.vendor_card?.nearestbranch ?? 'kathmandu',
+                      Cnumber: e.vendor_card?.phone ?? '9744+',
+                      issubbed: e.vendor_card?.subscribed == 1 ? true : false,
+                      memebertitle: e.vendor_card?.membership_title ?? 'Title',
+                      onsubscribed: () {
+                        ref.invalidate(getSubscriptionProvider(pageval: _pageVal));
+                      },
+                      ondoenload: () => _captureAndSave(_captureKeys[e.vendor_id]!),
+                      onconnectclicked: () {
+                        ref.invalidate(getSubscriptionProvider(pageval: _pageVal));
+                      },
                     ),
                   ),
+                ),
+                Divider(height: 3.h, color: ColorConstant.grayColor),
+              ],
+            ),
+          ),
+        if (_isLoading) // Show loading indicator when data is being fetched
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    ),
+  ),
+),
+
                   SliverToBoxAdapter(
                     child: subscriptionAsyncValue.when(
                       data: (data) {
@@ -1318,55 +1196,7 @@ class valuenotifilersidebutton extends StatelessWidget {
   }
 }
 
-Widget _buildFloatingButton(String photo) {
-  return InkWell(
-    onTap: () {
-      showSideBar.value = true;
-    },
-    child: Hero(
-      tag: 'profileHero',
-      child: Container(
-        margin: EdgeInsets.only(right: 3.w),
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey, width: 0.7),
-        ),
-        child: CircleAvatar(
-          radius: 18,
-          backgroundImage: NetworkImage(photo),
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _buildSidebar() {
-  return Container(
-    width: 70.w,
-    padding: EdgeInsets.symmetric(vertical: 5.h),
-    decoration: BoxDecoration(
-      color: const Color(0xffE2DAE5).withOpacity(0.9),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(10),
-        bottomLeft: Radius.circular(10),
-      ),
-    ),
-    child: Column(
-      children: [
-        SizedBox(height: 6.h),
-        _sidebarButton(Icons.person, "Profile", () {}),
-        _sidebarButton(Icons.qr_code, "Scan", () {}),
-        _sidebarButton(Icons.shopping_cart, "Cart", () {}),
-        _sidebarButton(Icons.add, "Sell", () {}),
-        _sidebarButton(Icons.list, "Orders", () {}),
-        _sidebarButton(Icons.close, "Close", () {
-          showSideBar.value = false;
-        }),
-      ],
-    ),
-  );
-}
 
 Widget _sidebarButton(IconData icon, String text, VoidCallback onTap) {
   return IconButton(

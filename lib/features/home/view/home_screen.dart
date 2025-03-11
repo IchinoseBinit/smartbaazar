@@ -304,6 +304,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           _storysearchresult = stories.data.home_story.story.posts ?? [];
         });
       } catch (e) {
+        setState(() {
+          
+        });
         debugPrint("Error loading stories: $e");
       }
     }
@@ -609,19 +612,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   SliverToBoxAdapter(
                     child: Center(
                       child: StorySearchBar(
+                          searchcontroller: _storysearchcontroller,
+                        onsearchpressed: () { 
+                        print('object ${_storysearchcontroller.text}');
+                          // if (
+                          //  _searchController.text.length > 0)
+                          _searchStories(_storysearchcontroller.text);
+                        },
                         unchanged: (value) {
-                          if (value.isEmpty) {
+                          if (value.isEmpty) { 
                             setState(() {
                               _storysearchresult = []; // ✅ Clear list if empty
                             });
                           }
                         },
-                        searchcontroller: _storysearchcontroller,
+                      
                         onsubmitted: _searchStories,
                         onClose: () {
                           setState(() {
                             _isPopupVisible =
                                 !_isPopupVisible; // Close the popup
+
+                            _storysearchresult = []; // ✅ Clear list if empty
                           });
                         },
                       ),

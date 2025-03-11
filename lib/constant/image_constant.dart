@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 
 final scrollToTopProvider = StateProvider<bool>((ref) => false);
-
 
 final List<Map<String, dynamic>> services = [
   {'label': 'Low Price Guarantee', 'id': 1},
@@ -29,7 +30,6 @@ Padding nolistingfound({String message = 'listing'}) {
     ),
   );
 }
-
 
 final List<Map<String, dynamic>> items = [
   {
@@ -96,13 +96,10 @@ const String eventicon = 'assets/icon/eventIcon.svg';
 const String basicsellericon = 'assets/icon/basic.png';
 const String domesticseller = 'assets/icon/domectic.png';
 
-
-
-//global spot and domestic 
+//global spot and domestic
 // const String domesticicon = 'assets/icon/domestic_brand.png';
 // const String globalicon = 'assets/icon/global_brand.png';
 // const String spotlighticon = 'assets/icon/spotlight_seller.png';
-
 
 const String drawerIcon = "$baseAsset/drawerIcon.svg";
 const String openCart = "$baseAsset/openCartIcon.svg";
@@ -161,4 +158,44 @@ class ImageConstant {
   static String pageNotFound = '$basePath/pageNotFoundImage.png';
   static String facebookShareImage = '$basePath/facebookShare.png';
   static String subscribeImage = '$basePath/subscribe.png';
+}
+
+successfulpayment(BuildContext context) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const OnlineTransactionRecordScreen(),
+        ),
+      );
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Message"),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Lottie.asset('assets/images/order_success.json'),
+        Text("Order Succesfull ! ")
+      ],
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
