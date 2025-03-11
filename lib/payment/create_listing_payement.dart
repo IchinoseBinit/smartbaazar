@@ -28,7 +28,7 @@ class practicecreate extends StatelessWidget {
             print('haka  9866543322 Success: $success');
           },
           child:
-              Text('Pay with Fonepay', style: TextStyle(color: Colors.black)),
+              Text('Pay with Fonepay', style: TextStyle(color: Colors.red)),
         ),
       ),
     );

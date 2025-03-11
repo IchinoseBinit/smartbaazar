@@ -238,7 +238,7 @@ class _ScratchCardState extends ConsumerState<ScratchCard> {
                                   _buildInfoTile('Participants',
                                       data.data!.total_participants!.total!),
                                   _buildInfoTile('Total prizes',
-                                      data.data!.gifts!.total_worth!),
+                                      data.data!.gifts!.total_worth?? '0'),
                                 ],
                               ),
                             ),

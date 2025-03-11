@@ -68,7 +68,7 @@ Future<String> updatelisting(
       'package_id': package?.toString(),
       'payment_method_id': '1',
       'trending': '1',
-      'stock': stock,
+      // 'stock': stock,
       'address': address,
       'length': length,
       'width': width,

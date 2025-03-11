@@ -98,6 +98,21 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20.h),
+                GeneralTextButton(
+                  width: MediaQuery.of(context).size.width,
+                  title: 'Apply Sponsorship',
+                  fgColor: Colors.white,
+                  bgColor: const Color(0xff362677),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ApplySponsorshipPriceScreen(),
+                      ),
+                    );
+                  },
+                ),
                 Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
                 SizedBox(height: 10.h),
                 Padding(
@@ -251,20 +266,6 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                   error: (error, stack) => Center(child: Text('Error: $error')),
                 ),
                 SizedBox(height: 20.h),
-                GeneralTextButton(
-                  width: MediaQuery.of(context).size.width,
-                  title: 'Apply Sponsorship',
-                  fgColor: Colors.white,
-                  bgColor: const Color(0xff362677),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ApplySponsorshipPriceScreen(),
-                      ),
-                    );
-                  },
-                ),
               ],
             ),
           ),

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/model/feed_gift_card_model.dart';
 import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
-void showCustomBottomSheet(
-    BuildContext context, FeedGiftCardModel feedGiftCard) {
+void showCustomBottomSheet(String vid, WidgetRef ref, BuildContext context,
+    FeedGiftCardModel feedGiftCard) {
   String getMembershipImage(String? membershipId) {
     switch (membershipId) {
       case '1':
@@ -63,19 +67,33 @@ void showCustomBottomSheet(
                             Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircleAvatar(
-                                    radius: 24,
-                                    backgroundColor: const Color(0x7F7F7F73)
-                                        .withOpacity(0.45),
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        feedGiftCard.userDetail!.vendorName ??
-                                            '',
-                                        fit: BoxFit.cover,
-                                        width: 50,
-                                        height: 50,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => VendorHomeScreen(
+                                            vid: int.tryParse(feedGiftCard
+                                                .userDetail!.userId!)!,
+                                            vendorName: feedGiftCard
+                                                .userDetail!.vendorImage!),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircleAvatar(
+                                      radius: 24,
+                                      backgroundColor: const Color(0x7F7F7F73)
+                                          .withOpacity(0.45),
+                                      child: ClipOval(
+                                        child: Image.network(
+                                          feedGiftCard.userDetail!.vendorName ??
+                                              '',
+                                          fit: BoxFit.cover,
+                                          width: 50,
+                                          height: 50,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -226,6 +244,7 @@ void showCustomBottomSheet(
                         itemCount: feedGiftCard.buyOrWinCard!.length,
                         itemBuilder: (context, index) {
                           return PopUpDiscountImageCard(
+                            vendorid: vid,
                             feedGiftCard: feedGiftCard.buyOrWinCard![index],
                           );
                         },
@@ -321,7 +340,30 @@ void showCustomBottomSheet(
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.sp),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (context) => MySubscribeAndWinPage(),
+                            // ))
+                            // ;
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => MySubscribeAndWinPage(),
+                            //     ));
+                            //      navigateToPage(
+
+                            //       ref: ref,
+                            //   context: context,
+                            //   page:MySubscribeAndWinPage(),
+                            //   showNavBar:
+                            //       true, // Hide the navbar when moving to this screen
+                            // );
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             MySubscribeAndWinPage()));
+                          },
                         ),
                         OutlinedButton(
                           child: Text(
@@ -329,7 +371,13 @@ void showCustomBottomSheet(
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.sp),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             MySubscribeAndWinPage()));
+                          },
                         ),
                         OutlinedButton(
                           child: Text(
@@ -337,7 +385,13 @@ void showCustomBottomSheet(
                             style:
                                 TextStyle(color: Colors.white, fontSize: 10.sp),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             MySubscribeAndWinPage()));
+                          },
                         ),
                       ],
                     )
@@ -353,8 +407,10 @@ void showCustomBottomSheet(
 }
 
 class PopUpDiscountImageCard extends StatelessWidget {
-  const PopUpDiscountImageCard({super.key, required this.feedGiftCard});
+  const PopUpDiscountImageCard(
+      {super.key, required this.feedGiftCard, required this.vendorid});
   final BuyOrWinCard feedGiftCard;
+  final String vendorid;
   @override
   Widget build(BuildContext context) {
     print(feedGiftCard.image);
@@ -474,21 +530,34 @@ class PopUpDiscountImageCard extends StatelessWidget {
                               SizedBox(
                                 width: 35.w,
                               ),
-                              Container(
-                                padding: const EdgeInsets.all(2),
-                                // Thickness of the border
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.grey, // Border color
-                                    width: 2.0, // Border width
+                              InkWell(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => VendorHomeScreen(
+                                  //         vid: int.tryParse(vendorid)!,
+                                  //         vendorName:
+                                  //             feedGiftCard.vendorImage!),
+                                  //   ),
+                                  // );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  // Thickness of the border
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.grey, // Border color
+                                      width: 2.0, // Border width
+                                    ),
                                   ),
-                                ),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(feedGiftCard.vendorName!),
-                                  radius:
-                                      18.0, // Adjust radius based on padding
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(feedGiftCard.vendorName!),
+                                    radius:
+                                        18.0, // Adjust radius based on padding
+                                  ),
                                 ),
                               ),
                               SizedBox(

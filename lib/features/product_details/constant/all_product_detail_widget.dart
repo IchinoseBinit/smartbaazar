@@ -20,40 +20,38 @@ import 'package:smartbazar/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AllProductDetailWidget extends StatefulWidget {
-  AllProductDetailWidget({
-    super.key,
-     required this.ref,
-    // this.membership_title,
-    this.id,
-    this.offer = '',
-    this.title = "Trade",
-    this.discounttedPrice = '0',
-    this.comment = '0',
-    this.price = '1',
-    this.vendorname = 'John',
-    this.distance = 2,
-    this.Vimage = '',
-    this.productImage,
-    this.lefttile = 'TradeHub',
-    this.similarproductCount,
-    this.membershipColor,
-    this.wow,
-    this.issponsored = false,
-    this.shortestDistance,
-    this.membershipTitle,
-    this.didcountpercentage,
-    this.avg_rating = 1,
-    this.tradeImage,
-    this.posttype = '1',
-    this.membershipid = '1',
-    required this.productid,
-    required this.lat,
-    required this.long,
-    this.savedid,
-    this.onRefresh,
-        this.onenquiredclicked
-
-  });
+  AllProductDetailWidget(
+      {super.key,
+      required this.ref,
+      // this.membership_title,
+      this.id,
+      this.offer = '',
+      this.title = "Trade",
+      this.discounttedPrice = '0',
+      this.comment = '0',
+      this.price = '1',
+      this.vendorname = 'John',
+      this.distance = 2,
+      this.Vimage = '',
+      this.productImage,
+      this.lefttile = 'TradeHub',
+      this.similarproductCount,
+      this.membershipColor,
+      this.wow,
+      this.issponsored = false,
+      this.shortestDistance,
+      this.membershipTitle,
+      this.didcountpercentage,
+      this.avg_rating = 1,
+      this.tradeImage,
+      this.posttype = '1',
+      this.membershipid = '1',
+      required this.productid,
+      required this.lat,
+      required this.long,
+      this.savedid,
+      this.onRefresh,
+      this.onenquiredclicked});
 
   String? title;
   String? price;
@@ -80,9 +78,8 @@ class AllProductDetailWidget extends StatefulWidget {
   String? lat, long;
   List<SavedPost>? savedid;
   final VoidCallback? onRefresh;
-    final Function()? onenquiredclicked;
-    WidgetRef ref;
-
+  final Function()? onenquiredclicked;
+  WidgetRef ref;
 
   @override
   State<AllProductDetailWidget> createState() => _AllProductDetailWidgetState();
@@ -109,7 +106,7 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
 
     return InkWell(
       onTap: () {
-          navigateToPage(
+        navigateToPage(
           context: context,
           page: ProductDetailScreen(productId: widget.productid),
           ref: widget.ref,
@@ -171,7 +168,7 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                 ),
                 PopupMenuButton(
                   menuPadding:
-                     EdgeInsets.only(left: 10.w), // Responsive menu padding
+                      EdgeInsets.only(left: 10.w), // Responsive menu padding
                   onSelected: (value) {},
                   padding: EdgeInsets.symmetric(
                       horizontal: 5.h), // Responsive padding
@@ -238,12 +235,13 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                           height: 30.h, // Responsive height
                           padding: EdgeInsets.only(left: 5.w),
                           onTap: () {
-                             Navigator.push(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>VendorHomeScreen(
-                                  vendorName: widget.vendorname!,
-                                  vid: int.tryParse(widget.id!.toString())!),
+                                  builder: (context) => VendorHomeScreen(
+                                      vendorName: widget.vendorname!,
+                                      vid:
+                                          int.tryParse(widget.id!.toString())!),
                                 ));
                           },
                           child: Text(
@@ -255,10 +253,19 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                             ),
                           )),
                       PopupMenuItem(
-                        onTap: () {
-                          launch(
-                              'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
-                        },
+                           onTap: () async {
+                                          String googleUrl =
+                                              'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
+                                          if (await canLaunchUrl(
+                                              Uri.parse(googleUrl))) {
+                                            await launchUrl(
+                                                Uri.parse(googleUrl),
+                                                mode: LaunchMode
+                                                    .inAppBrowserView);
+                                          } else {
+                                            throw 'Could not open the map.';
+                                          }
+                                        },
                         height: 30.h, // Responsive height
                         padding: EdgeInsets.only(left: 5.w),
                         child: Text(
@@ -304,13 +311,12 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
           ),
           InkWell(
             onTap: () {
-
-  navigateToPage(
-          context: context,
-          page: ProductDetailScreen(productId: widget.productid),
-          ref: widget.ref,
-          showNavBar: false, // Hide bottom navbar
-        );               
+              navigateToPage(
+                context: context,
+                page: ProductDetailScreen(productId: widget.productid),
+                ref: widget.ref,
+                showNavBar: false, // Hide bottom navbar
+              );
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -873,14 +879,29 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
                                       SizedBox(
                                         width: 2.w, // Responsive spacing
                                       ),
-                                      Text(
-                                        "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
-                                        style: headerstyle.copyWith(
-                                          fontFamily: GoogleFonts.quicksand()
-                                              .fontFamily,
-                                          fontSize:
-                                              9.sp, // Responsive font size
-                                          fontWeight: FontWeight.w700,
+                                      InkWell(
+                                        onTap: () async {
+                                          String googleUrl =
+                                              'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
+                                          if (await canLaunchUrl(
+                                              Uri.parse(googleUrl))) {
+                                            await launchUrl(
+                                                Uri.parse(googleUrl),
+                                                mode: LaunchMode
+                                                    .inAppBrowserView);
+                                          } else {
+                                            throw 'Could not open the map.';
+                                          }
+                                        },
+                                        child: Text(
+                                          "${widget.shortestDistance != null ? NumberFormat('#.##', 'en_US').format(widget.shortestDistance) : ''} km",
+                                          style: headerstyle.copyWith(
+                                            fontFamily: GoogleFonts.quicksand()
+                                                .fontFamily,
+                                            fontSize:
+                                                9.sp, // Responsive font size
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
                                       ),
                                     ],

@@ -23,10 +23,11 @@ class TestScreen extends StatelessWidget {
           ),
           onPressed: () async {
             var paymentResult = await makepaymentnow(context, amount, showText);
-            print('binod ID: ${paymentResult["id"]}, Success: ${paymentResult["success"]}');
+            print(
+                'binod ID: ${paymentResult["id"]}, Success: ${paymentResult["success"]}');
           },
           child:
-              Text('Pay with Fonepay', style: TextStyle(color: Colors.black)),
+              Text('Pay with Fonepay', style: TextStyle(color: Colors.red)),
         ),
       ),
     );
@@ -54,7 +55,6 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   late WebViewController _controller;
   bool isLoading = true;
   String? responseUrl;
-  
 
   @override
   void initState() {
@@ -70,9 +70,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
             setState(() => isLoading = false);
             responseUrl = url;
             if (url.contains("api_payment_verify")) {
+              //here we get wherether the success or failer is there
               Navigator.pop(context, url); // Return response URL
             }
-          },
+          }, 
         ),
       )
       ..loadRequest(Uri.parse(widget.paymentUrl));
@@ -91,35 +92,39 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   }
 }
 
-Future<Map<String, dynamic>> makepaymentnow(BuildContext context, String amount, bool showText) async {
+Future<Map<String, dynamic>> makepaymentnow(
+    BuildContext context, String amount, bool showText) async {
   String merchantId = "fonepay123";
   String paymentMode = "P";
   String prn = DateTime.now().millisecondsSinceEpoch.toString();
   String currency = "NPR";
-  String returnUrl = "https://smartbazaar.jianjun-rnd.com.np/api_payment_verify";
+  String returnUrl =
+      "https://smartbazaar.jianjun-rnd.com.np/api_payment_verify";
   String secretKey = "fonepay";
 
-  String message = "$merchantId,$paymentMode,$prn,$amount,$currency,03/06/2025,Test Payment,Test Remarks,$returnUrl";
+  String message =
+      "$merchantId,$paymentMode,$prn,$amount,$currency,03/06/2025,Test Payment,Test Remarks,$returnUrl";
   String dv = _generateDV(secretKey, message);
 
   String paymentUrl = Uri.encodeFull(
       "https://dev-clientapi.fonepay.com/api/merchantRequest"
-      "?PID=$merchantId&MD=$paymentMode&AMT=$amount&CRN=$currency&DT=03/06/2025" 
+      "?PID=$merchantId&MD=$paymentMode&AMT=$amount&CRN=$currency&DT=03/06/2025"
       "&R1=Test Payment&R2=Test Remarks&DV=$dv&RU=$returnUrl&PRN=$prn");
 
   final String? responseUrl = await Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => PaymentWebView(paymentUrl: paymentUrl, showText: showText),
+      builder: (context) =>
+          PaymentWebView(paymentUrl: paymentUrl, showText: showText),
     ),
   );
 
   if (responseUrl != null) {
-    print("DEBUG: Response URL - $responseUrl");  // Debug log
+    print("DEBUG: Response URL - $responseUrl"); // Debug log
 
     Uri uri = Uri.parse(responseUrl);
     Map<String, String> queryParams = Uri.splitQueryString(uri.query);
-    
+
     String? paymentId = queryParams["PRN"];
     bool success = queryParams["RC"] == "successful";
 

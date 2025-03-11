@@ -328,6 +328,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -553,6 +554,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                       productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",

@@ -797,7 +797,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                   },
                   child: const Text(
                     'Pay with Fonepay',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.red),
                   ),
                 ),
               ),

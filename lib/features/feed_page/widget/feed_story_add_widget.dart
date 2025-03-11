@@ -16,6 +16,7 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
   final int? storyCount;
   final FeedStory? feedStoryContent;
   final String userId;
+  final String productid;
 
   const FeedStoryAddWidget({
     super.key,
@@ -27,6 +28,7 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
     this.storyCount,
     this.feedStoryContent,
     required this.userId,
+    required this.productid
   });
 
   @override
@@ -85,6 +87,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
           navigateToPage(
             context: context,
             page: FeedStoryScreen(
+              productid: widget.productid,
               selectedVendorIndex: widget.index,
               initialIndex: widget.index,
               author: widget.vendorName ?? '',
@@ -189,7 +192,10 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                                   feedGiftCardFuture.when(
                                     data: (feedCardData) {
                                       return showCustomBottomSheet(
-                                          context, feedCardData);
+                                          feedCardData.userDetail!.userId!,
+                                          ref,
+                                          context,
+                                          feedCardData);
                                     },
                                     error: (error, stackTrace) =>
                                         Text("error $error"),

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class FeedStoryScreen extends ConsumerStatefulWidget {
@@ -15,6 +17,7 @@ class FeedStoryScreen extends ConsumerStatefulWidget {
   final FeedStory? feedStory;
   final int initialIndex;
   final int selectedVendorIndex;
+  final String productid;
 
   const FeedStoryScreen(
       {super.key,
@@ -22,7 +25,8 @@ class FeedStoryScreen extends ConsumerStatefulWidget {
       required this.storyCount,
       required this.initialIndex,
       required this.selectedVendorIndex,
-      this.feedStory});
+      this.feedStory,
+      required this.productid});
 
   @override
   ConsumerState<FeedStoryScreen> createState() => _FeedStoryScreenState();
@@ -435,27 +439,27 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                           },
                         ),
                       ),
-                      Positioned(
-                        top: 38,
-                        right: 16,
-                        child: Container(
-                          width: 36.w,
-                          height: 32.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
-                          // decoration: BoxDecoration(
-                          //   color: Colors.grey.withOpacity(0.5),
-                          //   borderRadius: BorderRadius.circular(200),
-                          // ),
-                          child: IconButton(
-                            icon: const Icon(Icons.close,
-                                color: Colors.white, size: 20),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 38,
+                      //   right: 16,
+                      //   child: Container(
+                      //     width: 36.w,
+                      //     height: 32.h,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       color: Colors.grey.withOpacity(0.5),
+                      //     ),
+                      //     // decoration: BoxDecoration(
+                      //     //   color: Colors.grey.withOpacity(0.5),
+                      //     //   borderRadius: BorderRadius.circular(200),
+                      //     // ),
+                      //     child: IconButton(
+                      //       icon: const Icon(Icons.close,
+                      //           color: Colors.white, size: 20),
+                      //       onPressed: () => Navigator.pop(context),
+                      //     ),
+                      //   ),
+                      // ),
                       // Author's name
                       Positioned(
                         top: 38,
@@ -901,14 +905,27 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                                       color: Colors.white, fontSize: 10.sp),
                                 ),
                                 SizedBox(height: 10.h),
-                                const Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_box_outlined,
-                                      color: Colors.black,
-                                    ),
-                                    Text("Buy"),
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    navigateToPage(
+                                      ref: ref,
+                                      context: context,
+                                      page: ProductDetailScreen(
+                                          productId: widget.productid),
+                                      //  ref: ref,
+                                      showNavBar:
+                                          false, // Hide the navbar when moving to this screen
+                                    );
+                                  },
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.check_box_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      Text("Buy"),
+                                    ],
+                                  ),
                                 )
                               ],
                             ),

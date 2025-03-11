@@ -9,16 +9,15 @@ class PostCard extends ConsumerStatefulWidget {
   final bool? isLive;
   final String? id;
 
-  const PostCard({
-    super.key,
-    required this.image,
-    required this.photo,
-    required this.caption,
-    required this.name,
-    this.isLive = false,
-    required this.subscribers,
-     required  this.id
-  });
+  const PostCard(
+      {super.key,
+      required this.image,
+      required this.photo,
+      required this.caption,
+      required this.name,
+      this.isLive = false,
+      required this.subscribers,
+      required this.id});
 
   @override
   ConsumerState<PostCard> createState() => _PostCardState();
@@ -115,7 +114,7 @@ class _PostCardState extends ConsumerState<PostCard> {
           Text.rich(
             textDirection: TextDirection.ltr,
             TextSpan(
-              text: widget.caption,
+              text: '  ${widget.caption}',
               style: const TextStyle(fontSize: 12),
             ),
             maxLines: 2,

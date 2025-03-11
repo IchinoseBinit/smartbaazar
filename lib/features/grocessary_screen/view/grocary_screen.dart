@@ -326,6 +326,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -551,6 +552,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                       productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",

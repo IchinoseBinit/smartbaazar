@@ -240,7 +240,7 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        widget.onImageSelected(_selectedImage);
+        widget.onImageSelected(_selectedImage);  
       });
     }
   }

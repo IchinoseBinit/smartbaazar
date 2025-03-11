@@ -304,9 +304,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           _storysearchresult = stories.data.home_story.story.posts ?? [];
         });
       } catch (e) {
-        setState(() {
-          
-        });
+        setState(() {});
         debugPrint("Error loading stories: $e");
       }
     }
@@ -612,21 +610,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   SliverToBoxAdapter(
                     child: Center(
                       child: StorySearchBar(
-                          searchcontroller: _storysearchcontroller,
-                        onsearchpressed: () { 
-                        print('object ${_storysearchcontroller.text}');
+                        searchcontroller: _storysearchcontroller,
+                        onsearchpressed: () {
+                          print('object ${_storysearchcontroller.text}');
                           // if (
                           //  _searchController.text.length > 0)
                           _searchStories(_storysearchcontroller.text);
                         },
                         unchanged: (value) {
-                          if (value.isEmpty) { 
+                          if (value.isEmpty) {
                             setState(() {
                               _storysearchresult = []; // ✅ Clear list if empty
                             });
                           }
                         },
-                      
                         onsubmitted: _searchStories,
                         onClose: () {
                           setState(() {
@@ -743,6 +740,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         _storysearchresult[index];
                                     // print('lamta ${_storysearchresult.l}');
                                     return FeedStoryAddWidget(
+                                      productid: searchstory.id!,
                                       index: index,
                                       vendorName: searchstory.vendorName ??
                                           "Unknown Vendor",
@@ -772,6 +770,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             itemBuilder: (context, index) {
                                               final story = posts[index];
                                               return FeedStoryAddWidget(
+                                                productid: story.id!,
                                                 index: index,
                                                 vendorName: story.vendorName ??
                                                     "Unknown Vendor",
@@ -2097,8 +2096,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               refresh();
                                             },
                                             productid: res.id,
-                                            lat: res.user.latitude,
-                                            long: res.user.longitude,
+                                            lat: res.latitude,
+                                            long: res.longitude,
                                             membershipid:
                                                 res.userDetail.membership_id,
                                             posttype: res.post_type_id,
@@ -2344,7 +2343,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                         Navigator.pop(context);
                       },
                       child: Icon(Icons.arrow_back_ios_rounded,
-                          size: screenWidth * 0.05))
+                          color: Colors.white, size: screenWidth * 0.05))
                   : Image.asset(
                       height: screenHeight * 0.05,
                       width: screenWidth * 0.1,
@@ -2514,8 +2513,8 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        if (SmartClient.token == "" &&
-                            SmartClient.userPhoto!.isEmpty) {
+                        if (SmartClient.token == "" ||
+                            SmartClient.userPhoto.isEmpty) {
                           return CircleAvatar(
                             child: Image.asset(
                                 'assets/images/Smartbazaar-Icon-for-QR.png'),

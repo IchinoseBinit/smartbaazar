@@ -344,6 +344,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     pinned: true,
                     floating: true,
                     delegate: StickyHeaderDelegate(
+                      showbackbutton: true,
                         visible: isSliverAppBarVisible,
                         searchController: _searchController,
                         onchanged: (value) {
@@ -569,6 +570,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                       productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",

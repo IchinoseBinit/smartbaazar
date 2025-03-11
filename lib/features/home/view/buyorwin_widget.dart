@@ -271,55 +271,55 @@ class buyorwin_widget extends StatelessWidget {
                     SizedBox(
                       height: 5.w,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "ENQUIRE",
-                          style: headerstyle.copyWith(
-                              color: Colors.black, fontSize: 12),
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "|",
-                          style: headerstyle.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "WIN",
-                          style: headerstyle.copyWith(
-                              color: Colors.black, fontSize: 12),
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "|",
-                          style: headerstyle.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                        SizedBox(
-                          width: 25.w,
-                        ),
-                        Text(
-                          "BUY",
-                          style: headerstyle.copyWith(
-                              color: Colors.black, fontSize: 12),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     SizedBox(
+                    //       width: 25.w,
+                    //     ),
+                    //     Text(
+                    //       "ENQUIRE",
+                    //       style: headerstyle.copyWith(
+                    //           color: Colors.black, fontSize: 12),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 25.w,
+                    //     ),
+                    //     Text(
+                    //       "|",
+                    //       style: headerstyle.copyWith(
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 15),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 25.w,
+                    //     ),
+                    //     Text(
+                    //       "WIN",
+                    //       style: headerstyle.copyWith(
+                    //           color: Colors.black, fontSize: 12),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 25.w,
+                    //     ),
+                    //     Text(
+                    //       "|",
+                    //       style: headerstyle.copyWith(
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 15),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 25.w,
+                    //     ),
+                    //     Text(
+                    //       "BUY",
+                    //       style: headerstyle.copyWith(
+                    //           color: Colors.black, fontSize: 12),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 10.h,
                     )

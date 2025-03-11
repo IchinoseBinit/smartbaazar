@@ -24,39 +24,43 @@ class VProduct {
   final int? commentCount;
   final String? wow;
   final int? discount_percentage;
+  final String? longitude;
   final String? post_type_id;
-    final List<SavedPost>? savedByLoggedUser;
+  final String? latitude;
+  final List<SavedPost>? savedByLoggedUser;
 
-
-  VProduct({
-    required this.id,
-    required this.title,
-    required this.avgRating,
-    required this.commentCount,
-    required this.wow,
-    required this.discountedPrice,
-    required this.description,
-    required this.similarProductCount,
-    required this.user,
-    required this.image,
-    required this.price,
-    required this.offers,
-    required this.userDetail,
-    this.discount_percentage,
-    required this.post_type_id,
-    this.savedByLoggedUser
-  });
+  VProduct(
+      {required this.id,
+      required this.title,
+      required this.avgRating,
+      required this.commentCount,
+      required this.wow,
+      required this.discountedPrice,
+      required this.description,
+      required this.similarProductCount,
+      required this.user,
+      required this.image,
+      required this.price,
+      required this.offers,
+      required this.userDetail,
+      this.discount_percentage,
+      required this.post_type_id,
+      this.savedByLoggedUser,
+      required this.longitude,
+      required this.latitude});
 
   factory VProduct.fromJson(Map<String, dynamic> json) {
-       List<SavedPost> savedByLoggedUserList = [];
+    List<SavedPost> savedByLoggedUserList = [];
     if (json['savedByLoggedUser'] != null &&
         json['savedByLoggedUser'] is List) {
       savedByLoggedUserList = (json['savedByLoggedUser'] as List)
           .map((item) => SavedPost.fromJson(item))
           .toList();
     }
-    
+
     return VProduct(
+      latitude: json['latitude'],
+      longitude: json['longitude'],
       savedByLoggedUser: savedByLoggedUserList,
       post_type_id: json['post_type_id'],
       discount_percentage: json['discount_percentage'],
@@ -102,7 +106,6 @@ class Homepage1 {
     );
   }
 }
-
 
 @riverpod
 Future<Homepage1> fetchAdvertisements(FetchAdvertisementsRef ref) async {

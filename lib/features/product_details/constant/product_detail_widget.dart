@@ -279,12 +279,17 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                                 ),
                               )),
                           PopupMenuItem(
-                            onTap: () {
-                              // print("lanto ${widget.lat} and ${widget.long}");
-                              launch(
-                                  'https://www.google.com/maps?q=${double.tryParse(widget.lat ?? '0')},${double.tryParse(widget.long ?? '0')}');
+                            onTap: () async {
+                              String googleUrl =
+                                  'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
+                              if (await canLaunchUrl(Uri.parse(googleUrl))) {
+                                await launchUrl(Uri.parse(googleUrl),
+                                    mode: LaunchMode.inAppBrowserView);
+                              } else {
+                                throw 'Could not open the map.';
+                              }
                             },
-                            height: 30,
+                            height: 30.h,
                             padding: const EdgeInsets.only(left: 5),
                             child: Text(
                               "Get Seller Directives",
@@ -731,21 +736,19 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                             // );
                             //yaxa
 
-                              navigateToPage(
-                                showNavBar: true,
-                                ref: ref,
-                                  context: context,
-                                  page: VendorHomeScreen(
-                                      vendorName: widget.vendorname!,
-                                       vid: int.tryParse(widget.vendorid!)!,
-                                      
-                                    
-                                  ),
-                                      
-                                  //     ,
-                                  // ref: ref,
-                                  // showNavBar: false, // Hide bottom navbar
-                                );
+                            navigateToPage(
+                              showNavBar: true,
+                              ref: ref,
+                              context: context,
+                              page: VendorHomeScreen(
+                                vendorName: widget.vendorname!,
+                                vid: int.tryParse(widget.vendorid!)!,
+                              ),
+
+                              //     ,
+                              // ref: ref,
+                              // showNavBar: false, // Hide bottom navbar
+                            );
                             // Navigator.push(
                             //     context,
                             //     MaterialPageRoute(
@@ -867,13 +870,29 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                                           size: 12,
                                         ),
                                         SizedBox(width: 2.w),
-                                        Text(
-                                          "${widget.shortestDistance != null ? formatToTwoDecimals(widget.shortestDistance!) : ''} km",
-                                          style: headerstyle.copyWith(
-                                            fontFamily: GoogleFonts.quicksand()
-                                                .fontFamily,
-                                            fontSize: 9.sp,
-                                            fontWeight: FontWeight.w700,
+                                        InkWell(
+                                          onTap: () async {
+                                            String googleUrl =
+                                                'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
+                                            if (await canLaunchUrl(
+                                                Uri.parse(googleUrl))) {
+                                              await launchUrl(
+                                                  Uri.parse(googleUrl),
+                                                  mode: LaunchMode
+                                                      .inAppBrowserView);
+                                            } else {
+                                              throw 'Could not open the map.';
+                                            }
+                                          },
+                                          child: Text(
+                                            "${widget.shortestDistance != null ? formatToTwoDecimals(widget.shortestDistance!) : ''} km",
+                                            style: headerstyle.copyWith(
+                                              fontFamily:
+                                                  GoogleFonts.quicksand()
+                                                      .fontFamily,
+                                              fontSize: 9.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ),
                                       ],

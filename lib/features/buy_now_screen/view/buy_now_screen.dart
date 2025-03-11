@@ -910,6 +910,8 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                                         '0',
                                     widget.weight,
                                     "sender",
+                                    success["id"]
+
                                   ).whenComplete(
                                     () {
                                       successfulpayment(context);
@@ -918,7 +920,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                               },
                               child: const Text(
                                 'Pay with Fonepay',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.red),
                               ),
                             ),
                           ),
@@ -997,6 +999,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                           '0',
                       widget.weight,
                       "sender",
+                      null
                     );
                     if (success) {
                       showDialog(

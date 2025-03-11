@@ -27,7 +27,7 @@ class PracticeScreenps extends StatelessWidget {
             print('Payment Success: $success');
           },
           child:
-              Text('Pay with Fonepay', style: TextStyle(color: Colors.black)),
+              Text('Pay with Fonepay', style: TextStyle(color: Colors.red)),
         ),
       ),
     );

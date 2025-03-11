@@ -12,6 +12,7 @@ import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/submit_sponsorship_payment_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/practice.dart';
 
 class ApplySponsorshipPriceScreen extends ConsumerStatefulWidget {
   const ApplySponsorshipPriceScreen({super.key});
@@ -86,6 +87,8 @@ class _ApplySponsorshipPriceScreenState
     final giftQty = giftQtyController.text.trim();
     const giftType = "gift";
 
+    //print('${totalCost}'); 9877654433
+
     if (imageFile == null ||
         gift.isEmpty ||
         giftWorth.isEmpty ||
@@ -102,30 +105,43 @@ class _ApplySponsorshipPriceScreenState
     }
 
     // Call the postgift API
-    final success = await ref.read(postgiftProvider(
-      gift,
-      giftWorth,
-      giftType,
-      giftQty,
-      imageFile!,
-    ).future);
 
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Gift posted successfully!'),
-          backgroundColor: Colors.grey,
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
-      );
+    var pay = await makepaymentnow(context, int.tryParse(totalCost).toString(), false);
+
+    if (pay["success"] == true) {
+      // Ensure checking the success flag correctly
+      final success = await ref.read(postgiftProvider(
+        gift,
+        giftWorth,
+        giftType,
+        giftQty,
+        imageFile!,
+      ).future);
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Gift posted successfully!'),
+            backgroundColor: Colors.grey,
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to post gift'),
+            backgroundColor: Colors.grey,
+          ),
+        );
+      } 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to post gift'),
-          backgroundColor: Colors.grey,
+          content: Text('Payment failed'),
+          backgroundColor: Colors.red,
         ),
       );
     }

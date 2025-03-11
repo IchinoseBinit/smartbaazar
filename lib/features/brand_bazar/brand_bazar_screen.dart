@@ -338,6 +338,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                     pinned: true,
                     floating: true,
                     delegate: StickyHeaderDelegate(
+                      showbackbutton: true,
                         visible: isSliverAppBarVisible,
                         searchController: _searchController,
                         onchanged: (value) {
@@ -347,6 +348,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
                     SliverAppBar(
+
                       automaticallyImplyLeading: false,
                       expandedHeight: 150.h,
                       floating: false,
@@ -563,6 +565,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                                 itemBuilder: (context, index) {
                                   final story = posts[index];
                                   return FeedStoryAddWidget(
+                                     productid: story.id!,
                                     index: index,
                                     vendorName:
                                         story.vendorName ?? "Unknown Vendor",

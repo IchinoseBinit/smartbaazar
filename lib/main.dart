@@ -46,9 +46,11 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/apply_sponsorship_price_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
@@ -131,13 +133,14 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashScreen()),
+          home:ProductDetailScreen(productId: '902')
+          ),
     );
     // home: SplashScreen()));
   }
 } //123
 // //9810443212
-// Redmi note 1 has the feature of long and and things like wifi is there 
+// Redmi note 1 has the feature of long and and things like wifi is there
 // Phone
 
 // Near darbar marga nepal

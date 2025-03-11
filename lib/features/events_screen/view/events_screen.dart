@@ -329,6 +329,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -554,6 +555,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                       productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",

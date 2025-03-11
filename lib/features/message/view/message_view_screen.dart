@@ -40,6 +40,10 @@ class MessageViewScreen extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   DropdownButton<String>(
+                    // icon: Icon(Icons.more_horiz_outlined),
+                    // hint: Icon(Icons.more_horiz_outlined),
+
+                    //   icon: Icon(Icons.more_horiz_outlined),
                     underline: const SizedBox(),
                     padding: EdgeInsets.zero,
                     borderRadius: BorderRadius.zero,
@@ -74,7 +78,7 @@ class MessageViewScreen extends ConsumerWidget {
               ),
               SizedBox(height: 11.h),
               Text(
-                'Previous Message',
+                'Previous Message/Alerts',
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w700,
@@ -193,87 +197,82 @@ class MessageViewScreen extends ConsumerWidget {
                               itemBuilder: (context, index) {
                                 final alert = alerts[index];
                                 return Container(
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // Alert Icon and Title
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.notifications,
-                                            color:
-                                                Colors.green.withOpacity(0.9),
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Expanded(
-                                            child: Text(
-                                              alert.title ?? 'No title',
-                                              style: TextStyle(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                      SizedBox(
+                                        height: 50.h,
+                                        width: 280.w,
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius:
+                                                  25, // Adjust size as needed
+                                              backgroundColor:
+                                                  const Color(0xffD9D9D9),
+                                              backgroundImage: NetworkImage(
+                                                alert.image ??
+                                                    "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
                                               ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              softWrap: true,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10.h),
+                                            SizedBox(width: 11.w),
 
-                                      // Alert Body Text
-                                      Text(
-                                        alert.body ?? 'No body',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: Colors.black.withOpacity(0.8),
-                                        ),
-                                        maxLines: 5,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                      ),
-                                      SizedBox(height: 20.h),
-
-                                      // Promotional Image
-                                      if (alert.image != null)
-                                        Center(
-                                          child: Image.network(
-                                            alert.image!,
-                                            fit: BoxFit.cover,
-                                            height: 100.h,
-                                            width: 180.h,
-                                          ),
-                                        ),
-                                      SizedBox(height: 20.h),
-
-                                      // Date and Time Row
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            alert.createdAt!,
-                                            style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
+                                            // Text Column
+                                            Flexible(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    alert.title!.length > 30
+                                                        ? alert.title!
+                                                                .substring(
+                                                                    0, 30) +
+                                                            '...'
+                                                        : alert.title!,
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      overflow: TextOverflow
+                                                          .ellipsis, // Make sure overflow happens after applying the condition
+                                                    ),
+                                                    maxLines: 1,
+                                                  ),
+                                                  SizedBox(height: 4.h),
+                                                  Text(
+                                                    alert.body!.length > 30
+                                                        ? alert.body!.substring(
+                                                                0, 30) +
+                                                            '...'
+                                                        : alert.body!,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      color: const Color(
+                                                              0xff000000)
+                                                          .withOpacity(0.45),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                    maxLines: 2,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(right: 5.w),
+                                        height: 12.h,
+                                        width: 12.w,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xff781740),
+                                        ),
                                       ),
                                     ],
                                   ),

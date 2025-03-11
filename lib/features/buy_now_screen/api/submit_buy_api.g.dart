@@ -84,6 +84,7 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
     String parcelCategoryId,
     double weight,
     String payer,
+    String? paymentid
   ) {
     return BuynowsubmitProvider(
       cityCode,
@@ -130,6 +131,7 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
       parcelCategoryId,
       weight,
       payer,
+      paymentid
     );
   }
 
@@ -248,6 +250,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     String parcelCategoryId,
     double weight,
     String payer,
+    String? paymentid
   ) : this._internal(
           (ref) => buynowsubmit(
             ref as BuynowsubmitRef,
@@ -295,6 +298,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
             parcelCategoryId,
             weight,
             payer,
+            paymentid
           ),
           from: buynowsubmitProvider,
           name: r'buynowsubmitProvider',
