@@ -146,7 +146,7 @@ class _BuyerAccountDetailsWidgetState
   String? userId;
   bool isLoading = false;
   bool _isInitialized = false;
-  LocationData? _locationData;
+  // LocationData? _locationData;
   @override
   void initState() {
     super.initState();
@@ -176,15 +176,13 @@ class _BuyerAccountDetailsWidgetState
             userData.usersLocation!.isNotEmpty) {
           try {
             final locationJson = jsonDecode(userData.usersLocation!);
-            _locationData = LocationData.fromJson(locationJson);
-            _branchController.text = _locationData!.location;
+            // _locationData = LocationData.fromJson(locationJson);
+            _branchController.text = locationJson['location'] ?? '';
           } catch (e) {
             _branchController.text = '';
-            _locationData = null;
           }
         } else {
           _branchController.text = '';
-          _locationData = null;
         }
         _isInitialized = true;
       });
@@ -219,13 +217,12 @@ class _BuyerAccountDetailsWidgetState
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
-        usersLocation: _locationData != null
-            ? jsonEncode({'location': _branchController.text})
-            : '',
+        usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
         try {
           await _updateUserDetails(updatedData);
+          print('>>>>>>>>>>>>>>>>>>>>>>$updatedData');
         } catch (e) {
           if (e is FormatException) {
             print('Error parsing location data: $e');
@@ -569,7 +566,7 @@ class LocationFieldWidget extends ConsumerStatefulWidget {
 
 class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
   String query = '';
-  bool showSuggestions = false;
+
   @override
   Widget build(BuildContext context) {
     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
@@ -611,22 +608,14 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
               ),
             ),
           ),
-          onTap: () {
-            setState(() {
-              showSuggestions = true;
-              query = widget.streetController.text;
-            });
-          },
           onChanged: (value) {
-            if (showSuggestions) {
-              setState(() {
-                query = value;
-              });
-            }
+            setState(() {
+              query = value; // Update query when text changes
+            });
           },
         ),
         const SizedBox(height: 10),
-        if (showSuggestions && query.isNotEmpty)
+        if (query.isNotEmpty)
           streetSuggestionsAsync.when(
             data: (addresses) {
               if (addresses.isEmpty) {
@@ -649,11 +638,11 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         onTap: () {
-                          //   print("kala ${widget.streetController.text}");
+                          print("kala ${widget.streetController.text}");
                           setState(() {
                             widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions
-                            showSuggestions = false;
+
                             widget.onSelected!(address.description);
                           });
                         },

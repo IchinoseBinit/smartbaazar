@@ -126,7 +126,9 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-      'user_location': branchLocations,
+      'users_location': jsonEncode({
+        'location': branchLocations,
+      }),
     };
 
     final response = await client.request(

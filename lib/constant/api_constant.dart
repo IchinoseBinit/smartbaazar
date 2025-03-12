@@ -118,7 +118,8 @@ class ApiConstants {
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
   //product import
   static String productimportapi = '$baseUrl/posts/product_import';
-
+//device Token
+  static String storeDeviceTokenUrl = '$baseUrl/users/device_token';
   //feed screen
   static String getFeedScreenFollowingUrl = '$baseUrl/users/getfeed';
   static String getForYouFeedUrl = '$baseUrl/users/getrandomfeed';
