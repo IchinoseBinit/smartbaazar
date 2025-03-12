@@ -253,7 +253,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _emailController.clear();
         _userNameController.clear();
         _genderController.clear();
-        branchControllers.clear();
+        // branchControllers.clear();
         //branchControllers = [TextEditingController()];
         _bioController.clear();
         description = '';
@@ -262,6 +262,20 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         // to = [];
         // closed = [];
       });
+      if (branchLocations.isNotEmpty) {
+        setState(() {
+          branchControllers.clear();
+          for (var location in branchLocations) {
+            branchControllers.add(TextEditingController(text: location));
+          }
+        });
+      } else {
+        setState(() {
+          branchControllers.clear();
+          branchControllers.add(TextEditingController());
+        });
+      }
+
       _formKey.currentState?.reset();
     } catch (error) {
       // Display error message

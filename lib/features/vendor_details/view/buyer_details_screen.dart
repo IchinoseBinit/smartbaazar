@@ -171,7 +171,7 @@ class _BuyerAccountDetailsWidgetState
         _emailController.text = userData.email ?? '';
         _userNameController.text = userData.username ?? '';
         _genderController.text =
-            userData.genderId != null ? userData.genderId.toString()  : '';
+            userData.genderId != null ? userData.genderId.toString() : '';
         if (userData.usersLocation != null &&
             userData.usersLocation!.isNotEmpty) {
           try {
@@ -569,7 +569,7 @@ class LocationFieldWidget extends ConsumerStatefulWidget {
 
 class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
   String query = '';
-
+  bool showSuggestions = false;
   @override
   Widget build(BuildContext context) {
     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
@@ -611,14 +611,22 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
               ),
             ),
           ),
-          onChanged: (value) {
+          onTap: () {
             setState(() {
-              query = value; // Update query when text changes
+              showSuggestions = true;
+              query = widget.streetController.text;
             });
+          },
+          onChanged: (value) {
+            if (showSuggestions) {
+              setState(() {
+                query = value;
+              });
+            }
           },
         ),
         const SizedBox(height: 10),
-        if (query.isNotEmpty)
+        if (showSuggestions && query.isNotEmpty)
           streetSuggestionsAsync.when(
             data: (addresses) {
               if (addresses.isEmpty) {
@@ -645,7 +653,7 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           setState(() {
                             widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions
-
+                            showSuggestions = false;
                             widget.onSelected!(address.description);
                           });
                         },
