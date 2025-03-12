@@ -24,6 +24,9 @@ class SponsorshipScreen extends ConsumerStatefulWidget {
 class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
   File? imageFile;
 
+
+  
+
   Future<void> submitbanner() async {
     if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -55,6 +58,8 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
       );
     }
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {

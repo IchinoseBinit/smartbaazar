@@ -382,10 +382,8 @@ class ProductDetailScreen extends ConsumerWidget {
                     ),
                     InkWell(
                       onTap: () async {
-                        final value = ref.watch(
-                            addtocartProvider(data.result!.id!.toString()));
-
-                        showDialog(
+                        if (SmartClient.token == '') {
+                          showDialog(
                             context: context,
                             builder: (_) {
                               return AlertDialog(
@@ -399,52 +397,24 @@ class ProductDetailScreen extends ConsumerWidget {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Sucessful!',
+                                        'Message!',
                                         style: TextStyle(
                                             fontSize: 24.sp,
                                             fontWeight: FontWeight.w700,
                                             color: const Color(0xff362677)),
                                       ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
+                                      SizedBox(height: 10.h),
                                       Text(
-                                        'Product added to the cart sucessfully!',
+                                        'Please login !',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.black),
                                       ),
-                                      SizedBox(
-                                        height: 5.h,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop('dialog');
-
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const AddToCartScreen()));
-                                        },
-                                        child: Text(
-                                          'View Cart',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
+                                      SizedBox(height: 5.h),
+                                  
+                                      SizedBox(height: 10.h),
                                       InkWell(
                                         onTap: () {
                                           Navigator.of(context,
@@ -461,7 +431,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                             Icons.check,
                                             color: Colors.white,
                                             size: 24,
-                                            weight: 50,
                                           ),
                                         ),
                                       )
@@ -469,7 +438,92 @@ class ProductDetailScreen extends ConsumerWidget {
                                   ),
                                 ),
                               );
-                            });
+                            },
+                          );
+                        } else {
+                          final value = ref.watch(
+                              addtocartProvider(data.result!.id!.toString()));
+
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                title: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 14.w, vertical: 12.h),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Successful!',
+                                        style: TextStyle(
+                                            fontSize: 24.sp,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff362677)),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        'Product added to the cart successfully!',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop('dialog');
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const AddToCartScreen()),
+                                          );
+                                        },
+                                        child: Text(
+                                          'View Cart',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop('dialog');
+                                        },
+                                        child: Container(
+                                          height: 40.h,
+                                          width: 40.w,
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xff362677),
+                                              shape: BoxShape.circle),
+                                          child: const Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       },
                       child: const CircleAvatar(
                           backgroundColor: Colors.grey,
@@ -491,7 +545,6 @@ class ProductDetailScreen extends ConsumerWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                     
                         if (data.result != null &&
                             data.result?.user != null &&
                             data.result?.user_details != null)

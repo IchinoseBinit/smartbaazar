@@ -6,7 +6,7 @@ part of 'submit_buy_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$buynowsubmitHash() => r'f23471b89c6ad2a888e3b783897f337e4289a6d8';
+String _$buynowsubmitHash() => r'b821c123c720e5d093a31397ca2eb89375a301d5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -84,7 +84,7 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
     String parcelCategoryId,
     double weight,
     String payer,
-    String? paymentid
+    String? paymentid,
   ) {
     return BuynowsubmitProvider(
       cityCode,
@@ -131,7 +131,7 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
       parcelCategoryId,
       weight,
       payer,
-      paymentid
+      paymentid,
     );
   }
 
@@ -184,6 +184,7 @@ class BuynowsubmitFamily extends Family<AsyncValue<bool>> {
       provider.parcelCategoryId,
       provider.weight,
       provider.payer,
+      provider.paymentid,
     );
   }
 
@@ -250,7 +251,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     String parcelCategoryId,
     double weight,
     String payer,
-    String? paymentid
+    String? paymentid,
   ) : this._internal(
           (ref) => buynowsubmit(
             ref as BuynowsubmitRef,
@@ -298,7 +299,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
             parcelCategoryId,
             weight,
             payer,
-            paymentid
+            paymentid,
           ),
           from: buynowsubmitProvider,
           name: r'buynowsubmitProvider',
@@ -353,6 +354,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
           parcelCategoryId: parcelCategoryId,
           weight: weight,
           payer: payer,
+          paymentid: paymentid,
         );
 
   BuynowsubmitProvider._internal(
@@ -406,6 +408,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     required this.parcelCategoryId,
     required this.weight,
     required this.payer,
+    required this.paymentid,
   }) : super.internal();
 
   final String cityCode;
@@ -452,6 +455,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
   final String parcelCategoryId;
   final double weight;
   final String payer;
+  final String? paymentid;
 
   @override
   Override overrideWith(
@@ -510,6 +514,7 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
         parcelCategoryId: parcelCategoryId,
         weight: weight,
         payer: payer,
+        paymentid: paymentid,
       ),
     );
   }
@@ -565,7 +570,8 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
         other.receiverAddress == receiverAddress &&
         other.parcelCategoryId == parcelCategoryId &&
         other.weight == weight &&
-        other.payer == payer;
+        other.payer == payer &&
+        other.paymentid == paymentid;
   }
 
   @override
@@ -615,11 +621,14 @@ class BuynowsubmitProvider extends AutoDisposeFutureProvider<bool> {
     hash = _SystemHash.combine(hash, parcelCategoryId.hashCode);
     hash = _SystemHash.combine(hash, weight.hashCode);
     hash = _SystemHash.combine(hash, payer.hashCode);
+    hash = _SystemHash.combine(hash, paymentid.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin BuynowsubmitRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `cityCode` of this provider.
   String get cityCode;
@@ -752,6 +761,9 @@ mixin BuynowsubmitRef on AutoDisposeFutureProviderRef<bool> {
 
   /// The parameter `payer` of this provider.
   String get payer;
+
+  /// The parameter `paymentid` of this provider.
+  String? get paymentid;
 }
 
 class _BuynowsubmitProviderElement
@@ -855,6 +867,8 @@ class _BuynowsubmitProviderElement
   double get weight => (origin as BuynowsubmitProvider).weight;
   @override
   String get payer => (origin as BuynowsubmitProvider).payer;
+  @override
+  String? get paymentid => (origin as BuynowsubmitProvider).paymentid;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

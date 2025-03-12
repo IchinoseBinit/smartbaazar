@@ -1,4 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
@@ -115,14 +119,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   // Future<void> getss() async {
   //   SharedPreferences stf = await SharedPreferences.getInstance();
-  //   var _a=jsonDecode(stf.getString('session')!);
-  //   print('bibash ${_a['result']['username']}');
+    
+  //   // Get the session string safely
+  //   String? sessionData = stf.getString('session');
+    
+  //   if (sessionData != null && sessionData.isNotEmpty) {
+  //     try {
+  //       var _a = jsonDecode(sessionData);
+        
+  //       // Ensure SmartClient.userPhoto is updated only when necessary
+  //       if (SmartClient.userPhoto.isEmpty && _a['result']['photo_url'] != null) {
+  //         SmartClient.userPhoto = _a['result']['photo_url'];
+  //       }
+  //     } catch (e) {
+  //       print('Error decoding session data: $e');
+  //     }
+  //   }
   // }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+  //  getss();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //  print('pinky ${SmartClient.}');
     return ScreenUtilInit(
       designSize: const Size(430, 690),
       splitScreenMode: true,
@@ -133,8 +161,8 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home:ProductDetailScreen(productId: '902')
-          ),
+          home: SplashScreen()
+          )
     );
     // home: SplashScreen()));
   }

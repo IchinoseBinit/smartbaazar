@@ -24,7 +24,7 @@ class MessageViewScreen extends ConsumerWidget {
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
-        //  initialIndex: 1,
+         initialIndex: 1,
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
@@ -95,6 +95,7 @@ class MessageViewScreen extends ConsumerWidget {
                       builder: (context, ref, _) {
                         final messageThreadProvider = ref.watch(
                             getMessageThreadProvider(filter: currentfilter));
+
                         return messageThreadProvider.when(
                           data: (messageThread) {
                             final messages = messageThread.result!.data;
@@ -108,53 +109,67 @@ class MessageViewScreen extends ConsumerWidget {
                                     final lastMessageAsync = ref.watch(
                                         getLastMessageProvider(
                                             message.id.toString()));
+
                                     return lastMessageAsync.when(
-                                        data: (lastMessage) {
-                                          return ListOfMessages(
-                                            threadId: message.id.toString(),
-                                            postId: message.postId.toString(),
-                                            subject: message.subject!,
-                                            isImportant: message.isImportant!,
-                                            body: lastMessage?.body ??
-                                                'No messages yet',
-                                          );
-                                        },
-                                        loading: () => Center(
-                                              child: Shimmer.fromColors(
-                                                baseColor: Colors.grey[300]!,
-                                                highlightColor:
-                                                    Colors.grey[100]!,
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(horizontal: 8),
-                                                  width: 40.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                ),
-                                              ),
+                                      data: (lastMessage) {
+                                        return ListOfMessages(
+                                          threadId: message.id.toString(),
+                                          postId: message.postId.toString(),
+                                          subject: message.subject!,
+                                          isImportant: message.isImportant!,
+                                          body: lastMessage?.body ??
+                                              'No messages yet',
+                                        );
+                                      },
+                                      loading: () => Center(
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            width: 40.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                        error: (error, stack) {
-                                          ref
-                                              .read(messageFilterStateProvider
-                                                  .notifier)
-                                              .updateFilter(
-                                                  'unread'); // Update the filter
-
-                                          // ref.refresh(messageFilterStateProvider
-                                          //     .notifier);
+                                          ),
+                                        ),
+                                      ),
+                                      error: (error, stack) {
+                                        // Invalidate and refresh the provider automatically
+                                        Future.delayed(Duration.zero, () {
                                           ref.invalidate(
-                                              messageFilterStateProvider);
-
-                                          return InkWell(
-                                              onTap: () => const LoginScreen(),
-                                              child: const Text(
-                                                  'Login/Try changing message type'));
+                                              getMessageThreadProvider);
+                                          ref.invalidate(
+                                              getLastMessageProvider);
                                         });
+
+                                        return InkWell(
+                                          onTap: () => ref.invalidate(
+                                              getMessageThreadProvider),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(Icons.refresh,
+                                                    color: Colors.black,
+                                                    size: 30), // Refresh Icon
+                                                SizedBox(height: 8), // Spacing
+                                                const Text(
+                                                  'Tap to refresh',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                 );
                               },
@@ -178,11 +193,27 @@ class MessageViewScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          error: (error, stack) => const InkWell(
-                              child: Center(child: Text('Please login again'))),
+                          error: (error, stack) {
+                            // Auto refresh when an error occurs
+                            Future.delayed(Duration.zero, () {
+                              ref.invalidate(getMessageThreadProvider);
+                            });
+
+                            return InkWell(
+                              onTap: () =>
+                                  ref.invalidate(getMessageThreadProvider),
+                              child: Center(
+                                child: const Text(
+                                  'Error loading messages. Tap to retry.',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
+
                     Consumer(
                       builder: (context, ref, _) {
                         final alertProvider =

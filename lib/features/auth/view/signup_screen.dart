@@ -158,14 +158,63 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  CustomTextFieldWidget(
-                    controller: genderController,
-                    icon: Icons.person_2_rounded,
-                    hintText: 'Sex',
-                    validator: (_) {
-                      return null;
+                  DropdownButtonFormField<String>(
+                    value: genderController.text.isEmpty
+                        ? null
+                        : genderController.text,
+                    onChanged: (String? newValue) {
+                      genderController.text =
+                          newValue ?? ''; // Update controller value
                     },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please select your gender'
+                        : null,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      filled: false,
+                      //  fillColor: true,
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(
+                            right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+                        child: Container(
+                          height: 50,
+                          width: 52,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 11.h),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: const Color(0xFFAEC5FF),
+                          ),
+                          child: Icon(Icons.person_2_rounded,
+                              color: const Color(0xff362677)),
+                        ),
+                      ),
+                      hintText: 'Sex',
+                      hintStyle: TextStyle(
+                        color: const Color(0xFFADADAD),
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    items: ['Male', 'Female', 'Other'].map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
                   ),
+
+                  // CustomTextFieldWidget(
+                  //   controller: genderController,
+                  //   icon: Icons.person_2_rounded,
+                  //   hintText: 'Sex',
+                  //   validator: (_) {
+                  //     return null;
+                  //   },
+                  // ),
                   SizedBox(
                     height: 22.h,
                   ),
@@ -248,7 +297,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 showAlertDialog(context);
                               }).onError(
                                 (error, stackTrace) {
-                                  return const Text('Fill up the ');
+                                  return showCustomToast(
+                                      context, 'Please fill info propely');
                                 },
                               );
                             }
