@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/fcm/local_notifications_service.dart';
-import 'package:smartbazar/features/fcm/store_device_token.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
