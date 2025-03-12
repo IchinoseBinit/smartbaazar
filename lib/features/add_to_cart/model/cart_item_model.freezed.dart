@@ -415,6 +415,9 @@ abstract class _CartItem implements CartItem {
   String? get weight;
   @override
   String? get phone;
+
+  /// Create a copy of CartItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>

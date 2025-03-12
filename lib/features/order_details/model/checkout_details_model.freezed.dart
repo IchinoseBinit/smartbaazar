@@ -1391,9 +1391,9 @@ abstract class _Item implements Item {
   String? get vendorId;
   @override
   @JsonKey(name: 'post_id')
-  String? get postId;
-  @override //   String? post_type_id,
+  String? get postId; //   String? post_type_id,
 //  @JsonKey(name: 'post_type_id') String? buynow_post_id, // for BuyNow model
+  @override
   String? get name;
   @override
   String? get title;

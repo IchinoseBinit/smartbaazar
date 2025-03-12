@@ -58,7 +58,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _genderController = TextEditingController(text: '');
     branchControllers = [TextEditingController()];
     _bioController = TextEditingController(text: '');
-    // _branchController = TextEditingController(text: '');
   }
 
   // Load userId from SharedPreferences
@@ -100,49 +99,49 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           branchControllers.clear();
 
           // Add new controllers
-          if (branchLocations != null)
+          if (branchLocations != null) {
             for (var i = 0; i < branchLocations!.length; i++) {
               TextEditingController controller =
                   TextEditingController(text: branchLocations[i]['location']);
               branchControllers.add(controller);
             }
+          }
         });
-        if (branchLocations != null)
-          List<String> branchLocationsText = branchLocations!.map((location) {
+        if (branchLocations != null) {
+          List<String> branchLocationsText = branchLocations.map((location) {
             return location['location'] as String;
           }).toList();
+        }
+        // branchControllers.clear();
+
+        // // Parse branch locations
+        // if (userData.branchLocation != null) {
+        //   List<dynamic> branchLocations =
+        //       jsonDecode(userData.branchLocation ?? '');
+        //   for (var location in branchLocations) {
+        //     TextEditingController controller = TextEditingController(
+        //       text: location['location'] ?? '',
+        //     );
+        //     branchControllers.add(controller);
+        //   }
+        // } else {
+        //   // If no branch locations, add at least one empty controller
+        //   branchControllers.add(TextEditingController());
+        // }
 
         // Parse opening hours
         if (userData.openingHours != null) {
-          String openingHoursData = userData.openingHours ?? '';
-          // for (var hour in openingHoursData) {
-          //   String day = hour['day'];
-          //   openingHours[day]!['from'] = hour['from'];
-          //   openingHours[day]!['to'] = hour['to'];
-          //   openingHours[day]!['closed'] = hour['closed'];
-          // }
+          List<dynamic> openingHoursData =
+              jsonDecode(userData.openingHours ?? '');
+          for (var hour in openingHoursData) {
+            String day = hour['day'];
+            openingHours[day]!['from'] = hour['from'];
+            openingHours[day]!['to'] = hour['to'];
+            openingHours[day]!['closed'] = hour['closed'];
+          }
         }
       });
     }
-  }
-
-  void _fetchInitialData() async {
-    final userDataAsync = ref.watch(getUserDetailsProvider);
-
-    userDataAsync.when(
-      data: (data) {
-        setState(() {
-          userData = data.data?.first;
-          _setInitialValues(userData!);
-        });
-      },
-      error: (error, stackTrace) {
-        print('Please login again');
-      },
-      loading: () {
-        print('Loading user details...');
-      },
-    );
   }
 
   void _addBranchField() {
@@ -171,7 +170,31 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
-        _updateUserDetails(updatedData);
+        List<String> branchLocations = branchControllers
+            .map((controller) => controller.text)
+            .toList()
+            .where((location) => location.isNotEmpty)
+            .toList();
+
+        List<String> dayNames = openingHours.keys.toList();
+        List<String> from = [];
+        List<String> to = [];
+        List<bool> closed = [];
+
+        for (int i = 0; i < dayNames.length; i++) {
+          from.add(openingHours[dayNames[i]]!['from'] ?? '');
+          to.add(openingHours[dayNames[i]]!['to'] ?? '');
+          closed.add(openingHours[dayNames[i]]!['closed']);
+        }
+
+        _updateUserDetails(
+          updatedData,
+          branchLocations,
+          dayNames,
+          from,
+          to,
+          closed,
+        );
       } else {
         // Handle error: userId not available
         ScaffoldMessenger.of(context).showSnackBar(
@@ -181,43 +204,18 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     }
   }
 
-  Future<void> _updateUserDetails(UserData data) async {
+  Future<void> _updateUserDetails(
+    UserData data,
+    List<String> branchLocations,
+    List<String> day,
+    List<String> fromList,
+    List<String> toList,
+    List<bool> closed,
+  ) async {
     setState(() {
       isLoading = true;
     });
     try {
-      //  List<Map<String, String>> branchLocations = branchControllers
-      //   .where((controller) => controller.text.isNotEmpty)
-      //   .map((controller) => {'location': controller.text})
-      //   .toList();
-      // Extract opening hours data
-      // List<Map<String, dynamic>> openingHoursData = openingHours.entries.map((entry) {
-      //   return {
-      //     'day': entry.key,
-      //     'from': entry.value['from'] ?? '',
-      //     'to': entry.value['to'] ?? '',
-      //     'closed': entry.value['closed'] ?? false,
-      //   };
-      // }).toList();
-
-      List<String> branchLocations = branchControllers
-          .map((controller) => controller.text)
-          .toList()
-          .where((location) => location.isNotEmpty)
-          .toList();
-
-      List<String> dayNames = openingHours.keys.toList();
-      List<String> from = [];
-      List<String> to = [];
-      List<bool> closed = [];
-
-      for (int i = 0; i < dayNames.length; i++) {
-        from.add(openingHours[dayNames[i]]!['from'] ?? '');
-        to.add(openingHours[dayNames[i]]!['to'] ?? '');
-        closed.add(openingHours[dayNames[i]]!['closed']);
-      }
-      print("kelaz $branchControllers");
-
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         data.name ?? '',
         data.phone ?? '',
@@ -231,15 +229,19 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //     : branchControllers.map((controller) => controller.text).toList(),
 
         data.bio ?? '',
-
-        openingHours.keys.toList(),
-        openingHours.values.map((v) => v['from']).toList().cast<String>(),
-        openingHours.values.map((v) => v['to']).toList().cast<String>(),
-        openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
+        day,
+        fromList,
+        toList,
+        closed,
+        // openingHours.keys.toList(),
+        // openingHours.values.map((v) => v['from']).toList().cast<String>(),
+        // openingHours.values.map((v) => v['to']).toList().cast<String>(),
+        // openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
 
         // description,
         //  dob!,
       ).future);
+      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>$updateUserDetail");
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -252,6 +254,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _userNameController.clear();
         _genderController.clear();
         branchControllers.clear();
+        //branchControllers = [TextEditingController()];
         _bioController.clear();
         description = '';
         // dayNames = [];
@@ -289,7 +292,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             final userData = data.data!.first;
             _setInitialValues(userData);
 
-            String branchLocations = data.data!.first.branchLocation!;
+            // String branchLocations = data.data!.first.branchLocation!;
             // List<String> branchLocationsText = branchLocations.map((location) {
             //   return location['location']
             //       as String; // Assuming each location is a Map with a 'location' key
@@ -574,6 +577,9 @@ class _BranchWidgetState extends State<BranchWidget> {
   @override
   void initState() {
     super.initState();
+    if (widget.branchControllers.isEmpty) {
+      widget.branchControllers.add(TextEditingController()); // Ensure one field
+    }
     initializeLocationWidgets();
   }
 
@@ -582,16 +588,19 @@ class _BranchWidgetState extends State<BranchWidget> {
       return LocationFieldWidget(
         streetController: controller,
         onSelected: (selectedLocation) {
-          print("Selected location: $selectedLocation");
           int index = widget.branchControllers.indexOf(controller);
           if (index >= 0 && index < branchLocations.length) {
-            branchLocations[index] = selectedLocation;
+            setState(() {
+              branchLocations[index] = selectedLocation;
+            });
           }
         },
       );
     }).toList();
+
+    // Initialize with actual values from controllers
     branchLocations =
-        List.filled(widget.branchControllers.length, "Your Location");
+        widget.branchControllers.map((controller) => controller.text).toList();
   }
 
   @override
@@ -606,24 +615,20 @@ class _BranchWidgetState extends State<BranchWidget> {
                 Expanded(
                   child: locationWidgets.length > index
                       ? locationWidgets[index]
-                      : branchLocations.length > index
-                          // ? Text(branchLocations[index])
-                          // : const Text("Your location"),
-
-                          ? const Text("Your location")
-                          : LocationFieldWidget(
-                              streetController: widget.branchControllers[index],
-                              onSelected: (selectedLocation) {
-                                print("Selected location: $selectedLocation");
-                                int currentIndex = widget.branchControllers
-                                    .indexOf(widget.branchControllers[index]);
-                                if (currentIndex >= 0 &&
-                                    currentIndex < branchLocations.length) {
-                                  branchLocations[currentIndex] =
-                                      selectedLocation;
-                                }
-                              },
-                            ),
+                      : LocationFieldWidget(
+                          streetController: widget.branchControllers[index],
+                          onSelected: (selectedLocation) {
+                            int currentIndex = widget.branchControllers
+                                .indexOf(widget.branchControllers[index]);
+                            if (currentIndex >= 0 &&
+                                currentIndex < branchLocations.length) {
+                              setState(() {
+                                branchLocations[currentIndex] =
+                                    selectedLocation;
+                              });
+                            }
+                          },
+                        ),
                 ),
                 SizedBox(width: 10.w),
                 if (index == 0)

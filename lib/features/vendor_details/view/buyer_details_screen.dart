@@ -13,6 +13,7 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
+import 'package:smartbazar/features/vendor_details/model/location_data.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/background_image_description_widgt.dart';
@@ -27,6 +28,7 @@ class BuyerDetailsScreen extends ConsumerStatefulWidget {
 
 class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
   String? vendorName;
+
   @override
   void initState() {
     super.initState();
@@ -144,7 +146,7 @@ class _BuyerAccountDetailsWidgetState
   String? userId;
   bool isLoading = false;
   bool _isInitialized = false;
-
+  LocationData? _locationData;
   @override
   void initState() {
     super.initState();
@@ -168,10 +170,22 @@ class _BuyerAccountDetailsWidgetState
         _phoneNumberController.text = userData.phone ?? '';
         _emailController.text = userData.email ?? '';
         _userNameController.text = userData.username ?? '';
-        _genderController.text = userData.genderId ?? '';
-        _branchController.text = userData.usersLocation != null
-            ? jsonDecode(userData.usersLocation!)['location'] ?? ''
-            : '';
+        _genderController.text =
+            userData.genderId != null ? userData.genderId.toString()  : '';
+        if (userData.usersLocation != null &&
+            userData.usersLocation!.isNotEmpty) {
+          try {
+            final locationJson = jsonDecode(userData.usersLocation!);
+            _locationData = LocationData.fromJson(locationJson);
+            _branchController.text = _locationData!.location;
+          } catch (e) {
+            _branchController.text = '';
+            _locationData = null;
+          }
+        } else {
+          _branchController.text = '';
+          _locationData = null;
+        }
         _isInitialized = true;
       });
     }
@@ -205,13 +219,29 @@ class _BuyerAccountDetailsWidgetState
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
-        usersLocation: jsonEncode({'location': _branchController.text}),
+        usersLocation: _locationData != null
+            ? jsonEncode({'location': _branchController.text})
+            : '',
       );
       if (userId != null) {
-        _updateUserDetails(
-            updatedData); // Call update method if userId is available
+        try {
+          await _updateUserDetails(updatedData);
+        } catch (e) {
+          if (e is FormatException) {
+            print('Error parsing location data: $e');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content:
+                    Text('Error updating location data. Please try again.'),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error: $e')),
+            );
+          }
+        }
       } else {
-        // Handle error: userId not available
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('User ID not available.')),
         );
@@ -238,7 +268,9 @@ class _BuyerAccountDetailsWidgetState
         data.email ?? '',
         userId ?? '',
         data.genderId ?? '',
-        jsonDecode(data.usersLocation ?? '{}')['location'] ?? '',
+        data.usersLocation!.isNotEmpty
+            ? jsonDecode(data.usersLocation!)['location'] ?? ''
+            : '',
         // openingHours,
         // description,
         //  dob!,
@@ -487,7 +519,7 @@ class _BuyerAccountDetailsWidgetState
                           // ),
                           LocationFieldWidget(
                             onSelected: (p0) {
-                           //   print("kalu $p0");
+                              //   print("kalu $p0");
                               updateStreet(p0);
                             },
                             streetController: _branchController,
@@ -609,7 +641,7 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           style: TextStyle(fontSize: 12.sp),
                         ),
                         onTap: () {
-                       //   print("kala ${widget.streetController.text}");
+                          //   print("kala ${widget.streetController.text}");
                           setState(() {
                             widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions

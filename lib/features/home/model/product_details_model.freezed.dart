@@ -1287,6 +1287,8 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     });
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MyProductDeailModelCopyWith<$Res>? get user_details {
@@ -1299,6 +1301,8 @@ class _$PostResultCopyWithImpl<$Res, $Val extends PostResult>
     });
   }
 
+  /// Create a copy of PostResult
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LocationModelCopyWith<$Res>? get location {
@@ -2891,7 +2895,8 @@ abstract class _SavedByUser implements SavedByUser {
   factory _SavedByUser.fromJson(Map<String, dynamic> json) =
       _$SavedByUserImpl.fromJson;
 
-  @override //   @JsonKey(name: 'id') String? id,
+//   @JsonKey(name: 'id') String? id,
+  @override
   @JsonKey(name: 'name')
   String? get name;
   @override
@@ -3686,6 +3691,9 @@ abstract class _MyProductDeailModel implements MyProductDeailModel {
   String? get membership_title;
   @override
   String? get membership_color;
+
+  /// Create a copy of MyProductDeailModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MyProductDeailModelImplCopyWith<_$MyProductDeailModelImpl> get copyWith =>

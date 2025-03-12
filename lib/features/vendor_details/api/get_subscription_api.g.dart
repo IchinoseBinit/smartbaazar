@@ -143,6 +143,8 @@ class GetSubscriptionProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetSubscriptionRef on AutoDisposeFutureProviderRef<SubscriptionResponse> {
   /// The parameter `pageval` of this provider.
   int get pageval;

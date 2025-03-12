@@ -428,8 +428,8 @@ class _FavouriteListProductDetailsState
                                             }
 
                                             // Invalidate provider to refresh the list
-                                            ref.invalidate(
-                                                getFavouriteListProvider);
+                                            // ref.invalidate(
+                                            //     getFavouriteListProvider);
 
                                             // Close the confirmation dialog
                                             if (Navigator.of(context)

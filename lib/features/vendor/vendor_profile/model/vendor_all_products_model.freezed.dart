@@ -198,6 +198,9 @@ abstract class _VendorAllProductsResponse implements VendorAllProductsResponse {
   VendorProfileAllProductsData? get data;
   @override
   String? get msg;
+
+  /// Create a copy of VendorAllProductsResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorAllProductsResponseImplCopyWith<_$VendorAllProductsResponseImpl>
@@ -262,6 +265,8 @@ class _$VendorProfileAllProductsDataCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AllProductsWrapperCopyWith<$Res>? get all_products {
@@ -376,6 +381,9 @@ abstract class _VendorProfileAllProductsData
 
   @override
   AllProductsWrapper? get all_products;
+
+  /// Create a copy of VendorProfileAllProductsData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorProfileAllProductsDataImplCopyWith<
@@ -391,8 +399,12 @@ AllProductsWrapper _$AllProductsWrapperFromJson(Map<String, dynamic> json) {
 mixin _$AllProductsWrapper {
   List<VendorAllproductsModel>? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this AllProductsWrapper to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AllProductsWrapper
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AllProductsWrapperCopyWith<AllProductsWrapper> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -416,6 +428,8 @@ class _$AllProductsWrapperCopyWithImpl<$Res, $Val extends AllProductsWrapper>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AllProductsWrapper
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -449,6 +463,8 @@ class __$$AllProductsWrapperImplCopyWithImpl<$Res>
       $Res Function(_$AllProductsWrapperImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AllProductsWrapper
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -496,12 +512,14 @@ class _$AllProductsWrapperImpl implements _AllProductsWrapper {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AllProductsWrapper
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AllProductsWrapperImplCopyWith<_$AllProductsWrapperImpl> get copyWith =>
@@ -526,8 +544,11 @@ abstract class _AllProductsWrapper implements AllProductsWrapper {
 
   @override
   List<VendorAllproductsModel>? get data;
+
+  /// Create a copy of AllProductsWrapper
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AllProductsWrapperImplCopyWith<_$AllProductsWrapperImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -565,8 +586,12 @@ mixin _$VendorAllproductsModel {
   List<FezzedSaved>? get savedByLoggedUser =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this VendorAllproductsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorAllproductsModelCopyWith<VendorAllproductsModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -616,6 +641,8 @@ class _$VendorAllproductsModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -740,6 +767,8 @@ class _$VendorAllproductsModelCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserDetailsModelCopyWith<$Res>? get userdetails {
@@ -801,6 +830,8 @@ class __$$VendorAllproductsModelImplCopyWithImpl<$Res>
       $Res Function(_$VendorAllproductsModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1065,7 +1096,7 @@ class _$VendorAllproductsModelImpl implements _VendorAllproductsModel {
                 .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1094,7 +1125,9 @@ class _$VendorAllproductsModelImpl implements _VendorAllproductsModel {
         const DeepCollectionEquality().hash(_savedByLoggedUser)
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorAllproductsModelImplCopyWith<_$VendorAllproductsModelImpl>
@@ -1185,8 +1218,11 @@ abstract class _VendorAllproductsModel implements VendorAllproductsModel {
   UserDetailsModel? get userdetails;
   @override
   List<FezzedSaved>? get savedByLoggedUser;
+
+  /// Create a copy of VendorAllproductsModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorAllproductsModelImplCopyWith<_$VendorAllproductsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -6,25 +6,6 @@ part of 'favourite_list_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getFavouriteListHash() => r'047f28fd5c32f6feb6a612bce9cd254d577bf8c4';
-
-/// See also [getFavouriteList].
-@ProviderFor(getFavouriteList)
-final getFavouriteListProvider =
-    AutoDisposeFutureProvider<FavouriteProductList>.internal(
-  getFavouriteList,
-  name: r'getFavouriteListProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getFavouriteListHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetFavouriteListRef
-    = AutoDisposeFutureProviderRef<FavouriteProductList>;
 String _$deleteFavouriteProductHash() =>
     r'48a51df1e7d278f558e9a1e8c56e7f14726eefa4';
 

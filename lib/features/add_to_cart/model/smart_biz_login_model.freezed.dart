@@ -27,8 +27,12 @@ mixin _$BizLoginResponse {
   int? get offset => throw _privateConstructorUsedError;
   BizLoginData? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this BizLoginResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BizLoginResponseCopyWith<BizLoginResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -60,6 +64,8 @@ class _$BizLoginResponseCopyWithImpl<$Res, $Val extends BizLoginResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,6 +104,8 @@ class _$BizLoginResponseCopyWithImpl<$Res, $Val extends BizLoginResponse>
     ) as $Val);
   }
 
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $BizLoginDataCopyWith<$Res>? get data {
@@ -139,6 +147,8 @@ class __$$BizLoginResponseImplCopyWithImpl<$Res>
       $Res Function(_$BizLoginResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -225,12 +235,14 @@ class _$BizLoginResponseImpl implements _BizLoginResponse {
             (identical(other.data, data) || other.data == data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, responseCode, message, totalSize, limit, offset, data);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BizLoginResponseImplCopyWith<_$BizLoginResponseImpl> get copyWith =>
@@ -269,8 +281,11 @@ abstract class _BizLoginResponse implements BizLoginResponse {
   int? get offset;
   @override
   BizLoginData? get data;
+
+  /// Create a copy of BizLoginResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BizLoginResponseImplCopyWith<_$BizLoginResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -286,8 +301,12 @@ mixin _$BizLoginData {
   int? get isPhoneVerified => throw _privateConstructorUsedError;
   int? get isProfileVerified => throw _privateConstructorUsedError;
 
+  /// Serializes this BizLoginData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BizLoginData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BizLoginDataCopyWith<BizLoginData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -315,6 +334,8 @@ class _$BizLoginDataCopyWithImpl<$Res, $Val extends BizLoginData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BizLoginData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -367,6 +388,8 @@ class __$$BizLoginDataImplCopyWithImpl<$Res>
       _$BizLoginDataImpl _value, $Res Function(_$BizLoginDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BizLoginData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -436,12 +459,14 @@ class _$BizLoginDataImpl implements _BizLoginData {
                 other.isProfileVerified == isProfileVerified));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, token, isActive, isPhoneVerified, isProfileVerified);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BizLoginData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BizLoginDataImplCopyWith<_$BizLoginDataImpl> get copyWith =>
@@ -473,8 +498,11 @@ abstract class _BizLoginData implements BizLoginData {
   int? get isPhoneVerified;
   @override
   int? get isProfileVerified;
+
+  /// Create a copy of BizLoginData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BizLoginDataImplCopyWith<_$BizLoginDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
