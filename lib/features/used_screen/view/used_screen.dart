@@ -2532,6 +2532,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     Buynowmodel resp = data.buynow![index];
 
                                     return buyorwin_widget(
+                                      ref: ref,
+                                      postid: resp.post_id!,
                                         vendorid: resp.vendor_id!,
                                         wow: resp.wow ?? '0',
                                         gift_qty: resp.gift_qty!,

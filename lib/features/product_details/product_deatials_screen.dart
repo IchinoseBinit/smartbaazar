@@ -783,9 +783,9 @@ class ProductDetailScreen extends ConsumerWidget {
                                     data.result!.location!.shortestDistance ??
                                         0,
                                 latitude: double.tryParse(data.result!.location!
-                                    .nearestBranch!.latitude!)!,
+                                    .nearestBranch!.latitude?? '0.0')?? 0.0,
                                 longitude: double.tryParse(data.result!
-                                    .location!.nearestBranch!.longitude!)!,
+                                    .location!.nearestBranch!.longitude?? '0')?? 0,
                               ),
                             SizedBox(
                               height: 20.h,

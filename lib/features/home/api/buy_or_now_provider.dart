@@ -130,6 +130,7 @@ class Buynowmodel {
   final String? name;
   final String? gift_qty;
   String? wow;
+  String? post_id;
 
   final int? winners;
 
@@ -142,10 +143,12 @@ class Buynowmodel {
       required this.winners,
       required this.gift_qty,
       required this.vendor_name,
-      required this.wow});
+      required this.wow,
+      required this.post_id});
 
   factory Buynowmodel.fromJson(Map<String, dynamic> json) {
     return Buynowmodel(
+      post_id: json['post_id'],
       vendor_id: json['vendor_id'] ?? '9',
       vendor_name: json['vendor_name'] as String,
       wow: json['wow']?.toString() ?? '0', // Safely handle null values

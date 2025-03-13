@@ -168,7 +168,7 @@ Future<HomeProductType> homeCategory(ref) async {
     print('Error fetching data: $e');
     return HomeProductType(
       home_story: null,
-      grocarry: [],
+      grocarry: [], 
       event: [],
       new_products: [],
       used_products: [],

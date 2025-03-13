@@ -253,13 +253,14 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                               height: 30,
                               padding: const EdgeInsets.only(left: 5),
                               onTap: () {
-                                navigateToPage(
-                                  context: context,
-                                  page: ProductDetailScreen(
-                                      productId: widget.productid),
-                                  ref: ref,
-                                  showNavBar: false, // Hide bottom navbar
-                                );
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorHomeScreen(
+                                      vendorName: widget.vendorname!,
+                                      vid:
+                                          int.tryParse(widget.vendorid!.toString())!),
+                                ));
                                 // Navigator.push(
                                 //     context,
                                 //     MaterialPageRoute(

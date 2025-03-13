@@ -38,16 +38,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   String accept = '0';
 
   Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now(); // Get current date
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: selectedDate.isAfter(now)
+          ? now
+          : selectedDate, // Prevent invalid initialDate 9877654433 abhsdba@gmai.com binod123bb
+      firstDate: DateTime(1800, 8),
+      lastDate: now, // Set lastDate to today's date
+    );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
-      dateTimeController.text = selectedDate.toString();
       dateTimeController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
     }
   }
@@ -297,8 +301,21 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 showAlertDialog(context);
                               }).onError(
                                 (error, stackTrace) {
-                                  return showCustomToast(
-                                      context, 'Please fill info propely');
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Warning"),
+                                      content:
+                                          Text("Please fill info properly."),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("OK"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
                               );
                             }

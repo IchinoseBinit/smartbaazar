@@ -727,7 +727,6 @@ class MyAccountWidget extends StatelessWidget {
   Future<void> _handleAction(BuildContext context, String title) async {
     if (title == 'Log Out') {
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      LogoutApi().logout(preferences.getString('userId')!, context);
       showCustomToast(context, "logged out successfully");
       await preferences.clear();
       Navigator.of(context, rootNavigator: true).pushReplacement(

@@ -293,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       try {
         final stories = await ref.watch(searchstoryapiProvider(query).future);
 
-        if (stories == null ||
+        if (stories == null || 
             stories.data == null ||
             stories.data.home_story == null) {
           throw Exception("No data available");
@@ -612,9 +612,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       child: StorySearchBar(
                         searchcontroller: _storysearchcontroller,
                         onsearchpressed: () {
-                          print('object ${_storysearchcontroller.text}');
-                          // if (
-                          //  _searchController.text.length > 0)
                           _searchStories(_storysearchcontroller.text);
                         },
                         unchanged: (value) {
@@ -736,22 +733,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _storysearchresult.length,
                                   itemBuilder: (context, index) {
-                                    final searchstory =
+                                    final mysearchstory =
                                         _storysearchresult[index];
                                     // print('lamta ${_storysearchresult.l}');
                                     return FeedStoryAddWidget(
-                                      productid: searchstory.id!,
+                                      productid: mysearchstory.id!,
                                       index: index,
-                                      vendorName: searchstory.vendorName ??
+                                      vendorName: _storysearchresult[index].vendorName ??
                                           "Unknown Vendor",
-                                      vendorImage: searchstory.vendorImage ??
+                                      vendorImage:_storysearchresult[index].vendorImage ??
                                           "https://example.com/default-image.png",
-                                      storyCount: searchstory.storyCount ?? 0,
-                                      showGift: searchstory.hasSponsoredGifts ??
+                                      storyCount: _storysearchresult[index].storyCount ?? 0,
+                                      showGift: _storysearchresult[index].hasSponsoredGifts ??
                                           false,
                                       feedStoryContent: _storysearchresponse!
                                           .data.home_story!.story!,
-                                      userId: searchstory.vendorId ?? '',
+                                      userId: _storysearchresult[index].vendorId ?? '',
                                     );
                                   },
                                 )
@@ -875,6 +872,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     Buynowmodel resp = data.buynow[index];
 
                                     return buyorwin_widget(
+                                      ref: ref,
+                                      postid: resp.post_id!,
                                       vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,

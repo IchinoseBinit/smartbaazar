@@ -871,11 +871,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                     widget.vid));
                                           },
                                           lat: double.tryParse(vendorcard.data!
-                                                  .vendor_card?.latitude ??
-                                              '0')!,
+                                                      .vendor_card?.latitude ??
+                                                  '0') ??
+                                              0,
                                           long: double.tryParse(vendorcard.data!
-                                                  .vendor_card?.longitude ??
-                                              '0')!,
+                                                      .vendor_card?.longitude ??
+                                                  '0') ??
+                                              0,
                                           vendorid: widget.vid.toString(),
                                           title: vendorcard
                                               .data!.vendor_card!.name!,
@@ -2265,8 +2267,10 @@ class DottedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10.h),
+    return Container(
+      padding: EdgeInsets.only(
+        top: 10.h,
+      ),
       child: SizedBox(
         height: 180.h,
         child: Row(
@@ -2297,43 +2301,42 @@ class DottedContainer extends StatelessWidget {
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: EdgeInsets.only(
+          bottom: 5.h,
+        ),
         child: DottedBorder(
           color: Colors.black,
           strokeWidth: 2,
           borderType: BorderType.RRect,
           radius: const Radius.circular(12),
           dashPattern: const [6, 5],
-          child: Stack(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
+                height: 10.h,
+              ),
+              SizedBox(
                 width: 100.w,
-                height: 180.h,
+                height: 100.h,
                 child: Image.network(
                   firstImage ?? 'https://via.placeholder.com/120',
                   fit: BoxFit.contain,
                 ),
               ),
-              Positioned(
-                left: 10.w,
-                bottom: 10.h,
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.sp,
-                    color: Colors.black,
-                  ),
+              Spacer(),
+              Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.sp,
+                  color: Colors.black,
                 ),
               ),
-              Positioned(
-                left: 30.w,
-                bottom: 4,
-                height: 12,
-                width: 12,
-                child: Icon(Icons.add),
-              )
+              Icon(Icons.add),
             ],
           ),
         ),

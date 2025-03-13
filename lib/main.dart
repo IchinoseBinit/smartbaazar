@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
@@ -161,12 +162,12 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashScreen()
-          )
+          home:SplashScreen()
+          ) 
     );
-    // home: SplashScreen()));
+    // home: SplashScreen())); bhaktapur
   }
-} //123
+} //123 dell
 // //9810443212
 // Redmi note 1 has the feature of long and and things like wifi is there
 // Phone
