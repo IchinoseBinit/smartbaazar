@@ -18,7 +18,7 @@ Future<UpdateUserDetail> updateUserDetails(
   String? email,
   String? userId,
   String? genderID,
-  List<String>? branchLocations,
+  List<Map<String, dynamic>> branchLocations,
   // Map<String, Map<String, dynamic>> openingHours,
   String? bio,
   List<String>? day,
@@ -70,7 +70,6 @@ Future<UpdateUserDetail> updateUserDetails(
 
       //    'dob': dob,
     };
-    print('formData>>>>>>>>>>>>>>..: $formData');
     final response = await client.request(
       requestType: RequestType.putWithTokenEncoded,
       url: "${ApiConstants.updateUserDetailsUrl}/$userId",
@@ -126,9 +125,10 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-      'users_location': jsonEncode({
-        'location': branchLocations,
-      }),
+      'users_location': branchLocations,
+      // 'users_location': jsonEncode({
+      //   'location': branchLocations,
+      // }),
     };
 
     final response = await client.request(

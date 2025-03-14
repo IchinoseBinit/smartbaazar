@@ -6,7 +6,7 @@ part of 'update_user_details_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateUserDetailsHash() => r'6081fa9a9c24100948a49c9a7ea95d9da4a06963';
+String _$updateUserDetailsHash() => r'185704f2c196096259f2dc847c92d4547ce9b260';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,7 +46,7 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
     String? email,
     String? userId,
     String? genderID,
-    List<String>? branchLocations,
+    List<Map<String, dynamic>> branchLocations,
     String? bio,
     List<String>? day,
     List<String?>? fromList,
@@ -115,7 +115,7 @@ class UpdateUserDetailsProvider
     String? email,
     String? userId,
     String? genderID,
-    List<String>? branchLocations,
+    List<Map<String, dynamic>> branchLocations,
     String? bio,
     List<String>? day,
     List<String?>? fromList,
@@ -187,7 +187,7 @@ class UpdateUserDetailsProvider
   final String? email;
   final String? userId;
   final String? genderID;
-  final List<String>? branchLocations;
+  final List<Map<String, dynamic>> branchLocations;
   final String? bio;
   final List<String>? day;
   final List<String?>? fromList;
@@ -287,7 +287,7 @@ mixin UpdateUserDetailsRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
   String? get genderID;
 
   /// The parameter `branchLocations` of this provider.
-  List<String>? get branchLocations;
+  List<Map<String, dynamic>> get branchLocations;
 
   /// The parameter `bio` of this provider.
   String? get bio;
@@ -323,7 +323,7 @@ class _UpdateUserDetailsProviderElement
   @override
   String? get genderID => (origin as UpdateUserDetailsProvider).genderID;
   @override
-  List<String>? get branchLocations =>
+  List<Map<String, dynamic>> get branchLocations =>
       (origin as UpdateUserDetailsProvider).branchLocations;
   @override
   String? get bio => (origin as UpdateUserDetailsProvider).bio;
@@ -338,7 +338,7 @@ class _UpdateUserDetailsProviderElement
 }
 
 String _$updateBuyerUserDetailsHash() =>
-    r'6e068f278e6677d79d7cdcca6fde322d8a76ae7f';
+    r'0e4fb74f5e97cdcaf1124b300303b6ceaf0425ed';
 
 /// See also [updateBuyerUserDetails].
 @ProviderFor(updateBuyerUserDetails)
