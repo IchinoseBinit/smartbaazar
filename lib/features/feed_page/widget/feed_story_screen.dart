@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/feed_page/api/post_story_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
@@ -350,6 +351,14 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     super.dispose();
   }
 
+  void _shareImage(String imageUrl, String bio) {
+    if (imageUrl.isNotEmpty) {
+      Share.share("It's about $bio\n : $imageUrl", subject: bio);
+    } else {
+      print("No image URL provided.");
+    }
+  }
+
   void _showCommentSection(BuildContext context, String feedproductid) {
     showModalBottomSheet(
         useRootNavigator: true,
@@ -435,31 +444,31 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                           },
                         ),
                       ),
-                      Positioned(
-                        top: 38,
-                        right: 16,
-                        child: Container(
-                          width: 36.w,
-                          height: 32.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
-                          // decoration: BoxDecoration(
-                          //   color: Colors.grey.withOpacity(0.5),
-                          //   borderRadius: BorderRadius.circular(200),
-                          // ),
-                          child: IconButton(
-                            icon: const Icon(Icons.close,
-                                color: Colors.white, size: 20),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 38,
+                      //   right: 16,
+                      //   child: Container(
+                      //     width: 36.w,
+                      //     height: 32.h,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       color: Colors.grey.withOpacity(0.5),
+                      //     ),
+                      //     // decoration: BoxDecoration(
+                      //     //   color: Colors.grey.withOpacity(0.5),
+                      //     //   borderRadius: BorderRadius.circular(200),
+                      //     // ),
+                      //     child: IconButton(
+                      //       icon: const Icon(Icons.close,
+                      //           color: Colors.white, size: 20),
+                      //       onPressed: () => Navigator.pop(context),
+                      //     ),
+                      //   ),
+                      // ),
                       // Author's name
                       Positioned(
                         top: 38,
-                        left: 20,
+                        left: 12,
                         child: Row(
                           children: [
                             Container(
@@ -614,61 +623,78 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                     ),
                     SizedBox(height: 30.h),
                     GestureDetector(
-  onTap: () async {
-    print("Liked!");
-    if (!mounted) return; // Ensure the widget is still mounted
+                      onTap: () async {
+                        print("Liked!");
+                        if (!mounted)
+                          return; // Ensure the widget is still mounted
 
-    // Save the current state of _isLiked and wowcount
-    final wasLiked = _isLiked[_currentVendorIndex][_currentStoryIndex] ?? false;
-    final currentWowCount = int.parse(wowcount![_currentVendorIndex][_currentStoryIndex]);
+                        // Save the current state of _isLiked and wowcount
+                        final wasLiked = _isLiked[_currentVendorIndex]
+                                [_currentStoryIndex] ??
+                            false;
+                        final currentWowCount = int.parse(
+                            wowcount![_currentVendorIndex][_currentStoryIndex]);
 
-    // Update the UI immediately
-    setState(() {
-      _isLoading = true;
-      _isLiked[_currentVendorIndex][_currentStoryIndex] = !wasLiked;
-      wowcount![_currentVendorIndex][_currentStoryIndex] =
-          (wasLiked ? currentWowCount - 1 : currentWowCount + 1).clamp(0, double.infinity).toString();
-    });
+                        // Update the UI immediately
+                        setState(() {
+                          _isLoading = true;
+                          _isLiked[_currentVendorIndex][_currentStoryIndex] =
+                              !wasLiked;
+                          wowcount![_currentVendorIndex][_currentStoryIndex] =
+                              (wasLiked
+                                      ? currentWowCount - 1
+                                      : currentWowCount + 1)
+                                  .clamp(0, double.infinity)
+                                  .toString();
+                        });
 
-    try {
-      final currentPostId = storyId?[_currentVendorIndex][_currentStoryIndex] ?? '';
+                        try {
+                          final currentPostId = storyId?[_currentVendorIndex]
+                                  [_currentStoryIndex] ??
+                              '';
 
-      // Await the API response
-      await ref.read(postStoryWowProvider(currentPostId).future);
+                          // Await the API response
+                          await ref
+                              .read(postStoryWowProvider(currentPostId).future);
 
-      // Force the provider to refresh
-      ref.invalidate(postStoryWowProvider);
-    } catch (e) {
-      print('Error: $e');
+                          // Force the provider to refresh
+                          ref.invalidate(postStoryWowProvider);
+                        } catch (e) {
+                          print('Error: $e');
 
-      // Revert the like status and wowcount if the API call fails
-      if (mounted) {
-        setState(() {
-          _isLiked[_currentVendorIndex][_currentStoryIndex] = wasLiked;
-          wowcount![_currentVendorIndex][_currentStoryIndex] = currentWowCount.toString();
-        });
-      }
+                          // Revert the like status and wowcount if the API call fails
+                          if (mounted) {
+                            setState(() {
+                              _isLiked[_currentVendorIndex]
+                                  [_currentStoryIndex] = wasLiked;
+                              wowcount![_currentVendorIndex]
+                                      [_currentStoryIndex] =
+                                  currentWowCount.toString();
+                            });
+                          }
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error liking post: $e')),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  },
-  child: Image.asset(
-    "assets/icon/Vector.png",
-    color: _isLiked[_currentVendorIndex][_currentStoryIndex] == true
-        ? Colors.grey
-        : Colors.pink,
-  ),
-),
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error liking post: $e')),
+                            );
+                          }
+                        } finally {
+                          if (mounted) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
+                        }
+                      },
+                      child: Image.asset(
+                        "assets/icon/Vector.png",
+                        color: _isLiked[_currentVendorIndex]
+                                    [_currentStoryIndex] ==
+                                true
+                            ? Colors.grey
+                            : Colors.pink,
+                      ),
+                    ),
                     Text(
                       (_currentVendorIndex < vendorStories.length &&
                               _currentStoryIndex <
@@ -718,7 +744,16 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                     ),
                     SizedBox(height: 10.h),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        _shareImage(
+                            vendorStories[_currentVendorIndex]
+                                    [_currentStoryIndex] ??
+                                '',
+                            (description?[_currentVendorIndex]
+                                        [_currentStoryIndex])
+                                    ?.replaceAll(RegExp(r'<[^>]*>'), '') ??
+                                'info');
+                      },
                       child: Image.asset("assets/images/share_icon.png",
                           color: Colors.grey),
                     ),
