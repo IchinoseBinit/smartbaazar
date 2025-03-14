@@ -2712,7 +2712,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: SizedBox(height: 50.h),
+                    child: SizedBox(height: 60.h),
                   )
                 ],
               ),

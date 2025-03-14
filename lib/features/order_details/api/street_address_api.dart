@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/order_details/model/street_address_model.dart';
@@ -8,7 +9,7 @@ part 'street_address_api.g.dart';
 
 @riverpod
 Future<List<StreetAddressModel>> getStreetAddress(
-    GetStreetAddressRef ref, String query) async {
+    Ref ref, String query) async {
   final SmartClient client = SmartClient();
   try {
     final response = await client.request(

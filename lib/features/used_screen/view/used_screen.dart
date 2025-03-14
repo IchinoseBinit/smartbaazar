@@ -347,7 +347,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         pinned: true,
                         floating: true,
                         delegate: StickyHeaderDelegate(
-                          showbackbutton: true,
+                            showbackbutton: true,
                             visible: isSliverAppBarVisible,
                             searchController: _searchController,
                             onchanged: (value) {
@@ -582,7 +582,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       final story = posts[index];
                                       return FeedStoryAddWidget(
-                                         productid: story.id!,
+                                        productid: story.id!,
                                         index: index,
                                         vendorName: story.vendorName ??
                                             "Unknown Vendor",
@@ -1009,7 +1009,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         data.hotProducts.length, (index) {
                                       VProduct hot = data.hotProducts[index];
                                       return ProductDetailWidget(
-
                                         onenquiredclicked: () {
                                           getEnquire(ref, hot.id).then(
                                             (value) {
@@ -2532,8 +2531,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     Buynowmodel resp = data.buynow![index];
 
                                     return buyorwin_widget(
-                                      ref: ref,
-                                      postid: resp.post_id!,
+                                        ref: ref,
+                                        postid: resp.post_id!,
                                         vendorid: resp.vendor_id!,
                                         wow: resp.wow ?? '0',
                                         gift_qty: resp.gift_qty!,
@@ -2763,7 +2762,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                                     2.w),
                                                         child:
                                                             ProductDetailWidget(
-                                                              
                                                           onenquiredclicked:
                                                               () {
                                                             print(
@@ -3117,7 +3115,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             },
                           ),
                           SizedBox(
-                            height: 10.w,
+                            height: 55.h,
                           )
                         ],
                       ),

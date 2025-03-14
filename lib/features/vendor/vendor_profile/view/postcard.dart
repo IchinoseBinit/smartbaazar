@@ -109,16 +109,37 @@ class _PostCardState extends ConsumerState<PostCard> {
             height: 150,
             width: double.infinity,
             fit: BoxFit.cover,
+            key: ValueKey(widget.image), // Forces reload when retrying
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(child: CircularProgressIndicator());
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return GestureDetector(
+                onTap: () => setState(() {
+                  widget.image;
+                }), // Retry on tap
+                child: Container(
+                  height: 150,
+                  width: double.infinity,
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Icon(Icons.refresh, size: 40, color: Colors.black54),
+                  ),
+                ),
+              );
+            },
           ),
           SizedBox(height: 5.h),
-          Text.rich(
-            textDirection: TextDirection.ltr,
-            TextSpan(
-              text: '  ${widget.caption}',
+          SizedBox(
+            height: 30, // Set a fixed height based on your requirement
+            child: Text(
+              '  ${widget.caption}',
               style: const TextStyle(fontSize: 12),
+              maxLines: 2,
+              overflow:
+                  TextOverflow.ellipsis, // Handles long text by adding "..."
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5),

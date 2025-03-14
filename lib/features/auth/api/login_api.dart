@@ -101,18 +101,17 @@ class LoginApi {
 
   // Store session details (tokens and user data)
   Future<void> _storeSessionDetails(LoginData user) async {
-  final prefs = await SharedPreferences.getInstance();
-  final data = user.toJson();
-  await prefs.setString("session", json.encode(data));
-  await prefs.setString("accessToken", SmartClient.token);
-  await prefs.setString("refreshToken", SmartClient.refresh);
-  await prefs.setString("name", SmartClient.userName);
-  await prefs.setString("email", SmartClient.userEmail);
-  await prefs.setString("phone", SmartClient.phone);
-  await prefs.setString("photo", SmartClient.userPhoto);
-  await prefs.setString("userId", SmartClient.userId);
-}
-
+    final prefs = await SharedPreferences.getInstance();
+    final data = user.toJson();
+    await prefs.setString("session", json.encode(data));
+    await prefs.setString("accessToken", SmartClient.token);
+    await prefs.setString("refreshToken", SmartClient.refresh);
+    await prefs.setString("name", SmartClient.userName);
+    await prefs.setString("email", SmartClient.userEmail);
+    await prefs.setString("phone", SmartClient.phone);
+    await prefs.setString("photo", SmartClient.userPhoto);
+    await prefs.setString("userId", SmartClient.userId);
+  }
 
   // Handle error response (non-2xx HTTP status)
   void _handleErrorResponse(Response response) {
@@ -125,19 +124,19 @@ class LoginApi {
   }
 
   // Handle Dio-specific errors (e.g., timeouts, server issues)
- String _handleDioError(DioException e) {
-  if (e.response != null) {
-    return e.response?.data['message'] ?? 'Unknown server error';
+  String _handleDioError(DioException e) {
+    if (e.response != null) {
+      return e.response?.data['message'] ?? 'Unknown server error';
+    }
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return 'Connection timeout. Please try again.';
+      case DioExceptionType.receiveTimeout:
+        return 'Server took too long to respond. Please try again.';
+      case DioExceptionType.sendTimeout:
+        return 'Request timed out. Please check your connection.';
+      default:
+        return 'Something went wrong. Please check your connection.';
+    }
   }
-  switch (e.type) {
-    case DioExceptionType.connectionTimeout:
-      return 'Connection timeout. Please try again.';
-    case DioExceptionType.receiveTimeout:
-      return 'Server took too long to respond. Please try again.';
-    case DioExceptionType.sendTimeout:
-      return 'Request timed out. Please check your connection.';
-    default:
-      return 'Something went wrong. Please check your connection.';
-  }
-}
 }

@@ -2683,7 +2683,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                         //   child: Image.asset('assets/icon/home.png'),
                         // ),
                         SizedBox(
-                          height: 40.h,
+                          height: 55.h,
                         ),
                       ],
                     ),

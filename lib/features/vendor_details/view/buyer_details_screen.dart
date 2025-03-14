@@ -11,6 +11,7 @@ import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/order_details/api/street_address_api.dart';
+import 'package:smartbazar/features/order_details/model/street_address_model.dart';
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/location_data.dart';
@@ -146,6 +147,7 @@ class _BuyerAccountDetailsWidgetState
   String? userId;
   bool isLoading = false;
   bool _isInitialized = false;
+  StreetAddressModel? selectedLocation;
   // LocationData? _locationData;
   @override
   void initState() {
@@ -217,12 +219,18 @@ class _BuyerAccountDetailsWidgetState
         email: _emailController.text,
         username: _userNameController.text,
         genderId: _genderController.text,
-        usersLocation: jsonEncode({'location': _branchController.text}),
+        usersLocation: selectedLocation != null
+            ? jsonEncode({
+                'location': selectedLocation!.description,
+                'latitude': selectedLocation!.latitude,
+                'longitude': selectedLocation!.longitude,
+              })
+            : null,
       );
       if (userId != null) {
         try {
           await _updateUserDetails(updatedData);
-          print('>>>>>>>>>>>>>>>>>>>>>>$updatedData');
+
         } catch (e) {
           if (e is FormatException) {
             print('Error parsing location data: $e');
@@ -246,11 +254,18 @@ class _BuyerAccountDetailsWidgetState
     }
   }
 
-  void updateStreet(String street) {
+  void updateStreet(StreetAddressModel address) {
     setState(() {
-      _branchController.text = street;
+      _branchController.text = address.description;
+      selectedLocation = address;
     });
   }
+
+  // void updateStreet(String street) {
+  //   setState(() {
+  //     _branchController.text = street;
+  //   });
+  // }
 
   Future<void> _updateUserDetails(UserData data) async {
     setState(() {
@@ -265,9 +280,10 @@ class _BuyerAccountDetailsWidgetState
         data.email ?? '',
         userId ?? '',
         data.genderId ?? '',
-        data.usersLocation!.isNotEmpty
-            ? jsonDecode(data.usersLocation!)['location'] ?? ''
-            : '',
+        data.usersLocation ?? '',
+        // data.usersLocation!.isNotEmpty
+        //     ? jsonDecode(data.usersLocation!) ?? ''
+        //     : '',
         // openingHours,
         // description,
         //  dob!,
@@ -557,7 +573,7 @@ class LocationFieldWidget extends ConsumerStatefulWidget {
     this.onSelected,
     required this.streetController,
   });
-  final Function(String)? onSelected;
+  final Function(StreetAddressModel)? onSelected;
   final TextEditingController streetController;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -642,8 +658,9 @@ class _LocationFieldWidgetState extends ConsumerState<LocationFieldWidget> {
                           setState(() {
                             widget.streetController.text = address.description;
                             query = ''; // Clear the query to hide suggestions
-
-                            widget.onSelected!(address.description);
+                            print('???????????????????????????$address');
+                            widget.onSelected!(address);
+                            // widget.onSelected!(address.description);
                           });
                         },
                       ),

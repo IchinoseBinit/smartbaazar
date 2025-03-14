@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/features/auth/widgets/general_text_field_widget.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/order_details/model/street_address_model.dart';
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
@@ -33,6 +34,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   String? userId;
   bool isLoading = false;
   bool _isInitialized = false;
+  List<StreetAddressModel> branchLocations = [];
   late List<TextEditingController> branchControllers;
   final Map<String, Map<String, dynamic>> openingHours = {
     'Sun': {'from': null, 'to': null, 'closed': false},
@@ -58,6 +60,12 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _genderController = TextEditingController(text: '');
     branchControllers = [TextEditingController()];
     _bioController = TextEditingController(text: '');
+  }
+
+  void _onBranchLocationsUpdated(List<StreetAddressModel> locations) {
+    setState(() {
+      branchLocations = locations;
+    });
   }
 
   // Load userId from SharedPreferences
@@ -170,11 +178,21 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
-        List<String> branchLocations = branchControllers
-            .map((controller) => controller.text)
-            .toList()
-            .where((location) => location.isNotEmpty)
+        List<Map<String, dynamic>> branchLocationsData = branchLocations
+            .map((location) => {
+                  'location': location.description,
+                  'latitude': location.latitude,
+                  'longitude': location.longitude,
+                })
             .toList();
+
+// Then in your updateUserDetailsProvider call:
+
+        // List<String> branchLocations = branchControllers
+        //     .map((controller) => controller.text)
+        //     .toList()
+        //     .where((location) => location.isNotEmpty)
+        //     .toList();
 
         List<String> dayNames = openingHours.keys.toList();
         List<String> from = [];
@@ -189,7 +207,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
         _updateUserDetails(
           updatedData,
-          branchLocations,
+          branchLocationsData,
           dayNames,
           from,
           to,
@@ -206,7 +224,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
   Future<void> _updateUserDetails(
     UserData data,
-    List<String> branchLocations,
+    List<Map<String, dynamic>> branchLocations,
     List<String> day,
     List<String> fromList,
     List<String> toList,
@@ -266,7 +284,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         setState(() {
           branchControllers.clear();
           for (var location in branchLocations) {
-            branchControllers.add(TextEditingController(text: location));
+            String locationDescription = location['location'] ?? '';
+            branchControllers
+                .add(TextEditingController(text: locationDescription));
           }
         });
       } else {
@@ -502,6 +522,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             branchControllers: branchControllers,
                             addBranchField: _addBranchField,
                             removeBranchField: _removeBranchField,
+                            onBranchLocationsUpdated: _onBranchLocationsUpdated,
                           ),
 
                           SizedBox(height: 10.2.h),
@@ -573,12 +594,14 @@ class BranchWidget extends StatefulWidget {
   final List<TextEditingController> branchControllers;
   final Function(int) removeBranchField;
   final Function() addBranchField;
+  final Function(List<StreetAddressModel>) onBranchLocationsUpdated;
 
   const BranchWidget({
     Key? key,
     required this.branchControllers,
     required this.removeBranchField,
     required this.addBranchField,
+    required this.onBranchLocationsUpdated,
   }) : super(key: key);
 
   @override
@@ -587,7 +610,7 @@ class BranchWidget extends StatefulWidget {
 
 class _BranchWidgetState extends State<BranchWidget> {
   List<SellerLocationFieldWidget> locationWidgets = [];
-  List<String> branchLocations = [];
+  List<StreetAddressModel> branchLocations = [];
   @override
   void initState() {
     super.initState();
@@ -607,14 +630,21 @@ class _BranchWidgetState extends State<BranchWidget> {
             setState(() {
               branchLocations[index] = selectedLocation;
             });
+            widget.onBranchLocationsUpdated(branchLocations);
           }
         },
       );
     }).toList();
 
     // Initialize with actual values from controllers
-    branchLocations =
-        widget.branchControllers.map((controller) => controller.text).toList();
+    branchLocations = widget.branchControllers
+        .map((controller) => StreetAddressModel(
+              description: controller.text,
+              latitude: 0.0,
+              longitude: 0.0,
+              placeId: '',
+            ))
+        .toList();
   }
 
   @override
@@ -640,6 +670,7 @@ class _BranchWidgetState extends State<BranchWidget> {
                                 branchLocations[currentIndex] =
                                     selectedLocation;
                               });
+                              widget.onBranchLocationsUpdated(branchLocations);
                             }
                           },
                         ),
@@ -704,6 +735,126 @@ class _BranchWidgetState extends State<BranchWidget> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class SellerLocationFieldWidget extends ConsumerStatefulWidget {
+  const SellerLocationFieldWidget({
+    super.key,
+    this.onSelected,
+    required this.streetController,
+  });
+  final Function(StreetAddressModel)? onSelected;
+  final TextEditingController streetController;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SellerLocationFieldWidgetState();
+}
+
+class _SellerLocationFieldWidgetState
+    extends ConsumerState<SellerLocationFieldWidget> {
+  String query = '';
+  bool showSuggestions = false;
+  StreetAddressModel? selectedLocation;
+  @override
+  Widget build(BuildContext context) {
+    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          controller: widget.streetController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+            hintText: "Your Location",
+            hintStyle: TextStyle(
+              color: const Color(0xffADADAD),
+              fontSize: 14.sp,
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 241, 234, 234),
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(
+                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+              child: Container(
+                height: 50,
+                width: 52,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(0xffAEC5FF),
+                ),
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              showSuggestions = true;
+              query = widget.streetController.text;
+            });
+          },
+          onChanged: (value) {
+            if (showSuggestions) {
+              setState(() {
+                query = value;
+              });
+            }
+          },
+        ),
+        const SizedBox(height: 10),
+        if (showSuggestions && query.isNotEmpty)
+          streetSuggestionsAsync.when(
+            data: (addresses) {
+              if (addresses.isEmpty) {
+                return const Text('No street address found.');
+              }
+
+              return Flexible(
+                fit: FlexFit.loose,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: addresses.length,
+                  itemBuilder: (context, index) {
+                    final address = addresses[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: ListTile(
+                        title: Text(
+                          address.description,
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
+                        onTap: () {
+                          //   print("kala ${widget.streetController.text}");
+                          setState(() {
+                            widget.streetController.text = address.description;
+                            selectedLocation = address;
+                            query = ''; // Clear the query to hide suggestions
+                            showSuggestions = false;
+                            widget.onSelected!(address);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stackTrace) => const Text('Please login again'),
+          ),
+      ],
     );
   }
 }
@@ -886,124 +1037,6 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
             },
           ),
         ),
-      ],
-    );
-  }
-}
-
-class SellerLocationFieldWidget extends ConsumerStatefulWidget {
-  const SellerLocationFieldWidget({
-    super.key,
-    this.onSelected,
-    required this.streetController,
-  });
-  final Function(String)? onSelected;
-  final TextEditingController streetController;
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SellerLocationFieldWidgetState();
-}
-
-class _SellerLocationFieldWidgetState
-    extends ConsumerState<SellerLocationFieldWidget> {
-  String query = '';
-  bool showSuggestions = false;
-  @override
-  Widget build(BuildContext context) {
-    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextFormField(
-          textInputAction: TextInputAction.next,
-          controller: widget.streetController,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-            hintText: "Your Location",
-            hintStyle: TextStyle(
-              color: const Color(0xffADADAD),
-              fontSize: 14.sp,
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            filled: true,
-            fillColor: const Color.fromARGB(255, 241, 234, 234),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
-              child: Container(
-                height: 50,
-                width: 52,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: const Color(0xffAEC5FF),
-                ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ),
-          onTap: () {
-            setState(() {
-              showSuggestions = true;
-              query = widget.streetController.text;
-            });
-          },
-          onChanged: (value) {
-            if (showSuggestions) {
-              setState(() {
-                query = value;
-              });
-            }
-          },
-        ),
-        const SizedBox(height: 10),
-        if (showSuggestions && query.isNotEmpty)
-          streetSuggestionsAsync.when(
-            data: (addresses) {
-              if (addresses.isEmpty) {
-                return const Text('No street address found.');
-              }
-
-              return Flexible(
-                fit: FlexFit.loose,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) {
-                    final address = addresses[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: ListTile(
-                        title: Text(
-                          address.description,
-                          style: TextStyle(fontSize: 12.sp),
-                        ),
-                        onTap: () {
-                          //   print("kala ${widget.streetController.text}");
-                          setState(() {
-                            widget.streetController.text = address.description;
-                            query = ''; // Clear the query to hide suggestions
-                            showSuggestions = false;
-                            widget.onSelected!(address.description);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => const Text('Please login again'),
-          ),
       ],
     );
   }

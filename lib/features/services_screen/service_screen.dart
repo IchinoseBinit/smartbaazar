@@ -3202,7 +3202,7 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
                           ),
                         ),
                         SizedBox(
-                          height: 40.h,
+                          height: 50.h,
                         ),
                       ],
                     ),

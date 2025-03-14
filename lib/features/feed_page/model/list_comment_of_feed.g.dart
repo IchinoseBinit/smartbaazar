@@ -10,11 +10,11 @@ _$FeedCommentModelImpl _$$FeedCommentModelImplFromJson(
         Map<String, dynamic> json) =>
     _$FeedCommentModelImpl(
       id: json['id'] as String?,
-      appFeedId: json['appFeedId'] as String?,
-      userId: json['userId'] as String?,
-      parentId: json['parentId'] as String?,
+      app_feed_id: json['app_feed_id'] as String?,
+      user_id: json['user_id'] as String?,
+      parent_id: json['parent_id'] as String?,
       comment: json['comment'] as String?,
-      createdAt: json['createdAt'] as String?,
+      created_at: json['created_at'] as String?,
       photo: json['photo'] as String?,
       name: json['name'] as String?,
     );
@@ -23,11 +23,11 @@ Map<String, dynamic> _$$FeedCommentModelImplToJson(
         _$FeedCommentModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'appFeedId': instance.appFeedId,
-      'userId': instance.userId,
-      'parentId': instance.parentId,
+      'app_feed_id': instance.app_feed_id,
+      'user_id': instance.user_id,
+      'parent_id': instance.parent_id,
       'comment': instance.comment,
-      'createdAt': instance.createdAt,
+      'created_at': instance.created_at,
       'photo': instance.photo,
       'name': instance.name,
     };

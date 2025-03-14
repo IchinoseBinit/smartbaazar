@@ -743,7 +743,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         ),
                       ),
                     ),
-
                     SliverToBoxAdapter(
                       child: subscriptionAsyncValue.when(
                         data: (data) {
@@ -808,21 +807,11 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         loading: () =>
                             Center(child: CircularProgressIndicator()),
                       ),
-                    )
-
-                    // SliverToBoxAdapter(
-                    //   child: SingleChildScrollView(
-                    //     child: Column(
-                    //       children: [
-                    //         ListView.builder(
-                    //           itemBuilder: (context, index) {
-                    //             Text("data");
-                    //           },
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    //)
+                    ),
+                    SliverToBoxAdapter(
+                        child: SizedBox(
+                      height: 55.h,
+                    ))
                   ],
                 ),
                 valuenotifilersidebutton(
