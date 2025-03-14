@@ -23,8 +23,12 @@ mixin _$BrandBazarModel {
   Data? get data => throw _privateConstructorUsedError;
   String get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this BrandBazarModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrandBazarModelCopyWith<BrandBazarModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$BrandBazarModelCopyWithImpl<$Res, $Val extends BrandBazarModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +74,8 @@ class _$BrandBazarModelCopyWithImpl<$Res, $Val extends BrandBazarModel>
     ) as $Val);
   }
 
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DataCopyWith<$Res>? get data {
@@ -103,6 +111,8 @@ class __$$BrandBazarModelImplCopyWithImpl<$Res>
       _$BrandBazarModelImpl _value, $Res Function(_$BrandBazarModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -149,11 +159,13 @@ class _$BrandBazarModelImpl implements _BrandBazarModel {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrandBazarModelImplCopyWith<_$BrandBazarModelImpl> get copyWith =>
@@ -179,8 +191,11 @@ abstract class _BrandBazarModel implements BrandBazarModel {
   Data? get data;
   @override
   String get msg;
+
+  /// Create a copy of BrandBazarModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrandBazarModelImplCopyWith<_$BrandBazarModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -197,8 +212,12 @@ mixin _$Data {
   List<BrandbazarLogo> get brandbazarLogos =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this Data to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -224,6 +243,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -274,6 +295,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -371,7 +394,7 @@ class _$DataImpl implements _Data {
                 .equals(other._brandbazarLogos, _brandbazarLogos));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -380,7 +403,9 @@ class _$DataImpl implements _Data {
       const DeepCollectionEquality().hash(_trand_banners),
       const DeepCollectionEquality().hash(_brandbazarLogos));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -411,8 +436,11 @@ abstract class _Data implements Data {
   List<TrandBanner> get trand_banners;
   @override
   List<BrandbazarLogo> get brandbazarLogos;
+
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -427,8 +455,12 @@ mixin _$TrandBanner {
   String get image => throw _privateConstructorUsedError;
   String get bazar => throw _privateConstructorUsedError;
 
+  /// Serializes this TrandBanner to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TrandBannerCopyWith<TrandBanner> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -452,6 +484,8 @@ class _$TrandBannerCopyWithImpl<$Res, $Val extends TrandBanner>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -495,6 +529,8 @@ class __$$TrandBannerImplCopyWithImpl<$Res>
       _$TrandBannerImpl _value, $Res Function(_$TrandBannerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -550,11 +586,13 @@ class _$TrandBannerImpl implements _TrandBanner {
             (identical(other.bazar, bazar) || other.bazar == bazar));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, image, bazar);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TrandBannerImplCopyWith<_$TrandBannerImpl> get copyWith =>
@@ -583,8 +621,11 @@ abstract class _TrandBanner implements TrandBanner {
   String get image;
   @override
   String get bazar;
+
+  /// Create a copy of TrandBanner
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TrandBannerImplCopyWith<_$TrandBannerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -605,8 +646,12 @@ mixin _$Advertisement {
   @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Advertisement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Advertisement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AdvertisementCopyWith<Advertisement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -637,6 +682,8 @@ class _$AdvertisementCopyWithImpl<$Res, $Val extends Advertisement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Advertisement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -707,6 +754,8 @@ class __$$AdvertisementImplCopyWithImpl<$Res>
       _$AdvertisementImpl _value, $Res Function(_$AdvertisementImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Advertisement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -804,12 +853,14 @@ class _$AdvertisementImpl implements _Advertisement {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, order, status, image, link, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Advertisement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AdvertisementImplCopyWith<_$AdvertisementImpl> get copyWith =>
@@ -853,8 +904,11 @@ abstract class _Advertisement implements Advertisement {
   @override
   @JsonKey(name: "updated_at")
   String? get updatedAt;
+
+  /// Create a copy of Advertisement
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AdvertisementImplCopyWith<_$AdvertisementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -873,8 +927,12 @@ mixin _$TrendBanner {
   @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this TrendBanner to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TrendBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TrendBannerCopyWith<TrendBanner> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -903,6 +961,8 @@ class _$TrendBannerCopyWithImpl<$Res, $Val extends TrendBanner>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TrendBanner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -961,6 +1021,8 @@ class __$$TrendBannerImplCopyWithImpl<$Res>
       _$TrendBannerImpl _value, $Res Function(_$TrendBannerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TrendBanner
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1040,12 +1102,14 @@ class _$TrendBannerImpl implements _TrendBanner {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, bazar, image, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TrendBanner
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TrendBannerImplCopyWith<_$TrendBannerImpl> get copyWith =>
@@ -1083,8 +1147,11 @@ abstract class _TrendBanner implements TrendBanner {
   @override
   @JsonKey(name: "updated_at")
   String? get updatedAt;
+
+  /// Create a copy of TrendBanner
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TrendBannerImplCopyWith<_$TrendBannerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1100,8 +1167,12 @@ mixin _$BrandbazarLogo {
   @JsonKey(name: "user_id")
   String? get userId => throw _privateConstructorUsedError;
 
+  /// Serializes this BrandbazarLogo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrandbazarLogo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrandbazarLogoCopyWith<BrandbazarLogo> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1127,6 +1198,8 @@ class _$BrandbazarLogoCopyWithImpl<$Res, $Val extends BrandbazarLogo>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrandbazarLogo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1167,6 +1240,8 @@ class __$$BrandbazarLogoImplCopyWithImpl<$Res>
       _$BrandbazarLogoImpl _value, $Res Function(_$BrandbazarLogoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrandbazarLogo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1218,11 +1293,13 @@ class _$BrandbazarLogoImpl implements _BrandbazarLogo {
             (identical(other.userId, userId) || other.userId == userId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, brandLogo, userId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrandbazarLogo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrandbazarLogoImplCopyWith<_$BrandbazarLogoImpl> get copyWith =>
@@ -1252,8 +1329,11 @@ abstract class _BrandbazarLogo implements BrandbazarLogo {
   @override
   @JsonKey(name: "user_id")
   String? get userId;
+
+  /// Create a copy of BrandbazarLogo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrandbazarLogoImplCopyWith<_$BrandbazarLogoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

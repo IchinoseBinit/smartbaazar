@@ -118,7 +118,8 @@ class ApiConstants {
   static String searchFromSavedSearchUrl = '$baseUrl/homeSections/search';
   //product import
   static String productimportapi = '$baseUrl/posts/product_import';
-
+//device Token
+  static String storeDeviceTokenUrl = '$baseUrl/users/device_token';
   //feed screen
   static String getFeedScreenFollowingUrl = '$baseUrl/users/getfeed';
   static String getForYouFeedUrl = '$baseUrl/users/getrandomfeed';
@@ -129,4 +130,6 @@ class ApiConstants {
   static String postFeedForm = '$baseUrl/users/storefeed';
   static String getOffersUrl = '$baseUrl/posts/getoffers';
   static String postFeedWOwUrl = '$baseUrl/users/feed_wow';
+  static String postStoryWowUrl = '$baseUrl/users/post_wow';
+  static String postStoryCommentUrl = '$baseUrl/posts/reviewcomment';
 }

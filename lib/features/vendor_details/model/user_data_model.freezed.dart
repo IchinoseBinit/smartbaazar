@@ -25,8 +25,12 @@ mixin _$UserDataModel {
   @JsonKey(name: 'msg')
   String? get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this UserDataModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDataModelCopyWith<UserDataModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$UserDataModelCopyWithImpl<$Res, $Val extends UserDataModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserDataModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
       _$UserModelImpl _value, $Res Function(_$UserModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserDataModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,12 +159,14 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_data), msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
@@ -184,8 +194,11 @@ abstract class _UserModel implements UserDataModel {
   @override
   @JsonKey(name: 'msg')
   String? get msg;
+
+  /// Create a copy of UserDataModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -323,8 +336,12 @@ mixin _$UserData {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this UserData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDataCopyWith<UserData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -412,6 +429,8 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -820,6 +839,8 @@ class __$$UserDataImplCopyWithImpl<$Res>
       _$UserDataImpl _value, $Res Function(_$UserDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1521,7 +1542,7 @@ class _$UserDataImpl implements _UserData {
             (identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1590,7 +1611,9 @@ class _$UserDataImpl implements _UserData {
         updatedAt
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
@@ -1865,8 +1888,11 @@ abstract class _UserData implements UserData {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

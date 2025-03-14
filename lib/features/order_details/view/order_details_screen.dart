@@ -25,7 +25,7 @@ import 'package:smartbazar/features/order_details/model/street_address_model.dar
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
-import 'package:smartbazar/practice.dart';
+import 'package:smartbazar/payment/paymment_extra.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
   const OrderDetailsScreen(
@@ -73,6 +73,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
       selectedCoupon = null;
     });
   }
+  
 
   // void updateCity(String city) {
   //   setState(() {
@@ -81,7 +82,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   // }
 
   void updateStreet(StreetAddressModel street) {
-    setState(() {
+    setState(() { 
       selectedStreet = street;
       print('Selected Street: $selectedStreet');
     });

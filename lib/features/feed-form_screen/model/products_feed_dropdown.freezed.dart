@@ -23,8 +23,12 @@ mixin _$ProductsFeedDropdown {
   @JsonKey(name: 'products')
   List<Product>? get products => throw _privateConstructorUsedError;
 
+  /// Serializes this ProductsFeedDropdown to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ProductsFeedDropdown
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductsFeedDropdownCopyWith<ProductsFeedDropdown> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$ProductsFeedDropdownCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProductsFeedDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -82,6 +88,8 @@ class __$$ProductsFeedDropdownImplCopyWithImpl<$Res>
       $Res Function(_$ProductsFeedDropdownImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProductsFeedDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -130,12 +138,14 @@ class _$ProductsFeedDropdownImpl implements _ProductsFeedDropdown {
             const DeepCollectionEquality().equals(other._products, _products));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_products));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductsFeedDropdown
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductsFeedDropdownImplCopyWith<_$ProductsFeedDropdownImpl>
@@ -162,8 +172,11 @@ abstract class _ProductsFeedDropdown implements ProductsFeedDropdown {
   @override
   @JsonKey(name: 'products')
   List<Product>? get products;
+
+  /// Create a copy of ProductsFeedDropdown
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductsFeedDropdownImplCopyWith<_$ProductsFeedDropdownImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -179,8 +192,12 @@ mixin _$Product {
   @JsonKey(name: 'title')
   String? get title => throw _privateConstructorUsedError;
 
+  /// Serializes this Product to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -203,6 +220,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -241,6 +260,8 @@ class __$$ProductImplCopyWithImpl<$Res>
       _$ProductImpl _value, $Res Function(_$ProductImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -290,11 +311,13 @@ class _$ProductImpl implements _Product {
             (identical(other.title, title) || other.title == title));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
@@ -321,8 +344,11 @@ abstract class _Product implements Product {
   @override
   @JsonKey(name: 'title')
   String? get title;
+
+  /// Create a copy of Product
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

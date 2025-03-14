@@ -6,7 +6,7 @@ part of 'checkout_form_submission_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postCheckoutFormHash() => r'0127d2fc220fd3adfd2809ec1f3d388c121c7331';
+String _$postCheckoutFormHash() => r'e59586ce45d25026d77e28592c9638495b5ae0ef';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -572,6 +572,8 @@ class PostCheckoutFormProvider extends AutoDisposeFutureProvider<bool> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin PostCheckoutFormRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `userName` of this provider.
   String get userName;
@@ -794,4 +796,4 @@ class _PostCheckoutFormProviderElement
   String get payer => (origin as PostCheckoutFormProvider).payer;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

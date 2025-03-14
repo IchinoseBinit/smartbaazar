@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/vendor_details/model/update_user_detail_model.dart';
@@ -8,20 +11,20 @@ part 'update_user_details_api.g.dart';
 
 @riverpod
 Future<UpdateUserDetail> updateUserDetails(
-   ref,
-  String fullName,
-  String phoneNumber,
-  String userName,
-  String email,
-  String userId,
-  String genderID,
-  List<String> branchLocations,
+  ref,
+  String? fullName,
+  String? phoneNumber,
+  String? userName,
+  String? email,
+  String? userId,
+  String? genderID,
+  List<String>? branchLocations,
   // Map<String, Map<String, dynamic>> openingHours,
-  String bio,
-  List<String> day,
-  List<String?> fromList,
-  List<String?> toList,
-  List<bool> closed,
+  String? bio,
+  List<String>? day,
+  List<String?>? fromList,
+  List<String?>? toList,
+  List<bool>? closed,
 
   // String dob,
 ) async {
@@ -43,7 +46,15 @@ Future<UpdateUserDetail> updateUserDetails(
       'accept_terms': 1,
       'accept_marketing_offers': 1,
       'bio': bio,
-      'location[]': branchLocations,
+      'branch_location': branchLocations != null
+          ? jsonEncode(branchLocations.map((location) {
+              return {
+                'location': location,
+                'longitude': '', // Add longitude if available
+                'latitude': '', // Add latitude if available
+              };
+            }).toList())
+          : null,
       'day[]': day,
       'from[]': fromList,
       'to[]': toList,
@@ -59,7 +70,7 @@ Future<UpdateUserDetail> updateUserDetails(
 
       //    'dob': dob,
     };
-
+    print('formData>>>>>>>>>>>>>>..: $formData');
     final response = await client.request(
       requestType: RequestType.putWithTokenEncoded,
       url: "${ApiConstants.updateUserDetailsUrl}/$userId",
@@ -72,6 +83,12 @@ Future<UpdateUserDetail> updateUserDetails(
       return userDetails;
     } else {
       throw Exception('Failed to update user details');
+    }
+  } on DioException catch (e) {
+    if (e.response != null) {
+      throw Exception('API error: ${e.response?.statusCode}');
+    } else {
+      throw Exception('Network error: ${e.message}');
     }
   } catch (e) {
     print('Error updating user details: $e');
@@ -109,7 +126,9 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
       'ip_addr': '127.0.0.1',
       'accept_terms': 1,
       'accept_marketing_offers': 1,
-      'user_location': branchLocations,
+      'users_location': jsonEncode({
+        'location': branchLocations,
+      }),
     };
 
     final response = await client.request(

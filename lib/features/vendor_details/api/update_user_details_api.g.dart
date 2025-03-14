@@ -6,7 +6,7 @@ part of 'update_user_details_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateUserDetailsHash() => r'a41450d726a14959951918adeda601c4f1fabcc3';
+String _$updateUserDetailsHash() => r'6081fa9a9c24100948a49c9a7ea95d9da4a06963';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,18 +40,18 @@ class UpdateUserDetailsFamily extends Family<AsyncValue<UpdateUserDetail>> {
 
   /// See also [updateUserDetails].
   UpdateUserDetailsProvider call(
-    String fullName,
-    String phoneNumber,
-    String userName,
-    String email,
-    String userId,
-    String genderID,
-    List<String> branchLocations,
-    String bio,
-    List<String> day,
-    List<String?> fromList,
-    List<String?> toList,
-    List<bool> closed,
+    String? fullName,
+    String? phoneNumber,
+    String? userName,
+    String? email,
+    String? userId,
+    String? genderID,
+    List<String>? branchLocations,
+    String? bio,
+    List<String>? day,
+    List<String?>? fromList,
+    List<String?>? toList,
+    List<bool>? closed,
   ) {
     return UpdateUserDetailsProvider(
       fullName,
@@ -109,18 +109,18 @@ class UpdateUserDetailsProvider
     extends AutoDisposeFutureProvider<UpdateUserDetail> {
   /// See also [updateUserDetails].
   UpdateUserDetailsProvider(
-    String fullName,
-    String phoneNumber,
-    String userName,
-    String email,
-    String userId,
-    String genderID,
-    List<String> branchLocations,
-    String bio,
-    List<String> day,
-    List<String?> fromList,
-    List<String?> toList,
-    List<bool> closed,
+    String? fullName,
+    String? phoneNumber,
+    String? userName,
+    String? email,
+    String? userId,
+    String? genderID,
+    List<String>? branchLocations,
+    String? bio,
+    List<String>? day,
+    List<String?>? fromList,
+    List<String?>? toList,
+    List<bool>? closed,
   ) : this._internal(
           (ref) => updateUserDetails(
             ref as UpdateUserDetailsRef,
@@ -181,18 +181,18 @@ class UpdateUserDetailsProvider
     required this.closed,
   }) : super.internal();
 
-  final String fullName;
-  final String phoneNumber;
-  final String userName;
-  final String email;
-  final String userId;
-  final String genderID;
-  final List<String> branchLocations;
-  final String bio;
-  final List<String> day;
-  final List<String?> fromList;
-  final List<String?> toList;
-  final List<bool> closed;
+  final String? fullName;
+  final String? phoneNumber;
+  final String? userName;
+  final String? email;
+  final String? userId;
+  final String? genderID;
+  final List<String>? branchLocations;
+  final String? bio;
+  final List<String>? day;
+  final List<String?>? fromList;
+  final List<String?>? toList;
+  final List<bool>? closed;
 
   @override
   Override overrideWith(
@@ -265,42 +265,44 @@ class UpdateUserDetailsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateUserDetailsRef on AutoDisposeFutureProviderRef<UpdateUserDetail> {
   /// The parameter `fullName` of this provider.
-  String get fullName;
+  String? get fullName;
 
   /// The parameter `phoneNumber` of this provider.
-  String get phoneNumber;
+  String? get phoneNumber;
 
   /// The parameter `userName` of this provider.
-  String get userName;
+  String? get userName;
 
   /// The parameter `email` of this provider.
-  String get email;
+  String? get email;
 
   /// The parameter `userId` of this provider.
-  String get userId;
+  String? get userId;
 
   /// The parameter `genderID` of this provider.
-  String get genderID;
+  String? get genderID;
 
   /// The parameter `branchLocations` of this provider.
-  List<String> get branchLocations;
+  List<String>? get branchLocations;
 
   /// The parameter `bio` of this provider.
-  String get bio;
+  String? get bio;
 
   /// The parameter `day` of this provider.
-  List<String> get day;
+  List<String>? get day;
 
   /// The parameter `fromList` of this provider.
-  List<String?> get fromList;
+  List<String?>? get fromList;
 
   /// The parameter `toList` of this provider.
-  List<String?> get toList;
+  List<String?>? get toList;
 
   /// The parameter `closed` of this provider.
-  List<bool> get closed;
+  List<bool>? get closed;
 }
 
 class _UpdateUserDetailsProviderElement
@@ -309,34 +311,34 @@ class _UpdateUserDetailsProviderElement
   _UpdateUserDetailsProviderElement(super.provider);
 
   @override
-  String get fullName => (origin as UpdateUserDetailsProvider).fullName;
+  String? get fullName => (origin as UpdateUserDetailsProvider).fullName;
   @override
-  String get phoneNumber => (origin as UpdateUserDetailsProvider).phoneNumber;
+  String? get phoneNumber => (origin as UpdateUserDetailsProvider).phoneNumber;
   @override
-  String get userName => (origin as UpdateUserDetailsProvider).userName;
+  String? get userName => (origin as UpdateUserDetailsProvider).userName;
   @override
-  String get email => (origin as UpdateUserDetailsProvider).email;
+  String? get email => (origin as UpdateUserDetailsProvider).email;
   @override
-  String get userId => (origin as UpdateUserDetailsProvider).userId;
+  String? get userId => (origin as UpdateUserDetailsProvider).userId;
   @override
-  String get genderID => (origin as UpdateUserDetailsProvider).genderID;
+  String? get genderID => (origin as UpdateUserDetailsProvider).genderID;
   @override
-  List<String> get branchLocations =>
+  List<String>? get branchLocations =>
       (origin as UpdateUserDetailsProvider).branchLocations;
   @override
-  String get bio => (origin as UpdateUserDetailsProvider).bio;
+  String? get bio => (origin as UpdateUserDetailsProvider).bio;
   @override
-  List<String> get day => (origin as UpdateUserDetailsProvider).day;
+  List<String>? get day => (origin as UpdateUserDetailsProvider).day;
   @override
-  List<String?> get fromList => (origin as UpdateUserDetailsProvider).fromList;
+  List<String?>? get fromList => (origin as UpdateUserDetailsProvider).fromList;
   @override
-  List<String?> get toList => (origin as UpdateUserDetailsProvider).toList;
+  List<String?>? get toList => (origin as UpdateUserDetailsProvider).toList;
   @override
-  List<bool> get closed => (origin as UpdateUserDetailsProvider).closed;
+  List<bool>? get closed => (origin as UpdateUserDetailsProvider).closed;
 }
 
 String _$updateBuyerUserDetailsHash() =>
-    r'6e068f278e6677d79d7cdcca6fde322d8a76ae7f';
+    r'317d34902623d9cfb4b10bbe18cbd9ce698f7df7';
 
 /// See also [updateBuyerUserDetails].
 @ProviderFor(updateBuyerUserDetails)
@@ -521,6 +523,8 @@ class UpdateBuyerUserDetailsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateBuyerUserDetailsRef
     on AutoDisposeFutureProviderRef<UpdateUserDetail> {
   /// The parameter `fullName` of this provider.
@@ -568,4 +572,4 @@ class _UpdateBuyerUserDetailsProviderElement
       (origin as UpdateBuyerUserDetailsProvider).branchLocations;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

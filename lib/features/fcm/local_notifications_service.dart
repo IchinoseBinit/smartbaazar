@@ -29,7 +29,7 @@ class LocalNotificationService {
     );
   }
 
-  //basic Notification
+  //basic Notificationerr
   static void showBasicNotification(RemoteMessage message) async {
     final http.Response image = await http
         .get(Uri.parse(message.notification?.android?.imageUrl ?? ''));

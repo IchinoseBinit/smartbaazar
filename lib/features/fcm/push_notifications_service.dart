@@ -1,62 +1,104 @@
 import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/fcm/local_notifications_service.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
+import 'package:smartbazar/utils/request_type.dart';
 
 class PushNotificationsService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  static Future init() async {
-    await messaging.requestPermission();
-    await messaging.getToken().then((value) {
-      sendTokenToServer(value!);
-    });
-    messaging.onTokenRefresh.listen((value){
-      sendTokenToServer(value);
-    });
-    FirebaseMessaging.onBackgroundMessage(handlebackgroundMessage);
-    //foreground
-    handleForegroundMessage();
-    messaging.subscribeToTopic('all').then((val){
-      log('sub');
-    });
+  /// Initialize FCM service with proper error handling and configuration
+  static Future<void> init() async {
+    try {
+      // Request permissions with specific options
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+        announcement: false,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+      );
 
-    // messaging.unsubscribeFromTopic('all');
+      log('Notification permission status: ${settings.authorizationStatus}');
+
+      // Configure foreground presentation options
+      await messaging.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      // Get token and send to server
+      String? token = await messaging.getToken();
+      if (token != null) {
+        await sendTokenToServer(token);
+      }
+
+      // Handle token refresh
+      messaging.onTokenRefresh.listen(sendTokenToServer);
+
+      // Set up background message handler
+      FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
+
+      // Handle foreground messages
+      handleForegroundMessage();
+
+      // Subscribe to topic
+      await messaging.subscribeToTopic('all');
+      log('Successfully subscribed to topic: all');
+    } catch (e) {
+      log('Error initializing FCM: $e');
+      rethrow;
+    }
   }
 
-  static Future<void> handlebackgroundMessage(RemoteMessage message) async {
-    await Firebase.initializeApp();
-    log(message.notification?.title ?? 'null');
+  static Future<void> _handleBackgroundMessage(RemoteMessage message) async {
+    try {
+      await Firebase.initializeApp();
+      log('Background message received: ${message.messageId}');
+      log('Notification title: ${message.notification?.title}');
+
+      // Handle background message logic here
+      LocalNotificationService.showBasicNotification(message);
+    } catch (e) {
+      log('Error handling background message: $e');
+      rethrow;
+    }
   }
 
   static void handleForegroundMessage() {
-    FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
-        // show local notification
-        LocalNotificationService.showBasicNotification(
-          message,
-        );
-      },
-    );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      try {
+        log('Foreground message received: ${message.messageId}');
+        LocalNotificationService.showBasicNotification(message);
+      } catch (e) {
+        log('Error handling foreground message: $e');
+      }
+    });
   }
 
-  static void sendTokenToServer(String token) {
-    print("FCM Token: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.$token");
-    // option 1 => API 
-    // option 2 => Firebase 
+  static Future<void> sendTokenToServer(String token) async {
+    try {
+      final SmartClient clinet = SmartClient();
+      final response = await clinet.request(
+        requestType: RequestType.postWithToken,
+        url: ApiConstants.storeDeviceTokenUrl,
+        parameter: {'device_token': token},
+      );
+
+      if (response.statusCode == 200) {
+        log('FCM Token successfully sent to server');
+      } else {
+        throw Exception(
+            'Failed to send token to server: ${response.statusMessage}');
+      }
+    } catch (e) {
+      log('Error sending token to server: $e');
+      rethrow;
+    }
   }
 }
-/*
-  1.Permissions [done]
-  2.fcm token [done]
-  3.test using token with Firebase [done]
-  4.fire notification [background] [done]
-  5.fire notification [killed] [done]
-  6.fire notification [foreground] [done]
-  7.test using token with Postman [done]
-  8.send Image with notification [done]
-  9.send notfification with custom sound [done]
-  10.send token to server [done]
-  11.topic [done]
- */

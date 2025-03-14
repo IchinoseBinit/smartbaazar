@@ -22,6 +22,8 @@ final newListingRepositoryProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef NewListingRepositoryRef = AutoDisposeProviderRef<NewListingRepository>;
 String _$typeListProviderHash() => r'c6cc4e2a2b04eb0a6b1be86cfa15755c32f0d7fb';
 
@@ -38,6 +40,8 @@ final typeListProviderProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef TypeListProviderRef = AutoDisposeFutureProviderRef<List<TypeList>>;
 String _$categoryListProviderHash() =>
     r'5b06c89fbba9c00294c0fa6ca76f2a7728a837e1';
@@ -178,6 +182,8 @@ class CategoryListProviderProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CategoryListProviderRef
     on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
@@ -313,6 +319,8 @@ class SubCategoryListProviderProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin SubCategoryListProviderRef
     on AutoDisposeFutureProviderRef<List<MyCategory>> {
   /// The parameter `parentId` of this provider.
@@ -344,6 +352,8 @@ final productTypeProviderProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ProductTypeProviderRef
     = AutoDisposeFutureProviderRef<List<ProductType>>;
 String _$cityListProviderHash() => r'542baf7c1076be39287b92361da056d4b975e8dd';
@@ -462,6 +472,8 @@ class CityListProviderProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CityListProviderRef on AutoDisposeFutureProviderRef<List<CityList>> {
   /// The parameter `page` of this provider.
   int get page;
@@ -476,4 +488,4 @@ class _CityListProviderProviderElement
   int get page => (origin as CityListProviderProvider).page;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

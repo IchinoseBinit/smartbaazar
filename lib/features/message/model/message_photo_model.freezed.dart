@@ -24,8 +24,12 @@ mixin _$MessagePhotoModel {
   UserAuth? get userAuth => throw _privateConstructorUsedError;
   MessagePhoto? get vendor => throw _privateConstructorUsedError;
 
+  /// Serializes this MessagePhotoModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessagePhotoModelCopyWith<MessagePhotoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,6 +57,8 @@ class _$MessagePhotoModelCopyWithImpl<$Res, $Val extends MessagePhotoModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -71,6 +77,8 @@ class _$MessagePhotoModelCopyWithImpl<$Res, $Val extends MessagePhotoModel>
     ) as $Val);
   }
 
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserAuthCopyWith<$Res>? get userAuth {
@@ -83,6 +91,8 @@ class _$MessagePhotoModelCopyWithImpl<$Res, $Val extends MessagePhotoModel>
     });
   }
 
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MessagePhotoCopyWith<$Res>? get vendor {
@@ -121,6 +131,8 @@ class __$$MessagePhotoModelImplCopyWithImpl<$Res>
       $Res Function(_$MessagePhotoModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -170,11 +182,13 @@ class _$MessagePhotoModelImpl implements _MessagePhotoModel {
             (identical(other.vendor, vendor) || other.vendor == vendor));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, userAuth, vendor);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessagePhotoModelImplCopyWith<_$MessagePhotoModelImpl> get copyWith =>
@@ -202,8 +216,11 @@ abstract class _MessagePhotoModel implements MessagePhotoModel {
   UserAuth? get userAuth;
   @override
   MessagePhoto? get vendor;
+
+  /// Create a copy of MessagePhotoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessagePhotoModelImplCopyWith<_$MessagePhotoModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -218,8 +235,12 @@ mixin _$UserAuth {
   String? get photo => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
 
+  /// Serializes this UserAuth to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserAuth
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserAuthCopyWith<UserAuth> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -242,6 +263,8 @@ class _$UserAuthCopyWithImpl<$Res, $Val extends UserAuth>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserAuth
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -285,6 +308,8 @@ class __$$UserAuthImplCopyWithImpl<$Res>
       _$UserAuthImpl _value, $Res Function(_$UserAuthImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserAuth
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -339,11 +364,13 @@ class _$UserAuthImpl implements _UserAuth {
             (identical(other.name, name) || other.name == name));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, photo, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserAuth
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserAuthImplCopyWith<_$UserAuthImpl> get copyWith =>
@@ -372,8 +399,11 @@ abstract class _UserAuth implements UserAuth {
   String? get photo;
   @override
   String? get name;
+
+  /// Create a copy of UserAuth
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserAuthImplCopyWith<_$UserAuthImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -391,8 +421,12 @@ mixin _$MessagePhoto {
   @JsonKey(name: 'vendor_image')
   String? get vendorImage => throw _privateConstructorUsedError;
 
+  /// Serializes this MessagePhoto to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MessagePhoto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MessagePhotoCopyWith<MessagePhoto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -419,6 +453,8 @@ class _$MessagePhotoCopyWithImpl<$Res, $Val extends MessagePhoto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MessagePhoto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -465,6 +501,8 @@ class __$$MessagePhotoImplCopyWithImpl<$Res>
       _$MessagePhotoImpl _value, $Res Function(_$MessagePhotoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of MessagePhoto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -528,12 +566,14 @@ class _$MessagePhotoImpl implements _MessagePhoto {
                 other.vendorImage == vendorImage));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, vendorId, vendorName, vendorImage);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MessagePhoto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MessagePhotoImplCopyWith<_$MessagePhotoImpl> get copyWith =>
@@ -566,8 +606,11 @@ abstract class _MessagePhoto implements MessagePhoto {
   @override
   @JsonKey(name: 'vendor_image')
   String? get vendorImage;
+
+  /// Create a copy of MessagePhoto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MessagePhotoImplCopyWith<_$MessagePhotoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

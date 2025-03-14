@@ -9,7 +9,7 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/vendor_details/api/update_user_details_api.dart';
 import 'package:smartbazar/features/vendor_details/api/user_data_api.dart';
 import 'package:smartbazar/features/vendor_details/model/user_data_model.dart';
-import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
+import 'package:smartbazar/features/order_details/api/street_address_api.dart';
 
 class AccountDetailsWidget extends ConsumerStatefulWidget {
   const AccountDetailsWidget({super.key});
@@ -58,7 +58,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     _genderController = TextEditingController(text: '');
     branchControllers = [TextEditingController()];
     _bioController = TextEditingController(text: '');
-    // _branchController = TextEditingController(text: '');
   }
 
   // Load userId from SharedPreferences
@@ -100,49 +99,49 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
           branchControllers.clear();
 
           // Add new controllers
-          if (branchLocations != null)
+          if (branchLocations != null) {
             for (var i = 0; i < branchLocations!.length; i++) {
               TextEditingController controller =
                   TextEditingController(text: branchLocations[i]['location']);
               branchControllers.add(controller);
             }
+          }
         });
-        if (branchLocations != null)
-          List<String> branchLocationsText = branchLocations!.map((location) {
+        if (branchLocations != null) {
+          List<String> branchLocationsText = branchLocations.map((location) {
             return location['location'] as String;
           }).toList();
+        }
+        // branchControllers.clear();
+
+        // // Parse branch locations
+        // if (userData.branchLocation != null) {
+        //   List<dynamic> branchLocations =
+        //       jsonDecode(userData.branchLocation ?? '');
+        //   for (var location in branchLocations) {
+        //     TextEditingController controller = TextEditingController(
+        //       text: location['location'] ?? '',
+        //     );
+        //     branchControllers.add(controller);
+        //   }
+        // } else {
+        //   // If no branch locations, add at least one empty controller
+        //   branchControllers.add(TextEditingController());
+        // }
 
         // Parse opening hours
         if (userData.openingHours != null) {
-          String openingHoursData = userData.openingHours ?? '';
-          // for (var hour in openingHoursData) {
-          //   String day = hour['day'];
-          //   openingHours[day]!['from'] = hour['from'];
-          //   openingHours[day]!['to'] = hour['to'];
-          //   openingHours[day]!['closed'] = hour['closed'];
-          // }
+          List<dynamic> openingHoursData =
+              jsonDecode(userData.openingHours ?? '');
+          for (var hour in openingHoursData) {
+            String day = hour['day'];
+            openingHours[day]!['from'] = hour['from'];
+            openingHours[day]!['to'] = hour['to'];
+            openingHours[day]!['closed'] = hour['closed'];
+          }
         }
       });
     }
-  }
-
-  void _fetchInitialData() async {
-    final userDataAsync = ref.watch(getUserDetailsProvider);
-
-    userDataAsync.when(
-      data: (data) {
-        setState(() {
-          userData = data.data?.first;
-          _setInitialValues(userData!);
-        });
-      },
-      error: (error, stackTrace) {
-        print('Please login again');
-      },
-      loading: () {
-        print('Loading user details...');
-      },
-    );
   }
 
   void _addBranchField() {
@@ -171,7 +170,31 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
-        _updateUserDetails(updatedData);
+        List<String> branchLocations = branchControllers
+            .map((controller) => controller.text)
+            .toList()
+            .where((location) => location.isNotEmpty)
+            .toList();
+
+        List<String> dayNames = openingHours.keys.toList();
+        List<String> from = [];
+        List<String> to = [];
+        List<bool> closed = [];
+
+        for (int i = 0; i < dayNames.length; i++) {
+          from.add(openingHours[dayNames[i]]!['from'] ?? '');
+          to.add(openingHours[dayNames[i]]!['to'] ?? '');
+          closed.add(openingHours[dayNames[i]]!['closed']);
+        }
+
+        _updateUserDetails(
+          updatedData,
+          branchLocations,
+          dayNames,
+          from,
+          to,
+          closed,
+        );
       } else {
         // Handle error: userId not available
         ScaffoldMessenger.of(context).showSnackBar(
@@ -181,43 +204,18 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     }
   }
 
-  Future<void> _updateUserDetails(UserData data) async {
+  Future<void> _updateUserDetails(
+    UserData data,
+    List<String> branchLocations,
+    List<String> day,
+    List<String> fromList,
+    List<String> toList,
+    List<bool> closed,
+  ) async {
     setState(() {
       isLoading = true;
     });
     try {
-      //  List<Map<String, String>> branchLocations = branchControllers
-      //   .where((controller) => controller.text.isNotEmpty)
-      //   .map((controller) => {'location': controller.text})
-      //   .toList();
-      // Extract opening hours data
-      // List<Map<String, dynamic>> openingHoursData = openingHours.entries.map((entry) {
-      //   return {
-      //     'day': entry.key,
-      //     'from': entry.value['from'] ?? '',
-      //     'to': entry.value['to'] ?? '',
-      //     'closed': entry.value['closed'] ?? false,
-      //   };
-      // }).toList();
-
-      List<String> branchLocations = branchControllers
-          .map((controller) => controller.text)
-          .toList()
-          .where((location) => location.isNotEmpty)
-          .toList();
-
-      List<String> dayNames = openingHours.keys.toList();
-      List<String> from = [];
-      List<String> to = [];
-      List<bool> closed = [];
-
-      for (int i = 0; i < dayNames.length; i++) {
-        from.add(openingHours[dayNames[i]]!['from'] ?? '');
-        to.add(openingHours[dayNames[i]]!['to'] ?? '');
-        closed.add(openingHours[dayNames[i]]!['closed']);
-      }
-      print("kelaz $branchControllers");
-
       final updateUserDetail = await ref.read(updateUserDetailsProvider(
         data.name ?? '',
         data.phone ?? '',
@@ -231,15 +229,19 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //     : branchControllers.map((controller) => controller.text).toList(),
 
         data.bio ?? '',
-
-        openingHours.keys.toList(),
-        openingHours.values.map((v) => v['from']).toList().cast<String>(),
-        openingHours.values.map((v) => v['to']).toList().cast<String>(),
-        openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
+        day,
+        fromList,
+        toList,
+        closed,
+        // openingHours.keys.toList(),
+        // openingHours.values.map((v) => v['from']).toList().cast<String>(),
+        // openingHours.values.map((v) => v['to']).toList().cast<String>(),
+        // openingHours.values.map((v) => v['closed']).toList().cast<bool>(),
 
         // description,
         //  dob!,
       ).future);
+      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>$updateUserDetail");
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -251,7 +253,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         _emailController.clear();
         _userNameController.clear();
         _genderController.clear();
-        branchControllers.clear();
+        // branchControllers.clear();
+        //branchControllers = [TextEditingController()];
         _bioController.clear();
         description = '';
         // dayNames = [];
@@ -259,6 +262,20 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         // to = [];
         // closed = [];
       });
+      if (branchLocations.isNotEmpty) {
+        setState(() {
+          branchControllers.clear();
+          for (var location in branchLocations) {
+            branchControllers.add(TextEditingController(text: location));
+          }
+        });
+      } else {
+        setState(() {
+          branchControllers.clear();
+          branchControllers.add(TextEditingController());
+        });
+      }
+
       _formKey.currentState?.reset();
     } catch (error) {
       // Display error message
@@ -289,7 +306,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
             final userData = data.data!.first;
             _setInitialValues(userData);
 
-            String branchLocations = data.data!.first.branchLocation!;
+            // String branchLocations = data.data!.first.branchLocation!;
             // List<String> branchLocationsText = branchLocations.map((location) {
             //   return location['location']
             //       as String; // Assuming each location is a Map with a 'location' key
@@ -569,29 +586,35 @@ class BranchWidget extends StatefulWidget {
 }
 
 class _BranchWidgetState extends State<BranchWidget> {
-  List<LocationFieldWidget> locationWidgets = [];
+  List<SellerLocationFieldWidget> locationWidgets = [];
   List<String> branchLocations = [];
   @override
   void initState() {
     super.initState();
+    if (widget.branchControllers.isEmpty) {
+      widget.branchControllers.add(TextEditingController()); // Ensure one field
+    }
     initializeLocationWidgets();
   }
 
   void initializeLocationWidgets() {
     locationWidgets = widget.branchControllers.map((controller) {
-      return LocationFieldWidget(
+      return SellerLocationFieldWidget(
         streetController: controller,
         onSelected: (selectedLocation) {
-          print("Selected location: $selectedLocation");
           int index = widget.branchControllers.indexOf(controller);
           if (index >= 0 && index < branchLocations.length) {
-            branchLocations[index] = selectedLocation;
+            setState(() {
+              branchLocations[index] = selectedLocation;
+            });
           }
         },
       );
     }).toList();
+
+    // Initialize with actual values from controllers
     branchLocations =
-        List.filled(widget.branchControllers.length, "Your Location");
+        widget.branchControllers.map((controller) => controller.text).toList();
   }
 
   @override
@@ -606,24 +629,20 @@ class _BranchWidgetState extends State<BranchWidget> {
                 Expanded(
                   child: locationWidgets.length > index
                       ? locationWidgets[index]
-                      : branchLocations.length > index
-                          // ? Text(branchLocations[index])
-                          // : const Text("Your location"),
-
-                          ? const Text("Your location")
-                          : LocationFieldWidget(
-                              streetController: widget.branchControllers[index],
-                              onSelected: (selectedLocation) {
-                                print("Selected location: $selectedLocation");
-                                int currentIndex = widget.branchControllers
-                                    .indexOf(widget.branchControllers[index]);
-                                if (currentIndex >= 0 &&
-                                    currentIndex < branchLocations.length) {
-                                  branchLocations[currentIndex] =
-                                      selectedLocation;
-                                }
-                              },
-                            ),
+                      : SellerLocationFieldWidget(
+                          streetController: widget.branchControllers[index],
+                          onSelected: (selectedLocation) {
+                            int currentIndex = widget.branchControllers
+                                .indexOf(widget.branchControllers[index]);
+                            if (currentIndex >= 0 &&
+                                currentIndex < branchLocations.length) {
+                              setState(() {
+                                branchLocations[currentIndex] =
+                                    selectedLocation;
+                              });
+                            }
+                          },
+                        ),
                 ),
                 SizedBox(width: 10.w),
                 if (index == 0)
@@ -867,6 +886,124 @@ class _OpeningHoursWidgetState extends State<OpeningHoursWidget> {
             },
           ),
         ),
+      ],
+    );
+  }
+}
+
+class SellerLocationFieldWidget extends ConsumerStatefulWidget {
+  const SellerLocationFieldWidget({
+    super.key,
+    this.onSelected,
+    required this.streetController,
+  });
+  final Function(String)? onSelected;
+  final TextEditingController streetController;
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SellerLocationFieldWidgetState();
+}
+
+class _SellerLocationFieldWidgetState
+    extends ConsumerState<SellerLocationFieldWidget> {
+  String query = '';
+  bool showSuggestions = false;
+  @override
+  Widget build(BuildContext context) {
+    final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          textInputAction: TextInputAction.next,
+          controller: widget.streetController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+            hintText: "Your Location",
+            hintStyle: TextStyle(
+              color: const Color(0xffADADAD),
+              fontSize: 14.sp,
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 241, 234, 234),
+            prefixIcon: Padding(
+              padding: EdgeInsets.only(
+                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+              child: Container(
+                height: 50,
+                width: 52,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.r),
+                  color: const Color(0xffAEC5FF),
+                ),
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              showSuggestions = true;
+              query = widget.streetController.text;
+            });
+          },
+          onChanged: (value) {
+            if (showSuggestions) {
+              setState(() {
+                query = value;
+              });
+            }
+          },
+        ),
+        const SizedBox(height: 10),
+        if (showSuggestions && query.isNotEmpty)
+          streetSuggestionsAsync.when(
+            data: (addresses) {
+              if (addresses.isEmpty) {
+                return const Text('No street address found.');
+              }
+
+              return Flexible(
+                fit: FlexFit.loose,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: addresses.length,
+                  itemBuilder: (context, index) {
+                    final address = addresses[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: ListTile(
+                        title: Text(
+                          address.description,
+                          style: TextStyle(fontSize: 12.sp),
+                        ),
+                        onTap: () {
+                          //   print("kala ${widget.streetController.text}");
+                          setState(() {
+                            widget.streetController.text = address.description;
+                            query = ''; // Clear the query to hide suggestions
+                            showSuggestions = false;
+                            widget.onSelected!(address.description);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+            loading: () => const CircularProgressIndicator(),
+            error: (error, stackTrace) => const Text('Please login again'),
+          ),
       ],
     );
   }

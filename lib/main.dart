@@ -64,9 +64,8 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
-import 'package:smartbazar/payment/git.dart';
+import 'package:smartbazar/git.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
-import 'package:smartbazar/practice.dart';
 import 'package:smartbazar/payment/create_listing_payement.dart';
 
 @pragma('vm:entry-point')
@@ -120,17 +119,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   // Future<void> getss() async {
   //   SharedPreferences stf = await SharedPreferences.getInstance();
-    
+
   //   // Get the session string safely
   //   String? sessionData = stf.getString('session');
-    
+
   //   if (sessionData != null && sessionData.isNotEmpty) {
   //     try {
   //       var _a = jsonDecode(sessionData);
-        
+
   //       // Ensure SmartClient.userPhoto is updated only when necessary
   //       if (SmartClient.userPhoto.isEmpty && _a['result']['photo_url'] != null) {
   //         SmartClient.userPhoto = _a['result']['photo_url'];
@@ -141,11 +139,10 @@ class _MyAppState extends State<MyApp> {
   //   }
   // }
 
-
   @override
   void initState() {
     // TODO: implement initState
-  //  getss();
+    //  getss();
     super.initState();
   }
 
@@ -153,18 +150,18 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     //  print('pinky ${SmartClient.}');
     return ScreenUtilInit(
-      designSize: const Size(430, 690),
-      splitScreenMode: true,
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home:SplashScreen()
-          ) 
-    );
+        designSize: const Size(430, 690),
+        splitScreenMode: true,
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: GoogleFonts.quicksand().fontFamily,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            home: SplashScreen()
+            ),
+            );
     // home: SplashScreen())); bhaktapur
   }
 } //123 dell

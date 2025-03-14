@@ -1547,6 +1547,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                           BrandNewModel prod =
                                                               alldata![index];
                                                           return ProductDetailWidget(
+                                                            savedid: prod.savedByLoggedUser ==
+                                                                        null ||
+                                                                    prod.savedByLoggedUser!
+                                                                        .isEmpty
+                                                                ? []
+                                                                : prod
+                                                                    .savedByLoggedUser,
                                                             onenquiredclicked:
                                                                 () {
                                                               print(
@@ -1615,11 +1622,17 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                 .userdetails!
                                                                 .user_id,
                                                             onRefresh: () {
-                                                              refreshAllprovider();
-                                                              ref.refresh(
-                                                                  getVendorCardProvider(
+                                                              alldata = [];
+                                                              ref.invalidate(
+                                                                  getvendorbybrandnameProvider(
                                                                       widget
                                                                           .vid));
+                                                              //  refreshAllprovider();
+                                                              // ref.refresh(
+                                                              //     getVendorCardProvider(
+                                                              //         widget
+                                                              //             .vid));
+                                                              //             ref.invalidate(provider)
                                                             },
                                                             membershipid: prod
                                                                 .userdetails

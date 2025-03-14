@@ -23,8 +23,12 @@ mixin _$PostBuyNowModel {
   BuyNowModel? get data => throw _privateConstructorUsedError;
   String? get msg => throw _privateConstructorUsedError;
 
+  /// Serializes this PostBuyNowModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PostBuyNowModelCopyWith<PostBuyNowModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$PostBuyNowModelCopyWithImpl<$Res, $Val extends PostBuyNowModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +74,8 @@ class _$PostBuyNowModelCopyWithImpl<$Res, $Val extends PostBuyNowModel>
     ) as $Val);
   }
 
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $BuyNowModelCopyWith<$Res>? get data {
@@ -103,6 +111,8 @@ class __$$PostBuyNowModelImplCopyWithImpl<$Res>
       _$PostBuyNowModelImpl _value, $Res Function(_$PostBuyNowModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -149,11 +159,13 @@ class _$PostBuyNowModelImpl implements _PostBuyNowModel {
             (identical(other.msg, msg) || other.msg == msg));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, data, msg);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PostBuyNowModelImplCopyWith<_$PostBuyNowModelImpl> get copyWith =>
@@ -179,8 +191,11 @@ abstract class _PostBuyNowModel implements PostBuyNowModel {
   BuyNowModel? get data;
   @override
   String? get msg;
+
+  /// Create a copy of PostBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PostBuyNowModelImplCopyWith<_$PostBuyNowModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -197,8 +212,12 @@ mixin _$BuyNowModel {
   List<BuyNowUserModel>? get user => throw _privateConstructorUsedError;
   List<dynamic>? get coupons => throw _privateConstructorUsedError;
 
+  /// Serializes this BuyNowModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BuyNowModelCopyWith<BuyNowModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -226,6 +245,8 @@ class _$BuyNowModelCopyWithImpl<$Res, $Val extends BuyNowModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -278,6 +299,8 @@ class __$$BuyNowModelImplCopyWithImpl<$Res>
       _$BuyNowModelImpl _value, $Res Function(_$BuyNowModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -385,7 +408,7 @@ class _$BuyNowModelImpl implements _BuyNowModel {
             const DeepCollectionEquality().equals(other._coupons, _coupons));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -394,7 +417,9 @@ class _$BuyNowModelImpl implements _BuyNowModel {
       const DeepCollectionEquality().hash(_user),
       const DeepCollectionEquality().hash(_coupons));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyNowModelImplCopyWith<_$BuyNowModelImpl> get copyWith =>
@@ -419,15 +444,18 @@ abstract class _BuyNowModel implements BuyNowModel {
       _$BuyNowModelImpl.fromJson;
 
   @override
-  List<BuyNowPostModel>? get posts;
-  @override // Avoid null issues
+  List<BuyNowPostModel>? get posts; // Avoid null issues
+  @override
   List<VendorBuyNowModel>? get vendor;
   @override
   List<BuyNowUserModel>? get user;
   @override
   List<dynamic>? get coupons;
+
+  /// Create a copy of BuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BuyNowModelImplCopyWith<_$BuyNowModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -507,8 +535,12 @@ mixin _$BuyNowPostModel {
   String? get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this BuyNowPostModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BuyNowPostModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BuyNowPostModelCopyWith<BuyNowPostModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -594,6 +626,8 @@ class _$BuyNowPostModelCopyWithImpl<$Res, $Val extends BuyNowPostModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BuyNowPostModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -994,6 +1028,8 @@ class __$$BuyNowPostModelImplCopyWithImpl<$Res>
       _$BuyNowPostModelImpl _value, $Res Function(_$BuyNowPostModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BuyNowPostModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1623,7 +1659,7 @@ class _$BuyNowPostModelImpl implements _BuyNowPostModel {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -1691,7 +1727,9 @@ class _$BuyNowPostModelImpl implements _BuyNowPostModel {
         updatedAt
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BuyNowPostModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyNowPostModelImplCopyWith<_$BuyNowPostModelImpl> get copyWith =>
@@ -1778,8 +1816,8 @@ abstract class _BuyNowPostModel implements BuyNowPostModel {
   String? get id;
   @override
   @JsonKey(name: 'country_code')
-  String? get countryCode;
-  @override // JSON key mapping
+  String? get countryCode; // JSON key mapping
+  @override
   @JsonKey(name: 'user_id')
   String? get userId;
   @override
@@ -1903,8 +1941,11 @@ abstract class _BuyNowPostModel implements BuyNowPostModel {
   String? get createdAt;
   @override
   String? get updatedAt;
+
+  /// Create a copy of BuyNowPostModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BuyNowPostModelImplCopyWith<_$BuyNowPostModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1919,8 +1960,12 @@ mixin _$VendorBuyNowModel {
   String? get name => throw _privateConstructorUsedError;
   String? get paymentQr => throw _privateConstructorUsedError;
 
+  /// Serializes this VendorBuyNowModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VendorBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VendorBuyNowModelCopyWith<VendorBuyNowModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1944,6 +1989,8 @@ class _$VendorBuyNowModelCopyWithImpl<$Res, $Val extends VendorBuyNowModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VendorBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1987,6 +2034,8 @@ class __$$VendorBuyNowModelImplCopyWithImpl<$Res>
       $Res Function(_$VendorBuyNowModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VendorBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2042,11 +2091,13 @@ class _$VendorBuyNowModelImpl implements _VendorBuyNowModel {
                 other.paymentQr == paymentQr));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, paymentQr);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VendorBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VendorBuyNowModelImplCopyWith<_$VendorBuyNowModelImpl> get copyWith =>
@@ -2076,8 +2127,11 @@ abstract class _VendorBuyNowModel implements VendorBuyNowModel {
   String? get name;
   @override
   String? get paymentQr;
+
+  /// Create a copy of VendorBuyNowModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VendorBuyNowModelImplCopyWith<_$VendorBuyNowModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2093,8 +2147,12 @@ mixin _$BuyNowUserModel {
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
 
+  /// Serializes this BuyNowUserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BuyNowUserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BuyNowUserModelCopyWith<BuyNowUserModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2118,6 +2176,8 @@ class _$BuyNowUserModelCopyWithImpl<$Res, $Val extends BuyNowUserModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BuyNowUserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2166,6 +2226,8 @@ class __$$BuyNowUserModelImplCopyWithImpl<$Res>
       _$BuyNowUserModelImpl _value, $Res Function(_$BuyNowUserModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BuyNowUserModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2228,11 +2290,13 @@ class _$BuyNowUserModelImpl implements _BuyNowUserModel {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, email, phone);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BuyNowUserModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyNowUserModelImplCopyWith<_$BuyNowUserModelImpl> get copyWith =>
@@ -2265,8 +2329,11 @@ abstract class _BuyNowUserModel implements BuyNowUserModel {
   String? get email;
   @override
   String? get phone;
+
+  /// Create a copy of BuyNowUserModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BuyNowUserModelImplCopyWith<_$BuyNowUserModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

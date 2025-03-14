@@ -16,7 +16,7 @@ import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/submit_sponsorship_payment_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/practice.dart';
+import 'package:smartbazar/payment/paymment_extra.dart';
 
 class ApplySponsorshipPriceScreen extends ConsumerStatefulWidget {
   const ApplySponsorshipPriceScreen({super.key});
@@ -110,7 +110,6 @@ class _ApplySponsorshipPriceScreenState
       );
       return;
     }
-
     // Call the postgift API
 
     var pay = await makepaymentnow(

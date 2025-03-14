@@ -25,7 +25,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _showSearchProductModels = false;
   final _debouncer = BehaviorSubject<String>();
-  late List<Container> items;
+  // late List<Container> items;
 
   void _onSearchFocusChanged(bool hasFocus) {
     setState(() {
@@ -35,22 +35,50 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
 
   final CarouselSliderController _carouselController =
       CarouselSliderController(); // Correct CarouselController instance
+  final ScrollController _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    super.initState();
-    items = [
-      left_arrow(
-          const Color(
-            0xff362664,
-          ),
-          '34999'),
-      left_arrow(const Color(0xff901B41), '9999'),
-      left_arrow(const Color(0xff362664), '19999'),
-    ];
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   items = [
+  //     left_arrow(
+  //         const Color(
+  //           0xff362664,
+  //         ),
+  //         '34999'),
+  //     left_arrow(const Color(0xff901B41), '9999'),
+  //     left_arrow(const Color(0xff362664), '19999'),
+  //   ];
+  // }
+  void _nextPage() {
+    setState(() {
+      _currentIndex = (_currentIndex + 1) % items.length;
+    });
+    _scrollToCurrentIndex();
+  }
+
+  void _previousPage() {
+    setState(() {
+      _currentIndex = (_currentIndex - 1 + items.length) % items.length;
+    });
+    _scrollToCurrentIndex();
+  }
+
+  void _scrollToCurrentIndex() {
+    _scrollController.animateTo(
+      _currentIndex * 320.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   int _currentIndex = 0;
+
+  final List<Map<String, dynamic>> items = [
+    {'color': const Color(0xff362664), 'price': '34999'},
+    {'color': const Color(0xff901B41), 'price': '9999'},
+    {'color': const Color(0xff362664), 'price': '19999'},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +123,6 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 10.h),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -111,7 +138,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                         height: 33.h,
                         child: TextFormField(
                           onFieldSubmitted: (value) {},
-                          controller: _searchController,
+                          controller: null,
                           decoration: InputDecoration(
                             hintText: 'Search...',
                             prefixIconConstraints:
@@ -158,171 +185,112 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10.h),
+              SizedBox(height: 15.h),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10.h),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: ColorConstant.blackColor,
+                      width: 1,
+                    )),
                 child: Column(
                   children: [
-                    SizedBox(height: 15.h),
+                    Text(
+                      "Start the #SmartRevolution",
+                      style: headerstyle.copyWith(
+                          fontFamily: GoogleFonts.kantumruyPro().fontFamily,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 20.sp,
+                          color: ColorConstant.blackColor),
+                    ),
                     Container(
-                      width: double.infinity,
+                      margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: ColorConstant.blackColor,
-                            width: 1,
-                          )),
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xffe2a90c),
+                      ),
                       child: Column(
                         children: [
-                          Text(
-                            "Start the #SmartRevolution",
-                            style: headerstyle.copyWith(
-                                fontFamily:
-                                    GoogleFonts.kantumruyPro().fontFamily,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 20.sp,
-                                color: ColorConstant.blackColor),
-                          ),
                           Container(
-                            margin: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: const Color(0xffe2a90c),
                             ),
-                            child: Column(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Container(
-                                  margin: const EdgeInsets.all(20),
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffe2a90c),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        "0%",
-                                        style: headerstyle.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 26.sp,
-                                            color: ColorConstant.blackColor),
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Commission",
-                                            style: headerstyle.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.sp,
-                                                color:
-                                                    ColorConstant.blackColor),
-                                          ),
-                                          Text(
-                                            "Forever",
-                                            style: headerstyle.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.sp,
-                                                color:
-                                                    ColorConstant.blackColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                Text(
+                                  "0%",
+                                  style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 26.sp,
+                                      color: ColorConstant.blackColor),
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "Commission",
+                                      style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16.sp,
+                                          color: ColorConstant.blackColor),
+                                    ),
+                                    Text(
+                                      "Forever",
+                                      style: headerstyle.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16.sp,
+                                          color: ColorConstant.blackColor),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 15.h),
+              SizedBox(
+                height: 450.h,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    children: items.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: left_arrow(item['color'], item['price']),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      onPressed: _previousPage,
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
                     ),
-                    SizedBox(height: 15.h),
-                    Text(
-                      "Choose Your membership Plan &",
-                      style: headerstyle.copyWith(
-                          fontFamily: GoogleFonts.kantumruyPro().fontFamily,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
-                          color: ColorConstant.blackColor),
-                    ),
-                    Text(
-                      "Start Selling",
-                      style: headerstyle.copyWith(
-                          fontFamily: GoogleFonts.kantumruyPro().fontFamily,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.sp,
-                          color: ColorConstant.blackColor),
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: items.asMap().entries.map((entry) {
-                        return Container(
-                          width: 12.0.w,
-                          height: 12.0.h,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _currentIndex == entry.key
-                                ? const Color(0xff8F8989)
-                                : const Color(0xffD9D9D9),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (_currentIndex > 0) {
-                              _carouselController.animateToPage(
-                                _currentIndex - 1,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                        ),
-                        Flexible(
-                          child: CarouselSlider(
-                            carouselController: _carouselController,
-                            items: items.map((item) => item).toList(),
-                            options: CarouselOptions(
-                              viewportFraction: 1,
-                              height: 420.h,
-                              enlargeCenterPage: true,
-                              reverse: true,
-                              enlargeFactor: 5,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _currentIndex = index;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            if (_currentIndex < items.length - 1) {
-                              _carouselController.animateToPage(
-                                _currentIndex + 1,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.arrow_forward_ios_rounded),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: _nextPage,
+                      icon: const Icon(Icons.arrow_forward_ios_rounded),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 10.h),
             ],
           ),
         ),
@@ -330,21 +298,16 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
     );
   }
 
-  Container left_arrow(
-    Color color,
-    String price,
-  ) {
+  Container left_arrow(Color color, String price) {
     return Container(
-      width: double.infinity,
+      width: 300,
       decoration: BoxDecoration(
         border: Border.all(width: 3, color: const Color(0xffF1EDED)),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: 5.h,
-          ),
+          //   const SizedBox(height: 10),
           Container(
             padding: EdgeInsets.symmetric(vertical: 10.h),
             width: double.infinity,
@@ -389,9 +352,7 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
               ],
             ),
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+          const SizedBox(height: 10),
           row_widget("Unlimited Retail & B2B Sales for 1 year", Icons.check,
               const Color(0xff46D916)),
           row_widget("FREE BizSpace:smartbazaar.com.np", Icons.check,
@@ -406,26 +367,26 @@ class _LeftArrowScreenState extends ConsumerState<LeftArrowScreen> {
               "Featured in Bandbazaar", Icons.close, const Color(0xffD91619)),
           row_widget(
               "Featured in Homepage", Icons.close, const Color(0xffD91619)),
-          SizedBox(
-            height: 50.h,
-          ),
-          SizedBox(
-            width: 290.w,
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    padding: WidgetStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 8.h)),
-                    shape: WidgetStatePropertyAll(BeveledRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
-                    backgroundColor: WidgetStatePropertyAll(color)),
-                onPressed: () async {
-                  await CrateListingIniatepayment(context, price, false);
-                },
-                child: Text(
-                  "Choose Plan",
-                  style: headerstyle.copyWith(
-                      fontSize: 18, fontWeight: FontWeight.w400),
-                )),
+          Spacer(),
+          Center(
+            child: SizedBox(
+              width: 290.w,
+              child: ElevatedButton(
+                  style: ButtonStyle(
+                      padding:
+                          WidgetStatePropertyAll(EdgeInsets.only(top: 3.h)),
+                      shape: WidgetStatePropertyAll(BeveledRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                      backgroundColor: WidgetStatePropertyAll(color)),
+                  onPressed: () async {
+                    await CrateListingIniatepayment(context, price, false);
+                  },
+                  child: Text(
+                    "Choose Plan",
+                    style: headerstyle.copyWith(
+                        fontSize: 18, fontWeight: FontWeight.w400),
+                  )),
+            ),
           )
         ],
       ),

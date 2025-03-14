@@ -22,8 +22,12 @@ SubscriptionResponse _$SubscriptionResponseFromJson(Map<String, dynamic> json) {
 mixin _$SubscriptionResponse {
   Subscriptions? get subscriptions => throw _privateConstructorUsedError;
 
+  /// Serializes this SubscriptionResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SubscriptionResponseCopyWith<SubscriptionResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$SubscriptionResponseCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -63,6 +69,8 @@ class _$SubscriptionResponseCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SubscriptionsCopyWith<$Res>? get subscriptions {
@@ -98,6 +106,8 @@ class __$$SubscriptionResponseImplCopyWithImpl<$Res>
       $Res Function(_$SubscriptionResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -137,11 +147,13 @@ class _$SubscriptionResponseImpl implements _SubscriptionResponse {
                 other.subscriptions == subscriptions));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, subscriptions);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscriptionResponseImplCopyWith<_$SubscriptionResponseImpl>
@@ -166,8 +178,11 @@ abstract class _SubscriptionResponse implements SubscriptionResponse {
 
   @override
   Subscriptions? get subscriptions;
+
+  /// Create a copy of SubscriptionResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscriptionResponseImplCopyWith<_$SubscriptionResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -181,8 +196,12 @@ mixin _$Subscriptions {
   int? get current_page => throw _privateConstructorUsedError;
   List<SubscriptionData>? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this Subscriptions to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Subscriptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SubscriptionsCopyWith<Subscriptions> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -206,6 +225,8 @@ class _$SubscriptionsCopyWithImpl<$Res, $Val extends Subscriptions>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Subscriptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -244,6 +265,8 @@ class __$$SubscriptionsImplCopyWithImpl<$Res>
       _$SubscriptionsImpl _value, $Res Function(_$SubscriptionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Subscriptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -299,12 +322,14 @@ class _$SubscriptionsImpl implements _Subscriptions {
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, current_page, const DeepCollectionEquality().hash(_data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Subscriptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscriptionsImplCopyWith<_$SubscriptionsImpl> get copyWith =>
@@ -330,8 +355,11 @@ abstract class _Subscriptions implements Subscriptions {
   int? get current_page;
   @override
   List<SubscriptionData>? get data;
+
+  /// Create a copy of Subscriptions
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscriptionsImplCopyWith<_$SubscriptionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -349,8 +377,12 @@ mixin _$SubscriptionData {
   String? get status => throw _privateConstructorUsedError;
   SubscriptionVendorCard? get vendor_card => throw _privateConstructorUsedError;
 
+  /// Serializes this SubscriptionData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SubscriptionDataCopyWith<SubscriptionData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -382,6 +414,8 @@ class _$SubscriptionDataCopyWithImpl<$Res, $Val extends SubscriptionData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -420,6 +454,8 @@ class _$SubscriptionDataCopyWithImpl<$Res, $Val extends SubscriptionData>
     ) as $Val);
   }
 
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SubscriptionVendorCardCopyWith<$Res>? get vendor_card {
@@ -461,6 +497,8 @@ class __$$SubscriptionDataImplCopyWithImpl<$Res>
       $Res Function(_$SubscriptionDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -548,12 +586,14 @@ class _$SubscriptionDataImpl implements _SubscriptionData {
                 other.vendor_card == vendor_card));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, user_id, vendor_id, followed_date, status, vendor_card);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscriptionDataImplCopyWith<_$SubscriptionDataImpl> get copyWith =>
@@ -592,8 +632,11 @@ abstract class _SubscriptionData implements SubscriptionData {
   String? get status;
   @override
   SubscriptionVendorCard? get vendor_card;
+
+  /// Create a copy of SubscriptionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscriptionDataImplCopyWith<_$SubscriptionDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -622,8 +665,12 @@ mixin _$SubscriptionVendorCard {
   String? get membership_title => throw _privateConstructorUsedError;
   String? get membership_color => throw _privateConstructorUsedError;
 
+  /// Serializes this SubscriptionVendorCard to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SubscriptionVendorCard
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SubscriptionVendorCardCopyWith<SubscriptionVendorCard> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -664,6 +711,8 @@ class _$SubscriptionVendorCardCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SubscriptionVendorCard
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -791,6 +840,8 @@ class __$$SubscriptionVendorCardImplCopyWithImpl<$Res>
       $Res Function(_$SubscriptionVendorCardImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SubscriptionVendorCard
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -978,7 +1029,7 @@ class _$SubscriptionVendorCardImpl implements _SubscriptionVendorCard {
                 other.membership_color == membership_color));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -999,7 +1050,9 @@ class _$SubscriptionVendorCardImpl implements _SubscriptionVendorCard {
       membership_title,
       membership_color);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SubscriptionVendorCard
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscriptionVendorCardImplCopyWith<_$SubscriptionVendorCardImpl>
@@ -1068,8 +1121,11 @@ abstract class _SubscriptionVendorCard implements SubscriptionVendorCard {
   String? get membership_title;
   @override
   String? get membership_color;
+
+  /// Create a copy of SubscriptionVendorCard
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscriptionVendorCardImplCopyWith<_$SubscriptionVendorCardImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

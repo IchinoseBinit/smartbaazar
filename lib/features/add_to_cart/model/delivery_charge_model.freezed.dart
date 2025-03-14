@@ -30,8 +30,12 @@ mixin _$ParcelFareResponse {
   ParcelData? get data => throw _privateConstructorUsedError;
   List<dynamic>? get errors => throw _privateConstructorUsedError;
 
+  /// Serializes this ParcelFareResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ParcelFareResponseCopyWith<ParcelFareResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,6 +68,8 @@ class _$ParcelFareResponseCopyWithImpl<$Res, $Val extends ParcelFareResponse>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -107,6 +113,8 @@ class _$ParcelFareResponseCopyWithImpl<$Res, $Val extends ParcelFareResponse>
     ) as $Val);
   }
 
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ParcelDataCopyWith<$Res>? get data {
@@ -149,6 +157,8 @@ class __$$ParcelFareResponseImplCopyWithImpl<$Res>
       $Res Function(_$ParcelFareResponseImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -254,12 +264,14 @@ class _$ParcelFareResponseImpl implements _ParcelFareResponse {
             const DeepCollectionEquality().equals(other._errors, _errors));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, responseCode, message, totalSize,
       limit, offset, data, const DeepCollectionEquality().hash(_errors));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcelFareResponseImplCopyWith<_$ParcelFareResponseImpl> get copyWith =>
@@ -303,8 +315,11 @@ abstract class _ParcelFareResponse implements ParcelFareResponse {
   ParcelData? get data;
   @override
   List<dynamic>? get errors;
+
+  /// Create a copy of ParcelFareResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ParcelFareResponseImplCopyWith<_$ParcelFareResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -364,8 +379,12 @@ mixin _$ParcelData {
   @JsonKey(name: 'est_id')
   int? get estId => throw _privateConstructorUsedError;
 
+  /// Serializes this ParcelData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ParcelData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ParcelDataCopyWith<ParcelData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -414,6 +433,8 @@ class _$ParcelDataCopyWithImpl<$Res, $Val extends ParcelData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ParcelData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -592,6 +613,8 @@ class __$$ParcelDataImplCopyWithImpl<$Res>
       _$ParcelDataImpl _value, $Res Function(_$ParcelDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ParcelData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -899,7 +922,7 @@ class _$ParcelDataImpl implements _ParcelData {
             (identical(other.estId, estId) || other.estId == estId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
@@ -930,7 +953,9 @@ class _$ParcelDataImpl implements _ParcelData {
         estId
       ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ParcelData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ParcelDataImplCopyWith<_$ParcelDataImpl> get copyWith =>
@@ -1048,8 +1073,11 @@ abstract class _ParcelData implements ParcelData {
   @override
   @JsonKey(name: 'est_id')
   int? get estId;
+
+  /// Create a copy of ParcelData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ParcelDataImplCopyWith<_$ParcelDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1082,8 +1110,12 @@ mixin _$Fare {
   @JsonKey(name: 'updated_at')
   String? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Fare to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Fare
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FareCopyWith<Fare> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1116,6 +1148,8 @@ class _$FareCopyWithImpl<$Res, $Val extends Fare>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Fare
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1208,6 +1242,8 @@ class __$$FareImplCopyWithImpl<$Res>
   __$$FareImplCopyWithImpl(_$FareImpl _value, $Res Function(_$FareImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Fare
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1356,7 +1392,7 @@ class _$FareImpl implements _Fare {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1372,7 +1408,9 @@ class _$FareImpl implements _Fare {
       createdAt,
       updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Fare
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FareImplCopyWith<_$FareImpl> get copyWith =>
@@ -1434,8 +1472,11 @@ abstract class _Fare implements Fare {
   @override
   @JsonKey(name: 'updated_at')
   String? get updatedAt;
+
+  /// Create a copy of Fare
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FareImplCopyWith<_$FareImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
