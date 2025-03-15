@@ -18,8 +18,16 @@ Future<FavouriteProductList> getFavouriteList(dynamic ref,
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = response.data;
-      return FavouriteProductList.fromJson(jsonResponse);
+        final Map<String, dynamic> rawData = response.data;
+      
+      // Create a new Map with the expected structure
+      final Map<String, dynamic> processedData = {
+        'data': rawData['data'],
+        'msg': rawData['msg']
+      };
+      
+      // Now safely convert to FavouriteProductList
+      return FavouriteProductList.fromJson(processedData);
     } else {
       throw Exception('Failed to load favourite list: ${response.statusCode}');
     }

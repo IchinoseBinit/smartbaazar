@@ -383,28 +383,6 @@ mixin _$SavedProducts {
   int? get currentPage => throw _privateConstructorUsedError;
   @JsonKey(name: "data")
   List<FavouriteProduct>? get data => throw _privateConstructorUsedError;
-  @JsonKey(name: "first_page_url")
-  String? get firstPageUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: "from")
-  int? get from => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_page")
-  int? get lastPage => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_page_url")
-  String? get lastPageUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: "links")
-  List<Link>? get links => throw _privateConstructorUsedError;
-  @JsonKey(name: "next_page_url")
-  dynamic get nextPageUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: "path")
-  String? get path => throw _privateConstructorUsedError;
-  @JsonKey(name: "per_page")
-  int? get perPage => throw _privateConstructorUsedError;
-  @JsonKey(name: "prev_page_url")
-  dynamic get prevPageUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: "to")
-  int? get to => throw _privateConstructorUsedError;
-  @JsonKey(name: "total")
-  int? get total => throw _privateConstructorUsedError;
 
   /// Serializes this SavedProducts to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -424,18 +402,7 @@ abstract class $SavedProductsCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<FavouriteProduct>? data,
-      @JsonKey(name: "first_page_url") String? firstPageUrl,
-      @JsonKey(name: "from") int? from,
-      @JsonKey(name: "last_page") int? lastPage,
-      @JsonKey(name: "last_page_url") String? lastPageUrl,
-      @JsonKey(name: "links") List<Link>? links,
-      @JsonKey(name: "next_page_url") dynamic nextPageUrl,
-      @JsonKey(name: "path") String? path,
-      @JsonKey(name: "per_page") int? perPage,
-      @JsonKey(name: "prev_page_url") dynamic prevPageUrl,
-      @JsonKey(name: "to") int? to,
-      @JsonKey(name: "total") int? total});
+      @JsonKey(name: "data") List<FavouriteProduct>? data});
 }
 
 /// @nodoc
@@ -455,17 +422,6 @@ class _$SavedProductsCopyWithImpl<$Res, $Val extends SavedProducts>
   $Res call({
     Object? currentPage = freezed,
     Object? data = freezed,
-    Object? firstPageUrl = freezed,
-    Object? from = freezed,
-    Object? lastPage = freezed,
-    Object? lastPageUrl = freezed,
-    Object? links = freezed,
-    Object? nextPageUrl = freezed,
-    Object? path = freezed,
-    Object? perPage = freezed,
-    Object? prevPageUrl = freezed,
-    Object? to = freezed,
-    Object? total = freezed,
   }) {
     return _then(_value.copyWith(
       currentPage: freezed == currentPage
@@ -476,50 +432,6 @@ class _$SavedProductsCopyWithImpl<$Res, $Val extends SavedProducts>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<FavouriteProduct>?,
-      firstPageUrl: freezed == firstPageUrl
-          ? _value.firstPageUrl
-          : firstPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPage: freezed == lastPage
-          ? _value.lastPage
-          : lastPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPageUrl: freezed == lastPageUrl
-          ? _value.lastPageUrl
-          : lastPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      links: freezed == links
-          ? _value.links
-          : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>?,
-      nextPageUrl: freezed == nextPageUrl
-          ? _value.nextPageUrl
-          : nextPageUrl // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String?,
-      perPage: freezed == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      prevPageUrl: freezed == prevPageUrl
-          ? _value.prevPageUrl
-          : prevPageUrl // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      to: freezed == to
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as int?,
-      total: freezed == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int?,
     ) as $Val);
   }
 }
@@ -534,18 +446,7 @@ abstract class _$$SavedProductsImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<FavouriteProduct>? data,
-      @JsonKey(name: "first_page_url") String? firstPageUrl,
-      @JsonKey(name: "from") int? from,
-      @JsonKey(name: "last_page") int? lastPage,
-      @JsonKey(name: "last_page_url") String? lastPageUrl,
-      @JsonKey(name: "links") List<Link>? links,
-      @JsonKey(name: "next_page_url") dynamic nextPageUrl,
-      @JsonKey(name: "path") String? path,
-      @JsonKey(name: "per_page") int? perPage,
-      @JsonKey(name: "prev_page_url") dynamic prevPageUrl,
-      @JsonKey(name: "to") int? to,
-      @JsonKey(name: "total") int? total});
+      @JsonKey(name: "data") List<FavouriteProduct>? data});
 }
 
 /// @nodoc
@@ -563,17 +464,6 @@ class __$$SavedProductsImplCopyWithImpl<$Res>
   $Res call({
     Object? currentPage = freezed,
     Object? data = freezed,
-    Object? firstPageUrl = freezed,
-    Object? from = freezed,
-    Object? lastPage = freezed,
-    Object? lastPageUrl = freezed,
-    Object? links = freezed,
-    Object? nextPageUrl = freezed,
-    Object? path = freezed,
-    Object? perPage = freezed,
-    Object? prevPageUrl = freezed,
-    Object? to = freezed,
-    Object? total = freezed,
   }) {
     return _then(_$SavedProductsImpl(
       currentPage: freezed == currentPage
@@ -584,50 +474,6 @@ class __$$SavedProductsImplCopyWithImpl<$Res>
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as List<FavouriteProduct>?,
-      firstPageUrl: freezed == firstPageUrl
-          ? _value.firstPageUrl
-          : firstPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      from: freezed == from
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPage: freezed == lastPage
-          ? _value.lastPage
-          : lastPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      lastPageUrl: freezed == lastPageUrl
-          ? _value.lastPageUrl
-          : lastPageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      links: freezed == links
-          ? _value._links
-          : links // ignore: cast_nullable_to_non_nullable
-              as List<Link>?,
-      nextPageUrl: freezed == nextPageUrl
-          ? _value.nextPageUrl
-          : nextPageUrl // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      path: freezed == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String?,
-      perPage: freezed == perPage
-          ? _value.perPage
-          : perPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      prevPageUrl: freezed == prevPageUrl
-          ? _value.prevPageUrl
-          : prevPageUrl // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      to: freezed == to
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as int?,
-      total: freezed == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int?,
     ));
   }
 }
@@ -637,20 +483,8 @@ class __$$SavedProductsImplCopyWithImpl<$Res>
 class _$SavedProductsImpl implements _SavedProducts {
   const _$SavedProductsImpl(
       {@JsonKey(name: "current_page") required this.currentPage,
-      @JsonKey(name: "data") required final List<FavouriteProduct>? data,
-      @JsonKey(name: "first_page_url") required this.firstPageUrl,
-      @JsonKey(name: "from") required this.from,
-      @JsonKey(name: "last_page") required this.lastPage,
-      @JsonKey(name: "last_page_url") required this.lastPageUrl,
-      @JsonKey(name: "links") required final List<Link>? links,
-      @JsonKey(name: "next_page_url") required this.nextPageUrl,
-      @JsonKey(name: "path") required this.path,
-      @JsonKey(name: "per_page") required this.perPage,
-      @JsonKey(name: "prev_page_url") required this.prevPageUrl,
-      @JsonKey(name: "to") required this.to,
-      @JsonKey(name: "total") required this.total})
-      : _data = data,
-        _links = links;
+      @JsonKey(name: "data") required final List<FavouriteProduct>? data})
+      : _data = data;
 
   factory _$SavedProductsImpl.fromJson(Map<String, dynamic> json) =>
       _$$SavedProductsImplFromJson(json);
@@ -670,50 +504,8 @@ class _$SavedProductsImpl implements _SavedProducts {
   }
 
   @override
-  @JsonKey(name: "first_page_url")
-  final String? firstPageUrl;
-  @override
-  @JsonKey(name: "from")
-  final int? from;
-  @override
-  @JsonKey(name: "last_page")
-  final int? lastPage;
-  @override
-  @JsonKey(name: "last_page_url")
-  final String? lastPageUrl;
-  final List<Link>? _links;
-  @override
-  @JsonKey(name: "links")
-  List<Link>? get links {
-    final value = _links;
-    if (value == null) return null;
-    if (_links is EqualUnmodifiableListView) return _links;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  @JsonKey(name: "next_page_url")
-  final dynamic nextPageUrl;
-  @override
-  @JsonKey(name: "path")
-  final String? path;
-  @override
-  @JsonKey(name: "per_page")
-  final int? perPage;
-  @override
-  @JsonKey(name: "prev_page_url")
-  final dynamic prevPageUrl;
-  @override
-  @JsonKey(name: "to")
-  final int? to;
-  @override
-  @JsonKey(name: "total")
-  final int? total;
-
-  @override
   String toString() {
-    return 'SavedProducts(currentPage: $currentPage, data: $data, firstPageUrl: $firstPageUrl, from: $from, lastPage: $lastPage, lastPageUrl: $lastPageUrl, links: $links, nextPageUrl: $nextPageUrl, path: $path, perPage: $perPage, prevPageUrl: $prevPageUrl, to: $to, total: $total)';
+    return 'SavedProducts(currentPage: $currentPage, data: $data)';
   }
 
   @override
@@ -723,42 +515,13 @@ class _$SavedProductsImpl implements _SavedProducts {
             other is _$SavedProductsImpl &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
-            const DeepCollectionEquality().equals(other._data, _data) &&
-            (identical(other.firstPageUrl, firstPageUrl) ||
-                other.firstPageUrl == firstPageUrl) &&
-            (identical(other.from, from) || other.from == from) &&
-            (identical(other.lastPage, lastPage) ||
-                other.lastPage == lastPage) &&
-            (identical(other.lastPageUrl, lastPageUrl) ||
-                other.lastPageUrl == lastPageUrl) &&
-            const DeepCollectionEquality().equals(other._links, _links) &&
-            const DeepCollectionEquality()
-                .equals(other.nextPageUrl, nextPageUrl) &&
-            (identical(other.path, path) || other.path == path) &&
-            (identical(other.perPage, perPage) || other.perPage == perPage) &&
-            const DeepCollectionEquality()
-                .equals(other.prevPageUrl, prevPageUrl) &&
-            (identical(other.to, to) || other.to == to) &&
-            (identical(other.total, total) || other.total == total));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      currentPage,
-      const DeepCollectionEquality().hash(_data),
-      firstPageUrl,
-      from,
-      lastPage,
-      lastPageUrl,
-      const DeepCollectionEquality().hash(_links),
-      const DeepCollectionEquality().hash(nextPageUrl),
-      path,
-      perPage,
-      const DeepCollectionEquality().hash(prevPageUrl),
-      to,
-      total);
+      runtimeType, currentPage, const DeepCollectionEquality().hash(_data));
 
   /// Create a copy of SavedProducts
   /// with the given fields replaced by the non-null parameter values.
@@ -778,19 +541,9 @@ class _$SavedProductsImpl implements _SavedProducts {
 
 abstract class _SavedProducts implements SavedProducts {
   const factory _SavedProducts(
-      {@JsonKey(name: "current_page") required final int? currentPage,
-      @JsonKey(name: "data") required final List<FavouriteProduct>? data,
-      @JsonKey(name: "first_page_url") required final String? firstPageUrl,
-      @JsonKey(name: "from") required final int? from,
-      @JsonKey(name: "last_page") required final int? lastPage,
-      @JsonKey(name: "last_page_url") required final String? lastPageUrl,
-      @JsonKey(name: "links") required final List<Link>? links,
-      @JsonKey(name: "next_page_url") required final dynamic nextPageUrl,
-      @JsonKey(name: "path") required final String? path,
-      @JsonKey(name: "per_page") required final int? perPage,
-      @JsonKey(name: "prev_page_url") required final dynamic prevPageUrl,
-      @JsonKey(name: "to") required final int? to,
-      @JsonKey(name: "total") required final int? total}) = _$SavedProductsImpl;
+          {@JsonKey(name: "current_page") required final int? currentPage,
+          @JsonKey(name: "data") required final List<FavouriteProduct>? data}) =
+      _$SavedProductsImpl;
 
   factory _SavedProducts.fromJson(Map<String, dynamic> json) =
       _$SavedProductsImpl.fromJson;
@@ -801,39 +554,6 @@ abstract class _SavedProducts implements SavedProducts {
   @override
   @JsonKey(name: "data")
   List<FavouriteProduct>? get data;
-  @override
-  @JsonKey(name: "first_page_url")
-  String? get firstPageUrl;
-  @override
-  @JsonKey(name: "from")
-  int? get from;
-  @override
-  @JsonKey(name: "last_page")
-  int? get lastPage;
-  @override
-  @JsonKey(name: "last_page_url")
-  String? get lastPageUrl;
-  @override
-  @JsonKey(name: "links")
-  List<Link>? get links;
-  @override
-  @JsonKey(name: "next_page_url")
-  dynamic get nextPageUrl;
-  @override
-  @JsonKey(name: "path")
-  String? get path;
-  @override
-  @JsonKey(name: "per_page")
-  int? get perPage;
-  @override
-  @JsonKey(name: "prev_page_url")
-  dynamic get prevPageUrl;
-  @override
-  @JsonKey(name: "to")
-  int? get to;
-  @override
-  @JsonKey(name: "total")
-  int? get total;
 
   /// Create a copy of SavedProducts
   /// with the given fields replaced by the non-null parameter values.

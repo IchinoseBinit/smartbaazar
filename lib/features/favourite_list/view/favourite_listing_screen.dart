@@ -81,7 +81,8 @@ class FavouriteListingScreen extends ConsumerStatefulWidget {
   const FavouriteListingScreen({super.key, this.scrollController});
 
   @override
-  ConsumerState<FavouriteListingScreen> createState() => _FavouriteListingScreenState();
+  ConsumerState<FavouriteListingScreen> createState() =>
+      _FavouriteListingScreenState();
 }
 
 class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
@@ -90,13 +91,13 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
   List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
 
   bool isLoading = false;
-    int pageNum = 1;
+  int pageNum = 1;
 
-
-   List<FavouriteProduct> favouriteList = [];
+  List<FavouriteProduct> favouriteList = [];
 
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       if (!isLoading) {
         // If we're not already loading, increment the page number and fetch more data
         setState(() {
@@ -106,7 +107,8 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
       }
     }
   }
-     Future<void> fetchFavouriteData() async {
+
+  Future<void> fetchFavouriteData() async {
     setState(() {
       isLoading = true;
     });
@@ -126,7 +128,6 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
       print('Error fetching data: $e');
     }
   }
-
 
   bool _isPopupVisible = false;
   int currentPageIndex = 0;
@@ -212,8 +213,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
       'screen': const EventsScreen()
     },
   ];
-    ScrollController _scrollController = ScrollController();
-
+  ScrollController _scrollController = ScrollController();
 
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -226,7 +226,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
 
   @override
   void initState() {
-      fetchFavouriteData(); // Initial data fetch
+    fetchFavouriteData(); // Initial data fetch
     _scrollController.addListener(_scrollListener); // Add scroll listener
     _loadUserId(); // print('binod ${SmartClient.laravelsession}');
     shared();
@@ -325,13 +325,14 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
 
   @override
   void dispose() {
-        _scrollController.removeListener(_scrollListener); // Clean up scroll listener
+    _scrollController
+        .removeListener(_scrollListener); // Clean up scroll listener
 
     dynamictabController.dispose();
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
-        _scrollController.dispose();
+    _scrollController.dispose();
 
     // _scrollController.dispose();
     // super.dispose();s
@@ -345,7 +346,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
       try {
         final stories = await ref.watch(searchstoryapiProvider(query).future);
 
-        if (stories == null || 
+        if (stories == null ||
             stories.data == null ||
             stories.data.home_story == null) {
           throw Exception("No data available");
@@ -388,10 +389,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
         _services.map((e) => e['label'] as String).toList();
     final asyncHomeStoryContent = ref.watch(getHomeStoryProvider);
 
-
     final AsyncValue<HomePosts> homePostsData = ref.watch(homePostsProvider);
-
-
 
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -431,470 +429,468 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
         },
         child: Stack(
           children: [
-            CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverPersistentHeader(
-                    pinned: true,
-                    floating: true,
-                    delegate: StickyHeaderDelegate(
-                        visible: isSliverAppBarVisible,
-                        searchController: _searchController,
-                        onchanged: (value) {
-                          print('value $value');
-                        },
-                        dropdownValueNotifier: dropdownValueNotifier,
-                        filteredSuggestions: [])),
-                if (isSliverAppBarVisible)
-                  SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      expandedHeight: 150.h,
-                      floating: false,
-                      pinned: false,
-                      flexibleSpace: AnimatedContainer(
-                        padding: EdgeInsets.zero,
-                        duration: const Duration(milliseconds: 150),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  // Color(0xFF681b4e),
-                                  // Color(0xFF392574),
-                                  // Color(0xFF681b4e),
-                                  Color(0xff651c50),
-                                  Color(0xff54225f),
-                                  // Color(0xFF392574).
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              SizedBox(
-                                height: 55.h,
-                                child: PageView.builder(
-                                  itemCount: _items.length,
-                                  padEnds: false,
-                                  controller: _pageController,
-                                  onPageChanged: (value) {
-                                    ref
-                                        .read(_selectedIndexProvider.notifier)
-                                        .state = value;
-                                  },
-                                  itemBuilder: (context, index) {
-                                    Map<String, dynamic> data = _items[index];
-
-                                    // Highlight only when index == 4
-                                    bool isActive = index == 1;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                      },
-                                      child: AnimatedContainer(
-                                        margin: EdgeInsets.only(left: 16.w),
-                                        padding: EdgeInsets.zero,
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        alignment: Alignment.center,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      data['screen']),
-                                            );
-                                          },
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (data['icon']
-                                                  .toString()
-                                                  .endsWith('.svg'))
-                                                SvgPicture.asset(
-                                                  data['icon'],
-                                                  alignment: Alignment.center,
-                                                  fit: BoxFit.contain,
-                                                  theme: const SvgTheme(
-                                                      currentColor:
-                                                          Color(0xffdd9d9d9)),
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                  width: 20,
-                                                  height: 20,
-                                                )
-                                              else
-                                                Image.asset(
-                                                  data['icon'],
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                  width: 20,
-                                                  height: 20,
-                                                ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                data['label'],
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Image.asset(
-                                  height: 60.h,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  'assets/images/circle.png')
-                            ],
-                          ),
-                        ),
-                      )),
-                // SliverToBoxAdapter(
-                //   child: Container(),
-                // ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 11, top: 11),
-                    child: GestureDetector(
-                      onVerticalDragUpdate: _onDragUpdate,
-                      onTap: () {
-                        setState(() {
-                          isSliverAppBarVisible = !isSliverAppBarVisible;
-                        });
+            CustomScrollView(controller: _scrollController, slivers: [
+              SliverPersistentHeader(
+                  pinned: true,
+                  floating: true,
+                  delegate: StickyHeaderDelegate(
+                      visible: isSliverAppBarVisible,
+                      searchController: _searchController,
+                      onchanged: (value) {
+                        print('value $value');
                       },
-                      child: Center(
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          height: 7.h,
-                          width: 60.w,
-                          decoration: BoxDecoration(
-                              color: const Color(0xff651c50),
-                              borderRadius: BorderRadius.circular(5)),
+                      dropdownValueNotifier: dropdownValueNotifier,
+                      filteredSuggestions: [])),
+              if (isSliverAppBarVisible)
+                SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    expandedHeight: 150.h,
+                    floating: false,
+                    pinned: false,
+                    flexibleSpace: AnimatedContainer(
+                      padding: EdgeInsets.zero,
+                      duration: const Duration(milliseconds: 150),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40),
+                              bottomRight: Radius.circular(40)),
+                          gradient: LinearGradient(
+                              colors: [
+                                // Color(0xFF681b4e),
+                                // Color(0xFF392574),
+                                // Color(0xFF681b4e),
+                                Color(0xff651c50),
+                                Color(0xff54225f),
+                                // Color(0xFF392574).
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (_isPopupVisible)
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: StorySearchBar(
-                        searchcontroller: _storysearchcontroller,
-                        onsearchpressed: () {
-                          _searchStories(_storysearchcontroller.text);
-                        },
-                        unchanged: (value) {
-                          if (value.isEmpty) {
-                            setState(() {
-                              _storysearchresult = []; // ✅ Clear list if empty
-                            });
-                          }
-                        },
-                        onsubmitted: _searchStories,
-                        onClose: () {
-                          setState(() {
-                            _isPopupVisible =
-                                !_isPopupVisible; // Close the popup
-
-                            _storysearchresult = []; // ✅ Clear list if empty
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 145.h,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _isPopupVisible = !_isPopupVisible;
-                                  });
-                                },
-                                child: Stack(
-                                  clipBehavior: Clip.none,
-                                  alignment: Alignment.center,
-                                  children: [
-                                    // Outer Circle
-                                    Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(4, (index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      ref
+                                          .read(_selectedIndexProvider.notifier)
+                                          .state = index;
+                                      _pageController.animateToPage(
+                                        index,
+                                        duration:
+                                            const Duration(milliseconds: 50),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 5.h,
+                                      width: 5.w,
                                       margin:
                                           EdgeInsets.symmetric(horizontal: 5.w),
-                                      width: 95.r,
-                                      height: 95.r,
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 3.w,
-                                          color: const Color(0xffEACACB),
-                                        ),
+                                        color: selectedIndex == index
+                                            ? Colors.amber
+                                            : Colors.grey,
                                         shape: BoxShape.circle,
                                       ),
                                     ),
-
-                                    // Vendor Image
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 38.r,
-                                        backgroundColor: const Color(0x7F7F7F73)
-                                            .withOpacity(0.45),
-                                        backgroundImage:
-                                            NetworkImage(SmartClient.userPhoto),
-                                      ),
-                                    ),
-
-                                    // Vendor Name - Adjusted Position
-                                    Positioned(
-                                      left: 10.w,
-                                      bottom: -25
-                                          .h, // Adjust bottom value to create more space
-                                      child: SizedBox(
-                                        width: 100.w,
-                                        child: Text(
-                                          SmartClient.userName ?? 'search',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 11.sp,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Search Icon
-                                    Positioned(
-                                      bottom: -5.h,
-                                      right: 0,
-                                      left: 0,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        padding: EdgeInsets.all(2.r),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: const Color(0xffAA0018),
-                                          size: 24.r,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  );
+                                }),
                               ),
-                            ],
-                          ),
-                          _storysearchresult.isNotEmpty
-                              ? ListView.builder(
-                                  padding: EdgeInsets.only(left: 3.w),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _storysearchresult.length,
-                                  itemBuilder: (context, index) {
-                                    final mysearchstory =
-                                        _storysearchresult[index];
-                                    // print('lamta ${_storysearchresult.l}');
-                                    return FeedStoryAddWidget(
-                                      productid: mysearchstory.id!,
-                                      index: index,
-                                      vendorName: _storysearchresult[index].vendorName ??
-                                          "Unknown Vendor",
-                                      vendorImage:_storysearchresult[index].vendorImage ??
-                                          "https://example.com/default-image.png",
-                                      storyCount: _storysearchresult[index].storyCount ?? 0,
-                                      showGift: _storysearchresult[index].hasSponsoredGifts ??
-                                          false,
-                                      feedStoryContent: _storysearchresponse!
-                                          .data.home_story!.story!,
-                                      userId: _storysearchresult[index].vendorId ?? '',
-                                    );
-                                  },
-                                )
-                              : asyncForYouStoryContent.when(
-                                  data: (feedStoryData) {
-                                    final feedStoryContent =
-                                        feedStoryData.data?.feedstory;
-                                    final posts = feedStoryContent?.posts ?? [];
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            SizedBox(
+                              height: 55.h,
+                              child: PageView.builder(
+                                itemCount: _items.length,
+                                padEnds: false,
+                                controller: _pageController,
+                                onPageChanged: (value) {
+                                  ref
+                                      .read(_selectedIndexProvider.notifier)
+                                      .state = value;
+                                },
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> data = _items[index];
 
-                                    return posts.isNotEmpty
-                                        ? ListView.builder(
-                                            padding: EdgeInsets.only(left: 3.w),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: posts.length,
-                                            itemBuilder: (context, index) {
-                                              final story = posts[index];
-                                              return FeedStoryAddWidget(
-                                                productid: story.id!,
-                                                index: index,
-                                                vendorName: story.vendorName ??
-                                                    "Unknown Vendor",
-                                                vendorImage: story
-                                                        .vendorImage ??
-                                                    "https://example.com/default-image.png",
-                                                storyCount:
-                                                    story.storyCount ?? 0,
-                                                showGift:
-                                                    story.hasSponsoredGifts ??
-                                                        false,
-                                                feedStoryContent:
-                                                    feedStoryContent!,
-                                                userId: story.vendorId ?? '',
-                                              );
-                                            },
-                                          )
-                                        : const Center(
-                                            child:
-                                                Text("No stories available"));
-                                  },
-                                  loading: () => SizedBox(
-                                    height: 40.h,
-                                    child: ListView.builder(
+                                  // Highlight only when index == 4
+                                  bool isActive = index == 1;
+                                  return GestureDetector(
+                                    onTap: () {
+                                      ref
+                                          .read(_selectedIndexProvider.notifier)
+                                          .state = index;
+                                    },
+                                    child: AnimatedContainer(
+                                      margin: EdgeInsets.only(left: 16.w),
                                       padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: 5,
-                                      itemBuilder: (_, __) => Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Shimmer.fromColors(
-                                          baseColor: Colors.grey[300]!,
-                                          highlightColor: Colors.grey[100]!,
-                                          child: Container(
-                                            width: 80,
-                                            height: 50,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.white,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      alignment: Alignment.center,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    data['screen']),
+                                          );
+                                        },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            if (data['icon']
+                                                .toString()
+                                                .endsWith('.svg'))
+                                              SvgPicture.asset(
+                                                data['icon'],
+                                                alignment: Alignment.center,
+                                                fit: BoxFit.contain,
+                                                theme: const SvgTheme(
+                                                    currentColor:
+                                                        Color(0xffdd9d9d9)),
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                                width: 20,
+                                                height: 20,
+                                              )
+                                            else
+                                              Image.asset(
+                                                data['icon'],
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                                width: 20,
+                                                height: 20,
+                                              ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              data['label'],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: isActive
+                                                    ? Colors.amber
+                                                    : const Color(0xffD9D9D9)
+                                                        .withOpacity(0.5),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  error: (error, _) => SizedBox(
-                                    height: 60.h,
-                                    child: Center(
-                                      child: Text(
-                                        error
-                                                .toString()
-                                                .contains('Session has expired')
-                                            ? 'Please log in again.'
-                                            : 'Error: $error',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                        ],
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Image.asset(
+                                height: 60.h,
+                                width: double.infinity,
+                                color: Colors.white,
+                                'assets/images/circle.png')
+                          ],
+                        ),
+                      ),
+                    )),
+              // SliverToBoxAdapter(
+              //   child: Container(),
+              // ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 11, top: 11),
+                  child: GestureDetector(
+                    onVerticalDragUpdate: _onDragUpdate,
+                    onTap: () {
+                      setState(() {
+                        isSliverAppBarVisible = !isSliverAppBarVisible;
+                      });
+                    },
+                    child: Center(
+                      child: Container(
+                        alignment: AlignmentDirectional.center,
+                        height: 7.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                            color: const Color(0xff651c50),
+                            borderRadius: BorderRadius.circular(5)),
                       ),
                     ),
                   ),
                 ),
+              ),
+              if (_isPopupVisible)
                 SliverToBoxAdapter(
-                  child:Column(
-                    children: [
-                             ...favouriteList.map((product) {
-              return ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        if (index >= favouriteList.length) {
-                          // Prevent accessing out-of-bounds index
-                          return const SizedBox.shrink();
-                        }
-                        final item = favouriteList[index];
-                        return FavouriteListProductDetails(item: item);
+                  child: Center(
+                    child: StorySearchBar(
+                      searchcontroller: _storysearchcontroller,
+                      onsearchpressed: () {
+                        _searchStories(_storysearchcontroller.text);
                       },
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 16.h,
-                      ),
-                      itemCount: favouriteList.length,
-                    );
-            }).toList(),
-            if (isLoading) CircularProgressIndicator(), // Show loading indicator at the bottom
-                    ],
-                  ) ,
-                )
+                      unchanged: (value) {
+                        if (value.isEmpty) {
+                          setState(() {
+                            _storysearchresult = []; // ✅ Clear list if empty
+                          });
+                        }
+                      },
+                      onsubmitted: _searchStories,
+                      onClose: () {
+                        setState(() {
+                          _isPopupVisible = !_isPopupVisible; // Close the popup
 
-              ]
-            ),
+                          _storysearchresult = []; // ✅ Clear list if empty
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 145.h,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _isPopupVisible = !_isPopupVisible;
+                                });
+                              },
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.center,
+                                children: [
+                                  // Outer Circle
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.w),
+                                    width: 95.r,
+                                    height: 95.r,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 3.w,
+                                        color: const Color(0xffEACACB),
+                                      ),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+
+                                  // Vendor Image
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 38.r,
+                                      backgroundColor: const Color(0x7F7F7F73)
+                                          .withOpacity(0.45),
+                                      backgroundImage:
+                                          NetworkImage(SmartClient.userPhoto),
+                                    ),
+                                  ),
+
+                                  // Vendor Name - Adjusted Position
+                                  Positioned(
+                                    left: 10.w,
+                                    bottom: -25
+                                        .h, // Adjust bottom value to create more space
+                                    child: SizedBox(
+                                      width: 100.w,
+                                      child: Text(
+                                        SmartClient.userName ?? 'search',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Search Icon
+                                  Positioned(
+                                    bottom: -5.h,
+                                    right: 0,
+                                    left: 0,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: EdgeInsets.all(2.r),
+                                      child: Icon(
+                                        Icons.search,
+                                        color: const Color(0xffAA0018),
+                                        size: 24.r,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        _storysearchresult.isNotEmpty
+                            ? ListView.builder(
+                                padding: EdgeInsets.only(left: 3.w),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _storysearchresult.length,
+                                itemBuilder: (context, index) {
+                                  final mysearchstory =
+                                      _storysearchresult[index];
+                                  // print('lamta ${_storysearchresult.l}');
+                                  return FeedStoryAddWidget(
+                                    productid: mysearchstory.id!,
+                                    index: index,
+                                    vendorName:
+                                        _storysearchresult[index].vendorName ??
+                                            "Unknown Vendor",
+                                    vendorImage: _storysearchresult[index]
+                                            .vendorImage ??
+                                        "https://example.com/default-image.png",
+                                    storyCount:
+                                        _storysearchresult[index].storyCount ??
+                                            0,
+                                    showGift: _storysearchresult[index]
+                                            .hasSponsoredGifts ??
+                                        false,
+                                    feedStoryContent: _storysearchresponse!
+                                        .data.home_story!.story!,
+                                    userId:
+                                        _storysearchresult[index].vendorId ??
+                                            '',
+                                  );
+                                },
+                              )
+                            : asyncForYouStoryContent.when(
+                                data: (feedStoryData) {
+                                  final feedStoryContent =
+                                      feedStoryData.data?.feedstory;
+                                  final posts = feedStoryContent?.posts ?? [];
+
+                                  return posts.isNotEmpty
+                                      ? ListView.builder(
+                                          padding: EdgeInsets.only(left: 3.w),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: posts.length,
+                                          itemBuilder: (context, index) {
+                                            final story = posts[index];
+                                            return FeedStoryAddWidget(
+                                              productid: story.id!,
+                                              index: index,
+                                              vendorName: story.vendorName ??
+                                                  "Unknown Vendor",
+                                              vendorImage: story.vendorImage ??
+                                                  "https://example.com/default-image.png",
+                                              storyCount: story.storyCount ?? 0,
+                                              showGift:
+                                                  story.hasSponsoredGifts ??
+                                                      false,
+                                              feedStoryContent:
+                                                  feedStoryContent!,
+                                              userId: story.vendorId ?? '',
+                                            );
+                                          },
+                                        )
+                                      : const Center(
+                                          child: Text("No stories available"));
+                                },
+                                loading: () => SizedBox(
+                                  height: 40.h,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemBuilder: (_, __) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Shimmer.fromColors(
+                                        baseColor: Colors.grey[300]!,
+                                        highlightColor: Colors.grey[100]!,
+                                        child: Container(
+                                          width: 80,
+                                          height: 50,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                error: (error, _) => SizedBox(
+                                  height: 60.h,
+                                  child: Center(
+                                    child: Text(
+                                      error
+                                              .toString()
+                                              .contains('Session has expired')
+                                          ? 'Please log in again.'
+                                          : 'Error: $error',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    ...favouriteList.map((product) {
+                      return ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          if (index >= favouriteList.length) {
+                            // Prevent accessing out-of-bounds index
+                            return const SizedBox.shrink();
+                          }
+                          final item = favouriteList[index];
+                          return FavouriteListProductDetails(item: item);
+                        },
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 16.h,
+                        ),
+                        itemCount: favouriteList.length,
+                      );
+                    }).toList(),
+                    if (isLoading)
+                      CircularProgressIndicator(), // Show loading indicator at the bottom
+                  ],
+                ),
+              )
+            ]),
             valuenotifilersidebutton(
                 showSideBar: showSideBar, isSectionsVisible: true),
             Positioned(
@@ -942,9 +938,8 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FavouriteListingScreen(
-                              
-                                  ),
+                                  builder: (context) =>
+                                      FavouriteListingScreen(),
                                 ),
                               );
                             } else {
