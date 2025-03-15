@@ -53,8 +53,9 @@ class _OnlineTransactionRecordScreenState
             data: (transactionData) {
               final allTransactions = transactionData.data!.allPayments;
               final holdTransactions = transactionData.data!.holdPayments;
-              final releaseTransactions =
-                  transactionData.data!.releasePayments!.cast<Payment>();
+             final releaseTransactions = transactionData.data!.releasePayments!
+    .map((e) => Payment.fromJson(e as Map<String, dynamic>))
+    .toList();
 
               return Column(
                 children: [

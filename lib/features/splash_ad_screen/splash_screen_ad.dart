@@ -117,7 +117,7 @@ class _AdSplashScreenState extends ConsumerState<AdSplashScreen> {
             Center(
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
-                fit: BoxFit.cover,
+                
                 placeholder: (context, url) => Image.asset(
                   'assets/images/preloader.gif',
                   width: 150.w,
