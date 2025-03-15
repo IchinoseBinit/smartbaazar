@@ -223,7 +223,7 @@ class _BuyerAccountDetailsWidgetState
             ? jsonEncode({
                 'location': selectedLocation!.description,
                 'latitude': selectedLocation!.latitude,
-                'longitude': selectedLocation!.longitude,
+                'longitude': selectedLocation!.longitude, 
               })
             : null,
       );

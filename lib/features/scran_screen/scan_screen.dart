@@ -268,6 +268,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
         /// 2. Update `_card` inside `setState`
         setState(() {
           _card = BigContainer(
+            membershipid: int.tryParse(value.data?.vendor_card?.membership_id?? '1')?? 1,
             onconnectclicked: () {
               
             },
@@ -276,7 +277,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             key: GlobalKey(),
             lat: double.tryParse(value.data!.vendor_card!.latitude ?? '0')!,
             long: double.tryParse(value.data!.vendor_card!.longitude ?? '0')!,
-            id: value.data!.vendor_card!.membership_id!,
+            vendorid: value.data!.vendor_card!.membership_id!,
             title: value.data!.vendor_card!.name!,
             logo: value.data!.vendor_card!.photo!,
             contact: value.data!.vendor_card!.phone!,

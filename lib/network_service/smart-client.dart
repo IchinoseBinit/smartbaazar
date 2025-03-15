@@ -5,6 +5,7 @@ import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/api/refresh_token_api.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -125,8 +126,11 @@ class SmartClient {
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.remove('accessToken');
     await prefs.remove('refreshToken');
+    await prefs.clear();
+  
   }
 
   Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
@@ -194,9 +198,7 @@ class SmartClient {
         return _client
             .post(url,
                 data: parameter,
-                options: Options(
-                  
-                  headers: {
+                options: Options(headers: {
                   ...mergedHeaders,
                   'Content-Type': 'multipart/form-data'
                 }))

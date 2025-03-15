@@ -1,4 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:firebase_core/firebase_core.dart';
@@ -11,9 +14,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_now_screen/view/buy_now_screen.dart';
@@ -27,6 +32,7 @@ import 'package:smartbazar/features/hot_deals/view/hot_vew_screen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
+import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
@@ -45,11 +51,14 @@ import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/apply_sponsorship_price_screen.dart';
+import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
@@ -111,14 +120,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   // Future<void> getss() async {
   //   SharedPreferences stf = await SharedPreferences.getInstance();
-  //   var _a=jsonDecode(stf.getString('session')!);
-  //   print('bibash ${_a['result']['username']}');
+    
+  //   // Get the session string safely
+  //   String? sessionData = stf.getString('session');
+    
+  //   if (sessionData != null && sessionData.isNotEmpty) {
+  //     try {
+  //       var _a = jsonDecode(sessionData);
+        
+  //       // Ensure SmartClient.userPhoto is updated only when necessary
+  //       if (SmartClient.userPhoto.isEmpty && _a['result']['photo_url'] != null) {
+  //         SmartClient.userPhoto = _a['result']['photo_url'];
+  //       }
+  //     } catch (e) {
+  //       print('Error decoding session data: $e');
+  //     }
+  //   }
   // }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+  //  getss();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //  print('pinky ${SmartClient.}');
     return ScreenUtilInit(
       designSize: const Size(430, 690),
       splitScreenMode: true,
@@ -129,16 +162,22 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SplashScreen()),
+          home:SplashScreen()
+          ) 
     );
-    // home: SplashScreen()));
+    // home: SplashScreen())); bhaktapur
   }
-} //123
-//9810443212
+} //123 dell
+// //9810443212
+// Redmi note 1 has the feature of long and and things like wifi is there
+// Phone
 
-//9844543322
-// 120
-// 12
+// Near darbar marga nepal
+// // wwww.google.com
+// //9844543322 bhaktapur
+// // 12.90
+// // 12.9
+// //7 bhaktapur
 
 class ImageConvert extends StatefulWidget {
   const ImageConvert({super.key});

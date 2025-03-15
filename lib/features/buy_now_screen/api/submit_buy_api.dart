@@ -55,6 +55,7 @@ Future<bool> buynowsubmit(
   String parcelCategoryId,
   double weight,
   String payer,
+  String? paymentid
 ) async {
   final SmartClient client = SmartClient();
 
@@ -109,6 +110,7 @@ Future<bool> buynowsubmit(
         "weight": weight.toString(),
         "payer": payer,
         "intermediate_coordinates": "", // Empty if no intermediate coordinates
+        'ui':paymentid
       },
     );
 

@@ -17,6 +17,7 @@ class DisputesScreen extends ConsumerWidget {
 
     return GenericSafeArea(
       child: Scaffold(
+         resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h),

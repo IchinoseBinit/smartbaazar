@@ -24,7 +24,7 @@ class MessageViewScreen extends ConsumerWidget {
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
-        //  initialIndex: 1,
+         initialIndex: 1,
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
@@ -40,6 +40,10 @@ class MessageViewScreen extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   DropdownButton<String>(
+                    // icon: Icon(Icons.more_horiz_outlined),
+                    // hint: Icon(Icons.more_horiz_outlined),
+
+                    //   icon: Icon(Icons.more_horiz_outlined),
                     underline: const SizedBox(),
                     padding: EdgeInsets.zero,
                     borderRadius: BorderRadius.zero,
@@ -74,7 +78,7 @@ class MessageViewScreen extends ConsumerWidget {
               ),
               SizedBox(height: 11.h),
               Text(
-                'Previous Message',
+                'Previous Message/Alerts',
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w700,
@@ -91,6 +95,7 @@ class MessageViewScreen extends ConsumerWidget {
                       builder: (context, ref, _) {
                         final messageThreadProvider = ref.watch(
                             getMessageThreadProvider(filter: currentfilter));
+
                         return messageThreadProvider.when(
                           data: (messageThread) {
                             final messages = messageThread.result!.data;
@@ -104,53 +109,67 @@ class MessageViewScreen extends ConsumerWidget {
                                     final lastMessageAsync = ref.watch(
                                         getLastMessageProvider(
                                             message.id.toString()));
+
                                     return lastMessageAsync.when(
-                                        data: (lastMessage) {
-                                          return ListOfMessages(
-                                            threadId: message.id.toString(),
-                                            postId: message.postId.toString(),
-                                            subject: message.subject!,
-                                            isImportant: message.isImportant!,
-                                            body: lastMessage?.body ??
-                                                'No messages yet',
-                                          );
-                                        },
-                                        loading: () => Center(
-                                              child: Shimmer.fromColors(
-                                                baseColor: Colors.grey[300]!,
-                                                highlightColor:
-                                                    Colors.grey[100]!,
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(horizontal: 8),
-                                                  width: 40.w,
-                                                  height: 100.h,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                ),
-                                              ),
+                                      data: (lastMessage) {
+                                        return ListOfMessages(
+                                          threadId: message.id.toString(),
+                                          postId: message.postId.toString(),
+                                          subject: message.subject!,
+                                          isImportant: message.isImportant!,
+                                          body: lastMessage?.body ??
+                                              'No messages yet',
+                                        );
+                                      },
+                                      loading: () => Center(
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            width: 40.w,
+                                            height: 100.h,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                        error: (error, stack) {
-                                          ref
-                                              .read(messageFilterStateProvider
-                                                  .notifier)
-                                              .updateFilter(
-                                                  'unread'); // Update the filter
-
-                                          // ref.refresh(messageFilterStateProvider
-                                          //     .notifier);
+                                          ),
+                                        ),
+                                      ),
+                                      error: (error, stack) {
+                                        // Invalidate and refresh the provider automatically
+                                        Future.delayed(Duration.zero, () {
                                           ref.invalidate(
-                                              messageFilterStateProvider);
-
-                                          return InkWell(
-                                              onTap: () => const LoginScreen(),
-                                              child: const Text(
-                                                  'Login/Try changing message type'));
+                                              getMessageThreadProvider);
+                                          ref.invalidate(
+                                              getLastMessageProvider);
                                         });
+
+                                        return InkWell(
+                                          onTap: () => ref.invalidate(
+                                              getMessageThreadProvider),
+                                          child: Center(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(Icons.refresh,
+                                                    color: Colors.black,
+                                                    size: 30), // Refresh Icon
+                                                SizedBox(height: 8), // Spacing
+                                                const Text(
+                                                  'Tap to refresh',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                 );
                               },
@@ -174,11 +193,27 @@ class MessageViewScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          error: (error, stack) => const InkWell(
-                              child: Center(child: Text('Please login again'))),
+                          error: (error, stack) {
+                            // Auto refresh when an error occurs
+                            Future.delayed(Duration.zero, () {
+                              ref.invalidate(getMessageThreadProvider);
+                            });
+
+                            return InkWell(
+                              onTap: () =>
+                                  ref.invalidate(getMessageThreadProvider),
+                              child: Center(
+                                child: const Text(
+                                  'Error loading messages. Tap to retry.',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
+
                     Consumer(
                       builder: (context, ref, _) {
                         final alertProvider =
@@ -193,87 +228,82 @@ class MessageViewScreen extends ConsumerWidget {
                               itemBuilder: (context, index) {
                                 final alert = alerts[index];
                                 return Container(
-                                  padding: EdgeInsets.all(16.w),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // Alert Icon and Title
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.notifications,
-                                            color:
-                                                Colors.green.withOpacity(0.9),
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Expanded(
-                                            child: Text(
-                                              alert.title ?? 'No title',
-                                              style: TextStyle(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                      SizedBox(
+                                        height: 50.h,
+                                        width: 280.w,
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              radius:
+                                                  25, // Adjust size as needed
+                                              backgroundColor:
+                                                  const Color(0xffD9D9D9),
+                                              backgroundImage: NetworkImage(
+                                                alert.image ??
+                                                    "https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png",
                                               ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              softWrap: true,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10.h),
+                                            SizedBox(width: 11.w),
 
-                                      // Alert Body Text
-                                      Text(
-                                        alert.body ?? 'No body',
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: Colors.black.withOpacity(0.8),
-                                        ),
-                                        maxLines: 5,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
-                                      ),
-                                      SizedBox(height: 20.h),
-
-                                      // Promotional Image
-                                      if (alert.image != null)
-                                        Center(
-                                          child: Image.network(
-                                            alert.image!,
-                                            fit: BoxFit.cover,
-                                            height: 100.h,
-                                            width: 180.h,
-                                          ),
-                                        ),
-                                      SizedBox(height: 20.h),
-
-                                      // Date and Time Row
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            alert.createdAt!,
-                                            style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
+                                            // Text Column
+                                            Flexible(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    alert.title!.length > 30
+                                                        ? alert.title!
+                                                                .substring(
+                                                                    0, 30) +
+                                                            '...'
+                                                        : alert.title!,
+                                                    style: TextStyle(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      overflow: TextOverflow
+                                                          .ellipsis, // Make sure overflow happens after applying the condition
+                                                    ),
+                                                    maxLines: 1,
+                                                  ),
+                                                  SizedBox(height: 4.h),
+                                                  Text(
+                                                    alert.body!.length > 30
+                                                        ? alert.body!.substring(
+                                                                0, 30) +
+                                                            '...'
+                                                        : alert.body!,
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      color: const Color(
+                                                              0xff000000)
+                                                          .withOpacity(0.45),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                    maxLines: 2,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(right: 5.w),
+                                        height: 12.h,
+                                        width: 12.w,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xff781740),
+                                        ),
                                       ),
                                     ],
                                   ),

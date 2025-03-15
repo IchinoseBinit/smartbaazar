@@ -293,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       try {
         final stories = await ref.watch(searchstoryapiProvider(query).future);
 
-        if (stories == null ||
+        if (stories == null || 
             stories.data == null ||
             stories.data.home_story == null) {
           throw Exception("No data available");
@@ -304,6 +304,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           _storysearchresult = stories.data.home_story.story.posts ?? [];
         });
       } catch (e) {
+        setState(() {});
         debugPrint("Error loading stories: $e");
       }
     }
@@ -609,6 +610,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   SliverToBoxAdapter(
                     child: Center(
                       child: StorySearchBar(
+                        searchcontroller: _storysearchcontroller,
+                        onsearchpressed: () {
+                          _searchStories(_storysearchcontroller.text);
+                        },
                         unchanged: (value) {
                           if (value.isEmpty) {
                             setState(() {
@@ -616,12 +621,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             });
                           }
                         },
-                        searchcontroller: _storysearchcontroller,
                         onsubmitted: _searchStories,
                         onClose: () {
                           setState(() {
                             _isPopupVisible =
                                 !_isPopupVisible; // Close the popup
+
+                            _storysearchresult = []; // ✅ Clear list if empty
                           });
                         },
                       ),
@@ -727,21 +733,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _storysearchresult.length,
                                   itemBuilder: (context, index) {
-                                    final searchstory =
+                                    final mysearchstory =
                                         _storysearchresult[index];
                                     // print('lamta ${_storysearchresult.l}');
                                     return FeedStoryAddWidget(
+                                      productid: mysearchstory.id!,
                                       index: index,
-                                      vendorName: searchstory.vendorName ??
+                                      vendorName: _storysearchresult[index].vendorName ??
                                           "Unknown Vendor",
-                                      vendorImage: searchstory.vendorImage ??
+                                      vendorImage:_storysearchresult[index].vendorImage ??
                                           "https://example.com/default-image.png",
-                                      storyCount: searchstory.storyCount ?? 0,
-                                      showGift: searchstory.hasSponsoredGifts ??
+                                      storyCount: _storysearchresult[index].storyCount ?? 0,
+                                      showGift: _storysearchresult[index].hasSponsoredGifts ??
                                           false,
                                       feedStoryContent: _storysearchresponse!
                                           .data.home_story!.story!,
-                                      userId: searchstory.vendorId ?? '',
+                                      userId: _storysearchresult[index].vendorId ?? '',
                                     );
                                   },
                                 )
@@ -760,6 +767,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             itemBuilder: (context, index) {
                                               final story = posts[index];
                                               return FeedStoryAddWidget(
+                                                productid: story.id!,
                                                 index: index,
                                                 vendorName: story.vendorName ??
                                                     "Unknown Vendor",
@@ -864,6 +872,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     Buynowmodel resp = data.buynow[index];
 
                                     return buyorwin_widget(
+                                      ref: ref,
+                                      postid: resp.post_id!,
                                       vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,
@@ -2085,8 +2095,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               refresh();
                                             },
                                             productid: res.id,
-                                            lat: res.user.latitude,
-                                            long: res.user.longitude,
+                                            lat: res.latitude,
+                                            long: res.longitude,
                                             membershipid:
                                                 res.userDetail.membership_id,
                                             posttype: res.post_type_id,
@@ -2332,7 +2342,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                         Navigator.pop(context);
                       },
                       child: Icon(Icons.arrow_back_ios_rounded,
-                          size: screenWidth * 0.05))
+                          color: Colors.white, size: screenWidth * 0.05))
                   : Image.asset(
                       height: screenHeight * 0.05,
                       width: screenWidth * 0.1,
@@ -2502,8 +2512,8 @@ class valuenotifilersidebutton extends StatelessWidget {
                       ),
                       duration: const Duration(seconds: 2),
                       builder: (context, color, child) {
-                        if (SmartClient.token == "" &&
-                            SmartClient.userPhoto!.isEmpty) {
+                        if (SmartClient.token == "" ||
+                            SmartClient.userPhoto.isEmpty) {
                           return CircleAvatar(
                             child: Image.asset(
                                 'assets/images/Smartbazaar-Icon-for-QR.png'),

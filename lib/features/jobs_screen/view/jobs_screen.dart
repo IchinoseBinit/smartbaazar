@@ -316,6 +316,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -541,6 +542,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                      productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",
@@ -2103,6 +2105,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                                   Buynowmodel resp = data.buynow![index];
 
                                   return buyorwin_widget(
+                                    ref: ref,
+                                    postid: resp.post_id!,
                                     vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,

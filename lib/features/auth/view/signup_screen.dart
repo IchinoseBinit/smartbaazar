@@ -38,16 +38,20 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   String accept = '0';
 
   Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now(); // Get current date
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: selectedDate.isAfter(now)
+          ? now
+          : selectedDate, // Prevent invalid initialDate 9877654433 abhsdba@gmai.com binod123bb
+      firstDate: DateTime(1800, 8),
+      lastDate: now, // Set lastDate to today's date
+    );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
-      dateTimeController.text = selectedDate.toString();
       dateTimeController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
     }
   }
@@ -158,14 +162,63 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   SizedBox(
                     height: 20.h,
                   ),
-                  CustomTextFieldWidget(
-                    controller: genderController,
-                    icon: Icons.person_2_rounded,
-                    hintText: 'Sex',
-                    validator: (_) {
-                      return null;
+                  DropdownButtonFormField<String>(
+                    value: genderController.text.isEmpty
+                        ? null
+                        : genderController.text,
+                    onChanged: (String? newValue) {
+                      genderController.text =
+                          newValue ?? ''; // Update controller value
                     },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please select your gender'
+                        : null,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      filled: false,
+                      //  fillColor: true,
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(
+                            right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+                        child: Container(
+                          height: 50,
+                          width: 52,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 11.h),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: const Color(0xFFAEC5FF),
+                          ),
+                          child: Icon(Icons.person_2_rounded,
+                              color: const Color(0xff362677)),
+                        ),
+                      ),
+                      hintText: 'Sex',
+                      hintStyle: TextStyle(
+                        color: const Color(0xFFADADAD),
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    items: ['Male', 'Female', 'Other'].map((String gender) {
+                      return DropdownMenuItem<String>(
+                        value: gender,
+                        child: Text(gender),
+                      );
+                    }).toList(),
                   ),
+
+                  // CustomTextFieldWidget(
+                  //   controller: genderController,
+                  //   icon: Icons.person_2_rounded,
+                  //   hintText: 'Sex',
+                  //   validator: (_) {
+                  //     return null;
+                  //   },
+                  // ),
                   SizedBox(
                     height: 22.h,
                   ),
@@ -248,7 +301,21 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                 showAlertDialog(context);
                               }).onError(
                                 (error, stackTrace) {
-                                  return const Text('Fill up the ');
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Warning"),
+                                      content:
+                                          Text("Please fill info properly."),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("OK"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
                               );
                             }

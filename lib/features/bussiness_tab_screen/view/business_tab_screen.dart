@@ -175,9 +175,9 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
     );
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(selectedIndex!);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _pageController.jumpToPage(selectedIndex!);
+    // });
     super.initState();
     tabController = TabController(length: 7, vsync: this);
 
@@ -301,6 +301,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                     pinned: true,
                     floating: true,
                     delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                         visible: isSliverAppBarVisible,
                         searchController: _searchController,
                         onchanged: (value) {
@@ -311,7 +312,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                 if (isSliverAppBarVisible)
                   SliverAppBar(
                       automaticallyImplyLeading: false,
-                      expandedHeight: 90.h,
+                      expandedHeight: 150.h,
                       floating: false,
                       pinned: false,
                       flexibleSpace: AnimatedContainer(
@@ -335,37 +336,43 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                 end: Alignment.bottomRight),
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(4, (index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = index;
-                                      _pageController.animateToPage(
-                                        index,
-                                        duration:
-                                            const Duration(milliseconds: 50),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 5.h,
-                                      width: 5.w,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
-                                      decoration: BoxDecoration(
-                                        color: selectedIndex == index
-                                            ? Colors.amber
-                                            : Colors.grey,
-                                        shape: BoxShape.circle,
+                              Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(4, (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = index;
+                                        _pageController.animateToPage(
+                                          index,
+                                          duration:
+                                              const Duration(milliseconds: 50),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 5.h,
+                                        width: 5.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        decoration: BoxDecoration(
+                                          color: selectedIndex == index
+                                              ? Colors.amber
+                                              : Colors.grey,
+                                          shape: BoxShape.circle,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  }),
+                                ),
                               ),
                               SizedBox(
                                 height: 15.h,
@@ -394,6 +401,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             .state = index;
                                       },
                                       child: AnimatedContainer(
+                                        margin: EdgeInsets.only(left: 16.w),
                                         padding: EdgeInsets.zero,
                                         duration:
                                             const Duration(milliseconds: 300),
@@ -462,6 +470,11 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                               SizedBox(
                                 height: 10.h,
                               ),
+                              Image.asset(
+                                  height: 60.h,
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  'assets/images/circle.png')
                             ],
                           ),
                         ),
@@ -780,7 +793,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   return Column(
                     children: [
                       SizedBox(
-                        height: isSliverAppBarVisible ? 280.h : 200.h,
+                        height: isSliverAppBarVisible ? 335.h : 200.h,
                       ),
                       Expanded(
                         child: TabBarView(
@@ -797,7 +810,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     scrollDirection: Axis.vertical,
                                     child: Padding(
                                       padding:
-                                          const EdgeInsets.only(bottom: 30),
+                                          const EdgeInsets.only(bottom: 70),
                                       child: SingleChildScrollView(
                                         physics: const BouncingScrollPhysics(),
                                         scrollDirection: Axis
@@ -821,6 +834,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                         2) -
                                                     15, // Adjust width for two columns
                                                 child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Card(
                                                       clipBehavior:
@@ -995,7 +1012,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
+                                    padding: const EdgeInsets.only(bottom: 40),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.vertical,
                                       child: Column(
@@ -1011,6 +1028,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                             child: Container(
                                               color: Colors.white,
                                               child: BigContainer(
+                                                membershipid: int.tryParse(
+                                                        e.membershipId ??
+                                                            '1') ??
+                                                    1,
                                                 onconnectclicked: () {
                                                   ref.invalidate(
                                                       getSearchResponseProvider(
@@ -1031,7 +1052,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                 },
                                                 storycount:
                                                     e.storyCount.toString(),
-                                                id: e.vendorId!,
+                                                vendorid: e.vendorId!,
                                                 issubbed: e.subscribed == 1
                                                     ? true
                                                     : false,
@@ -1073,7 +1094,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(left: 2),
+                                    padding: const EdgeInsets.only(
+                                        left: 2, bottom: 40),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis
                                           .vertical, // Scroll vertically if needed
@@ -1257,7 +1279,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
+                                    padding: const EdgeInsets.only(bottom: 50),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis
                                           .vertical, // Scroll vertically if needed
@@ -1442,7 +1464,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
+                                    padding: const EdgeInsets.only(bottom: 50),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis
                                           .vertical, // Scroll vertically if needed
@@ -1627,7 +1649,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
+                                    padding: const EdgeInsets.only(bottom: 50),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis
                                           .vertical, // Scroll vertically if needed
@@ -1812,7 +1834,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                     ),
                                   )
                                 : Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
+                                    padding: const EdgeInsets.only(bottom: 50),
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis
                                           .vertical, // Scroll vertically if needed
@@ -1996,7 +2018,7 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                   );
                 },
                 error: (error, stackTrace) {
-                  return const Text('Internet not found');
+                  return const Text('Check your internet');
                 },
                 loading: () {
                   // Shimmer effect for loading state
@@ -2022,8 +2044,10 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                           ),
                         ),
                         SizedBox(
-                          height: 50.h,
+                          height: 70.h,
                         ),
+
+                        //  SizedBox(height: ,)
                       ],
                     ),
                   );

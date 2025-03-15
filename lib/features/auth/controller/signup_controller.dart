@@ -5,6 +5,7 @@ import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/features/auth/api/signup_api.dart';
 import 'package:smartbazar/features/auth/model/signup_model.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/otp_screen.dart';
 
 final singUpProvider = Provider<SignUpAPi>((ref) {
   return SignUpAPi();
@@ -43,7 +44,7 @@ class SignUpController extends StateNotifier<GenericState> {
           accept_marketing_offers: accept_marketing_offers);
       state = LoadedState<SignupModel>(response: singUpData);
       await Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+          context, MaterialPageRoute(builder: (_) => const OtpScreen()));
     } catch (e) {
       String errorMessage =
           "An unexpected error occurred."; // Default error message

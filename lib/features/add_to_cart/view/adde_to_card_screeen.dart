@@ -60,6 +60,31 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     }
   }
 
+  int getSubtotal(List<CartItem> cartItems, List<bool> selectedItems) {
+    print('Cart Items: $cartItems');
+    print('Selected Items: $selectedItems');
+
+    double total = 0.0;
+    List<CartItem> filteredCart = [];
+
+    for (int i = 0; i < cartItems.length; i++) {
+      if (selectedItems[i]) {
+        try {
+          int qty = int.parse(cartItems[i].qty.toString());
+          double price = double.parse(cartItems[i].price.toString());
+
+          filteredCart.add(cartItems[i]);
+          total += qty * price;
+        } catch (e) {
+          print("Error parsing qty or price for item ${cartItems[i].name}: $e");
+        }
+      }
+    }
+    return total.toInt();
+  }
+
+  // return 1;
+
   void proceedToCheckout(
     List<CartItem> cartItems,
     List<bool> selectedItems,
@@ -75,29 +100,28 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
     }
 
     if (selectedProductIds.isNotEmpty && selectedVendorIds.isNotEmpty) {
-      Navigator.push(
+      Navigator.push( 
         context,
         MaterialPageRoute(
-          builder: (_) => OrderDetailsScreen(
-            
+          builder: (_) => OrderDetailsScreen( 
             vendorphone: cartItems
                     .where(
                       (element) => element.id == selectedProductIds[0],
                     )
                     .first
                     .phone ??
-                '+977', 
+                '+977',
             vendorid: int.tryParse(cartItems.first.vendorId!)!,
             vendorname: cartItems.first.name,
             wiright: int.tryParse(cartItems
                     .where((element) => element.id == selectedProductIds[0])
                     .first
-                    .weight ?? 
-                '1')!,   
-            latitude: double.tryParse(cartItems 
+                    .weight ??
+                '1')!,
+            latitude: double.tryParse(cartItems
                     .where((element) => element.id == selectedProductIds[0])
                     .first
-                    .latitude) ?? 
+                    .latitude) ??
                 0.0,
             longitude: double.tryParse(cartItems
                     .where((element) => element.id == selectedProductIds[0])
@@ -110,7 +134,8 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
           ),
         ),
       );
-    } else { //9844076655
+    } else {
+      //9844076655
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select items to proceed')),
       );
@@ -209,6 +234,7 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartItemsAsyncValue = ref.watch(getCartItemProvider);
+
     return GenericSafeArea(
       child: Scaffold(
         // extendBody: true,
@@ -480,14 +506,23 @@ class _AddToCartScreenState extends ConsumerState<AddToCartScreen> {
                             color: const Color(0xff36383C),
                           ),
                         ),
-                        Text(
-                          'Rs $subtotal',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff36383C),
-                          ),
-                        ),
+                        cartItemsAsyncValue.when(
+                          data: (data) {
+                            return Text(
+                              'Rs ${getSubtotal(
+                                data['cart'] as List<CartItem>? ?? [],
+                                selectedItems,
+                              )}',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff36383C),
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) => Text(error.toString()),
+                          loading: () => CircularProgressIndicator(),
+                        )
                       ],
                     ),
                     GeneralTextButton(

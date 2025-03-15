@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screenshot/screenshot.dart';
@@ -567,731 +568,804 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
       Overlay.of(context).insert(overlayEntry!);
     }
 
-    return Scaffold(
-        key: _key,
-        extendBody: true,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollUpdateNotification &&
-                notification.metrics.axis == Axis.vertical) {
-              // Check if the scroll is vertical
-              // Check if the SliverAppBar is completely off-screen
-              if (notification.metrics.pixels > 100) {
-                if (isSliverAppBarVisible) {
-                  setState(() {
-                    isSliverAppBarVisible = false;
-                  });
-                  print("SliverAppBar disappeared");
-                }
-              } else {
-                if (!isSliverAppBarVisible) {
-                  setState(() {
-                    _isSectionsVisible = true;
-                    isSliverAppBarVisible = true;
-                  });
-                  print("SliverAppBar visible");
+    return WillPopScope(
+      onWillPop: () async {
+        bool exitApp = await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Exit App?"),
+            content: Text("Do you really want to exit?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text("No"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text("Yes"),
+              ),
+            ],
+          ),
+        );
+        return exitApp ?? false;
+      },
+      child: Scaffold(
+          key: _key,
+          extendBody: true,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollUpdateNotification &&
+                  notification.metrics.axis == Axis.vertical) {
+                // Check if the scroll is vertical
+                // Check if the SliverAppBar is completely off-screen
+                if (notification.metrics.pixels > 100) {
+                  if (isSliverAppBarVisible) {
+                    setState(() {
+                      isSliverAppBarVisible = false;
+                    });
+                    print("SliverAppBar disappeared");
+                  }
+                } else {
+                  if (!isSliverAppBarVisible) {
+                    setState(() {
+                      _isSectionsVisible = true;
+                      isSliverAppBarVisible = true;
+                    });
+                    print("SliverAppBar visible");
+                  }
                 }
               }
-            }
-            return true; // Allow the scroll event to propagate
-          },
-          child: Stack(
-            children: [
-              CustomScrollView(
-                controller:
-                    _customScrollController, // Attach to CustomScrollView
+              return true; // Allow the scroll event to propagate
+            },
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  controller:
+                      _customScrollController, // Attach to CustomScrollView
 
-                slivers: [
-                  SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: StickyHeaderDelegate(
-                          visible: isSliverAppBarVisible,
-                          searchController: _searchController,
-                          onchanged: (value) {
-                            print('value $value');
-                          },
-                          dropdownValueNotifier: dropdownValueNotifier,
-                          filteredSuggestions: [])),
-                  if (isSliverAppBarVisible)
-                    SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        expandedHeight: 90.h,
-                        floating: false,
-                        pinned: false,
-                        flexibleSpace: AnimatedContainer(
-                          padding: EdgeInsets.zero,
-                          duration: const Duration(milliseconds: 150),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(40),
-                                  bottomRight: Radius.circular(40)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    // Color(0xFF681b4e),
-                                    // Color(0xFF392574),
-                                    // Color(0xFF681b4e),
-                                    Color(0xff651c50),
-                                    Color(0xff54225f),
-                                    // Color(0xFF392574).
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                SizedBox(
-                                  height: 15.h,
-                                ),
-                                SizedBox(
-                                  height: 55.h,
-                                  child: PageView.builder(
-                                    itemCount: _items.length,
-                                    padEnds: false,
-                                    controller: _pageController,
-                                    onPageChanged: (value) {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = value;
-                                    },
-                                    itemBuilder: (context, index) {
-                                      Map<String, dynamic> data = _items[index];
-
-                                      // Highlight only when index == 4
-                                      bool isActive = index == 1;
+                  slivers: [
+                    SliverPersistentHeader(
+                        pinned: true,
+                        floating: true,
+                        delegate: StickyHeaderDelegate(
+                            visible: isSliverAppBarVisible,
+                            searchController: _searchController,
+                            onchanged: (value) {
+                              print('value $value');
+                            },
+                            dropdownValueNotifier: dropdownValueNotifier,
+                            filteredSuggestions: [])),
+                    if (isSliverAppBarVisible)
+                      SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          expandedHeight: 90.h,
+                          floating: false,
+                          pinned: false,
+                          flexibleSpace: AnimatedContainer(
+                            padding: EdgeInsets.zero,
+                            duration: const Duration(milliseconds: 150),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(40),
+                                    bottomRight: Radius.circular(40)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      // Color(0xFF681b4e),
+                                      // Color(0xFF392574),
+                                      // Color(0xFF681b4e),
+                                      Color(0xff651c50),
+                                      Color(0xff54225f),
+                                      // Color(0xFF392574).
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(4, (index) {
                                       return GestureDetector(
                                         onTap: () {
                                           ref
                                               .read(_selectedIndexProvider
                                                   .notifier)
                                               .state = index;
+                                          _pageController.animateToPage(
+                                            index,
+                                            duration: const Duration(
+                                                milliseconds: 50),
+                                            curve: Curves.easeInOut,
+                                          );
                                         },
-                                        child: AnimatedContainer(
-                                          padding: EdgeInsets.zero,
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        data['screen']),
-                                              );
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (data['icon']
-                                                    .toString()
-                                                    .endsWith('.svg'))
-                                                  SvgPicture.asset(
-                                                    data['icon'],
-                                                    alignment: Alignment.center,
-                                                    fit: BoxFit.contain,
-                                                    theme: const SvgTheme(
-                                                        currentColor:
-                                                            Color(0xffdd9d9d9)),
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  )
-                                                else
-                                                  Image.asset(
-                                                    data['icon'],
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                    width: 20,
-                                                    height: 20,
-                                                  ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  data['label'],
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: isActive
-                                                        ? Colors.amber
-                                                        : const Color(
-                                                                0xffD9D9D9)
-                                                            .withOpacity(0.5),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                        child: Container(
+                                          height: 5.h,
+                                          width: 5.w,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          decoration: BoxDecoration(
+                                            color: selectedIndex == index
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
                                       );
-                                    },
+                                    }),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 11, top: 11),
-                      child: GestureDetector(
-                        onVerticalDragUpdate: _onDragUpdate,
-                        onTap: () {
-                          setState(() {
-                            isSliverAppBarVisible = !isSliverAppBarVisible;
-                          });
-                        },
-                        child: Center(
-                          child: Container(
-                            alignment: AlignmentDirectional.center,
-                            height: 7.h,
-                            width: 60.w,
-                            decoration: BoxDecoration(
-                                color: const Color(0xff651c50),
-                                borderRadius: BorderRadius.circular(5)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: ref.watch(getVendorCardProvider(widget.vid)).when(
-                      data: (vendorcard) {
-                        _vendorimage = vendorcard.data?.vendor_card!.photo!;
-                        print('rajuk ${vendorcard.data?.subscribed}');
-
-                        return Column(
-                          children: [
-                            if (vendorcard.data != null)
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5.h),
-                                child: DottedContainer(
-                                    firstImage:
-                                        vendorcard.data?.vendor_card?.photo,
-                                    deals: vendorcard.data?.deals,
-                                    vname: vendorcard.data!.vendor_card!.name!),
-                              ),
-                            if (vendorcard.data != null)
-                              vendorCardAsync.when(
-                                data: (data) {
-                                  return Screenshot(
-                                    controller: _screenshotController,
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: BigContainer(
-                                        onconnectclicked: () {
-                                          ref.invalidate((getVendorCardProvider(
-                                              widget.vid)));
-                                          setState(() {});
-                                        },
-                                        ondoenload: _captureAndSave,
-                                        onsubscribed: () {
-                                          ref.invalidate(getVendorCardProvider(
-                                              widget.vid));
-                                        },
-                                        lat: double.tryParse(vendorcard
-                                                .data!.vendor_card?.latitude ??
-                                            '0')!,
-                                        long: double.tryParse(vendorcard
-                                                .data!.vendor_card?.longitude ??
-                                            '0')!,
-                                        id: widget.vid.toString(),
-                                        title:
-                                            vendorcard.data!.vendor_card!.name!,
-                                        logo: vendorcard
-                                            .data!.vendor_card!.photo!,
-                                        contact: vendorcard
-                                                .data!.vendor_card!.phone ??
-                                            '97++',
-                                        storyCount: vendorcard
-                                            .data!.vendor_card!.storycount
-                                            .toString(),
-                                        membershipTitle: vendorcard.data!
-                                            .vendor_card!.membership_title!,
-                                        storycount: vendorcard
-                                            .data!.vendor_card!.storycount!
-                                            .toString(),
-                                        total_connections: vendorcard
-                                            .data!.vendor_card!.subscribers!
-                                            .toString(),
-                                        total_prize_worth: vendorcard
-                                            .data!.vendor_card!.prize_worth!
-                                            .toString(),
-                                        location: vendorcard.data!.vendor_card!
-                                                .nearestbranch ??
-                                            '',
-                                        Cnumber: vendorcard
-                                                .data!.vendor_card!.phone ??
-                                            '',
-                                        issubbed:
-                                            vendorcard.data?.subscribed == 1
-                                                ? true
-                                                : false,
-                                        memebertitle: vendorcard.data!
-                                            .vendor_card!.membership_title!,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                error: (error, stackTrace) {
-                                  return Center(child: Text('Error: $error'));
-                                },
-                                loading: () {
-                                  return Shimmer.fromColors(
-                                    baseColor: Colors.grey[300]!,
-                                    highlightColor: Colors.grey[100]!,
-                                    child: ListView.builder(
-                                      itemCount:
-                                          5, // Number of shimmer items you want to show
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
+                                  SizedBox(
+                                    height: 55.h,
+                                    child: PageView.builder(
+                                      itemCount: _items.length,
+                                      padEnds: false,
+                                      controller: _pageController,
+                                      onPageChanged: (value) {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = value;
+                                      },
                                       itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Container(
-                                            height: 120,
-                                            color: Colors.white,
-                                            child: Row(
-                                              children: <Widget>[
-                                                // Shimmer effect for image
-                                                Container(
-                                                  width: 100,
-                                                  height: 100,
-                                                  color: Colors.white,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                // Shimmer effect for text
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: 150,
+                                        Map<String, dynamic> data =
+                                            _items[index];
+
+                                        // Highlight only when index == 4
+                                        bool isActive = index == 1;
+                                        return GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(_selectedIndexProvider
+                                                    .notifier)
+                                                .state = index;
+                                          },
+                                          child: AnimatedContainer(
+                                            padding: EdgeInsets.zero,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            alignment: Alignment.center,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          data['screen']),
+                                                );
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  if (data['icon']
+                                                      .toString()
+                                                      .endsWith('.svg'))
+                                                    SvgPicture.asset(
+                                                      data['icon'],
+                                                      alignment:
+                                                          Alignment.center,
+                                                      fit: BoxFit.contain,
+                                                      theme: const SvgTheme(
+                                                          currentColor: Color(
+                                                              0xffdd9d9d9)),
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
                                                       height: 20,
-                                                      color: Colors.white,
+                                                    )
+                                                  else
+                                                    Image.asset(
+                                                      data['icon'],
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
+                                                      height: 20,
                                                     ),
-                                                    const SizedBox(height: 10),
-                                                    Container(
-                                                      width: 100,
-                                                      height: 15,
-                                                      color: Colors.white,
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    data['label'],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         );
                                       },
                                     ),
-                                  );
-                                },
-                              ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            const DottedLine(
-                                dashRadius: 5,
-                                dashColor: Color(0xffD9D9D9),
-                                dashLength: 7),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: TabBar(
-                                onTap: (value) {
-                                  setState(() {
-                                    // Check if the tapped tab index is greater than 1
-                                    dynamicheight = value > 1 ? 50.h : 410.h;
-                                    print("raju ${_tabController.index == 0}");
-                                    showsearch = _tabController.index == 0
-                                        ? true
-                                        : false;
-                                  });
-                                },
-                                tabAlignment: TabAlignment.start,
-                                isScrollable: true,
-                                controller: _tabController,
-                                tabs: const [
-                                  Tab(text: "SHOP"),
-                                  Tab(text: "About"),
-                                  Tab(text: "BRANDS"),
-                                  Tab(text: "GET DIRECTIONS"),
-                                  Tab(text: "CUSTOMER SERVICE"),
-                                  Tab(text: "CAREER"),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        return const Center(child: Text("Error loading data"));
-                      },
-                      loading: () {
-                        return Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            height: 100, // Adjust the height as needed
-                            margin: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                          )),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 11, top: 11),
+                        child: GestureDetector(
+                          onVerticalDragUpdate: _onDragUpdate,
+                          onTap: () {
+                            setState(() {
+                              isSliverAppBarVisible = !isSliverAppBarVisible;
+                            });
+                          },
+                          child: Center(
+                            child: Container(
+                              alignment: AlignmentDirectional.center,
+                              height: 7.h,
+                              width: 60.w,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xff651c50),
+                                  borderRadius: BorderRadius.circular(5)),
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        ref
-                            .watch(getvendorbybrandnameProvider(widget.vid))
-                            .when(
-                              data: (data) {
-                                print('halla ${data.data!.brandnew!.first.savedByLoggedUser}');
-                                // if (data.data!.b2b?.length == 0) {
-                                //   categories.where(
-                                //     (element) => element == 'b2b',
-                                //   );
-                                // }
-                                if (myselectedindex == 0) {
-                                  alldata = data.data?.brandnew;
-                                }
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: tabsize?.toDouble(),
-                                      child: TabBarView(
-                                        controller: _tabController,
-                                        children: [
-                                          SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                // Search Fieldf
-                                                SizedBox(
-                                                  width: 5.w,
-                                                ),
-                                                AnimatedSwitcher(
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                  child: _isSearchFieldVisible
-                                                      ? SizedBox(
-                                                          key: const ValueKey(
-                                                              'SearchField'),
-                                                          width: 300.0,
-                                                          child: TextField(
-                                                            onSubmitted:
-                                                                (value) {},
-                                                            controller:
-                                                                _vendorsearchController,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 5),
-                                                              hintText:
-                                                                  "Search...",
-                                                              filled: true,
-                                                              fillColor: Colors
-                                                                  .grey
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .withOpacity(
-                                                                          0.4),
-                                                                  width: 1.0,
-                                                                ),
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .all(
-                                                                        Radius.circular(
-                                                                            10.0)),
-                                                              ),
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: Colors
-                                                                      .blue
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                                  width: 1.5,
-                                                                ),
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .all(
-                                                                        Radius.circular(
-                                                                            10.0)),
-                                                              ),
-                                                              suffixIcon:
-                                                                  InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    vendorsearchrespnse =
-                                                                        [];
-                                                                    searchvendor(
-                                                                        _vendorsearchController
-                                                                            .text);
-                                                                  });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          10),
-                                                                  decoration:
-                                                                      const BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .only(
-                                                                      topRight:
-                                                                          Radius.circular(
-                                                                              10),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                              10),
-                                                                    ),
-                                                                    color: Colors
-                                                                        .black, // Replace with `ColorConstant.blackColor`
-                                                                  ),
-                                                                  child:
-                                                                      const Icon(
-                                                                    Icons
-                                                                        .search,
-                                                                    color: Colors
-                                                                        .white, // Replace with `ColorConstant.whiteColor`
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : IconButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              _isSearchFieldVisible =
-                                                                  true;
-                                                            });
-                                                          },
-                                                          icon: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        5,
-                                                                    vertical:
-                                                                        5),
-                                                            decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                color: ColorConstant
-                                                                    .blackColor),
-                                                            child: const Icon(
-                                                              Icons.search,
-                                                              color: ColorConstant
-                                                                  .whiteColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                ),
+                    SliverToBoxAdapter(
+                      child: ref.watch(getVendorCardProvider(widget.vid)).when(
+                        data: (vendorcard) {
+                          _vendorimage = vendorcard.data?.vendor_card!.photo!;
+                          print('rajuk ${vendorcard.data?.subscribed}');
 
-                                                SizedBox(
-                                                  height: 50,
-                                                  width: 750.w,
-                                                  child: Row(
-                                                    children: List.generate(
-                                                        _categorieslength!,
-                                                        (index) {
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            vendorsearchrespnse =
-                                                                [];
-                                                            //   print(
-                                                            //   "raja $myselectedindex");
-                                                            print(
-                                                                "rajali ${data.data?.services?.length}");
-                                                            myselectedindex =
-                                                                index;
-
-                                                            alldata = [
-                                                                  data.data
-                                                                      ?.brandnew,
-                                                                  data.data
-                                                                      ?.used,
-                                                                  data.data
-                                                                      ?.services,
-                                                                  data.data
-                                                                      ?.events,
-                                                                  data.data
-                                                                      ?.services,
-                                                                  data.data
-                                                                      ?.b2b,
-                                                                  data.data
-                                                                      ?.grocery
-                                                                ][index] ??
-                                                                [];
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      10.0,
-                                                                  vertical:
-                                                                      5.h),
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      10.w),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: myselectedindex ==
-                                                                    index
-                                                                ? ColorConstant
-                                                                    .blackColor
-                                                                : Colors
-                                                                    .grey[300],
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                          ),
-                                                          child: Text(
-                                                            categories[index],
-                                                            style: TextStyle(
-                                                              color:
-                                                                  myselectedindex ==
-                                                                          index
-                                                                      ? Colors
-                                                                          .white
-                                                                      : Colors
-                                                                          .black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
+                          return Column(
+                            children: [
+                              if (vendorcard.data != null)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                                  child: DottedContainer(
+                                      firstImage:
+                                          vendorcard.data?.vendor_card?.photo,
+                                      deals: vendorcard.data?.deals,
+                                      vname:
+                                          vendorcard.data!.vendor_card!.name!),
+                                ),
+                              if (vendorcard.data != null)
+                                vendorCardAsync.when(
+                                  data: (data) {
+                                    return Screenshot(
+                                      controller: _screenshotController,
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: BigContainer(
+                                          membershipid: int.tryParse(vendorcard
+                                                      .data
+                                                      ?.vendor_card
+                                                      ?.membership_id ??
+                                                  '1') ??
+                                              1,
+                                          onconnectclicked: () {
+                                            ref.invalidate(
+                                                (getVendorCardProvider(
+                                                    widget.vid)));
+                                            setState(() {});
+                                          },
+                                          ondoenload: _captureAndSave,
+                                          onsubscribed: () {
+                                            ref.invalidate(
+                                                getVendorCardProvider(
+                                                    widget.vid));
+                                          },
+                                          lat: double.tryParse(vendorcard.data!
+                                                      .vendor_card?.latitude ??
+                                                  '0') ??
+                                              0,
+                                          long: double.tryParse(vendorcard.data!
+                                                      .vendor_card?.longitude ??
+                                                  '0') ??
+                                              0,
+                                          vendorid: widget.vid.toString(),
+                                          title: vendorcard
+                                              .data!.vendor_card!.name!,
+                                          logo: vendorcard
+                                              .data!.vendor_card!.photo!,
+                                          contact: vendorcard
+                                                  .data!.vendor_card!.phone ??
+                                              '97++',
+                                          storyCount: vendorcard
+                                              .data!.vendor_card!.storycount
+                                              .toString(),
+                                          membershipTitle: vendorcard.data!
+                                              .vendor_card!.membership_title!,
+                                          storycount: vendorcard
+                                              .data!.vendor_card!.storycount!
+                                              .toString(),
+                                          total_connections: vendorcard
+                                              .data!.vendor_card!.subscribers!
+                                              .toString(),
+                                          total_prize_worth: vendorcard
+                                              .data!.vendor_card!.prize_worth!
+                                              .toString(),
+                                          location: vendorcard.data!
+                                                  .vendor_card!.nearestbranch ??
+                                              '',
+                                          Cnumber: vendorcard
+                                                  .data!.vendor_card!.phone ??
+                                              '',
+                                          issubbed:
+                                              vendorcard.data?.subscribed == 1
+                                                  ? true
+                                                  : false,
+                                          memebertitle: vendorcard.data!
+                                              .vendor_card!.membership_title!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  error: (error, stackTrace) {
+                                    return Center(child: Text('Error: $error'));
+                                  },
+                                  loading: () {
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[100]!,
+                                      child: ListView.builder(
+                                        itemCount:
+                                            5, // Number of shimmer items you want to show
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Container(
+                                              height: 120,
+                                              color: Colors.white,
+                                              child: Row(
+                                                children: <Widget>[
+                                                  // Shimmer effect for image
+                                                  Container(
+                                                    width: 100,
+                                                    height: 100,
+                                                    color: Colors.white,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          AnimatedContainer(
-                                            margin: const EdgeInsets.all(5),
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                            color: Colors.white,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 24.w, top: 32.h),
-                                                  child: Column(
+                                                  const SizedBox(width: 10),
+                                                  // Shimmer effect for text
+                                                  Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      if (data.data
-                                                                  ?.vendor_about !=
-                                                              null &&
-                                                          data
-                                                                  .data
-                                                                  ?.vendor_about
-                                                                  ?.bio
-                                                                  ?.length !=
-                                                              0)
-                                                        if (data.data!
-                                                                    .vendor_about !=
-                                                                null &&
-                                                            data.data
-                                                                    ?.vendor_about !=
-                                                                '')
-                                                          Text("Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                                                      Container(
+                                                        width: 150,
+                                                        height: 20,
+                                                        color: Colors.white,
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      Container(
+                                                        width: 100,
+                                                        height: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              const DottedLine(
+                                  dashRadius: 5,
+                                  dashColor: Color(0xffD9D9D9),
+                                  dashLength: 7),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: TabBar(
+                                  onTap: (value) {
+                                    setState(() {
+                                      // Check if the tapped tab index is greater than 1
+                                      dynamicheight = value > 1 ? 50.h : 410.h;
+                                      print(
+                                          "raju ${_tabController.index == 0}");
+                                      showsearch = _tabController.index == 0
+                                          ? true
+                                          : false;
+                                    });
+                                  },
+                                  tabAlignment: TabAlignment.start,
+                                  isScrollable: true,
+                                  controller: _tabController,
+                                  tabs: const [
+                                    Tab(text: "SHOP"),
+                                    Tab(text: "About"),
+                                    Tab(text: "BRANDS"),
+                                    Tab(text: "GET DIRECTIONS"),
+                                    Tab(text: "CUSTOMER SERVICE"),
+                                    Tab(text: "CAREER"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return const Center(
+                              child: Text("Error loading data"));
+                        },
+                        loading: () {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 100, // Adjust the height as needed
+                              margin: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          ref
+                              .watch(getvendorbybrandnameProvider(widget.vid))
+                              .when(
+                                data: (data) {
+                                  // print(
+                                  //     'halla ${data.data?.brandnew?.first.savedByLoggedUser}');
+                                  // if (data.data!.b2b?.length == 0) {
+                                  //   categories.where(
+                                  //     (element) => element == 'b2b',
+                                  //   );
+                                  // }
+                                  if (myselectedindex == 0) {
+                                    alldata = data.data?.brandnew;
+                                  }
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: tabsize?.toDouble(),
+                                        child: TabBarView(
+                                          controller: _tabController,
+                                          children: [
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  // Search Fieldf
+                                                  SizedBox(
+                                                    width: 5.w,
+                                                  ),
+                                                  AnimatedSwitcher(
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                    child: _isSearchFieldVisible
+                                                        ? SizedBox(
+                                                            key: const ValueKey(
+                                                                'SearchField'),
+                                                            width: 300.0,
+                                                            child: TextField(
+                                                              onSubmitted:
+                                                                  (value) {},
+                                                              controller:
+                                                                  _vendorsearchController,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                contentPadding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        left:
+                                                                            5),
+                                                                hintText:
+                                                                    "Search...",
+                                                                filled: true,
+                                                                fillColor: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.1),
+                                                                enabledBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .withOpacity(
+                                                                            0.4),
+                                                                    width: 1.0,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      const BorderRadius
+                                                                          .all(
+                                                                          Radius.circular(
+                                                                              10.0)),
+                                                                ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                    color: Colors
+                                                                        .blue
+                                                                        .withOpacity(
+                                                                            0.6),
+                                                                    width: 1.5,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      const BorderRadius
+                                                                          .all(
+                                                                          Radius.circular(
+                                                                              10.0)),
+                                                                ),
+                                                                suffixIcon:
+                                                                    InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      vendorsearchrespnse =
+                                                                          [];
+                                                                      searchvendor(
+                                                                          _vendorsearchController
+                                                                              .text);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            10),
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                        topRight:
+                                                                            Radius.circular(10),
+                                                                        bottomRight:
+                                                                            Radius.circular(10),
+                                                                      ),
+                                                                      color: Colors
+                                                                          .black, // Replace with `ColorConstant.blackColor`
+                                                                    ),
+                                                                    child:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .search,
+                                                                      color: Colors
+                                                                          .white, // Replace with `ColorConstant.whiteColor`
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : IconButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _isSearchFieldVisible =
+                                                                    true;
+                                                              });
+                                                            },
+                                                            icon: Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          5,
+                                                                      vertical:
+                                                                          5),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  color: ColorConstant
+                                                                      .blackColor),
+                                                              child: const Icon(
+                                                                Icons.search,
+                                                                color: ColorConstant
+                                                                    .whiteColor,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                  ),
+
+                                                  SizedBox(
+                                                    height: 50,
+                                                    width: 750.w,
+                                                    child: Row(
+                                                      children: List.generate(
+                                                          _categorieslength!,
+                                                          (index) {
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              vendorsearchrespnse =
+                                                                  [];
+                                                              //   print(
+                                                              //   "raja $myselectedindex");
+                                                              print(
+                                                                  "rajali ${data.data?.services?.length}");
+                                                              myselectedindex =
+                                                                  index;
+
+                                                              alldata = [
+                                                                    data.data
+                                                                        ?.brandnew,
+                                                                    data.data
+                                                                        ?.used,
+                                                                    data.data
+                                                                        ?.services,
+                                                                    data.data
+                                                                        ?.events,
+                                                                    data.data
+                                                                        ?.services,
+                                                                    data.data
+                                                                        ?.b2b,
+                                                                    data.data
+                                                                        ?.grocery
+                                                                  ][index] ??
+                                                                  [];
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.0,
+                                                                    vertical:
+                                                                        5.h),
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.w),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: myselectedindex ==
+                                                                      index
+                                                                  ? ColorConstant
+                                                                      .blackColor
+                                                                  : Colors.grey[
+                                                                      300],
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            child: Text(
+                                                              categories[index],
                                                               style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize:
-                                                                      12.sp)),
-                                                      SizedBox(height: 10.h),
-                                                      if (data.data
-                                                              ?.vendor_about !=
-                                                          null)
+                                                                color: myselectedindex ==
+                                                                        index
+                                                                    ? Colors
+                                                                        .white
+                                                                    : Colors
+                                                                        .black,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            AnimatedContainer(
+                                              margin: const EdgeInsets.all(5),
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                              color: Colors.white,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 24.w, top: 32.h),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        if (data.data
+                                                                    ?.vendor_about !=
+                                                                null &&
+                                                            data
+                                                                    .data
+                                                                    ?.vendor_about
+                                                                    ?.bio
+                                                                    ?.length !=
+                                                                0)
+                                                          if (data.data!
+                                                                      .vendor_about !=
+                                                                  null &&
+                                                              data.data
+                                                                      ?.vendor_about !=
+                                                                  '')
+                                                            Text(
+                                                                "Opening hours:\n${(jsonDecode(data.data!.vendor_about!.opening_hours!) as List).map((e) => '${e['day']}: ${e['closed'] ? 'Closed' : '${e['from'] ?? 'N/A'} - ${e['to'] ?? 'N/A'}'}').join('\n')}",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize:
+                                                                        12.sp)),
+                                                        SizedBox(height: 10.h),
+                                                        if (data.data
+                                                                ?.vendor_about !=
+                                                            null)
+                                                          Row(
+                                                            children: [
+                                                              Icon(Icons.phone,
+                                                                  color: const Color(
+                                                                      0xFF8B6C6C),
+                                                                  size: 14.h),
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                              if (data.data
+                                                                      ?.vendor_about !=
+                                                                  null)
+                                                                Text(
+                                                                  data
+                                                                          .data
+                                                                          ?.vendor_about!
+                                                                          .phone ??
+                                                                      '',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize:
+                                                                        12.sp,
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        SizedBox(height: 10.h),
                                                         Row(
                                                           children: [
-                                                            Icon(Icons.phone,
+                                                            Icon(
+                                                                Icons
+                                                                    .location_on,
                                                                 color: const Color(
                                                                     0xFF8B6C6C),
                                                                 size: 14.h),
@@ -1305,8 +1379,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                 data
                                                                         .data
                                                                         ?.vendor_about!
-                                                                        .phone ??
-                                                                    '',
+                                                                        .nearestbranch ??
+                                                                    'The Bio is not yet published stay tuned',
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
@@ -1318,567 +1392,630 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                               ),
                                                           ],
                                                         ),
-                                                      SizedBox(height: 10.h),
-                                                      Row(
-                                                        children: [
-                                                          Icon(
-                                                              Icons.location_on,
-                                                              color: const Color(
-                                                                  0xFF8B6C6C),
-                                                              size: 14.h),
-                                                          SizedBox(
-                                                            width: 10.w,
-                                                          ),
-                                                          if (data.data
-                                                                  ?.vendor_about !=
-                                                              null)
-                                                            Text(
-                                                              data
-                                                                      .data
-                                                                      ?.vendor_about!
-                                                                      .nearestbranch ??
-                                                                  'The Bio is not yet published stay tuned',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 12.sp,
-                                                              ),
+                                                        SizedBox(height: 10.h),
+                                                        Row(
+                                                          children: [
+                                                            Icon(Icons.email,
+                                                                color: const Color(
+                                                                    0xFF8B6C6C),
+                                                                size: 14.h),
+                                                            SizedBox(
+                                                              width: 10.w,
                                                             ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 10.h),
-                                                      Row(
-                                                        children: [
-                                                          Icon(Icons.email,
-                                                              color: const Color(
-                                                                  0xFF8B6C6C),
-                                                              size: 14.h),
-                                                          SizedBox(
-                                                            width: 10.w,
-                                                          ),
-                                                          if (data
-                                                                  .data
-                                                                  ?.vendor_about
-                                                                  ?.email !=
-                                                              null)
-                                                            Text(
-                                                              data
-                                                                  .data!
-                                                                  .vendor_about!
-                                                                  .email!,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 12.sp,
+                                                            if (data
+                                                                    .data
+                                                                    ?.vendor_about
+                                                                    ?.email !=
+                                                                null)
+                                                              Text(
+                                                                data
+                                                                    .data!
+                                                                    .vendor_about!
+                                                                    .email!,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                ),
                                                               ),
-                                                            ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 10.h),
-                                                      Text(
-                                                        "Bio",
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 14.sp,
+                                                          ],
                                                         ),
-                                                      ),
-                                                      SizedBox(height: 10.h),
-                                                      if (data
-                                                              .data
-                                                              ?.vendor_about
-                                                              ?.bio !=
-                                                          null)
+                                                        SizedBox(height: 10.h),
                                                         Text(
-                                                          data
-                                                              .data!
-                                                              .vendor_about!
-                                                              .bio!,
+                                                          "Bio",
                                                           style: TextStyle(
-                                                              fontSize: 12.sp),
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14.sp,
+                                                          ),
                                                         ),
-                                                    ],
+                                                        SizedBox(height: 10.h),
+                                                        if (data
+                                                                .data
+                                                                ?.vendor_about
+                                                                ?.bio !=
+                                                            null)
+                                                          Text(
+                                                            data
+                                                                .data!
+                                                                .vendor_about!
+                                                                .bio!,
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    12.sp),
+                                                          ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Coming Soon.........',
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
+                                            AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Coming Soon.........',
+                                                style: headerstyle.copyWith(
+                                                  color:
+                                                      ColorConstant.blackColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Coming Soon.........',
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
+                                            AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Coming Soon.........',
+                                                style: headerstyle.copyWith(
+                                                  color:
+                                                      ColorConstant.blackColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Coming Soon.........',
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
+                                            AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Coming Soon.........',
+                                                style: headerstyle.copyWith(
+                                                  color:
+                                                      ColorConstant.blackColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              'Coming Soon.........',
-                                              style: headerstyle.copyWith(
-                                                color: ColorConstant.blackColor,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
+                                            AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Coming Soon.........',
+                                                style: headerstyle.copyWith(
+                                                  color:
+                                                      ColorConstant.blackColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    if (showsearch!)
-                                      vendorsearchrespnse == null ||
-                                                  vendorsearchrespnse!
-                                                      .isEmpty ??
-                                              true
-                                          ? (alldata?.isEmpty ?? true
-                                              ? const Padding(
-                                                  padding: EdgeInsets.all(40.0),
-                                                  child: Center(
-                                                    child: Text(
-                                                        "No Listing available....."),
-                                                  ),
-                                                )
-                                              : AnimatedContainer(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  duration: const Duration(
-                                                      milliseconds: 400),
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Wrap(
-                                                      spacing: 3.w,
-                                                      children: List.generate(
-                                                          alldata?.length ?? 0,
-                                                          (index) {
-                                                        BrandNewModel prod =
-                                                            alldata![index];
-                                                        return ProductDetailWidget(
-                                                          onenquiredclicked:
-                                                              () {
-                                                            print(
-                                                                'lanka ${prod.id}');
-
-                                                            getEnquire(ref,
-                                                                    prod.id)
-                                                                .then(
-                                                              (value) {
-                                                                value.data?.enquire ==
-                                                                        0
-                                                                    ? showModalBottomSheet(
-                                                                        useSafeArea:
-                                                                            true,
-                                                                        isScrollControlled:
-                                                                            true,
-                                                                        context:
-                                                                            context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return SizedBox(
-                                                                            height:
-                                                                                MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
-
-                                                                            child:
-                                                                                SendMessageBottomWidget(
-                                                                              ref: ref,
-                                                                              productidid: prod.id,
-                                                                            ),
-                                                                          );
-                                                                        },
-                                                                      )
-                                                                    : navigateToPage(
-                                                                        context:
-                                                                            context,
-                                                                        page: ChatScreen(
-                                                                            threadId:
-                                                                                value.data!.thread!.id!,
-                                                                            username: value.data!.thread!.subject!,
-                                                                            postId: value.data!.thread!.post_id!),
-                                                                        ref:
-                                                                            ref,
-                                                                        showNavBar:
-                                                                            false, // Hide bottom navbar
-                                                                      );
-                                                                // if ()
-
-                                                                // SendMessageBottomWidget(
-                                                                //     ref: ref,
-                                                                //     productidid:
-                                                                //         prod.id);
-                                                              },
-                                                            ).catchError(
-                                                                    (error) {
-                                                              print(
-                                                                  'Error: $error');
-                                                            });
-                                                          },
-                                                          lat: prod.userdetails
-                                                              ?.latitude,
-                                                          long: prod.userdetails
-                                                              ?.longitude,
-                                                          productid: prod.id,
-                                                          posttype:
-                                                              prod.post_type_id,
-                                                          vendorid: prod
-                                                              .userdetails!
-                                                              .user_id,
-                                                          onRefresh: () {
-                                                            refreshAllprovider();
-                                                            ref.refresh(
-                                                                getVendorCardProvider(
-                                                                    widget
-                                                                        .vid));
-                                                          },
-                                                          membershipid: prod
-                                                              .userdetails
-                                                              ?.membership_id,
-                                                          didcountpercentage:
-                                                              prod.discount_percentage ??
-                                                                  0,
-                                                          lefttile: "TradeHub",
-                                                          vendorname: prod
-                                                                  .userdetails
-                                                                  ?.name ??
-                                                              "",
-                                                          Vimage: prod
-                                                                  .userdetails
-                                                                  ?.photo ??
-                                                              "",
-                                                          avg_rating: prod
-                                                                  .avg_rating
-                                                                  ?.toDouble() ??
-                                                              0,
-                                                          comment: prod
-                                                                  .commentcount
-                                                                  ?.toString() ??
-                                                              "0",
-                                                          discounttedPrice: prod
-                                                                  .discounted_price
-                                                                  ?.toString() ??
-                                                              "0",
-                                                          distance: double.tryParse(prod
-                                                                  .shortestDistance
-                                                                  ?.toString() ??
-                                                              "0"),
-                                                          issponsored: prod
-                                                                  .userdetails
-                                                                  ?.sponsored ??
-                                                              false,
-                                                          membershipColor: prod
-                                                                  .userdetails
-                                                                  ?.membership_color ??
-                                                              "",
-                                                          membershipTitle: prod
-                                                                  .userdetails
-                                                                  ?.membership_title ??
-                                                              "",
-                                                          offer: prod.wow ?? "",
-                                                          price:
-                                                              prod.price ?? "",
-                                                          productImage:
-                                                              prod.image,
-                                                          shortestDistance:
-                                                              prod.shortestDistance ??
-                                                                  0.0,
-                                                          similarproductCount:
-                                                              prod.similarVendorProfileProductCount ??
-                                                                  0,
-                                                          title:
-                                                              prod.title ?? "",
-                                                          wow: prod.wow ?? "",
-                                                        );
-                                                      }),
+                                      if (showsearch!)
+                                        vendorsearchrespnse == null ||
+                                                    vendorsearchrespnse!
+                                                        .isEmpty ??
+                                                true
+                                            ? (alldata?.isEmpty ?? true
+                                                ? const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(40.0),
+                                                    child: Center(
+                                                      child: Text(
+                                                          "No Listing available....."),
                                                     ),
-                                                  ),
-                                                ))
-                                          : SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Wrap(
-                                                spacing: 3.w,
-                                                children: List.generate(
-                                                    vendorsearchrespnse
-                                                            ?.length ??
-                                                        0, (index) {
-                                                  VendorSearchModel prod =
-                                                      vendorsearchrespnse![
-                                                          index];
-                                                  return ProductDetailWidget(
-                                                    onenquiredclicked: () {
-                                                      print('lanka ${prod.id}');
+                                                  )
+                                                : AnimatedContainer(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    duration: const Duration(
+                                                        milliseconds: 400),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Wrap(
+                                                        spacing: 3.w,
+                                                        children: List.generate(
+                                                            alldata?.length ??
+                                                                0, (index) {
+                                                          BrandNewModel prod =
+                                                              alldata![index];
+                                                          return ProductDetailWidget(
+                                                            onenquiredclicked:
+                                                                () {
+                                                              print(
+                                                                  'lanka ${prod.id}');
 
-                                                      getEnquire(
-                                                              ref,
-                                                              prod.id
-                                                                  .toString())
-                                                          .then(
-                                                        (value) {
-                                                          value.data?.enquire ==
-                                                                  0
-                                                              ? showModalBottomSheet(
-                                                                  useSafeArea:
-                                                                      true,
-                                                                  isScrollControlled:
-                                                                      true,
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return SizedBox(
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
-                                                                          0.8, // Use 80% of the screen height
+                                                              getEnquire(ref,
+                                                                      prod.id)
+                                                                  .then(
+                                                                (value) {
+                                                                  value.data?.enquire ==
+                                                                          0
+                                                                      ? showModalBottomSheet(
+                                                                          useSafeArea:
+                                                                              true,
+                                                                          isScrollControlled:
+                                                                              true,
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return SizedBox(
+                                                                              height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
 
-                                                                      child:
-                                                                          SendMessageBottomWidget(
-                                                                        ref:
-                                                                            ref,
-                                                                        productidid:
-                                                                            prod.id,
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                )
-                                                              : navigateToPage(
-                                                                  context:
-                                                                      context,
-                                                                  page: ChatScreen(
-                                                                      threadId: value
-                                                                          .data!
-                                                                          .thread!
-                                                                          .id!,
-                                                                      username: value
-                                                                          .data!
-                                                                          .thread!
-                                                                          .subject!,
-                                                                      postId: value
-                                                                          .data!
-                                                                          .thread!
-                                                                          .post_id!),
-                                                                  ref: ref,
-                                                                  showNavBar:
-                                                                      false, // Hide bottom navbar
-                                                                );
-                                                          // if ()
+                                                                              child: SendMessageBottomWidget(
+                                                                                ref: ref,
+                                                                                productidid: prod.id,
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                        )
+                                                                      : navigateToPage(
+                                                                          context:
+                                                                              context,
+                                                                          page: ChatScreen(
+                                                                              threadId: value.data!.thread!.id!,
+                                                                              username: value.data!.thread!.subject!,
+                                                                              postId: value.data!.thread!.post_id!),
+                                                                          ref:
+                                                                              ref,
+                                                                          showNavBar:
+                                                                              false, // Hide bottom navbar
+                                                                        );
+                                                                  // if ()
 
-                                                          // SendMessageBottomWidget(
-                                                          //     ref: ref,
-                                                          //     productidid:
-                                                          //         prod.id);
-                                                        },
-                                                      ).catchError((error) {
-                                                        print('Error: $error');
-                                                      });
-                                                    },
-                                                    lat: prod
-                                                        .userdetails?.latitude,
-                                                    long: prod
-                                                        .userdetails?.longitude,
-                                                    productid: prod.id!,
-                                                    posttype: prod.postType,
-                                                    vendorid: prod
-                                                        .userdetails?.userId,
-                                                    onRefresh: () {
-                                                      refreshAllprovider();
-                                                    },
-                                                    membershipid: prod
-                                                        .userdetails
-                                                        ?.membershipId,
-                                                    didcountpercentage: prod
-                                                        .discountPercentage
-                                                        ?.toInt(),
-                                                    lefttile: "TradeHub",
-                                                    vendorname: prod.userdetails
-                                                            ?.name ??
-                                                        "",
-                                                    Vimage: prod.userdetails
-                                                            ?.photo ??
-                                                        "",
-                                                    avg_rating: prod.avgRating
-                                                            ?.toDouble() ??
-                                                        0,
-                                                    comment: prod.commentCount
-                                                            ?.toString() ??
-                                                        "0",
-                                                    discounttedPrice: prod
-                                                            .discountedPrice
-                                                            ?.toString() ??
-                                                        "0",
-                                                    distance: double.tryParse(prod
-                                                            .userdetails
-                                                            ?.shortestDistance
-                                                            ?.toString() ??
-                                                        "0"),
-                                                    issponsored: prod
-                                                            .userdetails
-                                                            ?.sponsored ??
-                                                        false,
-                                                    membershipColor: prod
-                                                            .userdetails
-                                                            ?.membershipColor ??
-                                                        "",
-                                                    membershipTitle: prod
-                                                            .userdetails
-                                                            ?.membershipTitle ??
-                                                        "",
-                                                    offer: prod.wow ?? "",
-                                                    price: prod.price ?? "",
-                                                    productImage: prod.image,
-                                                    shortestDistance: prod
-                                                            .userdetails
-                                                            ?.shortestDistance ??
-                                                        0.0,
-                                                    similarproductCount:
-                                                        prod.similarProductCount ??
-                                                            0,
-                                                    title: prod.title ?? "",
-                                                    wow: prod.wow ?? "",
-                                                  );
-                                                }),
+                                                                  // SendMessageBottomWidget(
+                                                                  //     ref: ref,
+                                                                  //     productidid:
+                                                                  //         prod.id);
+                                                                },
+                                                              ).catchError(
+                                                                      (error) {
+                                                                print(
+                                                                    'Error: $error');
+                                                              });
+                                                            },
+                                                            lat: prod
+                                                                .userdetails
+                                                                ?.latitude,
+                                                            long: prod
+                                                                .userdetails
+                                                                ?.longitude,
+                                                            productid: prod.id,
+                                                            posttype: prod
+                                                                .post_type_id,
+                                                            vendorid: prod
+                                                                .userdetails!
+                                                                .user_id,
+                                                            onRefresh: () {
+                                                              refreshAllprovider();
+                                                              ref.refresh(
+                                                                  getVendorCardProvider(
+                                                                      widget
+                                                                          .vid));
+                                                            },
+                                                            membershipid: prod
+                                                                .userdetails
+                                                                ?.membership_id,
+                                                            didcountpercentage:
+                                                                prod.discount_percentage ??
+                                                                    0,
+                                                            lefttile:
+                                                                "TradeHub",
+                                                            vendorname: prod
+                                                                    .userdetails
+                                                                    ?.name ??
+                                                                "",
+                                                            Vimage: prod
+                                                                    .userdetails
+                                                                    ?.photo ??
+                                                                "",
+                                                            avg_rating: prod
+                                                                    .avg_rating
+                                                                    ?.toDouble() ??
+                                                                0,
+                                                            comment: prod
+                                                                    .commentcount
+                                                                    ?.toString() ??
+                                                                "0",
+                                                            discounttedPrice: prod
+                                                                    .discounted_price
+                                                                    ?.toString() ??
+                                                                "0",
+                                                            distance: double
+                                                                .tryParse(prod
+                                                                        .shortestDistance
+                                                                        ?.toString() ??
+                                                                    "0"),
+                                                            issponsored: prod
+                                                                    .userdetails
+                                                                    ?.sponsored ??
+                                                                false,
+                                                            membershipColor: prod
+                                                                    .userdetails
+                                                                    ?.membership_color ??
+                                                                "",
+                                                            membershipTitle: prod
+                                                                    .userdetails
+                                                                    ?.membership_title ??
+                                                                "",
+                                                            offer:
+                                                                prod.wow ?? "",
+                                                            price: prod.price ??
+                                                                "",
+                                                            productImage:
+                                                                prod.image,
+                                                            shortestDistance:
+                                                                prod.shortestDistance ??
+                                                                    0.0,
+                                                            similarproductCount:
+                                                                prod.similarVendorProfileProductCount ??
+                                                                    0,
+                                                            title: prod.title ??
+                                                                "",
+                                                            wow: prod.wow ?? "",
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  ))
+                                            : SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Wrap(
+                                                  spacing: 3.w,
+                                                  children: List.generate(
+                                                      vendorsearchrespnse
+                                                              ?.length ??
+                                                          0, (index) {
+                                                    VendorSearchModel prod =
+                                                        vendorsearchrespnse![
+                                                            index];
+                                                    return ProductDetailWidget(
+                                                      onenquiredclicked: () {
+                                                        print(
+                                                            'lanka ${prod.id}');
+
+                                                        getEnquire(
+                                                                ref,
+                                                                prod.id
+                                                                    .toString())
+                                                            .then(
+                                                          (value) {
+                                                            value.data?.enquire ==
+                                                                    0
+                                                                ? showModalBottomSheet(
+                                                                    useSafeArea:
+                                                                        true,
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return SizedBox(
+                                                                        height: MediaQuery.of(context).size.height *
+                                                                            0.8, // Use 80% of the screen height
+
+                                                                        child:
+                                                                            SendMessageBottomWidget(
+                                                                          ref:
+                                                                              ref,
+                                                                          productidid:
+                                                                              prod.id,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  )
+                                                                : navigateToPage(
+                                                                    context:
+                                                                        context,
+                                                                    page: ChatScreen(
+                                                                        threadId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .id!,
+                                                                        username: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .subject!,
+                                                                        postId: value
+                                                                            .data!
+                                                                            .thread!
+                                                                            .post_id!),
+                                                                    ref: ref,
+                                                                    showNavBar:
+                                                                        false, // Hide bottom navbar
+                                                                  );
+                                                            // if ()
+
+                                                            // SendMessageBottomWidget(
+                                                            //     ref: ref,
+                                                            //     productidid:
+                                                            //         prod.id);
+                                                          },
+                                                        ).catchError((error) {
+                                                          print(
+                                                              'Error: $error');
+                                                        });
+                                                      },
+                                                      lat: prod.userdetails
+                                                          ?.latitude,
+                                                      long: prod.userdetails
+                                                          ?.longitude,
+                                                      productid: prod.id!,
+                                                      posttype: prod.postType,
+                                                      vendorid: prod
+                                                          .userdetails?.userId,
+                                                      onRefresh: () {
+                                                        refreshAllprovider();
+                                                      },
+                                                      membershipid: prod
+                                                          .userdetails
+                                                          ?.membershipId,
+                                                      didcountpercentage: prod
+                                                          .discountPercentage
+                                                          ?.toInt(),
+                                                      lefttile: "TradeHub",
+                                                      vendorname: prod
+                                                              .userdetails
+                                                              ?.name ??
+                                                          "",
+                                                      Vimage: prod.userdetails
+                                                              ?.photo ??
+                                                          "",
+                                                      avg_rating: prod.avgRating
+                                                              ?.toDouble() ??
+                                                          0,
+                                                      comment: prod.commentCount
+                                                              ?.toString() ??
+                                                          "0",
+                                                      discounttedPrice: prod
+                                                              .discountedPrice
+                                                              ?.toString() ??
+                                                          "0",
+                                                      distance: double.tryParse(prod
+                                                              .userdetails
+                                                              ?.shortestDistance
+                                                              ?.toString() ??
+                                                          "0"),
+                                                      issponsored: prod
+                                                              .userdetails
+                                                              ?.sponsored ??
+                                                          false,
+                                                      membershipColor: prod
+                                                              .userdetails
+                                                              ?.membershipColor ??
+                                                          "",
+                                                      membershipTitle: prod
+                                                              .userdetails
+                                                              ?.membershipTitle ??
+                                                          "",
+                                                      offer: prod.wow ?? "",
+                                                      price: prod.price ?? "",
+                                                      productImage: prod.image,
+                                                      shortestDistance: prod
+                                                              .userdetails
+                                                              ?.shortestDistance ??
+                                                          0.0,
+                                                      similarproductCount:
+                                                          prod.similarProductCount ??
+                                                              0,
+                                                      title: prod.title ?? "",
+                                                      wow: prod.wow ?? "",
+                                                    );
+                                                  }),
+                                                ),
                                               ),
-                                            ),
-                                  ],
-                                );
-                              },
-                              error: (error, stackTrace) => const Text("login"),
-                              loading: () => Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  height: 100,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
+                                    ],
+                                  );
+                                },
+                                error: (error, stackTrace) =>
+                                    const Text("login"),
+                                loading: () => Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    height: 100,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        ],
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            child: const DottedLine(
+                                dashRadius: 5,
+                                dashColor: Color(0xffD9D9D9),
+                                dashLength: 7),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 18.w, bottom: 10, top: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "POSTS",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          liveandpost.when(
+                            data: (data) {
+                              if (data.feedPosts.isEmpty) {
+                                return Center(
+                                    child:
+                                        nolistingfound()); // ✅ Show "No Listing Found" if `feedPosts` is empty
+                              }
+
+                              return SizedBox(
+                                width: double.infinity,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: data.feedPosts.map((dataz) {
+                                      print("raja ${dataz.photo}");
+
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5.w),
+                                        child: PostCard(
+                                          id: dataz.id,
+                                          image: dataz.image ?? "",
+                                          name: dataz.name ?? "Unknown",
+                                          caption: dataz.caption ?? "",
+                                          photo: dataz.photo ?? "",
+                                          subscribers:
+                                              dataz.subscribers?.toString() ??
+                                                  "0",
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              );
+                            },
+                            loading: () => SizedBox(
+                              height: 295.h,
+                              width: double.infinity,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 5, // ✅ Placeholder shimmer count
+                                itemBuilder: (context, index) =>
+                                    Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 200.w,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: const DottedLine(
-                              dashRadius: 5,
-                              dashColor: Color(0xffD9D9D9),
-                              dashLength: 7),
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsets.only(left: 18.w, bottom: 10, top: 10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "POSTS",
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.left,
+                            error: (error, stack) => Center(
+                              child: Text("Error: $error",
+                                  style: const TextStyle(color: Colors.red)),
                             ),
                           ),
-                        ),
-                        liveandpost.when(
-                          data: (data) {
-                            if (data.feedPosts.isEmpty) {
-                              return Center(
-                                  child:
-                                      nolistingfound()); // ✅ Show "No Listing Found" if `feedPosts` is empty
-                            }
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            child: const DottedLine(
+                                dashRadius: 5,
+                                dashColor: Color(0xffD9D9D9),
+                                dashLength: 7),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 18.w, top: 10.h),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Live Prizes",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          liveandpost.when(
+                            data: (data) {
+                              if (data.live_prizes == null ||
+                                  data.live_prizes!.isEmpty) {
+                                return Center(
+                                    child:
+                                        nolistingfound()); // ✅ Shows "No Listing Found" when empty
+                              }
 
-                            return SizedBox(
-                              width: double.infinity,
-                              child: SingleChildScrollView(
+                              return SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: data.feedPosts.map((dataz) {
-                                    print("raja ${dataz.photo}");
-
-                                    return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
-                                      child: PostCard(
-                                        id: dataz.id,
-                                        image: dataz.image ?? "",
-                                        name: dataz.name ?? "Unknown",
-                                        caption: dataz.caption ?? "",
-                                        photo: dataz.photo ?? "",
-                                        subscribers:
-                                            dataz.subscribers?.toString() ??
-                                                "0",
-                                      ),
+                                  spacing: 10.w,
+                                  children: data.live_prizes!.map((card) {
+                                    return PostCard(
+                                      id: card.id,
+                                      // subscribers: data.subscribers.toString(),
+                                      isLive: false,
+                                      image: card.image!,
+                                      name: card.name!,
+                                      caption: card.caption ?? '',
+                                      photo: card.photo!,
+                                      subscribers: card.subscribers!.toString(),
                                     );
                                   }).toList(),
                                 ),
-                              ),
-                            );
-                          },
-                          loading: () => SizedBox(
-                            height: 295.h,
-                            width: double.infinity,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5, // ✅ Placeholder shimmer count
-                              itemBuilder: (context, index) =>
-                                  Shimmer.fromColors(
+                              );
+                            },
+                            loading: () => SizedBox(
+                              height: 260,
+                              width: double.infinity,
+                              child: Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,
                                 child: Container(
-                                  width: 200.w,
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
@@ -1886,283 +2023,234 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                 ),
                               ),
                             ),
+                            error: (error, stack) => Center(
+                              child: Text("Error: $error",
+                                  style: const TextStyle(color: Colors.red)),
+                            ),
                           ),
-                          error: (error, stack) => Center(
-                            child: Text("Error: $error",
-                                style: const TextStyle(color: Colors.red)),
+                          SizedBox(
+                            height: 5.h,
                           ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: const DottedLine(
-                              dashRadius: 5,
-                              dashColor: Color(0xffD9D9D9),
-                              dashLength: 7),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 18.w, top: 10.h),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: const DottedLine(
+                                dashRadius: 5,
+                                dashColor: Color(0xffD9D9D9),
+                                dashLength: 7),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "Live Prizes",
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                              "All Products",
                               textAlign: TextAlign.left,
+                              style: headerstyle.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                  color: ColorConstant.blackColor),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        liveandpost.when(
-                          data: (data) {
-                            if (data.live_prizes == null ||
-                                data.live_prizes!.isEmpty) {
-                              return Center(
-                                  child:
-                                      nolistingfound()); // ✅ Shows "No Listing Found" when empty
-                            }
-
-                            return SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                spacing: 10.w,
-                                children: data.live_prizes!.map((card) {
-                                  return PostCard(
-                                    id: card.id,
-                                    // subscribers: data.subscribers.toString(),
-                                    isLive: false,
-                                    image: card.image!,
-                                    name: card.name!,
-                                    caption: card.caption ?? '',
-                                    photo: card.photo!,
-                                    subscribers: card.subscribers!.toString(),
-                                  );
-                                }).toList(),
-                              ),
-                            );
-                          },
-                          loading: () => SizedBox(
-                            height: 260,
-                            width: double.infinity,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
-                          error: (error, stack) => Center(
-                            child: Text("Error: $error",
-                                style: const TextStyle(color: Colors.red)),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.h),
-                          child: const DottedLine(
-                              dashRadius: 5,
-                              dashColor: Color(0xffD9D9D9),
-                              dashLength: 7),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "All Products",
-                            textAlign: TextAlign.left,
-                            style: headerstyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                color: ColorConstant.blackColor),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10.w),
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        child: Wrap(
-                          spacing: 5.w,
-                          runSpacing: 15.h,
-                          children: _products.isEmpty
-                              ? [
-                                  // Show a "No Listings Found" message if no products are available
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 20.h),
-                                    child: Text(
-                                      'No Listings Found',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          child: Wrap(
+                            spacing: 5.w,
+                            runSpacing: 15.h,
+                            children: _products.isEmpty
+                                ? [
+                                    // Show a "No Listings Found" message if no products are available
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 20.h),
+                                      child: Text(
+                                        'No Listings Found',
+                                        style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ]
-                              : List.generate(
-                                  _products
-                                      .length, // Use _products list for data
-                                  (index) {
-                                    VendorAllproductsModel res =
-                                        _products[index];
-                                    print('katta ${res.savedByLoggedUser}');
+                                  ]
+                                : List.generate(
+                                    _products
+                                        .length, // Use _products list for data
+                                    (index) {
+                                      VendorAllproductsModel res =
+                                          _products[index];
+                                      print('katta ${res.savedByLoggedUser}');
 
-                                    return SizedBox(
-                                      width:
-                                          (MediaQuery.of(context).size.width -
-                                                  26.w) /
-                                              2, // Responsive width for items
-                                      child: Card(
-                                        clipBehavior: Clip.antiAlias,
-                                        shadowColor: const Color(0xff3D215F)
-                                            .withOpacity(0.5),
-                                        elevation: 9,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: AllProductDetailWidget(
-                                          ref: ref,
-                                          onenquiredclicked: () {
-                                            getEnquire(ref, res.id)
-                                                .then((value) {
-                                              if (value.data?.enquire == 0) {
-                                                showModalBottomSheet(
-                                                  useSafeArea: true,
-                                                  isScrollControlled: true,
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return SizedBox(
-                                                      height: MediaQuery.of(
-                                                                  context)
-                                                              .size
-                                                              .height *
-                                                          0.8, // 80% height of screen
-                                                      child:
-                                                          SendMessageBottomWidget(
-                                                        ref: ref,
-                                                        productidid: res.id,
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              } else {
-                                                navigateToPage(
-                                                  context: context,
-                                                  page: ChatScreen(
-                                                    threadId:
-                                                        value.data!.thread!.id!,
-                                                    username: value
-                                                        .data!.thread!.subject!,
-                                                    postId: value
-                                                        .data!.thread!.post_id!,
-                                                  ),
-                                                  ref: ref,
-                                                  showNavBar:
-                                                      false, // Hide bottom navbar
-                                                );
+                                      return SizedBox(
+                                        width:
+                                            (MediaQuery.of(context).size.width -
+                                                    26.w) /
+                                                2, // Responsive width for items
+                                        child: Card(
+                                          clipBehavior: Clip.antiAlias,
+                                          shadowColor: const Color(0xff3D215F)
+                                              .withOpacity(0.5),
+                                          elevation: 9,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: AllProductDetailWidget(
+                                            ref: ref,
+                                            onenquiredclicked: () {
+                                              getEnquire(ref, res.id)
+                                                  .then((value) {
+                                                if (value.data?.enquire == 0) {
+                                                  showModalBottomSheet(
+                                                    useSafeArea: true,
+                                                    isScrollControlled: true,
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.8, // 80% height of screen
+                                                        child:
+                                                            SendMessageBottomWidget(
+                                                          ref: ref,
+                                                          productidid: res.id,
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  navigateToPage(
+                                                    context: context,
+                                                    page: ChatScreen(
+                                                      threadId: value
+                                                          .data!.thread!.id!,
+                                                      username: value.data!
+                                                          .thread!.subject!,
+                                                      postId: value.data!
+                                                          .thread!.post_id!,
+                                                    ),
+                                                    ref: ref,
+                                                    showNavBar:
+                                                        false, // Hide bottom navbar
+                                                  );
+                                                }
+                                              }).catchError((error) {
+                                                print('Error: $error');
+                                              });
+                                            },
+                                            savedid: res.savedByLoggedUser ==
+                                                        null ||
+                                                    res.savedByLoggedUser!
+                                                        .isEmpty
+                                                ? []
+                                                : res.savedByLoggedUser
+                                                    ?.map((e) => SavedPost(
+                                                          id: e.id!,
+                                                          userId: e.user_id!,
+                                                          postId: e.post_id!,
+                                                          createdAt:
+                                                              e.createdAt ?? '',
+                                                          updatedAt:
+                                                              e.updatedAt ?? '',
+                                                        ))
+                                                    .toList(),
+                                            onRefresh: () async {
+                                              setstate() {
+                                                _products = [];
+                                                _fetchProducts();
+                                                ref.refresh(
+                                                    getVendorAllProductsProvider(
+                                                        widget.vid,
+                                                        page: _page));
+                                                ref.invalidate(
+                                                    getVendorAllProductsProvider(
+                                                        widget.vid,
+                                                        page: _page));
                                               }
-                                            }).catchError((error) {
-                                              print('Error: $error');
-                                            });
-                                          },
-                                          savedid: res.savedByLoggedUser ==
-                                                      null ||
-                                                  res.savedByLoggedUser!.isEmpty
-                                              ? []
-                                              : res.savedByLoggedUser
-                                                  ?.map((e) => SavedPost(
-                                                        id: e.id!,
-                                                        userId: e.user_id!,
-                                                        postId: e.post_id!,
-                                                        createdAt:
-                                                            e.createdAt ?? '',
-                                                        updatedAt:
-                                                            e.updatedAt ?? '',
-                                                      ))
-                                                  .toList(),
-                                          onRefresh: () {
-                                            ref.invalidate(
-                                                getVendorAllProductsProvider); // Refresh data
-                                          },
-                                          lat: res.userdetails?.latitude,
-                                          long: res.userdetails?.longitude,
-                                          productid: res.id,
-                                          posttype: res.post_type_id,
-                                          membershipid:
-                                              res.userdetails?.membership_id,
-                                          id: int.tryParse(res.id),
-                                          didcountpercentage:
-                                              res.discount_percentage ?? 0,
-                                          productImage: res.image,
-                                          Vimage: res.userdetails?.photo ?? "",
-                                          avg_rating:
-                                              res.avg_rating?.toDouble(),
-                                          comment: res.commentcount.toString(),
-                                          discounttedPrice: res.discounted_price
-                                                  ?.toString() ??
-                                              "0",
-                                          distance: res.shortestDistance ?? 0.0,
-                                          issponsored:
-                                              res.userdetails?.sponsored ??
-                                                  false,
-                                          lefttile: "All Products",
-                                          membershipColor: res.userdetails
-                                                  ?.membership_color ??
-                                              "",
-                                          membershipTitle: res.userdetails
-                                                  ?.membership_title ??
-                                              "",
-                                          offer: res.offers ?? "",
-                                          price: res.price ?? "0",
-                                          shortestDistance:
-                                              res.shortestDistance ?? 0.0,
-                                          similarproductCount:
-                                              res.similarVendorProfileProductCount ??
-                                                  0,
-                                          title: res.title ?? "No Title",
-                                          vendorname: res.userdetails?.name ??
-                                              "Unknown",
-                                          wow: res.wow ?? "",
+
+                                              ref.invalidate(
+                                                  getVendorAllProductsProvider(
+                                                      widget.vid,
+                                                      page:
+                                                          _page)); // Refresh data
+
+                                              showCustomToast(
+                                                context,
+                                                'Your action will be performed shortly',
+                                              );
+                                            },
+                                            lat: res.userdetails?.latitude,
+                                            long: res.userdetails?.longitude,
+                                            productid: res.id,
+                                            posttype: res.post_type_id,
+                                            membershipid:
+                                                res.userdetails?.membership_id,
+                                            id: int.tryParse(res.id),
+                                            didcountpercentage:
+                                                res.discount_percentage ?? 0,
+                                            productImage: res.image,
+                                            Vimage:
+                                                res.userdetails?.photo ?? "",
+                                            avg_rating:
+                                                res.avg_rating?.toDouble(),
+                                            comment:
+                                                res.commentcount.toString(),
+                                            discounttedPrice: res
+                                                    .discounted_price
+                                                    ?.toString() ??
+                                                "0",
+                                            distance:
+                                                res.shortestDistance ?? 0.0,
+                                            issponsored:
+                                                res.userdetails?.sponsored ??
+                                                    false,
+                                            lefttile: "All Products",
+                                            membershipColor: res.userdetails
+                                                    ?.membership_color ??
+                                                "",
+                                            membershipTitle: res.userdetails
+                                                    ?.membership_title ??
+                                                "",
+                                            offer: res.offers ?? "",
+                                            price: res.price ?? "0",
+                                            shortestDistance:
+                                                res.shortestDistance ?? 0.0,
+                                            similarproductCount:
+                                                res.similarVendorProfileProductCount ??
+                                                    0,
+                                            title: res.title ?? "No Title",
+                                            vendorname: res.userdetails?.name ??
+                                                "Unknown",
+                                            wow: res.wow ?? "",
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                      );
+                                    },
+                                  ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 20.h,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ));
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 20.h,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 }
 
@@ -2179,8 +2267,10 @@ class DottedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10.h),
+    return Container(
+      padding: EdgeInsets.only(
+        top: 10.h,
+      ),
       child: SizedBox(
         height: 180.h,
         child: Row(
@@ -2211,43 +2301,42 @@ class DottedContainer extends StatelessWidget {
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: EdgeInsets.only(
+          bottom: 5.h,
+        ),
         child: DottedBorder(
           color: Colors.black,
           strokeWidth: 2,
           borderType: BorderType.RRect,
           radius: const Radius.circular(12),
           dashPattern: const [6, 5],
-          child: Stack(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
+                height: 10.h,
+              ),
+              SizedBox(
                 width: 100.w,
-                height: 180.h,
+                height: 100.h,
                 child: Image.network(
                   firstImage ?? 'https://via.placeholder.com/120',
                   fit: BoxFit.contain,
                 ),
               ),
-              Positioned(
-                left: 10.w,
-                bottom: 10.h,
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.sp,
-                    color: Colors.black,
-                  ),
+              Spacer(),
+              Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.sp,
+                  color: Colors.black,
                 ),
               ),
-              Positioned(
-                left: 30.w,
-                bottom: 4,
-                height: 12,
-                width: 12,
-                child: Icon(Icons.add),
-              )
+              Icon(Icons.add),
             ],
           ),
         ),
@@ -2591,7 +2680,7 @@ class buildDealItemWidget extends StatelessWidget {
 // }
 
 class BigContainer extends StatefulWidget {
-  final String id;
+  final String vendorid;
   final String title;
   final String logo;
   final String contact;
@@ -2609,12 +2698,13 @@ class BigContainer extends StatefulWidget {
   final VoidCallback? onsubscribed; // Changed this to VoidCallback?
   final VoidCallback? ondoenload; // Changed this to VoidCallback?
   final VoidCallback? onconnectclicked;
+  final int membershipid;
 
   // Constructor
   BigContainer(
       {required this.lat,
       required this.long,
-      required this.id,
+      required this.vendorid,
       super.key,
       required this.title,
       required this.logo,
@@ -2631,7 +2721,8 @@ class BigContainer extends StatefulWidget {
       required this.memebertitle,
       required this.onsubscribed,
       required this.ondoenload,
-      required this.onconnectclicked});
+      required this.onconnectclicked,
+      required this.membershipid});
 
   @override
   State<BigContainer> createState() => _BigContainerState();
@@ -2650,7 +2741,8 @@ class _BigContainerState extends State<BigContainer> {
             context,
             MaterialPageRoute(
               builder: (context) => VendorHomeScreen(
-                  vid: int.tryParse(widget.id) ?? 9, vendorName: widget.title),
+                  vid: int.tryParse(widget.vendorid) ?? 9,
+                  vendorName: widget.title),
             ));
       },
       child: Padding(
@@ -2684,11 +2776,11 @@ class _BigContainerState extends State<BigContainer> {
                       icon:
                           const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
                       itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          value: 'Enquire',
-                          child: Text('Enquire',
-                              style: TextStyle(color: Colors.black)),
-                        ),
+                        // const PopupMenuItem(
+                        //   value: 'Enquire',
+                        //   child: Text('Enquire',
+                        //       style: TextStyle(color: Colors.black)),
+                        // ),
                         PopupMenuItem(
                           onTap: () {
                             Navigator.push(
@@ -2731,11 +2823,12 @@ class _BigContainerState extends State<BigContainer> {
                                           height: 600.h,
                                           width: 450.w,
                                           child: BigContainer(
+                                            membershipid: widget.membershipid,
                                             onconnectclicked: () {},
                                             storycount: widget.storyCount,
                                             lat: widget.lat,
                                             long: widget.long,
-                                            id: widget.id,
+                                            vendorid: widget.vendorid,
                                             title: widget.title,
                                             logo: widget.logo,
                                             contact: widget.contact,
@@ -2816,13 +2909,13 @@ class _BigContainerState extends State<BigContainer> {
                   Column(
                     children: [
                       Image.asset(
-                        widget.id.toString() == "2"
+                        widget.membershipid.toString() == "2"
                             ? spotlighticon
-                            : widget.id.toString() == "1"
+                            : widget.membershipid.toString() == "1"
                                 ? basicsellericon
-                                : widget.id.toString() == "3"
+                                : widget.membershipid.toString() == "3"
                                     ? domesticseller
-                                    : widget.id.toString() == "25"
+                                    : widget.membershipid.toString() == "25"
                                         ? globalicon
                                         : basicsellericon, // Default icon
                         width: 50,
@@ -3076,7 +3169,7 @@ class _BigContainerState extends State<BigContainer> {
                                     await Future.delayed(const Duration(
                                         seconds: 2)); // Simulate some delay
 
-                                    followUnfollowVendor(widget.id).then(
+                                    followUnfollowVendor(widget.vendorid).then(
                                       (value) {
                                         showCustomToast(context, value.msg!);
                                         if (value.scratchAva == '1') {
@@ -3121,7 +3214,7 @@ class _BigContainerState extends State<BigContainer> {
                   await Future.delayed(
                       const Duration(seconds: 2)); // Simulate delay
 
-                  followUnfollowVendor(widget.id).then(
+                  followUnfollowVendor(widget.vendorid).then(
                     (value) {
                       showCustomToast(context, value.msg!);
 

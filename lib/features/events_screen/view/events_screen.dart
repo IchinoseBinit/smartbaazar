@@ -329,6 +329,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
+                        showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -554,6 +555,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
+                                       productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",
@@ -2596,6 +2598,8 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                                   Buynowmodel resp = data.buynow![index];
 
                                   return buyorwin_widget(
+                                    ref: ref,
+                                    postid: resp.post_id!,
                                     vendorid: resp.vendor_id!,
                                       wow: resp.wow ?? '0',
                                       gift_qty: resp.gift_qty!,

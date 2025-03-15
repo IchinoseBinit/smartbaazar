@@ -6,12 +6,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/auth/widgets/custom_check_box_widgt.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
+import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_api.dart';
+import 'package:smartbazar/features/feed-form_screen/model/products_feed_dropdown.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/sponsorship/api/get_feed_products_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_coupon_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_gift_api.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/submit_sponsorship_payment_screen.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
+import 'package:smartbazar/practice.dart';
 
 class ApplySponsorshipPriceScreen extends ConsumerStatefulWidget {
   const ApplySponsorshipPriceScreen({super.key});
@@ -30,6 +35,9 @@ class _ApplySponsorshipPriceScreenState
   String totalWorth = 'Total Worth (Limit 2000)';
   String sponsorshipFee = 'Sponsorship Fee (2%)';
   String totalCost = 'NPR';
+  String? imageurl;
+  List<Product> products = [];
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +94,9 @@ class _ApplySponsorshipPriceScreenState
     final giftQty = giftQtyController.text.trim();
     const giftType = "gift";
 
-    if (imageFile == null ||
+    //print('${totalCost}'); 9877654433
+
+    if (
         gift.isEmpty ||
         giftWorth.isEmpty ||
         giftQty.isEmpty ||
@@ -102,30 +112,44 @@ class _ApplySponsorshipPriceScreenState
     }
 
     // Call the postgift API
-    final success = await ref.read(postgiftProvider(
-      gift,
-      giftWorth,
-      giftType,
-      giftQty,
-      imageFile!,
-    ).future);
 
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Gift posted successfully!'),
-          backgroundColor: Colors.grey,
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
-      );
+    var pay = await makepaymentnow(
+        context, int.tryParse(totalCost).toString(), false);
+
+    if (pay["success"] == true) {
+      // Ensure checking the success flag correctly
+      final success = await ref.read(postgiftProvider(
+        gift,
+        giftWorth,
+        giftType,
+        giftQty,
+       imageFile!,
+      ).future);
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Gift posted successfully!'),
+            backgroundColor: Colors.grey,
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to post gift'),
+            backgroundColor: Colors.grey,
+          ),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Failed to post gift'),
-          backgroundColor: Colors.grey,
+          content: Text('Payment failed'),
+          backgroundColor: Colors.red,
         ),
       );
     }
@@ -204,6 +228,81 @@ class _ApplySponsorshipPriceScreenState
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 child: Column(
                                   children: [
+                                    ref
+                                        .watch(getProductsFeedDropdownProvider)
+                                        .when(
+                                          data: (data) {
+                                            return CreateListingCardWidget(
+                                              child: DropdownButtonFormField<
+                                                  Product>(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  border: InputBorder.none,
+                                                ),
+                                                hint: const Text(
+                                                    'Please select a value'),
+                                                items: data!.products!.map<
+                                                    DropdownMenuItem<
+                                                        Product>>((item) {
+                                                  return DropdownMenuItem<
+                                                      Product>(
+                                                    value:
+                                                        item, // Pass the whole Product object
+                                                    child: Text(item
+                                                        .title!), // Display the title
+                                                  );
+                                                }).toList(),
+                                                onChanged:
+                                                    (selectedProduct) async {
+                                                  if (selectedProduct != null) {
+                                                    final giftImage = await ref.read(
+                                                        getProductsFeedProvider(
+                                                                selectedProduct
+                                                                    .id!)
+                                                            .future);
+
+                                                    setState(() {
+                                                      imageurl =
+                                                          giftImage.image;
+                                                      giftWorthController.text =
+                                                          giftImage.price;
+                                                      giftController.text =
+                                                          selectedProduct
+                                                              .title!;
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          loading: () => const Center(
+                                              child:
+                                                  CircularProgressIndicator()), // Show loader while fetching data
+                                          error: (error, stackTrace) => Center(
+                                            child: InkWell(
+                                              onTap: () => ref.invalidate(
+                                                  getProductsFeedDropdownProvider), // Refresh on error
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(Icons.refresh,
+                                                      color: Colors.red,
+                                                      size: 30),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    'Error loading data. Tap to retry.',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                     CreateListingCardWidget(
                                         child: Column(
                                       crossAxisAlignment:
@@ -214,7 +313,7 @@ class _ApplySponsorshipPriceScreenState
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Gift Name/Title',
+                                              'Gift Name/Title  ',
                                               style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w500,
@@ -222,6 +321,7 @@ class _ApplySponsorshipPriceScreenState
                                             ),
                                             Expanded(
                                               child: TextField(
+                                                readOnly: true,
                                                 textAlign: TextAlign.end,
                                                 textInputAction:
                                                     TextInputAction.done,
@@ -255,27 +355,82 @@ class _ApplySponsorshipPriceScreenState
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
-                                            Text(
-                                              '(Recommended Size 1:1)',
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color:
-                                                      const Color(0xffADADAD)),
-                                            )
+                                            // Text(
+                                            //   '(Recommended Size 1:1)',
+                                            //   style: TextStyle(
+                                            //       fontSize: 12.sp,
+                                            //       fontWeight: FontWeight.w500,
+                                            //       color:
+                                            //           const Color(0xffADADAD)),
+                                            // )
                                           ],
                                         ),
                                         SizedBox(
                                           height: 5.h,
                                         ),
-                                        ChooseFileWidget(
-                                          textColor: Colors.red,
-                                          onImageSelected: (selectedImage) {
-                                            setState(() {
-                                              imageFile = selectedImage;
-                                            });
-                                          },
+                                        Center(
+                                          child: Container(
+                                              height: 90,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: const Color(
+                                                        0xffADADAD)),
+                                              ),
+                                              child: imageurl != null &&
+                                                      imageurl!.isNotEmpty
+                                                  ? ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: Image.network(
+                                                        imageurl!,
+                                                        fit: BoxFit.cover,
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                        errorBuilder: (context,
+                                                            error, stackTrace) {
+                                                          return Center(
+                                                            child: Text(
+                                                              'Image',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Color(
+                                                                    0xff888888),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    )
+                                                  : Center(
+                                                      child: Text(
+                                                        'Image',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color:
+                                                              Color(0xff888888),
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    )),
                                         ),
+
+                                        // ChooseFileWidget(
+                                        //   textColor: Colors.red,
+                                        //   onImageSelected: (selectedImage) {
+                                        //     setState(() {
+                                        //       imageFile = selectedImage;
+                                        //     });
+                                        //   },
+                                        // ),
                                       ],
                                     )),
                                     CreateListingCardWidget(
@@ -343,6 +498,7 @@ class _ApplySponsorshipPriceScreenState
                                             ),
                                             Expanded(
                                               child: TextField(
+                                                readOnly: true,
                                                 textInputAction:
                                                     TextInputAction.done,
                                                 controller: giftWorthController,

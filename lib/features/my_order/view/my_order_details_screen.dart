@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/create_listing/api/get_location_provider.dart';
 import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/create_listing/view/city_field.dart';
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
@@ -438,11 +440,36 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
   List<String?>? issueList = [];
   Place? selectedpickup;
   bool _isImagePickerActive = false; // Track the state of image picker
+  Place? selectedplace;
+  List<Place>? _places; // Replace with your actual type for _places.
 
   final TextEditingController _pickupcontroller = TextEditingController();
+  Timer? _debounce;
 
   File? _selectedImage;
   TextEditingController? messagecontroller;
+  void _onSearchChanged(String searchTerm) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 10), () {
+      if (searchTerm.isNotEmpty) {
+        _getStreet(searchTerm);
+      }
+    });
+  }
+
+  Future<void> _getStreet(String name) async {
+    try {
+      final value = await getpickaddress(name);
+      setState(() {
+        _places = value.places!;
+      });
+      print("biabsh $_places");
+    } catch (e) {
+      // Handle errors if needed
+      print('Error fetching street data: $e');
+    }
+  }
 
   Future<void> _pickImage() async {
     if (_isImagePickerActive) {
@@ -547,7 +574,7 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
                   TextField(
                     controller: messagecontroller,
                     onChanged: (value) {
-                      widget.message(selectedissue!);
+                      widget.message(selectedissue?? 'message');
                     },
                     maxLines: null,
                     decoration: InputDecoration.collapsed(
@@ -563,30 +590,72 @@ class _ReturnProductDetailsState extends State<ReturnProductDetails> {
             SizedBox(height: 5.h),
             CityField(onCitySelected: widget.place),
             SizedBox(height: 5.h),
-            CreateListingCardWidget(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(
+              height: _places == null || _places!.isEmpty ? 120 : 200,
+              child: Stack(
                 children: [
-                  Text(
-                    'Street Address',
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  CreateListingCardWidget(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Street Address',
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        SizedBox(height: 10.h),
+                        TextField(
+                          controller: _pickupcontroller,
+                          onChanged: _onSearchChanged,
+                          decoration: InputDecoration.collapsed(
+                              hintText: 'Enter Street Address',
+                              hintStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.sp,
+                                  color: const Color(0xffADADAD))),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 10.h),
-                  TextField(
-                    onChanged: (value) {
-                      widget.address(value);
-                    },
-                    decoration: InputDecoration.collapsed(
-                        hintText: 'Enter Street Address',
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.sp,
-                            color: const Color(0xffADADAD))),
-                  ),
+                  if (_places != null)
+                    Positioned(
+                      top: 100.h,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 20.w),
+                        width: 400.w,
+                        height: 100.h,
+                        child: ListView.builder(
+                          itemCount: _places!.length > 3 ? 3 : _places?.length,
+                          itemBuilder: (context, index) {
+                            Place p = _places![index];
+                            return InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _pickupcontroller.text = p.description!;
+                                });
+                                widget.address(p
+                                    .description!); // Pass selected address to parent
+                                print(
+                                    "Selected Address: ${p.description!}"); // Debugging
+                                _places = [];
+                                // _pickupcontroller.text = '';
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 6.w),
+                                margin: EdgeInsets.symmetric(vertical: 3.h),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.grey, width: 0.7)),
+                                child: Text(p.description!),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),

@@ -240,7 +240,7 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
-        widget.onImageSelected(_selectedImage);
+        widget.onImageSelected(_selectedImage);  
       });
     }
   }
@@ -251,7 +251,9 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap: pickImage,
+          onTap: () {
+            
+          },
           child: Center(
             child: Container(
               height: 90.h,
@@ -284,46 +286,46 @@ class ChooseFileWidgetState extends State<ChooseFileWidget> {
           ),
         ),
         SizedBox(height: 10.h),
-        GestureDetector(
-          onTap: pickImage,
-          child: Container(
-            padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              color: const Color(0xffEDECEC),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  'Choose File',
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff36383C),
-                  ),
-                ),
-                SizedBox(width: 7.w),
-                Text(
-                  "|",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xffADADAD),
-                  ),
-                ),
-                SizedBox(width: 11.w),
-                Text(
-                  _selectedImage == null ? 'No File Chosen' : 'File Selected',
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w400,
-                    color: widget.textColor ?? const Color(0xff36383C),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // GestureDetector(
+        //   onTap: pickImage,
+        //   child: Container(
+        //     padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(12.r),
+        //       color: const Color(0xffEDECEC),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         Text(
+        //           'Choose File',
+        //           style: TextStyle(
+        //             fontSize: 10.sp,
+        //             fontWeight: FontWeight.w400,
+        //             color: const Color(0xff36383C),
+        //           ),
+        //         ),
+        //         SizedBox(width: 7.w),
+        //         Text(
+        //           "|",
+        //           style: TextStyle(
+        //             fontSize: 16.sp,
+        //             fontWeight: FontWeight.w700,
+        //             color: const Color(0xffADADAD),
+        //           ),
+        //         ),
+        //         SizedBox(width: 11.w),
+        //         Text(
+        //           _selectedImage == null ? 'No File Chosen' : 'File Selected',
+        //           style: TextStyle(
+        //             fontSize: 10.sp,
+        //             fontWeight: FontWeight.w400,
+        //             color: widget.textColor ?? const Color(0xff36383C),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

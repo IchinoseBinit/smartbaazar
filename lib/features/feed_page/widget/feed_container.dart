@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
@@ -40,7 +39,8 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.feedId,
       required this.isLiked,
       required this.refreshprovider,
-      required this.productinfo});
+      required this.productinfo,
+      required this.onlikedrefresh});
 
   final String? vendorImage;
   final String? vendorName;
@@ -61,6 +61,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String? isLiked;
   final String? productinfo;
   final VoidCallback? refreshprovider;
+  final VoidCallback? onlikedrefresh;
 
   // final UserDetail? userDetails;
   // final Interested? interested;
@@ -254,7 +255,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
               end: Alignment.bottomRight,
             )),
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,navigat
               children: [
                 Stack(
                   clipBehavior: Clip.none,
@@ -346,7 +347,10 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                   data: (feedCardData) {
                                     // print("pinky $feedCardData");
                                     return showCustomBottomSheet(
-                                        context, feedCardData);
+                                        feedCardData.userDetail!.userId!,
+                                        ref,
+                                        context,
+                                        feedCardData);
                                   },
                                   error: (error, stackTrace) =>
                                       const Text("Please login again"),
@@ -582,38 +586,38 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                 ),
               ),
 
-              Positioned(
-                top: 10.0,
-                right: 5.0,
-                // left: 10,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .push(MaterialPageRoute(
-                      builder: (context) => FullscreenImageView(
-                        imagePath: widget.feedDetailImage ?? '',
-                      ),
-                    ));
-                    widget.refreshprovider?.call();
+              // Positioned(
+              //   top: 10.0,
+              //   right: 5.0,
+              //   // left: 10,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       Navigator.of(context, rootNavigator: true)
+              //           .push(MaterialPageRoute(
+              //         builder: (context) => FullscreenImageView(
+              //           imagePath: widget.feedDetailImage ?? '',
+              //         ),
+              //       ));
+              //       widget.refreshprovider?.call();
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => FullscreenImageView(
-                    //       imagePath: widget.feedDetailImage ?? '',
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                  child: Container(
-                    color: Colors.black54,
-                    height: 35,
-                    width: 35,
-                    child: Icon(Icons.zoom_out_map_rounded,
-                        color: Colors.white, size: 20.h),
-                  ),
-                ),
-              ),
+              //       // Navigator.push(
+              //       //   context,
+              //       //   MaterialPageRoute(
+              //       //     builder: (context) => FullscreenImageView(
+              //       //       imagePath: widget.feedDetailImage ?? '',
+              //       //     ),
+              //       //   ),
+              //       // );
+              //     },
+              //     child: Container(
+              //       color: Colors.black54,
+              //       height: 35,
+              //       width: 35,
+              //       child: Icon(Icons.zoom_out_map_rounded,
+              //           color: Colors.white, size: 20.h),
+              //     ),
+              //   ),
+              // ),
 
               // Icons Section (Like, Comment, Share) positioned above the image
               Positioned(
@@ -640,7 +644,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                               .read(postFeedWowProvider(widget.feedId).future);
 
                           // Force the provider to refresh
-                          ref.invalidate(postFeedWowProvider);
+                          //   ref.invalidate(postFeedWowProvider);
 
                           // Ensure _isLiked is not null before updating
                           if (_isLiked != null) {
@@ -660,8 +664,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                           setState(() {
                             _isLoading = false;
                           });
+                          widget.onlikedrefresh?.call();
                         }
-                        // widget.refreshprovider?.call();
                       },
                       child: Row(
                         children: [

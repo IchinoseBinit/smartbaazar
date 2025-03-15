@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
+import 'package:smartbazar/features/message/view/chat_screen.dart';
+import 'package:smartbazar/features/product_details/carosel_widget.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 class buyorwin_widget extends StatelessWidget {
@@ -16,7 +21,10 @@ class buyorwin_widget extends StatelessWidget {
       required this.worth,
       required this.gift_qty,
       required this.wow,
-      required this.vendorid});
+      required this.vendorid,
+      required this.postid,
+      required this.ref
+      });
 
   final String vendorname,
       winners,
@@ -26,7 +34,9 @@ class buyorwin_widget extends StatelessWidget {
       worth,
       gift_qty,
       wow,
-      vendorid;
+      vendorid,
+      postid;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +206,7 @@ class buyorwin_widget extends StatelessWidget {
                               // ),
 
                               Text(
-                                "by ${vendorname.length > 15 ? '${vendorname.substring(0, 12)}...' : vendorname}",
+                                "by ${vendorname.length > 16 ? '${vendorname.substring(0, 16)}...' : vendorname}",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   // Use a fixed font size for debugging
@@ -277,10 +287,56 @@ class buyorwin_widget extends StatelessWidget {
                         SizedBox(
                           width: 25.w,
                         ),
-                        Text(
-                          "ENQUIRE",
-                          style: headerstyle.copyWith(
-                              color: Colors.black, fontSize: 12),
+                        InkWell(
+                          onTap: () {
+                            getEnquire(ref,postid).then(
+                              (value) {
+                                value.data?.enquire == 0
+                                    ? showModalBottomSheet(
+                                        useSafeArea: true,
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.8, // Use 80% of the screen height
+
+                                            child: SendMessageBottomWidget(
+                                              ref: ref,
+                                              productidid: postid,
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : navigateToPage(
+                                        context: context,
+                                        page: ChatScreen(
+                                            threadId: value.data!.thread!.id!,
+                                            username:
+                                                value.data!.thread!.subject!,
+                                            postId:
+                                                value.data!.thread!.post_id!),
+                                        ref: ref,
+                                        showNavBar: false, // Hide bottom navbar
+                                      );
+                                // if ()
+
+                                // SendMessageBottomWidget(
+                                //     ref: ref,
+                                //     productidid:
+                                //         prod.id);
+                              },
+                            ).catchError((error) {
+                              print('Error: $error');
+                            });
+                          },
+                          child: Text(
+                            "ENQUIRE",
+                            style: headerstyle.copyWith(
+                                color: Colors.black, fontSize: 12),
+                          ),
                         ),
                         SizedBox(
                           width: 25.w,

@@ -120,7 +120,7 @@ class PedingApprovalContainer extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to the product details page
-         navigateToPage(
+        navigateToPage(
           context: context,
           page: ProductDetailScreen(productId: productData.id!),
           ref: ref,
@@ -208,86 +208,104 @@ class PedingApprovalContainer extends ConsumerWidget {
               ],
             ),
             SizedBox(height: 10.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(width: 7.w),
-                Container(
+            InkWell(
+              onTap: () {
+                print("niko ${productData.categoryId}");
+                Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(  productId:productData.id! ,)));
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(width: 7.w),
+                  Container(
                     padding: EdgeInsets.only(
                         top: 15.h, left: 8.w, right: 8.w, bottom: 20.h),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       color: const Color(0xffF6F1F1),
                     ),
-                    child: Image.network(
-                      productData.image!,
-                      height: 70.h,
-                      errorBuilder: (context, error, stackTrace) {
-                        // Display a fallback icon if the image fails to load
-                        return Icon(
-                          Icons.image_not_supported,
-                          size: 70.h,
-                          color: Colors.grey,
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return SizedBox(
-                          height: 70.h,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                width: 50.w,
-                                height: 60.h,
-                                color: Colors.white,
+                    child: (productData.image == null ||
+                            productData.image!.isEmpty)
+                        ? Icon(
+                            Icons.image_not_supported,
+                            size: 70.h,
+                            color: Colors.grey,
+                          )
+                        : Image.network(
+                            productData.image!,
+                            height: 70.h,
+                            errorBuilder: (context, error, stackTrace) {
+                              // Display a fallback icon if the image fails to load
+                              return Icon(
+                                Icons.image_not_supported,
+                                size: 70.h,
+                                color: Colors.grey,
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return SizedBox(
+                                height: 70.h,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey[300]!,
+                                    highlightColor: Colors.grey[100]!,
+                                    child: Container(
+                                      width: 50.w,
+                                      height: 60.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  SizedBox(width: 20.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          productData.title!,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Order ID: ${productData.id}',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 40.h),
+                        Row(
+                          children: [
+                            Text(
+                              'Rs ${productData.price}',
+                              style: TextStyle(
+                                color: const Color(0xff36383C),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    )),
-                SizedBox(width: 20.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        productData.title!,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                            const Spacer(),
+                          ],
                         ),
-                      ),
-                      Text(
-                        'Order ID: ${productData.id}',
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 40.h),
-                      Row(
-                        children: [
-                          Text(
-                            'Rs ${productData.price}',
-                            style: TextStyle(
-                              color: const Color(0xff36383C),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

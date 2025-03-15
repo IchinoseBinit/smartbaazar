@@ -25,6 +25,7 @@ import 'package:smartbazar/features/order_details/model/street_address_model.dar
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
+import 'package:smartbazar/practice.dart';
 
 class OrderDetailsScreen extends ConsumerStatefulWidget {
   const OrderDetailsScreen(
@@ -358,7 +359,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
                       child: CustomRadioButton(
                         title1: 'standard',
                         title2: 'Hyper',
-                        onChanged: (p0) { 
+                        onChanged: (p0) {
                           hyperOption = p0.toLowerCase();
                           //  print('bibah ${hyperOption}');
                         },
@@ -647,17 +648,20 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                         color: Colors.black87,
                       )),
                   onPressed: () async {
-                       bool success = await initiatePayment(
-                              context, '100', true);
-                    // bool success = await initiatePayment(  
+                    print('rala ${widget.totalfromtop.toString()}');
+                    // print(
+                    //     'bibash ${gettoal(widget.totalfromtop, widget.deliverychareg.data?.estimatedFare ?? 0).toStringAsFixed(2)}');
+                    var success = await makepaymentnow(
+                        context, widget.totalfromtop.toString(), true);
+                    // bool success = await initiatePayment(
                     //     context,
                     //     gettoal(widget.totalfromtop,
                     //             widget.deliverychareg.data?.estimatedFare ?? 0)
                     //         .toStringAsFixed(2),
                     //     true);
 //9844076655
-                    if (success)
-                   await   ref
+                    if (success["success"])
+                      await ref
                           .read(postCheckoutFormProvider(
                         userName,
                         address,
@@ -765,7 +769,8 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                                                     const OnlineTransactionRecordScreen()));
                                       },
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           const Text('OK'),
                                           SizedBox(width: 8.w),
@@ -792,7 +797,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                   },
                   child: const Text(
                     'Pay with Fonepay',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.red),
                   ),
                 ),
               ),

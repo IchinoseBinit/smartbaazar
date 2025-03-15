@@ -14,9 +14,9 @@ Future<GetForYouFeedModel> getForYouFeedApi(ref) async {
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url: ApiConstants.getForYouFeedUrl,
-      headers: {
-        'X-AppApiToken': 'Yala@Techies_Nepal',
-      },
+      // headers: {
+      //   'X-AppApiToken': 'Yala@Techies_Nepal',
+      // },
     );
 
     if (response.statusCode == 200) {
