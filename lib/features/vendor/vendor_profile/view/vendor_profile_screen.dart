@@ -37,6 +37,7 @@ import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/buyer_details_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/features/vendor_details/view/vendor_details_screen.dart';
+import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
 class VendorProfileScreen extends StatefulWidget {
@@ -726,7 +727,19 @@ class MyAccountWidget extends StatelessWidget {
 
   Future<void> _handleAction(BuildContext context, String title) async {
     if (title == 'Log Out') {
+            SmartClient.token = '';
+   SmartClient.refresh = '';
+   SmartClient.userId = '';
+   SmartClient.userName = '';
+   SmartClient.userEmail = '';
+   SmartClient.laravelSession = '';
+   SmartClient.phone = '';
+   SmartClient.userPhoto = '';
+
       SharedPreferences preferences = await SharedPreferences.getInstance();
+    //     await preferences.remove('accessToken');
+    // await preferences.remove('refreshToken');
+    await preferences.clear();
       showCustomToast(context, "logged out successfully");
       await preferences.clear();
       Navigator.of(context, rootNavigator: true).pushReplacement(

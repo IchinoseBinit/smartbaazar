@@ -24,7 +24,7 @@ import 'package:smartbazar/features/order_details/model/street_address_model.dar
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:collection/collection.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
-import 'package:smartbazar/practice.dart';
+import 'package:smartbazar/payment/paymment_extra.dart';
 
 final quantityProvider = StateProvider<int>((ref) => 1);
 
@@ -913,7 +913,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                                     success["id"]
 
                                   ).whenComplete(
-                                    () {
+                                    () { 
                                       successfulpayment(context);
                                     },
                                   );

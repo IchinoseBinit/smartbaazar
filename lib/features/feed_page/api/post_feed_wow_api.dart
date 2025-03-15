@@ -6,7 +6,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'post_feed_wow_api.g.dart';
 
 @riverpod
-Future<String> postFeedWow(PostFeedWowRef ref, String feedId) async {
+Future<String> postFeedWow( ref, String feedId) async {
   final SmartClient client = SmartClient();
   try {
     final response = await client.request(

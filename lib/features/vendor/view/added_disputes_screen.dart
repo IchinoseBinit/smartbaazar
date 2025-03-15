@@ -13,7 +13,7 @@ import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
 class AddNewDisputes extends ConsumerStatefulWidget {
-   AddNewDisputes({super.key, this.vendorname});
+  AddNewDisputes({super.key, this.vendorname});
   String? vendorname;
 
   @override
@@ -53,7 +53,7 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
 
     // Get the PostDisputeRef from the provider
     final result = await ref.read(postDisputeProvider(
-            _vendorNameController.text,
+            _vendorNameController.text.toLowerCase().replaceAll(' ', ''),
             getIssueLabel(_selectedIssue!),
             _messageController.text,
             _selectedImages!.first)
@@ -70,23 +70,20 @@ class _AddNewDisputesState extends ConsumerState<AddNewDisputes> {
           context, "Failed to submit dispute. Please try again.");
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
-      if (widget.vendorname != null) {
-        _vendorNameController.text = widget.vendorname?? '';
-      }
+    if (widget.vendorname != null) {
+      _vendorNameController.text = widget.vendorname ?? '';
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-  
     return GenericSafeArea(
-    
       child: Scaffold(
-        
-        
         backgroundColor: const Color(0xffF6F1F1),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 16.h),

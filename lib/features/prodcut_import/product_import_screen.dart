@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-// import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +10,7 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/prodcut_import/Api/product_import_provider.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 class ProductImportScreen extends ConsumerStatefulWidget {
   const ProductImportScreen({super.key});
 
@@ -44,165 +45,173 @@ class _ProductImportScreenState extends ConsumerState<ProductImportScreen> {
             padding: EdgeInsets.symmetric(
               vertical: 20.h,
             ),
-            child: const Text('Please contact administrator'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.w,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.import_contacts),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Text(
+                        'Product Import',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Text('Go back',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xff888888))),
+                      )
+                    ],
+                  ),
+                ),
+                Divider(
+                  thickness: 2.w,
+                  color: const Color(0xffD9D9D9),
+                ),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'Please contact administrator',
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'CSV File',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      ChooseFile(
+                        textColor: Colors.red,
+                        onFileSelected: (file) async {
+                          // This assumes that StoreProductImportProvider returns an AsyncValue
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Sample Document',
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Icon(
+                            Icons.file_copy,
+                            size: 20.h,
+                            color: const Color(0xff362677),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      DownloadFileSampleWidget(
+                        onclicked: () async {
+                          const String fileUrl =
+                              'https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv';
 
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Padding(
-          //         padding: EdgeInsets.symmetric(
-          //           horizontal: 8.w,
-          //         ),
-          //         child: Row(
-          //           children: [
-          //             const Icon(Icons.import_contacts),
-          //             SizedBox(
-          //               width: 8.w,
-          //             ),
-          //             Text(
-          //               'Product Import',
-          //               style: TextStyle(
-          //                   fontSize: 14.sp,
-          //                   fontWeight: FontWeight.w700,
-          //                   color: Colors.black),
-          //             ),
-          //             const Spacer(),
-          //             InkWell(
-          //               onTap: () => Navigator.pop(context),
-          //               child: Text('Go back',
-          //                   style: TextStyle(
-          //                       fontSize: 14.sp,
-          //                       fontWeight: FontWeight.w700,
-          //                       color: const Color(0xff888888))),
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //       Divider(
-          //         thickness: 2.w,
-          //         color: const Color(0xffD9D9D9),
-          //       ),
-          //       SizedBox(
-          //         height: 20.h,
-          //       ),
-          //       Padding(
-          //         padding: EdgeInsets.symmetric(horizontal: 12.w),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Text(
-          //               'CSV File',
-          //               style: TextStyle(
-          //                   fontSize: 14.sp,
-          //                   fontWeight: FontWeight.w500,
-          //                   color: Colors.black),
-          //             ),
-          //             SizedBox(
-          //               height: 5.h,
-          //             ),
-          //             ChooseFile(
-          //               textColor: Colors.red,
-          //               onFileSelected: (file) async {
-          //                 // This assumes that StoreProductImportProvider returns an AsyncValue
-          //               },
-          //             ),
-          //             SizedBox(
-          //               height: 10.h,
-          //             ),
-          //             Row(
-          //               children: [
-          //                 Text(
-          //                   'Sample Document',
-          //                   style: TextStyle(
-          //                       fontSize: 14.sp,
-          //                       fontWeight: FontWeight.w500,
-          //                       color: Colors.black),
-          //                 ),
-          //                 SizedBox(
-          //                   width: 10.w,
-          //                 ),
-          //                 Icon(
-          //                   Icons.file_copy,
-          //                   size: 20.h,
-          //                   color: const Color(0xff362677),
-          //                 )
-          //               ],
-          //             ),
-          //             SizedBox(
-          //               height: 10.h,
-          //             ),
-          //             DownloadFileSampleWidget(
-          //               onclicked: () async {
-          //                 const String fileUrl =
-          //                     'https://smartbazaar.com.np/uploads/samples/Smartbazaaruser.csv';
+                          try {
+                            // Get the application directory to save the file
+                            var dir = await getApplicationDocumentsDirectory();
+                            String savePath = '${dir.path}/Smartbazaaruser.csv';
 
-          //                 try {
-          //                   // Get the application directory to save the file
-          //                   var dir = await getApplicationDocumentsDirectory();
-          //                   String savePath = '${dir.path}/Smartbazaaruser.csv';
+                            // Dio instance to handle file download
+                            Dio dio = Dio();
 
-          //                   // Dio instance to handle file download
-          //                   Dio dio = Dio();
+                            // Start downloading the file
+                            await dio.download(fileUrl, savePath);
+                            print('File downloaded to $savePath');
 
-          //                   // Start downloading the file
-          //                   await dio.download(fileUrl, savePath);
-          //                   print('File downloaded to $savePath');
+                            // Optional: Show a success message or do something after download
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('File downloaded successfully!')),
+                            );
+                          } catch (e) {
+                            print("Error downloading file: ${e.toString()}");
 
-          //                   // Optional: Show a success message or do something after download
-          //                   ScaffoldMessenger.of(context).showSnackBar(
-          //                     const SnackBar(
-          //                         content:
-          //                             Text('File downloaded successfully!')),
-          //                   );
-          //                 } catch (e) {
-          //                   print("Error downloading file: ${e.toString()}");
-
-          //                   // Optional: Show an error message
-          //                   ScaffoldMessenger.of(context).showSnackBar(
-          //                     SnackBar(
-          //                         content: Text(
-          //                             'Error downloading file: ${e.toString()}')),
-          //                   );
-          //                 }
-          //               },
-          //               text: 'Donwload Sample',
-          //             ),
-          //             SizedBox(
-          //               height: 10.h,
-          //             ),
-          //             DownloadFileSampleWidget(
-          //               onclicked: () async {
-          //                 final uri = Uri.parse(
-          //                     "https://smartbazaar.com.np/uploads/samples/SmartBazaar_Product_Import_Documentation.pdf");
-          //                 await launchUrl(
-          //                   uri,
-          //                 );
-          //               },
-          //               text: 'Donwload Documents',
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         height: 80.h,
-          //       ),
-          //       // GeneralTextButton(
-          //       //   // marginH: 0,
-          //       //   width: MediaQuery.of(context).size.width,
-          //       //   title: 'Online Transaction',
-          //       //   fgColor: Colors.white,
-          //       //   bgColor: const Color(0xff362677),
-          //       //   onPressed: () {
-          //       //     Navigator.push(
-          //       //         context,
-          //       //         MaterialPageRoute(
-          //       //             builder: (_) =>
-          //       //                 const OnlineTransactionRecordScreen()));
-          //       //   },
-          //       // ),
-          //     ],
-          //   ),
-         ),
+                            // Optional: Show an error message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Error downloading file: ${e.toString()}')),
+                            );
+                          }
+                        },
+                        text: 'Donwload Sample',
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      DownloadFileSampleWidget(
+                        onclicked: () async {
+                          final uri = Uri.parse(
+                              "https://smartbazaar.com.np/uploads/samples/SmartBazaar_Product_Import_Documentation.pdf");
+                          await launchUrl(
+                            uri,
+                          );
+                        },
+                        text: 'Donwload Documents',
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 80.h,
+                ),
+                // GeneralTextButton(
+                //   // marginH: 0,
+                //   width: MediaQuery.of(context).size.width,
+                //   title: 'Online Transaction',
+                //   fgColor: Colors.white,
+                //   bgColor: const Color(0xff362677),
+                //   onPressed: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (_) =>
+                //                 const OnlineTransactionRecordScreen()));
+                //   },
+                // ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -251,14 +260,12 @@ class DownloadFileSampleWidget extends StatelessWidget {
 class ChooseFile extends StatefulWidget {
   final Function(File?) onFileSelected;
   final Color? textColor;
-  bool? showbtn;
 
-   ChooseFile(
-      {Key? key,
-      required this.onFileSelected,
-      this.textColor,
-      this.showbtn = true})
-      : super(key: key);
+  const ChooseFile({
+    Key? key,
+    required this.onFileSelected,
+    this.textColor,
+  }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -275,17 +282,17 @@ class _ChooseFileState extends State<ChooseFile> {
   }
 
   Future<void> pickFile() async {
-    // final result = await FilePicker.platform.pickFiles(
-    //   type: FileType.custom,
-    //   allowedExtensions: ['csv'],
-    // );
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+    );
 
-    // if (result != null && result.files.isNotEmpty) {
-    //   setState(() {
-    //     _selectedFile = File(result.files.single.path!);
-    //     widget.onFileSelected(_selectedFile);
-    //   });
-    // }
+    if (result != null && result.files.isNotEmpty) {
+      setState(() {
+        _selectedFile = File(result.files.single.path!);
+        widget.onFileSelected(_selectedFile);
+      });
+    }
   }
 
   Future<void> uploadFile() async {
@@ -315,7 +322,7 @@ class _ChooseFileState extends State<ChooseFile> {
               padding: const EdgeInsets.only(top: 6, left: 12, bottom: 7),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: const Color(0xFFEDECEC),
+                color: const Color(0xffEDECEC),
               ),
               child: Row(
                 children: [
@@ -368,7 +375,7 @@ class _ChooseFileState extends State<ChooseFile> {
               )
             : Container(),
         const SizedBox(height: 10),
-         widget.showbtn!? GeneralTextButton(
+        GeneralTextButton(
             onPressed: uploadFile,
             marginH: 0,
             height: 28.h,
@@ -376,8 +383,7 @@ class _ChooseFileState extends State<ChooseFile> {
             isSmallText: true,
             fgColor: Colors.white,
             bgColor: const Color(0xff362677),
-            title: 'Add'):
-            const SizedBox(),
+            title: 'Add'),
       ],
     );
   }

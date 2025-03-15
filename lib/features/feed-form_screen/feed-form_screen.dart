@@ -11,7 +11,6 @@ import 'package:smartbazar/features/feed-form_screen/api/submit_feed_form.dart';
 import 'package:smartbazar/features/feed-form_screen/model/products_feed_dropdown.dart';
 import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/practice.dart';
 
 class FeedFormScreen extends ConsumerStatefulWidget {
   const FeedFormScreen({super.key});

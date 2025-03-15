@@ -21,11 +21,11 @@ FeedCommentModel _$FeedCommentModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FeedCommentModel {
   String? get id => throw _privateConstructorUsedError;
-  String? get appFeedId => throw _privateConstructorUsedError;
-  String? get userId => throw _privateConstructorUsedError;
-  String? get parentId => throw _privateConstructorUsedError;
+  String? get app_feed_id => throw _privateConstructorUsedError;
+  String? get user_id => throw _privateConstructorUsedError;
+  String? get parent_id => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
-  String? get createdAt => throw _privateConstructorUsedError;
+  String? get created_at => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
 
@@ -47,11 +47,11 @@ abstract class $FeedCommentModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String? appFeedId,
-      String? userId,
-      String? parentId,
+      String? app_feed_id,
+      String? user_id,
+      String? parent_id,
       String? comment,
-      String? createdAt,
+      String? created_at,
       String? photo,
       String? name});
 }
@@ -72,11 +72,11 @@ class _$FeedCommentModelCopyWithImpl<$Res, $Val extends FeedCommentModel>
   @override
   $Res call({
     Object? id = freezed,
-    Object? appFeedId = freezed,
-    Object? userId = freezed,
-    Object? parentId = freezed,
+    Object? app_feed_id = freezed,
+    Object? user_id = freezed,
+    Object? parent_id = freezed,
     Object? comment = freezed,
-    Object? createdAt = freezed,
+    Object? created_at = freezed,
     Object? photo = freezed,
     Object? name = freezed,
   }) {
@@ -85,25 +85,25 @@ class _$FeedCommentModelCopyWithImpl<$Res, $Val extends FeedCommentModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      appFeedId: freezed == appFeedId
-          ? _value.appFeedId
-          : appFeedId // ignore: cast_nullable_to_non_nullable
+      app_feed_id: freezed == app_feed_id
+          ? _value.app_feed_id
+          : app_feed_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
+      parent_id: freezed == parent_id
+          ? _value.parent_id
+          : parent_id // ignore: cast_nullable_to_non_nullable
               as String?,
       comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      created_at: freezed == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -127,11 +127,11 @@ abstract class _$$FeedCommentModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String? appFeedId,
-      String? userId,
-      String? parentId,
+      String? app_feed_id,
+      String? user_id,
+      String? parent_id,
       String? comment,
-      String? createdAt,
+      String? created_at,
       String? photo,
       String? name});
 }
@@ -150,11 +150,11 @@ class __$$FeedCommentModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? appFeedId = freezed,
-    Object? userId = freezed,
-    Object? parentId = freezed,
+    Object? app_feed_id = freezed,
+    Object? user_id = freezed,
+    Object? parent_id = freezed,
     Object? comment = freezed,
-    Object? createdAt = freezed,
+    Object? created_at = freezed,
     Object? photo = freezed,
     Object? name = freezed,
   }) {
@@ -163,25 +163,25 @@ class __$$FeedCommentModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      appFeedId: freezed == appFeedId
-          ? _value.appFeedId
-          : appFeedId // ignore: cast_nullable_to_non_nullable
+      app_feed_id: freezed == app_feed_id
+          ? _value.app_feed_id
+          : app_feed_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      userId: freezed == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      user_id: freezed == user_id
+          ? _value.user_id
+          : user_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      parentId: freezed == parentId
-          ? _value.parentId
-          : parentId // ignore: cast_nullable_to_non_nullable
+      parent_id: freezed == parent_id
+          ? _value.parent_id
+          : parent_id // ignore: cast_nullable_to_non_nullable
               as String?,
       comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      created_at: freezed == created_at
+          ? _value.created_at
+          : created_at // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -200,11 +200,11 @@ class __$$FeedCommentModelImplCopyWithImpl<$Res>
 class _$FeedCommentModelImpl implements _FeedCommentModel {
   _$FeedCommentModelImpl(
       {this.id,
-      this.appFeedId,
-      this.userId,
-      this.parentId,
+      this.app_feed_id,
+      this.user_id,
+      this.parent_id,
       this.comment,
-      this.createdAt,
+      this.created_at,
       this.photo,
       this.name});
 
@@ -214,15 +214,15 @@ class _$FeedCommentModelImpl implements _FeedCommentModel {
   @override
   final String? id;
   @override
-  final String? appFeedId;
+  final String? app_feed_id;
   @override
-  final String? userId;
+  final String? user_id;
   @override
-  final String? parentId;
+  final String? parent_id;
   @override
   final String? comment;
   @override
-  final String? createdAt;
+  final String? created_at;
   @override
   final String? photo;
   @override
@@ -230,7 +230,7 @@ class _$FeedCommentModelImpl implements _FeedCommentModel {
 
   @override
   String toString() {
-    return 'FeedCommentModel(id: $id, appFeedId: $appFeedId, userId: $userId, parentId: $parentId, comment: $comment, createdAt: $createdAt, photo: $photo, name: $name)';
+    return 'FeedCommentModel(id: $id, app_feed_id: $app_feed_id, user_id: $user_id, parent_id: $parent_id, comment: $comment, created_at: $created_at, photo: $photo, name: $name)';
   }
 
   @override
@@ -239,22 +239,22 @@ class _$FeedCommentModelImpl implements _FeedCommentModel {
         (other.runtimeType == runtimeType &&
             other is _$FeedCommentModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.appFeedId, appFeedId) ||
-                other.appFeedId == appFeedId) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.parentId, parentId) ||
-                other.parentId == parentId) &&
+            (identical(other.app_feed_id, app_feed_id) ||
+                other.app_feed_id == app_feed_id) &&
+            (identical(other.user_id, user_id) || other.user_id == user_id) &&
+            (identical(other.parent_id, parent_id) ||
+                other.parent_id == parent_id) &&
             (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.created_at, created_at) ||
+                other.created_at == created_at) &&
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, appFeedId, userId, parentId,
-      comment, createdAt, photo, name);
+  int get hashCode => Object.hash(runtimeType, id, app_feed_id, user_id,
+      parent_id, comment, created_at, photo, name);
 
   /// Create a copy of FeedCommentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -276,11 +276,11 @@ class _$FeedCommentModelImpl implements _FeedCommentModel {
 abstract class _FeedCommentModel implements FeedCommentModel {
   factory _FeedCommentModel(
       {final String? id,
-      final String? appFeedId,
-      final String? userId,
-      final String? parentId,
+      final String? app_feed_id,
+      final String? user_id,
+      final String? parent_id,
       final String? comment,
-      final String? createdAt,
+      final String? created_at,
       final String? photo,
       final String? name}) = _$FeedCommentModelImpl;
 
@@ -290,15 +290,15 @@ abstract class _FeedCommentModel implements FeedCommentModel {
   @override
   String? get id;
   @override
-  String? get appFeedId;
+  String? get app_feed_id;
   @override
-  String? get userId;
+  String? get user_id;
   @override
-  String? get parentId;
+  String? get parent_id;
   @override
   String? get comment;
   @override
-  String? get createdAt;
+  String? get created_at;
   @override
   String? get photo;
   @override

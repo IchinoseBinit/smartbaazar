@@ -7,11 +7,11 @@ part 'list_comment_of_feed.g.dart';
 class FeedCommentModel with _$FeedCommentModel {
   factory FeedCommentModel({
     String? id,
-    String? appFeedId,
-    String? userId,
-    String? parentId,
+    String? app_feed_id,
+    String? user_id,
+    String? parent_id,
     String? comment,
-    String? createdAt,
+    String? created_at,
     String? photo,
     String? name,
   }) = _FeedCommentModel;

@@ -19,6 +19,8 @@ class MyOrderScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderResponse = ref.watch(getOrderDetailsProvider);
+    bool _isloading;
+    _isloading = false;
 
     return Scaffold(
       extendBody: false,
@@ -208,6 +210,15 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
     return difference <= 15;
   }
 
+  bool? _isloadaing;
+
+  @override
+  void initState() {
+    _isloadaing = false;
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool _showdialog = false;
@@ -390,107 +401,116 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                                 fontWeight: FontWeight.w500,
                                 color: const Color(0xff36383C)),
                           ),
-                          GeneralTextButton(
-                            marginH: 0,
-                            isSmallText: true,
-                            height: 25.h,
-                            width: 97.w,
-                            fgColor: Colors.white,
-                            bgColor: const Color(0xff362677),
-                            textPadding: EdgeInsets.symmetric(horizontal: 2.w),
-                            title: 'Return',
-                            onPressed: () {
-                              OrderDetialsOderDialogBox().orderDetailDialouge(
-                                context,
-                                buttonTitle: 'Submit',
-                                callback: () async {
-                                  if (!mounted)
-                                    return; // Prevent execution if the widget is unmounted
+                          !_isloadaing!
+                              ? GeneralTextButton(
+                                  marginH: 0,
+                                  isSmallText: true,
+                                  height: 25.h,
+                                  width: 97.w,
+                                  fgColor: Colors.white,
+                                  bgColor: const Color(0xff362677),
+                                  textPadding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
+                                  title: 'Return',
+                                  onPressed: () {
+                                    OrderDetialsOderDialogBox()
+                                        .orderDetailDialouge(
+                                      context,
+                                      buttonTitle: 'Submit',
+                                      callback: () async {
+                                        if (!mounted)
+                                          return; // Prevent execution if the widget is unmounted
 
-                                  await ref
-                                      .read(
-                                    postmyreturnProvider(
-                                      widget.order.id, // Order ID
-                                      widget.order.vendorId, // Vendor ID
-                                      widget.order.postId, // Post ID
-                                      issue!, // Issue description
-                                      message!, // Message
-                                      place!.description!, // Place description
-                                      place!.place_id!, // City name
-                                      address!, // Address
-                                      place!.latitude!.toString(), // Latitude
-                                      place!.longitude!.toString(), // Longitude
-                                      image!,
-                                    ),
-                                  )
-                                      .whenData(
-                                    (value) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (ctx) => AlertDialog(
-                                          title: const Text("Return Sent"),
-                                          content: const Text(
-                                              "You have send a return"),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(ctx).pop();
-                                              },
-                                              child: const Text("okay"),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                  Future.delayed(
-                                      const Duration(milliseconds: 90), () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                        title: const Text("Return Sent"),
-                                        content: const Text(
-                                            "You have send a return"),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(ctx).pop();
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("okay"),
+                                        await ref
+                                            .read(
+                                          postmyreturnProvider(
+                                            widget.order.id, // Order ID
+                                            widget.order.vendorId, // Vendor ID
+                                            widget.order.postId, // Post ID
+                                            issue!, // Issue description
+                                            message!, // Message
+                                            place!
+                                                .description!, // Place description
+                                            place!.place_id!, // City name
+                                            address!, // Address
+                                            place!.latitude!
+                                                .toString(), // Latitude
+                                            place!.longitude!
+                                                .toString(), // Longitude
+                                            image!,
                                           ),
-                                        ],
+                                        )
+                                            .whenData(
+                                          (value) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                title:
+                                                    const Text("Return Sent"),
+                                                content: const Text(
+                                                    "You have send a return"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(ctx).pop();
+                                                    },
+                                                    child: const Text("okay"),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                        Future.delayed(
+                                            const Duration(milliseconds: 90),
+                                            () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                              title: const Text("Return Sent"),
+                                              content: const Text(
+                                                  "You have send a return"),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(ctx).pop();
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text("okay"),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          // deleayed code here
+                                          print('delayed execution');
+                                        });
+                                      },
+                                      widget: ReturnProductDetails(
+                                        issue: (p1) {
+                                          issue = p1;
+                                        },
+                                        message: (p0) {
+                                          message = p0;
+                                        },
+                                        address: (p3) {
+                                          address = p3;
+                                        },
+                                        place: (p4) {
+                                          print('bibash $p4');
+                                          place = p4;
+                                        },
+                                        file: (p5) {
+                                          image = p5;
+                                        },
                                       ),
+                                      title: 'Fill the form',
+                                      heading: 'Return Products',
                                     );
-                                    // deleayed code here
-                                    print('delayed execution');
-                                  });
-                                },
-                                widget: ReturnProductDetails(
-                                  issue: (p1) {
-                                    issue = p1;
-                                  },
-                                  message: (p0) {
-                                    message = p0;
-                                  },
-                                  address: (p3) {
-                                    address = p3;
-                                  },
-                                  place: (p4) {
-                                    print('bibash $p4');
-                                    place = p4;
-                                  },
-                                  file: (p5) {
-                                    image = p5;
-                                  },
-                                ),
-                                title: 'Fill the form',
-                                heading: 'Return Products',
-                              );
 
-                              //  Navigator.pop(context);
-                            },
-                          )
+                                    //  Navigator.pop(context);
+                                  },
+                                )
+                              : CircularProgressIndicator()
                         ],
                       ),
                   ],

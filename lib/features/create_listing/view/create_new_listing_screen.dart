@@ -4240,9 +4240,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                         borderRadius: BorderRadius.circular(6),
                                         child: Container(
                                           height:
-                                              30.0, // Increased height for better visibility
+                                              40.0, // Increased height for better visibility
                                           width:
-                                              30.0, // Adjust width if necessary
+                                              40.0, // Adjust width if necessary
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 1.h),
                                           decoration: BoxDecoration(
@@ -4254,10 +4254,10 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             onChanged: (value) {
                                               rows[index]['pieces'] = value;
                                             },
-                                            cursorHeight: 3,
+                                            cursorHeight: 5,
                                             style: const TextStyle(
                                               fontSize:
-                                                  10, // Ensure the font is large enough to be visible
+                                                  14, // Ensure the font is large enough to be visible
                                               color: Colors
                                                   .black, // Text color to make it visible
                                             ),
@@ -4283,9 +4283,9 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                         borderRadius: BorderRadius.circular(6),
                                         child: Container(
                                           height:
-                                              30.0, // Increased height for better visibility
+                                              40.0, // Increased height for better visibility
                                           width:
-                                              30.0, // Adjust width if necessary
+                                              40.0, // Adjust width if necessary
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 0.h),
                                           decoration: BoxDecoration(
@@ -4297,7 +4297,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                             onChanged: (value) {
                                               rows[index]['rate'] = value;
                                             },
-                                            cursorHeight: 3,
+                                            cursorHeight: 5,
                                             style: const TextStyle(
                                               fontSize:
                                                   10, // Ensure the font is large enough to be visible

@@ -151,7 +151,7 @@ class _UpdateListingState extends State<UpdateListing> {
 
   @override
   void initState() {
-    _getStreet(widget.prod!.address ?? widget.prod!.pickup!);
+    _getStreet(widget.prod!.address ?? widget.prod!.pickup?? 'kathmandu');
     addresscontroller.text = widget.prod?.address ?? '';
 
     _addTag(widget.prod!.tags ?? '');

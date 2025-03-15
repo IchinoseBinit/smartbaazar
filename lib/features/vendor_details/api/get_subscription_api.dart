@@ -7,7 +7,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'get_subscription_api.g.dart';
 
 @riverpod
-Future<SubscriptionResponse> getSubscription(GetSubscriptionRef ref, {int pageval = 1}) async {
+Future<SubscriptionResponse> getSubscription( ref, {int pageval = 1}) async {
   final SmartClient client = SmartClient();
 
   try {

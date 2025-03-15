@@ -52,7 +52,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           context,
           MaterialPageRoute(builder: (_) => MainScreen()),
         );
-        showCustomToast(context, "Welcome To Smart Bajar",mygravity: ToastGravity.BOTTOM);
+        showCustomToast(context, "Welcome To Xircle",mygravity: ToastGravity.BOTTOM);
       } else if (state is ErrorState) {
         setState(() {
           errorMessage = state.errorMessage;

@@ -16,7 +16,7 @@
   <!-- Permission for managing storage (Android 10 and above) -->
   <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
   <application
-    android:label="smartbazar"
+    android:label="Xircle"
     android:name="${applicationName}"
     android:icon="@mipmap/ic_launcher">
 

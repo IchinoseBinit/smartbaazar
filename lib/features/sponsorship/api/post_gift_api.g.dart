@@ -6,7 +6,7 @@ part of 'post_gift_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$postgiftHash() => r'1c6fbc56f2bb3fae21a36508349784ee35643294';
+String _$postgiftHash() => r'347dd882c91aee0261c343ebc7e0eb3c9d1180d2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,18 +40,16 @@ class PostgiftFamily extends Family<AsyncValue<bool>> {
 
   /// See also [postgift].
   PostgiftProvider call(
+    String postid,
     String gift,
     String giftWorth,
-    String giftType,
     String giftQty,
-    File imageFile,
   ) {
     return PostgiftProvider(
+      postid,
       gift,
       giftWorth,
-      giftType,
       giftQty,
-      imageFile,
     );
   }
 
@@ -60,11 +58,10 @@ class PostgiftFamily extends Family<AsyncValue<bool>> {
     covariant PostgiftProvider provider,
   ) {
     return call(
+      provider.postid,
       provider.gift,
       provider.giftWorth,
-      provider.giftType,
       provider.giftQty,
-      provider.imageFile,
     );
   }
 
@@ -87,19 +84,17 @@ class PostgiftFamily extends Family<AsyncValue<bool>> {
 class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
   /// See also [postgift].
   PostgiftProvider(
+    String postid,
     String gift,
     String giftWorth,
-    String giftType,
     String giftQty,
-    File imageFile,
   ) : this._internal(
           (ref) => postgift(
             ref as PostgiftRef,
+            postid,
             gift,
             giftWorth,
-            giftType,
             giftQty,
-            imageFile,
           ),
           from: postgiftProvider,
           name: r'postgiftProvider',
@@ -109,11 +104,10 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
                   : _$postgiftHash,
           dependencies: PostgiftFamily._dependencies,
           allTransitiveDependencies: PostgiftFamily._allTransitiveDependencies,
+          postid: postid,
           gift: gift,
           giftWorth: giftWorth,
-          giftType: giftType,
           giftQty: giftQty,
-          imageFile: imageFile,
         );
 
   PostgiftProvider._internal(
@@ -123,18 +117,16 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.postid,
     required this.gift,
     required this.giftWorth,
-    required this.giftType,
     required this.giftQty,
-    required this.imageFile,
   }) : super.internal();
 
+  final String postid;
   final String gift;
   final String giftWorth;
-  final String giftType;
   final String giftQty;
-  final File imageFile;
 
   @override
   Override overrideWith(
@@ -149,11 +141,10 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        postid: postid,
         gift: gift,
         giftWorth: giftWorth,
-        giftType: giftType,
         giftQty: giftQty,
-        imageFile: imageFile,
       ),
     );
   }
@@ -166,21 +157,19 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
   @override
   bool operator ==(Object other) {
     return other is PostgiftProvider &&
+        other.postid == postid &&
         other.gift == gift &&
         other.giftWorth == giftWorth &&
-        other.giftType == giftType &&
-        other.giftQty == giftQty &&
-        other.imageFile == imageFile;
+        other.giftQty == giftQty;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, postid.hashCode);
     hash = _SystemHash.combine(hash, gift.hashCode);
     hash = _SystemHash.combine(hash, giftWorth.hashCode);
-    hash = _SystemHash.combine(hash, giftType.hashCode);
     hash = _SystemHash.combine(hash, giftQty.hashCode);
-    hash = _SystemHash.combine(hash, imageFile.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -189,20 +178,17 @@ class PostgiftProvider extends AutoDisposeFutureProvider<bool> {
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin PostgiftRef on AutoDisposeFutureProviderRef<bool> {
+  /// The parameter `postid` of this provider.
+  String get postid;
+
   /// The parameter `gift` of this provider.
   String get gift;
 
   /// The parameter `giftWorth` of this provider.
   String get giftWorth;
 
-  /// The parameter `giftType` of this provider.
-  String get giftType;
-
   /// The parameter `giftQty` of this provider.
   String get giftQty;
-
-  /// The parameter `imageFile` of this provider.
-  File get imageFile;
 }
 
 class _PostgiftProviderElement extends AutoDisposeFutureProviderElement<bool>
@@ -210,15 +196,13 @@ class _PostgiftProviderElement extends AutoDisposeFutureProviderElement<bool>
   _PostgiftProviderElement(super.provider);
 
   @override
+  String get postid => (origin as PostgiftProvider).postid;
+  @override
   String get gift => (origin as PostgiftProvider).gift;
   @override
   String get giftWorth => (origin as PostgiftProvider).giftWorth;
   @override
-  String get giftType => (origin as PostgiftProvider).giftType;
-  @override
   String get giftQty => (origin as PostgiftProvider).giftQty;
-  @override
-  File get imageFile => (origin as PostgiftProvider).imageFile;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

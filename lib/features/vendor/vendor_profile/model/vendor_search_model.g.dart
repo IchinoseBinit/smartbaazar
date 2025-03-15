@@ -121,6 +121,9 @@ _$VendorSearchModelImpl _$$VendorSearchModelImplFromJson(
       userdetails: json['userdetails'] == null
           ? null
           : UserDetails.fromJson(json['userdetails'] as Map<String, dynamic>),
+      savedByLoggedUser: (json['savedByLoggedUser'] as List<dynamic>?)
+          ?.map((e) => FezzedSaved.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$VendorSearchModelImplToJson(
@@ -197,6 +200,7 @@ Map<String, dynamic> _$$VendorSearchModelImplToJson(
       'commentcount': instance.commentCount,
       'avg_rating': instance.avgRating,
       'userdetails': instance.userdetails,
+      'savedByLoggedUser': instance.savedByLoggedUser,
     };
 
 _$UserDetailsImpl _$$UserDetailsImplFromJson(Map<String, dynamic> json) =>

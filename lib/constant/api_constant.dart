@@ -131,5 +131,5 @@ class ApiConstants {
   static String getOffersUrl = '$baseUrl/posts/getoffers';
   static String postFeedWOwUrl = '$baseUrl/users/feed_wow';
   static String postStoryWowUrl = '$baseUrl/users/post_wow';
-  static String postStoryCommentUrl = '$baseUrl/posts/reviewcomment';
+  static String postStoryCommentUrl = '$baseUrl/posts/feed_comment';
 }

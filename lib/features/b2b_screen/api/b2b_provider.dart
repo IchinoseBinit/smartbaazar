@@ -8,7 +8,7 @@ import 'package:dio/dio.dart'; // For better error handling with Dio
 part 'b2b_provider.g.dart';
 
 @riverpod
-Future<PostTypeFetch> getB2bResponse(GetB2bResponseRef ref) async {
+Future<PostTypeFetch> getB2bResponse( ref) async {
   final SmartClient client = SmartClient();
   try {
     final Response response = await client.request(

@@ -9,21 +9,20 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'post_gift_api.g.dart';
 
 @riverpod
-Future<bool> postgift(PostgiftRef ref, String gift, String giftWorth,
-    String giftType, String giftQty, File imageFile) async {
+Future<bool> postgift( ref, String postid,  String gift, String giftWorth,
+     String giftQty, ) async {
   final SmartClient client = SmartClient();
   try {
     FormData formData = FormData.fromMap({
+      'post_id':postid,
       'gift': gift,
-      'image': await MultipartFile.fromFile(imageFile.path,
-          filename: imageFile.path.split('/').last),
       'gift_qty': giftQty,
       'gift_worth': giftWorth,
-      'gift_type': giftType,
+      'gift_type': 'gift',
     });
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
-      url: ApiConstants.postGiftStoreUrl,
+      url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/product_sponsor_store',
       parameter: formData,
     );
     if (response.statusCode == 200 &&

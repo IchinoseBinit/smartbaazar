@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/utils/request_type.dart';
 
@@ -28,13 +29,14 @@ class LogoutApi {
         await prefs.clear(); // Clear all preferences
 
         // Reset tokens in the client
-        SmartClient.token = '';
-        SmartClient.refresh = '';
-        SmartClient.userId = '';
-        SmartClient.userName = '';
-        SmartClient.userEmail = '';
-        SmartClient.laravelSession = '';
-        SmartClient.userPhoto = '';
+      SmartClient.token = '';
+   SmartClient.refresh = '';
+   SmartClient.userId = '';
+   SmartClient.userName = '';
+   SmartClient.userEmail = '';
+   SmartClient.laravelSession = '';
+   SmartClient.phone = '';
+   SmartClient.userPhoto = '';
 
         print('SharedPreferences cleared and tokens reset.');
 
@@ -42,7 +44,7 @@ class LogoutApi {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const LoginScreen(),
+              builder: (context) => const SplashScreen(),
             ));
       } else {
         print('Failed to logout: ${response.statusMessage}');

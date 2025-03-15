@@ -1547,6 +1547,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                           BrandNewModel prod =
                                                               alldata![index];
                                                           return ProductDetailWidget(
+                                                            
+                                                            savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser,
                                                             onenquiredclicked:
                                                                 () {
                                                               print(
@@ -1699,6 +1707,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         vendorsearchrespnse![
                                                             index];
                                                     return ProductDetailWidget(
+                                                        savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser,
                                                       onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
@@ -2102,6 +2117,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+
                                             ref: ref,
                                             onenquiredclicked: () {
                                               getEnquire(ref, res.id)

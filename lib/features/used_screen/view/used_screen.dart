@@ -259,7 +259,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -272,7 +271,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('2'));
 
     final asyncbajarValue = ref.watch(getUsedResponseProvider);
     final SearchProductModels =
@@ -347,7 +345,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                         pinned: true,
                         floating: true,
                         delegate: StickyHeaderDelegate(
-                          showbackbutton: true,
+                            showbackbutton: true,
                             visible: isSliverAppBarVisible,
                             searchController: _searchController,
                             onchanged: (value) {
@@ -582,7 +580,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     itemBuilder: (context, index) {
                                       final story = posts[index];
                                       return FeedStoryAddWidget(
-                                         productid: story.id!,
+                                        productid: story.id!,
                                         index: index,
                                         vendorName: story.vendorName ??
                                             "Unknown Vendor",
@@ -637,7 +635,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        padding: EdgeInsets.symmetric(vertical: 15.h),
                         child: asyncbajarValue.when(
                           data: (data) {
                             return Stack(
@@ -1009,7 +1007,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                         data.hotProducts.length, (index) {
                                       VProduct hot = data.hotProducts[index];
                                       return ProductDetailWidget(
-
                                         onenquiredclicked: () {
                                           getEnquire(ref, hot.id).then(
                                             (value) {
@@ -2532,8 +2529,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                     Buynowmodel resp = data.buynow![index];
 
                                     return buyorwin_widget(
-                                      ref: ref,
-                                      postid: resp.post_id!,
+                                        ref: ref,
+                                        postid: resp.post_id!,
                                         vendorid: resp.vendor_id!,
                                         wow: resp.wow ?? '0',
                                         gift_qty: resp.gift_qty!,
@@ -2763,7 +2760,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                                                     2.w),
                                                         child:
                                                             ProductDetailWidget(
-                                                              
                                                           onenquiredclicked:
                                                               () {
                                                             print(
@@ -3117,7 +3113,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                             },
                           ),
                           SizedBox(
-                            height: 10.w,
+                            height: 55.h,
                           )
                         ],
                       ),

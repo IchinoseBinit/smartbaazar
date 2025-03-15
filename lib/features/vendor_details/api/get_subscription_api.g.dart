@@ -6,7 +6,7 @@ part of 'get_subscription_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getSubscriptionHash() => r'be2d889327f5384bf95be2d22fe96089c7d7615d';
+String _$getSubscriptionHash() => r'4ef0c4502eb4e6f93be9c0896d691a758ddcde4b';
 
 /// Copied from Dart SDK
 class _SystemHash {

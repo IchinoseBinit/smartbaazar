@@ -275,7 +275,7 @@ class VendorUser {
       required this.photo,
       this.memberColor,
       this.shortestDistance,
-      this.nearestBranch,
+      this.nearestBranch, 
       this.sponsored,
       this.membershipTitle,
       this.latitude,
