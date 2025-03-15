@@ -156,7 +156,7 @@ class _MyAppState extends State<MyApp> {
             home: SplashScreen()));
     // home: SplashScreen())); bhaktapur
   }
-} //123 dell
+} //123 dells
 // //9810443212
 // Redmi note 1 has the feature of long and and things like wifi is there
 // Phone

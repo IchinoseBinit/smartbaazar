@@ -113,9 +113,9 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
 
     try {
       final result = await getFavouriteList(context, pagenum: pageNum);
-      if (result.data?.savedProducts?.data != null) {
+      if (result.data?.savedProducts != null) {
         setState(() {
-          favouriteList.addAll(result.data!.savedProducts!.data!);
+          favouriteList.addAll(result.data!.savedProducts?? []);
           isLoading = false;
         });
       }
