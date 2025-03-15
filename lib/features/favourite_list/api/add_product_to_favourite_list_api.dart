@@ -6,8 +6,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'add_product_to_favourite_list_api.g.dart';
 
 @riverpod
-Future<String> addToFavorites(
-     ref, String userId, String postId) async {
+Future<String> addToFavorites(ref, String userId, String postId) async {
   final SmartClient client = SmartClient();
 
   try {

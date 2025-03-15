@@ -10,6 +10,7 @@ import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_n
 import 'package:smartbazar/features/feed_page/api/post_story_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
+import 'package:smartbazar/features/feed_page/widget/story_search_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
@@ -593,7 +594,11 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Add comment action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StorySearchScreen()),
+                        );
                       },
                       icon: Icon(
                         Icons.search,
