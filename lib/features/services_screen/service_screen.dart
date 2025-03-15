@@ -255,10 +255,8 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
     // );
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('3'));
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -273,7 +271,6 @@ class _ServicesScreenState extends ConsumerState<ServicesScreen>
         ref.watch(searchProvider(_searchController.text));
     final asyncbajarValue = ref.watch(getServiceProviderProvider);
     final category = ref.watch(getCategoriesProvider(97));
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
     Future<void> refresh() async {
       ref.refresh(getServiceProviderProvider);
       ref.refresh(getCategoriesProvider(97));

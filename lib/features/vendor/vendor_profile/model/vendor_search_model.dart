@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 
 part 'vendor_search_model.freezed.dart';
 part 'vendor_search_model.g.dart';
@@ -106,6 +107,7 @@ class VendorSearchModel with _$VendorSearchModel {
     @JsonKey(name: 'commentcount') int? commentCount,
     @JsonKey(name: 'avg_rating') double? avgRating,
     @JsonKey(name: 'userdetails') UserDetails? userdetails,
+     List<FezzedSaved>? savedByLoggedUser,
   }) = _VendorSearchModel;
 
   factory VendorSearchModel.fromJson(Map<String, dynamic> json) =>

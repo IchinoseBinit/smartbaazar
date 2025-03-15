@@ -259,7 +259,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     // final pselectedIndex = ref.watch(bottomNavIndexProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -272,7 +271,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
     // final randomstory = ref.watch(fetchStoryHomeProvider);
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('2'));
 
     final asyncbajarValue = ref.watch(getUsedResponseProvider);
     final SearchProductModels =
@@ -637,7 +635,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        padding: EdgeInsets.symmetric(vertical: 15.h),
                         child: asyncbajarValue.when(
                           data: (data) {
                             return Stack(

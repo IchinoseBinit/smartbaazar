@@ -630,7 +630,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                         pinned: true,
                         floating: true,
                         delegate: StickyHeaderDelegate(
-                          showbackbutton: true,
                             visible: isSliverAppBarVisible,
                             searchController: _searchController,
                             onchanged: (value) {
@@ -639,175 +638,171 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                             dropdownValueNotifier: dropdownValueNotifier,
                             filteredSuggestions: [])),
                     if (isSliverAppBarVisible)
-                     SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      expandedHeight: 150.h,
-                      floating: false,
-                      pinned: false,
-                      flexibleSpace: AnimatedContainer(
-                        padding: EdgeInsets.zero,
-                        duration: const Duration(milliseconds: 150),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40)),
-                            gradient: LinearGradient(
-                                colors: [
-                                  // Color(0xFF681b4e),
-                                  // Color(0xFF392574),
-                                  // Color(0xFF681b4e),
-                                  Color(0xff651c50),
-                                  Color(0xff54225f),
-                                  // Color(0xFF392574).
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
+                      SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          expandedHeight: 90.h,
+                          floating: false,
+                          pinned: false,
+                          flexibleSpace: AnimatedContainer(
+                            padding: EdgeInsets.zero,
+                            duration: const Duration(milliseconds: 150),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(40),
+                                    bottomRight: Radius.circular(40)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      // Color(0xFF681b4e),
+                                      // Color(0xFF392574),
+                                      // Color(0xFF681b4e),
+                                      Color(0xff651c50),
+                                      Color(0xff54225f),
+                                      // Color(0xFF392574).
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
                               ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              SizedBox(
-                                height: 55.h,
-                                child: PageView.builder(
-                                  itemCount: _items.length,
-                                  padEnds: false,
-                                  controller: _pageController,
-                                  onPageChanged: (value) {
-                                    ref
-                                        .read(_selectedIndexProvider.notifier)
-                                        .state = value;
-                                  },
-                                  itemBuilder: (context, index) {
-                                    Map<String, dynamic> data = _items[index];
-
-                                    // Highlight only when index == 4
-                                    bool isActive = index == 1;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                      },
-                                      child: AnimatedContainer(
-                                        margin: EdgeInsets.only(left: 16.w),
-                                        padding: EdgeInsets.zero,
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        alignment: Alignment.center,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      data['screen']),
-                                            );
-                                          },
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (data['icon']
-                                                  .toString()
-                                                  .endsWith('.svg'))
-                                                SvgPicture.asset(
-                                                  data['icon'],
-                                                  alignment: Alignment.center,
-                                                  fit: BoxFit.contain,
-                                                  theme: const SvgTheme(
-                                                      currentColor:
-                                                          Color(0xffdd9d9d9)),
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                  width: 20,
-                                                  height: 20,
-                                                )
-                                              else
-                                                Image.asset(
-                                                  data['icon'],
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                  width: 20,
-                                                  height: 20,
-                                                ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                data['label'],
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: isActive
-                                                      ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
-                                                          .withOpacity(0.5),
-                                                ),
-                                              ),
-                                            ],
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(4, (index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(_selectedIndexProvider
+                                                  .notifier)
+                                              .state = index;
+                                          _pageController.animateToPage(
+                                            index,
+                                            duration: const Duration(
+                                                milliseconds: 50),
+                                            curve: Curves.easeInOut,
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 5.h,
+                                          width: 5.w,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 5.w),
+                                          decoration: BoxDecoration(
+                                            color: selectedIndex == index
+                                                ? Colors.amber
+                                                : Colors.grey,
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                      );
+                                    }),
+                                  ),
+                                  SizedBox(
+                                    height: 15.h,
+                                  ),
+                                  SizedBox(
+                                    height: 55.h,
+                                    child: PageView.builder(
+                                      itemCount: _items.length,
+                                      padEnds: false,
+                                      controller: _pageController,
+                                      onPageChanged: (value) {
+                                        ref
+                                            .read(
+                                                _selectedIndexProvider.notifier)
+                                            .state = value;
+                                      },
+                                      itemBuilder: (context, index) {
+                                        Map<String, dynamic> data =
+                                            _items[index];
+
+                                        // Highlight only when index == 4
+                                        bool isActive = index == 1;
+                                        return GestureDetector(
+                                          onTap: () {
+                                            ref
+                                                .read(_selectedIndexProvider
+                                                    .notifier)
+                                                .state = index;
+                                          },
+                                          child: AnimatedContainer(
+                                            padding: EdgeInsets.zero,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            alignment: Alignment.center,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          data['screen']),
+                                                );
+                                              },
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  if (data['icon']
+                                                      .toString()
+                                                      .endsWith('.svg'))
+                                                    SvgPicture.asset(
+                                                      data['icon'],
+                                                      alignment:
+                                                          Alignment.center,
+                                                      fit: BoxFit.contain,
+                                                      theme: const SvgTheme(
+                                                          currentColor: Color(
+                                                              0xffdd9d9d9)),
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
+                                                      height: 20,
+                                                    )
+                                                  else
+                                                    Image.asset(
+                                                      data['icon'],
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    data['label'],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: isActive
+                                                          ? Colors.amber
+                                                          : const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.5),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Image.asset(
-                                  height: 60.h,
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  'assets/images/circle.png')
-                            ],
-                          ),
-                        ),
-                      )),
+                            ),
+                          )),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 11, top: 11),
@@ -1552,13 +1547,14 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                           BrandNewModel prod =
                                                               alldata![index];
                                                           return ProductDetailWidget(
+                                                            
                                                             savedid: prod.savedByLoggedUser ==
-                                                                        null ||
-                                                                    prod.savedByLoggedUser!
-                                                                        .isEmpty
-                                                                ? []
-                                                                : prod
-                                                                    .savedByLoggedUser,
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser,
                                                             onenquiredclicked:
                                                                 () {
                                                               print(
@@ -1627,17 +1623,11 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                 .userdetails!
                                                                 .user_id,
                                                             onRefresh: () {
-                                                              alldata = [];
-                                                              ref.invalidate(
-                                                                  getvendorbybrandnameProvider(
+                                                              refreshAllprovider();
+                                                              ref.refresh(
+                                                                  getVendorCardProvider(
                                                                       widget
                                                                           .vid));
-                                                              //  refreshAllprovider();
-                                                              // ref.refresh(
-                                                              //     getVendorCardProvider(
-                                                              //         widget
-                                                              //             .vid));
-                                                              //             ref.invalidate(provider)
                                                             },
                                                             membershipid: prod
                                                                 .userdetails
@@ -1685,8 +1675,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                     ?.membership_title ??
                                                                 "",
                                                             offer:
-                                                                prod.offers ??
-                                                                    "",
+                                                                prod.wow ?? "",
                                                             price: prod.price ??
                                                                 "",
                                                             productImage:
@@ -1718,6 +1707,13 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         vendorsearchrespnse![
                                                             index];
                                                     return ProductDetailWidget(
+                                                        savedid: prod.savedByLoggedUser ==
+                                                                  null ||
+                                                              prod.savedByLoggedUser!
+                                                                  .isEmpty
+                                                          ? []
+                                                          : prod
+                                                              .savedByLoggedUser,
                                                       onenquiredclicked: () {
                                                         print(
                                                             'lanka ${prod.id}');
@@ -2121,6 +2117,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 BorderRadius.circular(15.0),
                                           ),
                                           child: AllProductDetailWidget(
+
                                             ref: ref,
                                             onenquiredclicked: () {
                                               getEnquire(ref, res.id)
@@ -2261,7 +2258,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
-                        height: 50.h,
+                        height: 20.h,
                       ),
                     )
                   ],

@@ -618,7 +618,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         asyncbajarValue.when(
                           data: (data) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.h),
+                              padding: EdgeInsets.symmetric(vertical: 15.h),
                               child: Stack(
                                 children: [
                                   // Carousel Slider

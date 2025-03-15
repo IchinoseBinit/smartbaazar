@@ -245,7 +245,6 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     // ref.watch(fetchAdsProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -261,10 +260,8 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
     final category = ref.watch(getCategoriesProvider(73));
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('4'));
 
     // asyncbajarValue.when(data: (data) {
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
     Future<void> refresh() async {
       ref.refresh(getCategoriesProvider(73));
       ref.refresh(getPostTypeStoryApiProvider('4'));
@@ -606,7 +603,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                         asyncbajarValue.when(
                           data: (data) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5.h),
+                              padding: EdgeInsets.symmetric(vertical: 15.h),
                               child: Stack(
                                 children: [
                                   // Carousel Slider

@@ -35,6 +35,7 @@ import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/online_transaction_record/online_transacation_record_screen.dart';
 import 'package:smartbazar/features/order_details/view/order_details_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
+import 'package:smartbazar/features/prodcut_import/product_import_screen.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
@@ -138,13 +139,6 @@ class _MyAppState extends State<MyApp> {
   //     }
   //   }
   // }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    //  getss();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

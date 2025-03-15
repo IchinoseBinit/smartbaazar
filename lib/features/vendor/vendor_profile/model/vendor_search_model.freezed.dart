@@ -654,6 +654,8 @@ mixin _$VendorSearchModel {
   double? get avgRating => throw _privateConstructorUsedError;
   @JsonKey(name: 'userdetails')
   UserDetails? get userdetails => throw _privateConstructorUsedError;
+  List<FezzedSaved>? get savedByLoggedUser =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this VendorSearchModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -742,7 +744,8 @@ abstract class $VendorSearchModelCopyWith<$Res> {
       @JsonKey(name: 'similarProductCount') int? similarProductCount,
       @JsonKey(name: 'commentcount') int? commentCount,
       @JsonKey(name: 'avg_rating') double? avgRating,
-      @JsonKey(name: 'userdetails') UserDetails? userdetails});
+      @JsonKey(name: 'userdetails') UserDetails? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
 
   $UserDetailsCopyWith<$Res>? get userdetails;
 }
@@ -833,6 +836,7 @@ class _$VendorSearchModelCopyWithImpl<$Res, $Val extends VendorSearchModel>
     Object? commentCount = freezed,
     Object? avgRating = freezed,
     Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1119,6 +1123,10 @@ class _$VendorSearchModelCopyWithImpl<$Res, $Val extends VendorSearchModel>
           ? _value.userdetails
           : userdetails // ignore: cast_nullable_to_non_nullable
               as UserDetails?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value.savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
     ) as $Val);
   }
 
@@ -1216,7 +1224,8 @@ abstract class _$$VendorSearchModelImplCopyWith<$Res>
       @JsonKey(name: 'similarProductCount') int? similarProductCount,
       @JsonKey(name: 'commentcount') int? commentCount,
       @JsonKey(name: 'avg_rating') double? avgRating,
-      @JsonKey(name: 'userdetails') UserDetails? userdetails});
+      @JsonKey(name: 'userdetails') UserDetails? userdetails,
+      List<FezzedSaved>? savedByLoggedUser});
 
   @override
   $UserDetailsCopyWith<$Res>? get userdetails;
@@ -1306,6 +1315,7 @@ class __$$VendorSearchModelImplCopyWithImpl<$Res>
     Object? commentCount = freezed,
     Object? avgRating = freezed,
     Object? userdetails = freezed,
+    Object? savedByLoggedUser = freezed,
   }) {
     return _then(_$VendorSearchModelImpl(
       id: freezed == id
@@ -1592,6 +1602,10 @@ class __$$VendorSearchModelImplCopyWithImpl<$Res>
           ? _value.userdetails
           : userdetails // ignore: cast_nullable_to_non_nullable
               as UserDetails?,
+      savedByLoggedUser: freezed == savedByLoggedUser
+          ? _value._savedByLoggedUser
+          : savedByLoggedUser // ignore: cast_nullable_to_non_nullable
+              as List<FezzedSaved>?,
     ));
   }
 }
@@ -1670,7 +1684,9 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
       @JsonKey(name: 'similarProductCount') this.similarProductCount,
       @JsonKey(name: 'commentcount') this.commentCount,
       @JsonKey(name: 'avg_rating') this.avgRating,
-      @JsonKey(name: 'userdetails') this.userdetails});
+      @JsonKey(name: 'userdetails') this.userdetails,
+      final List<FezzedSaved>? savedByLoggedUser})
+      : _savedByLoggedUser = savedByLoggedUser;
 
   factory _$VendorSearchModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$VendorSearchModelImplFromJson(json);
@@ -1855,10 +1871,20 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
   @override
   @JsonKey(name: 'userdetails')
   final UserDetails? userdetails;
+  final List<FezzedSaved>? _savedByLoggedUser;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser {
+    final value = _savedByLoggedUser;
+    if (value == null) return null;
+    if (_savedByLoggedUser is EqualUnmodifiableListView)
+      return _savedByLoggedUser;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'VendorSearchModel(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lon: $lon, lat: $lat, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, emailToken: $emailToken, phoneToken: $phoneToken, tmpToken: $tmpToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, wow: $wow, offers: $offers, storyDisplayDays: $storyDisplayDays, barcode: $barcode, b2bPricing: $b2bPricing, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, discountPercentage: $discountPercentage, postType: $postType, username: $username, city: $city, similarProductCount: $similarProductCount, commentCount: $commentCount, avgRating: $avgRating, userdetails: $userdetails)';
+    return 'VendorSearchModel(id: $id, countryCode: $countryCode, userId: $userId, categoryId: $categoryId, postTypeId: $postTypeId, title: $title, description: $description, tags: $tags, price: $price, negotiable: $negotiable, contactName: $contactName, email: $email, phone: $phone, phoneHidden: $phoneHidden, address: $address, cityId: $cityId, lon: $lon, lat: $lat, ipAddr: $ipAddr, length: $length, width: $width, weight: $weight, height: $height, pickup: $pickup, longitude: $longitude, latitude: $latitude, hyperDel: $hyperDel, sellerDel: $sellerDel, visits: $visits, emailToken: $emailToken, phoneToken: $phoneToken, tmpToken: $tmpToken, verifiedEmail: $verifiedEmail, verifiedPhone: $verifiedPhone, acceptTerms: $acceptTerms, acceptMarketingOffers: $acceptMarketingOffers, isPermanent: $isPermanent, reviewed: $reviewed, featured: $featured, archived: $archived, archivedAt: $archivedAt, archivedManually: $archivedManually, deletionMailSentAt: $deletionMailSentAt, fbProfile: $fbProfile, partner: $partner, discountedPrice: $discountedPrice, trending: $trending, stock: $stock, minOrder: $minOrder, sampPrice: $sampPrice, textOne: $textOne, textTwo: $textTwo, avaTo: $avaTo, branded: $branded, wow: $wow, offers: $offers, storyDisplayDays: $storyDisplayDays, barcode: $barcode, b2bPricing: $b2bPricing, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, image: $image, discountPercentage: $discountPercentage, postType: $postType, username: $username, city: $city, similarProductCount: $similarProductCount, commentCount: $commentCount, avgRating: $avgRating, userdetails: $userdetails, savedByLoggedUser: $savedByLoggedUser)';
   }
 
   @override
@@ -1978,7 +2004,9 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
             (identical(other.avgRating, avgRating) ||
                 other.avgRating == avgRating) &&
             (identical(other.userdetails, userdetails) ||
-                other.userdetails == userdetails));
+                other.userdetails == userdetails) &&
+            const DeepCollectionEquality()
+                .equals(other._savedByLoggedUser, _savedByLoggedUser));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2055,7 +2083,8 @@ class _$VendorSearchModelImpl implements _VendorSearchModel {
         similarProductCount,
         commentCount,
         avgRating,
-        userdetails
+        userdetails,
+        const DeepCollectionEquality().hash(_savedByLoggedUser)
       ]);
 
   /// Create a copy of VendorSearchModel
@@ -2148,8 +2177,8 @@ abstract class _VendorSearchModel implements VendorSearchModel {
       @JsonKey(name: 'similarProductCount') final int? similarProductCount,
       @JsonKey(name: 'commentcount') final int? commentCount,
       @JsonKey(name: 'avg_rating') final double? avgRating,
-      @JsonKey(name: 'userdetails')
-      final UserDetails? userdetails}) = _$VendorSearchModelImpl;
+      @JsonKey(name: 'userdetails') final UserDetails? userdetails,
+      final List<FezzedSaved>? savedByLoggedUser}) = _$VendorSearchModelImpl;
 
   factory _VendorSearchModel.fromJson(Map<String, dynamic> json) =
       _$VendorSearchModelImpl.fromJson;
@@ -2334,6 +2363,8 @@ abstract class _VendorSearchModel implements VendorSearchModel {
   @override
   @JsonKey(name: 'userdetails')
   UserDetails? get userdetails;
+  @override
+  List<FezzedSaved>? get savedByLoggedUser;
 
   /// Create a copy of VendorSearchModel
   /// with the given fields replaced by the non-null parameter values.

@@ -409,17 +409,31 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Flexible(
-                                    child: Text(
-                                      widget.vendorName ?? 'N/A',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 13.sp,
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                VendorHomeScreen(
+                                                    vid: int.tryParse(
+                                                        widget.userId)!,
+                                                    vendorName:
+                                                        widget.vendorName!),
+                                          ));
+                                    },
+                                    child: Flexible(
+                                      child: Text(
+                                        widget.vendorName ?? 'N/A',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13.sp,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
                                     ),
                                   ),
                                   SizedBox(width: 5.w),
@@ -1097,7 +1111,8 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                                       widget.id, _commentcontroller.text)
                                   .future);
 
-                              ref.invalidate(getStorycommentProvider(widget.id));
+                              ref.invalidate(
+                                  getStorycommentProvider(widget.id));
 
                               _commentcontroller.clear();
 

@@ -257,7 +257,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     //     final adsList = ref.watch(fetchAdsProvider);
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
-    var homecategory = ref.watch(homeCategoryProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -272,7 +271,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     final asyncbajarValue = ref.watch(getSocioDataProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
-    final category = ref.watch(getCategoriesProvider(0));
+    final category = ref.watch(getCategoriesProvider(1));
     // asyncbajarValue.when(data: (data) {
     ref.refresh(bottomNavIndexProvider);
     ref.refresh(getPostTypeStoryApiProvider('3'));
@@ -633,7 +632,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         height: 6.h,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.h),
+                        padding: EdgeInsets.symmetric(vertical: 15.h),
                         child: asyncbajarValue.when(
                           data: (data) {
                             return Stack(

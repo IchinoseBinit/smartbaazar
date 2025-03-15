@@ -33,8 +33,10 @@ class _ApplySponsorshipPriceScreenState
   final TextEditingController giftWorthController = TextEditingController();
   final TextEditingController giftQtyController = TextEditingController();
   String totalWorth = 'Total Worth (Limit 2000)';
+  String? productid;
   String sponsorshipFee = 'Sponsorship Fee (2%)';
   String totalCost = 'NPR';
+  int? totalamount;
   String? imageurl;
   List<Product> products = [];
 
@@ -66,6 +68,7 @@ class _ApplySponsorshipPriceScreenState
         final double total = quantity * worth;
         final double fee = total * 0.02;
         final double totalWithFee = total + fee;
+        totalamount = totalWithFee.toInt();
 
         setState(() {
           totalWorth = 'Rs $total';
@@ -93,11 +96,11 @@ class _ApplySponsorshipPriceScreenState
     final giftWorth = giftWorthController.text.trim();
     final giftQty = giftQtyController.text.trim();
     const giftType = "gift";
+    
 
-    //print('${totalCost}'); 9877654433
+    //print('${totalCost}'); 9877654433 123
 
-    if (
-        gift.isEmpty ||
+    if (gift.isEmpty ||
         giftWorth.isEmpty ||
         giftQty.isEmpty ||
         giftType.isEmpty) {
@@ -113,25 +116,26 @@ class _ApplySponsorshipPriceScreenState
     // Call the postgift API
 
     var pay = await makepaymentnow(
-        context, int.tryParse(totalCost).toString(), false);
+        context, totalamount.toString(), false);
 
-    if (pay["success"] == true) {
+    if (pay['success']==true) {
       // Ensure checking the success flag correctly
       final success = await ref.read(postgiftProvider(
-        gift,
+        productid!,
+        gift, 
         giftWorth,
-        giftType,
         giftQty,
-       imageFile!,
       ).future);
 
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Gift posted successfully!'),
-            backgroundColor: Colors.grey,
-          ),
-        );
+  ScaffoldMessenger.of(context).showSnackBar(
+  const SnackBar(
+    content: Text('Gift posted successfully!'),
+    backgroundColor: Colors.grey,
+    duration: Duration(seconds: 5), // Show for 5 seconds
+  ),
+);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const SponsorshipScreen()),
@@ -265,11 +269,12 @@ class _ApplySponsorshipPriceScreenState
                                                             .future);
 
                                                     setState(() {
+                                                      productid=selectedProduct.id;
                                                       imageurl =
                                                           giftImage.image;
                                                       giftWorthController.text =
                                                           giftImage.price;
-                                                      giftController.text =
+                                                      giftController.text = 
                                                           selectedProduct
                                                               .title!;
                                                     });

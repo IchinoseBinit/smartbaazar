@@ -265,10 +265,6 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
 
     // ref.watch(fetchAdsProvider);
     //     final adsList = ref.watch(fetchAdsProvider);
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
-
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('1'));
 
     final asyncbajarValue = ref.watch(getBrandBazaarResponseProvider);
     final SearchProductModels =
@@ -620,7 +616,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 6.h,
+                        height: 15.h,
                       ),
                       asyncbajarValue.when(
                         data: (data) {
@@ -735,221 +731,221 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                       SizedBox(
                         height: 10.h,
                       ),
-                      category.when(
-                        data: (data) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
-                            child: Column(
-                              children: [
-                                // Row for "ALL" and other services
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: SizedBox(
-                                    height: 100.h, // Adjust height as necessary
-                                    width: double.infinity,
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          // "ALL" Services (Standalone)
-                                          DottedBorder(
-                                            strokeWidth: 2,
-                                            color: Colors.grey,
-                                            borderType: BorderType.RRect,
-                                            radius: const Radius.circular(10),
-                                            dashPattern: const [15, 15],
-                                            child: SizedBox(
-                                              width: 100,
-                                              height: 100,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    "ALL",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Brands",
-                                                    style: headerstyle.copyWith(
-                                                      color: ColorConstant
-                                                          .blackColor,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5.w,
-                                          ),
+                      // category.when(
+                      //   data: (data) {
+                      //     return Padding(
+                      //       padding: EdgeInsets.symmetric(vertical: 10.h),
+                      //       child: Column(
+                      //         children: [
+                      //           // Row for "ALL" and other services
+                      //           Padding(
+                      //             padding: EdgeInsets.only(left: 5.w),
+                      //             child: SizedBox(
+                      //               height: 100.h, // Adjust height as necessary
+                      //               width: double.infinity,
+                      //               child: SingleChildScrollView(
+                      //                 scrollDirection: Axis.horizontal,
+                      //                 child: Row(
+                      //                   children: [
+                      //                     // "ALL" Services (Standalone)
+                      //                     DottedBorder(
+                      //                       strokeWidth: 2,
+                      //                       color: Colors.grey,
+                      //                       borderType: BorderType.RRect,
+                      //                       radius: const Radius.circular(10),
+                      //                       dashPattern: const [15, 15],
+                      //                       child: SizedBox(
+                      //                         width: 100,
+                      //                         height: 100,
+                      //                         child: Column(
+                      //                           mainAxisAlignment:
+                      //                               MainAxisAlignment.center,
+                      //                           children: [
+                      //                             Text(
+                      //                               "ALL",
+                      //                               style: headerstyle.copyWith(
+                      //                                 color: ColorConstant
+                      //                                     .blackColor,
+                      //                                 fontSize: 15,
+                      //                                 fontWeight:
+                      //                                     FontWeight.bold,
+                      //                               ),
+                      //                             ),
+                      //                             Text(
+                      //                               "Brands",
+                      //                               style: headerstyle.copyWith(
+                      //                                 color: ColorConstant
+                      //                                     .blackColor,
+                      //                                 fontSize: 15,
+                      //                                 fontWeight:
+                      //                                     FontWeight.bold,
+                      //                               ),
+                      //                             ),
+                      //                           ],
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                     SizedBox(
+                      //                       width: 5.w,
+                      //                     ),
 
-                                          // Other Services List
-                                          ListView(
-                                            physics:
-                                                const BouncingScrollPhysics(),
-                                            scrollDirection: Axis.horizontal,
-                                            shrinkWrap: true,
-                                            children: data.map((e) {
-                                              return Container(
-                                                width: 150.w,
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5),
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                      color: const Color(
-                                                          0xff651c50)),
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 5,
-                                                      vertical:
-                                                          5), // Adds spacing
-                                                  child: Text(
-                                                    e.name,
-                                                    textAlign: TextAlign
-                                                        .center, // Centers text
-                                                    maxLines:
-                                                        2, // Allows text to wrap into two lines
-                                                    overflow: TextOverflow
-                                                        .ellipsis, // Shows "..." if too long
-                                                    style: const TextStyle(
-                                                        fontSize:
-                                                            14), // Adjust font size if needed
-                                                  ),
-                                                ),
-                                              );
+                      //                     // Other Services List
+                      //                     ListView(
+                      //                       physics:
+                      //                           const BouncingScrollPhysics(),
+                      //                       scrollDirection: Axis.horizontal,
+                      //                       shrinkWrap: true,
+                      //                       children: data.map((e) {
+                      //                         return Container(
+                      //                           width: 150.w,
+                      //                           margin:
+                      //                               const EdgeInsets.symmetric(
+                      //                                   horizontal: 5),
+                      //                           alignment: Alignment.center,
+                      //                           decoration: BoxDecoration(
+                      //                             borderRadius:
+                      //                                 BorderRadius.circular(5),
+                      //                             border: Border.all(
+                      //                                 color: const Color(
+                      //                                     0xff651c50)),
+                      //                           ),
+                      //                           child: Padding(
+                      //                             padding: const EdgeInsets
+                      //                                 .symmetric(
+                      //                                 horizontal: 5,
+                      //                                 vertical:
+                      //                                     5), // Adds spacing
+                      //                             child: Text(
+                      //                               e.name,
+                      //                               textAlign: TextAlign
+                      //                                   .center, // Centers text
+                      //                               maxLines:
+                      //                                   2, // Allows text to wrap into two lines
+                      //                               overflow: TextOverflow
+                      //                                   .ellipsis, // Shows "..." if too long
+                      //                               style: const TextStyle(
+                      //                                   fontSize:
+                      //                                       14), // Adjust font size if needed
+                      //                             ),
+                      //                           ),
+                      //                         );
 
-                                              // return Padding(
-                                              //   padding: EdgeInsets.zero,
-                                              //   child: GestureDetector(
-                                              //     onTap: () {
-                                              //       showMenu(
-                                              //         context: context,
-                                              //         position: const RelativeRect
-                                              //             .fromLTRB(0, 0, 0,
-                                              //             0), // Base position; offset is handled by PopupMenuButton
-                                              //         items: [
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: ListTile(
-                                              //               title: const Text(
-                                              //                   "View Story"),
-                                              //               leading: const Icon(
-                                              //                   Icons.book),
-                                              //               onTap: () {
-                                              //                 // Implement onTap logic
-                                              //               },
-                                              //             ),
-                                              //           ),
-                                              //         ],
-                                              //       );
-                                              //     },
-                                              //     child: PopupMenuButton<int>(
-                                              //       offset: const Offset(0,
-                                              //           60), // The offset to position the menu above the widget
-                                              //       itemBuilder: (context) => [
-                                              //         const PopupMenuItem(
-                                              //           value: 1,
-                                              //           child: Text("View Story",
-                                              //               style: TextStyle(
-                                              //                   fontSize: 16.0)),
-                                              //         ),
-                                              //         if (e.parentClosure != null)
-                                              //           PopupMenuItem(
-                                              //             value: 1,
-                                              //             child: Text(
-                                              //               e.slug,
-                                              //               style: const TextStyle(
-                                              //                   fontSize: 16.0),
-                                              //             ),
-                                              //           ),
-                                              //       ],
-                                              //       child: Padding(
-                                              //         padding: EdgeInsets.symmetric(
-                                              //             horizontal: 10.w),
-                                              //         child: DashedBorder(
-                                              //           padding: 0,
-                                              //           dashCount: 2,
-                                              //           child: SizedBox(
-                                              //             // width: 100.w,
-                                              //             // height: 100.h,
-                                              //             child: Column(
-                                              //               mainAxisAlignment:
-                                              //                   MainAxisAlignment
-                                              //                       .center,
-                                              //               crossAxisAlignment:
-                                              //                   CrossAxisAlignment
-                                              //                       .center,
-                                              //               children: [
-                                              //                 Image.asset(
-                                              //                     'assets/images/cloth.png'),
-                                              //                 Center(
-                                              //                   child: Text(
-                                              //                     e.name ?? 'No Name',
-                                              //                     style:
-                                              //                         const TextStyle(
-                                              //                       color:
-                                              //                           Colors.black,
-                                              //                       fontWeight:
-                                              //                           FontWeight
-                                              //                               .w500,
-                                              //                       fontSize: 13,
-                                              //                     ),
-                                              //                     textAlign: TextAlign
-                                              //                         .center,
-                                              //                   ),
-                                              //                 )
-                                              //               ],
-                                              //             ),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // );
-                                            }).toList(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          return Text(error.toString());
-                        },
-                        loading: () => Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            width: 70.w,
-                            height: 100.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
-                      ),
+                      //                         // return Padding(
+                      //                         //   padding: EdgeInsets.zero,
+                      //                         //   child: GestureDetector(
+                      //                         //     onTap: () {
+                      //                         //       showMenu(
+                      //                         //         context: context,
+                      //                         //         position: const RelativeRect
+                      //                         //             .fromLTRB(0, 0, 0,
+                      //                         //             0), // Base position; offset is handled by PopupMenuButton
+                      //                         //         items: [
+                      //                         //           PopupMenuItem(
+                      //                         //             value: 1,
+                      //                         //             child: ListTile(
+                      //                         //               title: const Text(
+                      //                         //                   "View Story"),
+                      //                         //               leading: const Icon(
+                      //                         //                   Icons.book),
+                      //                         //               onTap: () {
+                      //                         //                 // Implement onTap logic
+                      //                         //               },
+                      //                         //             ),
+                      //                         //           ),
+                      //                         //         ],
+                      //                         //       );
+                      //                         //     },
+                      //                         //     child: PopupMenuButton<int>(
+                      //                         //       offset: const Offset(0,
+                      //                         //           60), // The offset to position the menu above the widget
+                      //                         //       itemBuilder: (context) => [
+                      //                         //         const PopupMenuItem(
+                      //                         //           value: 1,
+                      //                         //           child: Text("View Story",
+                      //                         //               style: TextStyle(
+                      //                         //                   fontSize: 16.0)),
+                      //                         //         ),
+                      //                         //         if (e.parentClosure != null)
+                      //                         //           PopupMenuItem(
+                      //                         //             value: 1,
+                      //                         //             child: Text(
+                      //                         //               e.slug,
+                      //                         //               style: const TextStyle(
+                      //                         //                   fontSize: 16.0),
+                      //                         //             ),
+                      //                         //           ),
+                      //                         //       ],
+                      //                         //       child: Padding(
+                      //                         //         padding: EdgeInsets.symmetric(
+                      //                         //             horizontal: 10.w),
+                      //                         //         child: DashedBorder(
+                      //                         //           padding: 0,
+                      //                         //           dashCount: 2,
+                      //                         //           child: SizedBox(
+                      //                         //             // width: 100.w,
+                      //                         //             // height: 100.h,
+                      //                         //             child: Column(
+                      //                         //               mainAxisAlignment:
+                      //                         //                   MainAxisAlignment
+                      //                         //                       .center,
+                      //                         //               crossAxisAlignment:
+                      //                         //                   CrossAxisAlignment
+                      //                         //                       .center,
+                      //                         //               children: [
+                      //                         //                 Image.asset(
+                      //                         //                     'assets/images/cloth.png'),
+                      //                         //                 Center(
+                      //                         //                   child: Text(
+                      //                         //                     e.name ?? 'No Name',
+                      //                         //                     style:
+                      //                         //                         const TextStyle(
+                      //                         //                       color:
+                      //                         //                           Colors.black,
+                      //                         //                       fontWeight:
+                      //                         //                           FontWeight
+                      //                         //                               .w500,
+                      //                         //                       fontSize: 13,
+                      //                         //                     ),
+                      //                         //                     textAlign: TextAlign
+                      //                         //                         .center,
+                      //                         //                   ),
+                      //                         //                 )
+                      //                         //               ],
+                      //                         //             ),
+                      //                         //           ),
+                      //                         //         ),
+                      //                         //       ),
+                      //                         //     ),
+                      //                         //   ),
+                      //                         // );
+                      //                       }).toList(),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     );
+                      //   },
+                      //   error: (error, stackTrace) {
+                      //     return Text(error.toString());
+                      //   },
+                      //   loading: () => Shimmer.fromColors(
+                      //     baseColor: Colors.grey[300]!,
+                      //     highlightColor: Colors.grey[100]!,
+                      //     child: Container(
+                      //       margin: const EdgeInsets.symmetric(horizontal: 8),
+                      //       width: 70.w,
+                      //       height: 100.h,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.grey,
+                      //         borderRadius: BorderRadius.circular(8),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10, top: 15),
                         child: Row(
@@ -1150,7 +1146,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                         height: 10.h,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 5.h),
+                        padding: EdgeInsets.only(top: 10.h),
                         child: SizedBox(
                           height: 50,
                           width: double.infinity,

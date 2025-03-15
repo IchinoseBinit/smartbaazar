@@ -254,7 +254,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
   Widget build(BuildContext context) {
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
-    var homecategory = ref.watch(homeCategoryProvider);
     Future<EnquireResponse> getEnquire(WidgetRef ref, String id) async {
       try {
         return await ref.read(checkEnquireProvider(id).future);
@@ -269,7 +268,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     // final randomstory = ref.watch(fetchStoryHomeProvider);
     final asyncbajarValue = ref.watch(getGrocertResponseProvider);
     final category = ref.watch(getCategoriesProvider(171));
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('8'));
+    // final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('8'));
 
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -287,7 +286,6 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
     // },)
     // final SearchProductModels = ref.watch(searchProvider(
     //     _searchController.text)); // Ensure this updates correctly
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
 
     return Scaffold(
         extendBody: true,

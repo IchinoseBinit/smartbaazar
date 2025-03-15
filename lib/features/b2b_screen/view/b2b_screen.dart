@@ -238,13 +238,10 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
       initialPage: headerIndex,
     );
     // ref.watch(fetchAdsProvider);
-    final pselectedIndex = ref.watch(bottomNavIndexProvider);
-    var homecategory = ref.watch(homeCategoryProvider);
 
     final asyncForYouStoryContent = ref.watch(getForYouStoryProvider);
 
     //     final adsList = ref.watch(fetchAdsProvider);
-    final asyncPostTypeContent = ref.watch(getPostTypeStoryApiProvider('7'));
     final asyncbajarValue = ref.watch(getB2bResponseProvider);
     final SearchProductModels =
         ref.watch(searchProvider(_searchController.text));
@@ -317,7 +314,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                       pinned: true,
                       floating: true,
                       delegate: StickyHeaderDelegate(
-                        showbackbutton: true,
+                          showbackbutton: true,
                           visible: isSliverAppBarVisible,
                           searchController: _searchController,
                           onchanged: (value) {
@@ -547,7 +544,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                     itemBuilder: (context, index) {
                                       final story = posts[index];
                                       return FeedStoryAddWidget(
-                                         productid: story.id!,
+                                        productid: story.id!,
                                         index: index,
                                         vendorName: story.vendorName ??
                                             "Unknown Vendor",
@@ -607,7 +604,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                     child: asyncbajarValue.when(
                       data: (data) {
                         return Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 15),
                           child: Stack(
                             children: [
                               // Carousel Slider
@@ -2209,8 +2206,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               return buyorwin_widget(
                                 ref: ref,
                                 postid: resp.post_id!,
-                                vendorid: resp.vendor_id!
-                                ,
+                                vendorid: resp.vendor_id!,
                                 wow: resp.wow ?? '0',
                                 gift_qty: resp.gift_qty!,
                                 worth: resp.worth!,
