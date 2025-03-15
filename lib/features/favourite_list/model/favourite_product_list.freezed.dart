@@ -210,7 +210,8 @@ Data _$DataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Data {
   @JsonKey(name: "saved_products")
-  SavedProducts? get savedProducts => throw _privateConstructorUsedError;
+  List<FavouriteProduct>? get savedProducts =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this Data to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -226,9 +227,8 @@ abstract class $DataCopyWith<$Res> {
   factory $DataCopyWith(Data value, $Res Function(Data) then) =
       _$DataCopyWithImpl<$Res, Data>;
   @useResult
-  $Res call({@JsonKey(name: "saved_products") SavedProducts? savedProducts});
-
-  $SavedProductsCopyWith<$Res>? get savedProducts;
+  $Res call(
+      {@JsonKey(name: "saved_products") List<FavouriteProduct>? savedProducts});
 }
 
 /// @nodoc
@@ -252,22 +252,8 @@ class _$DataCopyWithImpl<$Res, $Val extends Data>
       savedProducts: freezed == savedProducts
           ? _value.savedProducts
           : savedProducts // ignore: cast_nullable_to_non_nullable
-              as SavedProducts?,
+              as List<FavouriteProduct>?,
     ) as $Val);
-  }
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SavedProductsCopyWith<$Res>? get savedProducts {
-    if (_value.savedProducts == null) {
-      return null;
-    }
-
-    return $SavedProductsCopyWith<$Res>(_value.savedProducts!, (value) {
-      return _then(_value.copyWith(savedProducts: value) as $Val);
-    });
   }
 }
 
@@ -278,10 +264,8 @@ abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
       __$$DataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: "saved_products") SavedProducts? savedProducts});
-
-  @override
-  $SavedProductsCopyWith<$Res>? get savedProducts;
+  $Res call(
+      {@JsonKey(name: "saved_products") List<FavouriteProduct>? savedProducts});
 }
 
 /// @nodoc
@@ -300,9 +284,9 @@ class __$$DataImplCopyWithImpl<$Res>
   }) {
     return _then(_$DataImpl(
       savedProducts: freezed == savedProducts
-          ? _value.savedProducts
+          ? _value._savedProducts
           : savedProducts // ignore: cast_nullable_to_non_nullable
-              as SavedProducts?,
+              as List<FavouriteProduct>?,
     ));
   }
 }
@@ -311,14 +295,23 @@ class __$$DataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {@JsonKey(name: "saved_products") required this.savedProducts});
+      {@JsonKey(name: "saved_products")
+      required final List<FavouriteProduct>? savedProducts})
+      : _savedProducts = savedProducts;
 
   factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
       _$$DataImplFromJson(json);
 
+  final List<FavouriteProduct>? _savedProducts;
   @override
   @JsonKey(name: "saved_products")
-  final SavedProducts? savedProducts;
+  List<FavouriteProduct>? get savedProducts {
+    final value = _savedProducts;
+    if (value == null) return null;
+    if (_savedProducts is EqualUnmodifiableListView) return _savedProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
@@ -330,13 +323,14 @@ class _$DataImpl implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
-            (identical(other.savedProducts, savedProducts) ||
-                other.savedProducts == savedProducts));
+            const DeepCollectionEquality()
+                .equals(other._savedProducts, _savedProducts));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, savedProducts);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_savedProducts));
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
@@ -357,209 +351,19 @@ class _$DataImpl implements _Data {
 abstract class _Data implements Data {
   const factory _Data(
       {@JsonKey(name: "saved_products")
-      required final SavedProducts? savedProducts}) = _$DataImpl;
+      required final List<FavouriteProduct>? savedProducts}) = _$DataImpl;
 
   factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
 
   @override
   @JsonKey(name: "saved_products")
-  SavedProducts? get savedProducts;
+  List<FavouriteProduct>? get savedProducts;
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-SavedProducts _$SavedProductsFromJson(Map<String, dynamic> json) {
-  return _SavedProducts.fromJson(json);
-}
-
-/// @nodoc
-mixin _$SavedProducts {
-  @JsonKey(name: "current_page")
-  int? get currentPage => throw _privateConstructorUsedError;
-  @JsonKey(name: "data")
-  List<FavouriteProduct>? get data => throw _privateConstructorUsedError;
-
-  /// Serializes this SavedProducts to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SavedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $SavedProductsCopyWith<SavedProducts> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SavedProductsCopyWith<$Res> {
-  factory $SavedProductsCopyWith(
-          SavedProducts value, $Res Function(SavedProducts) then) =
-      _$SavedProductsCopyWithImpl<$Res, SavedProducts>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<FavouriteProduct>? data});
-}
-
-/// @nodoc
-class _$SavedProductsCopyWithImpl<$Res, $Val extends SavedProducts>
-    implements $SavedProductsCopyWith<$Res> {
-  _$SavedProductsCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SavedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? currentPage = freezed,
-    Object? data = freezed,
-  }) {
-    return _then(_value.copyWith(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<FavouriteProduct>?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$SavedProductsImplCopyWith<$Res>
-    implements $SavedProductsCopyWith<$Res> {
-  factory _$$SavedProductsImplCopyWith(
-          _$SavedProductsImpl value, $Res Function(_$SavedProductsImpl) then) =
-      __$$SavedProductsImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: "current_page") int? currentPage,
-      @JsonKey(name: "data") List<FavouriteProduct>? data});
-}
-
-/// @nodoc
-class __$$SavedProductsImplCopyWithImpl<$Res>
-    extends _$SavedProductsCopyWithImpl<$Res, _$SavedProductsImpl>
-    implements _$$SavedProductsImplCopyWith<$Res> {
-  __$$SavedProductsImplCopyWithImpl(
-      _$SavedProductsImpl _value, $Res Function(_$SavedProductsImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SavedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? currentPage = freezed,
-    Object? data = freezed,
-  }) {
-    return _then(_$SavedProductsImpl(
-      currentPage: freezed == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      data: freezed == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<FavouriteProduct>?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$SavedProductsImpl implements _SavedProducts {
-  const _$SavedProductsImpl(
-      {@JsonKey(name: "current_page") required this.currentPage,
-      @JsonKey(name: "data") required final List<FavouriteProduct>? data})
-      : _data = data;
-
-  factory _$SavedProductsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SavedProductsImplFromJson(json);
-
-  @override
-  @JsonKey(name: "current_page")
-  final int? currentPage;
-  final List<FavouriteProduct>? _data;
-  @override
-  @JsonKey(name: "data")
-  List<FavouriteProduct>? get data {
-    final value = _data;
-    if (value == null) return null;
-    if (_data is EqualUnmodifiableListView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  String toString() {
-    return 'SavedProducts(currentPage: $currentPage, data: $data)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SavedProductsImpl &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            const DeepCollectionEquality().equals(other._data, _data));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, currentPage, const DeepCollectionEquality().hash(_data));
-
-  /// Create a copy of SavedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SavedProductsImplCopyWith<_$SavedProductsImpl> get copyWith =>
-      __$$SavedProductsImplCopyWithImpl<_$SavedProductsImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SavedProductsImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _SavedProducts implements SavedProducts {
-  const factory _SavedProducts(
-          {@JsonKey(name: "current_page") required final int? currentPage,
-          @JsonKey(name: "data") required final List<FavouriteProduct>? data}) =
-      _$SavedProductsImpl;
-
-  factory _SavedProducts.fromJson(Map<String, dynamic> json) =
-      _$SavedProductsImpl.fromJson;
-
-  @override
-  @JsonKey(name: "current_page")
-  int? get currentPage;
-  @override
-  @JsonKey(name: "data")
-  List<FavouriteProduct>? get data;
-
-  /// Create a copy of SavedProducts
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SavedProductsImplCopyWith<_$SavedProductsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

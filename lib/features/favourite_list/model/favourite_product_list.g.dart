@@ -23,29 +23,14 @@ Map<String, dynamic> _$$FavouriteProductListImplToJson(
     };
 
 _$DataImpl _$$DataImplFromJson(Map<String, dynamic> json) => _$DataImpl(
-      savedProducts: json['saved_products'] == null
-          ? null
-          : SavedProducts.fromJson(
-              json['saved_products'] as Map<String, dynamic>),
+      savedProducts: (json['saved_products'] as List<dynamic>?)
+          ?.map((e) => FavouriteProduct.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$DataImplToJson(_$DataImpl instance) =>
     <String, dynamic>{
       'saved_products': instance.savedProducts,
-    };
-
-_$SavedProductsImpl _$$SavedProductsImplFromJson(Map<String, dynamic> json) =>
-    _$SavedProductsImpl(
-      currentPage: (json['current_page'] as num?)?.toInt(),
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => FavouriteProduct.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$SavedProductsImplToJson(_$SavedProductsImpl instance) =>
-    <String, dynamic>{
-      'current_page': instance.currentPage,
-      'data': instance.data,
     };
 
 _$FavouriteProductImpl _$$FavouriteProductImplFromJson(
