@@ -14,7 +14,7 @@ Future<FavouriteProductList> getFavouriteList(dynamic ref,
     final response = await client.request(
       requestType: RequestType.getWithToken,
       url:
-          'https://smartbazaar.jianjun-rnd.com.np/api/savedPosts?pages=$pagenum',
+          'https://smartbazaar.jianjun-rnd.com.np/api/savedPosts?page=$pagenum',
     );
 
     if (response.statusCode == 200) {

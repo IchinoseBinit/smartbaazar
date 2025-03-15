@@ -6,7 +6,7 @@ part of 'add_to_cart_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$addtocartHash() => r'2a59501f43e21ffb231323d0ab7181eb76894389';
+String _$addtocartHash() => r'e58ac9d0141031f5a0a268171e5177350695bc31';
 
 /// Copied from Dart SDK
 class _SystemHash {

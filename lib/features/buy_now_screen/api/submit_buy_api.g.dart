@@ -6,7 +6,7 @@ part of 'submit_buy_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$buynowsubmitHash() => r'b821c123c720e5d093a31397ca2eb89375a301d5';
+String _$buynowsubmitHash() => r'f7a7e20f6795414a0dbebc5cb2c47860793875ad';
 
 /// Copied from Dart SDK
 class _SystemHash {

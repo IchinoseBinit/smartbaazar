@@ -28,17 +28,17 @@ class SavedProducts with _$SavedProducts {
   const factory SavedProducts({
     @JsonKey(name: "current_page") required int? currentPage,
     @JsonKey(name: "data") required List<FavouriteProduct>? data,
-    // @JsonKey(name: "first_page_url") required String? firstPageUrl,
-    // @JsonKey(name: "from") required int? from,
-    // @JsonKey(name: "last_page") required int? lastPage,
-    // @JsonKey(name: "last_page_url") required String? lastPageUrl,
-    // @JsonKey(name: "links") required List<Link>? links,
-    // @JsonKey(name: "next_page_url") required dynamic nextPageUrl,
-    // @JsonKey(name: "path") required String? path,
-    // @JsonKey(name: "per_page") required int? perPage,
-    // @JsonKey(name: "prev_page_url") required dynamic prevPageUrl,
-    // @JsonKey(name: "to") required int? to,
-    // @JsonKey(name: "total") required int? total,
+    @JsonKey(name: "first_page_url") required String? firstPageUrl,
+    @JsonKey(name: "from") required int? from,
+    @JsonKey(name: "last_page") required int? lastPage,
+    @JsonKey(name: "last_page_url") required String? lastPageUrl,
+    @JsonKey(name: "links") required List<Link>? links,
+    @JsonKey(name: "next_page_url") required dynamic nextPageUrl,
+    @JsonKey(name: "path") required String? path,
+    @JsonKey(name: "per_page") required int? perPage,
+    @JsonKey(name: "prev_page_url") required dynamic prevPageUrl,
+    @JsonKey(name: "to") required int? to,
+    @JsonKey(name: "total") required int? total,
   }) = _SavedProducts;
 
   factory SavedProducts.fromJson(Map<String, dynamic> json) =>
