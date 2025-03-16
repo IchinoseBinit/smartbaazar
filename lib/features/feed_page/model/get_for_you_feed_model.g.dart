@@ -51,7 +51,7 @@ _$FeedPostImpl _$$FeedPostImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       wow: json['wow'] as String?,
       views: json['views'] as String?,
-      wow_status: json['wow_status'] as String?,
+      wow_status: (json['wow_status'] as num?)?.toInt(),
       createdAt: json['created_at'] as String?,
       feedDetail: json['feed_detail'] == null
           ? null

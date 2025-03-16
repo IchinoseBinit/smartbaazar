@@ -677,8 +677,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         radius: 38.r,
                                         backgroundColor: const Color(0x7F7F7F73)
                                             .withOpacity(0.45),
-                                        backgroundImage:
-                                            NetworkImage(SmartClient.userPhoto),
+                                      backgroundImage: SmartClient.userPhoto == ""
+    ? const AssetImage('assets/images/Smartbazaar-Icon-for-QR.png'
+    
+    ) as ImageProvider<Object>
+    : NetworkImage(SmartClient.userPhoto) as ImageProvider<Object>,
+
                                       ),
                                     ),
 
@@ -690,7 +694,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       child: SizedBox(
                                         width: 100.w,
                                         child: Text(
-                                          SmartClient.userName ?? 'search',
+                                          SmartClient.userName=='' ? 'search': SmartClient.userName,
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w600,

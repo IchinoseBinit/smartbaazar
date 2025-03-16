@@ -202,7 +202,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     // namecontroller.text = prefs.getString("name")!;
     // emailcontroller.text = prefs.getString("email")!;
     // phonecontroller.text = prefs.getString("phone")!;
-    namecontroller.text = prefs.getString("name")!;
+    namecontroller.text = prefs.getString("name") ?? SmartClient.userName;
     emailcontroller.text = SmartClient.userEmail;
     phonecontroller.text = SmartClient.phone;
   }
@@ -741,11 +741,20 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       const Spacer(),
                       Expanded(
                         child: TextField(
+                          onChanged:(value) {
+                            if (jobsresp?.result[0].id != null) {
+                              // Ensure the dynamic key is safe to access
+                              cf?.add([
+                                'cf.${jobsresp!.result[0].id}', // Create the key dynamically
+                                experiencecontroller,
+                              ]);
+                            }
+                          },
                           onSubmitted: (value) {
                             if (jobsresp?.result[0].id != null) {
                               // Ensure the dynamic key is safe to access
                               cf?.add([
-                                'cf.${jobsresp!.result[1].id}', // Create the key dynamically
+                                'cf.${jobsresp!.result[0].id}', // Create the key dynamically
                                 value,
                               ]);
                             }
@@ -3685,12 +3694,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                                 value: option,
                                 groupValue: selecctedProductTYpe,
                                 onChanged: (newValue) {
+                                  print('saka ${newValue}');
                                   setState(() {
                                     selecctedProductTYpe = newValue;
 
                                     // Create dynamic cf key
                                     final cfKey =
-                                        'cf.${getcar!.result.first.id}';
+                                        'cf.${selecctedProductTYpe!.fieldId}';
                                     final cfValue = [selecctedProductTYpe!.id];
 
                                     // Check if cf already contains this key
@@ -4538,7 +4548,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                     CustomCheckbox(
                       value: _acceptterms,
                       onChanged: (bool newValue) {
-                        // print('kalu ${selectedcategory}');
+                        print('kalu ${cf}');
                         setState(() {
                           _acceptterms = newValue;
                         });

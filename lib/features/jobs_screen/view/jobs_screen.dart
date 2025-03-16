@@ -2825,7 +2825,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                           Text(
                                             "Membership",
                                             style: headerstyle.copyWith(
-                                              fontSize: 5,
+                                              fontSize: 8,
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff918994),
                                             ),

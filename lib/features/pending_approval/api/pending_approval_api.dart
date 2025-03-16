@@ -19,7 +19,7 @@ Future<PendingApprovalModel> getPendingApprovalResponse(ref) async {
       return PendingApprovalModel.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load terms and conditions');
-    }
+    } 
   } catch (e) {
     // Handle or log the error here
     print('Error loading terms and conditions: $e');

@@ -2967,6 +2967,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                               BorderRadius.circular(15.0),
                                         ),
                                         child: AllProductDetailWidget(
+                                          id: int.tryParse(res.user.id),
                                           ref: ref,
                                           onenquiredclicked: () {
                                             getEnquire(ref, res.id).then(
@@ -3047,7 +3048,6 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           productid: res.id,
                                           shortestDistance:
                                               res.user.shortestDistance,
-                                          id: int.tryParse(res.id),
                                           membershipid: res.user.membership_id,
                                           offer: res.offers,
                                           posttype: res.post_type_id,
@@ -3394,7 +3394,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                           Text(
                                             "Membership",
                                             style: headerstyle.copyWith(
-                                              fontSize: 5,
+                                              fontSize: 8,
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff918994),
                                             ),

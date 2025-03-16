@@ -18,6 +18,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/generate_qr.dart';
+import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/auth/view/otp_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/become_brandbazaar_member/become_brandbazaar_member.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
@@ -54,12 +56,15 @@ import 'package:smartbazar/features/splash_screen/splash_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/apply_sponsorship_price_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/subscitption_trending/view/subscription_screen.dart';
+import 'package:smartbazar/features/update_listing/api/update_listing_provider.dart';
+import 'package:smartbazar/features/update_listing/view/update_listing_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
 import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
+import 'package:smartbazar/features/vendor/view/model/my_listing_model.dart';
 import 'package:smartbazar/features/vendor/view/my_listing_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
@@ -68,6 +73,7 @@ import 'package:smartbazar/network_service/smart-client.dart';
 import 'package:smartbazar/git.dart';
 import 'package:smartbazar/payment/payment_screen.dart';
 import 'package:smartbazar/payment/create_listing_payement.dart';
+import 'package:smartbazar/test.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -144,20 +150,23 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     //  print('pinky ${SmartClient.}');
     return ScreenUtilInit(
-        designSize: const Size(430, 690),
-        splitScreenMode: true,
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: GoogleFonts.quicksand().fontFamily,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: SplashScreen()));
-    // home: SplashScreen())); bhaktapur
+      designSize: const Size(430, 690),
+      splitScreenMode: true,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SplashScreen()
+          ) 
+          
+    );
+    // home: SplashScreen())); bhaktapur    5
   }
 } //123 dells
-// //9810443212 bhaktapur
+// //9810443212 
 // Redmi note 1 has the feature of long and and things like wifi is there
 // Phone
 

@@ -731,7 +731,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
 
                                   return FeedStoryAddWidget(
                                     productid: story.id!,
-
                                     index: index,
                                     vendorName:
                                         story.vendorName ?? "Unknown Vendor",
@@ -1008,14 +1007,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               refreshprovider: () async {
                                 refreshprovider();
                               },
-                              isLiked: feedItem.wow_status,
+                              isLiked: feedItem.wow_status.toString(),
                               hassttory:
                                   userDetails!.storyCount! > 0 ? true : false,
                               productCount: userDetails.productCount.toString(),
                               suscribers: userDetails.subscribers.toString(),
                               vendorName: userDetails.vendorName!,
                               vendorImage: userDetails.vendorImage!,
-                              livePrize: userDetails.livePrize.toString(),
+                              livePrize: userDetails.livePrize.toString(), 
                               distance:
                                   userDetails.distance?.toStringAsFixed(0),
                               interested: interested?.interested?.toString(),
@@ -1246,7 +1245,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                           Text(
                                             "Membership",
                                             style: headerstyle.copyWith(
-                                              fontSize: 5,
+                                              fontSize: 8,
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff918994),
                                             ),

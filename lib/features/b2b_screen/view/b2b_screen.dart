@@ -2637,6 +2637,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
+                                      
                                       ref: ref,
                                       savedid: res.savedByLoggedUser == null ||
                                               res.savedByLoggedUser!.isEmpty
@@ -2986,7 +2987,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                           Text(
                                             "Membership",
                                             style: headerstyle.copyWith(
-                                              fontSize: 5,
+                                              fontSize: 8,
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff918994),
                                             ),

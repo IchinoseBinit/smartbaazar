@@ -1136,6 +1136,8 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                     ),
                                                     child:
                                                         AllProductDetailWidget(
+                                                      id: int.tryParse(res
+                                                          .user.first.user_id),
                                                       ref: ref,
                                                       onenquiredclicked: () {
                                                         getEnquire(ref, res.id)
@@ -1230,7 +1232,6 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                                                           res.post_type_id,
                                                       membershipid: res.user[0]
                                                           .membership_id,
-                                                      id: int.tryParse(res.id),
                                                       didcountpercentage: res
                                                           .discount_percentage,
                                                       avg_rating:
@@ -2327,7 +2328,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                           Text(
                                             "Membership",
                                             style: headerstyle.copyWith(
-                                              fontSize: 5,
+                                              fontSize: 8,
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff918994),
                                             ),
