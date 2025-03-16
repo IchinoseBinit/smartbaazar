@@ -82,10 +82,11 @@ class PushNotificationsService {
   }
 
   static Future<void> sendTokenToServer(String token) async {
+    print(">>>>>>>>>>>>>>>>>FCM token: " + token);
     try {
       final SmartClient clinet = SmartClient();
       final response = await clinet.request(
-        requestType: RequestType.postWithToken,
+        requestType: RequestType.post,
         url: ApiConstants.storeDeviceTokenUrl,
         parameter: {'device_token': token},
       );

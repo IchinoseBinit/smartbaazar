@@ -34,7 +34,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   String? userId;
   bool isLoading = false;
   bool _isInitialized = false;
-  List<StreetAddressModel> branchLocations = [];
+  List<StreetAddressModel> selectedbranchLocations = [];
   late List<TextEditingController> branchControllers;
   final Map<String, Map<String, dynamic>> openingHours = {
     'Sun': {'from': null, 'to': null, 'closed': false},
@@ -64,7 +64,13 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
   void _onBranchLocationsUpdated(List<StreetAddressModel> locations) {
     setState(() {
-      branchLocations = locations;
+      branchControllers = locations.map((location) {
+        return TextEditingController(text: location.description);
+      }).toList();
+
+      selectedbranchLocations = locations;
+        print('Updated Branch Controllers: $branchControllers');
+    print('Updated Selected Branch Locations: $selectedbranchLocations');
     });
   }
 
@@ -108,7 +114,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
           // Add new controllers
           if (branchLocations != null) {
-            for (var i = 0; i < branchLocations!.length; i++) {
+            for (var i = 0; i < branchLocations.length; i++) {
               TextEditingController controller =
                   TextEditingController(text: branchLocations[i]['location']);
               branchControllers.add(controller);
@@ -155,18 +161,27 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   void _addBranchField() {
     setState(() {
       branchControllers.add(TextEditingController());
+      selectedbranchLocations.add(StreetAddressModel(
+        description: '',
+        latitude: 0.0,
+        longitude: 0.0,
+        placeId: '',
+      ));
     });
   }
 
   void _removeBranchField(int index) {
     setState(() {
       branchControllers.removeAt(index);
+      selectedbranchLocations.removeAt(index);
     });
   }
 
   void _submitUpdate() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      print('Selected Branch Locations: $selectedbranchLocations');
+
       final updatedData = UserData(
         name: _fullNameController.text,
         phone: _phoneNumberController.text,
@@ -178,13 +193,15 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         //  usersLocation: jsonEncode({'location': _branchController.text}),
       );
       if (userId != null) {
-        List<Map<String, dynamic>> branchLocationsData = branchLocations
+        List<Map<String, dynamic>> branchLocationsData = selectedbranchLocations
             .map((location) => {
                   'location': location.description,
                   'latitude': location.latitude,
                   'longitude': location.longitude,
                 })
             .toList();
+                print('Selected Branch Locations: $selectedbranchLocations');
+
 
 // Then in your updateUserDetailsProvider call:
 
@@ -522,7 +539,9 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             branchControllers: branchControllers,
                             addBranchField: _addBranchField,
                             removeBranchField: _removeBranchField,
-                            onBranchLocationsUpdated: _onBranchLocationsUpdated,
+                            onBranchLocationsUpdated: (value) {
+                              _onBranchLocationsUpdated(value);
+                            },
                           ),
 
                           SizedBox(height: 10.2.h),
@@ -594,7 +613,7 @@ class BranchWidget extends StatefulWidget {
   final List<TextEditingController> branchControllers;
   final Function(int) removeBranchField;
   final Function() addBranchField;
-  final Function(List<StreetAddressModel>) onBranchLocationsUpdated;
+  final Function(List<StreetAddressModel>)? onBranchLocationsUpdated;
 
   const BranchWidget({
     Key? key,
@@ -630,7 +649,7 @@ class _BranchWidgetState extends State<BranchWidget> {
             setState(() {
               branchLocations[index] = selectedLocation;
             });
-            widget.onBranchLocationsUpdated(branchLocations);
+            widget.onBranchLocationsUpdated!(branchLocations);
           }
         },
       );
@@ -670,7 +689,7 @@ class _BranchWidgetState extends State<BranchWidget> {
                                 branchLocations[currentIndex] =
                                     selectedLocation;
                               });
-                              widget.onBranchLocationsUpdated(branchLocations);
+                              widget.onBranchLocationsUpdated!(branchLocations);
                             }
                           },
                         ),

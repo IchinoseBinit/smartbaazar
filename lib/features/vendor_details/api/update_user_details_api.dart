@@ -46,15 +46,16 @@ Future<UpdateUserDetail> updateUserDetails(
       'accept_terms': 1,
       'accept_marketing_offers': 1,
       'bio': bio,
-      'branch_location': branchLocations != null
-          ? jsonEncode(branchLocations.map((location) {
-              return {
-                'location': location,
-                'longitude': '', // Add longitude if available
-                'latitude': '', // Add latitude if available
-              };
-            }).toList())
-          : null,
+      'branch_location': jsonEncode(branchLocations),
+      // ghh!= null
+      //     ? jsonEncode(branchLocations.map((location) {
+      //         return {
+      //           'location': location,
+      //           'longitude': '', // Add longitude if available
+      //           'latitude': '', // Add latitude if available
+      //         };
+      //       }).toList())
+      //     : null,
       'day[]': day,
       'from[]': fromList,
       'to[]': toList,
