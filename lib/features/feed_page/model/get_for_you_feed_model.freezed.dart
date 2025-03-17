@@ -388,7 +388,7 @@ mixin _$FeedPost {
   List<Product>? get products => throw _privateConstructorUsedError;
   String? get wow => throw _privateConstructorUsedError;
   String? get views => throw _privateConstructorUsedError;
-  String? get wow_status => throw _privateConstructorUsedError;
+  int? get wow_status => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'feed_detail')
@@ -425,7 +425,7 @@ abstract class $FeedPostCopyWith<$Res> {
       List<Product>? products,
       String? wow,
       String? views,
-      String? wow_status,
+      int? wow_status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
       @JsonKey(name: 'interested') Interested? interested,
@@ -516,7 +516,7 @@ class _$FeedPostCopyWithImpl<$Res, $Val extends FeedPost>
       wow_status: freezed == wow_status
           ? _value.wow_status
           : wow_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -599,7 +599,7 @@ abstract class _$$FeedPostImplCopyWith<$Res>
       List<Product>? products,
       String? wow,
       String? views,
-      String? wow_status,
+      int? wow_status,
       @JsonKey(name: 'created_at') String? createdAt,
       @JsonKey(name: 'feed_detail') FeedDetail? feedDetail,
       @JsonKey(name: 'interested') Interested? interested,
@@ -691,7 +691,7 @@ class __$$FeedPostImplCopyWithImpl<$Res>
       wow_status: freezed == wow_status
           ? _value.wow_status
           : wow_status // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -770,7 +770,7 @@ class _$FeedPostImpl implements _FeedPost {
   @override
   final String? views;
   @override
-  final String? wow_status;
+  final int? wow_status;
   @override
   @JsonKey(name: 'created_at')
   final String? createdAt;
@@ -869,7 +869,7 @@ abstract class _FeedPost implements FeedPost {
           final List<Product>? products,
           final String? wow,
           final String? views,
-          final String? wow_status,
+          final int? wow_status,
           @JsonKey(name: 'created_at') final String? createdAt,
           @JsonKey(name: 'feed_detail') final FeedDetail? feedDetail,
           @JsonKey(name: 'interested') final Interested? interested,
@@ -904,7 +904,7 @@ abstract class _FeedPost implements FeedPost {
   @override
   String? get views;
   @override
-  String? get wow_status;
+  int? get wow_status;
   @override
   @JsonKey(name: 'created_at')
   String? get createdAt;

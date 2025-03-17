@@ -120,7 +120,7 @@ Future<String> createlisting(
       for (var file in images) {
         if (file != null) {
           formData.files.add(MapEntry(
-            'pictures',
+            'pictures[]',
             await MultipartFile.fromFile(
               file.path,
               filename: file.path.split('/').last,

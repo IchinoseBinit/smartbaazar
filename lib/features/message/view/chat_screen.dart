@@ -13,11 +13,14 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
+import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
 import 'package:smartbazar/features/message/api/message_list_api.dart';
 import 'package:smartbazar/features/message/api/message_photo_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/reply_message_model_api.dart';
+import 'package:smartbazar/features/message/api/thread_is_important_api.dart';
+import 'package:smartbazar/features/message/api/thread_is_read_api.dart';
 import 'package:smartbazar/features/message/model/message_list_model.dart';
 import 'package:smartbazar/features/message/model/message_photo_model.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -103,7 +106,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void initState() {
-  if(widget.imageUrl!=null)  _messageController.text = "I'm interested. Can you share more details about this TechStore Feed?";
+    if (widget.imageUrl != null)
+      _messageController.text =
+          "I'm interested. Can you share more details about this TechStore Feed?";
     loaduserid();
     _isverified = false;
     checkUserVerified().then(
@@ -685,16 +690,49 @@ class ChatUserDetailWidget extends ConsumerWidget {
                         },
                         child: messageThreadAsync.when(
                           data: (threadData) {
+                            print('haka ${threadData}');
+
                             final isImportant = threadData.result!.data
                                     ?.firstWhere(
                                         (item) => item.postId == postId)
                                     .isImportant ==
                                 "1";
 
-                            return Icon(
-                              isImportant ? Icons.star : Icons.star_border,
-                              color: isImportant ? Colors.yellow : Colors.white,
-                              size: 24.sp,
+                            return InkWell(
+                              onTap: () async {
+                                // Use async
+                                try {
+                                  final check = await ref.read(
+                                      makethreadimportantProvider(id: threadId)
+                                          .future);
+
+                                  print('raka $check');
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text("Message"),
+                                      content: Text(check),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: const Text("Okay"),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print('Error: $e');
+                                }
+                              },
+                              child: Icon(
+                                isImportant ? Icons.star : Icons.star_border,
+                                color:
+                                    isImportant ? Colors.yellow : Colors.white,
+                                size: 24.sp,
+                              ),
                             );
                           },
                           loading: () => const CircularProgressIndicator(),
@@ -718,11 +756,13 @@ class ChatUserDetailWidget extends ConsumerWidget {
                                   content: Text('Item deleted successfully'),
                                   backgroundColor: Colors.grey),
                             );
-                            await Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const MessageViewScreen()),
-                            );
+
+                            Navigator.pop(context);
+
+                            // Trigger state refresh for the previous screen
+                            ref.invalidate(
+                                getMessageThreadProvider); // Replace with your actual provider
+                            ref.invalidate(getLastMessageProvider);
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -738,10 +778,40 @@ class ChatUserDetailWidget extends ConsumerWidget {
                         ),
                       ),
                       SizedBox(width: 10.w),
-                      Icon(
-                        Icons.mail_outline,
-                        color: Colors.white,
-                        size: 24.sp,
+                      InkWell(
+                        onTap: () async{
+                           try {
+                              final check = await ref.read(
+                                  makethreadreadProvider(id: threadId)
+                                      .future);
+
+                         //     print('raka $check');
+
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text("Message"),
+                                  content: Text(check),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(ctx).pop();
+                                      },
+                                      child: const Text("Okay"),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } catch (e) {
+                              print('Error: $e');
+                            }
+                         
+                        },
+                        child: Icon(
+                          Icons.mail_outline,
+                          color: Colors.white,
+                          size: 24.sp,
+                        ),
                       ),
                     ],
                   ),

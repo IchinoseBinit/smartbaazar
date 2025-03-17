@@ -1,49 +1,48 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/button_nav_sheet.dart';
-import 'package:smartbazar/constant/color_constant.dart';
-import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
 import 'package:smartbazar/features/feed_page/api/get_for_you_story_api.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
+import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
+import 'package:smartbazar/features/brand_bazar/api/brand_bazar_api.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
+import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
+import 'package:smartbazar/features/home/api/post_type_story_api.dart';
+import 'package:smartbazar/features/home/api/shopzone_provider.dart';
+import 'package:smartbazar/features/home/model/home_story_model.dart';
+import 'package:smartbazar/features/home/view/home_page_story_container.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:smartbazar/constant/color_constant.dart';
+import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/api/screen_category_api.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
-import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/feed_page/widget/not_a_story_widget.dart';
-import 'package:smartbazar/features/feed_page/widget/story_add_widget.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/buy_or_now_provider.dart';
 import 'package:smartbazar/features/home/api/get_story_provider.dart';
-import 'package:smartbazar/features/home/api/post_type_story_api.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/api/shopzone_provider.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/home/view/buyorwin_widget.dart';
-import 'package:smartbazar/features/home/view/circle_story_count.dart';
 import 'package:smartbazar/features/home/view/custom_border.dart';
 import 'package:smartbazar/features/home/view/header.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:smartbazar/features/home/view/home_page_story_container.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -51,10 +50,11 @@ import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/scratch_win/screen/subscribe_win_every_day_screen.dart';
 import 'package:smartbazar/features/services_screen/api/service_provider.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/api/service_provider.dart';
+import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
+import 'package:smartbazar/features/used_screen/api/used_provider.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
@@ -64,7 +64,7 @@ import 'package:smartbazar/network_service/smart-client.dart';
 
 import '../../product_details/constant/all_product_detail_widget.dart';
 
-final _selectedIndexProvider = StateProvider<int>((ref) => 3);
+final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
 
 class SocioShopScreen extends ConsumerStatefulWidget {
@@ -79,29 +79,27 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   final _debouncer = BehaviorSubject<String>();
-  int? selectedIndex = 3;
+  int? selectedIndex = 4;
+  int? selectedTab = 0;
+
+  int _currentIndex = 0;
+
   final ScrollController _scrollController = ScrollController();
   bool _isSectionsVisible = true;
   double _lastScrollOffset = 0;
   Offset _initialDragPosition = Offset.zero;
+  int headerIndex = 0;
+
   final ValueNotifier<bool> _showSideBar = ValueNotifier<bool>(true);
   List<FetchCategory> allcat = [];
   // bool _showSearchProductModels = false;
-  // late TabController tabController;
-  int headerIndex = 0;
-  int _currentIndex = 0;
-  late TabController dynamictabController;
+  //late TabController tabController;
+  bool _showSearchProductModels = false;
 
   PageController _pageController = PageController(viewportFraction: 0.3);
   Timer? _timer;
   final PageController _adscontroller = PageController(
     initialPage: 0,
-  );
-  int? postypeid = 1;
-
-  Map<String, String>? dropdownValue = headeritems.firstWhere(
-    (item) => item['label'] == 'B2B',
-    orElse: () => headeritems.first, // Fallback to the first item if not found
   );
 
   void _onPageChanged(int index) {
@@ -110,14 +108,21 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     });
   }
 
+  int? dynamicsize;
   int _currentPage = 0;
+  Map<String, String>? dropdownValue = headeritems.firstWhere(
+    (item) => item['label'] == 'Used',
+    orElse: () => headeritems.first, // Fallback to the first item if not found
+  );
+  int? postypeid = 0;
+
   final List<Map<String, dynamic>> _items = [
     {
       'icon': 'assets/icon/loading.svg',
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-    {
+        {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
@@ -137,6 +142,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'label': 'Brandbazaar',
       'screen': const BrandBazarScreen()
     },
+
     {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
@@ -158,18 +164,16 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'screen': const EventsScreen()
     },
   ];
-  bool _showSearchProductModels = false;
 
   @override
   void initState() {
-    dynamictabController = TabController(length: 3, vsync: this);
+      dynamictabController = TabController(length: 3, vsync: this);
     dynamictabController.addListener(() {
       setState(() {});
     });
-
     _pageController = PageController(
       viewportFraction: 0.3,
-      initialPage: selectedIndex!,
+      initialPage: headerIndex,
     );
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
@@ -177,28 +181,37 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       } else {
         _currentPage = 0;
       }
+
+      // _pageController.animateToPage(
+      //   _currentPage,
+      //   duration: const Duration(milliseconds: 350),
+      //   curve: Curves.easeIn,
+      // );
     });
 
     // Use the addPostFrameCallback to jump to the selected page after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _pageController.jumpToPage(headerIndex);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _pageController.jumpToPage(headerIndex);
+    // });
     super.initState();
     // tabController = TabController(length: 3, vsync: this);
 
+    // tabController.addListener(() {
+    //   setState(() {});
+    // });
     _searchController.addListener(() {
       _debouncer.add(_searchController.text);
     });
 
     _debouncer.debounceTime(const Duration(milliseconds: 300)).listen((query) {
       debugPrint("Search query: $query");
-      ref.refresh(
-          searchProvider(query)); // Ensure this provider works as expected
+      ref.refresh(searchProvider(query));
       setState(() {
         _showSearchProductModels = query.isNotEmpty;
       });
     });
   }
+  late TabController dynamictabController;
 
   void _handleScroll() {
     final scrollOffset = _scrollController.offset;
@@ -240,15 +253,15 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
   }
 
   ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0);
-
   @override
   void dispose() {
-    dynamictabController.dispose();
+    // tabController.dispose();
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
+        dynamictabController.dispose();
+
     _scrollController.dispose();
-    // super.dispose();s
   }
 
   @override
@@ -3074,6 +3087,8 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
+                                       id: int.tryParse(res.user.id),
+
                                       ref: ref,
                                       onenquiredclicked: () {
                                         getEnquire(ref, res.id).then(
@@ -3144,7 +3159,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       lat: res.user.latitude,
                                       long: res.user.longitude,
                                       productid: res.id,
-                                      id: int.tryParse(res.id),
                                       membershipid: res.user.membership_id,
                                       offer: res.offers,
                                       posttype: res.post_type_id,
