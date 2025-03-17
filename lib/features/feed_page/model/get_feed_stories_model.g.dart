@@ -47,23 +47,23 @@ Map<String, dynamic> _$$FeedStoryImplToJson(_$FeedStoryImpl instance) =>
     };
 
 _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
-      vendorId: json['vendor_id'] as String?,
+      vendorId: json['vendor_id'],
       vendorName: json['vendor_name'] as String?,
       vendorImage: json['vendor_image'] as String?,
       storyCount: (json['story_count'] as num?)?.toInt(),
       hasSponsoredGifts: json['has_sponsored_gifts'] as bool?,
-      id: json['id'] as String?,
+      id: json['id'],
       title: json['title'] as String?,
       image: json['image'] as String?,
-      price: json['price'] as String?,
-      discountedPrice: json['discounted_price'] as String?,
+      price: json['price'],
+      discountedPrice: json['discounted_price'],
       description: json['description'] as String?,
-      similarProductCount: (json['similarproductcount'] as num?)?.toInt(),
-      commentCount: (json['comment_count'] as num?)?.toInt(),
-      averageRating: (json['average_rating'] as num?)?.toInt(),
-      discountPercentage: (json['discount_percentage'] as num?)?.toDouble(),
-      wow: json['wow'] as String?,
-      wowStatus: (json['wow_status'] as num?)?.toInt(),
+      similarProductCount: json['similarproductcount'],
+      commentCount: json['comment_count'],
+      averageRating: json['average_rating'],
+      discountPercentage: json['discount_percentage'],
+      wow: json['wow'],
+      wowStatus: json['wow_status'],
     );
 
 Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>

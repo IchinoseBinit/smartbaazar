@@ -44,6 +44,7 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
   List<int> similarProductCounts = [];
   List<double> avgRatingCounts = [];
   List<bool?> isLiked = [];
+  List<String> storyId = [];
 
   PageController _pageController = PageController();
   late AnimationController _animationController;
@@ -52,6 +53,7 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
   bool _isLoading = false;
   bool _initialized = false;
   bool _showdialog = false;
+  bool _isInModal = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -69,6 +71,7 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
       // descriptions = posts.map((post) => post.description ?? '').toList();
       // prices = posts.map((post) => post.price ?? '').toList();
       // discountedPrices = posts.map((post) => post.discountedPrice ?? '').toList();
+      storyId = posts.map((post) => post.id ?? '').toList();
       wowCounts = posts.map((post) => post.wow ?? '0').toList();
       vendorImage = posts
           .map((post) =>
@@ -90,6 +93,10 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
     );
 
     _animationController.addStatusListener((status) {
+      if (_showdialog) {
+        _animationController.stop();
+        return;
+      }
       if (status == AnimationStatus.completed && !_isPaused) {
         _moveToNextStory();
       }
@@ -100,7 +107,7 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
   }
 
   void _startAutoScroll() {
-    if (!_isPaused) {
+    if (!_isPaused && !_isInModal && !_showdialog) {
       _animationController.reset();
       _animationController.forward();
     }
@@ -108,13 +115,30 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
 
   void _shareImage(String imageUrl, String bio) {
     if (imageUrl.isNotEmpty) {
-      Share.share("It's about $bio\n : $imageUrl", subject: bio);
+      setState(() {
+        _isInModal = true;
+        _animationController.stop();
+      });
+
+      Share.share("It's about $bio\n : $imageUrl", subject: bio).then((_) {
+        if (mounted) {
+          setState(() {
+            _isInModal = false;
+            _startAutoScroll();
+          });
+        }
+      });
     } else {
       print("No image URL provided.");
     }
   }
 
   void _showCommentSection(BuildContext context, String feedproductid) {
+    setState(() {
+      _isInModal = true;
+      _animationController.stop();
+    });
+
     showModalBottomSheet(
         useRootNavigator: true,
         useSafeArea: true,
@@ -124,19 +148,35 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         builder: (_) {
-          return LayoutBuilder(
-            builder: (context, _) {
-              return AnimatedContainer(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                duration: const Duration(milliseconds: 150),
-                height:
-                    MediaQuery.of(context).size.height, // Full screen height
-                child: CommentSection(id: feedproductid),
-              );
+          return WillPopScope(
+            onWillPop: () async {
+              setState(() {
+                _isInModal = false;
+                _startAutoScroll();
+              });
+              return true;
             },
+            child: LayoutBuilder(
+              builder: (context, _) {
+                return AnimatedContainer(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  duration: const Duration(milliseconds: 150),
+                  height:
+                      MediaQuery.of(context).size.height, // Full screen height
+                  child: CommentSection(id: feedproductid),
+                );
+              },
+            ),
           );
+        }).then((_) {
+      if (mounted) {
+        setState(() {
+          _isInModal = false;
+          _startAutoScroll();
         });
+      }
+    });
   }
 
   void _moveToNextStory() {
@@ -148,11 +188,12 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
 
     if (_currentStoryIndex == 0) {
       // If we're back at the start, exit the story viewer
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FeedScreen()),
-      );
-      return;
+      Navigator.pop(context);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => FeedScreen()),
+      // );
+      // return;
     }
 
     _pageController.animateToPage(
@@ -180,6 +221,17 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
 
     _animationController.reset();
     _startAutoScroll();
+  }
+
+  void _onLongPress(bool isPressed) {
+    setState(() {
+      _isPaused = isPressed;
+    });
+    if (isPressed) {
+      _animationController.stop();
+    } else {
+      _animationController.forward();
+    }
   }
 
   Widget _buildStoryImage(String imageUrl) {
@@ -231,14 +283,14 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
           onTapUp: (details) {
             final tapPosition = details.localPosition.dx;
             final halfWidth = MediaQuery.of(context).size.width / 2;
-            if (tapPosition < halfWidth) {
-              _previousStory();
-            } else {
-              _moveToNextStory();
-            }
+            // if (tapPosition < halfWidth) {
+            //   _previousStory();
+            // } else {
+            //   _moveToNextStory();
+            // }
           },
-          onLongPressStart: (_) => _isPaused = true,
-          onLongPressEnd: (_) => _isPaused = false,
+          onLongPressStart: (_) => _onLongPress(true),
+          onLongPressEnd: (_) => _onLongPress(false),
           child: Stack(
             children: [
               PageView.builder(
@@ -389,12 +441,20 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                         if (!mounted) return;
 
                         final currentStoryIndex = _currentStoryIndex;
+
+                        // Ensure lists have enough elements
+                        while (isLiked.length <= currentStoryIndex) {
+                          isLiked.add(false);
+                        }
+                        while (wowCounts.length <= currentStoryIndex) {
+                          wowCounts.add("0");
+                        }
+
                         final wasLiked = isLiked[currentStoryIndex] ?? false;
                         final currentWowCount =
-                            int.parse(wowCounts[currentStoryIndex]);
+                            int.tryParse(wowCounts[currentStoryIndex]) ?? 0;
 
                         setState(() {
-                          _isLoading = true;
                           isLiked[currentStoryIndex] = !wasLiked;
                           wowCounts[currentStoryIndex] = (wasLiked
                                   ? currentWowCount - 1
@@ -404,17 +464,25 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                         });
 
                         try {
-                          // Handle API call here
-                          await ref.read(
-                              postStoryWowProvider(widget.productid).future);
+                          final currentPostId =
+                              storyId?[currentStoryIndex] ?? '';
+
+                          await ref
+                              .read(postStoryWowProvider(currentPostId).future);
                           ref.invalidate(postStoryWowProvider);
                         } catch (e) {
+                          print('Error: $e');
+
                           if (mounted) {
                             setState(() {
                               isLiked[currentStoryIndex] = wasLiked;
                               wowCounts[currentStoryIndex] =
                                   currentWowCount.toString();
                             });
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error liking post: $e')),
+                            );
                           }
                         } finally {
                           if (mounted) {
@@ -482,6 +550,12 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                                   onTap: () {
                                     setState(() {
                                       _showdialog = !_showdialog;
+                                      if (_showdialog) {
+                                        _animationController
+                                            .stop(); // Pause animation when dialog is shown
+                                      } else {
+                                        _startAutoScroll(); // Resume animation when dialog is dismissed
+                                      }
                                     });
                                   },
                                   child: const Icon(Icons.error)),
@@ -510,81 +584,91 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                   bottom: 120,
                   child: AnimatedContainer(
                     duration: const Duration(seconds: 2),
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      elevation: 2,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 10.h,
-                        ),
-                        width: 300.w,
-                        height: 110.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  widget
-                                      .author, // Use widget.author instead of undefined title
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15.sp,
-                                    color: Colors.black,
+                    child: WillPopScope(
+                      onWillPop: () async {
+                        setState(() {
+                          _showdialog = false;
+                          _isInModal = false;
+                          _startAutoScroll();
+                        });
+                        return true;
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 2,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 10.h,
+                          ),
+                          width: 300.w,
+                          height: 110.h,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    widget
+                                        .author, // Use widget.author instead of undefined title
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15.sp,
+                                      color: Colors.black,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(width: 10.w),
-                                const Icon(Icons.arrow_outward),
-                              ],
-                            ),
-                            SizedBox(height: 15.h),
-                            Text(
-                              _currentStoryIndex < title.length
-                                  ? title[_currentStoryIndex]
-                                  : '', // Use descriptions array instead of undefined description
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: Colors.black,
+                                  SizedBox(width: 10.w),
+                                  const Icon(Icons.arrow_outward),
+                                ],
                               ),
-                            ),
-                            SizedBox(height: 10.h),
-                            Row(
-                              children: [
-                                Text(
-                                  _currentStoryIndex < prices.length
-                                      ? prices[_currentStoryIndex]
-                                      : '', // Use prices array instead of undefined price
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
+                              SizedBox(height: 15.h),
+                              Text(
+                                _currentStoryIndex < title.length
+                                    ? title[_currentStoryIndex]
+                                    : '', // Use descriptions array instead of undefined description
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Colors.black,
                                 ),
-                                SizedBox(width: 10.w),
-                                Text(
-                                  _currentStoryIndex < discountedPrices.length
-                                      ? discountedPrices[_currentStoryIndex]
-                                      : '', // Use discountedPrices array instead of undefined discountprice
-                                  style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                    color: Colors.black,
+                              ),
+                              SizedBox(height: 10.h),
+                              Row(
+                                children: [
+                                  Text(
+                                    _currentStoryIndex < prices.length
+                                        ? prices[_currentStoryIndex]
+                                        : '', // Use prices array instead of undefined price
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    _currentStoryIndex < discountedPrices.length
+                                        ? discountedPrices[_currentStoryIndex]
+                                        : '', // Use discountedPrices array instead of undefined discountprice
+                                    style: TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -405,7 +405,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Flexible(
+                            SizedBox(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -422,7 +422,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                                         widget.vendorName!),
                                           ));
                                     },
-                                    child: Flexible(
+                                    child: SizedBox(
                                       child: Text(
                                         widget.vendorName ?? 'N/A',
                                         style: TextStyle(

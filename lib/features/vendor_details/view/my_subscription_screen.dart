@@ -430,6 +430,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         pinned: true,
                         floating: true,
                         delegate: StickyHeaderDelegate(
+                          showbackbutton: true,
                             visible: isSliverAppBarVisible,
                             searchController: _searchController,
                             onchanged: (value) {},

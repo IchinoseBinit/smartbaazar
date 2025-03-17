@@ -45,18 +45,18 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
   late AnimationController _animationController;
   late List<List<String>>? description;
   late List<List<String>>? title;
-  late List<List<String>> price;
-  late List<List<String>>? discountprice;
-  late List<List<String>>? wowcount;
-  late List<List<int>>? commentcount;
-  late List<List<int>>? similarProductCount;
-  late List<List<String>>? storyId;
+  late List<List<dynamic>> price;
+  late List<List<dynamic>>? discountprice;
+  late List<List<dynamic>>? wowcount;
+  late List<List<dynamic>>? commentcount;
+  late List<List<dynamic>>? similarProductCount;
+  late List<List<dynamic>>? storyId;
 
-  late List<List<int>>? avgratingcount;
+  late List<List<dynamic>>? avgratingcount;
 
-  late List<double>? discountpercentagelist;
+  late List<dynamic>? discountpercentagelist;
   late List<List<bool?>> _isLiked;
-
+  bool _isInModal = false;
   final duration = const Duration(seconds: 4);
   bool _isPaused = false;
   int _currentVendorIndex = 0;
@@ -168,6 +168,10 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     _animationController = AnimationController(vsync: this, duration: duration);
 
     _animationController.addStatusListener((status) {
+      if (_showdialog) {
+        _animationController.stop();
+        return;
+      }
       if (status == AnimationStatus.completed && !_isPaused) {
         _moveToNextVendor();
       }
@@ -231,52 +235,45 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
   }
 
   void _startAutoScroll() {
-    if (!_isPaused) {
+    if (!_isPaused && !_isInModal && !_showdialog) {
       _animationController.reset();
       _animationController.forward();
     }
   }
 
   void _moveToNextVendor() {
+    if (_isInModal) return;
+
     setState(() {
       if (_showdialog) _showdialog = !_showdialog;
 
-      // Ensure _currentVendorIndex is within bounds
       if (_currentVendorIndex >= vendorStories.length) {
         print("Error: _currentVendorIndex out of range");
         _currentVendorIndex = vendorStories.length - 1;
         return;
       }
 
-      // Ensure _currentStoryIndex is within bounds
       if (_currentStoryIndex >= vendorStories[_currentVendorIndex].length) {
         print("Error: _currentStoryIndex out of range");
         _currentStoryIndex = 0;
         return;
       }
 
-      // Check if there are more stories in the current vendor
       if (_currentStoryIndex < vendorStories[_currentVendorIndex].length - 1) {
         _currentStoryIndex++;
-      }
-      // Move to the next vendor if there are no more stories
-      else if (_currentVendorIndex < vendorStories.length - 1) {
+      } else if (_currentVendorIndex < vendorStories.length - 1) {
         _currentVendorIndex++;
-
-        // If the new vendor has no stories, find the next valid one
         while (_currentVendorIndex < vendorStories.length &&
             vendorStories[_currentVendorIndex].isEmpty) {
           _currentVendorIndex++;
         }
-
         _currentStoryIndex = 0;
       } else {
-        Navigator.pop(context); // Exit if it's the last story
+        Navigator.pop(context);
         return;
       }
     });
 
-    // Recalculate the new page index
     int totalStoriesBeforeCurrent = 0;
     for (int i = 0; i < _currentVendorIndex; i++) {
       totalStoriesBeforeCurrent += vendorStories[i].length;
@@ -358,36 +355,63 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
   }
 
   void _shareImage(String imageUrl, String bio) {
-    if (imageUrl.isNotEmpty) {
-      Share.share("It's about $bio\n : $imageUrl", subject: bio);
-    } else {
-      print("No image URL provided.");
-    }
+    setState(() {
+      _isInModal = true;
+      _animationController.stop();
+    });
+
+    Share.share("It's about $bio\n : $imageUrl", subject: bio).then((_) {
+      if (mounted) {
+        setState(() {
+          _isInModal = false;
+          _startAutoScroll();
+        });
+      }
+    });
   }
 
   void _showCommentSection(BuildContext context, String feedproductid) {
+    setState(() {
+      _isInModal = true;
+      _animationController.stop();
+    });
+
     showModalBottomSheet(
-        useRootNavigator: true,
-        useSafeArea: true,
-        context: context,
-        isScrollControlled: true, // Allows full-screen modal
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        builder: (_) {
-          return LayoutBuilder(
+      useRootNavigator: true,
+      useSafeArea: true,
+      context: context,
+      isScrollControlled: true,
+      builder: (_) {
+        return WillPopScope(
+          onWillPop: () async {
+            setState(() {
+              _isInModal = false;
+              _startAutoScroll();
+            });
+            return true;
+          },
+          child: LayoutBuilder(
             builder: (context, _) {
               return AnimatedContainer(
                 padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
                 duration: const Duration(milliseconds: 150),
-                height:
-                    MediaQuery.of(context).size.height, // Full screen height
+                height: MediaQuery.of(context).size.height,
                 child: CommentSection(id: feedproductid),
               );
             },
-          );
+          ),
+        );
+      },
+    ).then((_) {
+      if (mounted) {
+        setState(() {
+          _isInModal = false;
+          _startAutoScroll();
         });
+      }
+    });
   }
 
   @override
@@ -476,32 +500,37 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                         top: 38,
                         left: 12,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                shape: BoxShape.circle,
-                              ),
-                              child: CircleAvatar(
-                                radius: 28.r,
-                                backgroundColor: Colors.black,
-                                backgroundImage:
-                                    (_currentVendorIndex < vendorImage.length)
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: 28.r,
+                                    backgroundColor: Colors.black,
+                                    backgroundImage: (_currentVendorIndex <
+                                            vendorImage.length)
                                         ? NetworkImage(
                                             vendorImage[_currentVendorIndex])
                                         : null,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              (_currentVendorIndex < vendors.length)
-                                  ? vendors[_currentVendorIndex]
-                                  : '',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  (_currentVendorIndex < vendors.length)
+                                      ? vendors[_currentVendorIndex]
+                                      : '',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               width: 170.w,
@@ -784,6 +813,12 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                                   onTap: () {
                                     setState(() {
                                       _showdialog = !_showdialog;
+                                      if (_showdialog) {
+                                        _animationController
+                                            .stop(); // Pause animation when dialog is shown
+                                      } else {
+                                        _startAutoScroll(); // Resume animation when dialog is dismissed
+                                      }
                                     });
                                   },
                                   child: const Icon(Icons.error)),
@@ -806,96 +841,110 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                   ],
                 ),
               ),
+              //show info
               if (_showdialog)
                 Positioned(
                   right: 30,
                   bottom: 120,
                   child: AnimatedContainer(
                     duration: const Duration(seconds: 2),
-                    child: Card(
-                      clipBehavior: Clip.antiAlias,
-                      elevation: 2,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 10.h,
-                        ),
-                        width: 300.w,
-                        height: 110.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  (_currentVendorIndex < vendorStories.length &&
-                                          _currentStoryIndex <
-                                              vendorStories[_currentVendorIndex]
-                                                  .length &&
-                                          title != null &&
-                                          title!.isNotEmpty)
-                                      ? (title![_currentVendorIndex]
-                                                      [_currentStoryIndex]
-                                                  .length >
-                                              15
-                                          ? '${title![_currentVendorIndex][_currentStoryIndex].substring(0, 15)}...'
-                                          : title![_currentVendorIndex]
-                                              [_currentStoryIndex])
-                                      : '',
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
-                                    color: Colors.black,
+                    child: WillPopScope(
+                      onWillPop: () async {
+                        setState(() {
+                          _showdialog = false;
+                          _isInModal = false;
+                          _startAutoScroll();
+                        });
+                        return true;
+                      },
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 2,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 10.h,
+                          ),
+                          width: 300.w,
+                          height: 110.h,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    (_currentVendorIndex <
+                                                vendorStories.length &&
+                                            _currentStoryIndex <
+                                                vendorStories[
+                                                        _currentVendorIndex]
+                                                    .length &&
+                                            title != null &&
+                                            title!.isNotEmpty)
+                                        ? (title![_currentVendorIndex]
+                                                        [_currentStoryIndex]
+                                                    .length >
+                                                15
+                                            ? '${title![_currentVendorIndex][_currentStoryIndex].substring(0, 15)}...'
+                                            : title![_currentVendorIndex]
+                                                [_currentStoryIndex])
+                                        : '',
+                                    style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 10.w),
-                                const Icon(Icons.arrow_outward),
-                              ],
-                            ),
-                            SizedBox(height: 15.h),
-                            Text(
-                              (description![_currentVendorIndex]
-                                      [_currentStoryIndex])
-                                  .replaceAll(RegExp(r'<[^>]*>'), ''),
-                              style: headerstyle.copyWith(
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: Colors.black,
+                                  SizedBox(width: 10.w),
+                                  const Icon(Icons.arrow_outward),
+                                ],
                               ),
-                            ),
-                            SizedBox(height: 10.h),
-                            Row(
-                              children: [
-                                Text(
-                                  price[_currentVendorIndex][_currentStoryIndex]
-                                      .toString(),
-                                  style: headerstyle.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
+                              SizedBox(height: 15.h),
+                              Text(
+                                (description![_currentVendorIndex]
+                                        [_currentStoryIndex])
+                                    .replaceAll(RegExp(r'<[^>]*>'), ''),
+                                style: headerstyle.copyWith(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: Colors.black,
                                 ),
-                                SizedBox(width: 10.w),
-                                Text(
-                                  discountprice?[_currentVendorIndex]
-                                          [_currentStoryIndex] ??
-                                      '0',
-                                  style: headerstyle.copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                    color: Colors.black,
+                              ),
+                              SizedBox(height: 10.h),
+                              Row(
+                                children: [
+                                  Text(
+                                    price[_currentVendorIndex]
+                                            [_currentStoryIndex]
+                                        .toString(),
+                                    style: headerstyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    discountprice?[_currentVendorIndex]
+                                            [_currentStoryIndex] ??
+                                        '0',
+                                    style: headerstyle.copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
