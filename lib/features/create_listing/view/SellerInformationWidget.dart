@@ -717,14 +717,10 @@ class _SellerInformationWidgetState
                     if (widget.category != null &&
                         widget.title != null &&
                         widget.city != null &&
-                        widget.description != null &&
                         widget.phonecoontroller?.text.isNotEmpty == true &&
-                        widget.terms != null) {
-                      if (widget.description!.length < 10) {
-                        showCustomToast(context,
-                            'Description should be more than 10 characters');
-                      }
-
+                        widget.terms != null &&
+                        selectedImages.length>0
+                        ) {
                       setState(() {
                         isloading = true; // Start loading
                       });
@@ -736,7 +732,6 @@ class _SellerInformationWidgetState
                               context, '50', true);
                           if (success) {
                             responseMessage = await createlisting(
-                              
                               trending: widget.trending,
                               package: _selectedpackage,
                               pieces: widget.pieces,
@@ -760,15 +755,15 @@ class _SellerInformationWidgetState
                               email: widget.emailcontroller!.text.trim(),
                               phone: widget.phonecoontroller!.text.trim(),
                               username: widget.nameconroller!.text.trim(),
-                              pickup: selectedpickup!.description!,
+                              pickup: selectedpickup?.description ?? '',
                               images: selectedImages,
                               accept: widget.terms?.trim() ?? '0',
                               address: widget.address!,
                               offer: widget.offer?.offers.trim(),
                               story: widget.story?.toString().trim(),
                               youtube: widget.youtube?.trim(),
-                              lat: selectedpickup!.latitude,
-                              long: selectedpickup!.longitude,
+                              lat: selectedpickup?.latitude,
+                              long: selectedpickup?.longitude,
                             );
                           } else {
                             // If payment fails, stop here
@@ -803,16 +798,16 @@ class _SellerInformationWidgetState
                             email: widget.emailcontroller!.text.trim(),
                             phone: widget.phonecoontroller!.text.trim(),
                             username: widget.nameconroller!.text.trim(),
-                            pickup: selectedpickup!.description!,
+                            pickup: selectedpickup?.description?? '',
                             images: selectedImages,
                             accept: widget.terms?.trim() ?? '0',
                             address: widget.address!,
                             offer: widget.offer?.offers.trim(),
                             story: widget.story?.toString().trim(),
                             youtube: widget.youtube?.trim(),
-                            lat: selectedpickup!.latitude,
-                            long: selectedpickup!.longitude,
-                          );
+                            lat: selectedpickup?.latitude,
+                            long: selectedpickup?.longitude,
+                          ); 
                         }
 
                         // Stop loading and show response dialog
@@ -851,6 +846,7 @@ class _SellerInformationWidgetState
                         setState(() {
                           isloading = false;
                         });
+                        print('object');
 
                         // Show error dialog
                         await showDialog(

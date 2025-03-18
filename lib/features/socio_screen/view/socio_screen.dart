@@ -122,7 +122,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'label': 'Everything',
       'screen': const HomeScreen()
     },
-        {
+    {
       'icon': 'assets/icon/openCartIcon.svg',
       'label': 'SocioShop',
       'screen': const SocioShopScreen()
@@ -142,7 +142,6 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       'label': 'Brandbazaar',
       'screen': const BrandBazarScreen()
     },
-
     {
       'icon': 'assets/icon/box.svg',
       'label': 'ServiceHub',
@@ -167,7 +166,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
   @override
   void initState() {
-      dynamictabController = TabController(length: 3, vsync: this);
+    dynamictabController = TabController(length: 3, vsync: this);
     dynamictabController.addListener(() {
       setState(() {});
     });
@@ -211,6 +210,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
       });
     });
   }
+
   late TabController dynamictabController;
 
   void _handleScroll() {
@@ -259,7 +259,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
     _debouncer.close();
     _searchController.dispose();
     super.dispose();
-        dynamictabController.dispose();
+    dynamictabController.dispose();
 
     _scrollController.dispose();
   }
@@ -356,7 +356,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                     pinned: true,
                     floating: true,
                     delegate: StickyHeaderDelegate(
-                      showbackbutton: true,
+                        showbackbutton: true,
                         visible: isSliverAppBarVisible,
                         searchController: _searchController,
                         onchanged: (value) {
@@ -365,7 +365,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         dropdownValueNotifier: dropdownValueNotifier,
                         filteredSuggestions: [])),
                 if (isSliverAppBarVisible)
-                      SliverAppBar(
+                  SliverAppBar(
                       automaticallyImplyLeading: false,
                       expandedHeight: 150.h,
                       floating: false,
@@ -395,40 +395,40 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(right: 20.w),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: List.generate(4, (index) {
+                              //       return GestureDetector(
+                              //         onTap: () {
+                              //           ref
+                              //               .read(
+                              //                   _selectedIndexProvider.notifier)
+                              //               .state = index;
+                              //           _pageController.animateToPage(
+                              //             index,
+                              //             duration:
+                              //                 const Duration(milliseconds: 50),
+                              //             curve: Curves.easeInOut,
+                              //           );
+                              //         },
+                              //         child: Container(
+                              //           height: 5.h,
+                              //           width: 5.w,
+                              //           margin: EdgeInsets.symmetric(
+                              //               horizontal: 5.w),
+                              //           decoration: BoxDecoration(
+                              //             color: selectedIndex == index
+                              //                 ? Colors.amber
+                              //                 : Colors.grey,
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     }),
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 15.h,
                               ),
@@ -582,7 +582,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                   itemBuilder: (context, index) {
                                     final story = posts[index];
                                     return FeedStoryAddWidget(
-                                       productid: story.id!,
+                                      productid: story.id!,
                                       index: index,
                                       vendorName:
                                           story.vendorName ?? "Unknown Vendor",
@@ -2062,20 +2062,20 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                             dynamicHeight = data.insidearr.isEmpty ||
                                     data.brandbazar_global!.isEmpty
                                 ? 150
-                                : 490;
+                                : 600;
                           } else if (dynamictabController.index == 1) {
                             // Ensure data.doma[0] is valid and has length
                             dynamicHeight = data.insidearr.isEmpty ||
                                     data.brandbazar_domestic!.isEmpty
                                 ? 150
-                                : 490;
+                                : 600;
                           } else if (dynamictabController.index == 2)
                             dynamicHeight = data.insidearr.isEmpty ||
                                     data.spotlights!.isEmpty
                                 ? 150
-                                : 490;
+                                : 600;
                           else
-                            dynamicHeight = 490;
+                            dynamicHeight = 600;
                           return SizedBox(
                             height: dynamicHeight,
                             width: double.infinity,
@@ -2699,9 +2699,9 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                 Buynowmodel resp = data.buynow![index];
 
                                 return buyorwin_widget(
-                                   ref: ref,
-                                  postid: resp.post_id!,
-                                  vendorid: resp.vendor_id!,
+                                    ref: ref,
+                                    postid: resp.post_id!,
+                                    vendorid: resp.vendor_id!,
                                     wow: resp.wow ?? '0',
                                     gift_qty: resp.gift_qty!,
                                     worth: resp.worth!,
@@ -2860,7 +2860,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
 
                                     // Calculate height dynamically
                                     double calculatedHeight =
-                                        products.isNotEmpty ? 380.h : 60.h;
+                                        products.isNotEmpty ? 500.h : 60.h;
 
                                     return AnimatedContainer(
                                       alignment: Alignment.topLeft,
@@ -3045,7 +3045,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                         ),
                       ),
                       SizedBox(
-                        height: 25.h,
+                        height: 5.h,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 5, bottom: 5),
@@ -3053,7 +3053,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'All Products',
+                              ' All Products',
                               style: headerstyle.copyWith(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17,
@@ -3087,8 +3087,7 @@ class _SocioShopScreenState extends ConsumerState<SocioShopScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
-                                       id: int.tryParse(res.user.id),
-
+                                      id: int.tryParse(res.user.id),
                                       ref: ref,
                                       onenquiredclicked: () {
                                         getEnquire(ref, res.id).then(
@@ -3514,7 +3513,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MembershSellip",
                                             style: headerstyle.copyWith(
                                               fontSize: 9,
                                               fontWeight: FontWeight.w700,

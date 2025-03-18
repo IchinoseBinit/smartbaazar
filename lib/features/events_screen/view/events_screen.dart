@@ -368,40 +368,40 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(4, (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                          _pageController.animateToPage(
-                                            index,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          decoration: BoxDecoration(
-                                            color: selectedIndex == index
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.only(right: 20.w),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: List.generate(4, (index) {
+                                //       return GestureDetector(
+                                //         onTap: () {
+                                //           ref
+                                //               .read(_selectedIndexProvider
+                                //                   .notifier)
+                                //               .state = index;
+                                //           _pageController.animateToPage(
+                                //             index,
+                                //             duration: const Duration(
+                                //                 milliseconds: 50),
+                                //             curve: Curves.easeInOut,
+                                //           );
+                                //         },
+                                //         child: Container(
+                                //           height: 5.h,
+                                //           width: 5.w,
+                                //           margin: EdgeInsets.symmetric(
+                                //               horizontal: 5.w),
+                                //           decoration: BoxDecoration(
+                                //             color: selectedIndex == index
+                                //                 ? Colors.amber
+                                //                 : Colors.grey,
+                                //             shape: BoxShape.circle,
+                                //           ),
+                                //         ),
+                                //       );
+                                //     }),
+                                //   ),
+                                // ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -1910,18 +1910,18 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[0].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             } else if (dynamictabController.index == 1) {
                               // Ensure data.doma[0] is valid and has length
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[1].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             } else if (dynamictabController.index == 2)
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[2].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             else
                               dynamicHeight = 300;
                             return SizedBox(
@@ -2975,7 +2975,18 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             },
                           ),
                         ),
-                        Padding(
+                      
+
+                        
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                         Padding(
                           padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2993,126 +3004,136 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         SizedBox(
                           height: 5.h,
                         ),
-
                         asyncbajarValue.when(
                           data: (data) {
-                            return SizedBox(
-                              width: double.infinity,
-                              child: AnimatedContainer(
-                                padding: EdgeInsets.zero,
-                                margin: EdgeInsets.zero,
-                                duration: const Duration(milliseconds: 400),
-                                height: 350.h,
-                                child: SingleChildScrollView(
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: AnimatedContainer(
                                   padding: EdgeInsets.zero,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Wrap(
-                                    spacing:
-                                        0.w, // Horizontal spacing between items
-                                    runSpacing:
-                                        0.h, // Vertical spacing between rows
-                                    children: List.generate(
-                                        data.hotProducts.length, (index) {
-                                      VProduct hot = data.hotProducts[index];
-                                      return ProductDetailWidget(
-                                        onenquiredclicked: () {
-                                          getEnquire(ref, hot.id).then(
-                                            (value) {
-                                              value.data?.enquire == 0
-                                                  ? showModalBottomSheet(
-                                                      useSafeArea: true,
-                                                      isScrollControlled: true,
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.8, // Use 80% of the screen height
+                                  margin: EdgeInsets.zero,
+                                  duration: const Duration(milliseconds: 400),
+                                  height: 350.h,
+                                  child: SingleChildScrollView(
+                                    padding: EdgeInsets.zero,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Wrap(
+                                      spacing: 0
+                                          .w, // Horizontal spacing between items
+                                      runSpacing:
+                                          0.h, // Vertical spacing between rows
+                                      children: List.generate(
+                                          data.hotProducts.length, (index) {
+                                        VProduct hot = data.hotProducts[index];
+                                        return ProductDetailWidget(
+                                          onenquiredclicked: () {
+                                            getEnquire(ref, hot.id).then(
+                                              (value) {
+                                                value.data?.enquire == 0
+                                                    ? showModalBottomSheet(
+                                                        useSafeArea: true,
+                                                        isScrollControlled:
+                                                            true,
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height *
+                                                                0.8, // Use 80% of the screen height
 
-                                                          child:
-                                                              SendMessageBottomWidget(
-                                                            ref: ref,
-                                                            productidid: hot.id,
-                                                          ),
-                                                        );
-                                                      },
-                                                    )
-                                                  : navigateToPage(
-                                                      context: context,
-                                                      page: ChatScreen(
-                                                          threadId: value.data!
-                                                              .thread!.id!,
-                                                          username: value.data!
-                                                              .thread!.subject!,
-                                                          postId: value
-                                                              .data!
-                                                              .thread!
-                                                              .post_id!),
-                                                      ref: ref,
-                                                      showNavBar:
-                                                          false, // Hide bottom navbar
-                                                    );
-                                              // if ()
+                                                            child:
+                                                                SendMessageBottomWidget(
+                                                              ref: ref,
+                                                              productidid:
+                                                                  hot.id,
+                                                            ),
+                                                          );
+                                                        },
+                                                      )
+                                                    : navigateToPage(
+                                                        context: context,
+                                                        page: ChatScreen(
+                                                            threadId: value
+                                                                .data!
+                                                                .thread!
+                                                                .id!,
+                                                            username: value
+                                                                .data!
+                                                                .thread!
+                                                                .subject!,
+                                                            postId: value
+                                                                .data!
+                                                                .thread!
+                                                                .post_id!),
+                                                        ref: ref,
+                                                        showNavBar:
+                                                            false, // Hide bottom navbar
+                                                      );
+                                                // if ()
 
-                                              // SendMessageBottomWidget(
-                                              //     ref: ref,
-                                              //     productidid:
-                                              //         prod.id);
-                                            },
-                                          ).catchError((error) {
-                                            print('Error: $error');
-                                          });
-                                        },
-                                        savedid: hot.savedByLoggedUser ==
-                                                    null ||
-                                                hot.savedByLoggedUser!.isEmpty
-                                            ? []
-                                            : hot.savedByLoggedUser
-                                                ?.map(
-                                                  (e) => SavedPost(
-                                                      id: e.id,
-                                                      userId: e.userId,
-                                                      postId: e.postId,
-                                                      createdAt: e.createdAt,
-                                                      updatedAt: e.updatedAt),
-                                                )
-                                                .toList(),
-                                        onRefresh: () {
-                                          refresh();
-                                        },
-                                        lat: hot.user.latitude,
-                                        long: hot.user.longitude,
-                                        productid: hot.id,
-                                        vendorid: hot.user.id,
-                                        posttype: hot.post_type_id,
-                                        shortestDistance:
-                                            hot.user.shortestDistance,
-                                        membershipid: hot.user.membership_id,
-                                        avg_rating: hot.avg_rating?.toDouble(),
-                                        didcountpercentage:
-                                            hot.discount_percentage,
-                                        offer: hot.offers,
-                                        wow: hot.wow,
-                                        comment: hot.commentcount.toString(),
-                                        discounttedPrice: hot.discounted_price,
-                                        issponsored: hot.user.sponsored,
-                                        lefttile: "Socio-Shop",
-                                        productImage: hot.image,
-                                        Vimage: hot.user.photo,
-                                        price: hot.price,
-                                        title: hot.title,
-                                        vendorname: hot.user.name,
-                                        similarproductCount:
-                                            hot.similarProductCount,
-                                        membershipColor:
-                                            hot.user.membershipColor,
-                                        membershipTitle:
-                                            hot.user.membershipTitle,
-                                      );
-                                    }),
+                                                // SendMessageBottomWidget(
+                                                //     ref: ref,
+                                                //     productidid:
+                                                //         prod.id);
+                                              },
+                                            ).catchError((error) {
+                                              print('Error: $error');
+                                            });
+                                          },
+                                          savedid: hot.savedByLoggedUser ==
+                                                      null ||
+                                                  hot.savedByLoggedUser!.isEmpty
+                                              ? []
+                                              : hot.savedByLoggedUser
+                                                  ?.map(
+                                                    (e) => SavedPost(
+                                                        id: e.id,
+                                                        userId: e.userId,
+                                                        postId: e.postId,
+                                                        createdAt: e.createdAt,
+                                                        updatedAt: e.updatedAt),
+                                                  )
+                                                  .toList(),
+                                          onRefresh: () {
+                                            refresh();
+                                          },
+                                          lat: hot.user.latitude,
+                                          long: hot.user.longitude,
+                                          productid: hot.id,
+                                          vendorid: hot.user.id,
+                                          posttype: hot.post_type_id,
+                                          shortestDistance:
+                                              hot.user.shortestDistance,
+                                          membershipid: hot.user.membership_id,
+                                          avg_rating:
+                                              hot.avg_rating?.toDouble(),
+                                          didcountpercentage:
+                                              hot.discount_percentage,
+                                          offer: hot.offers,
+                                          wow: hot.wow,
+                                          comment: hot.commentcount.toString(),
+                                          discounttedPrice:
+                                              hot.discounted_price,
+                                          issponsored: hot.user.sponsored,
+                                          lefttile: "Socio-Shop",
+                                          productImage: hot.image,
+                                          Vimage: hot.user.photo,
+                                          price: hot.price,
+                                          title: hot.title,
+                                          vendorname: hot.user.name,
+                                          similarproductCount:
+                                              hot.similarProductCount,
+                                          membershipColor:
+                                              hot.user.membershipColor,
+                                          membershipTitle:
+                                              hot.user.membershipTitle,
+                                        );
+                                      }),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -3144,15 +3165,10 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                           ),
                         ),
                         SizedBox(
-                          height: 50.h,
+                          height: 40.h,
                         ),
-                      ],
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 30.h,
-                    ),
+                      ]
+                    )
                   )
                 ],
               ),
@@ -3428,7 +3444,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MembSellership",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

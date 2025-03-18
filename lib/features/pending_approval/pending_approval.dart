@@ -1191,7 +1191,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "Sell",
                                             style: headerstyle.copyWith(
                                               fontSize: 9,
                                               fontWeight: FontWeight.w700,

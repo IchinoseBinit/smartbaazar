@@ -824,96 +824,95 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                                     context, _finalPrice!, true);
                                 if (success["success"])
                                   await buynowsubmit(
-                                    ref,
-                                    '715216549', // cityCode
-                                    widget.name, // username 9810443212
-                                    widget.venoraddress, // address
-                                    widget.email, // email
-                                    double.tryParse(
-                                        widget.items.price!)!, // price
-                                    newproducttype ??
-                                        paymentmethod ??
-                                        'qr', // payMethod
-                                    widget.selectedDeliveryOption ??
-                                        'self', // delivery
-                                    widget.hyper ?? 'standard', // deliveryType
-                                    widget.selectedStreet.description, // city
-                                    widget.selectedStreet.description, // street
-                                    widget.selectedStreet.latitude, // latitude
-                                    widget
-                                        .selectedStreet.longitude, // longitude
-                                    null, // coupon
-                                    ref
-                                        .read(quantityProvider.notifier)
-                                        .state, // qty
-                                    widget.deliverychareg.data?.estimatedFare!
-                                            .toDouble() ??
-                                        0, // delCost
-                                    0.0, // couponDiscount
-                                    double.tryParse(_finalPrice!)!, // total
-                                    int.tryParse(
-                                        widget.items.id!)!, // productId
-                                    widget.items.title!, // productTitle
-                                    //from delivery
+                                          ref,
+                                          '715216549', // cityCode
+                                          widget.name, // username 9810443212
+                                          widget.venoraddress, // address
+                                          widget.email, // email
+                                          double.tryParse(
+                                              widget.items.price!)!, // price
+                                          newproducttype ??
+                                              paymentmethod ??
+                                              'qr', // payMethod
+                                          widget.selectedDeliveryOption ??
+                                              'self', // delivery
+                                          widget.hyper ??
+                                              'standard', // deliveryType
+                                          widget
+                                              .selectedStreet.description, // city
+                                          widget.selectedStreet
+                                              .description, // street
+                                          widget.selectedStreet
+                                              .latitude, // latitude
+                                          widget.selectedStreet
+                                              .longitude, // longitude
+                                          null, // coupon
+                                          ref
+                                              .read(quantityProvider.notifier)
+                                              .state, // qty
+                                          widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                                              0, // delCost
+                                          0.0, // couponDiscount
+                                          double.tryParse(
+                                              _finalPrice!)!, // total
+                                          int.tryParse(
+                                              widget.items.id!)!, // productId
+                                          widget.items.title!, // productTitle
+                                          //from delivery
 
-                                    widget.bizLoginResponseparams!.data!.token!,
-                                    widget.deliverychareg.data?.zoneId ?? '0.0',
-                                    [
-                                      widget.pickuplatitutevednor,
-                                      widget.pickuplongitutevendor
-                                    ], //pickup
-                                    [
-                                      widget.pickuplatitutevednor,
-                                      widget.pickuplongitutevendor
-                                    ], //cusomer
-                                    [
-                                      widget.pickuplatitutevednor,
-                                      widget.pickuplongitutevendor
-                                    ], //customer
-                                    [
-                                      widget.selectedStreet.latitude,
-                                      widget.selectedStreet.longitude
-                                    ], //destination
-                                    widget.deliverychareg.data?.estId ?? 0,
-                                    widget.deliverychareg.data?.estimatedFare!
-                                            .toDouble() ??
-                                        0,
-                                    widget.deliverychareg.data
-                                            ?.estimatedDistance ??
-                                        0,
-                                    double.parse(widget.deliverychareg.data
-                                                ?.estimatedDuration
-                                                ?.replaceAll(
-                                                    RegExp(r'[^0-9.]'), '') ??
-                                            '0.0') ??
-                                        0.0,
+                                          widget.bizLoginResponseparams!.data!
+                                              .token!,
+                                          widget.deliverychareg.data?.zoneId ??
+                                              '0.0',
+                                          [
+                                            widget.pickuplatitutevednor,
+                                            widget.pickuplongitutevendor
+                                          ], //pickup
+                                          [
+                                            widget.pickuplatitutevednor,
+                                            widget.pickuplongitutevendor
+                                          ], //cusomer
+                                          [
+                                            widget.pickuplatitutevednor,
+                                            widget.pickuplongitutevendor
+                                          ], //customer
+                                          [
+                                            widget.selectedStreet.latitude,
+                                            widget.selectedStreet.longitude
+                                          ], //destination
+                                          widget.deliverychareg.data?.estId ??
+                                              0,
+                                          widget.deliverychareg.data?.estimatedFare!
+                                                  .toDouble() ??
+                                              0,
+                                          widget.deliverychareg.data?.estimatedDistance ??
+                                              0,
+                                          double.parse(widget.deliverychareg.data?.estimatedDuration?.replaceAll(RegExp(r'[^0-9.]'), '') ?? '0.0') ??
+                                              0.0,
+                                          widget.venoraddress,
+                                          widget.selectedStreet.description, //m
 
-                                    widget.venoraddress,
-                                    widget.selectedStreet.description, //m
-
-                                    widget.vendorid,
-                                    "parcel",
-                                    widget.deliverychareg.data?.returnFee!
-                                            .toDouble() ??
-                                        0.0, //return fee
-                                    widget.deliverychareg.data?.cancellationFee!
-                                            .toDouble() ??
-                                        0.0,
-                                    widget.sendername,
-                                    widget.senderPhone,
-                                    widget.senderaddress,
-                                    widget.name,
-                                    widget.receiverphone,
-                                    widget.selectedStreet.description,
-                                    widget.deliverychareg.data?.fare?.first
-                                            .parcelCategoryId ??
-                                        '0',
-                                    widget.weight,
-                                    "sender",
-                                    success["id"]
-
-                                  ).whenComplete(
-                                    () { 
+                                          widget.vendorid,
+                                          "parcel",
+                                          widget.deliverychareg.data?.returnFee!.toDouble() ??
+                                              0.0, //return fee
+                                          widget.deliverychareg.data?.cancellationFee!
+                                                  .toDouble() ??
+                                              0.0,
+                                          widget.sendername,
+                                          widget.senderPhone,
+                                          widget.senderaddress,
+                                          widget.name,
+                                          widget.receiverphone,
+                                          widget.selectedStreet.description,
+                                          widget.deliverychareg.data?.fare
+                                                  ?.first.parcelCategoryId ??
+                                              '0',
+                                          widget.weight,
+                                          "sender",
+                                          success["id"])
+                                      .whenComplete(
+                                    () {
                                       successfulpayment(context);
                                     },
                                   );
@@ -929,79 +928,78 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                     );
                   } else {
                     final bool success = await buynowsubmit(
-                      ref,
-                      '715216549', // cityCode
-                      widget.name, // username
-                      widget.venoraddress, // address
-                      widget.email, // email
-                      double.tryParse(widget.items.price!)!, // price
-                      newproducttype ?? paymentmethod ?? 'qr', // payMethod
-                      widget.selectedDeliveryOption ?? 'self', // delivery
-                      widget.hyper ?? 'standard', // deliveryType
-                      widget.selectedStreet.description, // city
-                      widget.selectedStreet.description, // street
-                      widget.selectedStreet.latitude, // latitude
-                      widget.selectedStreet.longitude, // longitude
-                      null, // coupon
-                      ref.read(quantityProvider.notifier).state, // qty
-                      widget.deliverychareg.data?.estimatedFare!.toDouble() ??
-                          0, // delCost
-                      0.0, // couponDiscount
-                      double.tryParse(_finalPrice!)!, // total
-                      int.tryParse(widget.items.id!)!, // productId
-                      widget.items.title!, // productTitle
-                      //from delivery
+                        ref,
+                        '715216549', // cityCode
+                        widget.name, // username
+                        widget.venoraddress, // address
+                        widget.email, // email
+                        double.tryParse(widget.items.price!)!, // price
+                        newproducttype ?? paymentmethod ?? 'qr', // payMethod
+                        widget.selectedDeliveryOption ?? 'self', // delivery
+                        widget.hyper ?? 'standard', // deliveryType
+                        widget.selectedStreet.description, // city
+                        widget.selectedStreet.description, // street
+                        widget.selectedStreet.latitude, // latitude
+                        widget.selectedStreet.longitude, // longitude
+                        null, // coupon
+                        ref.read(quantityProvider.notifier).state, // qty
+                        widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                            0, // delCost
+                        0.0, // couponDiscount
+                        double.tryParse(_finalPrice!)!, // total
+                        int.tryParse(widget.items.id!)!, // productId
+                        widget.items.title!, // productTitle
+                        //from delivery
 
-                      widget.bizLoginResponseparams!.data!.token!,
-                      widget.deliverychareg.data?.zoneId ?? '0.0',
-                      [
-                        widget.pickuplatitutevednor,
-                        widget.pickuplongitutevendor
-                      ], //pickup
-                      [
-                        widget.pickuplatitutevednor,
-                        widget.pickuplongitutevendor
-                      ], //cusomer
-                      [
-                        widget.pickuplatitutevednor,
-                        widget.pickuplongitutevendor
-                      ], //customer
-                      [
-                        widget.selectedStreet.latitude,
-                        widget.selectedStreet.longitude
-                      ], //destination
-                      widget.deliverychareg.data?.estId ?? 0,
-                      widget.deliverychareg.data?.estimatedFare!.toDouble() ??
-                          0,
-                      widget.deliverychareg.data?.estimatedDistance ?? 0,
-                      double.parse(widget.deliverychareg.data?.estimatedDuration
-                                  ?.replaceAll(RegExp(r'[^0-9.]'), '') ??
-                              '0.0') ??
-                          0.0,
+                        widget.bizLoginResponseparams!.data!.token!,
+                        widget.deliverychareg.data?.zoneId ?? '0.0',
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //pickup
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //cusomer
+                        [
+                          widget.pickuplatitutevednor,
+                          widget.pickuplongitutevendor
+                        ], //customer
+                        [
+                          widget.selectedStreet.latitude,
+                          widget.selectedStreet.longitude
+                        ], //destination
+                        widget.deliverychareg.data?.estId ?? 0,
+                        widget.deliverychareg.data?.estimatedFare!.toDouble() ??
+                            0,
+                        widget.deliverychareg.data?.estimatedDistance ?? 0,
+                        double.parse(widget
+                                    .deliverychareg.data?.estimatedDuration
+                                    ?.replaceAll(RegExp(r'[^0-9.]'), '') ??
+                                '0.0') ??
+                            0.0,
+                        widget.venoraddress,
+                        widget.selectedStreet.description, //m
 
-                      widget.venoraddress,
-                      widget.selectedStreet.description, //m
-
-                      widget.vendorid,
-                      "parcel",
-                      widget.deliverychareg.data?.returnFee!.toDouble() ??
-                          0.0, //return fee
-                      widget.deliverychareg.data?.cancellationFee!.toDouble() ??
-                          0.0,
-                      widget.sendername,
-                      widget.senderPhone,
-                      widget.senderaddress,
-                      widget.name,
-                      widget.receiverphone,
-                      widget.selectedStreet.description,
-                      widget.deliverychareg.data?.fare?.first
-                              .parcelCategoryId ??
-                          '0',
-                      widget.weight,
-                      "sender",
-                      null
-                      
-                    );
+                        widget.vendorid,
+                        "parcel",
+                        widget.deliverychareg.data?.returnFee!.toDouble() ??
+                            0.0, //return fee
+                        widget.deliverychareg.data?.cancellationFee!
+                                .toDouble() ??
+                            0.0,
+                        widget.sendername,
+                        widget.senderPhone,
+                        widget.senderaddress,
+                        widget.name,
+                        widget.receiverphone,
+                        widget.selectedStreet.description,
+                        widget.deliverychareg.data?.fare?.first
+                                .parcelCategoryId ??
+                            '0',
+                        widget.weight,
+                        "sender",
+                        null);
                     if (success) {
                       showDialog(
                         barrierDismissible: true,
@@ -1149,21 +1147,10 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Product',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            SizedBox(
-              width: 15.w,
-            ),
-            const Spacer(),
-            Text(
-              (item.name ?? item.title ?? 'N/A').length > 30
-                  ? '${(item.name ?? item.title ?? 'N/A').substring(0, 30)}...'
-                  : item.name ?? item.title ?? 'N/A',
-            )
-          ],
+        Text(
+          item.name ?? item.title ?? 'N/A',
+          maxLines: 2, // Restrict to 2 lines
+          overflow: TextOverflow.ellipsis, // Adds "..." when text overflows
         ),
         SizedBox(height: 5.h),
         Row(

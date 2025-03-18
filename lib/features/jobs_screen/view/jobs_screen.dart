@@ -352,40 +352,40 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(4, (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                          _pageController.animateToPage(
-                                            index,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          decoration: BoxDecoration(
-                                            color: selectedIndex == index
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.only(right: 20.w),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: List.generate(4, (index) {
+                                //       return GestureDetector(
+                                //         onTap: () {
+                                //           ref
+                                //               .read(_selectedIndexProvider
+                                //                   .notifier)
+                                //               .state = index;
+                                //           _pageController.animateToPage(
+                                //             index,
+                                //             duration: const Duration(
+                                //                 milliseconds: 50),
+                                //             curve: Curves.easeInOut,
+                                //           );
+                                //         },
+                                //         child: Container(
+                                //           height: 5.h,
+                                //           width: 5.w,
+                                //           margin: EdgeInsets.symmetric(
+                                //               horizontal: 5.w),
+                                //           decoration: BoxDecoration(
+                                //             color: selectedIndex == index
+                                //                 ? Colors.amber
+                                //                 : Colors.grey,
+                                //             shape: BoxShape.circle,
+                                //           ),
+                                //         ),
+                                //       );
+                                //     }),
+                                //   ),
+                                // ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -1485,20 +1485,20 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[0].isEmpty
                                   ? 150
-                                  : 430;
+                                  : 600;
                             } else if (tabController.index == 1) {
                               // Ensure data.doma[0] is valid and has length
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[1].isEmpty
                                   ? 150
-                                  : 430;
+                                  : 600;
                             } else if (tabController.index == 2)
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[2].isEmpty
                                   ? 150
-                                  : 430;
+                                  : 600;
                             else
-                              dynamicHeight = 430;
+                              dynamicHeight = 600;
 
                             return SizedBox(
                               // Use Expanded for better layout management
@@ -2177,7 +2177,7 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               width: double.infinity,
                               height: productsList.every((list) => list.isEmpty)
                                   ? 150.h
-                                  : 420.h,
+                                  : 500.h,
                               child: ValueListenableBuilder<int>(
                                 valueListenable: selectedIndexNotifier,
                                 builder: (context, selectedIndex, child) {
@@ -2423,81 +2423,84 @@ class _JobssScreenState extends ConsumerState<JobssScreen>
                               );
                             }
 
-                            return GridView.builder(
-                              physics:
-                                  const NeverScrollableScrollPhysics(), // Disable grid scrolling
-                              shrinkWrap: true, // Adjust to fit content
-                              itemCount: data.product.length,
-
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                mainAxisExtent: 300,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 0.6,
-                                mainAxisSpacing: 0.2,
-                                childAspectRatio: 0.5,
+                            return Padding(
+                              padding:  EdgeInsets.only(left: 8.w),
+                              child: GridView.builder(
+                                physics:
+                                    const NeverScrollableScrollPhysics(), // Disable grid scrolling
+                                shrinkWrap: true, // Adjust to fit content
+                                itemCount: data.product.length,
+                              
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  mainAxisExtent: 400,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.6,
+                                  mainAxisSpacing: 0.2,
+                                  childAspectRatio: 0.5,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 5.h),
+                                    child: AllProductDetailWidget(
+                                      ref: ref,
+                                      savedid: data.product[index]
+                                                      .savedByLoggedUser ==
+                                                  null ||
+                                              data.product[index]
+                                                  .savedByLoggedUser!.isEmpty
+                                          ? []
+                                          : data.product[index].savedByLoggedUser
+                                              ?.map(
+                                                (e) => SavedPost(
+                                                    id: e.id,
+                                                    userId: e.userId,
+                                                    postId: e.postId,
+                                                    createdAt: e.createdAt,
+                                                    updatedAt: e.updatedAt),
+                                              )
+                                              .toList(),
+                                      onRefresh: () {
+                                        refresh();
+                                      },
+                                      productid:
+                                          data.product[index].post_type_id!,
+                                      long: data.product[index].user.longitude,
+                                      lat: data.product[index].user.latitude,
+                                      avg_rating: data.product[index].avg_rating
+                                          ?.toDouble(),
+                                      didcountpercentage:
+                                          data.product[index].discount_percentage,
+                                      id: int.tryParse(data.product[index].id),
+                                      offer: data.product[index].offers,
+                                      membershipid:
+                                          data.product[index].user.membership_id,
+                                      posttype: data.product[index].post_type_id,
+                                      shortestDistance: data
+                                          .product[index].user.shortestDistance,
+                                      wow: data.product[index].wow,
+                                      comment: data.product[index].commentcount
+                                          .toString(),
+                                      issponsored:
+                                          data.product[index].user.sponsored,
+                                      discounttedPrice:
+                                          data.product[index].discounted_price,
+                                      lefttile: "Jobs",
+                                      productImage: data.product[index].image,
+                                      Vimage: data.product[index].user.photo,
+                                      vendorname: data.product[index].user.name,
+                                      title: data.product[index].title,
+                                      price: data.product[index].price,
+                                      similarproductCount:
+                                          data.product[index].similarProductCount,
+                                      membershipColor: data
+                                          .product[index].user.membershipColor,
+                                      membershipTitle: data
+                                          .product[index].user.membershipTitle,
+                                    ),
+                                  );
+                                },
                               ),
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 5.h),
-                                  child: AllProductDetailWidget(
-                                    ref: ref,
-                                    savedid: data.product[index]
-                                                    .savedByLoggedUser ==
-                                                null ||
-                                            data.product[index]
-                                                .savedByLoggedUser!.isEmpty
-                                        ? []
-                                        : data.product[index].savedByLoggedUser
-                                            ?.map(
-                                              (e) => SavedPost(
-                                                  id: e.id,
-                                                  userId: e.userId,
-                                                  postId: e.postId,
-                                                  createdAt: e.createdAt,
-                                                  updatedAt: e.updatedAt),
-                                            )
-                                            .toList(),
-                                    onRefresh: () {
-                                      refresh();
-                                    },
-                                    productid:
-                                        data.product[index].post_type_id!,
-                                    long: data.product[index].user.longitude,
-                                    lat: data.product[index].user.latitude,
-                                    avg_rating: data.product[index].avg_rating
-                                        ?.toDouble(),
-                                    didcountpercentage:
-                                        data.product[index].discount_percentage,
-                                    id: int.tryParse(data.product[index].id),
-                                    offer: data.product[index].offers,
-                                    membershipid:
-                                        data.product[index].user.membership_id,
-                                    posttype: data.product[index].post_type_id,
-                                    shortestDistance: data
-                                        .product[index].user.shortestDistance,
-                                    wow: data.product[index].wow,
-                                    comment: data.product[index].commentcount
-                                        .toString(),
-                                    issponsored:
-                                        data.product[index].user.sponsored,
-                                    discounttedPrice:
-                                        data.product[index].discounted_price,
-                                    lefttile: "Jobs",
-                                    productImage: data.product[index].image,
-                                    Vimage: data.product[index].user.photo,
-                                    vendorname: data.product[index].user.name,
-                                    title: data.product[index].title,
-                                    price: data.product[index].price,
-                                    similarproductCount:
-                                        data.product[index].similarProductCount,
-                                    membershipColor: data
-                                        .product[index].user.membershipColor,
-                                    membershipTitle: data
-                                        .product[index].user.membershipTitle,
-                                  ),
-                                );
-                              },
                             );
                             // SizedBox(
                             //   height: 360.h,
@@ -2823,7 +2826,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MemSellbership",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

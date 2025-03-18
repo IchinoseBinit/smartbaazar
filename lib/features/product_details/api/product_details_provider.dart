@@ -8,8 +8,6 @@ part 'product_details_provider.g.dart';
 
 @riverpod
 Future<PostModel> productDetails(ref, String id) async {
-  // final client = Dio();
-//
 
   final SmartClient client = SmartClient();
   try {

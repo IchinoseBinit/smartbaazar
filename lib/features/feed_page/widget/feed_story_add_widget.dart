@@ -133,7 +133,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
 
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
+                      border: Border.all(color: Colors.black.withOpacity(0.5)),
                       shape: BoxShape.circle,
                     ),
                     child: CircleAvatar(

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -293,7 +294,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       try {
         final stories = await ref.watch(searchstoryapiProvider(query).future);
 
-        if (stories == null || 
+        if (stories == null ||
             stories.data == null ||
             stories.data.home_story == null) {
           throw Exception("No data available");
@@ -677,12 +678,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         radius: 38.r,
                                         backgroundColor: const Color(0x7F7F7F73)
                                             .withOpacity(0.45),
-                                      backgroundImage: SmartClient.userPhoto == ""
-    ? const AssetImage('assets/images/Smartbazaar-Icon-for-QR.png'
-    
-    ) as ImageProvider<Object>
-    : NetworkImage(SmartClient.userPhoto) as ImageProvider<Object>,
-
+                                        backgroundImage: SmartClient
+                                                    .userPhoto ==
+                                                ""
+                                            ? const AssetImage(
+                                                    'assets/images/Smartbazaar-Icon-for-QR.png')
+                                                as ImageProvider<Object>
+                                            : NetworkImage(
+                                                    SmartClient.userPhoto)
+                                                as ImageProvider<Object>,
                                       ),
                                     ),
 
@@ -694,7 +698,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       child: SizedBox(
                                         width: 100.w,
                                         child: Text(
-                                          SmartClient.userName=='' ? 'search': SmartClient.userName,
+                                          SmartClient.userName == ''
+                                              ? 'search'
+                                              : SmartClient.userName,
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w600,
@@ -743,16 +749,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     return FeedStoryAddWidget(
                                       productid: mysearchstory.id!,
                                       index: index,
-                                      vendorName: _storysearchresult[index].vendorName ??
+                                      vendorName: _storysearchresult[index]
+                                              .vendorName ??
                                           "Unknown Vendor",
-                                      vendorImage:_storysearchresult[index].vendorImage ??
+                                      vendorImage: _storysearchresult[index]
+                                              .vendorImage ??
                                           "https://example.com/default-image.png",
-                                      storyCount: _storysearchresult[index].storyCount ?? 0,
-                                      showGift: _storysearchresult[index].hasSponsoredGifts ??
+                                      storyCount: _storysearchresult[index]
+                                              .storyCount ??
+                                          0,
+                                      showGift: _storysearchresult[index]
+                                              .hasSponsoredGifts ??
                                           false,
                                       feedStoryContent: _storysearchresponse!
                                           .data.home_story!.story!,
-                                      userId: _storysearchresult[index].vendorId ?? '',
+                                      userId:
+                                          _storysearchresult[index].vendorId ??
+                                              '',
                                     );
                                   },
                                 )
@@ -948,7 +961,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
 
-                              dynamicHeight = products.isEmpty ? 120.h : 450.h;
+                              dynamicHeight = products.isEmpty ? 120.h : 570.h;
 
                               return SizedBox(
                                 height: dynamicHeight,
@@ -997,7 +1010,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         },
                                       ),
                                     ),
-                                    SizedBox(height: 5.h),
+                                    SizedBox(height: 15.h),
                                     products.isNotEmpty
                                         ? SizedBox(
                                             child: AnimatedContainer(
@@ -1008,12 +1021,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               // height: 300.h,
                                               width: double.infinity,
                                               child: SingleChildScrollView(
-                                                padding: EdgeInsets.zero,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5.w),
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 child: Wrap(
-                                                  spacing: 3.w,
-                                                  runSpacing: 0.h,
+                                                  spacing: 5.w,
+                                                  runSpacing: 5.h,
                                                   children: List.generate(
                                                       products.length, (index) {
                                                     CategoryProduct prod =
@@ -1058,6 +1072,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                     context:
                                                                         context,
                                                                     page: ChatScreen(
+                                                                        consumerref:
+                                                                            ref,
                                                                         threadId: value
                                                                             .data!
                                                                             .thread!
@@ -1234,20 +1250,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
-                                    data.insidearr[0].isEmpty ? 140.h : 470.h;
+                                    data.insidearr[0].isEmpty ? 140.h : 600.h;
                               } else if (dynamictabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = (data.doma.isNotEmpty &&
                                         data.doma[0].isNotEmpty)
-                                    ? 470.h
+                                    ? 600.h
                                     : 140.h;
                               } else if (dynamictabController.index == 2)
                                 dynamicHeight = (data.spotlight.isNotEmpty &&
                                         data.spot[0].isNotEmpty)
-                                    ? 470.h
+                                    ? 600.h
                                     : 140.h;
                               else
-                                dynamicHeight = 470;
+                                dynamicHeight = 500;
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
@@ -1487,6 +1503,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                         context:
                                                                             context,
                                                                         page: ChatScreen(
+                                                                            consumerref:
+                                                                                ref,
                                                                             threadId:
                                                                                 value.data!.thread!.id!,
                                                                             username: value.data!.thread!.subject!,
@@ -1660,6 +1678,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                   context:
                                                                       context,
                                                                   page: ChatScreen(
+                                                                      consumerref:
+                                                                          ref,
                                                                       threadId: value
                                                                           .data!
                                                                           .thread!
@@ -1813,8 +1833,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 getSponsored.when(
                                   data: (data) {
                                     return SizedBox(
-                                      height: 370
-                                          .h, // Adjust as needed for dynamic height
+                                      // height: 370
+                                      //     .h, // Adjust as needed for dynamic height
                                       child: SingleChildScrollView(
                                         padding: EdgeInsets.zero,
                                         scrollDirection: Axis
@@ -2051,6 +2071,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       : navigateToPage(
                                                           context: context,
                                                           page: ChatScreen(
+                                                              consumerref: ref,
                                                               threadId: value
                                                                   .data!
                                                                   .thread!
@@ -2317,6 +2338,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
+      //  margin: EdgeInsets.only(bottom: 3.h),
       decoration: BoxDecoration(
         borderRadius: !visible!
             ? BorderRadius.only(
@@ -2332,143 +2354,180 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
           end: Alignment.bottomRight,
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
       alignment: Alignment.center,
       child: ValueListenableBuilder<Map<String, String>?>(
         valueListenable: dropdownValueNotifier,
         builder: (context, dropdownValue, child) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              showbackbutton!
-                  ? InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back_ios_rounded,
-                          color: Colors.white, size: screenWidth * 0.05))
-                  : Image.asset(
-                      height: screenHeight * 0.05,
-                      width: screenWidth * 0.1,
-                      'assets/images/Smartbazaar-Icon-for-QR.png'),
-              SizedBox(
-                height: screenHeight * 0.06,
-                child: Row(
-                  children: [
-                    Container(
-                      height: screenHeight * 0.06,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(screenWidth * 0.05),
-                          bottomLeft: Radius.circular(screenWidth * 0.05),
-                        ),
-                      ),
-                      child: DropdownButton<Map<String, String>>(
-                        alignment: Alignment.center,
-                        value: dropdownValueNotifier.value ??
-                            headeritems[postypeid!],
-                        onChanged: (value) {
-                          dropdownValueNotifier.value = value;
+          return Padding(
+            padding: EdgeInsets.only(top: 40.h, bottom: 20),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                showbackbutton!
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
                         },
-                        items: headeritems.map((item) {
-                          return DropdownMenuItem(
-                            alignment: Alignment.center,
-                            value: item,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  alignment: Alignment.center,
-                                  item['icon']!,
-                                  height: screenHeight * 0.02,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: screenWidth * 0.02),
-                                Text(
-                                  item['label']!,
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 0.03,
-                                    fontWeight: FontWeight.w600,
+                        child: Icon(Icons.arrow_back_ios_rounded,
+                            color: Colors.white, size: screenWidth * 0.05))
+                    : Padding(
+                        padding: EdgeInsets.only(left: 6.w),
+                        child: Image.asset(
+                            height: screenHeight * 0.05,
+                            width: screenWidth * 0.1,
+                            'assets/images/Smartbazaar-Icon-for-QR.png'),
+                      ),
+                // SizedBox(
+                //   width: 3.w,
+                // ),
+                SizedBox(
+                  width: 14.w,
+                ),
+                SizedBox(
+                  height: screenHeight * 0.09,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 20.w, right: 20.w, top: 2),
+                        // width: 130.w,
+                        height: screenHeight * 0.07,
+                        // padding:
+                        //     EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(38),
+                            bottomLeft: Radius.circular(38),
+                          ),
+                        ),
+                        child: DropdownButton<Map<String, String>>(
+                          //  padding: EdgeInsets.only(),
+                          alignment: Alignment.center,
+                          value: dropdownValueNotifier.value ??
+                              headeritems[postypeid!],
+                          onChanged: (value) {
+                            dropdownValueNotifier.value = value;
+                          },
+                          items: headeritems.map((item) {
+                            return DropdownMenuItem(
+                              alignment: Alignment.center,
+                              value: item,
+                              child: Row(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    alignment: Alignment.center,
+                                    item['icon']!,
+                                    height: screenHeight * 0.02,
                                     color: Colors.white,
                                   ),
-                                ),
-                              ],
+                                  // SizedBox(width: screenWidth * 0.02),
+                                  // if(item['label'])
+                                  // Text(
+                                  //   item['label']!,
+                                  //   style: TextStyle(
+                                  //     fontSize: screenWidth * 0.03,
+                                  //     fontWeight: FontWeight.w600,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          dropdownColor:
+                              const Color(0xff665B6B).withOpacity(0.5),
+                          underline: const SizedBox(),
+                          icon: const SizedBox(),
+                        ),
+                      ),
+                      Container(
+                        width: screenWidth * 0.5,
+                        height: screenHeight * 0.07,
+                        // padding: EdgeInsets.all(screenWidth * 0.01),
+                        decoration: const BoxDecoration(color: Colors.white),
+                        child: TextField(
+                          controller: searchController,
+                          onChanged: onchanged,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            suffixIcon: searchController != null
+                                ? InkWell(
+                                    onTap: () {
+                                      searchController?.clear();
+                                    },
+                                    child: Icon(
+                                      Icons.close,
+                                      size: screenWidth * 0.05,
+                                      color: ColorConstant.grayColor,
+                                    ),
+                                  )
+                                : null,
+                            focusedBorder: InputBorder.none,
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 40,
                             ),
-                          );
-                        }).toList(),
-                        dropdownColor: const Color(0xff665B6B).withOpacity(0.5),
-                        underline: const SizedBox(),
-                        icon: const SizedBox(),
+                            prefixIcon: Padding(
+                              padding: EdgeInsets.only(top: 3.h),
+                              child: Icon(
+                                Icons.search,
+                                size: screenWidth * 0.05,
+                                color: Color(0xff8c1d54),
+                              ),
+                            ),
+                            hintText: "Marketplace",
+                            hintStyle: TextStyle(
+                              fontSize: 12,
+                              letterSpacing: 1.3,
+                              //  fontFamily: GoogleFonts.san().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff8c1d54),
+                            ),
+                            contentPadding: EdgeInsets.only(bottom: 6.h),
+                          ),
+                        ),
                       ),
-                    ),
-                    Container(
-                      width: screenWidth * 0.4,
-                      height: screenHeight * 0.06,
-                      padding: EdgeInsets.all(screenWidth * 0.01),
-                      decoration: const BoxDecoration(color: Colors.white),
-                      child: TextField(
-                        controller: searchController,
-                        onChanged: onchanged,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          prefixIcon: Icon(
+                      InkWell(
+                        onTap: () {
+                          if (searchController!.text.trim().isNotEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BusinessTabScreen(
+                                    query: searchController!.text,
+                                  ),
+                                ));
+                          }
+                        },
+                        child: Container(
+                          height: screenHeight * 0.07,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenHeight * 0.01),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(30),
+                              bottomRight: Radius.circular(30),
+                            ),
+                          ),
+                          child: Icon(
                             Icons.search,
+                            color: Colors.white,
                             size: screenWidth * 0.05,
-                            color: Color(0xffD9D9D9),
                           ),
-                          hintText: "Search Everything",
-                          hintStyle: TextStyle(
-                            fontSize: screenWidth * 0.02,
-                            color: const Color(0xffD9D9D9),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: screenHeight * 0.02,
-                              horizontal: screenWidth * 0.02),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (searchController!.text.trim().isNotEmpty) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BusinessTabScreen(
-                                  query: searchController!.text,
-                                ),
-                              ));
-                        }
-                      },
-                      child: Container(
-                        height: screenHeight * 0.06,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05,
-                            vertical: screenHeight * 0.01),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(screenWidth * 0.05),
-                            bottomRight: Radius.circular(screenWidth * 0.05),
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: screenWidth * 0.05,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -2667,7 +2726,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MemberSellship",
                                             style: headerstyle.copyWith(
                                               fontSize: 9,
                                               fontWeight: FontWeight.w700,

@@ -336,20 +336,22 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                   controller: widget._totopscrollController,
                   slivers: [
                     SliverPersistentHeader(
-                        pinned: true,
-                        floating: true,
-                        delegate: StickyHeaderDelegate(
-                            visible: isSliverAppBarVisible,
-                            searchController: _searchController,
-                            onchanged: (value) {
-                              print('value $value');
-                            },
-                            dropdownValueNotifier: dropdownValueNotifier,
-                            filteredSuggestions: [])),
+                      pinned: true,
+                      floating: true,
+                      delegate: StickyHeaderDelegate(
+                        visible: isSliverAppBarVisible,
+                        searchController: _searchController,
+                        onchanged: (value) {
+                          print('value $value');
+                        },
+                        dropdownValueNotifier: dropdownValueNotifier,
+                        filteredSuggestions: [],
+                      ),
+                    ),
                     if (isSliverAppBarVisible)
                       SliverAppBar(
                           automaticallyImplyLeading: false,
-                          expandedHeight: 150.h,
+                          expandedHeight: 170.h,
                           floating: false,
                           pinned: false,
                           flexibleSpace: AnimatedContainer(
@@ -377,41 +379,44 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(4, (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ref
-                                                .read(_selectedIndexProvider
-                                                    .notifier)
-                                                .state = index;
-                                            _pageController.animateToPage(
-                                              index,
-                                              duration: const Duration(
-                                                  milliseconds: 50),
-                                              curve: Curves.easeInOut,
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 5.h,
-                                            width: 5.w,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            decoration: BoxDecoration(
-                                              color: selectedIndex == index
-                                                  ? Colors.amber
-                                                  : Colors.grey,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
+                                  SizedBox(
+                                    height: 13.h,
                                   ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(right: 20.w),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: List.generate(4, (index) {
+                                  //       return GestureDetector(
+                                  //         onTap: () {
+                                  //           ref
+                                  //               .read(_selectedIndexProvider
+                                  //                   .notifier)
+                                  //               .state = index;
+                                  //           _pageController.animateToPage(
+                                  //             index,
+                                  //             duration: const Duration(
+                                  //                 milliseconds: 50),
+                                  //             curve: Curves.easeInOut,
+                                  //           );
+                                  //         },
+                                  //         child: Container(
+                                  //           height: 5.h,
+                                  //           width: 5.w,
+                                  //           margin: EdgeInsets.symmetric(
+                                  //               horizontal: 5.w),
+                                  //           decoration: BoxDecoration(
+                                  //             color: selectedIndex == index
+                                  //                 ? Colors.amber
+                                  //                 : Colors.grey,
+                                  //             shape: BoxShape.circle,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     }),
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     height: 15.h,
                                   ),
@@ -558,9 +563,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                             padding: EdgeInsets.zero,
                             indicatorColor: const Color(0xFF392574),
                             labelColor: Colors.black,
+                            labelStyle: TextStyle(fontWeight: FontWeight.w500),
                             unselectedLabelColor: Colors.grey,
                             tabs: const [
-                              Tab(text: "For You"),
+                              Tab(
+                                text: "For You",
+                              ),
                               Tab(text: "Following"),
                             ],
                           ),
@@ -598,7 +606,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                 valuenotifilersidebutton(
                     showSideBar: _showSideBar, isSectionsVisible: true),
                 Positioned(
-                  top: 65,
+                  top: 100.h,
                   left: 48,
                   child: Container(
                     width: MediaQuery.of(context).size.width -
@@ -628,11 +636,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                             final product = results[index];
                             return ListTile(
                               contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 7),
+                                  vertical: 7, horizontal: 20),
                               dense: true,
                               title: Text(
+                                
                                 product.name,
                                 style: headerstyle.copyWith(
+                                //  decoration: BoxDecoration(),
+                                  
+                                  fontWeight: FontWeight.w600,
                                   color: ColorConstant.blackColor,
                                   fontSize:
                                       14, // Increase font size for better readability
@@ -849,6 +861,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                   feedId: feedItem.id ?? '',
                                 ),
                                 PromoCard(
+                                  passref: ref,
                                   products: feedItem.products!
                                       .map((product) => {
                                             "imagePath": product.image ??
@@ -1014,7 +1027,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               suscribers: userDetails.subscribers.toString(),
                               vendorName: userDetails.vendorName!,
                               vendorImage: userDetails.vendorImage!,
-                              livePrize: userDetails.livePrize.toString(), 
+                              livePrize: userDetails.livePrize.toString(),
                               distance:
                                   userDetails.distance?.toStringAsFixed(0),
                               interested: interested?.interested?.toString(),
@@ -1029,12 +1042,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               //feedDetail: feedItem.feedDetail,
                             ),
                             PromoCard(
+                              passref: ref,
                               products: feedItem.products!
                                   .map((product) => {
+                                    
                                         "imagePath": product.image ??
                                             "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
                                         "price": product.price ?? "N/A",
-                                        "id": feedItem.id ?? "",
+                                        "id": product.id ?? "",
                                       })
                                   .toList(),
                               captionTitle: '${feedItem.captionTitle}',
@@ -1243,7 +1258,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MembeSrship",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

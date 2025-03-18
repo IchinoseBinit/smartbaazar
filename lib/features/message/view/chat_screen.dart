@@ -12,6 +12,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:smartbazar/constant/api_constant.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/message/api/delete_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_is_important_api.dart';
@@ -69,6 +70,7 @@ class ChatScreen extends ConsumerStatefulWidget {
   final String username;
   final String postId;
   String? imageUrl;
+  WidgetRef? consumerref;
   // final String isImportant;
 
   ChatScreen(
@@ -76,7 +78,8 @@ class ChatScreen extends ConsumerStatefulWidget {
       required this.threadId,
       required this.username,
       required this.postId,
-      this.imageUrl
+      this.imageUrl,
+      this.consumerref
       // required this.isImportant,
       });
 
@@ -379,6 +382,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                 final message = messages[index];
 
                                 return ChatMessageWidget(
+                                  passedref: widget.consumerref ?? ref,
+                                  usernmame: _messagesphotoes!.userAuth!.name!,
                                   UserPhoto: _messagesphotoes
                                           ?.userAuth?.photo ??
                                       'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
@@ -779,33 +784,31 @@ class ChatUserDetailWidget extends ConsumerWidget {
                       ),
                       SizedBox(width: 10.w),
                       InkWell(
-                        onTap: () async{
-                           try {
-                              final check = await ref.read(
-                                  makethreadreadProvider(id: threadId)
-                                      .future);
+                        onTap: () async {
+                          try {
+                            final check = await ref.read(
+                                makethreadreadProvider(id: threadId).future);
 
-                         //     print('raka $check');
+                            //     print('raka $check');
 
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  title: const Text("Message"),
-                                  content: Text(check),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop();
-                                      },
-                                      child: const Text("Okay"),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } catch (e) {
-                              print('Error: $e');
-                            }
-                         
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text("Message"),
+                                content: Text(check),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(ctx).pop();
+                                    },
+                                    child: const Text("Okay"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } catch (e) {
+                            print('Error: $e');
+                          }
                         },
                         child: Icon(
                           Icons.mail_outline,
@@ -848,12 +851,17 @@ class ChatMessageWidget extends StatelessWidget {
   final bool isUserMessage;
   final MessageData message;
   final String UserPhoto;
+  final String usernmame;
+  final WidgetRef passedref;
 
-  const ChatMessageWidget(
-      {super.key,
-      required this.isUserMessage,
-      required this.message,
-      required this.UserPhoto});
+  const ChatMessageWidget({
+    super.key,
+    required this.isUserMessage,
+    required this.message,
+    required this.UserPhoto,
+    required this.usernmame,
+    required this.passedref
+  });
 
   bool _isImageUrl(String? url) {
     print("maka $url");
@@ -959,18 +967,31 @@ class ChatMessageWidget extends StatelessWidget {
             ),
           ),
           if (isUserMessage)
-            Container(
-              margin: EdgeInsets.only(left: 0.6.w),
-              padding: EdgeInsets.all(7.w),
-              child: CircleAvatar(
-                radius: 18
-                    .w, // This makes the CircleAvatar round with equal width and height
-                backgroundImage: NetworkImage(
-                  UserPhoto ??
-                      'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
-                ),
-              ),
-            )
+         InkWell(
+          onTap: () {
+                navigateToPage(
+                      context: context,
+                      page: VendorHomeScreen(
+                        vid: int.tryParse(message.userId!)!,
+                        vendorName: usernmame,
+                      ),
+                      showNavBar: true,
+                      ref: passedref,
+                    );
+          },
+           child: Container(
+                      margin: EdgeInsets.only(left: 0.6.w),
+                      padding: EdgeInsets.all(7.w),
+                      child: CircleAvatar(
+                        radius: 18
+                            .w, // This makes the CircleAvatar round with equal width and height
+                        backgroundImage: NetworkImage(
+                          UserPhoto ??
+                              'https://smartbazaar.jianjun-rnd.com.np/uploads/gifts//default.png',
+                        ),
+                      ),
+                    ),
+         ),
         ],
       ),
     );

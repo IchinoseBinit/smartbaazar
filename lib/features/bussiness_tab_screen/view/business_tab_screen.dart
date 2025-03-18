@@ -340,40 +340,40 @@ class _BusinessTabScreenState extends ConsumerState<BusinessTabScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(right: 20.w),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: List.generate(4, (index) {
+                              //       return GestureDetector(
+                              //         onTap: () {
+                              //           ref
+                              //               .read(
+                              //                   _selectedIndexProvider.notifier)
+                              //               .state = index;
+                              //           _pageController.animateToPage(
+                              //             index,
+                              //             duration:
+                              //                 const Duration(milliseconds: 50),
+                              //             curve: Curves.easeInOut,
+                              //           );
+                              //         },
+                              //         child: Container(
+                              //           height: 5.h,
+                              //           width: 5.w,
+                              //           margin: EdgeInsets.symmetric(
+                              //               horizontal: 5.w),
+                              //           decoration: BoxDecoration(
+                              //             color: selectedIndex == index
+                              //                 ? Colors.amber
+                              //                 : Colors.grey,
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     }),
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 15.h,
                               ),
@@ -2326,7 +2326,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "Sell",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

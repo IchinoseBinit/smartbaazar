@@ -632,13 +632,15 @@ class ProductDetailScreen extends ConsumerWidget {
                                     child: Text(
                                       data.result?.title ?? '',
                                       style: TextStyle(
+                                        
                                         color: Colors.black,
                                         fontSize: 19.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
+                                      maxLines: 2,
                                       softWrap: true,
                                       overflow: TextOverflow
-                                          .visible, // Ensures all text is shown
+                                          .ellipsis, // Ensures all text is shown
                                     ),
                                   ),
                                   Container(

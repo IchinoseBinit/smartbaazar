@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed-form_screen/api/offers_dropdown_api.dart';
 import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_api.dart';
 import 'package:smartbazar/features/feed-form_screen/api/submit_feed_form.dart';
@@ -29,29 +31,29 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
   TextEditingController offersController = TextEditingController();
   bool isSubmitting = false;
   List<String> selectedIds = []; // Local list to store selected product IDs
-
-  File? imageFile;
+  List<String?> selectedValues = [null];
+  List<File> imageFiles = []; // Update to a list of images
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ChooseFileWidgetState> _imageWidgetKey =
       GlobalKey<ChooseFileWidgetState>();
 
-  void _updateImage(File? image) {
-    setState(() {
-      imageFile = image;
-    });
-  }
+  // void _updateImage(File? image) {
+  //   setState(() {
+  //     imageFile = image;
+  //   });
+  // }
 
   void submitForm() async {
     bool isFormValid = _formKey.currentState!.validate();
 
     setState(() => isSubmitting = true);
-    if (!isFormValid || imageFile == null) {
+    if (!isFormValid || imageFiles == null) {
       // If form is invalid or image is not selected
       String errorMessage = '';
       if (!isFormValid) {
         errorMessage += 'Please fill all fields. ';
       }
-      if (imageFile == null) {
+      if (imageFiles == null) {
         errorMessage += 'Please select an image.';
       }
       setState(() => isSubmitting = false); // Ensure to reset the state
@@ -73,7 +75,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
       caption,
       offersId,
       productsIds,
-      imageFile!,
+      imageFiles[0],
     ).future)
         .then((success) {
       if (success) {
@@ -85,7 +87,15 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
             content: const Text('Feed submitted successfully!'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  navigateToPage(
+          context: context,
+          page: MainScreen(),
+          ref: ref,
+          showNavBar: true, // Hide bottom navbar
+        );
+
+                },
                 child: const Text('OK'),
               ),
             ],
@@ -106,7 +116,7 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
     captionTitleController.clear();
     captionController.clear();
     offersController.clear();
-    imageFile = null;
+    imageFiles = [];
     selectProductController = [TextEditingController()];
     setState(() {});
     // _imageWidgetKey.currentState?.resetImage();
@@ -181,8 +191,11 @@ class _FeedFormScreenState extends ConsumerState<FeedFormScreen> {
                               ChooseFileWidget(
                                 key: _imageWidgetKey, // Assign the key here
                                 textColor: Colors.red,
-                                onImageSelected: _updateImage,
-                                initialImage: imageFile,
+                                onImagesSelected: (images) {
+                                  setState(() {
+                                    imageFiles = images;
+                                  });
+                                },
                               ),
                               // ChooseFile(
                               //   showbtn: false,
@@ -465,6 +478,212 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
         ElevatedButton(
           onPressed: () => Navigator.pop(context, selectedIds),
           child: const Text('OK'),
+        ),
+      ],
+    );
+  }
+}
+
+class ChooseFileWidget extends StatefulWidget {
+  final Function(List<File>) onImagesSelected;
+  final Color? textColor;
+  final List<File>? initialImages;
+
+  const ChooseFileWidget({
+    super.key,
+    required this.onImagesSelected,
+    this.textColor,
+    this.initialImages,
+  });
+
+  @override
+  State<ChooseFileWidget> createState() => ChooseFileWidgetState();
+}
+
+class ChooseFileWidgetState extends State<ChooseFileWidget> {
+  List<File> _selectedImages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedImages = widget.initialImages ?? [];
+  }
+
+  @override
+  void didUpdateWidget(covariant ChooseFileWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialImages != widget.initialImages) {
+      setState(() {
+        _selectedImages = widget.initialImages ?? [];
+      });
+    }
+  }
+
+  Future<void> pickImages() async {
+    final pickedFiles = await ImagePicker().pickMultiImage();
+    if (pickedFiles.isNotEmpty) {
+      setState(() {
+        _selectedImages = pickedFiles.map((e) => File(e.path)).toList();
+        widget.onImagesSelected(_selectedImages);
+      });
+    }
+  }
+
+  void removeImage(int index) {
+    setState(() {
+      _selectedImages.removeAt(index);
+      widget.onImagesSelected(_selectedImages);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: pickImages,
+          child: Center(
+            child: Container(
+              width: 150.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(width: 1, color: const Color(0xffADADAD)),
+              ),
+              child: Column(
+                children: [
+                  // First image takes full width
+                  _selectedImages.isNotEmpty
+                      ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Image.file(
+                                _selectedImages.first,
+                                width: 150.w,
+                                height: 150.h,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              right: 4,
+                              top: 4,
+                              child: GestureDetector(
+                                onTap: () => removeImage(0),
+                                child: const Icon(
+                                  Icons.cancel,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(
+                          width: 150.w,
+                          height: 100.h,
+                          margin: const EdgeInsets.only(top: 30),
+                          child: Center(
+                            child: Text(
+                              'Add Images',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xffADADAD),
+                              ),
+                            ),
+                          ),
+                        ),
+                  // Remaining images in a grid
+                  if (_selectedImages.length > 1)
+                    Padding(
+                      padding: EdgeInsets.all(8.r),
+                      child: Wrap(
+                        spacing: 10.w,
+                        runSpacing: 10.h,
+                        children: _selectedImages
+                            .sublist(1) // Skip the first image
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                          int index = entry.key + 1; // Adjust index
+                          File image = entry.value;
+                          return Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.file(
+                                  image,
+                                  width: 60.w,
+                                  height: 60.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                right: 4,
+                                top: 4,
+                                child: GestureDetector(
+                                  onTap: () => removeImage(index),
+                                  child: const Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                    size: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        GestureDetector(
+          onTap: pickImages,
+          child: Container(
+            padding: EdgeInsets.only(top: 6.h, left: 12.w, bottom: 7.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.r),
+              color: const Color(0xffEDECEC),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Choose Files',
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff36383C),
+                  ),
+                ),
+                SizedBox(width: 7.w),
+                Text(
+                  "|",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xffADADAD),
+                  ),
+                ),
+                SizedBox(width: 11.w),
+                Text(
+                  _selectedImages.isEmpty
+                      ? 'No Files Chosen'
+                      : '${_selectedImages.length} Files Selected',
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400,
+                    color: widget.textColor ?? const Color(0xff36383C),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

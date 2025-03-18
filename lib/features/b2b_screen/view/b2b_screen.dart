@@ -353,40 +353,40 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(4, (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                          _pageController.animateToPage(
-                                            index,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          decoration: BoxDecoration(
-                                            color: selectedIndex == index
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.only(right: 20.w),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: List.generate(4, (index) {
+                                //       return GestureDetector(
+                                //         onTap: () {
+                                //           ref
+                                //               .read(_selectedIndexProvider
+                                //                   .notifier)
+                                //               .state = index;
+                                //           _pageController.animateToPage(
+                                //             index,
+                                //             duration: const Duration(
+                                //                 milliseconds: 50),
+                                //             curve: Curves.easeInOut,
+                                //           );
+                                //         },
+                                //         child: Container(
+                                //           height: 5.h,
+                                //           width: 5.w,
+                                //           margin: EdgeInsets.symmetric(
+                                //               horizontal: 5.w),
+                                //           decoration: BoxDecoration(
+                                //             color: selectedIndex == index
+                                //                 ? Colors.amber
+                                //                 : Colors.grey,
+                                //             shape: BoxShape.circle,
+                                //           ),
+                                //         ),
+                                //       );
+                                //     }),
+                                //   ),
+                                // ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -984,7 +984,7 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                               padding: EdgeInsets.zero,
                               margin: EdgeInsets.zero,
                               duration: const Duration(milliseconds: 400),
-                              height: 350.h,
+                              //   height: 350.h,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Wrap(
@@ -1653,20 +1653,20 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                           dynamicHeight = data.insidearr.isEmpty ||
                                   data.insidearr[0].isEmpty
                               ? 150
-                              : 500;
+                              : 600;
                         } else if (dynamictabController.index == 1) {
                           // Ensure data.doma[0] is valid and has length
                           dynamicHeight = data.insidearr.isEmpty ||
                                   data.insidearr[1].isEmpty
                               ? 150
-                              : 500;
+                              : 600;
                         } else if (dynamictabController.index == 2)
                           dynamicHeight = data.insidearr.isEmpty ||
                                   data.insidearr[2].isEmpty
                               ? 150
-                              : 500;
+                              : 600;
                         else
-                          dynamicHeight = 300;
+                          dynamicHeight = 600;
 
                         return SizedBox(
                           // Use Expanded for better layout management
@@ -2637,7 +2637,6 @@ class _B2bScreenState extends ConsumerState<B2bScreen>
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     child: AllProductDetailWidget(
-                                      
                                       ref: ref,
                                       savedid: res.savedByLoggedUser == null ||
                                               res.savedByLoggedUser!.isEmpty
@@ -2985,7 +2984,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "Sell",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

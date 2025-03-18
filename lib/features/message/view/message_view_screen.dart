@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/message/api/alert_message_api.dart';
 import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_photo_api.dart';
@@ -20,11 +21,12 @@ class MessageViewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    WidgetRef myref=ref;
     // bool refresh
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
       body: DefaultTabController(
-         initialIndex: 1,
+        initialIndex: 1,
         length: 2,
         child: Padding(
           padding: EdgeInsets.only(top: 20.h, left: 12.w, right: 12.w),
@@ -113,6 +115,7 @@ class MessageViewScreen extends ConsumerWidget {
                                     return lastMessageAsync.when(
                                       data: (lastMessage) {
                                         return ListOfMessages(
+                                          passref: myref,
                                           threadId: message.id.toString(),
                                           postId: message.postId.toString(),
                                           subject: message.subject!,
@@ -352,6 +355,7 @@ class ListOfMessages extends StatelessWidget {
   final String body;
   final String postId;
   final String isImportant;
+  final WidgetRef passref;
 
   const ListOfMessages({
     super.key,
@@ -360,22 +364,25 @@ class ListOfMessages extends StatelessWidget {
     required this.body,
     required this.postId,
     required this.isImportant,
+    required this.passref,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (context) => ChatScreen(
+          navigateToPage(
+                      context: context,
+                      page:ChatScreen(
               threadId: threadId,
               username: subject,
               postId: postId,
+              consumerref: passref,
               //  isImportant: isImportant,
             ),
-          ),
-        );
+                      showNavBar: false,
+                      ref: passref,
+                    );
       },
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 8.h),

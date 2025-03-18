@@ -73,7 +73,6 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
       selectedCoupon = null;
     });
   }
-  
 
   // void updateCity(String city) {
   //   setState(() {
@@ -82,7 +81,7 @@ class _OrderDetailsScreenState extends ConsumerState<OrderDetailsScreen> {
   // }
 
   void updateStreet(StreetAddressModel street) {
-    setState(() { 
+    setState(() {
       selectedStreet = street;
       print('Selected Street: $selectedStreet');
     });
@@ -1134,17 +1133,11 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Product',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-            SizedBox(
-              width: 15.w,
+           Text(
+              item.name ?? item.title ?? 'N/A',
+              maxLines: 2, // Restrict to 2 lines
+              overflow: TextOverflow.ellipsis, // Adds "..." when text overflows
             ),
-            Expanded(child: Text(item.name ?? 'N/A'))
-          ],
-        ),
         SizedBox(height: 5.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

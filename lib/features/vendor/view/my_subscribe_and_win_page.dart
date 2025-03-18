@@ -324,9 +324,11 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
           children: [
             CustomScrollView(slivers: [
               SliverPersistentHeader(
+
                   pinned: true,
                   floating: true,
                   delegate: StickyHeaderDelegate(
+                    showbackbutton: true,
                       visible: isSliverAppBarVisible,
                       searchController: _searchController,
                       onchanged: (value) {
@@ -523,6 +525,12 @@ class _MySubscribeAndWinPageState extends ConsumerState<MySubscribeAndWinPage>
                       ),
                     ),
                   ),
+                ),
+              ),
+                  SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("My Subscribe And Win"),
                 ),
               ),
               SliverToBoxAdapter(
@@ -1336,7 +1344,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "S",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,
