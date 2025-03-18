@@ -510,8 +510,8 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                     SizedBox(height: 10.h),
                     // Comment button
                     GestureDetector(
-                      onTap: () =>
-                          _showCommentSection(context, widget.productid),
+                      onTap: () => _showCommentSection(
+                          context, storyId[_currentStoryIndex]),
                       child: Image.asset("assets/icon/Rectangle.png",
                           color: Colors.grey),
                     ),
