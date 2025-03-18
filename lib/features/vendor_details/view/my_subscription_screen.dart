@@ -637,6 +637,12 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         ),
                       ),
                     ),
+                     SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("My Subscription"),
+                ),
+              ),
                     SliverToBoxAdapter(
                       child: SingleChildScrollView(
                         controller: _vendorScrollController,
@@ -1093,7 +1099,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "Sell",
                                             style: headerstyle.copyWith(
                                               fontSize: 9,
                                               fontWeight: FontWeight.w700,

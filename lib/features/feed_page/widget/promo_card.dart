@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:readmore/readmore.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 
 class PromoCard extends StatefulWidget {
   const PromoCard({
@@ -9,12 +12,14 @@ class PromoCard extends StatefulWidget {
     required this.captionTitle,
     required this.caption,
     required this.offerText,
+    required this.passref
   }) : super(key: key);
 
   final List<Map<String, String>> products;
   final String captionTitle;
   final String caption;
   final String offerText;
+  final WidgetRef passref;
 
   @override
   State<PromoCard> createState() => _PromoCardState();
@@ -79,6 +84,8 @@ class _PromoCardState extends State<PromoCard> {
                     // Product List
                     if (widget.products.isNotEmpty)
                       _productFirstItem(
+                        myref: widget.passref,
+                        productid: widget.products[0]["id"]!,
                         imagePath: widget.products[0]["imagePath"]!,
                         price: widget.products[0]["price"]!,
                         showHotIcon: true,
@@ -166,6 +173,8 @@ class _PromoCardState extends State<PromoCard> {
   Widget _productFirstItem({
     required String imagePath,
     required String price,
+    required String productid,
+    required WidgetRef myref,
     bool showHotIcon = false,
     String? postType,
   }) {
@@ -206,39 +215,49 @@ class _PromoCardState extends State<PromoCard> {
           ),
 
           // Product Price with Optional Icon
-          Container(
-            width: 135.w,
-            decoration: const BoxDecoration(
-              color: Color(0xFF70646B),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // if (showHotIcon)
-                  const Padding(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Icon(Icons.check_box, color: Colors.white),
-                    // child: Image.asset(
-                    //   'assets/icon/flame.png',
-                    //   width: 20.w,
-                    //   height: 20.h,
-                    //   color: Colors.white,
-                    // ),
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    postType == '3' ? 'BOOK' : 'BUY',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.white,
+          InkWell(
+            onTap: () {
+              navigateToPage(
+                context: context,
+                page: ProductDetailScreen(productId: productid),
+                ref: myref,
+                showNavBar: false, // Hide bottom navbar
+              );
+            },
+            child: Container(
+              width: 135.w,
+              decoration: const BoxDecoration(
+                color: Color(0xFF70646B),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // if (showHotIcon)
+                    const Padding(
+                      padding: EdgeInsets.only(left: 5.0),
+                      child: Icon(Icons.check_box, color: Colors.white),
+                      // child: Image.asset(
+                      //   'assets/icon/flame.png',
+                      //   width: 20.w,
+                      //   height: 20.h,
+                      //   color: Colors.white,
+                      // ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      postType == '3' ? 'BOOK' : 'BUY',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -303,7 +322,7 @@ class _PromoCardState extends State<PromoCard> {
                 children: [
                   Text(
                     'Rs $price',
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11.sp,
                       color: Colors.white,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
   final List<Map<String, String>> headeritems = [
-    {'icon': 'assets/icon/loadings.svg', 'label': 'Everything'},
+    {'icon': 'assets/icon/loadings.svg', 'label': 'All'},
     {'icon': 'assets/icon/openCartIcon.svg', 'label': 'Products'},
     {'icon': 'assets/icon/usedIcon.svg', 'label': 'Used'},
     {'icon': 'assets/icon/b2bIcon.svg', 'label': 'Services'},

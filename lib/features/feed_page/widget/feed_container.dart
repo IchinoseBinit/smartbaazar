@@ -237,311 +237,322 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
 
     return Column(
       children: [
-        Material(
-          elevation: 5,
-          shadowColor: ColorConstant.blackColor,
-          child: Container(
-            // padding: const EdgeInsets.all(10),
-            width: double.infinity,
-
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-              colors: [
-                Colors.white,
-                Color.fromARGB(255, 231, 219, 219),
-                Color(0xFFa4a4a4)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )),
-            child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,navigat
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
-                  children: [
-                    widget.hassttory
-                        ? Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5.w),
-                            width: 70.r,
-                            height: 70.r,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 3.w, color: const Color(0xffEACACB)),
-                              shape: BoxShape.circle,
-                            ),
-                          )
-                        : Container(),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
+        InkWell(
+          onTap: () {
+              Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => VendorHomeScreen(
                                   vid: int.tryParse(widget.userId)!,
                                   vendorName: widget.vendorName!),
                             ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 3, bottom: 3, right: 8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(),
+          },
+          child: Material(
+            elevation: 5,
+            shadowColor: ColorConstant.blackColor,
+            child: Container(
+              // padding: const EdgeInsets.all(10),
+              width: double.infinity,
+          
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  Color.fromARGB(255, 231, 219, 219),
+                  Color(0xFFa4a4a4)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,navigat
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      widget.hassttory
+                          ? Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5.w),
+                              width: 70.r,
+                              height: 70.r,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 3.w, color: const Color(0xffEACACB)),
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                          : Container(),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VendorHomeScreen(
+                                    vid: int.tryParse(widget.userId)!,
+                                    vendorName: widget.vendorName!),
+                              ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8, top: 3, bottom: 3, right: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(),
+                            ),
+                            child: CircleAvatar(
+                              radius: 25,
+                              backgroundColor:
+                                  const Color(0x7F7F7F73).withOpacity(0.45),
+                              child: ClipOval(
+                                child: widget.vendorImage != null &&
+                                        widget.vendorImage!.isNotEmpty
+                                    ? Image.network(
+                                        widget.vendorImage!,
+                                        fit: BoxFit.cover,
+                                        width: 52,
+                                        height: 52,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return Shimmer.fromColors(
+                                            baseColor: Colors.grey[300]!,
+                                            highlightColor: Colors.grey[100]!,
+                                            child: Container(
+                                              width: 52,
+                                              height: 52,
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(
+                                                  () {}); // Retry fetching the image on tap
+                                            },
+                                            child:
+                                                Icon(Icons.refresh, size: 24.sp),
+                                          );
+                                        },
+                                      )
+                                    : Icon(Icons.person, size: 24.sp),
+                              ),
+                            ),
                           ),
-                          child: CircleAvatar(
-                            radius: 25,
-                            backgroundColor:
-                                const Color(0x7F7F7F73).withOpacity(0.45),
-                            child: ClipOval(
-                              child: widget.vendorImage != null &&
-                                      widget.vendorImage!.isNotEmpty
-                                  ? Image.network(
-                                      widget.vendorImage!,
-                                      fit: BoxFit.cover,
-                                      width: 52,
-                                      height: 52,
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return Shimmer.fromColors(
+                        ),
+                      ),
+                      widget.showGift!
+                          ? Positioned(
+                              bottom: -10.h,
+                              right: 0,
+                              left: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  feedGiftCardFuture.when(
+                                    data: (feedCardData) {
+                                      // print("pinky $feedCardData");
+                                      return showCustomBottomSheet(
+                                          feedCardData.userDetail!.userId!,
+                                          ref,
+                                          context,
+                                          feedCardData);
+                                    },
+                                    error: (error, stackTrace) =>
+                                        const Text("Please login again"),
+                                    loading: () => showDialog(
+                                      context: context,
+                                      builder: (context) => Center(
+                                        child: Shimmer.fromColors(
                                           baseColor: Colors.grey[300]!,
                                           highlightColor: Colors.grey[100]!,
                                           child: Container(
-                                            width: 52,
-                                            height: 52,
-                                            color: Colors.white,
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(
-                                                () {}); // Retry fetching the image on tap
-                                          },
-                                          child:
-                                              Icon(Icons.refresh, size: 24.sp),
-                                        );
-                                      },
-                                    )
-                                  : Icon(Icons.person, size: 24.sp),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    widget.showGift!
-                        ? Positioned(
-                            bottom: -10.h,
-                            right: 0,
-                            left: 0,
-                            child: GestureDetector(
-                              onTap: () {
-                                feedGiftCardFuture.when(
-                                  data: (feedCardData) {
-                                    // print("pinky $feedCardData");
-                                    return showCustomBottomSheet(
-                                        feedCardData.userDetail!.userId!,
-                                        ref,
-                                        context,
-                                        feedCardData);
-                                  },
-                                  error: (error, stackTrace) =>
-                                      const Text("Please login again"),
-                                  loading: () => showDialog(
-                                    context: context,
-                                    builder: (context) => Center(
-                                      child: Shimmer.fromColors(
-                                        baseColor: Colors.grey[300]!,
-                                        highlightColor: Colors.grey[100]!,
-                                        child: Container(
-                                          width: 50.r,
-                                          height: 50.r,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
+                                            width: 50.r,
+                                            height: 50.r,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                                widget.refreshprovider?.call();
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  padding: EdgeInsets.all(2.r),
-                                  child: Icon(
-                                    Icons.card_giftcard,
-                                    color: Colors.amber,
-                                    size: 20.r,
+                                  );
+                                  widget.refreshprovider?.call();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    padding: EdgeInsets.all(2.r),
+                                    child: Icon(
+                                      Icons.card_giftcard,
+                                      color: Colors.amber,
+                                      size: 20.r,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
-                // SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                VendorHomeScreen(
-                                                    vid: int.tryParse(
-                                                        widget.userId)!,
-                                                    vendorName:
-                                                        widget.vendorName!),
-                                          ));
-                                    },
-                                    child: SizedBox(
-                                      child: Text(
-                                        widget.vendorName ?? 'N/A',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 13.sp,
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                  // SizedBox(width: 10.w),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  VendorHomeScreen(
+                                                      vid: int.tryParse(
+                                                          widget.userId)!,
+                                                      vendorName:
+                                                          widget.vendorName!),
+                                            ));
+                                      },
+                                      child: SizedBox(
+                                        child: Text(
+                                          widget.vendorName ?? 'N/A',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 13.sp,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
                                         ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        softWrap: true,
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(width: 5.w),
+                                    SizedBox(width: 5.w),
+                                    Image.asset(
+                                      "assets/images/back.png",
+                                      height: 16.h,
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
                                   Image.asset(
-                                    "assets/images/back.png",
+                                    _getMembershipImage(widget.membershipId),
+                                    width: 16.w,
                                     height: 16.h,
+                                    color: Colors.black45,
                                   ),
-                                  SizedBox(
-                                    width: 10.w,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      widget.membershipTitle ?? '',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 10.sp,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Row(
+                            ],
+                          ),
+                        ),
+                        // SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
                               children: [
-                                Image.asset(
-                                  _getMembershipImage(widget.membershipId),
-                                  width: 16.w,
-                                  height: 16.h,
-                                  color: Colors.black45,
+                                Text(
+                                  widget.suscribers ?? '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11.sp),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    widget.membershipTitle ?? '',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 10.sp,
-                                    ),
-                                  ),
+                                Text(
+                                  "SUBSCRIBERS",
+                                  style: TextStyle(fontSize: 9.sp),
                                 ),
                               ],
                             ),
+                            SizedBox(width: 15.w),
+                            Column(
+                              children: [
+                                Text(
+                                  widget.productCount ?? '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11.sp),
+                                ),
+                                Text(
+                                  "PRODUCTS",
+                                  style: TextStyle(fontSize: 9.sp),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 15.w),
+                            Column(
+                              children: [
+                                Text(
+                                  widget.livePrize ?? '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 11.sp),
+                                ),
+                                Text(
+                                  "LIVE PRIZES",
+                                  style: TextStyle(fontSize: 9.sp),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10.w),
+                            Column(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  size: 14.sp,
+                                ),
+                                // SizedBox(height: 5.h),
+                                Text(
+                                  '${widget.distance ?? '0'} km',
+                                  style: TextStyle(fontSize: 9.sp),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 5.w,
+                            )
                           ],
                         ),
-                      ),
-                      // SizedBox(height: 10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                widget.suscribers ?? '0',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11.sp),
-                              ),
-                              Text(
-                                "SUBSCRIBERS",
-                                style: TextStyle(fontSize: 9.sp),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 15.w),
-                          Column(
-                            children: [
-                              Text(
-                                widget.productCount ?? '0',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11.sp),
-                              ),
-                              Text(
-                                "PRODUCTS",
-                                style: TextStyle(fontSize: 9.sp),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 15.w),
-                          Column(
-                            children: [
-                              Text(
-                                widget.livePrize ?? '0',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11.sp),
-                              ),
-                              Text(
-                                "LIVE PRIZES",
-                                style: TextStyle(fontSize: 9.sp),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 10.w),
-                          Column(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                size: 14.sp,
-                              ),
-                              // SizedBox(height: 5.h),
-                              Text(
-                                '${widget.distance ?? '0'} km',
-                                style: TextStyle(fontSize: 9.sp),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 5.w,
-                          )
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

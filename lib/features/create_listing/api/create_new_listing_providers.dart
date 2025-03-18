@@ -79,7 +79,7 @@ Future<String> createlisting(
       'width': width,
       'height': height,
       'weight': weight,
-      'pickup': pickup,
+      'pickup': pickup.trim().length==0? null:pickup,
       'longitude': long?.toString() ?? "75",
       'latitude': lat?.toString() ?? "85",
       'hyper_del': hyperd,

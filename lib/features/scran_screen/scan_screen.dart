@@ -256,22 +256,23 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     );
   }
 
-  void showcard(WidgetRef ref, String name) {
-    GiveVendorid().givemeid(name).then(
-      (value) {
+void showcard(WidgetRef ref, String name) {
+  GiveVendorid().givemeid(name).then(
+    (value) {
+      setState(() {
         generatedvendorid = int.tryParse(value);
-      },
-    );
+      });
 
-    if (generatedvendorid != null) {
+      if (generatedvendorid == null) {
+        _showSnackBar("Vendor ID is not available");
+        return;
+      }
+
       ref.read(getVendorCardProvider(generatedvendorid!)).whenData((value) {
-        /// 2. Update `_card` inside `setState`
         setState(() {
           _card = BigContainer(
-            membershipid: int.tryParse(value.data?.vendor_card?.membership_id?? '1')?? 1,
-            onconnectclicked: () {
-              
-            },
+            membershipid: int.tryParse(value.data?.vendor_card?.membership_id ?? '1') ?? 1,
+            onconnectclicked: () {},
             ondoenload: () {},
             onsubscribed: () {},
             key: GlobalKey(),
@@ -293,7 +294,6 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
           );
         });
 
-        /// 3. Show the dialog **after** updating `_card`
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -303,15 +303,17 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             content: InkWell(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VendorHomeScreen(
-                          vid: int.tryParse(generatedvendorid.toString())!,
-                          vendorName: ''),
-                    ));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VendorHomeScreen(
+                      vid: generatedvendorid!,
+                      vendorName: '',
+                    ),
+                  ),
+                );
               },
               child: _card ?? const Center(child: CircularProgressIndicator()),
-            ), // Show loader if null
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -321,13 +323,15 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
           ),
         );
       });
-    }
-  }
+    },
+  );
+}
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
+void _showSnackBar(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+}
+
+
 
   @override
   Widget build(BuildContext context) {

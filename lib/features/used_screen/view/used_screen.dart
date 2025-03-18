@@ -384,41 +384,41 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(4, (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ref
-                                                .read(_selectedIndexProvider
-                                                    .notifier)
-                                                .state = index;
-                                            _pageController.animateToPage(
-                                              index,
-                                              duration: const Duration(
-                                                  milliseconds: 50),
-                                              curve: Curves.easeInOut,
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 5.h,
-                                            width: 5.w,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            decoration: BoxDecoration(
-                                              color: selectedIndex == index
-                                                  ? Colors.amber
-                                                  : Colors.grey,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(right: 20.w),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: List.generate(4, (index) {
+                                  //       return GestureDetector(
+                                  //         onTap: () {
+                                  //           ref
+                                  //               .read(_selectedIndexProvider
+                                  //                   .notifier)
+                                  //               .state = index;
+                                  //           _pageController.animateToPage(
+                                  //             index,
+                                  //             duration: const Duration(
+                                  //                 milliseconds: 50),
+                                  //             curve: Curves.easeInOut,
+                                  //           );
+                                  //         },
+                                  //         child: Container(
+                                  //           height: 5.h,
+                                  //           width: 5.w,
+                                  //           margin: EdgeInsets.symmetric(
+                                  //               horizontal: 5.w),
+                                  //           decoration: BoxDecoration(
+                                  //             color: selectedIndex == index
+                                  //                 ? Colors.amber
+                                  //                 : Colors.grey,
+                                  //             shape: BoxShape.circle,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     }),
+                                  //   ),
+                                  // ),
                                   SizedBox(
                                     height: 15.h,
                                   ),
@@ -1880,21 +1880,21 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                               if (tabController.index == 0) {
                                 dynamicHeight = data.insidearr.isEmpty ||
                                         data.global.isEmpty
-                                    ? 150
-                                    : 440;
+                                    ? 160
+                                    : 600;
                               } else if (tabController.index == 1) {
                                 // Ensure data.doma[0] is valid and has length
                                 dynamicHeight = data.insidearr.isEmpty &&
                                         data.brandbazar_domestic?.length == 0
-                                    ? 150
-                                    : 470;
+                                    ? 160
+                                    : 600;
                               } else if (tabController.index == 2)
                                 dynamicHeight = data.insidearr.isEmpty ||
                                         data.spotlights?.length == 0
-                                    ? 150
-                                    : 470;
+                                    ? 650
+                                    : 600;
                               else
-                                dynamicHeight = 200;
+                                dynamicHeight = 210;
                               return SizedBox(
                                 // Use Expanded for better layout management
                                 child: AnimatedContainer(
@@ -1911,7 +1911,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding: EdgeInsets.only(top: 10.h),
+                                            padding: EdgeInsets.only(
+                                                top: 10.h, bottom: 15.h),
                                             child: Row(
                                               children: [
                                                 if (data.global.isNotEmpty)
@@ -2102,8 +2103,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 5),
+                                            padding: EdgeInsets.only(
+                                                top: 5, bottom: 15.h),
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
@@ -2122,7 +2123,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                           data.brandbazar_domestic!.isEmpty
                                               ? Padding(
                                                   padding: EdgeInsets.only(
-                                                      top: 18.h),
+                                                      bottom: 10.h, top: 18.h),
                                                   child: Center(
                                                     child: nolistingfound(),
                                                   ),
@@ -2289,8 +2290,8 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 5),
+                                            padding: EdgeInsets.only(
+                                                top: 5, bottom: 15.h),
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
@@ -2730,7 +2731,7 @@ class _UsedScreenState extends ConsumerState<UsedScreen>
 
                                         // Calculate height dynamically
                                         double calculatedHeight =
-                                            products.isNotEmpty ? 380.h : 60.h;
+                                            products.isNotEmpty ? 500.h : 60.h;
 
                                         return AnimatedContainer(
                                           alignment: Alignment.topLeft,
@@ -3392,7 +3393,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "MemberSellship",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

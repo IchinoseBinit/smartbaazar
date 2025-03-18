@@ -363,40 +363,40 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(4, (index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          ref
-                                              .read(_selectedIndexProvider
-                                                  .notifier)
-                                              .state = index;
-                                          _pageController.animateToPage(
-                                            index,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.easeInOut,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.w,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w),
-                                          decoration: BoxDecoration(
-                                            color: selectedIndex == index
-                                                ? Colors.amber
-                                                : Colors.grey,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.only(right: 20.w),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: List.generate(4, (index) {
+                                //       return GestureDetector(
+                                //         onTap: () {
+                                //           ref
+                                //               .read(_selectedIndexProvider
+                                //                   .notifier)
+                                //               .state = index;
+                                //           _pageController.animateToPage(
+                                //             index,
+                                //             duration: const Duration(
+                                //                 milliseconds: 50),
+                                //             curve: Curves.easeInOut,
+                                //           );
+                                //         },
+                                //         child: Container(
+                                //           height: 5.h,
+                                //           width: 5.w,
+                                //           margin: EdgeInsets.symmetric(
+                                //               horizontal: 5.w),
+                                //           decoration: BoxDecoration(
+                                //             color: selectedIndex == index
+                                //                 ? Colors.amber
+                                //                 : Colors.grey,
+                                //             shape: BoxShape.circle,
+                                //           ),
+                                //         ),
+                                //       );
+                                //     }),
+                                //   ),
+                                // ),
                                 SizedBox(
                                   height: 15.h,
                                 ),
@@ -1517,20 +1517,20 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[0].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             } else if (dynamictabController.index == 1) {
                               // Ensure data.doma[0] is valid and has length
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[0].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             } else if (dynamictabController.index == 2)
                               dynamicHeight = data.insidearr.isEmpty ||
                                       data.insidearr[0].isEmpty
                                   ? 150
-                                  : 500;
+                                  : 600;
                             else
-                              dynamicHeight = 300;
+                              dynamicHeight = 600;
                             return SizedBox(
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
@@ -2306,7 +2306,7 @@ class _GrocarysScreenState extends ConsumerState<GrocarysScreen>
 
                                       // Calculate height dynamically
                                       double calculatedHeight =
-                                          products.isNotEmpty ? 359.h : 50.h;
+                                          products.isNotEmpty ? 500.h : 50.h;
 
                                       return AnimatedContainer(
                                         alignment: Alignment.topLeft,
@@ -2963,7 +2963,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "S",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

@@ -160,13 +160,12 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
           ),
           home: SplashScreen()
-          ) 
-          
+          ),
     );
     // home: SplashScreen())); bhaktapur    5
   }
 } //123 dells
-// //9810443212 
+// //9810443212
 // Redmi note 1 has the feature of long and and things like wifi is there
 // Phone
 

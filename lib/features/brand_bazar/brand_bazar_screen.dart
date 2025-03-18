@@ -373,40 +373,40 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(right: 20.w),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(4, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = index;
-                                        _pageController.animateToPage(
-                                          index,
-                                          duration:
-                                              const Duration(milliseconds: 50),
-                                          curve: Curves.easeInOut,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 5.h,
-                                        width: 5.w,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.w),
-                                        decoration: BoxDecoration(
-                                          color: selectedIndex == index
-                                              ? Colors.amber
-                                              : Colors.grey,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(right: 20.w),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: List.generate(4, (index) {
+                              //       return GestureDetector(
+                              //         onTap: () {
+                              //           ref
+                              //               .read(
+                              //                   _selectedIndexProvider.notifier)
+                              //               .state = index;
+                              //           _pageController.animateToPage(
+                              //             index,
+                              //             duration:
+                              //                 const Duration(milliseconds: 50),
+                              //             curve: Curves.easeInOut,
+                              //           );
+                              //         },
+                              //         child: Container(
+                              //           height: 5.h,
+                              //           width: 5.w,
+                              //           margin: EdgeInsets.symmetric(
+                              //               horizontal: 5.w),
+                              //           decoration: BoxDecoration(
+                              //             color: selectedIndex == index
+                              //                 ? Colors.amber
+                              //                 : Colors.grey,
+                              //             shape: BoxShape.circle,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     }),
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 15.h,
                               ),
@@ -983,7 +983,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                               padding: EdgeInsets.zero,
                               margin: EdgeInsets.zero,
                               duration: const Duration(milliseconds: 400),
-                              height: 350.h,
+                              //  height: 350.h,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Wrap(
@@ -1346,6 +1346,7 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                 ),
                 SliverToBoxAdapter(
                   child: Column(
+                    spacing: 20.h,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1363,163 +1364,175 @@ class _BrandBazarScreenState extends ConsumerState<BrandBazarScreen>
                           // Define the products list corresponding to each categor
                           return data.data!.new_products.isEmpty
                               ? nolistingfound()
-                              : SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollDirection: Axis
-                                      .vertical, // Scroll vertically if needed
-                                  child: Wrap(
-                                    alignment: WrapAlignment.start,
-                                    spacing:
-                                        5.w, // Horizontal space between items
-                                    runSpacing:
-                                        15.h, // Vertical space between rows
-                                    children: List.generate(
-                                      data.data!.new_products.length,
-                                      (index) {
-                                        BrandNewModel res =
-                                            data.data!.new_products[index];
+                              : Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.w),
+                                  child: SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis
+                                        .vertical, // Scroll vertically if needed
+                                    child: Wrap(
+                                      alignment: WrapAlignment.start,
+                                      spacing:
+                                          5.w, // Horizontal space between items
+                                      runSpacing:
+                                          15.h, // Vertical space between rows
+                                      children: List.generate(
+                                        data.data!.new_products.length,
+                                        (index) {
+                                          BrandNewModel res =
+                                              data.data!.new_products[index];
 
-                                        return SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  30.w) /
-                                              2, // Dynamically adjust to fit two items per row
-                                          child: Card(
-                                            clipBehavior: Clip.antiAlias,
-                                            shadowColor: const Color(0xff3D215F)
-                                                .withOpacity(0.5),
-                                            elevation: 9,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15.0),
+                                          return SizedBox(
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width -
+                                                    30.w) /
+                                                2, // Dynamically adjust to fit two items per row
+                                            child: Card(
+                                              clipBehavior: Clip.antiAlias,
+                                              shadowColor:
+                                                  const Color(0xff3D215F)
+                                                      .withOpacity(0.5),
+                                              elevation: 9,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 5.w),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.0),
+                                              ),
+                                              child: AllProductDetailWidget(
+                                                ref: ref,
+                                                onenquiredclicked: () {
+                                                  getEnquire(ref, res.id).then(
+                                                    (value) {
+                                                      value.data?.enquire == 0
+                                                          ? showModalBottomSheet(
+                                                              useSafeArea: true,
+                                                              isScrollControlled:
+                                                                  true,
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return SizedBox(
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.8, // Use 80% of the screen height
+
+                                                                  child:
+                                                                      SendMessageBottomWidget(
+                                                                    ref: ref,
+                                                                    productidid:
+                                                                        res.id,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            )
+                                                          : navigateToPage(
+                                                              context: context,
+                                                              page: ChatScreen(
+                                                                  threadId: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .id!,
+                                                                  username: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .subject!,
+                                                                  postId: value
+                                                                      .data!
+                                                                      .thread!
+                                                                      .post_id!),
+                                                              ref: ref,
+                                                              showNavBar:
+                                                                  false, // Hide bottom navbar
+                                                            );
+                                                      // if ()
+
+                                                      // SendMessageBottomWidget(
+                                                      //     ref: ref,
+                                                      //     productidid:
+                                                      //         prod.id);
+                                                    },
+                                                  ).catchError((error) {
+                                                    print('Error: $error');
+                                                  });
+                                                },
+                                                savedid: res.savedByLoggedUser ==
+                                                            null ||
+                                                        res.savedByLoggedUser!
+                                                            .isEmpty
+                                                    ? []
+                                                    : res.savedByLoggedUser
+                                                        ?.map(
+                                                          (e) => SavedPost(
+                                                              id: e.id!,
+                                                              userId:
+                                                                  e.user_id!,
+                                                              postId:
+                                                                  e.post_id!,
+                                                              createdAt:
+                                                                  e.createdAt ??
+                                                                      '',
+                                                              updatedAt:
+                                                                  e.updatedAt ??
+                                                                      ''),
+                                                        )
+                                                        .toList(),
+                                                onRefresh: () {
+                                                  refreshAllProviders();
+                                                },
+                                                productid: res.id,
+                                                lat: res.userdetails!.latitude,
+                                                long:
+                                                    res.userdetails!.longitude,
+                                                membershipid: res
+                                                    .userdetails!.membership_id,
+                                                posttype: res.post_type_id,
+                                                didcountpercentage:
+                                                    res.discount_percentage,
+                                                id: int.tryParse(
+                                                    res.userdetails!.user_id),
+                                                shortestDistance: res
+                                                    .userdetails!
+                                                    .shortestDistance,
+                                                issponsored: res.userdetails!
+                                                        .sponsored ??
+                                                    false,
+                                                distance: res.userdetails!
+                                                    .shortestDistance,
+                                                wow: res.wow.toString(),
+                                                discounttedPrice: res
+                                                    .discount_percentage!
+                                                    .toString(),
+                                                comment:
+                                                    res.commentcount.toString(),
+                                                avg_rating: res.avg_rating
+                                                        ?.toDouble() ??
+                                                    0.0,
+                                                offer: res.offers,
+                                                productImage: res.image,
+                                                Vimage: res.userdetails!.photo,
+                                                vendorname:
+                                                    res.userdetails!.name,
+                                                title: res.title,
+                                                price: res.price,
+                                                similarproductCount: res
+                                                    .similarVendorProfileProductCount,
+                                                membershipColor: res
+                                                    .userdetails!
+                                                    .membership_color,
+                                                membershipTitle: res
+                                                    .userdetails!
+                                                    .membership_title,
+                                              ),
                                             ),
-                                            child: AllProductDetailWidget(
-                                              ref: ref,
-                                              onenquiredclicked: () {
-                                                getEnquire(ref, res.id).then(
-                                                  (value) {
-                                                    value.data?.enquire == 0
-                                                        ? showModalBottomSheet(
-                                                            useSafeArea: true,
-                                                            isScrollControlled:
-                                                                true,
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return SizedBox(
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .height *
-                                                                    0.8, // Use 80% of the screen height
-
-                                                                child:
-                                                                    SendMessageBottomWidget(
-                                                                  ref: ref,
-                                                                  productidid:
-                                                                      res.id,
-                                                                ),
-                                                              );
-                                                            },
-                                                          )
-                                                        : navigateToPage(
-                                                            context: context,
-                                                            page: ChatScreen(
-                                                                threadId: value
-                                                                    .data!
-                                                                    .thread!
-                                                                    .id!,
-                                                                username: value
-                                                                    .data!
-                                                                    .thread!
-                                                                    .subject!,
-                                                                postId: value
-                                                                    .data!
-                                                                    .thread!
-                                                                    .post_id!),
-                                                            ref: ref,
-                                                            showNavBar:
-                                                                false, // Hide bottom navbar
-                                                          );
-                                                    // if ()
-
-                                                    // SendMessageBottomWidget(
-                                                    //     ref: ref,
-                                                    //     productidid:
-                                                    //         prod.id);
-                                                  },
-                                                ).catchError((error) {
-                                                  print('Error: $error');
-                                                });
-                                              },
-                                              savedid: res.savedByLoggedUser ==
-                                                          null ||
-                                                      res.savedByLoggedUser!
-                                                          .isEmpty
-                                                  ? []
-                                                  : res.savedByLoggedUser
-                                                      ?.map(
-                                                        (e) => SavedPost(
-                                                            id: e.id!,
-                                                            userId: e.user_id!,
-                                                            postId: e.post_id!,
-                                                            createdAt:
-                                                                e.createdAt ??
-                                                                    '',
-                                                            updatedAt:
-                                                                e.updatedAt ??
-                                                                    ''),
-                                                      )
-                                                      .toList(),
-                                              onRefresh: () {
-                                                refreshAllProviders();
-                                              },
-                                              productid: res.id,
-                                              lat: res.userdetails!.latitude,
-                                              long: res.userdetails!.longitude,
-                                              membershipid: res
-                                                  .userdetails!.membership_id,
-                                              posttype: res.post_type_id,
-                                              didcountpercentage:
-                                                  res.discount_percentage,
-                                              id: int.tryParse(
-                                                  res.userdetails!.user_id),
-                                              shortestDistance: res.userdetails!
-                                                  .shortestDistance,
-                                              issponsored:
-                                                  res.userdetails!.sponsored ??
-                                                      false,
-                                              distance: res.userdetails!
-                                                  .shortestDistance,
-                                              wow: res.wow.toString(),
-                                              discounttedPrice: res
-                                                  .discount_percentage!
-                                                  .toString(),
-                                              comment:
-                                                  res.commentcount.toString(),
-                                              avg_rating:
-                                                  res.avg_rating?.toDouble() ??
-                                                      0.0,
-                                              offer: res.offers,
-                                              productImage: res.image,
-                                              Vimage: res.userdetails!.photo,
-                                              vendorname: res.userdetails!.name,
-                                              title: res.title,
-                                              price: res.price,
-                                              similarproductCount: res
-                                                  .similarVendorProfileProductCount,
-                                              membershipColor: res.userdetails!
-                                                  .membership_color,
-                                              membershipTitle: res.userdetails!
-                                                  .membership_title,
-                                            ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                 );
@@ -1935,7 +1948,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                         children: [
                                           Icon(Icons.person_add),
                                           Text(
-                                            "Membership",
+                                            "S",
                                             style: headerstyle.copyWith(
                                               fontSize: 8,
                                               fontWeight: FontWeight.w700,

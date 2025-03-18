@@ -168,153 +168,162 @@ class _CarsoselWidgetState extends ConsumerState<CarsoselWidget> {
         Positioned(
           left: 40.w,
           bottom: 15.h,
-          child: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 1),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10.h),
-                decoration: const BoxDecoration(
-                    color: ColorConstant.whiteColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        bottomLeft: Radius.circular(30))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/tire.png",
-                      color: ColorConstant.blackColor,
-                    ),
-                    SizedBox(
-                      width: 7.w,
-                    ),
-                    Text(
-                      widget.wow == 'null' ? "1" : widget.wow,
-                      style: headerstyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: ColorConstant.blackColor),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    InkWell(
-                      onTap: widget.onCommenttapped,
-                      child: Image.asset(
-                        "assets/images/Frame.png",
+          child: Card(
+            shadowColor: Colors.black,
+            elevation: 9,
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 1),
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10.h),
+                  decoration: const BoxDecoration(
+                      color: ColorConstant.whiteColor,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          bottomLeft: Radius.circular(30))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/tire.png",
                         color: ColorConstant.blackColor,
-                        height: 30,
-                        width: 30,
                       ),
-                    ),
-                    SizedBox(
-                      width: 7.w,
-                    ),
-                    Text(
-                      widget.comment,
-                      style: headerstyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: ColorConstant.blackColor),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Image.asset("assets/icon/Frame.png"),
-                    SizedBox(
-                      width: 7.w,
-                    ),
-                    Text(
-                      widget.avg_rating,
-                      style: headerstyle.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: ColorConstant.blackColor),
-                    )
-                  ],
+                      SizedBox(
+                        width: 7.w,
+                      ),
+                      Text(
+                        widget.wow == 'null' ? "1" : widget.wow,
+                        style: headerstyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: ColorConstant.blackColor),
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      InkWell(
+                        onTap: widget.onCommenttapped,
+                        child: Image.asset(
+                          "assets/images/Frame.png",
+                          color: ColorConstant.blackColor,
+                          height: 30,
+                          width: 30,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 7.w,
+                      ),
+                      Text(
+                        widget.comment,
+                        style: headerstyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: ColorConstant.blackColor),
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Image.asset("assets/icon/Frame.png"),
+                      SizedBox(
+                        width: 7.w,
+                      ),
+                      Text(
+                        widget.avg_rating,
+                        style: headerstyle.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: ColorConstant.blackColor),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                decoration: const BoxDecoration(
-                    color: ColorConstant.whiteColor,
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        bottomRight: Radius.circular(30))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        getEnquire(ref, widget.pid.toString()).then(
-                          (value) {
-                            value.data?.enquire == 0
-                                ? showModalBottomSheet(
-                                    useSafeArea: true,
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return SizedBox(
-                                        height: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                            0.8, // Use 80% of the screen height
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                  decoration: const BoxDecoration(
+                      color: ColorConstant.whiteColor,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          getEnquire(ref, widget.pid.toString()).then(
+                            (value) {
+                              value.data?.enquire == 0
+                                  ? showModalBottomSheet(
+                                      useSafeArea: true,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.8, // Use 80% of the screen height
 
-                                        child: SendMessageBottomWidget(
-                                          ref: ref,
-                                          productidid: widget.pid.toString(),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : navigateToPage(
-                                    context: context,
-                                    page: ChatScreen(
-                                        threadId: value.data!.thread!.id!,
-                                        username: value.data!.thread!.subject!,
-                                        postId: value.data!.thread!.post_id!),
-                                    ref: ref,
-                                    showNavBar: false, // Hide bottom navbar
-                                  );
-                          },
-                        ).catchError(
-                          (error) {
-                            print('Error: $error');
-                          },
-                        );
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/wave.png',
-                          ),
-                          Text(
-                            "ASk",
-                            style: headerstyle.copyWith(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                                color: const Color(0xff362677)),
-                          )
-                        ],
+                                          child: SendMessageBottomWidget(
+                                            ref: ref,
+                                            productidid: widget.pid.toString(),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : navigateToPage(
+                                      context: context,
+                                      page: ChatScreen(
+                                          threadId: value.data!.thread!.id!,
+                                          username:
+                                              value.data!.thread!.subject!,
+                                          postId: value.data!.thread!.post_id!),
+                                      ref: ref,
+                                      showNavBar: false, // Hide bottom navbar
+                                    );
+                            },
+                          ).catchError(
+                            (error) {
+                              print('Error: $error');
+                            },
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/wave.png',
+                            ),
+                            Text(
+                              "ASk",
+                              style: headerstyle.copyWith(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  color: const Color(0xff362677)),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    CircleAvatar(backgroundImage: NetworkImage(widget.VImage)),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      CircleAvatar(
+                          backgroundImage: NetworkImage(widget.VImage)),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         Positioned(

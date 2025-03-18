@@ -116,248 +116,269 @@ class _AllProductDetailWidgetState extends State<AllProductDetailWidget> {
       child: Column(
         // mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: 10.w, vertical: 5.h), // Responsive padding
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(
-                      widget.posttype == '1'
-                          ? productsicon
-                          : widget.posttype == '7'
-                              ? b2bIcon
-                              : widget.posttype == '2'
-                                  ? usedIcon
-                                  : widget.posttype == '3'
-                                      ? servicesIcon
-                                      : widget.posttype == '4'
-                                          ? jobIcon
-                                          : widget.posttype == '5'
-                                              ? eventIcon
-                                              : widget.posttype == '8'
-                                                  ? grocaryicon
-                                                  : 'defaultIcon', // Provide a default icon path if no match is found
-                      height: 10.h, // Responsive height for the icon
-                      color: Colors.grey,
+          Stack(
+            children: [
+              Positioned(
+                child: CachedNetworkImage(
+                  imageUrl: widget.productImage ?? '',
+                  height: 150.h,
+                  //  width: 150.w,
+                  fit: BoxFit.fill,
+                  // width: 200.w,
+                  // fit: BoxFit.fill,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      width: 200.w,
+                      height: 140.h,
+                      color: Colors.white,
                     ),
-                    Text(
-                      widget.posttype == '1'
-                          ? 'Products'
-                          : widget.posttype == '7'
-                              ? 'B2B'
-                              : widget.posttype == '2'
-                                  ? 'Used'
-                                  : widget.posttype == '3'
-                                      ? 'Services'
-                                      : widget.posttype == '4'
-                                          ? 'Jobs'
-                                          : widget.posttype == '5'
-                                              ? 'Events'
-                                              : widget.posttype == '8'
-                                                  ? 'Grocery'
-                                                  : '', // Default to an empty string if no match
-                      style: headerstyle.copyWith(
-                          fontSize: 9.sp,
-                          color: Colors.grey), // Responsive font size
-                    ),
-                  ],
-                ),
-                PopupMenuButton(
-                  menuPadding:
-                      EdgeInsets.only(left: 10.w), // Responsive menu padding
-                  onSelected: (value) {},
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 5.h), // Responsive padding
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(6))),
-                  constraints:
-                      const BoxConstraints.expand(width: 150, height: 150),
-                  iconColor: const Color(0xffB6B4B4),
-                  color: Colors.grey,
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                          height: 30.h, // Responsive height
-                          padding: EdgeInsets.only(left: 5.w, top: 10.h),
-                          onTap: () {
-                            Share.share('Share this');
-                          },
-                          child: Text(
-                            "Share",
-                            style: headerstyle.copyWith(
-                              fontFamily: GoogleFonts.quicksand().fontFamily,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 9.sp, // Responsive font size
-                            ),
-                          )),
-                      PopupMenuItem(
-                          onTap: () async {
-                            addToFavorites(
-                                    null, userId.toString(), widget.productid)
-                                .then(
-                              (value) {
-                                widget.onRefresh?.call();
-                                final snackBar = SnackBar(
-                                  content: Text(value),
-                                );
-                                widget.onRefresh?.call();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                                setState(() {});
-                              },
-                            ).catchError((error) {
-                              const errorSnackBar = SnackBar(
-                                content: Text('Please login and try again'),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(errorSnackBar);
-                            });
-                            widget.onRefresh?.call();
-                          },
-                          height: 30.h, // Responsive height
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: Text(
-                            widget.savedid == null || widget.savedid!.isEmpty
-                                ? "Save"
-                                : "UnSave",
-                            style: headerstyle.copyWith(
-                              fontFamily: GoogleFonts.quicksand().fontFamily,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 8.sp, // Responsive font size
-                            ),
-                          )),
-                      PopupMenuItem(
-                          height: 30.h, // Responsive height
-                          padding: EdgeInsets.only(left: 5.w),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VendorHomeScreen(
-                                      vendorName: widget.vendorname!,
-                                      vid:
-                                          int.tryParse(widget.id!.toString())!),
-                                ));
-                          },
-                          child: Text(
-                            "Contact Seller",
-                            style: headerstyle.copyWith(
-                              fontFamily: GoogleFonts.quicksand().fontFamily,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 8.sp, // Responsive font size
-                            ),
-                          )),
-                      PopupMenuItem(
-                           onTap: () async {
-                                          String googleUrl =
-                                              'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
-                                          if (await canLaunchUrl(
-                                              Uri.parse(googleUrl))) {
-                                            await launchUrl(
-                                                Uri.parse(googleUrl),
-                                                mode: LaunchMode
-                                                    .inAppBrowserView);
-                                          } else {
-                                            throw 'Could not open the map.';
-                                          }
-                                        },
-                        height: 30.h, // Responsive height
-                        padding: EdgeInsets.only(left: 5.w),
-                        child: Text(
-                          "Get Seller Directions",
-                          style: headerstyle.copyWith(
-                            fontFamily: GoogleFonts.quicksand().fontFamily,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8.sp, // Responsive font size
-                          ),
+                  ),
+                  errorWidget: (context, url, error) {
+                    // If the image is null or failed to load, retry automatically
+                    return CachedNetworkImage(
+                      imageUrl: widget.productImage ?? '',
+                      height: 130.h,
+                      width: 200.w,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: 200.w,
+                          height: 130.h,
+                          color: Colors.white,
                         ),
                       ),
-                      PopupMenuItem(
-                        height: 30.h, // Responsive height
-                        padding: EdgeInsets.only(left: 5.w),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReportComplainScreen(
-                                    productId: userId!,
-                                    productName: widget.vendorname!),
-                              ));
-                        },
-                        child: Text(
-                          "Report",
-                          style: headerstyle.copyWith(
-                            fontFamily: GoogleFonts.quicksand().fontFamily,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8.sp, // Responsive font size
-                          ),
-                        ),
-                      ),
-                    ];
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.broken_image, size: 50),
+                    );
                   },
-                  child: const Icon(
-                    size: 20,
-                    color: ColorConstant.grayColor,
-                    Icons.more_vert,
-                  ),
                 ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              navigateToPage(
-                context: context,
-                page: ProductDetailScreen(productId: widget.productid),
-                ref: widget.ref,
-                showNavBar: false, // Hide bottom navbar
-              );
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
-              child: CachedNetworkImage(
-                imageUrl: widget.productImage ?? '',
-                height: 100.h,
-                width: 150.w,
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.center,
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: Container(
-                    height: 100.h,
-                    color: Colors.white, // Placeholder shimmer effect
-                  ),
-                ),
-                errorWidget: (context, url, error) {
-                  return CachedNetworkImage(
-                    imageUrl: widget.productImage ?? '', // Retry loading
-                    height: 100.h,
-                    width: 150.w,
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.center,
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        height: 100.h,
-                        color: Colors.white,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => SizedBox(
-                      height: 100.h,
-                      child: const Icon(
-                          Icons.error), // Show error icon if retry fails
-                    ),
-                  );
-                },
               ),
-            ),
+              Positioned(
+                width: 195.w,
+                height: 50.h,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            widget.posttype == '1'
+                                ? productsicon
+                                : widget.posttype == '7'
+                                    ? b2bIcon
+                                    : widget.posttype == '2'
+                                        ? usedIcon
+                                        : widget.posttype == '3'
+                                            ? servicesIcon
+                                            : widget.posttype == '4'
+                                                ? jobIcon
+                                                : widget.posttype == '5'
+                                                    ? eventIcon
+                                                    : widget.posttype == '8'
+                                                        ? grocaryicon
+                                                        : productsicon, // Provide a default icon path if no match is found
+                            height: 15,
+                            color: Colors.black,
+                          ),
+                          Text(
+                            widget.posttype == '1'
+                                ? 'Products'
+                                : widget.posttype == '7'
+                                    ? 'B2B'
+                                    : widget.posttype == '2'
+                                        ? 'Used'
+                                        : widget.posttype == '3'
+                                            ? 'Services'
+                                            : widget.posttype == '4'
+                                                ? 'Jobs'
+                                                : widget.posttype == '5'
+                                                    ? 'Events'
+                                                    : widget.posttype == '8'
+                                                        ? 'Grocery'
+                                                        : '', // Default to an empty string if no match
+                            style: headerstyle.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 9.sp,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      PopupMenuButton(
+                        menuPadding: EdgeInsets.only(left: 10.w),
+                        onSelected: (value) {},
+                        padding: EdgeInsets.symmetric(horizontal: 5.h),
+                        elevation: 0,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6))),
+                        constraints: const BoxConstraints.expand(
+                            width: 150, height: 150),
+                        iconColor: Colors.black,
+                        color: Colors.black,
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                                height: 30,
+                                padding: EdgeInsets.only(left: 5.w, top: 10.h),
+                                onTap: () {
+                                  Share.share(
+                                      "It's about ${widget.productImage}",
+                                      subject: widget.title);
+                                },
+                                child: Text(
+                                  "Share",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 9,
+                                  ),
+                                )),
+                            PopupMenuItem(
+                                onTap: () async {
+                                  addToFavorites(null, userId.toString(),
+                                          widget.productid)
+                                      .then(
+                                    (value) {
+                                      widget.onRefresh?.call();
+                                      final snackBar = SnackBar(
+                                        content: Text(value),
+                                      );
+                                      widget.onRefresh?.call();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      setState(() {});
+                                    },
+                                  ).catchError((error) {
+                                    const errorSnackBar = SnackBar(
+                                      content:
+                                          Text('Please login and try again'),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(errorSnackBar);
+                                  });
+                                  widget.onRefresh?.call();
+                                },
+                                height: 30,
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Text(
+                                  widget.savedid == null ||
+                                          widget.savedid!.isEmpty
+                                      ? "Save"
+                                      : "UnSave",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
+                            PopupMenuItem(
+                                height: 30,
+                                padding: const EdgeInsets.only(left: 5),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => VendorHomeScreen(
+                                            vendorName: widget.vendorname!,
+                                            vid: int.tryParse(
+                                                widget.id!.toString())!),
+                                      ));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => VendorHomeScreen(
+                                  //         vendorName: widget.vendorname!,
+                                  //         vid: int.parse(widget.vendorid!),
+                                  //       ),
+                                  //     ));
+                                },
+                                child: Text(
+                                  "Conatct Seller",
+                                  style: headerstyle.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 8,
+                                  ),
+                                )),
+                            PopupMenuItem(
+                              onTap: () async {
+                                String googleUrl =
+                                    'https://www.google.com/maps/search/?api=1&query=${widget.lat},${widget.long}';
+                                if (await canLaunchUrl(Uri.parse(googleUrl))) {
+                                  await launchUrl(Uri.parse(googleUrl),
+                                      mode: LaunchMode.inAppBrowserView);
+                                } else {
+                                  throw 'Could not open the map.';
+                                }
+                              },
+                              height: 30.h,
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Text(
+                                "Get Seller Directives",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              height: 30,
+                              padding: const EdgeInsets.only(left: 5),
+                              onTap: () {
+                                // print('value ${userId}');
+                                navigateToPage(
+                                  context: context,
+                                  page: ReportComplainScreen(
+                                      productId: userId.toString(),
+                                      productName: widget.vendorname!),
+                                  ref: widget.ref,
+                                  showNavBar: false, // Hide bottom navbar
+                                );
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => ReportComplainScreen(
+                                //           productId: userId.toString(),
+                                //           productName: widget.vendorname!),
+                                //     ));
+                              },
+                              child: Text(
+                                "Report",
+                                style: headerstyle.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 8,
+                                ),
+                              ),
+                            ),
+                          ];
+                        },
+                        child: const Icon(
+                          size: 20,
+                          color: ColorConstant.blackColor,
+                          Icons.more_vert,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
           SizedBox(
             height: 3.h,
