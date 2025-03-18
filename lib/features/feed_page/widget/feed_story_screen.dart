@@ -6,12 +6,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
+import 'package:smartbazar/features/feed_page/api/add_story_comment_api.dart';
+import 'package:smartbazar/features/feed_page/api/list_comment_story_api.dart';
 
 import 'package:smartbazar/features/feed_page/api/post_story_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
+import 'package:smartbazar/features/feed_page/model/list_comment_of_feed.dart';
 import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
 import 'package:smartbazar/features/feed_page/widget/story_search_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 
@@ -38,6 +42,7 @@ class FeedStoryScreen extends ConsumerStatefulWidget {
 class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     with TickerProviderStateMixin {
   late List<Post> stories;
+  late List<dynamic> vendorId;
   late List<String> vendors;
   late List<String> vendorImage;
   late List<List<String?>> vendorStories;
@@ -96,6 +101,7 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
     groupedStories =
         groupBy(widget.feedStory?.posts! ?? [], (post) => post.vendorId!);
     stories = widget.feedStory?.posts! ?? [];
+    vendorId = stories.map((story) => story.vendorId!).toSet().toList();
     vendors = stories.map((story) => story.vendorName!).toSet().toList();
     vendorImage = stories.map((story) => story.vendorImage!).toSet().toList();
     vendorStories = groupedStories.entries.map((entry) {
@@ -398,7 +404,7 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                 ),
                 duration: const Duration(milliseconds: 150),
                 height: MediaQuery.of(context).size.height,
-                child: CommentSection(id: feedproductid),
+                child: StoryCommentSection(id: feedproductid),
               );
             },
           ),
@@ -504,30 +510,58 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 28.r,
-                                    backgroundColor: Colors.black,
-                                    backgroundImage: (_currentVendorIndex <
-                                            vendorImage.length)
-                                        ? NetworkImage(
-                                            vendorImage[_currentVendorIndex])
-                                        : null,
+                                GestureDetector(
+                                  onTap: () {
+                                    navigateToPage(
+                                      context: context,
+                                      page: VendorHomeScreen(
+                                          vid: int.tryParse(
+                                              vendorId[_currentStoryIndex])!,
+                                          vendorName:
+                                              vendors[_currentVendorIndex]),
+                                      ref: ref,
+                                      showNavBar: true,
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 28.r,
+                                      backgroundColor: Colors.black,
+                                      backgroundImage: (_currentVendorIndex <
+                                              vendorImage.length)
+                                          ? NetworkImage(
+                                              vendorImage[_currentVendorIndex])
+                                          : null,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Text(
-                                  (_currentVendorIndex < vendors.length)
-                                      ? vendors[_currentVendorIndex]
-                                      : '',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
+                                GestureDetector(
+                                  onTap: () {
+                                    navigateToPage(
+                                      context: context,
+                                      page: VendorHomeScreen(
+                                          vid: int.tryParse(
+                                              vendorId[_currentStoryIndex])!,
+                                          vendorName:
+                                              vendors[_currentVendorIndex]),
+                                      ref: ref,
+                                      showNavBar: true,
+                                    );
+                                  },
+                                  child: Text(
+                                    (_currentVendorIndex < vendors.length)
+                                        ? vendors[_currentVendorIndex]
+                                        : '',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -730,8 +764,8 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                         color: _isLiked[_currentVendorIndex]
                                     [_currentStoryIndex] ==
                                 true
-                            ? Colors.grey
-                            : Colors.pink,
+                            ? Colors.pink
+                            : Colors.grey,
                       ),
                     ),
                     Text(
@@ -1000,7 +1034,10 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                                       ref: ref,
                                       context: context,
                                       page: ProductDetailScreen(
-                                          productId: widget.productid),
+                                          productId:
+                                              storyId?[_currentVendorIndex]
+                                                      [_currentStoryIndex] ??
+                                                  '0'),
                                       //  ref: ref,
                                       showNavBar:
                                           false, // Hide the navbar when moving to this screen
@@ -1122,6 +1159,129 @@ class _CountdownTimerState extends State<CountdownTimer> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class StoryCommentSection extends ConsumerStatefulWidget {
+  const StoryCommentSection({super.key, required this.id});
+
+  final String id;
+
+  @override
+  ConsumerState<StoryCommentSection> createState() => _StoryCommentSectionState();
+}
+
+class _StoryCommentSectionState extends ConsumerState<StoryCommentSection> {
+  bool _isLoading = false;
+  final TextEditingController _commentcontroller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final commentAsyncValue = ref.watch(getStorycommentProvider(widget.id));
+
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      minChildSize: 1,
+      maxChildSize: 1,
+      builder: (context, scrollController) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 40,
+                  height: 5,
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              Text(
+                "Comment",
+                style: headerstyle.copyWith(
+                    color: ColorConstant.blackColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800),
+              ),
+              commentAsyncValue.when(
+                data: (comment) {
+                  if (comment.isEmpty) {
+                    return const Text('No comments yet');
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: comment.length,
+                      itemBuilder: (context, index) {
+                        FeedCommentModel value = comment[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(value.photo ?? ""),
+                          ),
+                          title: Text(value.name ?? "",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(value.comment ?? ""),
+                        );
+                      },
+                    ),
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) =>
+                    const Center(child: Text('Please login again')),
+              ),
+              // Comment Input Section
+              TextField(
+                controller: _commentcontroller,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: "Add a comment...",
+                  border: InputBorder.none,
+                  suffixIcon: _isLoading
+                      ? const CircularProgressIndicator()
+                      : IconButton(
+                          icon: const Icon(Icons.send, color: Colors.blue),
+                          onPressed: () async {
+                            if (_commentcontroller.text.isNotEmpty) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+
+                              await ref.read(postStorycommentProvider(
+                                      widget.id, _commentcontroller.text)
+                                  .future);
+
+                              ref.invalidate(
+                                  postStorycommentProvider(widget.id, ''));
+
+                              _commentcontroller.clear();
+
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          }),
+                ),
+              ),
+              SizedBox(
+                height: 5.h,
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

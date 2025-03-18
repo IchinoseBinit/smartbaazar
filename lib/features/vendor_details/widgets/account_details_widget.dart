@@ -64,13 +64,29 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
 
   void _onBranchLocationsUpdated(List<StreetAddressModel> locations) {
     setState(() {
+      selectedbranchLocations = locations;
+      selectedbranchLocations = locations.map((location) {
+        return StreetAddressModel(
+          description: location.description,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          placeId: location.placeId,
+        );
+      }).toList();
+
+      // branchLocationsData = locationMaps;
+
+      // Update controllers with descriptions
       branchControllers = locations.map((location) {
         return TextEditingController(text: location.description);
       }).toList();
-
-      selectedbranchLocations = locations;
-        print('Updated Branch Controllers: $branchControllers');
-    print('Updated Selected Branch Locations: $selectedbranchLocations');
+      print('Updated Branch Controllers: $branchControllers');
+      print('Updated Selected Branch Locations: $selectedbranchLocations');
+      // Print coordinates for verification
+      // print('Updated Locations:');
+      // locations.asMap().forEach((index, location) {
+      //   print('Index $index: ${location.latitude}, ${location.longitude}');
+      // });
     });
   }
 
@@ -111,13 +127,22 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         // Clear existing controllers
         setState(() {
           branchControllers.clear();
+          selectedbranchLocations.clear();
 
           // Add new controllers
           if (branchLocations != null) {
-            for (var i = 0; i < branchLocations.length; i++) {
+            for (var location in branchLocations) {
               TextEditingController controller =
-                  TextEditingController(text: branchLocations[i]['location']);
+                  TextEditingController(text: location['location']);
               branchControllers.add(controller);
+
+              // Initialize with actual latitude and longitude values
+              selectedbranchLocations.add(StreetAddressModel(
+                description: location['location'] ?? '',
+                latitude: double.parse(location['latitude']) ?? 0.0,
+                longitude: double.parse(location['longitude']) ?? 0.0,
+                placeId: location['placeId'] ?? '',
+              ));
             }
           }
         });
@@ -161,7 +186,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
   void _addBranchField() {
     setState(() {
       branchControllers.add(TextEditingController());
-      selectedbranchLocations.add(StreetAddressModel(
+      selectedbranchLocations.add(const StreetAddressModel(
         description: '',
         latitude: 0.0,
         longitude: 0.0,
@@ -196,12 +221,11 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         List<Map<String, dynamic>> branchLocationsData = selectedbranchLocations
             .map((location) => {
                   'location': location.description,
-                  'latitude': location.latitude,
-                  'longitude': location.longitude,
+                  'latitude': location.latitude.toString(),
+                  'longitude': location.longitude.toString(),
                 })
             .toList();
-                print('Selected Branch Locations: $selectedbranchLocations');
-
+        print('Selected Branch Locations: $selectedbranchLocations');
 
 // Then in your updateUserDetailsProvider call:
 
@@ -542,6 +566,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                             onBranchLocationsUpdated: (value) {
                               _onBranchLocationsUpdated(value);
                             },
+                            initialBranchLocations: selectedbranchLocations,
                           ),
 
                           SizedBox(height: 10.2.h),
@@ -614,13 +639,14 @@ class BranchWidget extends StatefulWidget {
   final Function(int) removeBranchField;
   final Function() addBranchField;
   final Function(List<StreetAddressModel>)? onBranchLocationsUpdated;
-
+  final List<StreetAddressModel> initialBranchLocations;
   const BranchWidget({
     Key? key,
     required this.branchControllers,
     required this.removeBranchField,
     required this.addBranchField,
     required this.onBranchLocationsUpdated,
+    required this.initialBranchLocations,
   }) : super(key: key);
 
   @override
@@ -640,30 +666,27 @@ class _BranchWidgetState extends State<BranchWidget> {
   }
 
   void initializeLocationWidgets() {
-    locationWidgets = widget.branchControllers.map((controller) {
+    branchLocations = widget.initialBranchLocations;
+
+    locationWidgets = widget.branchControllers.asMap().entries.map((entry) {
+      int index = entry.key;
+      TextEditingController controller = entry.value;
       return SellerLocationFieldWidget(
         streetController: controller,
+        initialLocation:
+            branchLocations.length > index ? branchLocations[index] : null,
         onSelected: (selectedLocation) {
-          int index = widget.branchControllers.indexOf(controller);
-          if (index >= 0 && index < branchLocations.length) {
-            setState(() {
+          setState(() {
+            if (index < branchLocations.length) {
               branchLocations[index] = selectedLocation;
-            });
-            widget.onBranchLocationsUpdated!(branchLocations);
-          }
+            } else {
+              branchLocations.add(selectedLocation);
+            }
+          });
+          widget.onBranchLocationsUpdated!(branchLocations);
         },
       );
     }).toList();
-
-    // Initialize with actual values from controllers
-    branchLocations = widget.branchControllers
-        .map((controller) => StreetAddressModel(
-              description: controller.text,
-              latitude: 0.0,
-              longitude: 0.0,
-              placeId: '',
-            ))
-        .toList();
   }
 
   @override
@@ -763,9 +786,12 @@ class SellerLocationFieldWidget extends ConsumerStatefulWidget {
     super.key,
     this.onSelected,
     required this.streetController,
+    this.initialLocation,
   });
   final Function(StreetAddressModel)? onSelected;
   final TextEditingController streetController;
+  final StreetAddressModel? initialLocation;
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _SellerLocationFieldWidgetState();
@@ -776,6 +802,15 @@ class _SellerLocationFieldWidgetState
   String query = '';
   bool showSuggestions = false;
   StreetAddressModel? selectedLocation;
+  @override
+  void initState() {
+    super.initState();
+    selectedLocation = widget.initialLocation;
+    if (selectedLocation != null) {
+      widget.streetController.text = selectedLocation!.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
@@ -861,6 +896,7 @@ class _SellerLocationFieldWidgetState
                             selectedLocation = address;
                             query = ''; // Clear the query to hide suggestions
                             showSuggestions = false;
+                            print('>>>>>>>>>>>>>>>>address$address');
                             widget.onSelected!(address);
                           });
                         },

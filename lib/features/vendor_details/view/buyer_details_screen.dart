@@ -222,15 +222,14 @@ class _BuyerAccountDetailsWidgetState
         usersLocation: selectedLocation != null
             ? jsonEncode({
                 'location': selectedLocation!.description,
-                'latitude': selectedLocation!.latitude,
-                'longitude': selectedLocation!.longitude, 
+                'latitude': selectedLocation!.latitude.toString(),
+                'longitude': selectedLocation!.longitude.toString(),
               })
             : null,
       );
       if (userId != null) {
         try {
           await _updateUserDetails(updatedData);
-
         } catch (e) {
           if (e is FormatException) {
             print('Error parsing location data: $e');

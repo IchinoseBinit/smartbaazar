@@ -164,7 +164,7 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                   duration: const Duration(milliseconds: 150),
                   height:
                       MediaQuery.of(context).size.height, // Full screen height
-                  child: CommentSection(id: feedproductid),
+                  child: StoryCommentSection(id: feedproductid),
                 );
               },
             ),
