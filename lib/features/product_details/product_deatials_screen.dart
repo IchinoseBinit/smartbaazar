@@ -1220,7 +1220,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   },
                                                 ),
                                                 Text(
-                                                    "User Rating: $rating"), // Print user rating
+                                                    "Give Rating: $rating"), // Print user rating
                                               ],
                                             );
                                           },

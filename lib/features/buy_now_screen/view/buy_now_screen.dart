@@ -63,7 +63,7 @@ class _BuyNowFormScreenState extends ConsumerState<BuyNowFormScreen> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController pricecontroller = TextEditingController();
   String selectedPaymentMethod = "pre-payement"; // Default payment method
-  String selectedDeliveryOption = "self pickup"; // Default delivery option
+  String selectedDeliveryOption = "store pickup"; // Default delivery option
   String hyperOption = 'standard';
   // String standard = 'Standard';
 

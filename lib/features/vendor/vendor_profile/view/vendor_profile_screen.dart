@@ -338,19 +338,18 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 18.h),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    border:
-                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Container(
+                      padding: EdgeInsets.all(5.h),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.r),
+                          border: Border.all(
+                              width: 1.w, color: const Color(0xffADADAD))),
+                      margin: EdgeInsets.all(8.0),
                       child: Text('Buyer Center'),
-                    ),
-                    const Divider(
-                      color: Color(0xffADADAD),
                     ),
                     Padding(
                       padding:
@@ -366,19 +365,18 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                 height: 20.h,
               ),
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    border:
-                        Border.all(width: 1.w, color: const Color(0xffADADAD))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Container(
+                      padding: EdgeInsets.all(5.h),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.r),
+                          border: Border.all(
+                              width: 1.w, color: const Color(0xffADADAD))),
+                      margin: EdgeInsets.all(8.0),
                       child: Text('Seller Center'),
-                    ),
-                    const Divider(
-                      color: Color(0xffADADAD),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
