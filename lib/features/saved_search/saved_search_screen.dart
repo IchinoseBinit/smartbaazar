@@ -66,7 +66,9 @@ class _SavedSearchScreenState extends ConsumerState<SavedSearchScreen> {
 
     return GenericSafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFF6F1F1),
+        extendBody: true,
+        backgroundColor: Colors.transparent,
+        // backgroundColor: const Color(0xFFF6F1F1),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.h),

@@ -53,7 +53,7 @@ class _StorySearchScreenState extends ConsumerState<StorySearchScreen> {
             focusNode: _focusNode,
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: "Search stories...",
+              hintText: "Search Story...",
               border: InputBorder.none,
               prefixIcon: Icon(Icons.search, color: Colors.grey),
               contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

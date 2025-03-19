@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -47,81 +48,93 @@ class _VendroDetailsScreenState extends ConsumerState<VendroDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GenericSafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(width: 1, color: Colors.black)),
-                      child: Image.asset(ImageConstant.personImage),
-                    ),
-                    SizedBox(
-                      width: 15.w,
-                    ),
-                    if (vendorName != null)
-                      Text(
-                        '$vendorName',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff000000),
-                        ),
-                      ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const AddToCartScreen()));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(9),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
+        SystemNavigator.pop();
+      },
+      child: GenericSafeArea(
+        child: Scaffold(
+          extendBody: true,
+          
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(width: 2, color: Colors.black)),
-                        child: SvgPicture.asset(
-                          openCart,
-                          colorFilter: const ColorFilter.mode(
-                              Color(0xff362677), BlendMode.srcIn),
+                            border: Border.all(width: 1, color: Colors.black)),
+                        child: Image.asset(ImageConstant.personImage),
+                      ),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      if (vendorName != null)
+                        Text(
+                          '$vendorName',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff000000),
+                          ),
+                        ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const AddToCartScreen()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(9),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(width: 2, color: Colors.black)),
+                          child: SvgPicture.asset(
+                            openCart,
+                            colorFilter: const ColorFilter.mode(
+                                Color(0xff362677), BlendMode.srcIn),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                // const PhotoAvatarContainerWidget(),
-                // SizedBox(
-                //   height: 16.h,
-                // ),
-                const BackgroundImageDescriptionWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const AccountDetailsWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const BankDetailsWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const VerifyAccountWidget(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const ChangePasswordWidget(),
-              ],
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  // const PhotoAvatarContainerWidget(),
+                  // SizedBox(
+                  //   height: 16.h,
+                  // ),
+                  const BackgroundImageDescriptionWidget(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const AccountDetailsWidget(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const BankDetailsWidget(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const VerifyAccountWidget(),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  const ChangePasswordWidget(),
+                ],
+              ),
             ),
           ),
         ),
@@ -620,7 +633,7 @@ class _PreferredTimeZoneDropdownState extends State<PreferredTimeZoneDropdown> {
           hintText: "Preferred Time Zone",
           hintStyle: TextStyle(
             color: const Color(0xFFADADAD),
-            fontSize: 14.sp,
+            fontSize: 13.sp,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),

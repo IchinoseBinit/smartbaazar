@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
+import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/payment/create_listing_payement.dart';
 import 'package:smartbazar/features/add_to_cart/api/smart_biz_login_api.dart';
 import 'package:smartbazar/features/add_to_cart/model/delivery_charge_model.dart';
@@ -1027,7 +1028,7 @@ class _OrderSummaryWidgetState extends ConsumerState<OrderSummaryWidget> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            const OnlineTransactionRecordScreen(),
+                                            const MyOrderScreen(),
                                       ));
                                 },
                                 child: const Text('OK'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ import 'package:smartbazar/features/auth/api/logout.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/become_smart_seller/view/smart_seller_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/buy_or_win_form/view/buy_or_win_screen.dart';
 import 'package:smartbazar/features/contact_us/view/contact_us_screen.dart';
 import 'package:smartbazar/features/exchange_adBost/view/exchange_adBost_screen.dart';
@@ -78,7 +80,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       "icon": Icons.mail,
       "title": 'Favourite',
       "subtitle": 'Listing',
-      "screen":  FavouriteListingScreen(),
+      "screen": FavouriteListingScreen(),
     },
     {
       "icon": Icons.saved_search,
@@ -596,20 +598,20 @@ class VendorProfileGridWidget extends StatelessWidget {
                     builder: (context) => const MyListingScreen(),
                   ));
             }
-                   if (data['subtitle'] == 'followers') {
-                     Navigator.push(
+            if (data['subtitle'] == 'followers') {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MySubscriptionScreen(),
                   ));
-                   }
-                   if (data['subtitle'] == 'favourite') {
-                     Navigator.push(
+            }
+            if (data['subtitle'] == 'favourite') {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  FavouriteListingScreen(),
+                    builder: (context) => FavouriteListingScreen(),
                   ));
-                   }
+            }
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0.w),
@@ -661,13 +663,13 @@ class VendorProfileGridWidget extends StatelessWidget {
   }
 }
 
-class BuyerCenterWidget extends StatelessWidget {
+class BuyerCenterWidget extends ConsumerWidget {
   final List<Map<String, dynamic>> buyerData;
 
   const BuyerCenterWidget({super.key, required this.buyerData});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Wrap(
       alignment: WrapAlignment.start, // Align items to the start
       spacing: 2.0, // Horizontal space between items
@@ -678,11 +680,17 @@ class BuyerCenterWidget extends StatelessWidget {
               15, // Fit 4 items in a row
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => buyerData[index]['screen'] as Widget,
-                ),
+              navigateToPage(
+                context: context,
+                page: buyerData[index]['screen'] as Widget,
+                ref: ref,
+                showNavBar: true, // Hide bottom navbar
               );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => buyerData[index]['screen'] as Widget,
+              //   ),
+              // );
             },
             child: Column(
               crossAxisAlignment:
@@ -727,19 +735,19 @@ class MyAccountWidget extends StatelessWidget {
 
   Future<void> _handleAction(BuildContext context, String title) async {
     if (title == 'Log Out') {
-            SmartClient.token = '';
-   SmartClient.refresh = '';
-   SmartClient.userId = '';
-   SmartClient.userName = '';
-   SmartClient.userEmail = '';
-   SmartClient.laravelSession = '';
-   SmartClient.phone = '';
-   SmartClient.userPhoto = '';
+      SmartClient.token = '';
+      SmartClient.refresh = '';
+      SmartClient.userId = '';
+      SmartClient.userName = '';
+      SmartClient.userEmail = '';
+      SmartClient.laravelSession = '';
+      SmartClient.phone = '';
+      SmartClient.userPhoto = '';
 
       SharedPreferences preferences = await SharedPreferences.getInstance();
-    //     await preferences.remove('accessToken');
-    // await preferences.remove('refreshToken');
-    await preferences.clear();
+      //     await preferences.remove('accessToken');
+      // await preferences.remove('refreshToken');
+      await preferences.clear();
       showCustomToast(context, "logged out successfully");
       await preferences.clear();
       Navigator.of(context, rootNavigator: true).pushReplacement(

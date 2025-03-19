@@ -747,7 +747,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

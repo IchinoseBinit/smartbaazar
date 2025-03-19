@@ -13,7 +13,7 @@ Future<List<FeedCommentModel>> getStorycomment(ref, String postid) async {
   try {
     final response = await client.request(
         requestType: RequestType.get,
-        url: 'https://smartbazaar.jianjun-rnd.com.np/api/users/feed_comment/$postid');
+        url: 'https://smartbazaar.jianjun-rnd.com.np/api/posts/showcomment/$postid');
 
     if (response.statusCode == 200) {
       final jsonResponse = response.data;

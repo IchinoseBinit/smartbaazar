@@ -16,7 +16,8 @@ class MyReturnScreen extends ConsumerWidget {
 
     return GenericSafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xffF6F1F1),
+        extendBody: true,
+        backgroundColor: Colors.transparent,
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.h),
           child: Column(
@@ -58,9 +59,9 @@ class MyReturnScreen extends ConsumerWidget {
               Expanded(
                   child: myReturnsAsyncValue.when(
                 data: (data) {
-                   print('Data: $data');
-                    print('Return Received: ${data.returnReceived}');
-                    print('Return Placed: ${data.returnPlaced}');
+                  print('Data: $data');
+                  print('Return Received: ${data.returnReceived}');
+                  print('Return Placed: ${data.returnPlaced}');
                   return DefaultTabController(
                     length: 2, // Number of tabs
                     child: Column(
@@ -91,7 +92,7 @@ class MyReturnScreen extends ConsumerWidget {
                                           itemBuilder: (context, index) {
                                             final returnReceivedItem = data
                                                 .returnReceived?.data?[index];
-                                          
+
                                             return Padding(
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 10.w),

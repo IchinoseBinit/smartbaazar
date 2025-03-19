@@ -248,7 +248,7 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
     });
   }
 
-  Future<void> _fetchOffers() async { 
+  Future<void> _fetchOffers() async {
     try {
       OffersResponse fetchedTypes = await repository.fetchOffers();
       getoffer = fetchedTypes.data;
@@ -634,6 +634,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           controller: titlecontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter title',
                               hintStyle: TextStyle(
@@ -680,6 +682,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               }
                             },
                             controller: eventaddress,
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
                             decoration: InputDecoration.collapsed(
                                 hintText: 'Enter address',
                                 hintStyle: TextStyle(
@@ -850,6 +854,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: companynamecontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter company name',
                               hintStyle: TextStyle(
@@ -908,6 +914,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: joblocationcontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter job location',
                               hintStyle: TextStyle(
@@ -957,6 +965,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: comapnycontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText:
                                   'Enter company name leav if not want to disclose',
@@ -1001,7 +1011,13 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               value.length < 10;
                         },
                         controller: descriptionController,
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         onEditingComplete: () {},
+                        onChanged: (value) {
+                          ref.read(showWarningProvider.notifier).state =
+                              value.length < 10;
+                        },
                         decoration: InputDecoration.collapsed(
                             hintText: 'Describe what makes your listing unique',
                             hintStyle: TextStyle(
@@ -1056,6 +1072,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                         SizedBox(height: 15.h),
                         TextField(
                           controller: whatsintheboxcontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           onSubmitted: (value) {
                             if (phoneresp?.result[1].id != null) {
                               // Ensure the dynamic key is safe to access
@@ -2391,6 +2409,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: auomobilecontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
                               hintStyle: TextStyle(
@@ -2524,6 +2544,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                       Expanded(
                         child: TextField(
                           controller: addresscontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter address',
                               hintStyle: TextStyle(
@@ -3386,6 +3408,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: youtubecontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter youtube link',
                               hintStyle: TextStyle(
@@ -3432,6 +3456,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: modelcontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Enter model',
                               hintStyle: TextStyle(
@@ -4089,6 +4115,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                               ]);
                             }
                           },
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Brand name',
                               hintStyle: TextStyle(
@@ -4315,6 +4343,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             }
                           },
                           controller: grocerrbradncontroller,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Grocery Brand',
                               hintStyle: TextStyle(
@@ -4604,6 +4634,8 @@ class _CreateNewListinScreenState extends ConsumerState<CreateNewListinScreen> {
                             // TextField with the placeholder for typing
                             TextField(
                               controller: tagController,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
                               onChanged: (text) {
                                 setState(() {
                                   _inputText = text;

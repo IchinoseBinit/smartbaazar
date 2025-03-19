@@ -110,12 +110,15 @@ class _BuyerDetailsScreenState extends ConsumerState<BuyerDetailsScreen> {
               // SizedBox(
               //   height: 16.h,
               // ),
-
+    
               // const VerifyAccountWidget(),
               SizedBox(
                 height: 16.h,
               ),
               const ChangePasswordWidget(),
+              SizedBox(
+                height: 58.h,
+              ),
             ],
           ),
         ),

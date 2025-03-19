@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/constant/image_constant.dart';
+import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
 import 'package:smartbazar/features/feed_page/view/feed_page_screen.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/message/view/message_view_screen.dart';
@@ -56,20 +57,42 @@ class MainScreen extends ConsumerWidget {
       onWillPop: () async {
         bool exitApp = await showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: Text("Exit App?"),
-            content: Text("Do you really want to exit?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text("No"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text("Yes"),
-              ),
-            ],
-          ),
+          builder: (context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setStateDialog) {
+              return AlertDialog(
+                title: Text(
+                  "Exit App?",
+                  style: TextStyle(
+                    color: const Color(0xff362677),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text("Do you really want to exit?"),
+                actions: [
+                  GeneralTextButton(
+                    width: MediaQuery.of(context).size.width,
+                    marginH: 0,
+                    fgColor: Colors.white,
+                    bgColor: const Color(0xff362677),
+                    title: 'Yes',
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                  SizedBox(height: 15.h),
+                  GeneralTextButton(
+                    width: MediaQuery.of(context).size.width,
+                    marginH: 0,
+                    fgColor: Colors.white,
+                    bgColor: const Color(0xffADADAD),
+                    title: 'No',
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                ],
+              );
+            });
+          },
         );
         return exitApp ?? false;
       },

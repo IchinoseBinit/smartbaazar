@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/feed_page/api/feed_gift_card_api.dart';
-import 'package:smartbazar/features/feed_page/api/list_comment_story_api.dart';
+import 'package:smartbazar/features/feed_page/api/list_comment_feed_api.dart';
 import 'package:smartbazar/features/feed_page/api/post_feed_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/list_comment_of_feed.dart';
 import 'package:smartbazar/features/feed_page/view/add_comment_provider.dart';
@@ -239,13 +239,13 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
       children: [
         InkWell(
           onTap: () {
-              Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VendorHomeScreen(
-                                  vid: int.tryParse(widget.userId)!,
-                                  vendorName: widget.vendorName!),
-                            ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VendorHomeScreen(
+                      vid: int.tryParse(widget.userId)!,
+                      vendorName: widget.vendorName!),
+                ));
           },
           child: Material(
             elevation: 5,
@@ -253,7 +253,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
             child: Container(
               // padding: const EdgeInsets.all(10),
               width: double.infinity,
-          
+
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                 colors: [
@@ -335,8 +335,8 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                               setState(
                                                   () {}); // Retry fetching the image on tap
                                             },
-                                            child:
-                                                Icon(Icons.refresh, size: 24.sp),
+                                            child: Icon(Icons.refresh,
+                                                size: 24.sp),
                                           );
                                         },
                                       )
@@ -1037,7 +1037,7 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
 
   @override
   Widget build(BuildContext context) {
-    final commentAsyncValue = ref.watch(getStorycommentProvider(widget.id));
+    final commentAsyncValue = ref.watch(getfeedcommentProvider(widget.id));
 
     return DraggableScrollableSheet(
       initialChildSize: 1,
@@ -1122,8 +1122,7 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                                       widget.id, _commentcontroller.text)
                                   .future);
 
-                              ref.invalidate(
-                                  getStorycommentProvider(widget.id));
+                              ref.invalidate(getfeedcommentProvider(widget.id));
 
                               _commentcontroller.clear();
 
