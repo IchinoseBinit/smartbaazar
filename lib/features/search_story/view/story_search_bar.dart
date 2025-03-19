@@ -84,7 +84,7 @@ class _StorySearchBarState extends State<StorySearchBar> {
               controller: widget.searchcontroller,
               onChanged: widget.unchanged,
               decoration: InputDecoration(
-                hintText: 'Enter Vendor Name',
+                hintText: 'Search Story ',
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(color: Color(0xFF090909)),

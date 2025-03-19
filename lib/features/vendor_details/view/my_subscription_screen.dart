@@ -467,41 +467,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 20.w),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(4, (index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ref
-                                                .read(_selectedIndexProvider
-                                                    .notifier)
-                                                .state = index;
-                                            _pageController.animateToPage(
-                                              index,
-                                              duration: const Duration(
-                                                  milliseconds: 50),
-                                              curve: Curves.easeInOut,
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 5.h,
-                                            width: 5.w,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            decoration: BoxDecoration(
-                                              color: selectedIndex == index
-                                                  ? Colors.amber
-                                                  : Colors.grey,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ),
-                                  ),
+                              
                                   SizedBox(
                                     height: 15.h,
                                   ),
@@ -640,7 +606,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                      SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("My Subscription"),
+                  child: Text("My Connections"),
                 ),
               ),
                     SliverToBoxAdapter(

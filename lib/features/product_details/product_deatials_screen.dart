@@ -739,7 +739,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Rs ${data.result?.price} ",
+                                      Text("Rs 99999 ",
                                           style: headerstyle.copyWith(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 15,
@@ -1221,7 +1221,7 @@ class ProductDetailScreen extends ConsumerWidget {
                                                   },
                                                 ),
                                                 Text(
-                                                    "User Rating: $rating"), // Print user rating
+                                                    "Give Rating: $rating"), // Print user rating
                                               ],
                                             );
                                           },

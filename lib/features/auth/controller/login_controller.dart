@@ -162,12 +162,12 @@ class LoginController extends StateNotifier<GenericState> {
   }
 
   void _handleError(BuildContext context, dynamic error) {
-    String errorMessage = 'An unexpected error occurred.';
+    String errorMessage = 'Username or password invalid.';
     if (error is DioException) {
       final responseData = error.response?.data;
       if (responseData is Map<String, dynamic>) {
         errorMessage =
-            responseData['message'] ?? 'An unexpected error occurred.';
+            responseData['message'] ?? 'Username or password invalid.';
       } else if (responseData is String) {
         errorMessage = responseData;
       }
