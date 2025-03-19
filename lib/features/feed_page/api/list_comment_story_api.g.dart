@@ -6,7 +6,7 @@ part of 'list_comment_story_api.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getStorycommentHash() => r'2257f8e15065af457429c5a8fe995788e8e435c1';
+String _$getStorycommentHash() => r'2105a9a53143f22bba7799ad6217d4e7198a17db';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const getStorycommentProvider = GetStorycommentFamily();
 
 /// See also [getStorycomment].
-class GetStorycommentFamily extends Family<AsyncValue<List<FeedCommentModel>>> {
+class GetStorycommentFamily extends Family<AsyncValue<List<CommentModel>>> {
   /// See also [getStorycomment].
   const GetStorycommentFamily();
 
@@ -73,7 +73,7 @@ class GetStorycommentFamily extends Family<AsyncValue<List<FeedCommentModel>>> {
 
 /// See also [getStorycomment].
 class GetStorycommentProvider
-    extends AutoDisposeFutureProvider<List<FeedCommentModel>> {
+    extends AutoDisposeFutureProvider<List<CommentModel>> {
   /// See also [getStorycomment].
   GetStorycommentProvider(
     String postid,
@@ -108,8 +108,7 @@ class GetStorycommentProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<FeedCommentModel>> Function(GetStorycommentRef provider)
-        create,
+    FutureOr<List<CommentModel>> Function(GetStorycommentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -126,7 +125,7 @@ class GetStorycommentProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<FeedCommentModel>> createElement() {
+  AutoDisposeFutureProviderElement<List<CommentModel>> createElement() {
     return _GetStorycommentProviderElement(this);
   }
 
@@ -146,14 +145,13 @@ class GetStorycommentProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetStorycommentRef
-    on AutoDisposeFutureProviderRef<List<FeedCommentModel>> {
+mixin GetStorycommentRef on AutoDisposeFutureProviderRef<List<CommentModel>> {
   /// The parameter `postid` of this provider.
   String get postid;
 }
 
 class _GetStorycommentProviderElement
-    extends AutoDisposeFutureProviderElement<List<FeedCommentModel>>
+    extends AutoDisposeFutureProviderElement<List<CommentModel>>
     with GetStorycommentRef {
   _GetStorycommentProviderElement(super.provider);
 

@@ -51,6 +51,7 @@ import 'package:smartbazar/features/product_details/api/product_details_provider
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_story_screen.dart';
 
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/main.dart';

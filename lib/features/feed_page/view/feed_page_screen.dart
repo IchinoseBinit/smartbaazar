@@ -3,23 +3,18 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
-import 'package:smartbazar/features/auth/view/bottom_navigation_bar.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
-import 'package:smartbazar/features/b2b_screen/view/fakescreen.dart';
 import 'package:smartbazar/features/left_arrow/view/left_arrow_screen.dart';
 import 'package:smartbazar/features/scran_screen/scan_screen.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
 import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
-import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/feed_page/api/get_feed_of_following_api.dart';
@@ -32,21 +27,14 @@ import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart'
 import 'package:smartbazar/features/feed_page/widget/promo_card.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
-import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
-import 'package:smartbazar/features/message/view/message_view_screen.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
-import 'package:smartbazar/features/pending_approval/pending_approval.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
 import 'package:smartbazar/features/used_screen/view/used_screen.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:smartbazar/general_widget/general_safe_area.dart';
-import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 3);
@@ -639,11 +627,10 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                                   vertical: 7, horizontal: 20),
                               dense: true,
                               title: Text(
-                                
                                 product.name,
                                 style: headerstyle.copyWith(
-                                //  decoration: BoxDecoration(),
-                                  
+                                  //  decoration: BoxDecoration(),
+
                                   fontWeight: FontWeight.w600,
                                   color: ColorConstant.blackColor,
                                   fontSize:
@@ -1045,7 +1032,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               passref: ref,
                               products: feedItem.products!
                                   .map((product) => {
-                                    
                                         "imagePath": product.image ??
                                             "https://smartbazaar.jianjun-rnd.com.np/uploads/smartbazaar_app_loading_logo.png",
                                         "price": product.price ?? "N/A",

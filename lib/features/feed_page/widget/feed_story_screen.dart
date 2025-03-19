@@ -11,8 +11,7 @@ import 'package:smartbazar/features/feed_page/api/list_comment_story_api.dart';
 
 import 'package:smartbazar/features/feed_page/api/post_story_wow_api.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
-import 'package:smartbazar/features/feed_page/model/list_comment_of_feed.dart';
-import 'package:smartbazar/features/feed_page/widget/feed_container.dart';
+import 'package:smartbazar/features/feed_page/model/list_comment_of_story.dart';
 import 'package:smartbazar/features/feed_page/widget/story_search_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
@@ -387,6 +386,7 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
       useSafeArea: true,
       context: context,
       isScrollControlled: true,
+       backgroundColor: Colors.transparent,
       builder: (_) {
         return WillPopScope(
           onWillPop: () async {
@@ -988,76 +988,81 @@ class _FeedStoryScreenState extends ConsumerState<FeedStoryScreen>
                   bottom: 10,
                   child: Container(
                     color: Colors.transparent,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.8,
-                          height: 89.h,
-                          color: Colors.black.withOpacity(0.3),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.whatshot,
-                                  size: 50,
-                                  color: Colors.orange,
-                                ),
-                                CountdownTimer(
-                                  targetDate: DateTime.now().add(const Duration(
-                                      days: 3,
-                                      hours: 12,
-                                      minutes: 12,
-                                      seconds: 5)), //change this
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.2,
-                          height: 88.h,
-                          color: Colors.orange,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Ending Soon",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10.sp),
-                                ),
-                                SizedBox(height: 10.h),
-                                InkWell(
-                                  onTap: () {
-                                    navigateToPage(
-                                      ref: ref,
-                                      context: context,
-                                      page: ProductDetailScreen(
-                                          productId:
-                                              storyId?[_currentVendorIndex]
-                                                      [_currentStoryIndex] ??
-                                                  '0'),
-                                      //  ref: ref,
-                                      showNavBar:
-                                          false, // Hide the navbar when moving to this screen
-                                    );
-                                  },
-                                  child: const Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_box_outlined,
-                                        color: Colors.black,
-                                      ),
-                                      Text("Buy"),
-                                    ],
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.8,
+                            height: 89.h,
+                            color: Colors.black.withOpacity(0.3),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 8),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.whatshot,
+                                    size: 45,
+                                    color: Colors.orange,
                                   ),
-                                )
-                              ],
+                                  CountdownTimer(
+                                    targetDate: DateTime.now().add(
+                                        const Duration(
+                                            days: 3,
+                                            hours: 12,
+                                            minutes: 12,
+                                            seconds: 5)), //change this
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.2,
+                            height: 89.h,
+                            color: Colors.orange,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Ending Soon",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10.sp),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  InkWell(
+                                    onTap: () {
+                                      navigateToPage(
+                                        ref: ref,
+                                        context: context,
+                                        page: ProductDetailScreen(
+                                            productId:
+                                                storyId?[_currentVendorIndex]
+                                                        [_currentStoryIndex] ??
+                                                    '0'),
+                                        //  ref: ref,
+                                        showNavBar:
+                                            false, // Hide the navbar when moving to this screen
+                                      );
+                                    },
+                                    child: const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_box_outlined,
+                                          color: Colors.black,
+                                        ),
+                                        Text("Buy"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ))
             ],
@@ -1128,7 +1133,7 @@ class _CountdownTimerState extends State<CountdownTimer> {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 50,
+              width: 48,
               height: 50,
               child: CircularProgressIndicator(
                 value: value /
@@ -1141,8 +1146,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
             ),
             Text(
               value.toString().padLeft(2, '0'),
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -1152,8 +1157,8 @@ class _CountdownTimerState extends State<CountdownTimer> {
         const SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
+          style: TextStyle(
+            fontSize: 10.sp,
             fontWeight: FontWeight.w500,
             color: Colors.white,
           ),
@@ -1169,7 +1174,8 @@ class StoryCommentSection extends ConsumerStatefulWidget {
   final String id;
 
   @override
-  ConsumerState<StoryCommentSection> createState() => _StoryCommentSectionState();
+  ConsumerState<StoryCommentSection> createState() =>
+      _StoryCommentSectionState();
 }
 
 class _StoryCommentSectionState extends ConsumerState<StoryCommentSection> {
@@ -1181,9 +1187,9 @@ class _StoryCommentSectionState extends ConsumerState<StoryCommentSection> {
     final commentAsyncValue = ref.watch(getStorycommentProvider(widget.id));
 
     return DraggableScrollableSheet(
-      initialChildSize: 1,
-      minChildSize: 1,
-      maxChildSize: 1,
+      initialChildSize: 0.5,
+      minChildSize: 0.3,
+      maxChildSize: 0.9,
       builder: (context, scrollController) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -1224,7 +1230,7 @@ class _StoryCommentSectionState extends ConsumerState<StoryCommentSection> {
                       controller: scrollController,
                       itemCount: comment.length,
                       itemBuilder: (context, index) {
-                        FeedCommentModel value = comment[index];
+                        CommentModel value = comment[index];
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(value.photo ?? ""),
@@ -1240,7 +1246,7 @@ class _StoryCommentSectionState extends ConsumerState<StoryCommentSection> {
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) =>
-                    const Center(child: Text('Please login again')),
+                    const Center(child: Text('No Comments Available')),
               ),
               // Comment Input Section
               TextField(

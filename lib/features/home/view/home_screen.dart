@@ -9,14 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
-import 'package:smartbazar/features/add_to_cart/api/delivery_charge_api.dart';
 import 'package:smartbazar/features/add_to_cart/view/adde_to_card_screeen.dart';
 import 'package:smartbazar/features/auth/view/login_screen.dart';
 import 'package:smartbazar/features/auth/view/signup_screen.dart';
@@ -26,7 +24,6 @@ import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart'
 import 'package:smartbazar/features/feed_page/widget/feed_story_add_widget.dart';
 import 'package:smartbazar/features/home/api/story_search_api.dart';
 import 'package:smartbazar/features/home/model/home_search_model.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/product_details/api/check_enquire_provider.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
@@ -55,8 +52,6 @@ import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/search_story/view/story_search_bar.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
-import 'package:smartbazar/features/home/model/home_story_model.dart'
-    as home_model;
 
 import '../../events_screen/view/events_screen.dart';
 import '../../grocessary_screen/view/grocary_screen.dart';
@@ -906,7 +901,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                             error: (error, stackTrace) {
-                              return Text("Please check your internet");
+                              return const Text("Please check your internet");
                             },
                             loading: () {
                               // Shimmer loading effect
@@ -1771,7 +1766,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               );
                             },
                             error: (error, stackTrace) {
-                              return Text("Please check your internet");
+                              return const Text("Please check your internet");
                             },
                             loading: () => SizedBox(
                               height: 350.h, // Adjust the height dynamically
@@ -2398,7 +2393,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(38),
                             bottomLeft: Radius.circular(38),
                           ),
@@ -2455,7 +2450,8 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                           onChanged: onchanged,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            suffixIcon: searchController != null
+                            suffixIcon: searchController != null &&
+                                    searchController!.text.isNotEmpty
                                 ? InkWell(
                                     onTap: () {
                                       searchController?.clear();
@@ -2468,7 +2464,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                                   )
                                 : null,
                             focusedBorder: InputBorder.none,
-                            prefixIconConstraints: BoxConstraints(
+                            prefixIconConstraints: const BoxConstraints(
                               minWidth: 40,
                             ),
                             prefixIcon: Padding(
@@ -2476,16 +2472,16 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                               child: Icon(
                                 Icons.search,
                                 size: screenWidth * 0.05,
-                                color: Color(0xff8c1d54),
+                                color: const Color(0xff8c1d54),
                               ),
                             ),
                             hintText: "Marketplace",
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontSize: 12,
                               letterSpacing: 1.3,
                               //  fontFamily: GoogleFonts.san().fontFamily,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xff8c1d54),
+                              color: Color(0xff8c1d54),
                             ),
                             contentPadding: EdgeInsets.only(bottom: 6.h),
                           ),
@@ -2511,7 +2507,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
                             color: Colors.transparent,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(30),
                               bottomRight: Radius.circular(30),
                             ),
@@ -2672,7 +2668,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                       },
                                       icon: Column(
                                         children: [
-                                          Icon(Icons.person_2_outlined),
+                                          const Icon(Icons.person_2_outlined),
                                           Text(
                                             "Log in",
                                             style: headerstyle.copyWith(
@@ -2698,7 +2694,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                       },
                                       icon: Column(
                                         children: [
-                                          Icon(Icons.person_2_outlined),
+                                          const Icon(Icons.person_2_outlined),
                                           Text(
                                             "Sign up",
                                             style: headerstyle.copyWith(
@@ -2724,7 +2720,7 @@ class valuenotifilersidebutton extends StatelessWidget {
                                       },
                                       icon: Column(
                                         children: [
-                                          Icon(Icons.person_add),
+                                          const Icon(Icons.person_add),
                                           Text(
                                             "MemberSellship",
                                             style: headerstyle.copyWith(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -9,26 +9,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:smartbazar/common/controller/generic_state.dart';
 import 'package:smartbazar/constant/button_nav_sheet.dart';
 import 'package:smartbazar/constant/color_constant.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/b2b_screen/view/b2b_screen.dart';
 import 'package:smartbazar/features/brand_bazar/brand_bazar_screen.dart';
-import 'package:smartbazar/features/bussiness_tab_screen/view/business_tab_screen.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
-import 'package:smartbazar/features/create_listing/view/create_new_listing_screen.dart';
 import 'package:smartbazar/features/events_screen/view/events_screen.dart';
 import 'package:smartbazar/features/grocessary_screen/view/grocary_screen.dart';
 import 'package:smartbazar/features/home/api/search_product.dart';
 import 'package:smartbazar/features/home/model/search_product_model.dart';
-import 'package:smartbazar/features/home/view/header.dart';
 import 'package:smartbazar/features/home/view/home_screen.dart';
 import 'package:smartbazar/features/jobs_screen/view/jobs_screen.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
@@ -36,8 +31,6 @@ import 'package:smartbazar/features/product_details/api/check_enquire_provider.d
 import 'package:smartbazar/features/product_details/constant/all_product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/constant/product_detail_widget.dart';
 import 'package:smartbazar/features/product_details/model/enquire_model.dart';
-import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
-import 'package:smartbazar/features/report_complain/view/report_complain_screen.dart';
 import 'package:smartbazar/features/scratch_win/screen/scratch_card.dart';
 import 'package:smartbazar/features/services_screen/service_screen.dart';
 import 'package:smartbazar/features/socio_screen/view/socio_screen.dart';
@@ -47,29 +40,23 @@ import 'package:smartbazar/features/vendor/vendor_profile/api/get_vendor_posts_a
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_all_products_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_card_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_product_search_api.dart';
-import 'package:smartbazar/features/vendor/vendor_profile/api/vendor_profile_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/api/vendorfollow_unfollow_api.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_all_products_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_profile_name.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/vendor_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/model/venodr_search_model.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/postcard.dart';
+import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_story_screen.dart';
 import 'package:smartbazar/features/vendor/view/added_disputes_screen.dart';
-import 'package:smartbazar/features/vendor/view/disputes_screen.dart';
-import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
-import 'package:smartbazar/features/vendor_details/view/my_subscription_screen.dart';
 import 'package:smartbazar/main.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart' as http;
 
 final _selectedIndexProvider = StateProvider<int>((ref) => 0);
 bool isSliverAppBarVisible = true; // Track the visibility of SliverAppBar
@@ -1250,7 +1237,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                             });
                                                           },
                                                           child: Container(
-                                                            
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     horizontal:
@@ -1549,7 +1535,6 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                         milliseconds: 400),
                                                     child:
                                                         SingleChildScrollView(
-                                                          
                                                       scrollDirection:
                                                           Axis.horizontal,
                                                       child: Wrap(
@@ -1711,7 +1696,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 child: Wrap(
-                                                  alignment: WrapAlignment.start,
+                                                  alignment:
+                                                      WrapAlignment.start,
                                                   spacing: 3.w,
                                                   children: List.generate(
                                                       vendorsearchrespnse
@@ -2284,161 +2270,9 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
   }
 }
 
-class DottedContainer extends StatelessWidget {
-  final String? firstImage;
-  final List<Deal>? deals;
-  final String vname;
 
-  const DottedContainer(
-      {super.key,
-      required this.firstImage,
-      required this.deals,
-      required this.vname});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 10.h,
-      ),
-      child: SizedBox(
-        height: 180.h,
-        child: Row(
-          children: [
-            _buildFirstItem(firstImage!, vname, context),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: deals?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final data = deals![index];
-                  return buildDealItemWidget(data: data);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildFirstItem(String firstImage, String name, BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (context) => const CreateNewListinScreen(),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        padding: EdgeInsets.only(
-          bottom: 5.h,
-        ),
-        child: DottedBorder(
-          color: Colors.black,
-          strokeWidth: 2,
-          borderType: BorderType.RRect,
-          radius: const Radius.circular(12),
-          dashPattern: const [6, 5],
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 10.h,
-              ),
-              SizedBox(
-                width: 100.w,
-                height: 100.h,
-                child: Image.network(
-                  firstImage ?? 'https://via.placeholder.com/120',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Spacer(),
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13.sp,
-                  color: Colors.black,
-                ),
-              ),
-              Icon(Icons.add),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class buildDealItemWidget extends StatelessWidget {
-  const buildDealItemWidget({
-    super.key,
-    required this.data,
-  });
-
-  final Deal data;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // padding: EdgeInsets.symmetric(horizontal: 2.w),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: DottedBorder(
-        color: const Color(0xffD9D9D9),
-        strokeWidth: 2,
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
-        dashPattern: const [6, 5],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20.h),
-            Image.network(
-              data.image ?? 'https://via.placeholder.com/110',
-              height: 90.h,
-              width: 90.w,
-              fit: BoxFit.fill,
-            ),
-            SizedBox(height: 30.h),
-            SizedBox(
-              height: 30.h,
-              width: 110.w,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  padding: WidgetStateProperty.all(EdgeInsets.zero),
-                  shape: WidgetStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  backgroundColor: WidgetStateProperty.all(
-                    const Color(0xff362677),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  data.discount_percentage == null
-                      ? '0%'
-                      : '${data.discount_percentage}%',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12.sp,
-                      color: ColorConstant.whiteColor),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // class VendorFirstTabBarSection extends StatefulWidget {
 //   final TabController tabController;

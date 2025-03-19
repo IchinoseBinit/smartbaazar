@@ -80,36 +80,30 @@ class MyReturnScreen extends ConsumerWidget {
                             // Return Received tab
                             Container(
                               padding: EdgeInsets.symmetric(vertical: 20.h),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    if (data.returnReceived?.data?.isNotEmpty ??
-                                        false)
-                                      ListView.separated(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            final returnReceivedItem = data
-                                                .returnReceived?.data?[index];
-
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w),
-                                              child: ReturnOrderDetails(
-                                                  returnItem:
-                                                      returnReceivedItem),
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) =>
-                                              SizedBox(height: 14.h),
-                                          itemCount:
-                                              data.returnReceived!.data!.length)
-                                    else
-                                      const Center(
-                                          child: Text('No Returns Received')),
-                                  ],
-                                ),
+                              child: Expanded(
+                                child: data.returnReceived?.data?.isNotEmpty ??
+                                        false
+                                    ? ListView.separated(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          final returnReceivedItem =
+                                              data.returnReceived?.data?[index];
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w),
+                                            child: ReturnOrderDetails(
+                                                returnItem: returnReceivedItem),
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(height: 14.h),
+                                        itemCount:
+                                            data.returnReceived!.data!.length,
+                                      )
+                                    : const Center(
+                                        child: Text('No Returns Received')),
                               ),
                             ),
                             Container(

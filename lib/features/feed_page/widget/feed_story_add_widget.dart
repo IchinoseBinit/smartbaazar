@@ -18,18 +18,17 @@ class FeedStoryAddWidget extends ConsumerStatefulWidget {
   final String userId;
   final String productid;
 
-  const FeedStoryAddWidget({
-    super.key,
-    required this.index,
-    this.showGift,
-    this.addSearch = false,
-    this.vendorName,
-    this.vendorImage,
-    this.storyCount,
-    this.feedStoryContent,
-    required this.userId,
-    required this.productid
-  });
+  const FeedStoryAddWidget(
+      {super.key,
+      required this.index,
+      this.showGift,
+      this.addSearch = false,
+      this.vendorName,
+      this.vendorImage,
+      this.storyCount,
+      this.feedStoryContent,
+      required this.userId,
+      required this.productid});
 
   @override
   ConsumerState<FeedStoryAddWidget> createState() => _FeedStoryAddWidgetState();
@@ -123,6 +122,15 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
                     width: 95.r,
                     height: 95.r,
                     decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xffEACACB).withOpacity(0.5),
+                          Colors.white.withOpacity(0.7),
+                        ],
+                        stops: [0.0, 1.0],
+                      ),
                       border: Border.all(
                           width: 3.w, color: const Color(0xffEACACB)),
                       shape: BoxShape.circle,
@@ -133,7 +141,7 @@ class _FeedStoryAddWidgetState extends ConsumerState<FeedStoryAddWidget> {
 
                   Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black.withOpacity(0.5)),
+                      border: Border.all(color: Colors.grey.withOpacity(0.5)),
                       shape: BoxShape.circle,
                     ),
                     child: CircleAvatar(

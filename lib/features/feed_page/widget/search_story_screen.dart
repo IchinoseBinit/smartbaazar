@@ -522,6 +522,19 @@ class _SearchStoryScreenState extends ConsumerState<SearchStoryScreen>
                       style: TextStyle(fontSize: 7.sp, color: Colors.grey),
                     ),
                     SizedBox(height: 10.h),
+                    SizedBox(height: 10.h),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset("assets/icon/starIcon.png",
+                          color: Colors.grey),
+                    ),
+                    Text(
+                      (_currentStoryIndex < avgRatingCounts.length)
+                          ? avgRatingCounts[_currentStoryIndex].toString()
+                          : '0',
+                      style: TextStyle(fontSize: 7.sp, color: Colors.grey),
+                    ),
+                    SizedBox(height: 10.h),
                     // Share button
                     GestureDetector(
                       onTap: () {

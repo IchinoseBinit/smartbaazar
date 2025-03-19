@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/feed_page/model/get_feed_stories_model.dart';
@@ -7,12 +8,12 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'get_for_you_story_api.g.dart';
 
 @riverpod
-Future<GetFeedStoriesModel> getForYouStory(GetForYouStoryRef ref) async {
+Future<GetFeedStoriesModel> getForYouStory(Ref ref) async {
   final SmartClient client = SmartClient();
 
   try {
     final response = await client.request(
-      requestType: RequestType.getWithToken,
+      requestType: RequestType.get,
       url: ApiConstants.getForYoufeedstory,
     );
     if (response.statusCode == 200) {
@@ -21,8 +22,7 @@ Future<GetFeedStoriesModel> getForYouStory(GetForYouStoryRef ref) async {
       final jsonResponse = response.data;
       // Ensure the data field is handled correctly
       if (jsonResponse is Map<String, dynamic>) {
-        if (jsonResponse['data'] is List<dynamic> &&
-            jsonResponse['data'].isEmpty) {
+        if (jsonResponse['data'] is List<dynamic>) {
           return const GetFeedStoriesModel(
               data: FeedStoryData(feedstory: FeedStory()));
         } else {
