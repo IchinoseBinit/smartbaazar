@@ -470,7 +470,10 @@ class _UpdateListingState extends State<UpdateListing> {
 
     return Scaffold(
       backgroundColor: const Color(0xffF6F1F1),
-      body: SingleChildScrollView(
+      body: 
+      Stack(
+        children: [
+        SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -2240,12 +2243,33 @@ class _UpdateListingState extends State<UpdateListing> {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Center(
-                    child: isloading
-                        ? const Center(child: CircularProgressIndicator())
-                        : GeneralEelevatedButton(
-                            text: isloading ? 'Submitting...' : 'Submit',
-                            onPresssed: () async {
+               
+
+                
+
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+         Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      color: Colors.white, // Add background color if necessary
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GeneralTextButton(
+                            marginH: 0,
+                            fgColor: Colors.white,
+                            bgColor: const Color(0xff362677),
+                            title: isloading ? 'Submitting...' : 'Submit',
+                            onPressed: () async {
                               // print(
                               //     'Category: ${selectedcategopry?.id ?? widget.prod?.categoryId}');
                               // print(
@@ -2353,7 +2377,7 @@ class _UpdateListingState extends State<UpdateListing> {
                                       actions: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.pop(context);
+                                              Navigator.pop(context, "Please Check your input");
                                           },
                                           child: const Text("OK"),
                                         ),
@@ -2392,16 +2416,11 @@ class _UpdateListingState extends State<UpdateListing> {
                               }
                             },
                           ),
+                        ],
+                      ),
+                    ),
                   ),
-
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      ],
       ),
     );
   }
