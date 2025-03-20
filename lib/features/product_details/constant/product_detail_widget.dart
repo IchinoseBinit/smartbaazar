@@ -232,7 +232,15 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                                   style: headerstyle.copyWith(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 9.sp,
-                                      color: Colors.black),
+                                      color: Colors.black,
+                                      shadows: [
+                                          Shadow(
+                                            offset: Offset(1, 1), // Adjust for shadow position
+                                            blurRadius: 3, // Adjust for shadow softness
+                                            color: Colors.white, // White shadow color
+                                          ),
+                                        ],
+                                      ),
                                 ),
                               ],
                             ),
@@ -398,7 +406,7 @@ class _ProductDetailWidgetState extends ConsumerState<ProductDetailWidget> {
                                 ];
                               },
                               child: const Icon(
-                                size: 20,
+                                size: 25,
                                 color: ColorConstant.blackColor,
                                 Icons.more_vert,
                               ),

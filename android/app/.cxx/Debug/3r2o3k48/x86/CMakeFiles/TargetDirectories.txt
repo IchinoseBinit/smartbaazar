@@ -1,0 +1,2 @@
+/home/punkholic/random/github/smartbaazar/android/app/.cxx/Debug/3r2o3k48/x86/CMakeFiles/edit_cache.dir
+/home/punkholic/random/github/smartbaazar/android/app/.cxx/Debug/3r2o3k48/x86/CMakeFiles/rebuild_cache.dir

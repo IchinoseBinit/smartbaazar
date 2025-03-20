@@ -2422,7 +2422,7 @@ class StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
                           onChanged: onchanged,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            suffixIcon: searchController != null
+                            suffixIcon: searchController?.text.isEmpty != true
                                 ? InkWell(
                                     onTap: () {
                                       searchController?.clear();
