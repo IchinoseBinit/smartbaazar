@@ -8,9 +8,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
+import 'package:smartbazar/features/vendor_details/api/trending_vendor_api.dart';
 import 'package:smartbazar/network_service/smart-client.dart';
 import 'dart:ui' as ui;
 
@@ -62,7 +64,7 @@ class MySubscriptionScreen extends ConsumerStatefulWidget {
 }
 
 class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   // HomeSearchResopnse? _storysearchresponse;
   // List<Post> _storysearchresult = []; // ✅ Local List instead of StateProvider
 
@@ -83,6 +85,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
   List<SubscriptionData> _subscriptions = []; // Store subscriptions
   final ScrollController _vendorScrollController = ScrollController();
   final Map<String, GlobalKey> _captureKeys = {};
+  late TabController _tabController;
 
   //innsersearch
 
@@ -212,6 +215,8 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
 
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+
     _vendorScrollController.addListener(_scrollListener);
     _loadSubscriptions();
     _loadSubscriptions();
@@ -334,15 +339,16 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
   ];
   final int _currentIndex = 0;
 
-  @override
-  void dispose() {
-    dynamictabController.dispose();
-    _debouncer.close();
-    _searchController.dispose();
-    super.dispose();
-    // _scrollController.dispose();
-    // super.dispose();s
-  }
+@override
+void dispose() {
+  _tabController.dispose();  // Dispose _tabController
+  dynamictabController.dispose();  // Dispose dynamictabController
+  _debouncer.close();
+  _searchController.dispose();
+  _vendorScrollController.dispose();  // Dispose ScrollController if used
+  super.dispose();
+}
+
 
   int selectedIndexx = 0; // State variable for selected index
   bool isSliverAppBarVisible = true;
@@ -430,7 +436,7 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         pinned: true,
                         floating: true,
                         delegate: StickyHeaderDelegate(
-                          showbackbutton: true,
+                            showbackbutton: true,
                             visible: isSliverAppBarVisible,
                             searchController: _searchController,
                             onchanged: (value) {},
@@ -467,7 +473,6 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                              
                                   SizedBox(
                                     height: 15.h,
                                   ),
@@ -603,192 +608,262 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         ),
                       ),
                     ),
-                     SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("My Connections"),
-                ),
-              ),
                     SliverToBoxAdapter(
-                      child: SingleChildScrollView(
-                        controller: _vendorScrollController,
-                        child: Column(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("My Connections"),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        indicatorPadding: const EdgeInsets.symmetric(
+                            horizontal: 16), // Aligns indicator
+                        tabs: [
+                          Tab(
+                            icon: Image.asset(
+                              "assets/images/news.png",
+                              height: 30,
+                              width: 30,
+                            ),
+                            text: "My Connections",
+                          ),
+                          Tab(
+                            icon: Image.asset(
+                              "assets/images/grow.png",
+                              height: 30,
+                              width: 30,
+                            ),
+                            text: "Explore",
+                          ),
+                        ],
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height *
+                              0.7, // 70% of screen height
+                        ),
+                        child: TabBarView(
+                          controller: _tabController,
                           children: [
-                            if (_subscriptions.isEmpty &&
-                                !_isLoading) // ✅ Show message when empty
-                              Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Center(
-                                  child: Text(
-                                    "No Data Available",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey),
-                                  ),
-                                ),
-                              )
-                            else
-                              ..._subscriptions.map(
-                                (e) => Column(
-                                  children: [
-                                    RepaintBoundary(
-                                      key: _captureKeys.putIfAbsent(
-                                          e.vendor_id!, () => GlobalKey()),
-                                      child: Container(
-                                        color: Colors.white,
-                                        child: BigContainer(
-                                          membershipid: int.tryParse(e
-                                                      .vendor_card
-                                                      ?.membership_id ??
-                                                  '1') ??
-                                              1,
-                                          storycount: e.vendor_card?.storycount
-                                                  .toString() ??
-                                              '0',
-                                          lat: double.tryParse(
-                                                  e.vendor_card?.latitude ??
-                                                      '0') ??
-                                              0.0,
-                                          long: double.tryParse(
-                                                  e.vendor_card?.longitude ??
-                                                      '0.0') ??
-                                              0.0,
-                                          vendorid: e.vendor_id ?? '9',
-                                          title: e.vendor_card?.name ?? '',
-                                          logo: e.vendor_card?.photo ??
-                                              'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
-                                          contact:
-                                              e.vendor_card?.phone ?? '977+',
-                                          storyCount: e.vendor_card?.storycount
-                                                  .toString() ??
-                                              '0',
-                                          membershipTitle:
-                                              e.vendor_card?.membership_title ??
-                                                  'N/A',
-                                          total_connections: e
-                                                  .vendor_card?.connection
-                                                  .toString() ??
-                                              '0',
-                                          total_prize_worth: e
-                                                  .vendor_card?.prize_worth
-                                                  .toString() ??
-                                              '0',
-                                          location:
-                                              e.vendor_card?.nearestbranch ??
-                                                  'kathmandu',
-                                          Cnumber:
-                                              e.vendor_card?.phone ?? '9744+',
-                                          issubbed:
-                                              e.vendor_card?.subscribed == 1
-                                                  ? true
-                                                  : false,
-                                          memebertitle:
-                                              e.vendor_card?.membership_title ??
-                                                  'Title',
-                                          onsubscribed: () {
-                                            ref.invalidate(
-                                                getSubscriptionProvider(
-                                                    pageval: _pageVal));
-                                          },
-                                          ondoenload: () => _captureAndSave(
-                                              _captureKeys[e.vendor_id]!),
-                                          onconnectclicked: () {
-                                            ref.invalidate(
-                                                getSubscriptionProvider(
-                                                    pageval: _pageVal));
-                                          },
+                            SingleChildScrollView(
+                              controller: _vendorScrollController,
+                              child: Column(
+                                children: [
+                                  if (_subscriptions.isEmpty &&
+                                      !_isLoading) // ✅ Show message when empty
+                                    Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Center(
+                                        child: Text(
+                                          "No Data Available",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey),
                                         ),
                                       ),
+                                    )
+                                  else
+                                    ..._subscriptions.map(
+                                      (e) => Column(
+                                        children: [
+                                          RepaintBoundary(
+                                            key: _captureKeys.putIfAbsent(
+                                                e.vendor_id!,
+                                                () => GlobalKey()),
+                                            child: Container(
+                                              color: Colors.white,
+                                              child: BigContainer(
+                                                membershipid: int.tryParse(e
+                                                            .vendor_card
+                                                            ?.membership_id ??
+                                                        '1') ??
+                                                    1,
+                                                storycount: e
+                                                        .vendor_card?.storycount
+                                                        .toString() ??
+                                                    '0',
+                                                lat: double.tryParse(e
+                                                            .vendor_card
+                                                            ?.latitude ??
+                                                        '0') ??
+                                                    0.0,
+                                                long: double.tryParse(e
+                                                            .vendor_card
+                                                            ?.longitude ??
+                                                        '0.0') ??
+                                                    0.0,
+                                                vendorid: e.vendor_id ?? '9',
+                                                title:
+                                                    e.vendor_card?.name ?? '',
+                                                logo: e.vendor_card?.photo ??
+                                                    'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                                                contact: e.vendor_card?.phone ??
+                                                    '977+',
+                                                storyCount: e
+                                                        .vendor_card?.storycount
+                                                        .toString() ??
+                                                    '0',
+                                                membershipTitle: e.vendor_card
+                                                        ?.membership_title ??
+                                                    'N/A',
+                                                total_connections: e
+                                                        .vendor_card?.connection
+                                                        .toString() ??
+                                                    '0',
+                                                total_prize_worth: e.vendor_card
+                                                        ?.prize_worth
+                                                        .toString() ??
+                                                    '0',
+                                                location: e.vendor_card
+                                                        ?.nearestbranch ??
+                                                    'kathmandu',
+                                                Cnumber: e.vendor_card?.phone ??
+                                                    '9744+',
+                                                issubbed:
+                                                    e.vendor_card?.subscribed ==
+                                                            1
+                                                        ? true
+                                                        : false,
+                                                memebertitle: e.vendor_card
+                                                        ?.membership_title ??
+                                                    'Title',
+                                                onsubscribed: () {
+                                                  ref.invalidate(
+                                                      getSubscriptionProvider(
+                                                          pageval: _pageVal));
+                                                },
+                                                ondoenload: () =>
+                                                    _captureAndSave(
+                                                        _captureKeys[
+                                                            e.vendor_id]!),
+                                                onconnectclicked: () {
+                                                  ref.invalidate(
+                                                      getSubscriptionProvider(
+                                                          pageval: _pageVal));
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          Divider(
+                                              height: 3.h,
+                                              color: ColorConstant.grayColor),
+                                        ],
+                                      ),
                                     ),
-                                    Divider(
-                                        height: 3.h,
-                                        color: ColorConstant.grayColor),
-                                  ],
-                                ),
+                                  if (_isLoading) // Show loading indicator when data is being fetched
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                ],
                               ),
-                            if (_isLoading) // Show loading indicator when data is being fetched
-                              const Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: CircularProgressIndicator(),
-                              ),
+                            ),
+                            SingleChildScrollView(
+                                child: ref.watch(gettrendingcardProvider).when(
+                                    data: (data) {
+                                      return Column(
+                                        children: data.trending.map(
+                                          (e) {
+                                            return BigContainer(
+                                              membershipid: int.tryParse(e
+                                                          .vendor_card
+                                                          ?.membership_id ??
+                                                      '1') ??
+                                                  1,
+                                              storycount: e.vendor_card
+                                                      ?.storycount
+                                                      .toString() ??
+                                                  '0',
+                                              lat: double.tryParse(e
+                                                          .vendor_card
+                                                          ?.latitude ??
+                                                      '0') ??
+                                                  0.0,
+                                              long: double.tryParse(e
+                                                          .vendor_card
+                                                          ?.longitude ??
+                                                      '0.0') ??
+                                                  0.0,
+                                              vendorid: e.id
+                                                      ??
+                                                  '9',
+                                              title:
+                                                  e.vendor_card?.name ??
+                                                      '',
+                                              logo: e.vendor_card
+                                                      ?.photo ??
+                                                  'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                                              contact:
+                                                  e.vendor_card?.phone ??
+                                                      '977+',
+                                              storyCount: e.vendor_card
+                                                      ?.storycount
+                                                      .toString() ??
+                                                  '0',
+                                              membershipTitle: e
+                                                      .vendor_card
+                                                      ?.membership_title ??
+                                                  'N/A',
+                                              total_connections: e
+                                                      .vendor_card?.connection.toString()??
+                                                    
+                                                  '0',
+                                              total_prize_worth: e
+                                                      .vendor_card
+                                                      ?.prize_worth
+                                                      .toString() ??
+                                                  '0',
+                                              location: e.vendor_card
+                                                      ?.nearestbranch ??
+                                                  'kathmandu',
+                                              Cnumber:
+                                                  e.vendor_card?.phone ??
+                                                      '9744+',
+                                              issubbed: e.vendor_card
+                                                          ?.subscribed ==
+                                                      1
+                                                  ? true
+                                                  : false,
+                                              memebertitle: e.vendor_card
+                                                      ?.membership_title ??
+                                                  'Title',
+                                              onsubscribed: () {
+                                                ref.invalidate(
+                                                    getSubscriptionProvider(
+                                                        pageval: _pageVal));
+                                              },
+                                              ondoenload: () => _captureAndSave(
+                                                  _captureKeys[e
+                                                      .id
+                                                      ]!),
+                                              onconnectclicked: () {
+                                                ref.invalidate(
+                                                    getSubscriptionProvider(
+                                                        pageval: _pageVal));
+                                              },
+                                            );
+                                          },
+                                        ).toList(),
+                                      );
+                                    },
+                                    error: (error, stackTrace) {
+                                      print('error');
+                                      return Text('please login');
+                                    },
+                                    loading: () => CircularProgressIndicator(),)),
                           ],
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: subscriptionAsyncValue.when(
-                        data: (data) {
-                          // return Column(
-                          //   //   children: [],
-                          //   children: data.subscriptions!
-                          //       .map((e) => Column(
-                          //         spacing: 2,
-                          //             mainAxisAlignment: MainAxisAlignment.start,
-                          //             crossAxisAlignment:
-                          //                 CrossAxisAlignment.center,
-                          //             children: [
-                          //               BigContainer(
-                          //                 storycount:
-                          //                     e.vendor?.storyCount.toString() ??
-                          //                         '0',
-
-                          //                 lat: double.tryParse(
-                          //                         e.vendor?.latitude ?? '0') ??
-                          //                     0.0,
-                          //                 long: double.tryParse(
-                          //                         e.vendor?.longitude ?? '0.0') ??
-                          //                     0.0,
-                          //                 id: e.id ?? '9',
-                          //                 title: e.vendor?.name ?? '',
-                          //                 logo: e.vendor?.photo ??
-                          //                     'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
-                          //                 contact: e.vendor?.phone ?? '977+',
-                          //                 storyCount:
-                          //                     e.vendor?.storyCount.toString() ??
-                          //                         '0',
-                          //                 membershipTitle:
-                          //                     e.vendor?.membershipTitle ?? 'N/A',
-                          //                 // storycount: 'storycount',
-                          //                 total_connections:
-                          //                     e.vendor?.connection.toString() ??
-                          //                         '0',
-                          //                 total_prize_worth:
-                          //                     e.vendor?.prizeWorth.toString() ??
-                          //                         '0',
-                          //                 location: e.vendor?.nearestbranch ??
-                          //                     'kathmandu',
-                          //                 Cnumber: e.vendor?.phone ?? '9744+',
-                          //                 issubbed: true,
-                          //                 memebertitle: '',
-                          //                 onsubscribed: () {},
-                          //                 ondoenload: () {},
-                          //                 onconnectclicked: () {},
-                          //               ),
-                          //               Divider(
-
-                          //                 height: 3.h,
-                          //                 color: ColorConstant.grayColor,
-                          //               )
-                          //             ],
-                          //           )) // Replace with actual data
-                          //       .toList(),
-                          // );
-                        },
-                        error: (err, stackTrace) =>
-                            Center(child: Text("Error: $err")),
-                        loading: () =>
-                            Center(child: CircularProgressIndicator()),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 55.h,
-                    ))
+                    )
                   ],
                 ),
-                valuenotifilersidebutton(
-                    showSideBar: showSideBar, isSectionsVisible: true),
+                // valuenotifilersidebutton(
+                //     showSideBar: showSideBar, isSectionsVisible: true),
                 Positioned(
                   top: 65,
                   left: 48,
@@ -865,7 +940,8 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
                         return const Center(child: CircularProgressIndicator());
                       },
                       error: (error, stack) {
-                        return Center(child: Text(error.toString()));
+                        print('object');
+                        return Center(child: Text('PLease login'));
                       },
                     ),
                   ),
