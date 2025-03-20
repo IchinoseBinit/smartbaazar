@@ -341,7 +341,10 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
     } catch (error) {
       // Display error message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $error')),
+        SnackBar(
+            content: Text(
+          error.toString(),
+        )),
       );
     } finally {
       setState(() {

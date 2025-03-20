@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/feed_page/api/story_search_api.dart';
 import 'package:smartbazar/features/feed_page/widget/search_story_screen.dart';
@@ -120,7 +121,7 @@ class _StorySearchScreenState extends ConsumerState<StorySearchScreen> {
             // Search Results
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -154,68 +155,95 @@ class _StorySearchScreenState extends ConsumerState<StorySearchScreen> {
                       itemBuilder: (context, index) {
                         final post = posts[index];
 
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey[200]!,
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
+                        return Card(
+                          margin: EdgeInsetsDirectional.symmetric(
+                              horizontal: 0, vertical: 8.h),
+                          elevation: 4,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6.w, vertical: 5.h),
+                            width: MediaQuery.of(context).size.width,
+
+                            // margin: const EdgeInsets.only(bottom: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: const Color(0xffFFFFFF),
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 197, 196, 196),
+                                width: 1,
                               ),
-                            ],
-                          ),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                post.image ?? "",
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: Colors.grey[200],
-                                    child: const Icon(Icons.image,
-                                        color: Colors.grey),
-                                  );
-                                },
-                              ),
-                            ),
-                            title: Text(
-                              post.title ?? "No Title",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              post.vendorName ?? "Unknown Vendor",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                            onTap: () {
-                              navigateToPage(
-                                context: context,
-                                page: SearchStoryScreen(
-                                  productid: post.id ?? '',
-                                  initialIndex: 0,
-                                  author: post.vendorName ?? '',
-                                  storyCount: 1,
-                                  feedStory: data.data?.homeStory?.story,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.1),
+                                  spreadRadius: 10,
+                                  blurRadius: 10,
+                                  offset: const Offset(2, 1),
                                 ),
-                                ref: ref,
-                                showNavBar: false,
-                              );
-                            },
+                              ],
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 12),
+                              leading: Container(
+                                padding: EdgeInsets.only(
+                                    top: 2.h,
+                                    left: 2.w,
+                                    right: 2.w,
+                                    bottom: 2.h),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  color: const Color(0xffF6F1F1),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(2),
+                                  child: Image.network(
+                                    post.image ?? "",
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: const Icon(
+                                            Icons.image_not_supported,
+                                            color: Colors.grey),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                post.title ?? "No Title",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              subtitle: Text(
+                                post.vendorName ?? "Unknown Vendor",
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: const Color(0xff36383C),
+                                ),
+                              ),
+                              onTap: () {
+                                navigateToPage(
+                                  context: context,
+                                  page: SearchStoryScreen(
+                                    productid: post.id ?? '',
+                                    initialIndex: 0,
+                                    author: post.vendorName ?? '',
+                                    storyCount: 1,
+                                    feedStory: data.data?.homeStory?.story,
+                                  ),
+                                  ref: ref,
+                                  showNavBar: false,
+                                );
+                              },
+                            ),
                           ),
                         );
                       },

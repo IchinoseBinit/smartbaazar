@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/vendor_details/model/update_user_detail_model.dart';
@@ -86,6 +87,15 @@ Future<UpdateUserDetail> updateUserDetails(
     }
   } on DioException catch (e) {
     if (e.response != null) {
+      final errorData = e.response?.data;
+      if (errorData != null && errorData is Map<String, dynamic>) {
+        final errorMessages = (errorData['errors'] as Map<String, dynamic>?)
+            ?.values
+            .map((e) => e.join(', '))
+            .join('\n');
+
+        throw errorMessages ?? "Validation failed.";
+      }
       throw Exception('API error: ${e.response?.statusCode}');
     } else {
       throw Exception('Network error: ${e.message}');
@@ -98,7 +108,7 @@ Future<UpdateUserDetail> updateUserDetails(
 
 @riverpod
 Future<UpdateUserDetail> updateBuyerUserDetails(
-  UpdateBuyerUserDetailsRef ref,
+  Ref ref,
   String fullName,
   String phoneNumber,
   String userName,
@@ -145,8 +155,21 @@ Future<UpdateUserDetail> updateBuyerUserDetails(
     } else {
       throw Exception('Failed to update user details');
     }
+  } on DioException catch (e) {
+    if (e.response?.statusCode == 422) {
+      // Extract specific error messages from the response
+      final errorData = e.response?.data;
+      if (errorData != null && errorData is Map<String, dynamic>) {
+        final errorMessages = (errorData['errors'] as Map<String, dynamic>?)
+            ?.values
+            .map((e) => e.join(', '))
+            .join('\n');
+
+        throw errorMessages ?? "Validation failed.";
+      }
+    }
+    throw Exception("Something went wrong. Please try again.");
   } catch (e) {
-    print('Error updating user details: $e');
-    rethrow; // Re-throw the exception to propagate it up the call stack
+    throw Exception("An error occurred: ${e.toString()}");
   }
 }
