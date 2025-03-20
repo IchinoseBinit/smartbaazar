@@ -437,7 +437,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                           
                               SizedBox(
                                 height: 15.h,
                               ),
@@ -454,14 +453,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   },
                                   itemBuilder: (context, index) {
                                     Map<String, dynamic> data = _items[index];
-
+    
                                     // Highlight only when index == 4
                                     bool isActive = index == 1;
                                     return GestureDetector(
                                       onTap: () {
                                         ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
+                                            .read(_selectedIndexProvider
+                                                .notifier)
                                             .state = index;
                                       },
                                       child: AnimatedContainer(
@@ -495,7 +494,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           Color(0xffdd9d9d9)),
                                                   color: isActive
                                                       ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
+                                                      : const Color(
+                                                              0xffD9D9D9)
                                                           .withOpacity(0.5),
                                                   width: 20,
                                                   height: 20,
@@ -505,7 +505,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   data['icon'],
                                                   color: isActive
                                                       ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
+                                                      : const Color(
+                                                              0xffD9D9D9)
                                                           .withOpacity(0.5),
                                                   width: 20,
                                                   height: 20,
@@ -519,7 +520,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   fontWeight: FontWeight.w700,
                                                   color: isActive
                                                       ? Colors.amber
-                                                      : const Color(0xffD9D9D9)
+                                                      : const Color(
+                                                              0xffD9D9D9)
                                                           .withOpacity(0.5),
                                                 ),
                                               ),
@@ -580,7 +582,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                         unchanged: (value) {
                           if (value.isEmpty) {
                             setState(() {
-                              _storysearchresult = []; // ✅ Clear list if empty
+                              _storysearchresult =
+                                  []; // ✅ Clear list if empty
                             });
                           }
                         },
@@ -589,7 +592,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           setState(() {
                             _isPopupVisible =
                                 !_isPopupVisible; // Close the popup
-
+    
                             _storysearchresult = []; // ✅ Clear list if empty
                           });
                         },
@@ -617,8 +620,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   children: [
                                     // Outer Circle
                                     Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 5.w),
                                       width: 95.r,
                                       height: 95.r,
                                       decoration: BoxDecoration(
@@ -629,17 +632,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         shape: BoxShape.circle,
                                       ),
                                     ),
-
+    
                                     // Vendor Image
                                     Container(
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
+                                        border:
+                                            Border.all(color: Colors.black),
                                         shape: BoxShape.circle,
                                       ),
                                       child: CircleAvatar(
                                         radius: 38.r,
-                                        backgroundColor: const Color(0x7F7F7F73)
-                                            .withOpacity(0.45),
+                                        backgroundColor:
+                                            const Color(0x7F7F7F73)
+                                                .withOpacity(0.45),
                                         backgroundImage: SmartClient
                                                     .userPhoto ==
                                                 ""
@@ -651,7 +656,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 as ImageProvider<Object>,
                                       ),
                                     ),
-
+    
                                     // Vendor Name - Adjusted Position
                                     Positioned(
                                       left: 10.w,
@@ -674,7 +679,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         ),
                                       ),
                                     ),
-
+    
                                     // Search Icon
                                     Positioned(
                                       bottom: -5.h,
@@ -725,9 +730,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           false,
                                       feedStoryContent: _storysearchresponse!
                                           .data.home_story!.story!,
-                                      userId:
-                                          _storysearchresult[index].vendorId ??
-                                              '',
+                                      userId: _storysearchresult[index]
+                                              .vendorId ??
+                                          '',
                                     );
                                   },
                                 )
@@ -735,11 +740,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   data: (feedStoryData) {
                                     final feedStoryContent =
                                         feedStoryData.data?.feedstory;
-                                    final posts = feedStoryContent?.posts ?? [];
-
+                                    final posts =
+                                        feedStoryContent?.posts ?? [];
+    
                                     return posts.isNotEmpty
                                         ? ListView.builder(
-                                            padding: EdgeInsets.only(left: 3.w),
+                                            padding:
+                                                EdgeInsets.only(left: 3.w),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             itemCount: posts.length,
@@ -748,8 +755,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               return FeedStoryAddWidget(
                                                 productid: story.id!,
                                                 index: index,
-                                                vendorName: story.vendorName ??
-                                                    "Unknown Vendor",
+                                                vendorName:
+                                                    story.vendorName ??
+                                                        "Unknown Vendor",
                                                 vendorImage: story
                                                         .vendorImage ??
                                                     "https://example.com/default-image.png",
@@ -797,9 +805,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     height: 60.h,
                                     child: Center(
                                       child: Text(
-                                        error
-                                                .toString()
-                                                .contains('Session has expired')
+                                        error.toString().contains(
+                                                'Session has expired')
                                             ? 'Please log in again.'
                                             : 'Error: $error',
                                       ),
@@ -849,7 +856,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   itemCount: data.buynow.length,
                                   itemBuilder: (context, index) {
                                     Buynowmodel resp = data.buynow[index];
-
+    
                                     return buyorwin_widget(
                                       ref: ref,
                                       postid: resp.post_id!,
@@ -881,8 +888,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       5, // Adjust this number for the number of shimmer items
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.w),
                                       child: Shimmer.fromColors(
                                         baseColor: Colors.grey[300]!,
                                         highlightColor: Colors.grey[100]!,
@@ -901,7 +908,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           SizedBox(
                             height: 10.h,
                           ),
-
+    
                           // Display Products for the selected category
                           category.when(
                             data: (data) {
@@ -918,13 +925,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 data.event, // EVENT
                                 data.grocarry, // GROCERY
                               ];
-
+    
                               // Ensure selectedIndex is valid and get products
                               List<CategoryProduct> products =
                                   productsList[selectedIndexx];
-
-                              dynamicHeight = products.isEmpty ? 120.h : 570.h;
-
+    
+                              dynamicHeight =
+                                  products.isEmpty ? 120.h : 570.h;
+    
                               return SizedBox(
                                 height: dynamicHeight,
                                 width: double.infinity,
@@ -940,7 +948,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         itemBuilder: (context, index) {
                                           bool isSelected =
                                               index == selectedIndexx;
-
+    
                                           return GestureDetector(
                                             onTap: () {
                                               setState(() {
@@ -991,17 +999,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   spacing: 5.w,
                                                   runSpacing: 5.h,
                                                   children: List.generate(
-                                                      products.length, (index) {
+                                                      products.length,
+                                                      (index) {
                                                     CategoryProduct prod =
                                                         products[index];
                                                     //yeaiho
-
+    
                                                     return ProductDetailWidget(
                                                       onenquiredclicked: () {
                                                         // print(
                                                         //     'lanka ${prod.id}');
-
-                                                        getEnquire(ref, prod.id)
+    
+                                                        getEnquire(
+                                                                ref, prod.id)
                                                             .then(
                                                           (value) {
                                                             value.data?.enquire ==
@@ -1017,9 +1027,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                         (BuildContext
                                                                             context) {
                                                                       return SizedBox(
-                                                                        height: MediaQuery.of(context).size.height *
-                                                                            0.8, // Use 80% of the screen height
-
+                                                                        height:
+                                                                            MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
+    
                                                                         child:
                                                                             SendMessageBottomWidget(
                                                                           ref:
@@ -1053,7 +1063,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                         false, // Hide bottom navbar
                                                                   );
                                                             // if ()
-
+    
                                                             // SendMessageBottomWidget(
                                                             //     ref: ref,
                                                             //     productidid:
@@ -1092,8 +1102,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           'assets/icon/loading.svg',
                                                       didcountpercentage: prod
                                                           .discount_percentage,
-                                                      distance:
-                                                          prod.shortestDistance,
+                                                      distance: prod
+                                                          .shortestDistance,
                                                       issponsored: prod
                                                               .userdetails
                                                               ?.sponsored ??
@@ -1102,26 +1112,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           .userdetails
                                                           ?.shortestDistance,
                                                       wow: prod.wow,
-                                                      comment: prod.commentCount
+                                                      comment: prod
+                                                          .commentCount
                                                           .toString(),
-                                                      avg_rating: prod.avgRating
+                                                      avg_rating: prod
+                                                          .avgRating
                                                           ?.toDouble(),
                                                       offer: prod.offers,
-                                                      vendorid:
-                                                          prod.userdetails?.id,
+                                                      vendorid: prod
+                                                          .userdetails?.id,
                                                       lefttile: categories[
                                                           selectedIndexx],
                                                       vendorname: prod
                                                               .userdetails
                                                               ?.name ??
                                                           '',
-                                                      discounttedPrice:
-                                                          prod.discountedPrice,
+                                                      discounttedPrice: prod
+                                                          .discountedPrice,
                                                       Vimage: prod
                                                           .userdetails?.photo,
                                                       price: prod.price,
                                                       title: prod.title,
-                                                      productImage: prod.image,
+                                                      productImage:
+                                                          prod.image,
                                                       membershipColor: prod
                                                               .userdetails
                                                               ?.memberColor ??
@@ -1139,7 +1152,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             ),
                                           )
                                         : Padding(
-                                            padding: EdgeInsets.only(top: 20.h),
+                                            padding:
+                                                EdgeInsets.only(top: 20.h),
                                             child: nolistingfound(),
                                           ),
                                   ],
@@ -1168,8 +1182,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               .w, // Placeholder width for product item
                                           height: 250
                                               .h, // Placeholder height for product item
-                                          color:
-                                              Colors.grey, // Placeholder color
+                                          color: Colors
+                                              .grey, // Placeholder color
                                         ),
                                       );
                                     },
@@ -1182,9 +1196,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                             height: 5.h,
                           ),
                           // Expanded(
-
+    
                           // child: ProductDetailWidget(),),
-
+    
                           SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -1209,7 +1223,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           buyorwin.when(
                             data: (data) {
                               double dynamicHeight;
-
+    
                               if (dynamictabController.index == 0) {
                                 dynamicHeight =
                                     data.insidearr[0].isEmpty ? 140.h : 600.h;
@@ -1229,7 +1243,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               return SizedBox(
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
-                                  height: dynamicHeight, // Main dynamic height
+                                  height:
+                                      dynamicHeight, // Main dynamic height
                                   width: double.infinity,
                                   child: TabBarView(
                                     controller: dynamictabController,
@@ -1260,13 +1275,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ),
                                           data.insidearr[0].isEmpty
                                               ? Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 5.h),
+                                                  padding: EdgeInsets.only(
+                                                      top: 5.h),
                                                   child: Center(
-                                                      child: nolistingfound()),
+                                                      child:
+                                                          nolistingfound()),
                                                 )
                                               : SizedBox(
-                                                  child: SingleChildScrollView(
+                                                  child:
+                                                      SingleChildScrollView(
                                                     scrollDirection: Axis
                                                         .horizontal, // Horizontal scrolling
                                                     child: Wrap(
@@ -1276,11 +1293,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           .h, // Vertical space between rows
                                                       children: List.generate(
                                                           data.insidearr[0]
-                                                              .length, (index) {
+                                                              .length,
+                                                          (index) {
                                                         GlobalModel prod =
                                                             data.insidearr[0]
                                                                 [index];
-
+    
                                                         return Padding(
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -1299,7 +1317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                   print(
                                                                       'lapu ${value.data?.enquire == 0}');
                                                                   // if ()
-
+    
                                                                   // SendMessageBottomWidget(
                                                                   //     ref: ref,
                                                                   //     productidid:
@@ -1327,7 +1345,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                             long: prod.user[0]
                                                                     .longitude ??
                                                                 '0.0',
-                                                            productid: prod.id,
+                                                            productid:
+                                                                prod.id,
                                                             membershipid: prod
                                                                 .user
                                                                 .first
@@ -1338,18 +1357,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                 .posttypename,
                                                             didcountpercentage:
                                                                 prod.discount_percentage,
-                                                            shortestDistance: prod
-                                                                .shortestDistance,
+                                                            shortestDistance:
+                                                                prod.shortestDistance,
                                                             distance: prod
                                                                 .user[0]
                                                                 .shortestDistance,
-                                                            avg_rating:
-                                                                prod.avg_rating,
-                                                            offer: prod.offers,
-                                                            vendorid: prod.user
-                                                                .first.user_id,
-                                                            comment:
-                                                                prod.commentnum,
+                                                            avg_rating: prod
+                                                                .avg_rating,
+                                                            offer:
+                                                                prod.offers,
+                                                            vendorid: prod
+                                                                .user
+                                                                .first
+                                                                .user_id,
+                                                            comment: prod
+                                                                .commentnum,
                                                             wow: prod.wow,
                                                             issponsored: prod
                                                                 .user[0]
@@ -1391,7 +1413,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         children: [
                                           if (data.domestic.isNotEmpty)
                                             SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
+                                              scrollDirection:
+                                                  Axis.horizontal,
                                               child: Row(
                                                 children:
                                                     data.domestic.map((e) {
@@ -1409,9 +1432,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                           ),
                                           data.doma.isEmpty ||
                                                   data.doma[0].isEmpty
-                                              ? Center(child: nolistingfound())
+                                              ? Center(
+                                                  child: nolistingfound())
                                               : SizedBox(
-                                                  child: SingleChildScrollView(
+                                                  child:
+                                                      SingleChildScrollView(
                                                     scrollDirection: Axis
                                                         .horizontal, // Horizontal scrolling
                                                     child: Wrap(
@@ -1423,16 +1448,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           data.doma[0].length,
                                                           (index) {
                                                         GlobalModel prod =
-                                                            data.doma[0][index];
+                                                            data.doma[0]
+                                                                [index];
                                                         print(
                                                             "laukatp ${prod.post_type_id} and ${prod.title}");
-
+    
                                                         return ProductDetailWidget(
                                                           onenquiredclicked:
                                                               () {
                                                             print(
                                                                 'lanka ${prod.id}');
-
+    
                                                             getEnquire(ref,
                                                                     prod.id)
                                                                 .then(
@@ -1447,14 +1473,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                         context:
                                                                             context,
                                                                         builder:
-                                                                            (BuildContext
-                                                                                context) {
+                                                                            (BuildContext context) {
                                                                           return SizedBox(
-                                                                            height:
-                                                                                MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
-
-                                                                            child:
-                                                                                SendMessageBottomWidget(
+                                                                            height: MediaQuery.of(context).size.height * 0.8, // Use 80% of the screen height
+    
+                                                                            child: SendMessageBottomWidget(
                                                                               ref: ref,
                                                                               productidid: prod.id,
                                                                             ),
@@ -1465,10 +1488,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                         context:
                                                                             context,
                                                                         page: ChatScreen(
-                                                                            consumerref:
-                                                                                ref,
-                                                                            threadId:
-                                                                                value.data!.thread!.id!,
+                                                                            consumerref: ref,
+                                                                            threadId: value.data!.thread!.id!,
                                                                             username: value.data!.thread!.subject!,
                                                                             postId: value.data!.thread!.post_id!),
                                                                         ref:
@@ -1477,7 +1498,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                             false, // Hide bottom navbar
                                                                       );
                                                                 // if ()
-
+    
                                                                 // SendMessageBottomWidget(
                                                                 //     ref: ref,
                                                                 //     productidid:
@@ -1510,16 +1531,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               .user
                                                               .first
                                                               .membership_id,
-                                                          posttype:
-                                                              prod.post_type_id,
-                                                          lefttile:
-                                                              prod.posttypename,
+                                                          posttype: prod
+                                                              .post_type_id,
+                                                          lefttile: prod
+                                                              .posttypename,
                                                           tradeImage:
                                                               domesticicon,
-                                                          didcountpercentage: prod
-                                                              .discount_percentage,
-                                                          Vimage: prod
-                                                              .user.first.photo,
+                                                          didcountpercentage:
+                                                              prod.discount_percentage,
+                                                          Vimage: prod.user
+                                                              .first.photo,
                                                           shortestDistance: prod
                                                               .user[0]
                                                               .shortestDistance,
@@ -1536,16 +1557,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           issponsored: prod
                                                               .user[0]
                                                               .sponsored!,
-                                                          vendorname:
-                                                              prod.contactName,
+                                                          vendorname: prod
+                                                              .contactName,
                                                           discounttedPrice:
                                                               prod.discont,
                                                           price: prod.price,
                                                           title: prod.title,
                                                           productImage:
                                                               prod.imageUrl,
-                                                          similarproductCount: prod
-                                                              .similarproductCount,
+                                                          similarproductCount:
+                                                              prod.similarproductCount,
                                                           membershipColor: prod
                                                               .user
                                                               .first
@@ -1570,7 +1591,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                         children: [
                                           if (data.domestic.isNotEmpty)
                                             SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
+                                              scrollDirection:
+                                                  Axis.horizontal,
                                               child: Row(
                                                 children:
                                                     data.spotlight.map((e) {
@@ -1600,11 +1622,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     (index) {
                                                   GlobalModel prod =
                                                       data.spot[0][index];
-
+    
                                                   return ProductDetailWidget(
                                                     onenquiredclicked: () {
-                                                      print('lanka ${prod.id}');
-
+                                                      print(
+                                                          'lanka ${prod.id}');
+    
                                                       getEnquire(ref, prod.id)
                                                           .then(
                                                         (value) {
@@ -1621,11 +1644,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                       (BuildContext
                                                                           context) {
                                                                     return SizedBox(
-                                                                      height: MediaQuery.of(context)
-                                                                              .size
-                                                                              .height *
+                                                                      height: MediaQuery.of(context).size.height *
                                                                           0.8, // Use 80% of the screen height
-
+    
                                                                       child:
                                                                           SendMessageBottomWidget(
                                                                         ref:
@@ -1659,14 +1680,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                       false, // Hide bottom navbar
                                                                 );
                                                           // if ()
-
+    
                                                           // SendMessageBottomWidget(
                                                           //     ref: ref,
                                                           //     productidid:
                                                           //         prod.id);
                                                         },
                                                       ).catchError((error) {
-                                                        print('Error: $error');
+                                                        print(
+                                                            'Error: $error');
                                                       });
                                                     },
                                                     savedid: prod.savedByLoggedUser ==
@@ -1679,9 +1701,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                     onRefresh: () {
                                                       refresh();
                                                     },
-                                                    lat:
-                                                        prod.user[0].latitude ??
-                                                            '0.0',
+                                                    lat: prod.user[0]
+                                                            .latitude ??
+                                                        '0.0',
                                                     long: prod.user[0]
                                                             .longitude ??
                                                         '0.0',
@@ -1691,36 +1713,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                         .shortestDistance,
                                                     membershipid: prod.user
                                                         .first.membership_id,
-                                                    posttype: prod.post_type_id,
+                                                    posttype:
+                                                        prod.post_type_id,
                                                     didcountpercentage: prod
                                                         .discount_percentage,
-                                                    lefttile: prod.posttypename,
+                                                    lefttile:
+                                                        prod.posttypename,
                                                     tradeImage: spotlighticon,
                                                     Vimage:
                                                         prod.user.first.photo,
                                                     distance:
                                                         prod.shortestDistance,
-                                                    avg_rating: prod.avg_rating,
+                                                    avg_rating:
+                                                        prod.avg_rating,
                                                     offer: prod.offers,
-                                                    vendorid:
-                                                        prod.user.first.user_id,
+                                                    vendorid: prod
+                                                        .user.first.user_id,
                                                     comment: prod.commentnum,
                                                     wow: prod.wow,
-                                                    issponsored:
-                                                        prod.user[0].sponsored!,
+                                                    issponsored: prod
+                                                        .user[0].sponsored!,
                                                     vendorname:
                                                         prod.contactName,
                                                     discounttedPrice:
                                                         prod.discont,
                                                     price: prod.price,
                                                     title: prod.title,
-                                                    productImage: prod.imageUrl,
+                                                    productImage:
+                                                        prod.imageUrl,
                                                     similarproductCount: prod
                                                         .similarproductCount,
-                                                    membershipColor: prod.user
-                                                        .first.membership_color,
-                                                    membershipTitle: prod.user
-                                                        .first.membership_title,
+                                                    membershipColor: prod
+                                                        .user
+                                                        .first
+                                                        .membership_color,
+                                                    membershipTitle: prod
+                                                        .user
+                                                        .first
+                                                        .membership_title,
                                                   );
                                                 }),
                                               ),
@@ -1746,14 +1776,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                       6, // Show placeholder items while loading
                                   itemBuilder: (context, index) {
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w),
                                       child: Container(
                                         width: 150
                                             .w, // Placeholder width for product item
                                         height: 250
                                             .h, // Placeholder height for product item
-                                        color: Colors.grey, // Placeholder color
+                                        color:
+                                            Colors.grey, // Placeholder color
                                       ),
                                     );
                                   },
@@ -1780,13 +1811,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 ),
                                 Center(
                                   child: Container(
-                                    alignment: AlignmentDirectional.centerStart,
+                                    alignment:
+                                        AlignmentDirectional.centerStart,
                                     margin: EdgeInsets.only(bottom: 5.h),
                                     height: 5.h,
                                     width: 100.w,
                                     decoration: BoxDecoration(
                                         color: const Color(0xff901B41),
-                                        borderRadius: BorderRadius.circular(5)),
+                                        borderRadius:
+                                            BorderRadius.circular(5)),
                                   ),
                                 ),
                                 SizedBox(
@@ -1818,15 +1851,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                   // Debugging: log the response data
                                                   print(
                                                       'Enquire value: ${value.data?.enquire}');
-
+    
                                                   if (value.data?.enquire ==
                                                       0) {
                                                     print("salla");
-
+    
                                                     // Show the bottom widget as a modal bottom sheet
                                                     showModalBottomSheet(
                                                       useSafeArea: true,
-                                                      isScrollControlled: true,
+                                                      isScrollControlled:
+                                                          true,
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
@@ -1836,7 +1870,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                                   .size
                                                                   .height *
                                                               0.8, // Use 80% of the screen height
-
+    
                                                           child:
                                                               SendMessageBottomWidget(
                                                             ref: ref,
@@ -1865,11 +1899,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               onRefresh: () {
                                                 refresh();
                                               },
-                                              lat:
-                                                  prefs.userdetails?.latitude ??
-                                                      '0.0',
-                                              long: prefs
-                                                      .userdetails?.longitude ??
+                                              lat: prefs.userdetails
+                                                      ?.latitude ??
+                                                  '0.0',
+                                              long: prefs.userdetails
+                                                      ?.longitude ??
                                                   '0.0',
                                               productid: prefs.id,
                                               membershipid: prefs
@@ -1881,14 +1915,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               shortestDistance: prefs
                                                   .userdetails
                                                   ?.shortestDistance,
-                                              issponsored:
-                                                  prefs.userdetails!.sponsored!,
+                                              issponsored: prefs
+                                                  .userdetails!.sponsored!,
                                               wow: prefs.wow,
-                                              distance: prefs.shortestDistance,
-                                              comment:
-                                                  prefs.commentcount.toString(),
-                                              avg_rating:
-                                                  prefs.avg_rating?.toDouble(),
+                                              distance:
+                                                  prefs.shortestDistance,
+                                              comment: prefs.commentcount
+                                                  .toString(),
+                                              avg_rating: prefs.avg_rating
+                                                  ?.toDouble(),
                                               discounttedPrice:
                                                   prefs.discounted_price,
                                               offer: prefs.offers,
@@ -1899,7 +1934,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                               title: prefs.title,
                                               vendorname:
                                                   prefs.userdetails!.name,
-                                              Vimage: prefs.userdetails!.photo,
+                                              Vimage:
+                                                  prefs.userdetails!.photo,
                                               similarproductCount:
                                                   prefs.similarProductCount,
                                               membershipColor: prefs
@@ -1934,7 +1970,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             // Adjust this number for the number of shimmer items
                                             return Shimmer.fromColors(
                                               baseColor: Colors.grey[300]!,
-                                              highlightColor: Colors.grey[100]!,
+                                              highlightColor:
+                                                  Colors.grey[100]!,
                                               child: Container(
                                                 width: 150.w,
                                                 height: 150.h,
@@ -1983,7 +2020,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     data.allProducts.length,
                                     (index) {
                                       VProduct res = data.allProducts[index];
-
+    
                                       return SizedBox(
                                         width: (MediaQuery.of(context)
                                                     .size
@@ -2012,15 +2049,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                           isScrollControlled:
                                                               true,
                                                           context: context,
-                                                          builder: (BuildContext
-                                                              context) {
+                                                          builder:
+                                                              (BuildContext
+                                                                  context) {
                                                             return SizedBox(
                                                               height: MediaQuery.of(
                                                                           context)
                                                                       .size
                                                                       .height *
                                                                   0.8, // Use 80% of the screen height
-
+    
                                                               child:
                                                                   SendMessageBottomWidget(
                                                                 ref: ref,
@@ -2033,7 +2071,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                       : navigateToPage(
                                                           context: context,
                                                           page: ChatScreen(
-                                                              consumerref: ref,
+                                                              consumerref:
+                                                                  ref,
                                                               threadId: value
                                                                   .data!
                                                                   .thread!
@@ -2051,7 +2090,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                               false, // Hide bottom navbar
                                                         );
                                                   // if ()
-
+    
                                                   // SendMessageBottomWidget(
                                                   //     ref: ref,
                                                   //     productidid:
@@ -2061,23 +2100,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 print('Error: $error');
                                               });
                                             },
-                                            savedid:
-                                                res.savedByLoggedUser == null ||
-                                                        res.savedByLoggedUser!
-                                                            .isEmpty
-                                                    ? []
-                                                    : res.savedByLoggedUser
-                                                        ?.map(
-                                                          (e) => SavedPost(
-                                                              id: e.id,
-                                                              userId: e.userId,
-                                                              postId: e.postId,
-                                                              createdAt:
-                                                                  e.createdAt,
-                                                              updatedAt:
-                                                                  e.updatedAt),
-                                                        )
-                                                        .toList(),
+                                            savedid: res.savedByLoggedUser ==
+                                                        null ||
+                                                    res.savedByLoggedUser!
+                                                        .isEmpty
+                                                ? []
+                                                : res.savedByLoggedUser
+                                                    ?.map(
+                                                      (e) => SavedPost(
+                                                          id: e.id,
+                                                          userId: e.userId,
+                                                          postId: e.postId,
+                                                          createdAt:
+                                                              e.createdAt,
+                                                          updatedAt:
+                                                              e.updatedAt),
+                                                    )
+                                                    .toList(),
                                             onRefresh: () {
                                               refresh();
                                             },
@@ -2091,12 +2130,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                                 res.discount_percentage,
                                             id: int.tryParse(
                                                 res.userDetail.user_id!),
-                                            shortestDistance:
-                                                res.userDetail.shortestDistance,
+                                            shortestDistance: res
+                                                .userDetail.shortestDistance,
                                             issponsored:
                                                 res.userDetail.sponsored ??
                                                     false,
-                                            distance: res.user.shortestDistance,
+                                            distance:
+                                                res.user.shortestDistance,
                                             wow: res.wow.toString(),
                                             discounttedPrice:
                                                 res.discountedPrice,
@@ -2113,10 +2153,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                             price: res.price,
                                             similarproductCount:
                                                 res.similarProductCount,
-                                            membershipColor:
-                                                res.userDetail.membership_color,
-                                            membershipTitle:
-                                                res.userDetail.membership_title,
+                                            membershipColor: res
+                                                .userDetail.membership_color,
+                                            membershipTitle: res
+                                                .userDetail.membership_title,
                                           ),
                                         ),
                                       );
@@ -2141,8 +2181,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                   children: List.generate(5, (index) {
                                     // Adjust this number for the number of shimmer items
                                     return Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w),
                                       child: Shimmer.fromColors(
                                         baseColor: Colors.grey[300]!,
                                         highlightColor: Colors.grey[100]!,

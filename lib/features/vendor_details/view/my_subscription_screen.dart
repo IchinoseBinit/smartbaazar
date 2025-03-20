@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/my_order/view/my_order_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_profile_screen.dart';
@@ -339,16 +340,15 @@ class _MySubscriptionScreenState extends ConsumerState<MySubscriptionScreen>
   ];
   final int _currentIndex = 0;
 
-@override
-void dispose() {
-  _tabController.dispose();  // Dispose _tabController
-  dynamictabController.dispose();  // Dispose dynamictabController
-  _debouncer.close();
-  _searchController.dispose();
-  _vendorScrollController.dispose();  // Dispose ScrollController if used
-  super.dispose();
-}
-
+  @override
+  void dispose() {
+    _tabController.dispose(); // Dispose _tabController
+    dynamictabController.dispose(); // Dispose dynamictabController
+    _debouncer.close();
+    _searchController.dispose();
+    _vendorScrollController.dispose(); // Dispose ScrollController if used
+    super.dispose();
+  }
 
   int selectedIndexx = 0; // State variable for selected index
   bool isSliverAppBarVisible = true;
@@ -378,405 +378,292 @@ void dispose() {
         ref.watch(searchProvider(_searchController.text));
     debugPrint('Search Results: ${SearchProductModels.asData?.value}');
 
-    return WillPopScope(
-      onWillPop: () async {
-        bool exitApp = await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text("Exit App?"),
-            content: Text("Do you really want to exit?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text("No"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text("Yes"),
-              ),
-            ],
-          ),
-        );
-        return exitApp ?? false;
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        drawerScrimColor: const Color(0xff651c50),
-        key: _key,
-        backgroundColor: ColorConstant.whiteColor,
-        body: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is ScrollUpdateNotification &&
-                  notification.metrics.axis == Axis.vertical) {
-                // Check if the scroll is vertical
-                // Check if the SliverAppBar is completely off-screen
-                if (notification.metrics.pixels > 100) {
-                  if (isSliverAppBarVisible) {
-                    setState(() {
-                      isSliverAppBarVisible = false;
-                    });
-                  }
-                } else {
-                  if (!isSliverAppBarVisible) {
-                    setState(() {
-                      _isSectionsVisible = true;
-                      isSliverAppBarVisible = true;
-                    });
-                  }
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      drawerScrimColor: const Color(0xff651c50),
+      key: _key,
+      backgroundColor: ColorConstant.whiteColor,
+      body: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification is ScrollUpdateNotification &&
+                notification.metrics.axis == Axis.vertical) {
+              // Check if the scroll is vertical
+              // Check if the SliverAppBar is completely off-screen
+              if (notification.metrics.pixels > 100) {
+                if (isSliverAppBarVisible) {
+                  setState(() {
+                    isSliverAppBarVisible = false;
+                  });
+                }
+              } else {
+                if (!isSliverAppBarVisible) {
+                  setState(() {
+                    _isSectionsVisible = true;
+                    isSliverAppBarVisible = true;
+                  });
                 }
               }
-              return true; // Allow the scroll event to propagate
-            },
-            child: Stack(
-              children: [
-                CustomScrollView(
-                  controller: widget.scrollController,
-                  slivers: [
-                    SliverPersistentHeader(
-                        pinned: true,
-                        floating: true,
-                        delegate: StickyHeaderDelegate(
-                            showbackbutton: true,
-                            visible: isSliverAppBarVisible,
-                            searchController: _searchController,
-                            onchanged: (value) {},
-                            dropdownValueNotifier: dropdownValueNotifier,
-                            filteredSuggestions: [])),
-                    if (isSliverAppBarVisible)
-                      SliverAppBar(
-                          automaticallyImplyLeading: false,
-                          expandedHeight: 150.h,
-                          floating: false,
-                          pinned: false,
-                          flexibleSpace: AnimatedContainer(
-                            padding: EdgeInsets.zero,
-                            duration: const Duration(milliseconds: 150),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(40),
-                                    bottomRight: Radius.circular(40)),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      // Color(0xFF681b4e),
-                                      // Color(0xFF392574),
-                                      // Color(0xFF681b4e),
-                                      Color(0xff651c50),
-                                      Color(0xff54225f),
-                                      // Color(0xFF392574).
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 15.h,
-                                  ),
-                                  SizedBox(
-                                    height: 55.h,
-                                    child: PageView.builder(
-                                      itemCount: _items.length,
-                                      padEnds: false,
-                                      controller: _pageController,
-                                      onPageChanged: (value) {
-                                        ref
-                                            .read(
-                                                _selectedIndexProvider.notifier)
-                                            .state = value;
-                                      },
-                                      itemBuilder: (context, index) {
-                                        Map<String, dynamic> data =
-                                            _items[index];
-
-                                        // Highlight only when index == 4
-                                        bool isActive = index == 1;
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ref
-                                                .read(_selectedIndexProvider
-                                                    .notifier)
-                                                .state = index;
-                                          },
-                                          child: AnimatedContainer(
-                                            margin: EdgeInsets.only(left: 16.w),
-                                            padding: EdgeInsets.zero,
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            alignment: Alignment.center,
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          data['screen']),
-                                                );
-                                              },
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  if (data['icon']
-                                                      .toString()
-                                                      .endsWith('.svg'))
-                                                    SvgPicture.asset(
-                                                      data['icon'],
-                                                      alignment:
-                                                          Alignment.center,
-                                                      fit: BoxFit.contain,
-                                                      theme: const SvgTheme(
-                                                          currentColor: Color(
-                                                              0xffdd9d9d9)),
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                      width: 20,
-                                                      height: 20,
-                                                    )
-                                                  else
-                                                    Image.asset(
-                                                      data['icon'],
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                      width: 20,
-                                                      height: 20,
-                                                    ),
-                                                  const SizedBox(height: 8),
-                                                  Text(
-                                                    data['label'],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: isActive
-                                                          ? Colors.amber
-                                                          : const Color(
-                                                                  0xffD9D9D9)
-                                                              .withOpacity(0.5),
-                                                    ),
+            }
+            return true; // Allow the scroll event to propagate
+          },
+          child: Stack(
+            children: [
+              CustomScrollView(
+                controller: widget.scrollController,
+                slivers: [
+                  SliverPersistentHeader(
+                      pinned: true,
+                      floating: true,
+                      delegate: StickyHeaderDelegate(
+                          showbackbutton: true,
+                          visible: isSliverAppBarVisible,
+                          searchController: _searchController,
+                          onchanged: (value) {},
+                          dropdownValueNotifier: dropdownValueNotifier,
+                          filteredSuggestions: [])),
+                  if (isSliverAppBarVisible)
+                    SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        expandedHeight: 150.h,
+                        floating: false,
+                        pinned: false,
+                        flexibleSpace: AnimatedContainer(
+                          padding: EdgeInsets.zero,
+                          duration: const Duration(milliseconds: 150),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(40),
+                                  bottomRight: Radius.circular(40)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    // Color(0xFF681b4e),
+                                    // Color(0xFF392574),
+                                    // Color(0xFF681b4e),
+                                    Color(0xff651c50),
+                                    Color(0xff54225f),
+                                    // Color(0xFF392574).
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                SizedBox(
+                                  height: 55.h,
+                                  child: PageView.builder(
+                                    itemCount: _items.length,
+                                    padEnds: false,
+                                    controller: _pageController,
+                                    onPageChanged: (value) {
+                                      ref
+                                          .read(
+                                              _selectedIndexProvider.notifier)
+                                          .state = value;
+                                    },
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> data =
+                                          _items[index];
+    
+                                      // Highlight only when index == 4
+                                      bool isActive = index == 1;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(_selectedIndexProvider
+                                                  .notifier)
+                                              .state = index;
+                                        },
+                                        child: AnimatedContainer(
+                                          margin: EdgeInsets.only(left: 16.w),
+                                          padding: EdgeInsets.zero,
+                                          duration: const Duration(
+                                              milliseconds: 300),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        data['screen']),
+                                              );
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (data['icon']
+                                                    .toString()
+                                                    .endsWith('.svg'))
+                                                  SvgPicture.asset(
+                                                    data['icon'],
+                                                    alignment:
+                                                        Alignment.center,
+                                                    fit: BoxFit.contain,
+                                                    theme: const SvgTheme(
+                                                        currentColor: Color(
+                                                            0xffdd9d9d9)),
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
+                                                  )
+                                                else
+                                                  Image.asset(
+                                                    data['icon'],
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                    width: 20,
+                                                    height: 20,
                                                   ),
-                                                ],
-                                              ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  data['label'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w700,
+                                                    color: isActive
+                                                        ? Colors.amber
+                                                        : const Color(
+                                                                0xffD9D9D9)
+                                                            .withOpacity(0.5),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  Image.asset(
-                                      height: 60.h,
-                                      width: double.infinity,
-                                      color: Colors.white,
-                                      'assets/images/circle.png')
-                                ],
-                              ),
-                            ),
-                          )),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 11, top: 11),
-                        child: GestureDetector(
-                          onVerticalDragUpdate: _onDragUpdate,
-                          onTap: () {
-                            setState(() {
-                              isSliverAppBarVisible = !isSliverAppBarVisible;
-                            });
-                          },
-                          child: Center(
-                            child: Container(
-                              alignment: AlignmentDirectional.center,
-                              height: 7.h,
-                              width: 60.w,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xff651c50),
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("My Connections"),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: TabBar(
-                        controller: _tabController,
-                        isScrollable: true,
-                        indicatorPadding: const EdgeInsets.symmetric(
-                            horizontal: 16), // Aligns indicator
-                        tabs: [
-                          Tab(
-                            icon: Image.asset(
-                              "assets/images/news.png",
-                              height: 30,
-                              width: 30,
-                            ),
-                            text: "My Connections",
-                          ),
-                          Tab(
-                            icon: Image.asset(
-                              "assets/images/grow.png",
-                              height: 30,
-                              width: 30,
-                            ),
-                            text: "Explore",
-                          ),
-                        ],
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height *
-                              0.7, // 70% of screen height
-                        ),
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            SingleChildScrollView(
-                              controller: _vendorScrollController,
-                              child: Column(
-                                children: [
-                                  if (_subscriptions.isEmpty &&
-                                      !_isLoading) // ✅ Show message when empty
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Center(
-                                        child: Text(
-                                          "No Data Available",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey),
                                         ),
-                                      ),
-                                    )
-                                  else
-                                    ..._subscriptions.map(
-                                      (e) => Column(
-                                        children: [
-                                          RepaintBoundary(
-                                            key: _captureKeys.putIfAbsent(
-                                                e.vendor_id!,
-                                                () => GlobalKey()),
-                                            child: Container(
-                                              color: Colors.white,
-                                              child: BigContainer(
-                                                membershipid: int.tryParse(e
-                                                            .vendor_card
-                                                            ?.membership_id ??
-                                                        '1') ??
-                                                    1,
-                                                storycount: e
-                                                        .vendor_card?.storycount
-                                                        .toString() ??
-                                                    '0',
-                                                lat: double.tryParse(e
-                                                            .vendor_card
-                                                            ?.latitude ??
-                                                        '0') ??
-                                                    0.0,
-                                                long: double.tryParse(e
-                                                            .vendor_card
-                                                            ?.longitude ??
-                                                        '0.0') ??
-                                                    0.0,
-                                                vendorid: e.vendor_id ?? '9',
-                                                title:
-                                                    e.vendor_card?.name ?? '',
-                                                logo: e.vendor_card?.photo ??
-                                                    'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
-                                                contact: e.vendor_card?.phone ??
-                                                    '977+',
-                                                storyCount: e
-                                                        .vendor_card?.storycount
-                                                        .toString() ??
-                                                    '0',
-                                                membershipTitle: e.vendor_card
-                                                        ?.membership_title ??
-                                                    'N/A',
-                                                total_connections: e
-                                                        .vendor_card?.connection
-                                                        .toString() ??
-                                                    '0',
-                                                total_prize_worth: e.vendor_card
-                                                        ?.prize_worth
-                                                        .toString() ??
-                                                    '0',
-                                                location: e.vendor_card
-                                                        ?.nearestbranch ??
-                                                    'kathmandu',
-                                                Cnumber: e.vendor_card?.phone ??
-                                                    '9744+',
-                                                issubbed:
-                                                    e.vendor_card?.subscribed ==
-                                                            1
-                                                        ? true
-                                                        : false,
-                                                memebertitle: e.vendor_card
-                                                        ?.membership_title ??
-                                                    'Title',
-                                                onsubscribed: () {
-                                                  ref.invalidate(
-                                                      getSubscriptionProvider(
-                                                          pageval: _pageVal));
-                                                },
-                                                ondoenload: () =>
-                                                    _captureAndSave(
-                                                        _captureKeys[
-                                                            e.vendor_id]!),
-                                                onconnectclicked: () {
-                                                  ref.invalidate(
-                                                      getSubscriptionProvider(
-                                                          pageval: _pageVal));
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                          Divider(
-                                              height: 3.h,
-                                              color: ColorConstant.grayColor),
-                                        ],
-                                      ),
-                                    ),
-                                  if (_isLoading) // Show loading indicator when data is being fetched
-                                    const Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                ],
-                              ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
+                                ),
+                                Image.asset(
+                                    height: 60.h,
+                                    width: double.infinity,
+                                    color: Colors.white,
+                                    'assets/images/circle.png')
+                              ],
                             ),
-                            SingleChildScrollView(
-                                child: ref.watch(gettrendingcardProvider).when(
-                                    data: (data) {
-                                      return Column(
-                                        children: data.trending.map(
-                                          (e) {
-                                            return BigContainer(
+                          ),
+                        )),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 11, top: 11),
+                      child: GestureDetector(
+                        onVerticalDragUpdate: _onDragUpdate,
+                        onTap: () {
+                          setState(() {
+                            isSliverAppBarVisible = !isSliverAppBarVisible;
+                          });
+                        },
+                        child: Center(
+                          child: Container(
+                            alignment: AlignmentDirectional.center,
+                            height: 7.h,
+                            width: 60.w,
+                            decoration: BoxDecoration(
+                                color: const Color(0xff651c50),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("My Connections"),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      indicatorPadding: const EdgeInsets.symmetric(
+                          horizontal: 16), // Aligns indicator
+                      tabs: [
+                        Tab(
+                          icon: Image.asset(
+                            "assets/images/news.png",
+                            height: 30,
+                            width: 30,
+                          ),
+                          text: "My Connections",
+                        ),
+                        Tab(
+                          icon: Image.asset(
+                            "assets/images/grow.png",
+                            height: 30,
+                            width: 30,
+                          ),
+                          text: "Explore",
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height *
+                            0.7, // 70% of screen height
+                      ),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          SingleChildScrollView(
+                            controller: _vendorScrollController,
+                            child: Column(
+                              children: [
+                                if (_subscriptions.isEmpty &&
+                                    !_isLoading) // ✅ Show message when empty
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Center(
+                                      child: Text(
+                                        "No Data Available",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.grey),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  ..._subscriptions.map(
+                                    (e) => Column(
+                                      children: [
+                                        RepaintBoundary(
+                                          key: _captureKeys.putIfAbsent(
+                                              e.vendor_id!,
+                                              () => GlobalKey()),
+                                          child: Container(
+                                            color: Colors.white,
+                                            child: BigContainer(
                                               membershipid: int.tryParse(e
                                                           .vendor_card
                                                           ?.membership_id ??
                                                       '1') ??
                                                   1,
-                                              storycount: e.vendor_card
-                                                      ?.storycount
+                                              storycount: e
+                                                      .vendor_card?.storycount
                                                       .toString() ??
                                                   '0',
                                               lat: double.tryParse(e
@@ -789,46 +676,38 @@ void dispose() {
                                                           ?.longitude ??
                                                       '0.0') ??
                                                   0.0,
-                                              vendorid: e.id
-                                                      ??
-                                                  '9',
+                                              vendorid: e.vendor_id ?? '9',
                                               title:
-                                                  e.vendor_card?.name ??
-                                                      '',
-                                              logo: e.vendor_card
-                                                      ?.photo ??
+                                                  e.vendor_card?.name ?? '',
+                                              logo: e.vendor_card?.photo ??
                                                   'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
-                                              contact:
-                                                  e.vendor_card?.phone ??
-                                                      '977+',
-                                              storyCount: e.vendor_card
-                                                      ?.storycount
+                                              contact: e.vendor_card?.phone ??
+                                                  '977+',
+                                              storyCount: e
+                                                      .vendor_card?.storycount
                                                       .toString() ??
                                                   '0',
-                                              membershipTitle: e
-                                                      .vendor_card
+                                              membershipTitle: e.vendor_card
                                                       ?.membership_title ??
                                                   'N/A',
                                               total_connections: e
-                                                      .vendor_card?.connection.toString()??
-                                                    
+                                                      .vendor_card?.connection
+                                                      .toString() ??
                                                   '0',
-                                              total_prize_worth: e
-                                                      .vendor_card
+                                              total_prize_worth: e.vendor_card
                                                       ?.prize_worth
                                                       .toString() ??
                                                   '0',
                                               location: e.vendor_card
                                                       ?.nearestbranch ??
                                                   'kathmandu',
-                                              Cnumber:
-                                                  e.vendor_card?.phone ??
-                                                      '9744+',
-                                              issubbed: e.vendor_card
-                                                          ?.subscribed ==
-                                                      1
-                                                  ? true
-                                                  : false,
+                                              Cnumber: e.vendor_card?.phone ??
+                                                  '9744+',
+                                              issubbed:
+                                                  e.vendor_card?.subscribed ==
+                                                          1
+                                                      ? true
+                                                      : false,
                                               memebertitle: e.vendor_card
                                                       ?.membership_title ??
                                                   'Title',
@@ -837,10 +716,101 @@ void dispose() {
                                                     getSubscriptionProvider(
                                                         pageval: _pageVal));
                                               },
-                                              ondoenload: () => _captureAndSave(
-                                                  _captureKeys[e
-                                                      .id
-                                                      ]!),
+                                              ondoenload: () =>
+                                                  _captureAndSave(
+                                                      _captureKeys[
+                                                          e.vendor_id]!),
+                                              onconnectclicked: () {
+                                                ref.invalidate(
+                                                    getSubscriptionProvider(
+                                                        pageval: _pageVal));
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Divider(
+                                            height: 3.h,
+                                            color: ColorConstant.grayColor),
+                                      ],
+                                    ),
+                                  ),
+                                if (_isLoading) // Show loading indicator when data is being fetched
+                                  const Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                              child: ref.watch(gettrendingcardProvider).when(
+                                    data: (data) {
+                                      return Column(
+                                        children: data.trending.map(
+                                          (e) {
+                                            return BigContainer(
+                                              membershipid: int.tryParse(e
+                                                          .vendor_card
+                                                          ?.membership_id ??
+                                                      '1') ??
+                                                  1,
+                                              storycount: e
+                                                      .vendor_card?.storycount
+                                                      .toString() ??
+                                                  '0',
+                                              lat: double.tryParse(e
+                                                          .vendor_card
+                                                          ?.latitude ??
+                                                      '0') ??
+                                                  0.0,
+                                              long: double.tryParse(e
+                                                          .vendor_card
+                                                          ?.longitude ??
+                                                      '0.0') ??
+                                                  0.0,
+                                              vendorid: e.id ?? '9',
+                                              title:
+                                                  e.vendor_card?.name ?? '',
+                                              logo: e.vendor_card?.photo ??
+                                                  'https://fastly.picsum.photos/id/98/536/354.jpg?hmac=bXkGljIuCAlgNitm7wIO-UM-3MhJpJ9rs4I1dSaT5KI',
+                                              contact: e.vendor_card?.phone ??
+                                                  '977+',
+                                              storyCount: e
+                                                      .vendor_card?.storycount
+                                                      .toString() ??
+                                                  '0',
+                                              membershipTitle: e.vendor_card
+                                                      ?.membership_title ??
+                                                  'N/A',
+                                              total_connections: e
+                                                      .vendor_card?.connection
+                                                      .toString() ??
+                                                  '0',
+                                              total_prize_worth: e.vendor_card
+                                                      ?.prize_worth
+                                                      .toString() ??
+                                                  '0',
+                                              location: e.vendor_card
+                                                      ?.nearestbranch ??
+                                                  'kathmandu',
+                                              Cnumber: e.vendor_card?.phone ??
+                                                  '9744+',
+                                              issubbed:
+                                                  e.vendor_card?.subscribed ==
+                                                          1
+                                                      ? true
+                                                      : false,
+                                              memebertitle: e.vendor_card
+                                                      ?.membership_title ??
+                                                  'Title',
+                                              onsubscribed: () {
+                                                ref.invalidate(
+                                                    getSubscriptionProvider(
+                                                        pageval: _pageVal));
+                                              },
+                                              ondoenload: () =>
+                                                  _captureAndSave(
+                                                      _captureKeys[e.id]!),
                                               onconnectclicked: () {
                                                 ref.invalidate(
                                                     getSubscriptionProvider(
@@ -855,100 +825,101 @@ void dispose() {
                                       print('error');
                                       return Text('please login');
                                     },
-                                    loading: () => CircularProgressIndicator(),)),
-                          ],
-                        ),
+                                    loading: () =>
+                                        CircularProgressIndicator(),
+                                  )),
+                        ],
                       ),
-                    )
-                  ],
-                ),
-                // valuenotifilersidebutton(
-                //     showSideBar: showSideBar, isSectionsVisible: true),
-                Positioned(
-                  top: 65,
-                  left: 48,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width -
-                        90, // Add width constraint
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.circular(12), // Rounded corners
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
                     ),
-                    child: SearchProductModels.when(
-                      data: (results) {
-                        return ListView.separated(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount: results.length > 5
-                              ? 4
-                              : results.length, // Limit results if needed
-                          itemBuilder: (context, index) {
-                            final product = results[index];
-                            return ListTile(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 7),
-                              dense: true,
-                              title: Text(
-                                product.name,
-                                style: headerstyle.copyWith(
-                                  color: ColorConstant.blackColor,
-                                  fontSize:
-                                      14, // Increase font size for better readability
-                                ),
-                              ),
-                              onTap: () {
-                                if (product.id != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => VendorHomeScreen(
-                                        vendorName: product.name,
-                                        vid: int.tryParse(product.id!)!,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BusinessTabScreen(
-                                        query: _searchController.text,
-                                      ),
-                                    ),
-                                  );
-                                }
-                                setState(() {
-                                  _showSearchProductModels = false;
-                                  FocusScope.of(context).unfocus();
-                                });
-                              },
-                            );
-                          },
-                          separatorBuilder: (context, index) => const Divider(),
-                        );
-                      },
-                      loading: () {
-                        return const Center(child: CircularProgressIndicator());
-                      },
-                      error: (error, stack) {
-                        print('object');
-                        return Center(child: Text('PLease login'));
-                      },
-                    ),
+                  )
+                ],
+              ),
+              // valuenotifilersidebutton(
+              //     showSideBar: showSideBar, isSectionsVisible: true),
+              Positioned(
+                top: 65,
+                left: 48,
+                child: Container(
+                  width: MediaQuery.of(context).size.width -
+                      90, // Add width constraint
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.circular(12), // Rounded corners
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
                   ),
-                )
-              ],
-            )),
-      ),
+                  child: SearchProductModels.when(
+                    data: (results) {
+                      return ListView.separated(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: results.length > 5
+                            ? 4
+                            : results.length, // Limit results if needed
+                        itemBuilder: (context, index) {
+                          final product = results[index];
+                          return ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 7),
+                            dense: true,
+                            title: Text(
+                              product.name,
+                              style: headerstyle.copyWith(
+                                color: ColorConstant.blackColor,
+                                fontSize:
+                                    14, // Increase font size for better readability
+                              ),
+                            ),
+                            onTap: () {
+                              if (product.id != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VendorHomeScreen(
+                                      vendorName: product.name,
+                                      vid: int.tryParse(product.id!)!,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BusinessTabScreen(
+                                      query: _searchController.text,
+                                    ),
+                                  ),
+                                );
+                              }
+                              setState(() {
+                                _showSearchProductModels = false;
+                                FocusScope.of(context).unfocus();
+                              });
+                            },
+                          );
+                        },
+                        separatorBuilder: (context, index) => const Divider(),
+                      );
+                    },
+                    loading: () {
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                    error: (error, stack) {
+                      print('object');
+                      return Center(child: Text('PLease login'));
+                    },
+                  ),
+                ),
+              )
+            ],
+          )),
     );
   }
 }

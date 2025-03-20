@@ -11,7 +11,6 @@ import 'package:smartbazar/features/message/api/last_message_api.dart';
 import 'package:smartbazar/features/message/api/message_photo_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_api.dart';
 import 'package:smartbazar/features/message/api/message_thread_provider.dart';
-import 'package:smartbazar/features/message/model/message_photo_model.dart';
 import 'package:smartbazar/features/message/view/chat_screen.dart';
 
 class MessageViewScreen extends ConsumerWidget {
@@ -21,7 +20,7 @@ class MessageViewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    WidgetRef myref=ref;
+    WidgetRef myref = ref;
     // bool refresh
     final currentfilter = ref.watch(messageFilterStateProvider);
     return Scaffold(
@@ -371,18 +370,18 @@ class ListOfMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-          navigateToPage(
-                      context: context,
-                      page:ChatScreen(
-              threadId: threadId,
-              username: subject,
-              postId: postId,
-              consumerref: passref,
-              //  isImportant: isImportant,
-            ),
-                      showNavBar: false,
-                      ref: passref,
-                    );
+        navigateToPage(
+          context: context,
+          page: ChatScreen(
+            threadId: threadId,
+            username: subject,
+            postId: postId,
+            consumerref: passref,
+            //  isImportant: isImportant,
+          ),
+          showNavBar: false,
+          ref: passref,
+        );
       },
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 8.h),
