@@ -119,12 +119,22 @@ class MainScreen extends ConsumerWidget {
                         true; // Trigger scroll
                   }
 
-                  if (index == selectedIndex) {
-                    _navigatorKeys[index]
+                  if (index == 0) {
+                    // Home Screen is at index 0
+                    ref.read(currentScreenProvider.notifier).state = 0;
+
+                    // Reset the navigation stack for Home
+                    _navigatorKeys[0]
                         .currentState
                         ?.popUntil((route) => route.isFirst);
                   } else {
-                    ref.read(currentScreenProvider.notifier).state = index;
+                    if (index == selectedIndex) {
+                      _navigatorKeys[index]
+                          .currentState
+                          ?.popUntil((route) => route.isFirst);
+                    } else {
+                      ref.read(currentScreenProvider.notifier).state = index;
+                    }
                   }
                 })
             : null,

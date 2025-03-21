@@ -1961,91 +1961,101 @@ class MyListinDetails extends ConsumerWidget {
             ],
           ),
           SizedBox(height: 10.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: const Color(0xffF6F1F1),
+          InkWell(
+            onTap: () {
+                  navigateToPage(
+            context: context,
+            page: ProductDetailScreen(productId:product.id!),
+            ref:  ref,
+            showNavBar: false, // Hide bottom navbar
+          );
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    color: const Color(0xffF6F1F1),
+                  ),
+                  child: Image.network(
+                    product.image ?? ImageConstant.laptopImage,
+                    height: 55.h,
+                  ),
                 ),
-                child: Image.network(
-                  product.image ?? ImageConstant.laptopImage,
-                  height: 55.h,
-                ),
-              ),
-              SizedBox(width: 20.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.title ?? 'No title',
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const Icon(Icons.visibility,
-                                size: 16, color: Color(0xff888888)),
-                            Text(
-                              '${product.visits ?? '0'} Views',
-                              style: TextStyle(
-                                  fontSize: 9.sp,
-                                  color: const Color(0xff888888)),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.lock_clock,
-                              size: 16.sp,
-                              color: const Color(0xff888888),
-                            ),
-                            Text(
-                              formattedDate, // Display formatted date here
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 9.sp,
+                SizedBox(width: 20.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.title ?? 'No title',
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Icon(Icons.visibility,
+                                  size: 16, color: Color(0xff888888)),
+                              Text(
+                                '${product.visits ?? '0'} Views',
+                                style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xff888888)),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.lock_clock,
+                                size: 16.sp,
                                 color: const Color(0xff888888),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.location_on,
-                                size: 16, color: Color(0xff888888)),
-                            Text(
-                              product.address ?? 'Unknown Address',
-                              style: TextStyle(
+                              Text(
+                                formattedDate, // Display formatted date here
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
                                   fontSize: 9.sp,
-                                  color: const Color(0xff888888)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Text(
-                      'Rs ${product.price ?? 'N/A'}',
-                      style: TextStyle(
-                          color: const Color(0xff36383C),
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
+                                  color: const Color(0xff888888),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on,
+                                  size: 16, color: Color(0xff888888)),
+                              Text(
+                                product.address ?? 'Unknown Address',
+                                style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xff888888)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Text(
+                        'Rs ${product.price ?? 'N/A'}',
+                        style: TextStyle(
+                            color: const Color(0xff36383C),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

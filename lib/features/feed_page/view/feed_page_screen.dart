@@ -1039,6 +1039,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen>
                               showGift: userDetails.hasSponsoredGifts ?? false,
                               userId: feedItem.userId ?? '',
                               feedId: feedItem.id ?? '',
+                              passref: ref,
                               //feedDetail: feedItem.feedDetail,
                             ),
                             PromoCard(

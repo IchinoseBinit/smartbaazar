@@ -480,39 +480,39 @@ class _PendingApprovalScreenState extends ConsumerState<PendingApprovalScreen>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 20.w),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(4, (index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      ref
-                                          .read(_selectedIndexProvider.notifier)
-                                          .state = index;
-                                      _pageController.animateToPage(
-                                        index,
-                                        duration:
-                                            const Duration(milliseconds: 50),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 5.h,
-                                      width: 5.w,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.w),
-                                      decoration: BoxDecoration(
-                                        color: selectedIndex == index
-                                            ? Colors.amber
-                                            : Colors.grey,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(right: 20.w),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: List.generate(4, (index) {
+                            //       return GestureDetector(
+                            //         onTap: () {
+                            //           ref
+                            //               .read(_selectedIndexProvider.notifier)
+                            //               .state = index;
+                            //           _pageController.animateToPage(
+                            //             index,
+                            //             duration:
+                            //                 const Duration(milliseconds: 50),
+                            //             curve: Curves.easeInOut,
+                            //           );
+                            //         },
+                            //         child: Container(
+                            //           height: 5.h,
+                            //           width: 5.w,
+                            //           margin:
+                            //               EdgeInsets.symmetric(horizontal: 5.w),
+                            //           decoration: BoxDecoration(
+                            //             color: selectedIndex == index
+                            //                 ? Colors.amber
+                            //                 : Colors.grey,
+                            //             shape: BoxShape.circle,
+                            //           ),
+                            //         ),
+                            //       );
+                            //     }),
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 15.h,
                             ),
@@ -669,209 +669,8 @@ class _PendingApprovalScreenState extends ConsumerState<PendingApprovalScreen>
                     ),
                   ),
                 ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 145.h,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _isPopupVisible = !_isPopupVisible;
-                                });
-                              },
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                alignment: Alignment.center,
-                                children: [
-                                  // Outer Circle
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.w),
-                                    width: 95.r,
-                                    height: 95.r,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 3.w,
-                                        color: const Color(0xffEACACB),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-
-                                  // Vendor Image
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 38.r,
-                                      backgroundColor: const Color(0x7F7F7F73)
-                                          .withOpacity(0.45),
-                                      backgroundImage:
-                                          NetworkImage(SmartClient.userPhoto),
-                                    ),
-                                  ),
-
-                                  // Vendor Name - Adjusted Position
-                                  Positioned(
-                                    left: 10.w,
-                                    bottom: -25
-                                        .h, // Adjust bottom value to create more space
-                                    child: SizedBox(
-                                      width: 100.w,
-                                      child: Text(
-                                        SmartClient.userName ?? 'search',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11.sp,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Search Icon
-                                  Positioned(
-                                    bottom: -5.h,
-                                    right: 0,
-                                    left: 0,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      padding: EdgeInsets.all(2.r),
-                                      child: Icon(
-                                        Icons.search,
-                                        color: const Color(0xffAA0018),
-                                        size: 24.r,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        _storysearchresult.isNotEmpty
-                            ? ListView.builder(
-                                padding: EdgeInsets.only(left: 3.w),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: _storysearchresult.length,
-                                itemBuilder: (context, index) {
-                                  final mysearchstory =
-                                      _storysearchresult[index];
-                                  // print('lamta ${_storysearchresult.l}');
-                                  return FeedStoryAddWidget(
-                                    productid: mysearchstory.id!,
-                                    index: index,
-                                    vendorName:
-                                        _storysearchresult[index].vendorName ??
-                                            "Unknown Vendor",
-                                    vendorImage: _storysearchresult[index]
-                                            .vendorImage ??
-                                        "https://example.com/default-image.png",
-                                    storyCount:
-                                        _storysearchresult[index].storyCount ??
-                                            0,
-                                    showGift: _storysearchresult[index]
-                                            .hasSponsoredGifts ??
-                                        false,
-                                    feedStoryContent: _storysearchresponse!
-                                        .data.home_story!.story!,
-                                    userId:
-                                        _storysearchresult[index].vendorId ??
-                                            '',
-                                  );
-                                },
-                              )
-                            : asyncForYouStoryContent.when(
-                                data: (feedStoryData) {
-                                  final feedStoryContent =
-                                      feedStoryData.data?.feedstory;
-                                  final posts = feedStoryContent?.posts ?? [];
-
-                                  return posts.isNotEmpty
-                                      ? ListView.builder(
-                                          padding: EdgeInsets.only(left: 3.w),
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: posts.length,
-                                          itemBuilder: (context, index) {
-                                            final story = posts[index];
-                                            return FeedStoryAddWidget(
-                                              productid: story.id!,
-                                              index: index,
-                                              vendorName: story.vendorName ??
-                                                  "Unknown Vendor",
-                                              vendorImage: story.vendorImage ??
-                                                  "https://example.com/default-image.png",
-                                              storyCount: story.storyCount ?? 0,
-                                              showGift:
-                                                  story.hasSponsoredGifts ??
-                                                      false,
-                                              feedStoryContent:
-                                                  feedStoryContent!,
-                                              userId: story.vendorId ?? '',
-                                            );
-                                          },
-                                        )
-                                      : const Center(
-                                          child: Text("No stories available"));
-                                },
-                                loading: () => SizedBox(
-                                  height: 40.h,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 5,
-                                    itemBuilder: (_, __) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8),
-                                      child: Shimmer.fromColors(
-                                        baseColor: Colors.grey[300]!,
-                                        highlightColor: Colors.grey[100]!,
-                                        child: Container(
-                                          width: 80,
-                                          height: 50,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                error: (error, _) => SizedBox(
-                                  height: 60.h,
-                                  child: Center(
-                                    child: Text(
-                                      error
-                                              .toString()
-                                              .contains('Session has expired')
-                                          ? 'Please log in again.'
-                                          : 'Error: $error',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+           
+           
 SliverToBoxAdapter(
   child: Column(
     children: [

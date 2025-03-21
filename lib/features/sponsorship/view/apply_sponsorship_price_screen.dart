@@ -298,7 +298,7 @@ class _ApplySponsorshipPriceScreenState
                                                       size: 30),
                                                   const SizedBox(height: 8),
                                                   Text(
-                                                    'Error loading data. Tap to retry.',
+                                                    'Please login',
                                                     style: TextStyle(
                                                         color: Colors.red),
                                                   ),

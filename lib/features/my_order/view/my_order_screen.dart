@@ -10,6 +10,7 @@ import 'package:smartbazar/features/create_listing/model/places_model.dart';
 import 'package:smartbazar/features/my_order/api/post_return_api.dart';
 import 'package:smartbazar/features/my_order/view/my_order_details_screen.dart';
 import 'package:smartbazar/features/my_order/api/my_order_api.dart';
+import 'package:smartbazar/features/my_order/view/my_return_screen.dart';
 import 'package:smartbazar/features/product_details/product_deatials_screen.dart';
 import 'package:smartbazar/utils/custom_toast.dart';
 
@@ -421,69 +422,66 @@ class _OrderContainerState extends ConsumerState<OrderContainer> {
                                         if (!mounted)
                                           return; // Prevent execution if the widget is unmounted
 
-                                        await ref
-                                            .read(
-                                          postmyreturnProvider(
-                                            widget.order.id, // Order ID
-                                            widget.order.vendorId, // Vendor ID
-                                            widget.order.postId, // Post ID
-                                            issue!, // Issue description
-                                            message!, // Message
-                                            place!
-                                                .description!, // Place description
-                                            place!.place_id!, // City name
-                                            address!, // Address
-                                            place!.latitude!
-                                                .toString(), // Latitude
-                                            place!.longitude!
-                                                .toString(), // Longitude
-                                            image!,
-                                          ),
-                                        )
-                                            .whenData(
-                                          (value) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                title:
-                                                    const Text("Return Sent"),
-                                                content: const Text(
-                                                    "You have send a return"),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(ctx).pop();
-                                                    },
-                                                    child: const Text("okay"),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                        Future.delayed(
-                                            const Duration(milliseconds: 90),
-                                            () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (ctx) => AlertDialog(
-                                              title: const Text("Return Sent"),
-                                              content: const Text(
-                                                  "You have send a return"),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(ctx).pop();
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text("okay"),
-                                                ),
-                                              ],
-                                            ),
+                                        try {
+                                          final _return = await ref.read(
+                                            postmyreturnProvider(
+                                              widget.order.id, // Order ID
+                                              widget
+                                                  .order.vendorId, // Vendor ID
+                                              widget.order.postId, // Post ID
+                                              issue!, // Issue description
+                                              message!, // Message
+                                              place!
+                                                  .description!, // Place description
+                                              place!.place_id!, // City name
+                                              address!, // Address
+                                              place!.latitude!
+                                                  .toString(), // Latitude
+                                              place!.longitude!
+                                                  .toString(), // Longitude
+                                              image!,
+                                            ).future, // Ensure it awaits the future
                                           );
-                                          // deleayed code here
-                                          print('delayed execution');
-                                        });
+
+                                          print(
+                                              'bibash $_return'); // ✅ This should now print the response
+
+                                          Future.delayed(
+                                              const Duration(milliseconds: 90),
+                                              () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      title: const Text(
+                                                          "Return Sent"),
+                                                      content: Text("$_return"),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            //    Navigator.push(context, route)
+
+                                                            try {
+                                                              // Navigator.pop(
+                                                              //     context); // Close dialog
+                                                                                            Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(builder: (ctx) => MyReturnScreen()),
+        );
+                                                            } catch (e) {
+                                                              print(
+                                                                  'error $e');
+                                                            }
+                                                          },
+                                                          child: const Text(
+                                                              "Okay"),
+                                                        ),
+                                                      ],
+                                                    ));
+                                            print('delayed execution');
+                                          });
+                                        } catch (e) {
+                                          print(
+                                              'Error: $e'); // Print error if API fails
+                                        }
                                       },
                                       widget: ReturnProductDetails(
                                         issue: (p1) {
