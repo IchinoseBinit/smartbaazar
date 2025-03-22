@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smartbazar/constant/api_constant.dart';
 import 'package:smartbazar/features/add_to_cart/model/cart_item_model.dart';
@@ -8,7 +9,7 @@ import 'package:smartbazar/utils/request_type.dart';
 part 'cart_item_api.g.dart';
 
 @riverpod
-Future<Map<String, List<Object>>> getCartItem(GetCartItemRef ref) async {
+Future<Map<String, List<Object>>> getCartItem(Ref ref) async {
   final SmartClient client = SmartClient();
 
   try {

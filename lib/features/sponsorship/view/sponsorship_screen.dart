@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smartbazar/constant/image_constant.dart';
 import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart';
+import 'package:smartbazar/features/button_nav_bar/cusom_btn_bar/custom_bottom_nav.dart';
 import 'package:smartbazar/features/sponsorship/api/delete_sponsor_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_sponsor_banner_api.dart';
 import 'package:smartbazar/features/sponsorship/api/sponsor_gift_api.dart';
@@ -23,9 +25,6 @@ class SponsorshipScreen extends ConsumerStatefulWidget {
 
 class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
   File? imageFile;
-
-
-  
 
   Future<void> submitbanner() async {
     if (imageFile == null) {
@@ -58,8 +57,6 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
       );
     }
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -110,12 +107,18 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                   fgColor: Colors.white,
                   bgColor: const Color(0xff362677),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ApplySponsorshipPriceScreen(),
-                      ),
+                    navigateToPage(
+                      context: context,
+                      page: ApplySponsorshipPriceScreen(),
+                      ref: ref,
+                      showNavBar: false, // Hide bottom navbar
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => const ApplySponsorshipPriceScreen(),
+                    //   ),
+                    // );
                   },
                 ),
                 Divider(thickness: 2.w, color: const Color(0xffD9D9D9)),
@@ -217,7 +220,7 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                               ),
                               SizedBox(height: 8.h),
                               //  ChooseFileWidget(),
-                              ChooseFileWidget(
+                              ChooseImageFileWidget(
                                 textColor: Colors.red,
                                 initialImage: imageFile,
                                 onImageSelected: (selectedImage) {
@@ -268,7 +271,7 @@ class _SponsorshipScreenState extends ConsumerState<SponsorshipScreen> {
                   },
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  error: (error, stack) => Center(child: Text('Please login')),
                 ),
                 SizedBox(height: 20.h),
               ],
@@ -524,6 +527,92 @@ class SponsorShipExpansionTileWidget extends StatelessWidget {
             fontSize: 12.sp,
             fontWeight: FontWeight.w500,
             color: const Color(0xff36383C),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ChooseImageFileWidget extends StatefulWidget {
+  final Color textColor;
+  final File? initialImage;
+  final Function(File?) onImageSelected;
+
+  const ChooseImageFileWidget({
+    Key? key,
+    required this.textColor,
+    this.initialImage,
+    required this.onImageSelected,
+  }) : super(key: key);
+
+  @override
+  _ChooseImageFileWidgetState createState() => _ChooseImageFileWidgetState();
+}
+
+class _ChooseImageFileWidgetState extends State<ChooseImageFileWidget> {
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  bool _isPickerActive = false; // Add this flag
+
+  @override
+  void initState() {
+    super.initState();
+    _imageFile = widget.initialImage;
+  }
+
+  Future<void> _pickImage() async {
+    if (_isPickerActive) return; // Prevent multiple calls to _pickImage
+
+    setState(() {
+      _isPickerActive = true; // Set the flag to true when picker is active
+    });
+
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+      widget.onImageSelected(_imageFile);
+    }
+
+    setState(() {
+      _isPickerActive = false; // Set the flag to false when picker is done
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 120.w),
+          child: GestureDetector(
+            onTap: _pickImage,
+            child: Container(
+              alignment: Alignment.center,
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(color: widget.textColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: _imageFile != null
+                  ? Image.file(_imageFile!, fit: BoxFit.cover)
+                  : Icon(Icons.add_a_photo, color: widget.textColor),
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: _isPickerActive
+              ? null
+              : _pickImage, // Disable button if picker is active
+          child: Text(
+            "Choose Image",
+            style: TextStyle(color: widget.textColor),
           ),
         ),
       ],

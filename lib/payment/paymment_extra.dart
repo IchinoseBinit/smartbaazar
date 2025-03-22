@@ -13,13 +13,13 @@ class TestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Fonepay Payment')),
+      appBar: AppBar(title: const Text('Fonepay Payment')),
       body: Center(
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.grey.shade300,
             elevation: 0,
-            side: BorderSide(width: 2, color: Colors.black87),
+            side: const BorderSide(width: 2, color: Colors.black87),
           ),
           onPressed: () async {
             var paymentResult = await makepaymentnow(context, amount, showText);
@@ -27,7 +27,7 @@ class TestScreen extends StatelessWidget {
                 'binod ID: ${paymentResult["id"]}, Success: ${paymentResult["success"]}');
           },
           child:
-              Text('Pay with Fonepay', style: TextStyle(color: Colors.red)),
+              const Text('Pay with Fonepay', style: TextStyle(color: Colors.red)),
         ),
       ),
     );
@@ -85,7 +85,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),
-          if (isLoading) Center(child: CircularProgressIndicator()),
+          if (isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

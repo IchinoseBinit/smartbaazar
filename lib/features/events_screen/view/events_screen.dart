@@ -2975,18 +2975,15 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                             },
                           ),
                         ),
-                      
-
-                        
                       ],
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                         Padding(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                        Padding(
                           padding: const EdgeInsets.all(5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3007,7 +3004,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         asyncbajarValue.when(
                           data: (data) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.only(bottom: 80),
                               child: SizedBox(
                                 width: double.infinity,
                                 child: AnimatedContainer(
@@ -3167,8 +3164,11 @@ class _EventsScreenState extends ConsumerState<EventsScreen>
                         SizedBox(
                           height: 40.h,
                         ),
-                      ]
-                    )
+                      ])),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 40.h,
+                    ),
                   )
                 ],
               ),

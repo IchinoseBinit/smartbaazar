@@ -434,7 +434,7 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
                   pinned: true,
                   floating: true,
                   delegate: StickyHeaderDelegate(
-                    showbackbutton: true,
+                      showbackbutton: true,
                       visible: isSliverAppBarVisible,
                       searchController: _searchController,
                       onchanged: (value) {
@@ -640,31 +640,22 @@ class _FavouriteListingScreenState extends ConsumerState<FavouriteListingScreen>
                 ),
               ),
               SliverToBoxAdapter(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...favouriteList.map((product) {
-                      return ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (index >= favouriteList.length) {
-                            // Prevent accessing out-of-bounds index
-                            return const SizedBox.shrink();
-                          }
-                          final item = favouriteList[index];
-                          return FavouriteListProductDetails(item: item);
-                        },
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 16.h,
-                        ),
-                        itemCount: favouriteList.length,
-                      );
-                    }).toList(),
-                    if (isLoading)
-                      CircularProgressIndicator(), // Show loading indicator at the bottom
-                  ],
+                child: ListView.separated(
+                  physics:
+                      NeverScrollableScrollPhysics(), // Prevent internal scrolling issues
+                  shrinkWrap: true, // Prevents unnecessary layout jumps
+                  itemCount: favouriteList.length +
+                      (isLoading ? 1 : 0), // Extra item for loader
+                  itemBuilder: (context, index) {
+                    if (index == favouriteList.length) {
+                      return Center(
+                          child:
+                              CircularProgressIndicator()); // Pagination Loader
+                    }
+                    return FavouriteListProductDetails(
+                        item: favouriteList[index]);
+                  },
+                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
                 ),
               )
             ]),
@@ -1399,13 +1390,19 @@ class _FavouriteListProductDetailsState
         elevation: 6,
         child: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ProductDetailScreen(productId: widget.item.id!),
-              ),
-            );
+                navigateToPage(
+            context: context,
+            page: ProductDetailScreen(productId: widget.item.id!),
+            ref: ref,
+            showNavBar: false, // Hide bottom navbar
+          );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) =>
+            //         ProductDetailScreen(productId: widget.item.id!),
+            //   ),
+            // );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.h),
@@ -1484,6 +1481,8 @@ class _FavouriteListProductDetailsState
                     ),
                     Expanded(
                         child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           widget.item.title!,
@@ -1497,6 +1496,8 @@ class _FavouriteListProductDetailsState
                           height: 40.h,
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (widget.item.discountedPrice != null &&
                                 widget.item.discountedPrice!.isNotEmpty) ...[

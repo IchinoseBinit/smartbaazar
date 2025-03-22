@@ -109,37 +109,31 @@ class MyReturnScreen extends ConsumerWidget {
                             Container(
                                 padding: EdgeInsets.symmetric(vertical: 20.h),
                                 child: SingleChildScrollView(
-                                    child: Column(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        if (data.returnPlaced?.data
-                                                ?.isNotEmpty ??
-                                            false)
-                                          ListView.separated(
-                                              itemBuilder: (context, index) {
-                                                final returnPlacedItem = data
-                                                    .returnPlaced?.data?[index];
-                                                return Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10.w),
-                                                  child: ReturnOrderDetails(
-                                                      returnItem:
-                                                          returnPlacedItem),
-                                                );
-                                              },
-                                              separatorBuilder:
-                                                  (context, index) =>
-                                                      SizedBox(height: 14.h),
-                                              itemCount: data
-                                                  .returnPlaced!.data!.length)
-                                        else
-                                          const Center(
-                                              child: Text('No Returns Placed')),
-                                      ],
-                                    )
-                                  ],
-                                )))
+  child: Column(
+    children: [
+      if (data.returnPlaced?.data?.isNotEmpty ?? false)
+        ...List.generate(
+          data.returnPlaced!.data!.length,
+          (index) {
+            final returnPlacedItem = data.returnPlaced?.data?[index];
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Column(
+                children: [
+                  ReturnOrderDetails(returnItem: returnPlacedItem),
+                  SizedBox(height: 14.h), // Manually adding space between items
+                ],
+              ),
+            );
+          },
+        )
+      else
+        const Center(child: Text('No Returns Placed')),
+    ],
+  ),
+)
+
+                                )
                             // if (data.returnReceived?.data?.isNotEmpty ?? false)
                             //   Padding(
                             //     padding: EdgeInsets.symmetric(vertical: 20.h),

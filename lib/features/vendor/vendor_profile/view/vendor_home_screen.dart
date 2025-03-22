@@ -1673,7 +1673,8 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                                     ?.membership_title ??
                                                                 "",
                                                             offer:
-                                                                prod.wow ?? "",
+                                                                prod.offers ??
+                                                                    "",
                                                             price: prod.price ??
                                                                 "",
                                                             productImage:
@@ -1835,7 +1836,7 @@ class _VendorHomeScreenState extends ConsumerState<VendorHomeScreen>
                                                               .userdetails
                                                               ?.membershipTitle ??
                                                           "",
-                                                      offer: prod.wow ?? "",
+                                                      offer: prod.offers ?? "",
                                                       price: prod.price ?? "",
                                                       productImage: prod.image,
                                                       shortestDistance: prod
@@ -2599,594 +2600,618 @@ class _BigContainerState extends State<BigContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: DottedBorder(
-        color: const Color(0xFF6D1A49),
-        strokeWidth: 1,
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(35),
-        dashPattern: const [7, 5],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      widget.ondoenload?.call(); // ✅ Make sure it's called
-                    },
-                    icon: const Icon(
-                      Icons.file_download_outlined,
-                      color: Color(0xFF6D1A49),
-                    ),
-                  ),
-                  PopupMenuButton(
-                    icon:
-                        const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
-                    itemBuilder: (context) => [
-                      // const PopupMenuItem(
-                      //   value: 'Enquire',
-                      //   child: Text('Enquire',
-                      //       style: TextStyle(color: Colors.black)),
-                      // ),
-                      PopupMenuItem(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddNewDisputes(
-                                  vendorname: widget.title,
-                                ),
-                              ));
-                        },
-                        value: 'Report',
-                        child: const Text('Report',
-                            style: TextStyle(color: Colors.black)),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VendorHomeScreen(
+                  vendorName: widget.title,
+                  vid: int.tryParse(widget.vendorid)!),
+            ));
+        //  navigateToPage(
+        //                     context: context,
+        //                     page: VendorHomeScreen(
+        //                       vendorName: widget.title,
+        //                       vid: int.tryParse(widget.vendorid)!
+        //                     ),
+        //                     ref: widget.,
+        //                     showNavBar:
+        //                         true, // Hide the navbar when moving to this screen
+        //                   );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: DottedBorder(
+          color: const Color(0xFF6D1A49),
+          strokeWidth: 1,
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(35),
+          dashPattern: const [7, 5],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        widget.ondoenload?.call(); // ✅ Make sure it's called
+                      },
+                      icon: const Icon(
+                        Icons.file_download_outlined,
+                        color: Color(0xFF6D1A49),
                       ),
-                      PopupMenuItem(
-                        onTap: () async {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              Future.delayed(
-                                  const Duration(milliseconds: 300),
-                                  () async {
-                                Navigator.of(context)
-                                    .pop(); // Close dialog after 300ms
-                                await captureAndShare(); // Capture and share image
-                              });
-    
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                insetPadding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: RepaintBoundary(
-                                    key: _widgetKey,
-                                    child: Container(
-                                      color: Colors
-                                          .white, // Ensure background color
-                                      padding: const EdgeInsets.all(
-                                          10), // Avoid layout issues
-                                      child: SizedBox(
-                                        height: 600.h,
-                                        width: 450.w,
-                                        child: BigContainer(
-                                          membershipid: widget.membershipid,
-                                          onconnectclicked: () {},
-                                          storycount: widget.storyCount,
-                                          lat: widget.lat,
-                                          long: widget.long,
-                                          vendorid: widget.vendorid,
-                                          title: widget.title,
-                                          logo: widget.logo,
-                                          contact: widget.contact,
-                                          storyCount: widget.storyCount,
-                                          membershipTitle:
-                                              widget.membershipTitle,
-                                          total_connections:
-                                              widget.total_connections,
-                                          total_prize_worth:
-                                              widget.total_prize_worth,
-                                          location: widget.location,
-                                          Cnumber: widget.Cnumber,
-                                          issubbed: widget.issubbed == 1
-                                              ? true
-                                              : false,
-                                          memebertitle:
-                                              widget.membershipTitle,
-                                          onsubscribed: widget.onsubscribed,
-                                          ondoenload: () {},
+                    ),
+                    PopupMenuButton(
+                      icon:
+                          const Icon(Icons.more_vert, color: Color(0xFF6D1A49)),
+                      itemBuilder: (context) => [
+                        // const PopupMenuItem(
+                        //   value: 'Enquire',
+                        //   child: Text('Enquire',
+                        //       style: TextStyle(color: Colors.black)),
+                        // ),
+                        PopupMenuItem(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddNewDisputes(
+                                    vendorname: widget.title,
+                                  ),
+                                ));
+                          },
+                          value: 'Report',
+                          child: const Text('Report',
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                        PopupMenuItem(
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                Future.delayed(
+                                    const Duration(milliseconds: 300),
+                                    () async {
+                                  Navigator.of(context)
+                                      .pop(); // Close dialog after 300ms
+                                  await captureAndShare(); // Capture and share image
+                                });
+
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  insetPadding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: RepaintBoundary(
+                                      key: _widgetKey,
+                                      child: Container(
+                                        color: Colors
+                                            .white, // Ensure background color
+                                        padding: const EdgeInsets.all(
+                                            10), // Avoid layout issues
+                                        child: SizedBox(
+                                          height: 600.h,
+                                          width: 450.w,
+                                          child: BigContainer(
+                                            membershipid: widget.membershipid,
+                                            onconnectclicked: () {},
+                                            storycount: widget.storyCount,
+                                            lat: widget.lat,
+                                            long: widget.long,
+                                            vendorid: widget.vendorid,
+                                            title: widget.title,
+                                            logo: widget.logo,
+                                            contact: widget.contact,
+                                            storyCount: widget.storyCount,
+                                            membershipTitle:
+                                                widget.membershipTitle,
+                                            total_connections:
+                                                widget.total_connections,
+                                            total_prize_worth:
+                                                widget.total_prize_worth,
+                                            location: widget.location,
+                                            Cnumber: widget.Cnumber,
+                                            issubbed: widget.issubbed == 1
+                                                ? true
+                                                : false,
+                                            memebertitle:
+                                                widget.membershipTitle,
+                                            onsubscribed: widget.onsubscribed,
+                                            ondoenload: () {},
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        value: 'Share',
-                        child: const Text('Share',
-                            style: TextStyle(color: Colors.black)),
+                                );
+                              },
+                            );
+                          },
+                          value: 'Share',
+                          child: const Text('Share',
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                      ],
+                      onSelected: (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("$value Clicked")),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Connect",
+                          style: TextStyle(fontSize: 9.sp),
+                        ),
+                        Text(
+                          "Pass",
+                          style: TextStyle(fontSize: 9.sp),
+                        )
+                      ],
+                    ),
+                  ),
+                  DottedBorder(
+                    color: const Color(0xff6d1a49),
+                    strokeWidth: 2,
+                    borderPadding: const EdgeInsets.all(3),
+                    dashPattern: const [9, 5],
+                    borderType: BorderType.Circle,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CircleAvatar(
+                          radius: 40,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget.logo),
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                          ),
+                        )),
+                  ),
+                  Column(
+                    children: [
+                      Image.asset(
+                        widget.membershipid.toString() == "2"
+                            ? spotlighticon
+                            : widget.membershipid.toString() == "1"
+                                ? basicsellericon
+                                : widget.membershipid.toString() == "3"
+                                    ? domesticseller
+                                    : widget.membershipid.toString() == "25"
+                                        ? globalicon
+                                        : basicsellericon, // Default icon
+                        width: 50,
+                        height: 50,
+                        color: Colors.grey,
                       ),
+
+                      Text(
+                        widget.membershipTitle,
+                        style: TextStyle(fontSize: 9.sp),
+                      ),
+                      // Text(
+                      //   "Exclusive",
+                      //   style: TextStyle(fontSize: 9.sp),
+                      // ),
+                      // Text(
+                      //   "Brand",
+                      //   style: TextStyle(fontSize: 9.sp),
+                      // )
                     ],
-                    onSelected: (value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("$value Clicked")),
-                      );
-                    },
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Connect",
-                        style: TextStyle(fontSize: 9.sp),
-                      ),
-                      Text(
-                        "Pass",
-                        style: TextStyle(fontSize: 9.sp),
-                      )
-                    ],
-                  ),
-                ),
-                DottedBorder(
-                  color: const Color(0xff6d1a49),
-                  strokeWidth: 2,
-                  borderPadding: const EdgeInsets.all(3),
-                  dashPattern: const [9, 5],
-                  borderType: BorderType.Circle,
-                  child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: CircleAvatar(
-                        radius: 40,
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(widget.logo),
-                          radius: 60,
-                          backgroundColor: Colors.white,
-                        ),
-                      )),
-                ),
-                Column(
-                  children: [
-                    Image.asset(
-                      widget.membershipid.toString() == "2"
-                          ? spotlighticon
-                          : widget.membershipid.toString() == "1"
-                              ? basicsellericon
-                              : widget.membershipid.toString() == "3"
-                                  ? domesticseller
-                                  : widget.membershipid.toString() == "25"
-                                      ? globalicon
-                                      : basicsellericon, // Default icon
-                      width: 50,
-                      height: 50,
-                      color: Colors.grey,
-                    ),
-    
-                    Text(
-                      widget.membershipTitle,
-                      style: TextStyle(fontSize: 9.sp),
-                    ),
-                    // Text(
-                    //   "Exclusive",
-                    //   style: TextStyle(fontSize: 9.sp),
-                    // ),
-                    // Text(
-                    //   "Brand",
-                    //   style: TextStyle(fontSize: 9.sp),
-                    // )
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10.sp),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Text(
+              SizedBox(height: 10.sp),
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                      child: Text(
                     widget.title,
                     style: TextStyle(
-                        fontSize: 24.sp,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 24.sp,
                       color: Colors.black,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1, // Ensures only one line is allowed
+                    overflow:
+                        TextOverflow.ellipsis, // Adds "..." if text is too long
+                  )),
+                  Center(
+                    child: Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            // Use Google Maps app-specific URL scheme
-                            final Uri mapsIntentUrl = Uri.parse(
-                                'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.long}');
-    
-                            // Fallback check
-                            if (await canLaunchUrl(mapsIntentUrl)) {
-                              await launchUrl(
-                                mapsIntentUrl,
-                                mode: LaunchMode.externalApplication,
-                              );
-                            } else {
-                              print(
-                                  "Could not open Google Maps using intent URL");
-                            }
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                color: const Color(0xFF370C6B),
-                                size: 15.w,
-                              ),
-                              Text(
-                                "Open",
-                                style: TextStyle(
-                                  fontSize: 9.sp,
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              // Use Google Maps app-specific URL scheme
+                              final Uri mapsIntentUrl = Uri.parse(
+                                  'https://www.google.com/maps/dir/?api=1&destination=${widget.lat},${widget.long}');
+
+                              // Fallback check
+                              if (await canLaunchUrl(mapsIntentUrl)) {
+                                await launchUrl(
+                                  mapsIntentUrl,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              } else {
+                                print(
+                                    "Could not open Google Maps using intent URL");
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
                                   color: const Color(0xFF370C6B),
+                                  size: 15.w,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "Open",
+                                  style: TextStyle(
+                                    fontSize: 9.sp,
+                                    color: const Color(0xFF370C6B),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        Icon(
-                          Icons.directions,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Directions",
-                          style: TextStyle(
-                            fontSize: 9.sp,
+                          SizedBox(width: 5.w),
+                          Icon(
+                            Icons.directions,
                             color: const Color(0xFF370C6B),
+                            size: 15.w,
                           ),
-                        ),
-                      ],
-                    ),
-                    widget.location == 'null'
-                        ? const SizedBox()
-                        : Text(
-                            widget.location,
+                          Text(
+                            "Directions",
                             style: TextStyle(
                               fontSize: 9.sp,
                               color: const Color(0xFF370C6B),
                             ),
-                          )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          color: const Color(0xFF370C6B),
-                          size: 15.w,
-                        ),
-                        Text(
-                          "Customer Service",
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            color: const Color(0xFF370C6B),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                      ],
-                    ),
-                    Text(
-                      widget.Cnumber,
-                      style: TextStyle(
-                        fontSize: 9.sp,
-                        color: const Color(0xFF370C6B),
+                        ],
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5.h),
-              width: MediaQuery.sizeOf(context).width,
-              color: const Color(0xFF4B004B),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 18.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          widget.total_connections,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          "Connections",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      children: [
-                        Text(
-                          widget.storycount,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          "DealzCircle",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 15.w),
-                    Column(
-                      children: [
-                        Text(
-                          "Rs.${widget.total_prize_worth}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.sp,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          "Prize Worth",
-                          style:
-                              TextStyle(fontSize: 10.sp, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  color: const Color(0xFF4B004B),
-                  width: MediaQuery.sizeOf(context).width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0),
-                    child: Text(
-                      "smartbazaar.com.np/${widget.title}",
-                      style: const TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
+                      widget.location == 'null'
+                          ? const SizedBox()
+                          : Text(
+                              widget.location,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: const Color(0xFF370C6B),
+                              ),
+                            )
+                    ],
                   ),
-                ),
-                Positioned(
-                  bottom:
-                      -40, // Adjust based on how much the CircleAvatar should overlap
-                  left: MediaQuery.sizeOf(context).width / 2 -
-                      50, // Center the avatar
-                  child: ClipOval(
-                      child: _loading
-                          ? const CircularProgressIndicator()
-                          : Container(
-                              width: 60,
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: InkWell(
-                                onTap: () async {
-                                  setState(() {
-                                    _loading = true;
-                                  });
-                                  await Future.delayed(const Duration(
-                                      seconds: 2)); // Simulate some delay
-    
-                                  followUnfollowVendor(widget.vendorid).then(
-                                    (value) {
-                                      showCustomToast(context, value.msg!);
-                                      if (value.scratchAva == '1') {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return const Dialog(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                insetPadding:
-                                                    EdgeInsets.all(10),
-                                                child: ScratchCard());
-                                          },
-                                        );
-                                      }
-                                    },
-                                  );
-                                  widget.onsubscribed?.call();
-                                  _loading = false;
-                                },
-                                child: Image.asset(
-                                  'assets/images/zoomlogo.png',
-                                  fit: BoxFit.cover,
-                                  width: 140,
-                                  height: 140,
-                                ),
-                              ),
-                            )),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            SizedBox(height: 40.h),
-            InkWell(
-              onTap: () async {
-                setState(() {
-                  _loading = true;
-                });
-    
-                await Future.delayed(
-                    const Duration(seconds: 2)); // Simulate delay
-    
-                followUnfollowVendor(widget.vendorid).then(
-                  (value) {
-                    showCustomToast(context, value.msg!);
-    
-                    if (value.scratchAva == '1') {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Dialog(
-                            backgroundColor: Colors.transparent,
-                            insetPadding: EdgeInsets.all(10),
-                            child: ScratchCard(),
-                          );
-                        },
-                      );
-                    }
-    
-                    // Update state to reflect subscription status
-                    setState(() {
-                      _loading = false;
-                      widget.issubbed =
-                          !widget.issubbed; // Toggle subscription status
-                    });
-    
-                    widget.onsubscribed?.call();
-                    widget.onconnectclicked?.call();
-                  },
-                ).catchError((error) {
-                  setState(() {
-                    _loading = false;
-                  });
-                  showCustomToast(context, "Something went wrong");
-                });
-              },
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.w, bottom: 5.w),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Column(
                     children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            color: const Color(0xFF370C6B),
+                            size: 15.w,
+                          ),
+                          Text(
+                            "Customer Service",
+                            style: TextStyle(
+                              fontSize: 9.sp,
+                              color: const Color(0xFF370C6B),
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                        ],
+                      ),
                       Text(
-                        widget.issubbed ? "Connected" : "Connect",
+                        widget.Cnumber,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
-                          color: const Color(0xff370C6B),
+                          fontSize: 9.sp,
+                          color: const Color(0xFF370C6B),
                         ),
-                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.h),
+                width: MediaQuery.sizeOf(context).width,
+                color: const Color(0xFF4B004B),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            widget.total_connections,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "Connections",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 15.w),
+                      Column(
+                        children: [
+                          Text(
+                            widget.storycount,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "DealzCircle",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 15.w),
+                      Column(
+                        children: [
+                          Text(
+                            "Rs.${widget.total_prize_worth}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "Prize Worth",
+                            style:
+                                TextStyle(fontSize: 10.sp, color: Colors.white),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 30.h,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Shop",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    color: const Color(0xFF4B004B),
+                    width: MediaQuery.sizeOf(context).width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: Text(
+                        "smartbazaar.com.np/${widget.title}",
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
+                  ),
+                  Positioned(
+                    bottom:
+                        -40, // Adjust based on how much the CircleAvatar should overlap
+                    left: MediaQuery.sizeOf(context).width / 2 -
+                        50, // Center the avatar
+                    child: ClipOval(
+                        child: _loading
+                            ? const CircularProgressIndicator()
+                            : Container(
+                                width: 60,
+                                height: 60,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      _loading = true;
+                                    });
+                                    await Future.delayed(const Duration(
+                                        seconds: 2)); // Simulate some delay
+
+                                    followUnfollowVendor(widget.vendorid).then(
+                                      (value) {
+                                        showCustomToast(context, value.msg!);
+                                        if (value.scratchAva == '1') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return const Dialog(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  insetPadding:
+                                                      EdgeInsets.all(10),
+                                                  child: ScratchCard());
+                                            },
+                                          );
+                                        }
+                                      },
+                                    );
+                                    widget.onsubscribed?.call();
+                                    _loading = false;
+                                  },
+                                  child: Image.asset(
+                                    'assets/images/zoomlogo.png',
+                                    fit: BoxFit.cover,
+                                    width: 140,
+                                    height: 140,
+                                  ),
+                                ),
+                              )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              SizedBox(height: 40.h),
+              InkWell(
+                onTap: () async {
+                  setState(() {
+                    _loading = true;
+                  });
+
+                  await Future.delayed(
+                      const Duration(seconds: 2)); // Simulate delay
+
+                  followUnfollowVendor(widget.vendorid).then(
+                    (value) {
+                      showCustomToast(context, value.msg!);
+
+                      if (value.scratchAva == '1') {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Dialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: EdgeInsets.all(10),
+                              child: ScratchCard(),
+                            );
+                          },
+                        );
+                      }
+
+                      // Update state to reflect subscription status
+                      setState(() {
+                        _loading = false;
+                        widget.issubbed =
+                            !widget.issubbed; // Toggle subscription status
+                      });
+
+                      widget.onsubscribed?.call();
+                      widget.onconnectclicked?.call();
+                    },
+                  ).catchError((error) {
+                    setState(() {
+                      _loading = false;
+                    });
+                    showCustomToast(context, "Something went wrong");
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.w, bottom: 5.w),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.issubbed ? "Connected" : "Connect",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.sp,
+                            color: const Color(0xff370C6B),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "Feed",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "FreePrizes",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    VerticalDivider(
-                      thickness: 2.w,
-                      color: const Color(0xFF4B004B),
-                    ),
-                    Text(
-                      "Brands",
-                      style: TextStyle(
-                          color: const Color(0xFF4B004B),
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset('assets/images/arrow_down.png')
-                  ]),
-            ),
-            SizedBox(
-              height: 3.h,
-            )
-          ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30.h,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Shop",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Profile",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Feed",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "FreePrizes",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      VerticalDivider(
+                        thickness: 2.w,
+                        color: const Color(0xFF4B004B),
+                      ),
+                      Text(
+                        "Brands",
+                        style: TextStyle(
+                            color: const Color(0xFF4B004B),
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Image.asset('assets/images/arrow_down.png')
+                    ]),
+              ),
+              SizedBox(
+                height: 3.h,
+              )
+            ],
+          ),
         ),
       ),
     );

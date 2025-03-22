@@ -40,7 +40,8 @@ class FeedContainer extends ConsumerStatefulWidget {
       required this.isLiked,
       required this.refreshprovider,
       required this.productinfo,
-      required this.onlikedrefresh});
+      required this.onlikedrefresh,
+      this.passref});
 
   final String? vendorImage;
   final String? vendorName;
@@ -62,6 +63,7 @@ class FeedContainer extends ConsumerStatefulWidget {
   final String? productinfo;
   final VoidCallback? refreshprovider;
   final VoidCallback? onlikedrefresh;
+  final WidgetRef? passref;
 
   // final UserDetail? userDetails;
   // final Interested? interested;
@@ -116,8 +118,12 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
   void _showCommentSection(BuildContext context, String feedproductid) {
     showModalBottomSheet(
         useRootNavigator: true,
-        useSafeArea: true,
+        //  useSafeArea: true,
         context: context,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height -
+              80, // here increase or decrease in width
+        ),
         isScrollControlled: true, // Allows full-screen modal
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -358,7 +364,7 @@ class _FeedContainerState extends ConsumerState<FeedContainer> {
                                       // print("pinky $feedCardData");
                                       return showCustomBottomSheet(
                                           feedCardData.userDetail!.userId!,
-                                          ref,
+                                          widget.passref ?? ref,
                                           context,
                                           feedCardData);
                                     },

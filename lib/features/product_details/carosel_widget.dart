@@ -170,7 +170,7 @@ class _CarsoselWidgetState extends ConsumerState<CarsoselWidget> {
           bottom: 15.h,
           child: Card(
             shadowColor: Colors.black,
-            elevation: 9,
+            elevation: 5,
             shape: BeveledRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),

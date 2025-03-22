@@ -22,8 +22,21 @@ Future<String> postmyreturn(
   File image,
 ) async {
   final SmartClient client = SmartClient();
+  final Dio dio = Dio();
+dio.options.connectTimeout = Duration(seconds: 10);
+dio.options.receiveTimeout = Duration(seconds: 10);
+
 
   try {
+    if (!await image.exists()) {
+      throw Exception("Image file does not exist.");
+    }
+
+    print("File Path: ${image.path}");
+    print("File Exists: ${await image.exists()}");
+
+    await Future.delayed(Duration(milliseconds: 500)); // Ensure file is ready
+
     final formData = FormData.fromMap({
       "orderid": orderid,
       "vendor_id": vendorid,
@@ -38,6 +51,9 @@ Future<String> postmyreturn(
       "image": await MultipartFile.fromFile(image.path, filename: "upload.jpg"),
     });
 
+   dio.options.connectTimeout = Duration(seconds: 10);
+    dio.options.receiveTimeout = Duration(seconds: 10);
+
     final response = await client.request(
       requestType: RequestType.postWithTokenFormData,
       url: 'https://smartbazaar.jianjun-rnd.com.np/api/store_returns',
@@ -47,7 +63,7 @@ Future<String> postmyreturn(
     if (response.statusCode == 200) {
       final jsonResponse = response.data;
       print('Raw JSON Response: $jsonResponse');
-      return jsonResponse.toString(); 
+      return jsonResponse['msg'].toString(); 
     } else {
       print('Error: ${response.statusCode}');
       print('Response Data: ${response.data}');
@@ -55,6 +71,6 @@ Future<String> postmyreturn(
     }
   } catch (e) {
     print('Error submitting return request: $e');
-    return Future.error('Failed to submit return request: $e'); // Ensure error is handled
+    return Future.error('Failed to submit return request: $e');
   }
 }

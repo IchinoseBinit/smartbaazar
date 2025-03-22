@@ -9,8 +9,9 @@ import 'package:smartbazar/features/home/view/custom_card_backclipper.dart';
 import 'package:smartbazar/features/vendor/vendor_profile/view/vendor_home_screen.dart';
 import 'package:smartbazar/features/vendor/view/my_subscribe_and_win_page.dart';
 
-void showCustomBottomSheet(String vid, WidgetRef ref, BuildContext context,
+void showCustomBottomSheet(String vid, WidgetRef passedref, BuildContext context,
     FeedGiftCardModel feedGiftCard) {
+      WidgetRef? hereref;
   String getMembershipImage(String? membershipId) {
     switch (membershipId) {
       case '1':
@@ -69,16 +70,28 @@ void showCustomBottomSheet(String vid, WidgetRef ref, BuildContext context,
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => VendorHomeScreen(
-                                            vid: int.tryParse(feedGiftCard
-                                                .userDetail!.userId!)!,
-                                            vendorName: feedGiftCard
-                                                .userDetail!.vendorImage!),
-                                      ),
-                                    );
+                                    
+                          //             navigateToPage(
+                          //   context: context,
+                          //   page: VendorHomeScreen(
+                          //                   vid: int.tryParse(feedGiftCard
+                          //                       .userDetail!.userId!)!,
+                          //                   vendorName: feedGiftCard
+                          //                       .userDetail!.vendorImage!),
+                          //   ref: hereref!,
+                          //   showNavBar:
+                          //       false, // Hide the navbar when moving to this screen
+                          // );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => VendorHomeScreen(
+                                    //         vid: int.tryParse(feedGiftCard
+                                    //             .userDetail!.userId!)!,
+                                    //         vendorName: feedGiftCard
+                                    //             .userDetail!.vendorImage!),
+                                    //   ),
+                                    // );
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -411,6 +424,7 @@ class PopUpDiscountImageCard extends StatelessWidget {
       {super.key, required this.feedGiftCard, required this.vendorid});
   final BuyOrWinCard feedGiftCard;
   final String vendorid;
+  
   @override
   Widget build(BuildContext context) {
     print(feedGiftCard.image);
@@ -532,15 +546,15 @@ class PopUpDiscountImageCard extends StatelessWidget {
                               ),
                               InkWell(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => VendorHomeScreen(
-                                  //         vid: int.tryParse(vendorid)!,
-                                  //         vendorName:
-                                  //             feedGiftCard.vendorImage!),
-                                  //   ),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => VendorHomeScreen(
+                                          vid: int.tryParse(vendorid)!,
+                                          vendorName:
+                                              feedGiftCard.vendorImage!),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(2),
