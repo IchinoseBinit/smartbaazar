@@ -8,13 +8,11 @@ import 'package:smartbazar/features/auth/widgets/genral_text_button_widget.dart'
 import 'package:smartbazar/features/create_listing/widget/create_listing_card_widget.dart';
 import 'package:smartbazar/features/feed-form_screen/api/products_feed_dropdown_api.dart';
 import 'package:smartbazar/features/feed-form_screen/model/products_feed_dropdown.dart';
-import 'package:smartbazar/features/message/view/chat_screen.dart';
 import 'package:smartbazar/features/sponsorship/api/get_feed_products_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_coupon_api.dart';
 import 'package:smartbazar/features/sponsorship/api/post_gift_api.dart';
 import 'package:smartbazar/features/sponsorship/view/sponsorship_screen.dart';
 import 'package:smartbazar/features/sponsorship/view/submit_sponsorship_payment_screen.dart';
-import 'package:smartbazar/features/vendor_details/widgets/bank_details_widget.dart';
 import 'package:smartbazar/general_widget/general_safe_area.dart';
 import 'package:smartbazar/payment/paymment_extra.dart';
 
@@ -96,7 +94,6 @@ class _ApplySponsorshipPriceScreenState
     final giftWorth = giftWorthController.text.trim();
     final giftQty = giftQtyController.text.trim();
     const giftType = "gift";
-    
 
     //print('${totalCost}'); 9877654433 123
 
@@ -115,26 +112,25 @@ class _ApplySponsorshipPriceScreenState
     }
     // Call the postgift API
 
-    var pay = await makepaymentnow(
-        context, totalamount.toString(), false);
+    var pay = await makepaymentnow(context, totalamount.toString(), false);
 
-    if (pay['success']==true) {
+    if (pay['success'] == true) {
       // Ensure checking the success flag correctly
       final success = await ref.read(postgiftProvider(
         productid!,
-        gift, 
+        gift,
         giftWorth,
         giftQty,
       ).future);
 
       if (success) {
-  ScaffoldMessenger.of(context).showSnackBar(
-  const SnackBar(
-    content: Text('Gift posted successfully!'),
-    backgroundColor: Colors.grey,
-    duration: Duration(seconds: 5), // Show for 5 seconds
-  ),
-);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Gift posted successfully!'),
+            backgroundColor: Colors.grey,
+            duration: Duration(seconds: 5), // Show for 5 seconds
+          ),
+        );
 
         Navigator.pushReplacement(
           context,
@@ -246,17 +242,27 @@ class _ApplySponsorshipPriceScreenState
                                                       InputBorder.none,
                                                   border: InputBorder.none,
                                                 ),
-                                                hint: const Text(
-                                                    'Please select a value'),
+                                                hint: Text(
+                                                  'Please select a value',
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                ),
                                                 items: data!.products!.map<
                                                     DropdownMenuItem<
                                                         Product>>((item) {
                                                   return DropdownMenuItem<
                                                       Product>(
-                                                    value:
-                                                        item, // Pass the whole Product object
-                                                    child: Text(item
-                                                        .title!), // Display the title
+                                                    value: item,
+                                                    child: Text(
+                                                      item.title!,
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                      ),
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   );
                                                 }).toList(),
                                                 onChanged:
@@ -269,12 +275,13 @@ class _ApplySponsorshipPriceScreenState
                                                             .future);
 
                                                     setState(() {
-                                                      productid=selectedProduct.id;
+                                                      productid =
+                                                          selectedProduct.id;
                                                       imageurl =
                                                           giftImage.image;
                                                       giftWorthController.text =
                                                           giftImage.price;
-                                                      giftController.text = 
+                                                      giftController.text =
                                                           selectedProduct
                                                               .title!;
                                                     });
@@ -290,13 +297,13 @@ class _ApplySponsorshipPriceScreenState
                                             child: InkWell(
                                               onTap: () => ref.invalidate(
                                                   getProductsFeedDropdownProvider), // Refresh on error
-                                              child: Column(
+                                              child: const Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Icon(Icons.refresh,
                                                       color: Colors.red,
                                                       size: 30),
-                                                  const SizedBox(height: 8),
+                                                  SizedBox(height: 8),
                                                   Text(
                                                     'Please login',
                                                     style: TextStyle(
@@ -319,7 +326,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Gift Name/Title  ',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -330,6 +337,11 @@ class _ApplySponsorshipPriceScreenState
                                                 textInputAction:
                                                     TextInputAction.done,
                                                 controller: giftController,
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
                                                 decoration:
                                                     InputDecoration.collapsed(
                                                         hintText: 'Gift Title',
@@ -355,7 +367,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Gift Image ',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -397,7 +409,7 @@ class _ApplySponsorshipPriceScreenState
                                                         height: double.infinity,
                                                         errorBuilder: (context,
                                                             error, stackTrace) {
-                                                          return Center(
+                                                          return const Center(
                                                             child: Text(
                                                               'Image',
                                                               style: TextStyle(
@@ -413,7 +425,7 @@ class _ApplySponsorshipPriceScreenState
                                                         },
                                                       ),
                                                     )
-                                                  : Center(
+                                                  : const Center(
                                                       child: Text(
                                                         'Image',
                                                         style: TextStyle(
@@ -449,7 +461,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Gift Quantity',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -461,6 +473,11 @@ class _ApplySponsorshipPriceScreenState
                                                 keyboardType:
                                                     TextInputType.number,
                                                 controller: giftQtyController,
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
                                                 decoration:
                                                     InputDecoration.collapsed(
                                                         hintText: '1',
@@ -488,7 +505,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Gift Worth ',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -506,6 +523,11 @@ class _ApplySponsorshipPriceScreenState
                                                 textInputAction:
                                                     TextInputAction.done,
                                                 controller: giftWorthController,
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black,
+                                                ),
                                                 keyboardType:
                                                     TextInputType.number,
                                                 textAlign: TextAlign.end,
@@ -537,7 +559,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Total Worth ',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -572,7 +594,7 @@ class _ApplySponsorshipPriceScreenState
                                               Text(
                                                 'Impression',
                                                 style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
                                                 ),
@@ -615,7 +637,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               '2 % Sponsorship Fee',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),
@@ -652,7 +674,7 @@ class _ApplySponsorshipPriceScreenState
                                             Text(
                                               'Total Cost',
                                               style: TextStyle(
-                                                  fontSize: 16.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black),
                                             ),

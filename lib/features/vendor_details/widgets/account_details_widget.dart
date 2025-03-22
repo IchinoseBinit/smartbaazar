@@ -80,8 +80,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
       branchControllers = locations.map((location) {
         return TextEditingController(text: location.description);
       }).toList();
-      print('Updated Branch Controllers: $branchControllers');
-      print('Updated Selected Branch Locations: $selectedbranchLocations');
+
       // Print coordinates for verification
       // print('Updated Locations:');
       // locations.asMap().forEach((index, location) {
@@ -139,8 +138,8 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
               // Initialize with actual latitude and longitude values
               selectedbranchLocations.add(StreetAddressModel(
                 description: location['location'] ?? '',
-                latitude: double.parse(location['latitude']) ?? 0.0,
-                longitude: double.parse(location['longitude']) ?? 0.0,
+                latitude: double.parse(location['latitude']),
+                longitude: double.parse(location['longitude']),
                 placeId: location['placeId'] ?? '',
               ));
             }
@@ -225,7 +224,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                   'longitude': location.longitude.toString(),
                 })
             .toList();
-        print('Selected Branch Locations: $selectedbranchLocations');
 
 // Then in your updateUserDetailsProvider call:
 
@@ -300,7 +298,6 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
         // description,
         //  dob!,
       ).future);
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>$updateUserDetail");
 
       // Display success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -426,7 +423,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                                 ),
                                 Radio<String>(
                                   value: '1', // Male
-                                  groupValue: _genderController.text ?? '',
+                                  groupValue: _genderController.text,
 
                                   onChanged: _updateGender,
                                   fillColor: WidgetStateProperty.all(
@@ -442,7 +439,7 @@ class _AccountDetailsWidgetState extends ConsumerState<AccountDetailsWidget> {
                                 ),
                                 Radio<String>(
                                   value: '2', // Female
-                                  groupValue: _genderController.text ?? '',
+                                  groupValue: _genderController.text,
 
                                   onChanged: _updateGender,
                                   fillColor: WidgetStateProperty.all(
@@ -700,6 +697,7 @@ class _BranchWidgetState extends State<BranchWidget> {
         (index) => Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: locationWidgets.length > index
@@ -723,6 +721,9 @@ class _BranchWidgetState extends State<BranchWidget> {
                 SizedBox(width: 10.w),
                 if (index == 0)
                   Container(
+                    width: 40.w,
+                    height: 40.w,
+                    margin: EdgeInsets.only(top: 20.h),
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xFFADADAD)),
                     ),
@@ -736,6 +737,9 @@ class _BranchWidgetState extends State<BranchWidget> {
                   )
                 else if (index == widget.branchControllers.length)
                   Container(
+                    width: 40.w,
+                    height: 40.w,
+                    margin: EdgeInsets.only(top: 20.h),
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xFFADADAD)),
                     ),
@@ -749,6 +753,9 @@ class _BranchWidgetState extends State<BranchWidget> {
                   )
                 else if (index > 0) ...[
                   Container(
+                    width: 40.w,
+                    height: 40.w,
+                    margin: EdgeInsets.only(top: 20.h),
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xFFADADAD)),
                     ),
@@ -762,6 +769,9 @@ class _BranchWidgetState extends State<BranchWidget> {
                   ),
                   SizedBox(width: 10.w),
                   Container(
+                    width: 40.w,
+                    height: 40.w,
+                    margin: EdgeInsets.only(top: 20.h),
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xFFADADAD)),
                     ),
@@ -805,6 +815,7 @@ class _SellerLocationFieldWidgetState
   String query = '';
   bool showSuggestions = false;
   StreetAddressModel? selectedLocation;
+
   @override
   void initState() {
     super.initState();
@@ -817,100 +828,112 @@ class _SellerLocationFieldWidgetState
   @override
   Widget build(BuildContext context) {
     final streetSuggestionsAsync = ref.watch(getStreetAddressProvider(query));
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
-          textInputAction: TextInputAction.next,
-          controller: widget.streetController,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-            hintText: "Your Location",
-            hintStyle: TextStyle(
-              color: const Color(0xffADADAD),
-              fontSize: 14.sp,
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            filled: true,
-            fillColor: const Color.fromARGB(255, 241, 234, 234),
-            prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                  right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
-              child: Container(
-                height: 50,
-                width: 52,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: const Color(0xffAEC5FF),
+        // TextField section
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                controller: widget.streetController,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  hintText: "Your Location",
+                  hintStyle: TextStyle(
+                    color: const Color(0xffADADAD),
+                    fontSize: 14.sp,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 241, 234, 234),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.only(
+                        right: 11.w, left: 10.w, top: 5.h, bottom: 5.h),
+                    child: Container(
+                      height: 50,
+                      width: 52,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 11.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: const Color(0xffAEC5FF),
+                      ),
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.red,
-                ),
+                onTap: () {
+                  setState(() {
+                    showSuggestions = true;
+                    query = widget.streetController.text;
+                  });
+                },
+                onChanged: (value) {
+                  if (showSuggestions) {
+                    setState(() {
+                      query = value;
+                    });
+                  }
+                },
               ),
             ),
-          ),
-          onTap: () {
-            setState(() {
-              showSuggestions = true;
-              query = widget.streetController.text;
-            });
-          },
-          onChanged: (value) {
-            if (showSuggestions) {
-              setState(() {
-                query = value;
-              });
-            }
-          },
+          ],
         ),
-        const SizedBox(height: 10),
-        if (showSuggestions && query.isNotEmpty)
-          streetSuggestionsAsync.when(
-            data: (addresses) {
-              if (addresses.isEmpty) {
-                return const Text('No street address found.');
-              }
 
-              return Flexible(
-                fit: FlexFit.loose,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) {
-                    final address = addresses[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: ListTile(
-                        title: Text(
-                          address.description,
-                          style: TextStyle(fontSize: 12.sp),
+        // Suggestions section
+        if (showSuggestions && query.isNotEmpty)
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: streetSuggestionsAsync.when(
+              data: (addresses) {
+                if (addresses.isEmpty) {
+                  return const Text('No street address found.');
+                }
+
+                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: addresses.length,
+                    itemBuilder: (context, index) {
+                      final address = addresses[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: ListTile(
+                          title: Text(
+                            address.description,
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              widget.streetController.text =
+                                  address.description;
+                              selectedLocation = address;
+                              query = ''; // Clear the query to hide suggestions
+                              showSuggestions = false;
+                              widget.onSelected!(address);
+                            });
+                          },
                         ),
-                        onTap: () {
-                          //   print("kala ${widget.streetController.text}");
-                          setState(() {
-                            widget.streetController.text = address.description;
-                            selectedLocation = address;
-                            query = ''; // Clear the query to hide suggestions
-                            showSuggestions = false;
-                            print('>>>>>>>>>>>>>>>>address$address');
-                            widget.onSelected!(address);
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            loading: () => const CircularProgressIndicator(),
-            error: (error, stackTrace) => const Text('Please login again'),
+                      );
+                    },
+                  ),
+                );
+              },
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stackTrace) => const Text('Please login again'),
+            ),
           ),
       ],
     );
